@@ -65,15 +65,37 @@ No production holds have been applied.
 
 ### Task 4: Orchestrator integration
 
+Implemented and independently approved: explicit original/repair referrals,
+default content-baseline audit, held live/terminal scheduling, idempotent review,
+all candidate exclusions, stopped/refill behavior, continuation prompts, legacy
+normal gates, and reported-infrastructure priority (including released failed
+holds at repair limits). Final Harness suite passes 272/272; final full validate
+passed 760 tests, 756 pass, 4 existing skips, 0 fail, test phase 26.66 seconds
+(`/tmp/boundary-integration-final-validate.log`). The operator documentation is updated.
+
 - [ ] Add RED tests to `builder/goal-harness/orchestrator.test.mjs`: explicit original/repair reports become manual_review; preserve thread/worktree; no valid result or six-result snapshot; repeat harvest idempotent; empty slot refill; stopped scheduling unchanged; prose alone is not a referral; normal completed PCR still accepted.
 - [ ] Add RED tests for held author terminal extraction without acceptance/interrupt, held repair-limit task excluded from retries/replacements, release permits subsequent review, and compiled repair prompt permits a boundary request without unconditional commit.
 - [ ] Cover `compileInfrastructureResumePrompt` as well: its continuation wrapper also currently demands completion/commit unconditionally, so it must preserve the explicit boundary referral outcome while retaining all normal completed-PCR checks.
 - [ ] Add an overdue held inProgress/pending author test: no interrupt or timeout repair transition. Test `scheduler.mjs` counts held running authors, excludes terminal held author_review from active slots, and refills the freed slot.
 - [ ] Add author_review -> manual_review to `state-machine.mjs`. In harvest, preserve terminal report first; held task stays author_review without validation/promotion. Otherwise retain infrastructure rejection priority, validate full report, then call boundary audit when explicitly requested and append a transition with provenance before continuing. Other reports execute unchanged original gates.
+- [ ] Regress the reported-infrastructure error-code mismatch: `GOAL_REPORTED_UUID_INFRASTRUCTURE_UNAVAILABLE` must enter infrastructure `retryable_failure`, not content `repair_requested`. Scope held terminal observations to their exact turn id so a later successful repair cannot inherit an older terminal failure.
 - [ ] Exclude coordinator_hold from every dispatch/retry/repair candidate source, exempt held live turns from automatic timeout interrupts, and update `scheduler.mjs` slot accounting as above. Fix `compileRepairPrompt` wrapper to distinguish explicit boundary handoff from normal repair. Run focused tests GREEN.
 - [ ] Document API/JSON state meanings, limits, legacy handling and recovery in `builder/docs/tools/goal-harness.md`.
 
 ### Task 5: Verification and real rollout
+
+Task 4 intermediate verification: all Harness tests passed 270/270 and full
+validate passed 758 tests (754 pass, 4 existing skips). Independent review then
+found a missing precedence case: a released held failed-turn JSON report carrying
+`tiangong_cli_unavailable` must reach infrastructure retry before the noncompleted
+turn gate, both below and at the repair limit. These green runs do not prove that
+case; correction and fresh tests/review are required before production rollout.
+
+Pre-rollout read-only observation: the owning app-server returned `completed`
+for the expected existing turns of CPC 45266, 47140, 47171, 47172, 47173 and
+47214. This is not a quality acceptance or integration result. No harvest, hold,
+dispatch or production state mutation was performed by this observation; review
+must use the final verified Harness and preserve all original reports/worktrees.
 
 - [ ] Run all Harness tests: `node --test builder/goal-harness/*.test.mjs` (temporary dangerous-path fixtures only).
 - [ ] Run `npm run validate` in isolated dev worktree; inspect actual counts/failures. Get independent code review; fix defects with RED tests first.

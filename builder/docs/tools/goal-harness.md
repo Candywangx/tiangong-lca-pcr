@@ -98,6 +98,72 @@ client message id, turn id, timestamps, old/new commits, and findings are persis
 second turn for the same repair. A replacement task is allowed only after the configured repair limit or a recorded
 thread/worktree/commit recovery failure.
 
+### Explicit boundary review and coordinator holds
+
+An author may return a non-null `boundary_review` with reason
+`semantic_boundary_unresolved` or `overlapping_pcr_identity`, a substantive summary,
+open questions, and evidence locators with observations. These observations are
+unverified author claims, not accepted methodology or positive mapping evidence.
+Ordinary completed-PCR reports use null; legacy reports may omit the field.
+Free-text `manual_review_required` never substitutes for this explicit request.
+
+The independent boundary auditor verifies task identity, actual HEAD and baseline
+ancestry, authorized committed and dirty paths, and bounded no-follow file hashes.
+It preserves partial four-file work without accepting it. A referral cannot claim
+final inventory rows, adopted UUIDs, ranges, reference UUID confirmation, bilingual
+alignment, sync or validation success. UUID infrastructure failure remains a retryable
+failure, not a boundary-review workaround. Its report hash is explicitly canonical
+JSON; it is distinct from the exact persisted report-byte hash used below.
+
+For legacy reports needing coordinator inspection, the bounded library APIs in
+`builder/goal-harness/coordinator-hold.mjs` are `holdCoordinatorTask`,
+`releaseCoordinatorTask`, and `coordinatorTaskSha256`. Both operations take:
+
+```js
+{
+  stateDir, task_id, operation_id, coordinator, reason,
+  expected_task_sha256, expected_report_sha256, dry_run: true
+}
+```
+
+Compute the task SHA using `coordinatorTaskSha256` on the current task rebuilt from
+`GoalEventStore`, and the report SHA-256 on exact bytes at that task's `report_path`.
+Inspect both before authorizing the operation. A dry run performs validation without
+appending an event or changing the state projection; set `dry_run: false` on the same
+request to apply. Use a new operation id and fresh hashes for release. Do not edit
+`state.json` or reset retry/repair counters to accomplish either operation.
+
+Only `authoring`, `authoring_repair`, `author_review`, `repair_requested`, and
+`retryable_failure` tasks with a persisted report are eligible. Accepted or integrated
+results require the correction workflow instead. The operation holds the Goal lock,
+checks task/report CAS, rejects unsafe or larger-than-1-MiB report files, and appends
+an audited `task_replaced` event. Linux descriptor-anchored no-follow reads are required;
+unsupported secure traversal fails closed. Exact retries return the original receipt
+without reinstating an old task snapshot; operation-id reuse with different input fails.
+
+The audit retains actor, UTC time, reason, task/report hashes, current execution
+provenance and separate report-path recording provenance. An older report does not
+thereby become evidence from the current turn. Release clears `coordinator_hold` and
+appends the hold/release pair to `coordinator_hold_history`, preserving execution
+fields, counters, threads, worktrees and reports.
+
+The scheduling contract is separate from the hold receipt: held tasks must be
+excluded from normal dispatch, repairs, retry replacements and dry-run selection.
+A held running turn continues and occupies its slot without automatic timeout
+interruption. Its terminal report is retained at `author_review` without acceptance;
+that terminal held task no longer occupies an author slot. Release permits review
+again, not automatic acceptance. A valid explicit boundary referral is recorded as
+unadjudicated `manual_review`, retaining its original queue action and file/report
+provenance; it is not one of the six valid results and creates no accepted mapping.
+
+For rollout, stop dispatch first, retain active turns and existing results, verify
+the hold and referral scheduling tests and full validate, then run authenticated
+doctor. Inspect legacy reports read-only and pin their current task/report hashes
+before any explicit hold. Do not infer referrals from old report prose or rewrite
+old reports. Validate one eligible original-thread outcome before restoring the
+rolling pool; exhausted repair budgets remain visible for coordinator inspection
+and must not be reset to manufacture a pilot.
+
 If an idle visible thread omits the expected repair turn from its history, the adapter can recover that completed
 turn from the local Codex session path returned by app-server. It requires a regular, non-symlink UTF-8 JSONL file
 under the configured Codex home `sessions/`, matching session thread/worktree identity, and exactly one terminal

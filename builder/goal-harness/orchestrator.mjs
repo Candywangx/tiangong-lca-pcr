@@ -16,6 +16,7 @@ import { appendGoalCacheReceipt, listGoalCacheReceipts } from "./goal-cache.mjs"
 import { validateAuthorReport } from "./author-gates.mjs";
 import { selectGoalRuntimeBaseCommit } from "./runtime-baseline.mjs";
 import { resolveAuthorContentBaseCommit } from "./author-baseline.mjs";
+import { auditBoundaryReview } from "./boundary-review.mjs";
 
 export async function dispatchGoalAuthors({
   config,
@@ -51,7 +52,7 @@ export async function dispatchGoalAuthors({
       state = store.rebuild();
     }
     if (resumeStopped) {
-      for (const failed of state.tasks.filter((task) => task.state === "retryable_failure" && (task.attempt ?? 0) < (config.retry_policy?.max_attempts ?? 3))) {
+      for (const failed of state.tasks.filter((task) => !task.coordinator_hold && task.state === "retryable_failure" && (task.attempt ?? 0) < (config.retry_policy?.max_attempts ?? 3))) {
         if (failed.failure_code === "GOAL_EVENT_ID_CONFLICT"
           && failed.thread_id
           && failed.turn_id
@@ -332,10 +333,10 @@ export async function dispatchGoalAuthors({
 }
 
 function selectDispatchTasks(state, slots) {
-  const repairRequests = state.tasks.filter((task) => task.state === "repair_requested" && task.thread_id && task.worktree_path);
+  const repairRequests = state.tasks.filter((task) => !task.coordinator_hold && task.state === "repair_requested" && task.thread_id && task.worktree_path);
   const repairCapacity = Math.max(0, slots - activeAuthorCount(state.tasks));
   const selectedRepairs = repairRequests.slice(0, repairCapacity);
-  const prepared = state.tasks.filter((task) => task.state === "preflight" && task.worktree_path && !task.thread_id);
+  const prepared = state.tasks.filter((task) => !task.coordinator_hold && task.state === "preflight" && task.worktree_path && !task.thread_id);
   return [...selectedRepairs, ...prepared, ...dispatchCandidates(state.tasks, { slots: slots - selectedRepairs.length })].slice(0, slots);
 }
 
@@ -343,7 +344,7 @@ function previewResumedState({ config, state }) {
   const maxAttempts = config.retry_policy?.max_attempts ?? 3;
   const maxRepairs = config.retry_policy?.max_repairs ?? 2;
   const tasks = state.tasks.map((failed) => {
-    if (failed.state !== "retryable_failure" || (failed.attempt ?? 0) >= maxAttempts) return failed;
+    if (failed.coordinator_hold || failed.state !== "retryable_failure" || (failed.attempt ?? 0) >= maxAttempts) return failed;
     if (failed.failure_code === "GOAL_EVENT_ID_CONFLICT"
       && failed.thread_id
       && failed.turn_id
@@ -379,6 +380,7 @@ export async function harvestGoalAuthors({
   verifySourcesFn = verifySourceLocators,
   auditHybridSearchFn = auditHybridSearchReceipts,
   validateReportFn = validateAuthorReport,
+  auditBoundaryReviewFn = auditBoundaryReview,
   now = () => new Date(),
 }) {
   return withGoalLockAsync(stateDir, "harvest", async () => {
@@ -390,6 +392,7 @@ export async function harvestGoalAuthors({
     for (const selected of candidates) {
       state = store.rebuild();
       let task = state.tasks.find((entry) => entry.id === selected.id);
+      if (task.coordinator_hold && task.state === "author_review") continue;
       let report;
       if (task.state === "authoring" || task.state === "authoring_repair") {
         const wasRepair = task.state === "authoring_repair"
@@ -402,15 +405,20 @@ export async function harvestGoalAuthors({
         try {
           extracted = extractCompletedTurnReport(response, task.turn_id);
         } catch (error) {
-          if (error.code !== "GOAL_AUTHOR_TURN_MISSING") throw error;
-          const anotherTurnIsActive = (response.thread?.turns ?? []).some((turn) =>
-            turn.id !== task.turn_id && ["inProgress", "pending"].includes(turn.status),
-          );
-          if (anotherTurnIsActive) continue;
-          extracted = { status: "missing", report: null, error: { code: error.code, message: error.message } };
+          if (task.coordinator_hold && error.code === "GOAL_AUTHOR_REPORT_PARSE_FAILED") {
+            const terminal = response.thread?.turns?.find((turn) => turn.id === task.turn_id);
+            extracted = { status: terminal.status, report: null, error: { code: error.code, message: error.message } };
+          } else {
+            if (error.code !== "GOAL_AUTHOR_TURN_MISSING") throw error;
+            const anotherTurnIsActive = (response.thread?.turns ?? []).some((turn) =>
+              turn.id !== task.turn_id && ["inProgress", "pending"].includes(turn.status),
+            );
+            if (task.coordinator_hold || anotherTurnIsActive) continue;
+            extracted = { status: "missing", report: null, error: { code: error.code, message: error.message } };
+          }
         }
         if (extracted.status === "inProgress" || extracted.status === "pending") {
-          if (!authorTimedOut(task, config.author_timeout_seconds, now())) continue;
+          if (task.coordinator_hold || !authorTimedOut(task, config.author_timeout_seconds, now())) continue;
           await adapter.interruptTurn({ threadId: task.thread_id, turnId: task.turn_id });
           const canResumeRepair = wasRepair && (task.repair_resume_count ?? 0) < 1;
           const repairResumeFailed = wasRepair && (task.repair_resume_count ?? 0) >= 1;
@@ -437,7 +445,16 @@ export async function harvestGoalAuthors({
           failures.push(task);
           continue;
         }
-        if (isCodexUsageLimitFailure(extracted)) {
+        if (task.coordinator_hold) {
+          const terminal = response.thread?.turns?.find((turn) => turn.id === task.turn_id);
+          const raw = [...(terminal?.items ?? [])].reverse().find((item) => item.type === "agentMessage" && item.text?.trim())?.text ?? null;
+          task = { ...task, author_turn_observation: { turn_id: task.turn_id, status: terminal?.status ?? extracted.status, extracted_status: extracted.status,
+            error: extracted.error ?? terminal?.error ?? null, raw_final_message: raw } };
+          if (extracted.report == null && raw != null) {
+            try { extracted.report = JSON.parse(raw); } catch { /* Preserve the raw terminal message for operator inspection. */ }
+          }
+        }
+        if (!task.coordinator_hold && isCodexUsageLimitFailure(extracted)) {
           const failureIdentity = turnObservationIdentity(task, "usage-limit");
           task = applyTaskTransition(task, { transition_id: failureIdentity, to: "retryable_failure", at: now().toISOString() });
           task = {
@@ -453,7 +470,7 @@ export async function harvestGoalAuthors({
           failures.push(task);
           continue;
         }
-        if (extracted.status !== "completed") {
+        if (!task.coordinator_hold && extracted.status !== "completed") {
           const canResumeRepair = wasRepair && (task.repair_resume_count ?? 0) < 1;
           const repairResumeFailed = wasRepair && (task.repair_resume_count ?? 0) >= 1;
           const canRepairTurn = canResumeRepair || (!repairResumeFailed && (task.repair_count ?? 0) < (config.retry_policy?.max_repairs ?? 2));
@@ -485,20 +502,34 @@ export async function harvestGoalAuthors({
         const reportPath = path.join(reportDir, wasRepair ? `author-report-repair-${task.repair_count}.json` : "author-report.json");
         writeFileSync(reportPath, `${JSON.stringify(report, null, 2)}\n`);
         task = applyTaskTransition(task, { transition_id: `${task.id}-turn-${task.turn_id}-review`, to: "author_review", at: new Date().toISOString() });
-        task = { ...task, report_path: reportPath, last_author_commit: report.commit_sha };
-        if (wasRepair) task = { ...finishLatestRepair(task, report.commit_sha, now().toISOString()), continuing_repair_after_thread_replacement: false };
+        task = { ...task, report_path: reportPath, last_author_commit: report?.commit_sha ?? task.last_author_commit ?? null };
+        if (wasRepair) task = { ...finishLatestRepair(task, report?.commit_sha, now().toISOString()), continuing_repair_after_thread_replacement: false };
         store.append({ event_id: `${task.id}-turn-${task.turn_id}-report`, type: "task_replaced", payload: { task } });
       } else {
         report = JSON.parse(readFileSync(task.report_path, "utf8"));
       }
+      if (task.coordinator_hold) continue;
       try {
-        const unavailableRows = (report.inventory?.unresolved ?? []).filter((entry) => entry.reason_code === "tiangong_cli_unavailable");
+        const unavailableRows = Array.isArray(report?.inventory?.unresolved)
+          ? report.inventory.unresolved.filter((entry) => entry?.reason_code === "tiangong_cli_unavailable") : [];
         if (unavailableRows.length > 0) {
           throw new GoalHarnessError("GOAL_REPORTED_UUID_INFRASTRUCTURE_UNAVAILABLE", "tiangong_cli_unavailable cannot be accepted as unresolved PCR coverage; repair it now that Goal infrastructure preflight is healthy.", { retryable: true, row_ids: unavailableRows.map((entry) => entry.row_id) });
+        }
+        if (task.author_turn_observation?.turn_id === task.turn_id && task.author_turn_observation.extracted_status !== "completed") {
+          throw new GoalHarnessError("GOAL_AUTHOR_TURN_REPAIR_REQUIRED", "Preserved held turn did not complete with a machine report.", { observation: task.author_turn_observation });
         }
         const reportSchema = validateReportFn(report);
         if (!reportSchema.valid) {
           throw new GoalHarnessError("GOAL_AUTHOR_RESULT_INVALID", `Author report failed ${reportSchema.errors.length} Schema check(s).`, { findings: reportSchema.errors.map((detail) => ({ code: "AUTHOR_REPORT_SCHEMA_INVALID", message: detail.message, detail })) });
+        }
+        if (report.boundary_review != null) {
+          const authorContentBaseCommit = resolveAuthorContentBaseCommit({ projectRoot: config.project_root, task, fallbackCommit: task.author_base_commit ?? state.baseline.commit });
+          const audit = await auditBoundaryReviewFn({ projectRoot: config.project_root, baselineCommit: authorContentBaseCommit, worktreePath: task.worktree_path, task: { ...task, goal_id: config.goal_id }, report, stateDir });
+          task = applyTaskTransition(task, { transition_id: `${task.id}-turn-${task.turn_id}-boundary-review`, to: "manual_review", at: now().toISOString() });
+          task = { ...task, author_content_base_commit: authorContentBaseCommit,
+            boundary_review_audit: { ...audit, original_queue_action: task.queue_action }, queue_action: "manual_review" };
+          store.append({ event_id: `${task.id}-turn-${task.turn_id}-boundary-review-recorded`, type: "task_replaced", payload: { task } });
+          continue;
         }
         if ((report.uuid_audits?.length ?? 0) > 0 && !config.tools?.tiangong_cli_root) {
           throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "tools.tiangong_cli_root is required to independently audit final UUIDs.");
@@ -574,12 +605,13 @@ export async function harvestGoalAuthors({
         });
         task = {
           ...task,
-          failure_code: repairable ? "GOAL_AUTHOR_REPAIR_REQUIRED" : ((task.repair_count ?? 0) >= repairLimit ? "GOAL_REPAIR_LIMIT_REACHED" : (error.code ?? "GOAL_AUTHOR_REVIEW_FAILED")),
+          failure_code: repairable ? "GOAL_AUTHOR_REPAIR_REQUIRED" : (!isRepairableReviewFailure(error)
+            ? error.code : ((task.repair_count ?? 0) >= repairLimit ? "GOAL_REPAIR_LIMIT_REACHED" : (error.code ?? "GOAL_AUTHOR_REVIEW_FAILED"))),
           failure_message: error.message,
           validation_result: error.details ?? null,
           pending_gate_findings: findings,
           repair_count: task.repair_count ?? 0,
-          last_author_commit: report.commit_sha ?? task.last_author_commit ?? null,
+          last_author_commit: report?.commit_sha ?? task.last_author_commit ?? null,
         };
         store.append({ event_id: `${task.id}-turn-${task.turn_id}-invalid-result`, type: "task_replaced", payload: { task } });
         failures.push(task);
@@ -612,7 +644,8 @@ function compileRepairPrompt(task, currentAuthorPrompt, { resumeExistingRepair =
     "Do not restart the PCR and do not modify files outside the original four-file allowlist.",
     "The complete current author contract follows. It supersedes the original turn's UUID receipt and output-report instructions.",
     currentAuthorPrompt,
-    "Fix every structured gate finding below, rerun structured sync twice, validate, commit only the allowed files, and return a complete JSON report matching the output schema supplied to this repair turn.",
+    "For a completed PCR, fix every structured gate finding below, rerun structured sync twice, validate, commit only the allowed files, and return a complete JSON report matching the output schema supplied to this repair turn.",
+    "For an explicit boundary_review referral, follow the boundary-review report contract above, preserve partial authorized work, report actual HEAD, and do not run sync, validation, or make a commit merely to satisfy completion gates.",
     JSON.stringify({
       repair_count: resumeExistingRepair ? (task.repair_count ?? 1) : (task.repair_count ?? 0) + 1,
       continuation_of_interrupted_repair: resumeExistingRepair,
@@ -630,7 +663,8 @@ function compileInfrastructureResumePrompt(task, currentAuthorPrompt, resumeCoun
     "Do not restart the PCR, do not modify files outside the original four-file allowlist, and do not count this continuation as a content repair.",
     "The complete current author contract follows and supersedes the interrupted turn's tooling and output-report instructions.",
     currentAuthorPrompt,
-    "Resume from the files already present, complete all required checks, commit only the allowed files, and return a complete JSON report matching the supplied output schema.",
+    "For a completed PCR, resume from the files already present, complete all required checks, commit only the allowed files, and return a complete JSON report matching the supplied output schema.",
+    "For an explicit boundary_review referral, follow the boundary-review report contract above, preserve partial authorized work, report actual HEAD, and do not run sync, validation, or make a commit merely to satisfy completion gates.",
     JSON.stringify({
       infrastructure_resume_count: resumeCount,
       continuing_content_repair: continuingRepair,
@@ -666,6 +700,7 @@ function finishLatestRepair(task, commit, endedAt) {
 function isRepairableReviewFailure(error) {
   return !new Set([
     "GOAL_UUID_INFRASTRUCTURE_UNAVAILABLE",
+    "GOAL_REPORTED_UUID_INFRASTRUCTURE_UNAVAILABLE",
     "GOAL_UUID_DIRECT_READ_FAILED",
     "GOAL_HYBRID_SEARCH_FAILED",
     "GOAL_HYBRID_SEARCH_UNAUTHENTICATED",

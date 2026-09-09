@@ -7,10 +7,217 @@ import test from "node:test";
 
 import { dispatchGoalAuthors, harvestGoalAuthors } from "./orchestrator.mjs";
 import { GoalEventStore } from "./event-store.mjs";
+import { activeAuthorCount } from "./scheduler.mjs";
+
+function boundaryReport(task, commit) {
+  return {
+    schema_version: 1, cpc_code: task.cpc_code, product_name_en: "Example", product_name_zh: "示例", pcr_path: task.pcr_path,
+    queue_action: task.queue_action, files: task.allowed_files, sources: [], hybrid_search_receipt_ids: [], uuid_audits: [], rejected_uuid_candidates: [],
+    inventory: { total_rows: 0, matched_rows: 0, unresolved_rows: 0, unresolved: [] }, reference_product_uuid_confirmed: false, ranges: [],
+    bilingual: { aligned: false, en_inventory_rows: 0, zh_inventory_rows: 0 }, structured_sync: { first_run_ok: false, second_run_clean: false, schema_valid: false },
+    validate: { ok: false, exit_code: 0, known_shared_artifact_only: false, summary: "Not run: boundary review requested." },
+    complexity_justification: null, cartesian_expansion_review: null, methodology_necessity_approved: null, commit_sha: commit, unresolved_issues: [],
+    boundary_review: { reason_code: "semantic_boundary_unresolved", summary: "Classification alone does not establish a distinct methodology boundary.", questions: ["Is a separate PCR needed?"], evidence: [{ locator: "https://example.invalid/source", observation: "Multiple product routes overlap." }] },
+  };
+}
+
+for (const repair of [false, true]) test(`explicit boundary referral preserves partial work and is idempotent (repair=${repair})`, async (t) => {
+  const { root, stateDir, config } = fixture({ taskCount: 7 });
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const store = new GoalEventStore({ stateDir });
+  const first = await dispatchGoalAuthors({ config, stateDir, slots: 1, adapter: { async createAuthorTask() { return { thread_id: "visible", turn_id: "terminal" }; } } });
+  let task = first.dispatched[0];
+  const baseline = git(task.worktree_path, ["rev-parse", "HEAD"]);
+  writeFileSync(path.join(task.worktree_path, task.allowed_files[0]), "preserved partial\n");
+  if (repair) {
+    task = { ...task, state: "authoring_repair", repair_count: 1, repair_history: [{ ended_at: null }] };
+    store.append({ event_id: "repair-fixture", type: "task_replaced", payload: { task } });
+  }
+  for (const ready of store.rebuild().tasks.slice(1, 6)) store.append({ event_id: `${ready.id}-ready`, type: "task_replaced", payload: { task: { ...ready, state: "valid_result", author_commit: baseline, valid_at: "2026-01-01" } } });
+  store.append({ event_id: "stopped-referral", type: "scheduling_stopped", payload: {} });
+  const report = boundaryReport(task, baseline);
+  let reads = 0;
+  const adapter = { async readThread() { reads++; return { thread: { turns: [{ id: task.turn_id, status: "completed", items: [{ type: "agentMessage", text: JSON.stringify(report) }] }] } }; } };
+  const harvested = await harvestGoalAuthors({ config, stateDir, adapter, reviewFn() { throw new Error("referral must not run acceptance"); } });
+  const referred = harvested.state.tasks[0];
+  assert.equal(referred.state, "manual_review");
+  assert.equal(referred.queue_action, "manual_review");
+  assert.equal(referred.boundary_review_audit.original_queue_action, "promote_legacy");
+  assert.equal(referred.boundary_review_audit.status, "unadjudicated");
+  assert.equal(referred.boundary_review_audit.baseline_commit, baseline);
+  assert.equal(referred.thread_id, task.thread_id);
+  assert.equal(referred.worktree_path, task.worktree_path);
+  assert.equal(readFileSync(path.join(task.worktree_path, task.allowed_files[0]), "utf8"), "preserved partial\n");
+  assert.deepEqual(JSON.parse(readFileSync(referred.report_path, "utf8")), report);
+  assert.deepEqual(harvested.valid_results, []);
+  assert.deepEqual(harvested.failures, []);
+  assert.equal(harvested.snapshot, null);
+  assert.equal(harvested.state.stopped, true);
+  const sequence = harvested.state.last_event_sequence;
+  assert.equal((await harvestGoalAuthors({ config, stateDir, adapter })).state.last_event_sequence, sequence);
+  assert.equal(reads, 1);
+  const refill = await dispatchGoalAuthors({ config, stateDir, slots: 1, resumeStopped: true, adapter: { async createAuthorTask() { return { thread_id: "next", turn_id: "next-turn" }; } } });
+  assert.equal(refill.dispatched.length, 1);
+  assert.equal(refill.dispatched[0].id, "cpc:3.0:41117");
+});
+
+for (const authorState of ["authoring", "authoring_repair"]) for (const status of ["completed", "inProgress", "pending"]) test(`coordinator hold preserves ${status} ${authorState} without acceptance or timeout`, async (t) => {
+  const { root, stateDir, config } = fixture();
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  config.author_timeout_seconds = 1;
+  const first = await dispatchGoalAuthors({ config, stateDir, slots: 1, adapter: { async createAuthorTask() { return { thread_id: "held", turn_id: "held-turn" }; } } });
+  const task = { ...first.dispatched[0], state: authorState, coordinator_hold: { reason: "review" }, dispatched_at: "2000-01-01T00:00:00Z", updated_at: "2000-01-01T00:00:00Z", repair_started_at: "2000-01-01T00:00:00Z" };
+  const store = new GoalEventStore({ stateDir });
+  store.append({ event_id: "hold-fixture", type: "task_replaced", payload: { task } });
+  const report = boundaryReport(task, git(task.worktree_path, ["rev-parse", "HEAD"]));
+  const adapter = { async readThread() { return { thread: { turns: [{ id: task.turn_id, status, items: [{ type: "agentMessage", text: JSON.stringify(report) }] }] } }; }, async interruptTurn() { assert.fail("held author must not be interrupted"); } };
+  const result = await harvestGoalAuthors({ config, stateDir, adapter, reviewFn() { assert.fail("held author must not be reviewed"); } });
+  assert.deepEqual(result.failures, []);
+  assert.deepEqual(result.valid_results, []);
+  const held = result.state.tasks[0];
+  assert.equal(held.state, status === "completed" ? "author_review" : authorState);
+  assert.equal(activeAuthorCount([held]), status === "completed" ? 0 : 1);
+  if (status === "completed") {
+    assert.deepEqual(JSON.parse(readFileSync(held.report_path, "utf8")), report);
+    const again = await harvestGoalAuthors({ config, stateDir, adapter: {}, reviewFn() { assert.fail("held review repeated"); } });
+    assert.equal(again.state.last_event_sequence, result.state.last_event_sequence);
+    store.append({ event_id: "release-fixture", type: "task_replaced", payload: { task: { ...held, coordinator_hold: null } } });
+    assert.equal((await harvestGoalAuthors({ config, stateDir, adapter: {} })).state.tasks[0].state, "manual_review");
+  }
+});
+
+for (const infrastructure of [false, true]) test(`compiled continuation permits explicit boundary referral (infrastructure=${infrastructure})`, async (t) => {
+  const { root, stateDir, config } = fixture();
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const store = new GoalEventStore({ stateDir });
+  const task = { ...store.rebuild().tasks[0], state: "repair_requested", thread_id: "same", worktree_path: root, infrastructure_resume_pending: infrastructure };
+  store.append({ event_id: "prompt-fixture", type: "task_replaced", payload: { task } });
+  let prompt;
+  await dispatchGoalAuthors({ config, stateDir, slots: 1, adapter: { async startRepairTurn(input) { prompt = input.prompt; return { thread_id: "same", turn_id: "continued" }; } } });
+  assert.match(prompt, /For a completed PCR/u);
+  assert.match(prompt, /For an explicit boundary_review referral/u);
+  assert.doesNotMatch(prompt, /Fix every structured gate finding below, rerun/u);
+  assert.doesNotMatch(prompt, /Resume from the files already present, complete all required checks/u);
+});
+
+for (const heldState of ["queued", "preflight", "repair_requested", "retryable_failure"]) test(`held ${heldState} excluded from dispatch and resume preview`, async (t) => {
+  const { root, stateDir, config } = fixture();
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const store = new GoalEventStore({ stateDir });
+  const task = { ...store.rebuild().tasks[0], state: heldState, coordinator_hold: { reason: "operator review" }, attempt: 1, repair_count: 2, repair_resume_count: 1, failure_code: "GOAL_REPAIR_LIMIT_REACHED", worktree_path: root, thread_id: heldState === "preflight" ? null : "held-thread" };
+  store.append({ event_id: "held-dispatch-fixture", type: "task_replaced", payload: { task } });
+  assert.deepEqual((await dispatchGoalAuthors({ config, stateDir, slots: 1, adapter: {}, resumeStopped: true, dryRun: true })).would_dispatch, []);
+  assert.deepEqual((await dispatchGoalAuthors({ config, stateDir, slots: 1, adapter: {}, resumeStopped: true })).dispatched, []);
+  assert.deepEqual(store.rebuild().tasks[0], task);
+});
 
 function git(root, args) {
   return execFileSync("git", args, { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
 }
+
+for (const status of ["completed", "failed", "interrupted"]) test(`held malformed ${status} terminal observation is retained until release`, async (t) => {
+  const { root, stateDir, config } = fixture();
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const store = new GoalEventStore({ stateDir });
+  const task = { ...store.rebuild().tasks[0], state: "authoring_repair", coordinator_hold: { reason: "inspection" }, thread_id: "held", turn_id: "held-terminal", worktree_path: root, repair_count: 2 };
+  store.append({ event_id: "malformed-hold", type: "task_replaced", payload: { task } });
+  const raw = "partial boundary discussion, not JSON";
+  const adapter = { async readThread() { return { thread: { turns: [{ id: task.turn_id, status, items: [{ type: "agentMessage", text: raw }], error: { code: "usageLimitExceeded", message: "usage limit" } }] } }; } };
+  const result = await harvestGoalAuthors({ config, stateDir, adapter });
+  const held = result.state.tasks[0];
+  assert.equal(held.state, "author_review");
+  assert.equal(held.author_turn_observation.status, status);
+  assert.equal(held.author_turn_observation.raw_final_message, raw);
+  assert.equal(JSON.parse(readFileSync(held.report_path, "utf8")), null);
+  assert.deepEqual(result.failures, []);
+  assert.equal(activeAuthorCount([held]), 0);
+  await harvestGoalAuthors({ config, stateDir, adapter: {} });
+  store.append({ event_id: "malformed-release", type: "task_replaced", payload: { task: { ...held, coordinator_hold: null } } });
+  const released = await harvestGoalAuthors({ config, stateDir, adapter: {} });
+  assert.equal(released.valid_results.length, 0);
+  assert.equal(released.failures.length, 1);
+});
+
+for (const repairCount of [0, 2]) test(`released held failed report preserves infrastructure priority at repair count ${repairCount}`, async (t) => {
+  const { root, stateDir, config } = fixture();
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const store = new GoalEventStore({ stateDir });
+  const task = { ...store.rebuild().tasks[0], state: "authoring_repair", coordinator_hold: { reason: "inspection" }, thread_id: "held", turn_id: "held-failed", worktree_path: root, repair_count: repairCount };
+  store.append({ event_id: "held-failed-infrastructure", type: "task_replaced", payload: { task } });
+  const report = boundaryReport(task, git(root, ["rev-parse", "HEAD"]));
+  report.files = ["manifest.yaml", "pcr.en-US.md", "pcr.zh-CN.md", "structured.yaml"].map((file) => `${task.pcr_path}/${file}`);
+  report.inventory.unresolved = [{ row_id: "r1", reason_code: "tiangong_cli_unavailable" }];
+  const result = await harvestGoalAuthors({ config, stateDir, adapter: { async readThread() { return { thread: { turns: [{ id: task.turn_id, status: "failed", items: [{ type: "agentMessage", text: JSON.stringify(report) }] }] } }; } } });
+  const held = result.state.tasks[0];
+  assert.equal(held.state, "author_review");
+  assert.deepEqual(JSON.parse(readFileSync(held.report_path, "utf8")), report);
+  assert.deepEqual(result.failures, []);
+  store.append({ event_id: "held-infrastructure-release", type: "task_replaced", payload: { task: { ...held, coordinator_hold: null } } });
+  const released = await harvestGoalAuthors({ config, stateDir, adapter: {} });
+  assert.equal(released.valid_results.length, 0);
+  assert.equal(released.failures.length, 1);
+  assert.equal(released.state.tasks[0].state, "retryable_failure");
+  assert.equal(released.state.tasks[0].failure_code, "GOAL_REPORTED_UUID_INFRASTRUCTURE_UNAVAILABLE");
+  assert.equal(released.state.tasks[0].repair_count, repairCount);
+});
+
+test("held missing turn remains live until terminal evidence exists", async (t) => {
+  const { root, stateDir, config } = fixture();
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const store = new GoalEventStore({ stateDir });
+  const task = { ...store.rebuild().tasks[0], state: "authoring", coordinator_hold: { reason: "inspect" }, thread_id: "held", turn_id: "omitted", worktree_path: root };
+  store.append({ event_id: "held-missing", type: "task_replaced", payload: { task } });
+  const result = await harvestGoalAuthors({ config, stateDir, adapter: { async readThread() { return { thread: { turns: [] } }; } } });
+  assert.deepEqual(result.state.tasks[0], task);
+  assert.equal(activeAuthorCount(result.state.tasks), 1);
+});
+
+test("new repair completion does not inherit released held-turn failure", async (t) => {
+  const { root, stateDir, config } = fixture();
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const first = await dispatchGoalAuthors({ config, stateDir, slots: 1, adapter: { async createAuthorTask() { return { thread_id: "same", turn_id: "new-completed" }; } } });
+  const task = { ...first.dispatched[0], state: "authoring_repair", author_turn_observation: { turn_id: "old-held", status: "failed", extracted_status: "failed" } };
+  new GoalEventStore({ stateDir }).append({ event_id: "released-prior-observation", type: "task_replaced", payload: { task } });
+  const report = boundaryReport(task, git(task.worktree_path, ["rev-parse", "HEAD"]));
+  const result = await harvestGoalAuthors({ config, stateDir, adapter: { async readThread() { return { thread: { turns: [{ id: task.turn_id, status: "completed", items: [{ type: "agentMessage", text: JSON.stringify(report) }] }] } }; } } });
+  assert.equal(result.state.tasks[0].state, "manual_review");
+});
+
+for (const variant of ["malformed", "unsafe", "prose", "null", "infrastructure", "infrastructure-limit", "baseline"]) test(`referral preserves ordinary gates: ${variant}`, async (t) => {
+  const { root, stateDir, config } = fixture();
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const first = await dispatchGoalAuthors({ config, stateDir, slots: 1, adapter: { async createAuthorTask() { return { thread_id: "gate", turn_id: "gate-turn" }; } } });
+  let task = first.dispatched[0];
+  const report = boundaryReport(task, git(task.worktree_path, ["rev-parse", "HEAD"]));
+  if (variant === "malformed") report.boundary_review = {};
+  if (variant === "unsafe") writeFileSync(path.join(task.worktree_path, "unauthorized"), "must not accept");
+  if (variant === "prose") { delete report.boundary_review; report.unresolved_issues = ["semantic_boundary_unresolved: please refer for manual review"]; }
+  if (variant === "null") report.boundary_review = null;
+  if (variant.startsWith("infrastructure")) report.inventory.unresolved = [{ row_id: "r1", reason_code: "tiangong_cli_unavailable" }];
+  if (variant === "infrastructure-limit") {
+    task = { ...task, repair_count: 2 };
+    new GoalEventStore({ stateDir }).append({ event_id: "repair-limit-infrastructure", type: "task_replaced", payload: { task } });
+  }
+  if (variant === "baseline") {
+    writeFileSync(path.join(task.worktree_path, "policy.txt"), "unauthorized committed earlier\n");
+    git(task.worktree_path, ["add", "policy.txt"]); git(task.worktree_path, ["commit", "-qm", "unauthorized runtime baseline"]);
+    report.commit_sha = git(task.worktree_path, ["rev-parse", "HEAD"]);
+    task = { ...task, author_base_commit: report.commit_sha };
+    new GoalEventStore({ stateDir }).append({ event_id: "misleading-runtime-base", type: "task_replaced", payload: { task } });
+  }
+  let normalReview = 0;
+  const result = await harvestGoalAuthors({ config, stateDir, adapter: { async readThread() { return { thread: { turns: [{ id: task.turn_id, status: "completed", items: [{ type: "agentMessage", text: JSON.stringify(report) }] }] } }; } }, reviewFn() { normalReview++; throw new Error("ordinary completion gates remain required"); } });
+  assert.equal(result.failures.length, 1);
+  assert.equal(result.valid_results.length, 0);
+  assert.notEqual(result.state.tasks[0].state, "manual_review");
+  assert.equal(normalReview, ["prose", "null"].includes(variant) ? 1 : 0);
+  assert.equal(result.state.tasks[0].boundary_review_audit, undefined);
+  if (variant.startsWith("infrastructure")) {
+    assert.equal(result.state.tasks[0].pending_gate_findings[0].code, "GOAL_REPORTED_UUID_INFRASTRUCTURE_UNAVAILABLE");
+    assert.equal(result.state.tasks[0].state, "retryable_failure");
+    assert.equal(result.state.tasks[0].failure_code, "GOAL_REPORTED_UUID_INFRASTRUCTURE_UNAVAILABLE");
+  }
+});
 
 function fixture({ taskCount = 1 } = {}) {
   const root = mkdtempSync(path.join(tmpdir(), "tiangong-goal-orchestrator-"));
