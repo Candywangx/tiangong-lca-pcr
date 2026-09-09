@@ -49,16 +49,25 @@ Pre-commit full validate including the extra report test passed 673 tests,
 
 ### Task 3: Explicit legacy hold API
 
-- [ ] Add temporary event-store tests in `builder/goal-harness/coordinator-hold.test.mjs`: allowed states, reject accepted/integrating/completed, report hash and expected task SHA mismatch, no-follow report read, dry-run, replay, release, stale operation id/payload, counters and worktree untouched.
-- [ ] Run RED, then implement hold/release in `builder/goal-harness/coordinator-hold.mjs` using withGoalLock and append-only task_replaced. Require operation id, coordinator, substantive reason, expected task SHA and report SHA; no raw state.json edits. Bind operation identity to payload and preserve history. Reject report paths outside Goal authors/state root and oversized or symlinked reports.
-- [ ] Run tests GREEN.
+- [x] Add temporary event-store tests in `builder/goal-harness/coordinator-hold.test.mjs`: allowed states, reject accepted/integrating/completed, report hash and expected task SHA mismatch, no-follow report read, dry-run, replay, release, stale operation id/payload, counters and worktree untouched.
+- [x] Run RED, then implement hold/release in `builder/goal-harness/coordinator-hold.mjs` using withGoalLock and append-only task_replaced. Require operation id, coordinator, substantive reason, expected task SHA and report SHA; no raw state.json edits. Bind operation identity to payload and preserve history. Reject report paths outside Goal authors/state root and oversized or symlinked reports.
+- [x] Run tests GREEN.
 
 ## Chunk 2: Scheduler and rollout
+
+Task 3 verification: initial 29 tests failed explicitly on missing APIs before
+implementation; added counter-provenance coverage produced five further expected
+failures before correction. Expanded hold/release and lock tests passed 60/60
+independently. Specification and subsequent code-quality reviews approved.
+Full validate passed 732 tests, 728 pass, 4 existing skips, 0 fail; test phase
+27.79 seconds (`/tmp/coordinator-hold-validate-20260909.log`).
+No production holds have been applied.
 
 ### Task 4: Orchestrator integration
 
 - [ ] Add RED tests to `builder/goal-harness/orchestrator.test.mjs`: explicit original/repair reports become manual_review; preserve thread/worktree; no valid result or six-result snapshot; repeat harvest idempotent; empty slot refill; stopped scheduling unchanged; prose alone is not a referral; normal completed PCR still accepted.
 - [ ] Add RED tests for held author terminal extraction without acceptance/interrupt, held repair-limit task excluded from retries/replacements, release permits subsequent review, and compiled repair prompt permits a boundary request without unconditional commit.
+- [ ] Cover `compileInfrastructureResumePrompt` as well: its continuation wrapper also currently demands completion/commit unconditionally, so it must preserve the explicit boundary referral outcome while retaining all normal completed-PCR checks.
 - [ ] Add an overdue held inProgress/pending author test: no interrupt or timeout repair transition. Test `scheduler.mjs` counts held running authors, excludes terminal held author_review from active slots, and refills the freed slot.
 - [ ] Add author_review -> manual_review to `state-machine.mjs`. In harvest, preserve terminal report first; held task stays author_review without validation/promotion. Otherwise retain infrastructure rejection priority, validate full report, then call boundary audit when explicitly requested and append a transition with provenance before continuing. Other reports execute unchanged original gates.
 - [ ] Exclude coordinator_hold from every dispatch/retry/repair candidate source, exempt held live turns from automatic timeout interrupts, and update `scheduler.mjs` slot accounting as above. Fix `compileRepairPrompt` wrapper to distinguish explicit boundary handoff from normal repair. Run focused tests GREEN.
