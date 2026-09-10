@@ -84,6 +84,11 @@ publishes the pinned Viewer snapshot and requires publication before landing. Re
 steps. Runtime installation includes the tracked Viewer generator, schemas and core read-context dependencies so
 an author/integration worktree cannot mix old package code with the coordinated Harness.
 
+For a correction after landing, explicitly pass `correction: true` to planning. The predecessor stays byte-for-byte
+unchanged in landed history; the new snapshot carries `correction_of` and reuses the recorded author commits. It
+captures the approved external PCR inputs and rebuilds every shared projection under the next repository sequence.
+No new author result or completed PCR is counted for such a correction, and publication plus CAS remain mandatory.
+
 Viewer recovery tests use `viewer-test-fixture.mjs`: the real pinned publisher, worker, schemas and one four-file PCR,
 one accepted mapping and one coverage leaf. No failure-injection assertions are skipped. On the September 10 local
 baseline, the full main test suite took 697.6 seconds (922 tests; 918 passed, 4 existing skips). After the compatible

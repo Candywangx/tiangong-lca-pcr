@@ -18,15 +18,15 @@ const runtimeDelivery = new Set(["packages/pcr-core/src/projection-completeness.
 
 // F4 audit boundary: plans bind exact bytes, never a broad permission to refresh CAS.
 // The coordinator supplies the user's approval reference; no approval is inferred.
-export function planReconciliation({ config, stateDir, snapshotId, inputPaths, deliveryPaths = [] }) {
+export function planReconciliation({ config, stateDir, snapshotId, inputPaths, deliveryPaths = [], correction = false }) {
   const state = new GoalEventStore({ stateDir }).rebuild();
   const snapshot = state.snapshots.find(s => s.id === snapshotId);
-  if (!state.stopped || snapshot?.state !== "validated" || state.tasks.some(t => ["authoring", "authoring_repair", "preflight", "integrating"].includes(t.state)) ||
-      existsSync(path.join(stateDir, "landings", snapshotId, "journal.json"))) {
+  if (!state.stopped || snapshot?.state !== (correction ? "landed" : "validated") || state.tasks.some(t => ["authoring", "authoring_repair", "preflight", "integrating"].includes(t.state)) ||
+      (!correction && existsSync(path.join(stateDir, "landings", snapshotId, "journal.json")))) {
     throw failure("NOT_READY", "Stop scheduling and finish active operations before reconciling an unlanded validated snapshot.");
   }
   const tasks = snapshot.task_ids.map(id => state.tasks.find(t => t.id === id));
-  if (tasks.some(t => !t || t.state !== "validated")) throw failure("NOT_READY", "Snapshot author results must still be validated.");
+  if (tasks.some(t => !t || t.state !== (correction ? "completed" : "validated"))) throw failure("NOT_READY", "Snapshot author results must still be validated or completed for an explicit correction.");
   const authorFiles = new Set(tasks.flatMap(t => t.allowed_files));
   const inputs = normalize(inputPaths);
   const delivery = normalize(deliveryPaths);
@@ -39,7 +39,7 @@ export function planReconciliation({ config, stateDir, snapshotId, inputPaths, d
   for (const file of delivery) if (!runtimeDelivery.has(file)) throw failure("PATH_INVALID", `Runtime delivery path is not approved: ${file}`);
   for (const file of [...inputs, ...delivery]) assertRegular(config.project_root, file);
   const plan = {
-    schema_version: 1, goal_id: config.goal_id, project_root: config.project_root,
+    schema_version: 1, goal_id: config.goal_id, project_root: config.project_root, correction,
     snapshot_id: snapshotId, snapshot_sha256: hash(snapshot), task_sha256: hash(tasks),
     main_head: git(config.project_root, ["rev-parse", "HEAD"]),
     base_commit: selectRepositoryIntegrationHead({ projectRoot: config.project_root, fallbackHead: selectGoalRuntimeBaseCommit(state, { projectRoot: config.project_root }) }),
@@ -64,7 +64,7 @@ export function applyReconciliation({ config, stateDir, plan, approvalReference,
       return existing.payload.result;
     }
     assertReconciliationInputs({ projectRoot: config.project_root, expected: plan.expected_inputs });
-    const current = planReconciliation({ config, stateDir, snapshotId: plan.snapshot_id, inputPaths: plan.input_paths, deliveryPaths: plan.delivery_paths });
+    const current = planReconciliation({ config, stateDir, snapshotId: plan.snapshot_id, inputPaths: plan.input_paths, deliveryPaths: plan.delivery_paths, correction: plan.correction ?? false });
     if (!isDeepStrictEqual(current, plan)) throw failure("INPUT_CHANGED", "Goal, snapshot, runtime, HEAD or selected author evidence changed after planning.");
     if (dryRun) return { status: "dry_run", plan_sha256: digest, next_action: "Apply the same approved plan to create a fresh integration snapshot." };
     const state = store.rebuild();
@@ -91,6 +91,7 @@ export function applyReconciliation({ config, stateDir, plan, approvalReference,
     const next = {
       id, goal_id: config.goal_id, state: "integration_pending", task_ids: old.task_ids,
       author_commits: old.author_commits, created_at: at,
+      ...(plan.correction ? { correction_of: old.id } : {}),
       reconciliation: { plan_sha256: digest, approval_reference: approvalReference, previous_snapshot_id: old.id, base_commit: commit, expected_inputs: plan.expected_inputs, delivery_paths: plan.delivery_paths },
     };
     const tasks = old.task_ids.map(taskId => {
@@ -102,7 +103,7 @@ export function applyReconciliation({ config, stateDir, plan, approvalReference,
     const result = { status: "reconciliation_prepared", snapshot_id: id, previous_snapshot_id: old.id, base_commit: commit, plan_sha256: digest, next_action: "Integrate the new snapshot; all validation and CAS gates remain required." };
     store.append({ event_id: eventId, type: "snapshot_reconciled", at, payload: {
       plan, approval_reference: approvalReference, result,
-      previous_snapshot: { ...old, state: "superseded", superseded_by: id, superseded_at: at }, snapshot: next, tasks,
+      previous_snapshot: plan.correction ? old : { ...old, state: "superseded", superseded_by: id, superseded_at: at }, snapshot: next, tasks,
     } });
     return result;
   }));

@@ -75,6 +75,22 @@ test("approval is pinned to input hashes, snapshot, and stopped scheduling", t =
   assert.throws(() => apply(f, p), e => e.code === "GOAL_RECONCILIATION_NOT_READY");
 });
 
+test("an explicit correction retains landed snapshot truth and reuses the same author results", t => {
+  const f = fixture(t);
+  f.store.append({ type: "snapshot_replaced", payload: { snapshot: { ...f.snapshot, state: "landed", landed_at: "2026-09-10T00:00:00Z" } } });
+  f.store.append({ type: "task_replaced", payload: { task: { ...f.store.rebuild().tasks[0], state: "completed" } } });
+  assert.throws(() => plan(f), e => e.code === "GOAL_RECONCILIATION_NOT_READY");
+  const p = reconciliation.planReconciliation({ config: f.config, stateDir: f.stateDir, snapshotId: f.snapshot.id, inputPaths: [mapping, adr], correction: true });
+  const result = apply(f, p);
+  const state = f.store.rebuild();
+  assert.equal(state.snapshots[0].state, "landed");
+  assert.equal(state.snapshots[0].integration_commit, f.commit);
+  assert.equal(state.snapshots[1].correction_of, f.snapshot.id);
+  assert.equal(state.tasks[0].author_commit, f.commit);
+  assert.equal(state.tasks[0].state, "integration_pending");
+  assert.deepEqual(apply(f, p), result);
+});
+
 test("reconciliation forbids broad/sensitive paths and overlapping author files", t => {
   const f = fixture(t);
   for (const inputPaths of [[".env"], ["library"], [files[0]], ["unrelated.txt"]]) {
