@@ -31,12 +31,7 @@ export function captureExpectedFilesFromCommit(root, commit, paths) {
     const repoPath = assertRepoPath(entry, { allowSensitive: true });
     const result = execFileSync("git", ["cat-file", "-e", `${commit}:${repoPath}`], { cwd: root, stdio: "ignore" , encoding: "utf8" });
     void result;
-    const bytes = execFileSync("git", ["show", `${commit}:${repoPath}`], {
-      cwd: root,
-      encoding: "buffer",
-      stdio: ["ignore", "pipe", "pipe"],
-      maxBuffer: GIT_BLOB_MAX_BUFFER,
-    });
+    const bytes = readCommitFile(root, commit, repoPath);
     return [repoPath, { kind: "file", sha256: createHash("sha256").update(bytes).digest("hex"), size: bytes.length }];
   }));
 }
@@ -61,7 +56,8 @@ export function landGoalSnapshot({ config, stateDir, snapshotId = null, dryRun =
     const expected = { ...expectedFromBaseline, ...(state.landed_path_fingerprints ?? {}) };
     const result = landFilesCas({
       projectRoot: config.project_root,
-      sourceRoot: snapshot.worktree_path,
+      sourceRoot: config.project_root,
+      sourceCommit: snapshot.integration_commit,
       paths: snapshot.changed_files,
       expected,
       stateDir,
@@ -88,16 +84,23 @@ export function landGoalSnapshot({ config, stateDir, snapshotId = null, dryRun =
   });
 }
 
-export function landFilesCas({ projectRoot, sourceRoot, paths, expected, stateDir, snapshotId, dryRun = false }) {
+export function landFilesCas({ projectRoot, sourceRoot, sourceCommit = null, paths, expected, stateDir, snapshotId, dryRun = false }) {
   const normalized = [...new Set(paths.map((entry) => assertRepoPath(entry, { allowSensitive: true })))].sort();
+  const sourceFingerprints = sourceCommit
+    ? captureExpectedFilesFromCommit(sourceRoot, sourceCommit, normalized)
+    : null;
   const operationDir = path.join(stateDir, "landings", snapshotId);
   const journalPath = path.join(operationDir, "journal.json");
   if (existsSync(journalPath)) {
     const journal = JSON.parse(readFileSync(journalPath, "utf8"));
+    if (sourceFingerprints && normalized.some((repoPath) =>
+      !sameFingerprint(journal.sources?.find((entry) => entry.repoPath === repoPath)?.fingerprint, sourceFingerprints[repoPath]))) {
+      throw new GoalHarnessError("GOAL_LAND_SOURCE_INVALID", "Landing journal does not match the validated integration commit.");
+    }
     if (journal.status === "landed") {
       return { status: "already_landed", snapshot_id: snapshotId, paths: journal.paths };
     }
-    return recoverLandingJournal({ projectRoot, operationDir, journalPath, journal, normalized, snapshotId });
+    return recoverLandingJournal({ projectRoot, operationDir, journalPath, journal, normalized, snapshotId, dryRun });
   }
 
   const conflicts = [];
@@ -114,6 +117,9 @@ export function landFilesCas({ projectRoot, sourceRoot, paths, expected, stateDi
 
   const sources = normalized.map((repoPath) => {
     const absolutePath = resolveRepoPath(sourceRoot, repoPath, { allowSensitive: true });
+    if (sourceFingerprints) {
+      return { repoPath, absolutePath, fingerprint: sourceFingerprints[repoPath] };
+    }
     if (!existsSync(absolutePath) || !lstatSync(absolutePath).isFile()) {
       throw new GoalHarnessError("GOAL_LAND_SOURCE_INVALID", `Landing source is not a regular file: ${repoPath}`);
     }
@@ -129,7 +135,11 @@ export function landFilesCas({ projectRoot, sourceRoot, paths, expected, stateDi
   for (const source of sources) {
     const staged = resolveRepoPath(stageDir, source.repoPath, { allowSensitive: true });
     mkdirSync(path.dirname(staged), { recursive: true });
-    copyFileSync(source.absolutePath, staged);
+    if (sourceCommit) {
+      writeFileSync(staged, readCommitFile(sourceRoot, sourceCommit, source.repoPath));
+    } else {
+      copyFileSync(source.absolutePath, staged);
+    }
     const existing = resolveRepoPath(projectRoot, source.repoPath, { allowSensitive: true });
     if (existsSync(existing)) {
       const backup = resolveRepoPath(backupDir, source.repoPath, { allowSensitive: true });
@@ -156,7 +166,7 @@ export function landFilesCas({ projectRoot, sourceRoot, paths, expected, stateDi
   return { status: "landed", snapshot_id: snapshotId, paths: normalized };
 }
 
-export function recoverLandingJournal({ projectRoot, operationDir, journalPath, journal, normalized, snapshotId }) {
+export function recoverLandingJournal({ projectRoot, operationDir, journalPath, journal, normalized, snapshotId, dryRun = false }) {
   if (!["prepared", "applying"].includes(journal.status) || journal.snapshot_id !== snapshotId || stableJson(journal.paths) !== stableJson(normalized)) {
     throw new GoalHarnessError("GOAL_LAND_RECOVERY_INVALID", `Landing journal cannot be recovered safely: ${journalPath}`, { journal });
   }
@@ -175,6 +185,9 @@ export function recoverLandingJournal({ projectRoot, operationDir, journalPath, 
   }
   if (conflicts.length > 0) {
     throw new GoalHarnessError("GOAL_LAND_RECOVERY_CONFLICT", `Landing recovery stopped because ${conflicts.length} path(s) no longer match the journal`, { conflicts, journal_path: journalPath });
+  }
+  if (dryRun) {
+    return { status: "dry_run", snapshot_id: snapshotId, paths: normalized, sources: journal.sources, recovery_required: true };
   }
   writeJson(journalPath, { ...journal, status: "applying", recovered_at: new Date().toISOString() });
   for (const repoPath of normalized) {
@@ -197,6 +210,15 @@ export function recoverLandingJournal({ projectRoot, operationDir, journalPath, 
   }
   writeJson(journalPath, { ...journal, status: "landed", recovered_at: new Date().toISOString() });
   return { status: "recovered_landing", snapshot_id: snapshotId, paths: normalized };
+}
+
+function readCommitFile(root, commit, repoPath) {
+  return execFileSync("git", ["show", `${commit}:${repoPath}`], {
+    cwd: root,
+    encoding: "buffer",
+    stdio: ["ignore", "pipe", "pipe"],
+    maxBuffer: GIT_BLOB_MAX_BUFFER,
+  });
 }
 
 function fingerprint(absolutePath) {
