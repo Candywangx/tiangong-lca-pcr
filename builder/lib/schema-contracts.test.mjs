@@ -1,11 +1,16 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { materialProjectionCompletenessIssues } from "../../packages/pcr-core/src/projection-completeness.mjs";
+import {
+  hasDeclaredUnresolvedReferenceProductFlow,
+  materialProjectionCompletenessIssues,
+} from "../../packages/pcr-core/src/projection-completeness.mjs";
 import { manifestIdentityProblems } from "./lifecycle-policy.mjs";
 import {
   assertClassificationMapping,
+  assertCpcProductChain,
   validateClassificationMapping,
+  validateCpcProductChain,
   validateManifest,
   validateMarkdownFrontmatter,
   validateRelease,
@@ -13,6 +18,239 @@ import {
   validateRevision,
   validateStructured,
 } from "./schema-contracts.mjs";
+import { ContractSchemaError } from "../../packages/pcr-core/src/schema-validation.mjs";
+
+const validCpcProductChain = {
+  schema_version: 1,
+  artifact_kind: "cpc_product_chain_pilot",
+  status: "draft",
+  classification_system: "CPC",
+  classification_version: "3.0",
+  official_sources: [],
+  chains: [
+    {
+      id: "barley-to-beer",
+      title: "Barley to beer",
+      description: "A pilot product chain from barley production to beer production.",
+      nodes: [
+        {
+          id: "barley",
+          code: "01150",
+          label: "Barley",
+          stage: "feedstock production",
+          role: "primary feedstock",
+        },
+        {
+          id: "beer",
+          code: "24310",
+          label: "Beer made from malt",
+          stage: "product manufacturing",
+          role: "downstream product",
+        },
+      ],
+      edges: [
+        {
+          id: "barley-feedstock-for-beer",
+          from: "barley",
+          to: "beer",
+          relationship_type: "primary_feedstock",
+          evidence_status: "supported_by_pcr",
+          boundary_assessment: "aligned",
+          interface: {
+            upstream_output_condition: "Harvested barley at the farm gate.",
+            downstream_starting_condition: "Barley received for malting.",
+            fit_summary: "The upstream output is the downstream primary feedstock.",
+          },
+          route_conditions: ["Beer production uses malted barley."],
+          evidence: [
+            {
+              kind: "pcr_projection",
+              pcr_id: "pcr.barley-seed",
+              supports: "The upstream dataset requirement identifies barley feedstock.",
+              locator: {
+                kind: "field",
+                field_path: "boundary_abstraction.upstream_dataset_requirement",
+              },
+            },
+          ],
+          review_notes: ["Confirm the malting route during methodology review."],
+        },
+      ],
+    },
+  ],
+};
+
+test("CPC product-chain contract accepts a minimal authored chain", () => {
+  assert.equal(validateCpcProductChain(validCpcProductChain).valid, true);
+  assert.equal(assertCpcProductChain(validCpcProductChain), validCpcProductChain);
+});
+
+test("CPC product-chain contract rejects an unknown evidence state", () => {
+  const unknownEvidenceState = structuredClone(validCpcProductChain);
+  unknownEvidenceState.chains[0].edges[0].evidence_status = "inferred";
+
+  assert.equal(validateCpcProductChain(unknownEvidenceState).valid, false);
+});
+
+test("CPC product-chain contract exhaustively constrains PCR projection locators", () => {
+  const supportedInventoryLocator = structuredClone(validCpcProductChain);
+  supportedInventoryLocator.chains[0].edges[0].evidence[0].locator = {
+    kind: "inventory_row",
+    process_id: "beer-production",
+    direction: "inputs",
+    flow_type: "product",
+    row_id: "barley",
+    field: "description",
+  };
+  const unsupportedFieldLocator = structuredClone(validCpcProductChain);
+  unsupportedFieldLocator.chains[0].edges[0].evidence[0].locator.field_path =
+    "system_boundary.rules";
+  const unsupportedInventoryLocator = structuredClone(validCpcProductChain);
+  unsupportedInventoryLocator.chains[0].edges[0].evidence[0].locator = {
+    kind: "inventory_row",
+    process_id: "beer-production",
+    direction: "inputs",
+    flow_type: "product",
+    row_id: "barley",
+    field: "amount",
+  };
+
+  assert.equal(validateCpcProductChain(supportedInventoryLocator).valid, true);
+  assert.equal(validateCpcProductChain(unsupportedFieldLocator).valid, false);
+  assert.equal(validateCpcProductChain(unsupportedInventoryLocator).valid, false);
+});
+
+test("CPC product-chain contract keeps official source records distinct and dated", () => {
+  const crossShapeSource = structuredClone(validCpcProductChain);
+  crossShapeSource.official_sources = [
+    {
+      kind: "official_source",
+      source_id: "cpc-3.0",
+      supports: "CPC labels",
+    },
+  ];
+  const source = {
+    id: "cpc-3.0",
+    title: "Central Product Classification Version 3.0",
+    publisher: "United Nations Statistics Division",
+    url: "https://unstats.un.org/unsd/classifications/CPC%203.0?lang=en&view=detail#codes",
+    locator: "CPC 3.0 codes 01150 and 24310",
+    supports: "The classification codes and labels used by the pilot chain.",
+    accessed_at: "2026-09-02",
+  };
+  const missingAccessDate = structuredClone(validCpcProductChain);
+  missingAccessDate.official_sources = [{ ...source }];
+  delete missingAccessDate.official_sources[0].accessed_at;
+  const malformedAccessDate = structuredClone(validCpcProductChain);
+  malformedAccessDate.official_sources = [{ ...source, accessed_at: "2026-9-2" }];
+  const validOfficialSource = structuredClone(validCpcProductChain);
+  validOfficialSource.official_sources = [{ ...source }];
+  validOfficialSource.chains[0].edges[0].evidence = [
+    {
+      kind: "official_source",
+      source_id: source.id,
+      supports: "The official classification supplies the CPC codes and labels.",
+    },
+  ];
+  const malformedOfficialSourceUrls = [
+    "https://example.com/%ZZ",
+    "https://exa[mple.com/path",
+    "https://example.com/#first#second",
+    "https://example.com:65536/source",
+    "example.com/path",
+    "https://example.com/white space",
+    "https://example.com/{raw-brace}",
+    "https://example.com/\\raw-backslash",
+    "https://example.com/\u0001control",
+    "https://example.com/资料",
+    "https://example.com/[raw-bracket]",
+    "https://example.com/?q=[raw-bracket]",
+    "urn:foo[raw-bracket]",
+  ];
+
+  assert.equal(validateCpcProductChain(crossShapeSource).valid, false);
+  assert.equal(validateCpcProductChain(missingAccessDate).valid, false);
+  assert.equal(validateCpcProductChain(malformedAccessDate).valid, false);
+  assert.equal(validateCpcProductChain(validOfficialSource).valid, true);
+  for (const url of [
+    "urn:isbn:9780141036144",
+    "https://[2001:db8::1]/source",
+    "https://example.com/%E8%B5%84%E6%96%99",
+  ]) {
+    const validAbsoluteUri = structuredClone(validOfficialSource);
+    validAbsoluteUri.official_sources[0].url = url;
+    assert.equal(
+      validateCpcProductChain(validAbsoluteUri).valid,
+      true,
+      `${url} must be accepted as an absolute official source URI`,
+    );
+  }
+  for (const url of malformedOfficialSourceUrls) {
+    const malformedOfficialSourceUrl = structuredClone(validCpcProductChain);
+    malformedOfficialSourceUrl.official_sources = [{ ...source, url }];
+    assert.equal(
+      validateCpcProductChain(malformedOfficialSourceUrl).valid,
+      false,
+      `${url} must be rejected as an official source URL`,
+    );
+  }
+
+  const invalidPort = structuredClone(validOfficialSource);
+  invalidPort.official_sources[0].url = "https://example.com:65536/source";
+  const invalidPortResult = validateCpcProductChain(invalidPort);
+  assert.equal(invalidPortResult.valid, false);
+  assert.ok(
+    invalidPortResult.errors.some(
+      (issue) =>
+        issue.code === "semantic.absolute_uri" &&
+        issue.instance_path === "/official_sources/0/url",
+    ),
+  );
+  assert.throws(
+    () => assertCpcProductChain(invalidPort, { source: "pilot.yaml" }),
+    (error) =>
+      error instanceof ContractSchemaError &&
+      error.source === "pilot.yaml" &&
+      error.errors.some(
+        (issue) =>
+          issue.code === "semantic.absolute_uri" &&
+          issue.instance_path === "/official_sources/0/url",
+      ),
+  );
+});
+
+test("CPC product-chain authored shapes reject derived read-model properties", () => {
+  const derivedProperties = [
+    "scheduling_status",
+    "coverage_status",
+    "mapping",
+    "pcr_id",
+    "pcr_path",
+    "readiness",
+    "projection_status",
+    "blockers",
+    "waves",
+    "counts",
+  ];
+
+  for (const property of derivedProperties) {
+    const documentProperty = structuredClone(validCpcProductChain);
+    documentProperty[property] = "derived";
+    assert.equal(
+      validateCpcProductChain(documentProperty).valid,
+      false,
+      `${property} must be rejected on the authored document`,
+    );
+
+    const nodeProperty = structuredClone(validCpcProductChain);
+    nodeProperty.chains[0].nodes[0][property] = "derived";
+    assert.equal(
+      validateCpcProductChain(nodeProperty).valid,
+      false,
+      `${property} must be rejected on an authored node`,
+    );
+  }
+});
 
 test("manifest Schema validates shape while active identity completeness stays semantic", () => {
   const manifest = {
@@ -84,6 +322,181 @@ test("structured Schema permits empty sections whose material completeness is ch
     completenessIssues.some(
       (issue) => issue.code === "material_projection.process_inventory.flow_rows",
     ),
+  );
+});
+
+test("candidate completeness permits a blank product flow UUID only when its output row is registered unresolved", () => {
+  const projection = {
+    reference_flow_definition: {
+      reference_amount: "1 kg",
+      product_flow_ref: { name: "Example product", uuid: "" },
+      flow_property_ref: { uuid: "mass-property" },
+      unit_group_ref: { uuid: "mass-units" },
+      reference_unit: "kg",
+    },
+    process_inventory: [
+      {
+        outputs: {
+          product: [{ row_id: "reference_product", name: "Example product" }],
+          waste: [],
+          elementary: [],
+        },
+      },
+    ],
+  };
+  const manifest = {
+    status: "candidate",
+    content_maturity: "authored_methodology",
+    review_metadata: {
+      unresolved_flow_identities: [
+        { row_id: "reference_product", reason: "No exact product flow is available." },
+      ],
+    },
+  };
+
+  assert.equal(hasDeclaredUnresolvedReferenceProductFlow(projection, manifest), true);
+  assert.equal(
+    hasDeclaredUnresolvedReferenceProductFlow(projection, {
+      ...manifest,
+      review_metadata: {
+        unresolved_flow_identities: [
+          "No exact Tiangong reference product flow was found for Example product.",
+        ],
+      },
+    }),
+    true,
+  );
+  assert.equal(
+    hasDeclaredUnresolvedReferenceProductFlow(
+      {
+        ...projection,
+        reference_flow_definition: {
+          ...projection.reference_flow_definition,
+          product_flow_ref: {
+            name: "Example product; exact UUID pending correction",
+            uuid: "",
+          },
+        },
+      },
+      {
+        ...manifest,
+        review_metadata: {
+          unresolved: [{ issue_id: "tiangong-reference-product-flow-property" }],
+        },
+      },
+    ),
+    true,
+  );
+  assert.equal(
+    hasDeclaredUnresolvedReferenceProductFlow(projection, {
+      ...manifest,
+      review_metadata: {
+        unresolved: [{ code: "reference_product_flow_uuid" }],
+      },
+    }),
+    true,
+  );
+  assert.equal(
+    hasDeclaredUnresolvedReferenceProductFlow(projection, {
+      ...manifest,
+      review_metadata: {
+        reference_flow_identity: {
+          status: "unresolved",
+          unresolved_support_fields: ["reference_product_flow_uuid"],
+        },
+      },
+    }),
+    true,
+  );
+  assert.equal(
+    hasDeclaredUnresolvedReferenceProductFlow(projection, {
+      ...manifest,
+      review_metadata: {
+        unresolved_flow_identities: ["reference_product_example_product"],
+      },
+    }),
+    true,
+  );
+  assert.equal(
+    materialProjectionCompletenessIssues(projection, {
+      allowUnresolvedProductFlowUuid: true,
+    }).some(
+      (issue) =>
+        issue.code ===
+        "material_projection.reference_flow_definition.product_flow_ref.uuid",
+    ),
+    false,
+  );
+
+  assert.equal(
+    hasDeclaredUnresolvedReferenceProductFlow(projection, {
+      ...manifest,
+      review_metadata: { unresolved_flow_identities: ["different_row"] },
+    }),
+    false,
+  );
+  assert.equal(
+    materialProjectionCompletenessIssues(projection).some(
+      (issue) =>
+        issue.code ===
+        "material_projection.reference_flow_definition.product_flow_ref.uuid",
+    ),
+    true,
+  );
+});
+
+test("candidate completeness recognizes the Goal inventory UUID unresolved contract for the reference output", () => {
+  const projection = {
+    reference_flow_definition: {
+      reference_amount: "1 kg",
+      product_flow_ref: { name: "Example product", uuid: "" },
+      flow_property_ref: { uuid: "mass-property" },
+      unit_group_ref: { uuid: "mass-units" },
+      reference_unit: "kg",
+    },
+    process_inventory: [
+      {
+        outputs: {
+          product: [{ row_id: "finished_product", name: "Example product" }],
+          waste: [],
+          elementary: [],
+        },
+      },
+    ],
+  };
+  const manifest = {
+    status: "candidate",
+    content_maturity: "authored_methodology",
+    review_metadata: {
+      unresolved: {
+        inventory_flow_uuids: [
+          {
+            row_id: "finished_product",
+            reason_code: "no_exact_candidate",
+            explanation: "No exact public state-100 product flow was found; receipt verified.",
+          },
+        ],
+      },
+    },
+  };
+
+  assert.equal(hasDeclaredUnresolvedReferenceProductFlow(projection, manifest), true);
+  assert.equal(
+    hasDeclaredUnresolvedReferenceProductFlow(projection, {
+      ...manifest,
+      review_metadata: {
+        unresolved: {
+          inventory_flow_uuids: [
+            {
+              row_id: "different_row",
+              reason_code: "no_exact_candidate",
+              explanation: "A different inventory row is unresolved.",
+            },
+          ],
+        },
+      },
+    }),
+    false,
   );
 });
 

@@ -1,7 +1,7 @@
 # PCR Goal Harness Design
 
-**Status:** accepted for implementation by the task brief
-**Date:** 2026-09-02
+**Status:** accepted for implementation by the task brief  
+**Date:** 2026-09-02  
 **Scope:** local Node.js ESM command-line orchestration for durable PCR batch production
 
 ## Outcomes
@@ -138,3 +138,4 @@ action, and dry-run where mutation is meaningful. Repeating a successful command
 - No CAS conflict is overwritten.
 - No temporary author or integration worktree is deleted automatically by `stop` or before successful landing.
 - No credential content or lookup log is copied into PCR Markdown or structured projection.
+

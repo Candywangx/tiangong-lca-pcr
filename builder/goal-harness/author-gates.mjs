@@ -128,8 +128,12 @@ export function assertAuthorQuality({ report, authorizedFiles, changedFiles, inv
       const audit = audits.get(row.uuid.toLowerCase());
       if (!audit || !audit.hybrid_search_receipt_id || audit.state_code !== 100) {
         findings.push({ code: "UUID_NOT_DIRECTLY_VERIFIED", row_id: row.row_id, uuid: row.uuid, message: "Every final UUID needs hybrid discovery and public state_code=100 direct read audit." });
-      } else if (translated?.name !== audit.base_name_zh) {
+      } else if (audit.base_name_zh && translated?.name !== audit.base_name_zh) {
         findings.push({ code: "ZH_FLOW_NAME_NOT_OFFICIAL", row_id: row.row_id, expected: audit.base_name_zh, actual: translated?.name ?? null, message: "A UUID-bearing Chinese flow name must equal the directly read TianGong Chinese baseName." });
+      } else if (!audit.base_name_zh && translated?.name !== audit.base_name_en) {
+        findings.push({ code: "ZH_FLOW_NAME_CANONICAL_FALLBACK_REQUIRED", row_id: row.row_id, expected: audit.base_name_en, actual: translated?.name ?? null, message: "When TianGong has no Chinese baseName, retain the verified canonical English baseName instead of inventing a Chinese official name." });
+      } else if (!audit.base_name_zh && !/(?:Chinese\s+baseName.*unavailable|no\s+(?:official\s+)?Chinese\s+baseName|中文\s*(?:baseName|基础名称|名称).*(?:不可用|缺失|为空|未提供))/iu.test(audit.semantic_review ?? "")) {
+        findings.push({ code: "ZH_FLOW_NAME_UNAVAILABLE_EXPLANATION_MISSING", row_id: row.row_id, message: "The UUID audit must explain that the TianGong Chinese baseName is unavailable." });
       }
     } else if (translated && !/\p{Script=Han}/u.test(translated.name ?? "")) {
       findings.push({ code: "ZH_FLOW_NAME_NOT_LOCALIZED", row_id: row.row_id, message: "An unresolved concrete flow needs a clear professional Chinese name." });

@@ -137,6 +137,37 @@ test("event store appends a hash chain and rebuilds the same projection", () => 
   }
 });
 
+test("event store reuses its verified projection across appends and invalidates it when the log changes externally", () => {
+  const root = makeRoot();
+  try {
+    class CountingStore extends GoalEventStore {
+      eventLogReads = 0;
+      readEvents() {
+        this.eventLogReads += 1;
+        return super.readEvents();
+      }
+    }
+    const stateDir = path.join(root, "goal-state");
+    const store = new CountingStore({ stateDir });
+    store.initialize({ goal_id: "fixture-goal", tasks: [] });
+    store.eventLogReads = 0;
+
+    store.append({ event_id: "event-1", type: "goal_planned", payload: { count: 1 } });
+    store.append({ event_id: "event-2", type: "scheduling_stopped", payload: {} });
+    assert.equal(store.eventLogReads, 0, "same-process appends should not reread the complete verified event log");
+    assert.equal(store.rebuild().last_event_sequence, 2);
+    assert.equal(store.eventLogReads, 0, "an unchanged log should reuse the verified projection");
+
+    writeFileSync(path.join(stateDir, "events.jsonl"), "not-json\n", { flag: "a" });
+    assert.throws(
+      () => store.append({ event_id: "event-3", type: "scheduling_resumed", payload: {} }),
+      (error) => error.code === "GOAL_EVENT_LOG_CORRUPT",
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("scheduler rolls slots, replaces blocked tasks, and snapshots earliest six exactly once", () => {
   const tasks = [
     { id: "a", state: "authoring", queue_order: 1 },

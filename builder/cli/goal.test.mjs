@@ -134,3 +134,67 @@ test("Viewer publication and recovery commands use the configured durable store"
     rmSync(root, { recursive: true, force: true });
   }
 });
+
+test("resume human output is a bounded summary and does not serialize the full Goal state", async () => {
+  const module = await import("./goal.mjs");
+  assert.equal(typeof module.renderHuman, "function");
+  const output = module.renderHuman({
+    command: "resume",
+    dry_run: false,
+    next_action: "Run goal:status",
+    result: {
+      dispatched: [{ cpc_code: "46910", state: "authoring" }],
+      harvest: {
+        valid_results: [{ cpc_code: "46532" }],
+        failures: [],
+        snapshot: null,
+      },
+      state: { deliberately_large_projection: "x".repeat(100_000) },
+    },
+  });
+
+  assert.match(output, /Goal resume/u);
+  assert.match(output, /1 valid/u);
+  assert.match(output, /1 dispatched/u);
+  assert.match(output, /46532/u);
+  assert.match(output, /46910/u);
+  assert.doesNotMatch(output, /deliberately_large_projection/u);
+  assert.ok(Buffer.byteLength(output) < 2_000, `expected bounded output, received ${Buffer.byteLength(output)} bytes`);
+});
+
+test("integrate and land human output summarize durable results without serializing audit payloads", async () => {
+  const { renderHuman } = await import("./goal.mjs");
+  const largeAudit = { deliberately_large_audit: "x".repeat(100_000) };
+  const integrated = renderHuman({
+    command: "integrate",
+    dry_run: false,
+    next_action: "Run goal:land",
+    result: {
+      snapshot: {
+        id: "snapshot-example",
+        state: "validated",
+        integration_commit: "a".repeat(40),
+        command_results: [{ name: "validate", exit_code: 0 }],
+        validation_result: largeAudit,
+      },
+    },
+  });
+  const landed = renderHuman({
+    command: "land",
+    dry_run: false,
+    next_action: "Run goal:resume",
+    result: {
+      status: "landed",
+      snapshot: { id: "snapshot-example", integration_commit: "a".repeat(40), validation_result: largeAudit },
+      path_fingerprints: Object.fromEntries(Array.from({ length: 500 }, (_, index) => [`file-${index}`, largeAudit])),
+    },
+  });
+
+  assert.match(integrated, /snapshot-example/u);
+  assert.match(integrated, /validated/u);
+  assert.match(landed, /snapshot-example/u);
+  assert.match(landed, /landed/u);
+  assert.doesNotMatch(`${integrated}${landed}`, /deliberately_large_audit/u);
+  assert.ok(Buffer.byteLength(integrated) < 2_000);
+  assert.ok(Buffer.byteLength(landed) < 2_000);
+});

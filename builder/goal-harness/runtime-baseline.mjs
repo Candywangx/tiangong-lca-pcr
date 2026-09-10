@@ -14,10 +14,20 @@ const EXACT_RUNTIME_PATHS = new Set([
   "builder/cli/goal.mjs",
   "builder/cli/goal.test.mjs",
   "builder/cli/goal-uuid-search.mjs",
+  "builder/cli/materials.mjs",
+  "builder/docs/prompts/claude-create-pcr.md",
+  "builder/docs/prompts/codex-create-pcr.md",
+  "builder/docs/tools/data-sources-and-tools.md",
   "builder/docs/tools/goal-harness.md",
+  "builder/docs/tools/shared-materials.md",
+  "builder/docs/workflows/create-pcr.md",
+  "builder/lib/schema-contracts.test.mjs",
+  "builder/lib/shared-materials.mjs",
+  "builder/lib/shared-materials.test.mjs",
   "builder/schemas/goal-author-report.schema.json",
   "builder/schemas/goal-harness-config.schema.json",
   "package.json",
+  "packages/pcr-core/src/projection-completeness.mjs",
   "packages/pcr-viewer/viewer-build.test.mjs",
 ]);
 
@@ -34,7 +44,7 @@ export function ensureGoalRuntimeBaseline({ projectRoot, sourceRoot, stateDir, g
     if (dirty.length > 0) {
       throw new GoalHarnessError("GOAL_RUNTIME_SOURCE_DIRTY", "Harness runtime source has uncommitted approved-path changes; commit and verify them before installing a Goal runtime baseline.", { paths: dirty });
     }
-    if (state.runtime_baseline?.source_commit === sourceCommit && isAncestor(projectRoot, state.runtime_baseline.commit, baseCommit)) {
+    if (state.runtime_baseline?.source_commit === sourceCommit && state.runtime_baseline.commit === baseCommit) {
       return state.runtime_baseline;
     }
 

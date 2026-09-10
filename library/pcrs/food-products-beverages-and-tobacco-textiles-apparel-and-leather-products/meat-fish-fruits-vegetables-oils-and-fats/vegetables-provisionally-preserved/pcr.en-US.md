@@ -6,7 +6,7 @@ sync_with: pcr.zh-CN.md
 ---
 
 # Vegetables provisionally preserved
-
+food-products-beverages-and-tobacco-textiles-apparel-and-leather-products
 ## 1. Scope and Applicability
 
 This PCR covers factory-gate production of vegetables that are provisionally preserved as an intermediate product, remain unsuitable in that state for immediate consumption, and require further processing before consumption. It covers receipt and preparation of the vegetable, exactly one declared provisional-preservation route, and storage and dispatch. It excludes fresh, frozen, dried, ready-to-eat, canned or otherwise finally preserved vegetables and vegetables whose defining preservation route is vinegar or acetic acid.

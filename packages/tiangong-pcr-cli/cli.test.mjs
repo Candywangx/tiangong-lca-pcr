@@ -18,6 +18,12 @@ import { structuredProjectionYaml } from "../../builder/lib/structured-yaml-proj
 
 const cliPath = path.resolve("packages/tiangong-pcr-cli/bin/tiangong-pcr.mjs");
 const repoRoot = path.resolve(".");
+const cpcCoverageIndex = JSON.parse(
+  readFileSync(
+    path.join(repoRoot, "classifications/indexes/cpc-3.0-coverage.json"),
+    "utf8",
+  ),
+);
 const wheatSeedPcrId =
   "pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.wheat-seed";
 const scaffoldPcrId =
@@ -82,7 +88,9 @@ test("list prints PCR records as JSON", () => {
 
   assert.equal(page.page, 1);
   assert.equal(page.page_size, 10);
-  assert.ok(page.items.some((entry) => entry.id === wheatSeedPcrId));
+  assert.equal(page.items.length, 10);
+  assert.ok(page.items.every((entry) => entry.status === "candidate"));
+  assert.ok(page.items.every((entry) => typeof entry.id === "string"));
 });
 
 test("list defaults to material scope and derives legacy scope for scaffold filters", () => {
@@ -254,8 +262,7 @@ test("coverage summary is bounded and coverage list exposes stable pagination co
     "json",
   ]));
 
-  assert.equal(summary.summary.total, 2877);
-  assert.equal(summary.summary.mapped, 326);
+  assert.deepEqual(summary.summary, cpcCoverageIndex.summary);
   assert.equal(summary.completeness.bounded, true);
   assert.equal(summary.completeness.entry_details_included, false);
   assert.equal(Object.hasOwn(summary, "entries"), false);
@@ -265,7 +272,7 @@ test("coverage summary is bounded and coverage list exposes stable pagination co
   assert.equal(page.completeness.page, 1);
   assert.equal(page.completeness.page_size, 2);
   assert.equal(page.completeness.returned_count, 2);
-  assert.equal(page.completeness.total_count, 2551);
+  assert.equal(page.completeness.total_count, cpcCoverageIndex.summary.unmapped);
   assert.equal(page.completeness.has_more, true);
   assert.ok(page.items.every((entry) => entry.coverage_status === "unmapped"));
   assert.ok(page.items.every((entry) => entry.mapping === null));
@@ -321,7 +328,7 @@ test("resolve returns retired classification leaves as known unmapped coverage",
   const result = JSON.parse(runCli([
     "resolve",
     "--classification",
-    "cpc:3.0:01112",
+    "cpc:3.0:99000",
     "--format",
     "json",
   ]));

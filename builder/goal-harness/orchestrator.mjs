@@ -11,13 +11,23 @@ import { auditHybridSearchReceipts, isReusableCommonUuidAudit } from "./uuid-sea
 import { activeAuthorCount, buildIntegrationSnapshot, dispatchCandidates } from "./scheduler.mjs";
 import { applyTaskTransition } from "./state-machine.mjs";
 import { ensureGoalWorktree } from "./worktrees.mjs";
-import { extractCompletedTurnReport, reviewAuthorWorktree } from "./author-review.mjs";
+import { extractCompletedTurnReport, inspectAuthorCommit, reviewAuthorWorktree } from "./author-review.mjs";
 import { appendGoalCacheReceipt, listGoalCacheReceipts } from "./goal-cache.mjs";
 import { validateAuthorReport } from "./author-gates.mjs";
 import { selectGoalRuntimeBaseCommit } from "./runtime-baseline.mjs";
 import { resolveAuthorContentBaseCommit } from "./author-baseline.mjs";
+import { auditBoundaryReview } from "./boundary-review.mjs";
+import { ensureMaterialsRoot, queryMaterials, resolveMaterialsRoot } from "../lib/shared-materials.mjs";
 
-export async function dispatchGoalAuthors({ config, stateDir, slots = config.author_slots, adapter, resumeStopped = false, dryRun = false }) {
+export async function dispatchGoalAuthors({
+  config,
+  stateDir,
+  slots = config.author_slots,
+  adapter,
+  resumeStopped = false,
+  dryRun = false,
+  preDispatchCheck = null,
+}) {
   if (!Number.isInteger(slots) || slots < 1 || slots > 6) {
     throw new GoalHarnessError("GOAL_SLOTS_INVALID", "Author slots must be an integer from 1 through 6");
   }
@@ -27,12 +37,23 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
     if (state.stopped && !resumeStopped) {
       throw new GoalHarnessError("GOAL_SCHEDULING_STOPPED", `Goal ${state.goal_id} is stopped; use resume explicitly.`);
     }
+    if (!dryRun && preDispatchCheck) await preDispatchCheck({ state });
+    if (dryRun) {
+      const previewState = resumeStopped ? previewResumedState({ config, state }) : state;
+      const selected = selectDispatchTasks(previewState, slots);
+      return {
+        dispatched: [],
+        would_dispatch: selected.map((task) => task.id),
+        state,
+        next_action: "Repeat without --dry-run to create visible author tasks.",
+      };
+    }
     if (state.stopped && resumeStopped) {
       store.append({ event_id: `resume-${state.last_event_sequence + 1}`, type: "scheduling_resumed", payload: {} });
       state = store.rebuild();
     }
     if (resumeStopped) {
-      for (const failed of state.tasks.filter((task) => task.state === "retryable_failure" && (task.attempt ?? 0) < (config.retry_policy?.max_attempts ?? 3))) {
+      for (const failed of state.tasks.filter((task) => !task.coordinator_hold && task.state === "retryable_failure" && (task.attempt ?? 0) < (config.retry_policy?.max_attempts ?? 3))) {
         if (failed.failure_code === "GOAL_EVENT_ID_CONFLICT"
           && failed.thread_id
           && failed.turn_id
@@ -55,12 +76,18 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
         const requiresThreadReplacement = new Set(["GOAL_REPAIR_RESUME_FAILED", "GOAL_REPAIR_LIMIT_REACHED"]).has(failed.failure_code);
         const replaceThreadInPlace = requiresThreadReplacement
           && canReuseAuthorizedAuthorWorktree({ config, task: failed, baselineCommit: state.baseline.commit });
-        const repairInPlace = !requiresThreadReplacement
+        const infrastructureRetry = failed.failure_code === "GOAL_CODEX_USAGE_LIMIT_EXCEEDED";
+        const infrastructureResumeInPlace = infrastructureRetry
+          && canReuseAuthorizedAuthorWorktree({ config, task: failed, baselineCommit: state.baseline.commit });
+        const repairInPlace = !requiresThreadReplacement && !infrastructureRetry
           && Boolean(failed.thread_id && failed.worktree_path && (failed.repair_count ?? 0) < (config.retry_policy?.max_repairs ?? 2));
         const nextCycle = nextDispatchCycle(failed);
+        const retryMode = replaceThreadInPlace
+          ? "replace-thread"
+          : (infrastructureResumeInPlace ? "infrastructure-resume" : (repairInPlace ? "repair" : "requeue"));
         let task = applyTaskTransition(failed, {
-          transition_id: `${authorIdentity(config.goal_id, failed.cpc_code, failed.attempt ?? 1, failed.uuid_enrichment_generation)}-${replaceThreadInPlace ? "replace-thread" : (repairInPlace ? "repair" : "requeue")}-${nextCycle}`,
-          to: replaceThreadInPlace ? "preflight" : (repairInPlace ? "repair_requested" : "queued"),
+          transition_id: `${authorIdentity(config.goal_id, failed.cpc_code, failed.attempt ?? 1, failed.uuid_enrichment_generation)}-${retryMode}-${nextCycle}`,
+          to: replaceThreadInPlace ? "preflight" : ((repairInPlace || infrastructureResumeInPlace) ? "repair_requested" : "queued"),
           at: new Date().toISOString(),
         });
         if (replaceThreadInPlace) {
@@ -81,10 +108,30 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
             author_content_base_commit: authorContentBaseCommit,
             reason: "Continue the preserved repair worktree after the original visible thread and its one continuation both became unrecoverable.",
           };
+        } else if (infrastructureResumeInPlace) {
+          task = {
+            ...task,
+            dispatch_cycle: nextCycle,
+            infrastructure_resume_pending: true,
+            infrastructure_resume_target_state: hasOpenContentRepair(failed) ? "authoring_repair" : "authoring",
+          };
         } else if (!repairInPlace && failed.thread_id) {
+          const authorContentBaseCommit = resolveAuthorContentBaseCommit({
+            projectRoot: config.project_root,
+            task: failed,
+            fallbackCommit: state.baseline.commit,
+          });
           task = {
             ...task,
             previous_thread_ids: [...new Set([...(failed.previous_thread_ids ?? []), failed.thread_id])],
+            previous_worktree_paths: [...new Set([...(failed.previous_worktree_paths ?? []), failed.worktree_path].filter(Boolean))],
+            author_base_commit: selectRecordedAuthorBaseCommit({
+              projectRoot: config.project_root,
+              task: failed,
+              baselineCommit: authorContentBaseCommit,
+              fallbackCommit: failed.author_base_commit ?? state.baseline.commit,
+            }),
+            author_content_base_commit: authorContentBaseCommit,
             worktree_path: null,
             author_branch: null,
             thread_id: null,
@@ -96,26 +143,26 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
       state = store.rebuild();
     }
 
-    const repairRequests = state.tasks.filter((task) => task.state === "repair_requested" && task.thread_id && task.worktree_path);
-    const repairCapacity = Math.max(0, slots - activeAuthorCount(state.tasks));
-    const selectedRepairs = repairRequests.slice(0, repairCapacity);
-    const prepared = state.tasks.filter((task) => task.state === "preflight" && task.worktree_path && !task.thread_id);
-    const selected = [...selectedRepairs, ...prepared, ...dispatchCandidates(state.tasks, { slots: slots - selectedRepairs.length })].slice(0, slots);
-    if (dryRun) {
-      return { dispatched: [], would_dispatch: selected.map((task) => task.id), state, next_action: "Repeat without --dry-run to create visible author tasks." };
-    }
+    const selected = selectDispatchTasks(state, slots);
 
     const dispatched = [];
     for (const selectedTask of selected) {
       state = store.rebuild();
       let task = state.tasks.find((entry) => entry.id === selectedTask.id);
+      if (!task) continue;
+      const materialsRoot = ensureMaterialsRoot(resolveMaterialsRoot({ cwd: config.project_root, root: config.tools?.materials_root }));
+      const materialsQuery = queryMaterials({ root: materialsRoot, request: { product: task.product_name_en }, limit: 5 });
       if (task?.state === "repair_requested") {
+        const resumeInfrastructure = task.infrastructure_resume_pending === true;
         const resumeExistingRepair = task.repair_resume_pending === true;
         const repairNumber = resumeExistingRepair ? (task.repair_count ?? 1) : (task.repair_count ?? 0) + 1;
         const repairResumeNumber = resumeExistingRepair ? (task.repair_resume_count ?? 0) + 1 : 0;
-        const repairIdentity = resumeExistingRepair
-          ? `${task.id}-repair-${repairNumber}-resume-${repairResumeNumber}`
-          : `${task.id}-repair-${repairNumber}`;
+        const infrastructureResumeNumber = (task.infrastructure_resume_count ?? 0) + 1;
+        const repairIdentity = resumeInfrastructure
+          ? `${task.id}-infrastructure-resume-${infrastructureResumeNumber}`
+          : (resumeExistingRepair
+            ? `${task.id}-content-repair-${repairNumber}-resume-${repairResumeNumber}`
+            : `${task.id}-content-repair-${repairNumber}`);
         const compiled = compileAuthorPrompt({
           task: {
             ...task,
@@ -126,36 +173,63 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
           verifiedCommonUuids: selectRelevantCommonUuids({ stateDir, task }),
           verifiedSourceReceipts: selectRelevantSourceReceipts({ stateDir, task, state }),
           tools: { ...config.tools, project_root: config.project_root, config_path: path.resolve(state.config_path ?? config.config_path ?? "") },
+          materials: materialsQuery,
         });
-        const prompt = compileRepairPrompt(task, compiled.prompt, { resumeExistingRepair });
+        const prompt = resumeInfrastructure
+          ? compileInfrastructureResumePrompt(task, compiled.prompt, infrastructureResumeNumber)
+          : compileRepairPrompt(task, compiled.prompt, { resumeExistingRepair });
         const outputSchema = compiled.output_schema;
         const taskStateDir = path.join(stateDir, "authors", authorIdentity(config.goal_id, task.cpc_code, task.attempt ?? 1, task.uuid_enrichment_generation));
         mkdirSync(taskStateDir, { recursive: true });
-        const repairArtifactStem = resumeExistingRepair
-          ? `repair-${repairNumber}-resume-${repairResumeNumber}`
-          : `repair-${repairNumber}`;
+        const repairArtifactStem = resumeInfrastructure
+          ? `infrastructure-resume-${infrastructureResumeNumber}`
+          : (resumeExistingRepair
+            ? `repair-${repairNumber}-resume-${repairResumeNumber}`
+            : `repair-${repairNumber}`);
         writeFileSync(path.join(taskStateDir, `${repairArtifactStem}-prompt.txt`), prompt);
+        writeFileSync(path.join(taskStateDir, `${repairArtifactStem}-materials-query.json`), `${JSON.stringify(materialsQuery, null, 2)}\n`);
         writeFileSync(path.join(taskStateDir, `${repairArtifactStem}-output-schema.json`), `${JSON.stringify(outputSchema, null, 2)}\n`);
         const visible = await adapter.startRepairTurn({
           threadId: task.thread_id,
           worktreePath: task.worktree_path,
+          additionalWorkspaceRoots: [materialsRoot],
           prompt,
           outputSchema,
           clientUserMessageId: repairIdentity,
           receiptStateDir: stateDir,
         });
         const startedAt = new Date().toISOString();
-        task = applyTaskTransition(task, { transition_id: `${repairIdentity}-authoring`, to: "authoring_repair", at: startedAt });
+        const resumedState = resumeInfrastructure ? (task.infrastructure_resume_target_state ?? "authoring") : "authoring_repair";
+        task = applyTaskTransition(task, { transition_id: `${repairIdentity}-authoring`, to: resumedState, at: startedAt });
         task = {
           ...task,
           ...visible,
-          repair_count: repairNumber,
-          repair_resume_count: repairResumeNumber,
+          repair_count: resumeInfrastructure ? (task.repair_count ?? 0) : repairNumber,
+          repair_resume_count: resumeInfrastructure ? (task.repair_resume_count ?? 0) : repairResumeNumber,
           repair_resume_pending: false,
-          repair_started_at: resumeExistingRepair ? task.repair_started_at : startedAt,
-          repair_history: resumeExistingRepair
-            ? appendRepairResumeTurn(task.repair_history, visible.turn_id)
-            : [...(task.repair_history ?? []), {
+          infrastructure_resume_pending: false,
+          infrastructure_resume_target_state: null,
+          infrastructure_resume_count: resumeInfrastructure ? infrastructureResumeNumber : (task.infrastructure_resume_count ?? 0),
+          infrastructure_resume_history: resumeInfrastructure
+            ? [...(task.infrastructure_resume_history ?? []), {
+              resume_count: infrastructureResumeNumber,
+              turn_id: visible.turn_id,
+              started_at: startedAt,
+              interrupted_turn_id: task.turn_id ?? null,
+              failure_code: task.failure_code ?? null,
+            }]
+            : (task.infrastructure_resume_history ?? []),
+          failure_code: resumeInfrastructure ? null : task.failure_code,
+          failure_message: resumeInfrastructure ? null : task.failure_message,
+          pending_gate_findings: resumeInfrastructure && !hasOpenContentRepair(task) ? [] : task.pending_gate_findings,
+          repair_started_at: resumeInfrastructure
+            ? task.repair_started_at
+            : (resumeExistingRepair ? task.repair_started_at : startedAt),
+          repair_history: resumeInfrastructure
+            ? (task.repair_history ?? [])
+            : (resumeExistingRepair
+              ? appendRepairResumeTurn(task.repair_history, visible.turn_id)
+              : [...(task.repair_history ?? []), {
               repair_count: repairNumber,
               turn_id: visible.turn_id,
               resume_turn_ids: [],
@@ -164,7 +238,7 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
               original_commit: task.last_author_commit ?? task.author_commit ?? null,
               new_commit: null,
               gate_findings: task.pending_gate_findings ?? [],
-            }],
+            }]),
         };
         store.append({ event_id: `${repairIdentity}-started`, type: "task_replaced", payload: { task } });
         dispatched.push(task);
@@ -195,9 +269,11 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
         verifiedCommonUuids: selectRelevantCommonUuids({ stateDir, task }),
         verifiedSourceReceipts: selectRelevantSourceReceipts({ stateDir, task, state }),
         tools: { ...config.tools, project_root: config.project_root, config_path: path.resolve(state.config_path ?? config.config_path ?? "") },
+        materials: materialsQuery,
       });
       const taskStateDir = path.join(stateDir, "authors", identity);
       mkdirSync(taskStateDir, { recursive: true });
+      writeFileSync(path.join(taskStateDir, "materials-query.json"), `${JSON.stringify(materialsQuery, null, 2)}\n`);
       writeFileSync(path.join(taskStateDir, "prompt.txt"), compiled.prompt);
       writeFileSync(path.join(taskStateDir, "output-schema.json"), `${JSON.stringify(compiled.output_schema, null, 2)}\n`);
       writeFileSync(path.join(taskStateDir, "prepared.json"), `${JSON.stringify({
@@ -227,6 +303,7 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
       try {
         const visible = await adapter.createAuthorTask({
           worktreePath,
+          additionalWorkspaceRoots: [materialsRoot],
           title: `PCR ${task.cpc_code} · ${task.product_name_en}`,
           prompt: compiled.prompt,
           outputSchema: compiled.output_schema,
@@ -265,6 +342,45 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
   });
 }
 
+function selectDispatchTasks(state, slots) {
+  const repairRequests = state.tasks.filter((task) => !task.coordinator_hold && task.state === "repair_requested" && task.thread_id && task.worktree_path);
+  const repairCapacity = Math.max(0, slots - activeAuthorCount(state.tasks));
+  const selectedRepairs = repairRequests.slice(0, repairCapacity);
+  const prepared = state.tasks.filter((task) => !task.coordinator_hold && task.state === "preflight" && task.worktree_path && !task.thread_id);
+  return [...selectedRepairs, ...prepared, ...dispatchCandidates(state.tasks, { slots: slots - selectedRepairs.length })].slice(0, slots);
+}
+
+function previewResumedState({ config, state }) {
+  const maxAttempts = config.retry_policy?.max_attempts ?? 3;
+  const maxRepairs = config.retry_policy?.max_repairs ?? 2;
+  const tasks = state.tasks.map((failed) => {
+    if (failed.coordinator_hold || failed.state !== "retryable_failure" || (failed.attempt ?? 0) >= maxAttempts) return failed;
+    if (failed.failure_code === "GOAL_EVENT_ID_CONFLICT"
+      && failed.thread_id
+      && failed.turn_id
+      && canReuseAuthorizedAuthorWorktree({ config, task: failed, baselineCommit: state.baseline.commit })) {
+      return { ...failed, state: "authoring" };
+    }
+    const requiresThreadReplacement = new Set(["GOAL_REPAIR_RESUME_FAILED", "GOAL_REPAIR_LIMIT_REACHED"]).has(failed.failure_code);
+    const replaceThreadInPlace = requiresThreadReplacement
+      && canReuseAuthorizedAuthorWorktree({ config, task: failed, baselineCommit: state.baseline.commit });
+    const infrastructureRetry = failed.failure_code === "GOAL_CODEX_USAGE_LIMIT_EXCEEDED";
+    const infrastructureResumeInPlace = infrastructureRetry
+      && canReuseAuthorizedAuthorWorktree({ config, task: failed, baselineCommit: state.baseline.commit });
+    const repairInPlace = !requiresThreadReplacement && !infrastructureRetry
+      && Boolean(failed.thread_id && failed.worktree_path && (failed.repair_count ?? 0) < maxRepairs);
+    if (replaceThreadInPlace) return { ...failed, state: "preflight", thread_id: null, turn_id: null };
+    if (infrastructureResumeInPlace) return { ...failed, state: "repair_requested", infrastructure_resume_pending: true };
+    if (repairInPlace) return { ...failed, state: "repair_requested" };
+    return {
+      ...failed,
+      state: "queued",
+      ...(failed.thread_id ? { worktree_path: null, author_branch: null, thread_id: null, turn_id: null } : {}),
+    };
+  });
+  return { ...state, stopped: false, tasks };
+}
+
 export async function harvestGoalAuthors({
   config,
   stateDir,
@@ -274,6 +390,7 @@ export async function harvestGoalAuthors({
   verifySourcesFn = verifySourceLocators,
   auditHybridSearchFn = auditHybridSearchReceipts,
   validateReportFn = validateAuthorReport,
+  auditBoundaryReviewFn = auditBoundaryReview,
   now = () => new Date(),
 }) {
   return withGoalLockAsync(stateDir, "harvest", async () => {
@@ -285,21 +402,33 @@ export async function harvestGoalAuthors({
     for (const selected of candidates) {
       state = store.rebuild();
       let task = state.tasks.find((entry) => entry.id === selected.id);
+      if (task.coordinator_hold && task.state === "author_review") continue;
       let report;
       if (task.state === "authoring" || task.state === "authoring_repair") {
         const wasRepair = task.state === "authoring_repair"
           || task.continuing_repair_after_thread_replacement === true
           || (Boolean(task.previous_thread_ids?.length) && task.repair_history?.at(-1)?.ended_at == null);
-        const response = await adapter.readThread({ threadId: task.thread_id, includeTurns: true });
+        const response = await adapter.readThread({ threadId: task.thread_id, includeTurns: true,
+          expectedTurnId: task.turn_id, worktreePath: task.worktree_path });
+        if (response.session_recovery) task = { ...task, session_recovery: response.session_recovery };
         let extracted;
         try {
           extracted = extractCompletedTurnReport(response, task.turn_id);
         } catch (error) {
-          if (error.code !== "GOAL_AUTHOR_TURN_MISSING") throw error;
-          extracted = { status: "missing", report: null, error: { code: error.code, message: error.message } };
+          if (task.coordinator_hold && error.code === "GOAL_AUTHOR_REPORT_PARSE_FAILED") {
+            const terminal = response.thread?.turns?.find((turn) => turn.id === task.turn_id);
+            extracted = { status: terminal.status, report: null, error: { code: error.code, message: error.message } };
+          } else {
+            if (error.code !== "GOAL_AUTHOR_TURN_MISSING") throw error;
+            const anotherTurnIsActive = (response.thread?.turns ?? []).some((turn) =>
+              turn.id !== task.turn_id && ["inProgress", "pending"].includes(turn.status),
+            );
+            if (task.coordinator_hold || anotherTurnIsActive) continue;
+            extracted = { status: "missing", report: null, error: { code: error.code, message: error.message } };
+          }
         }
         if (extracted.status === "inProgress" || extracted.status === "pending") {
-          if (!authorTimedOut(task, config.author_timeout_seconds, now())) continue;
+          if (task.coordinator_hold || !authorTimedOut(task, config.author_timeout_seconds, now())) continue;
           await adapter.interruptTurn({ threadId: task.thread_id, turnId: task.turn_id });
           const canResumeRepair = wasRepair && (task.repair_resume_count ?? 0) < 1;
           const repairResumeFailed = wasRepair && (task.repair_resume_count ?? 0) >= 1;
@@ -326,7 +455,32 @@ export async function harvestGoalAuthors({
           failures.push(task);
           continue;
         }
-        if (extracted.status !== "completed") {
+        if (task.coordinator_hold) {
+          const terminal = response.thread?.turns?.find((turn) => turn.id === task.turn_id);
+          const raw = [...(terminal?.items ?? [])].reverse().find((item) => item.type === "agentMessage" && item.text?.trim())?.text ?? null;
+          task = { ...task, author_turn_observation: { turn_id: task.turn_id, status: terminal?.status ?? extracted.status, extracted_status: extracted.status,
+            error: extracted.error ?? terminal?.error ?? null, raw_final_message: raw } };
+          if (extracted.report == null && raw != null) {
+            try { extracted.report = JSON.parse(raw); } catch { /* Preserve the raw terminal message for operator inspection. */ }
+          }
+        }
+        if (!task.coordinator_hold && isCodexUsageLimitFailure(extracted)) {
+          const failureIdentity = turnObservationIdentity(task, "usage-limit");
+          task = applyTaskTransition(task, { transition_id: failureIdentity, to: "retryable_failure", at: now().toISOString() });
+          task = {
+            ...task,
+            failure_code: "GOAL_CODEX_USAGE_LIMIT_EXCEEDED",
+            failure_message: extracted.error?.message ?? "Codex author usage capacity is unavailable.",
+            pending_gate_findings: [{
+              code: "codex_usage_limit_exceeded",
+              remediation: "Keep the visible thread and worktree intact; resume only after Codex usage capacity is available again.",
+            }],
+          };
+          store.append({ event_id: `${failureIdentity}-recorded`, type: "task_replaced", payload: { task } });
+          failures.push(task);
+          continue;
+        }
+        if (!task.coordinator_hold && extracted.status !== "completed") {
           const canResumeRepair = wasRepair && (task.repair_resume_count ?? 0) < 1;
           const repairResumeFailed = wasRepair && (task.repair_resume_count ?? 0) >= 1;
           const canRepairTurn = canResumeRepair || (!repairResumeFailed && (task.repair_count ?? 0) < (config.retry_policy?.max_repairs ?? 2));
@@ -358,20 +512,34 @@ export async function harvestGoalAuthors({
         const reportPath = path.join(reportDir, wasRepair ? `author-report-repair-${task.repair_count}.json` : "author-report.json");
         writeFileSync(reportPath, `${JSON.stringify(report, null, 2)}\n`);
         task = applyTaskTransition(task, { transition_id: `${task.id}-turn-${task.turn_id}-review`, to: "author_review", at: new Date().toISOString() });
-        task = { ...task, report_path: reportPath, last_author_commit: report.commit_sha };
-        if (wasRepair) task = { ...finishLatestRepair(task, report.commit_sha, now().toISOString()), continuing_repair_after_thread_replacement: false };
+        task = { ...task, report_path: reportPath, last_author_commit: report?.commit_sha ?? task.last_author_commit ?? null };
+        if (wasRepair) task = { ...finishLatestRepair(task, report?.commit_sha, now().toISOString()), continuing_repair_after_thread_replacement: false };
         store.append({ event_id: `${task.id}-turn-${task.turn_id}-report`, type: "task_replaced", payload: { task } });
       } else {
         report = JSON.parse(readFileSync(task.report_path, "utf8"));
       }
+      if (task.coordinator_hold) continue;
       try {
-        const unavailableRows = (report.inventory?.unresolved ?? []).filter((entry) => entry.reason_code === "tiangong_cli_unavailable");
+        const unavailableRows = Array.isArray(report?.inventory?.unresolved)
+          ? report.inventory.unresolved.filter((entry) => entry?.reason_code === "tiangong_cli_unavailable") : [];
         if (unavailableRows.length > 0) {
           throw new GoalHarnessError("GOAL_REPORTED_UUID_INFRASTRUCTURE_UNAVAILABLE", "tiangong_cli_unavailable cannot be accepted as unresolved PCR coverage; repair it now that Goal infrastructure preflight is healthy.", { retryable: true, row_ids: unavailableRows.map((entry) => entry.row_id) });
+        }
+        if (task.author_turn_observation?.turn_id === task.turn_id && task.author_turn_observation.extracted_status !== "completed") {
+          throw new GoalHarnessError("GOAL_AUTHOR_TURN_REPAIR_REQUIRED", "Preserved held turn did not complete with a machine report.", { observation: task.author_turn_observation });
         }
         const reportSchema = validateReportFn(report);
         if (!reportSchema.valid) {
           throw new GoalHarnessError("GOAL_AUTHOR_RESULT_INVALID", `Author report failed ${reportSchema.errors.length} Schema check(s).`, { findings: reportSchema.errors.map((detail) => ({ code: "AUTHOR_REPORT_SCHEMA_INVALID", message: detail.message, detail })) });
+        }
+        if (report.boundary_review != null) {
+          const authorContentBaseCommit = resolveAuthorContentBaseCommit({ projectRoot: config.project_root, task, fallbackCommit: task.author_base_commit ?? state.baseline.commit });
+          const audit = await auditBoundaryReviewFn({ projectRoot: config.project_root, baselineCommit: authorContentBaseCommit, worktreePath: task.worktree_path, task: { ...task, goal_id: config.goal_id }, report, stateDir });
+          task = applyTaskTransition(task, { transition_id: `${task.id}-turn-${task.turn_id}-boundary-review`, to: "manual_review", at: now().toISOString() });
+          task = { ...task, author_content_base_commit: authorContentBaseCommit,
+            boundary_review_audit: { ...audit, original_queue_action: task.queue_action }, queue_action: "manual_review" };
+          store.append({ event_id: `${task.id}-turn-${task.turn_id}-boundary-review-recorded`, type: "task_replaced", payload: { task } });
+          continue;
         }
         if ((report.uuid_audits?.length ?? 0) > 0 && !config.tools?.tiangong_cli_root) {
           throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "tools.tiangong_cli_root is required to independently audit final UUIDs.");
@@ -447,12 +615,13 @@ export async function harvestGoalAuthors({
         });
         task = {
           ...task,
-          failure_code: repairable ? "GOAL_AUTHOR_REPAIR_REQUIRED" : ((task.repair_count ?? 0) >= repairLimit ? "GOAL_REPAIR_LIMIT_REACHED" : (error.code ?? "GOAL_AUTHOR_REVIEW_FAILED")),
+          failure_code: repairable ? "GOAL_AUTHOR_REPAIR_REQUIRED" : (!isRepairableReviewFailure(error)
+            ? error.code : ((task.repair_count ?? 0) >= repairLimit ? "GOAL_REPAIR_LIMIT_REACHED" : (error.code ?? "GOAL_AUTHOR_REVIEW_FAILED"))),
           failure_message: error.message,
           validation_result: error.details ?? null,
           pending_gate_findings: findings,
           repair_count: task.repair_count ?? 0,
-          last_author_commit: report.commit_sha ?? task.last_author_commit ?? null,
+          last_author_commit: report?.commit_sha ?? task.last_author_commit ?? null,
         };
         store.append({ event_id: `${task.id}-turn-${task.turn_id}-invalid-result`, type: "task_replaced", payload: { task } });
         failures.push(task);
@@ -485,7 +654,8 @@ function compileRepairPrompt(task, currentAuthorPrompt, { resumeExistingRepair =
     "Do not restart the PCR and do not modify files outside the original four-file allowlist.",
     "The complete current author contract follows. It supersedes the original turn's UUID receipt and output-report instructions.",
     currentAuthorPrompt,
-    "Fix every structured gate finding below, rerun structured sync twice, validate, commit only the allowed files, and return a complete JSON report matching the output schema supplied to this repair turn.",
+    "For a completed PCR, fix every structured gate finding below, rerun structured sync twice, validate, commit only the allowed files, and return a complete JSON report matching the output schema supplied to this repair turn.",
+    "For an explicit boundary_review referral, follow the boundary-review report contract above, preserve partial authorized work, report actual HEAD, and do not run sync, validation, or make a commit merely to satisfy completion gates.",
     JSON.stringify({
       repair_count: resumeExistingRepair ? (task.repair_count ?? 1) : (task.repair_count ?? 0) + 1,
       continuation_of_interrupted_repair: resumeExistingRepair,
@@ -494,6 +664,30 @@ function compileRepairPrompt(task, currentAuthorPrompt, { resumeExistingRepair =
       gate_findings: task.pending_gate_findings ?? [],
     }, null, 2),
   ].join("\n\n");
+}
+
+function compileInfrastructureResumePrompt(task, currentAuthorPrompt, resumeCount) {
+  const continuingRepair = hasOpenContentRepair(task);
+  return [
+    "Continue the same PCR in this same visible thread and the same preserved worktree after an infrastructure-only interruption.",
+    "Do not restart the PCR, do not modify files outside the original four-file allowlist, and do not count this continuation as a content repair.",
+    "The complete current author contract follows and supersedes the interrupted turn's tooling and output-report instructions.",
+    currentAuthorPrompt,
+    "For a completed PCR, resume from the files already present, complete all required checks, commit only the allowed files, and return a complete JSON report matching the supplied output schema.",
+    "For an explicit boundary_review referral, follow the boundary-review report contract above, preserve partial authorized work, report actual HEAD, and do not run sync, validation, or make a commit merely to satisfy completion gates.",
+    JSON.stringify({
+      infrastructure_resume_count: resumeCount,
+      continuing_content_repair: continuingRepair,
+      repair_count: task.repair_count ?? 0,
+      allowed_files: task.allowed_files ?? [],
+      gate_findings: continuingRepair ? (task.repair_history?.at(-1)?.gate_findings ?? []) : [],
+    }, null, 2),
+  ].join("\n\n");
+}
+
+function hasOpenContentRepair(task) {
+  const latest = task.repair_history?.at(-1);
+  return Boolean((task.repair_count ?? 0) > 0 && latest && latest.ended_at == null);
 }
 
 function appendRepairResumeTurn(repairHistory, turnId) {
@@ -516,10 +710,15 @@ function finishLatestRepair(task, commit, endedAt) {
 function isRepairableReviewFailure(error) {
   return !new Set([
     "GOAL_UUID_INFRASTRUCTURE_UNAVAILABLE",
+    "GOAL_REPORTED_UUID_INFRASTRUCTURE_UNAVAILABLE",
     "GOAL_UUID_DIRECT_READ_FAILED",
     "GOAL_HYBRID_SEARCH_FAILED",
     "GOAL_HYBRID_SEARCH_UNAUTHENTICATED",
   ]).has(error.code);
+}
+
+function isCodexUsageLimitFailure(extracted) {
+  return extracted?.error?.codexErrorInfo === "usageLimitExceeded";
 }
 
 function selectRelevantCommonUuids({ stateDir, task }) {
@@ -605,5 +804,17 @@ function canReuseAuthorizedAuthorWorktree({ config, task, baselineCommit }) {
     return [...dirty].every((entry) => allowed.has(entry));
   } catch {
     return false;
+  }
+}
+
+function selectRecordedAuthorBaseCommit({ projectRoot, task, baselineCommit, fallbackCommit }) {
+  const candidate = task.last_author_commit ?? task.author_commit;
+  if (!candidate) return fallbackCommit;
+  try {
+    const inspected = inspectAuthorCommit({ projectRoot, baselineCommit, authorCommit: candidate });
+    const allowed = new Set(task.allowed_files ?? []);
+    return inspected.changed_files.every((entry) => allowed.has(entry)) ? candidate : fallbackCommit;
+  } catch {
+    return fallbackCommit;
   }
 }

@@ -12,6 +12,10 @@ Then read only the tool notes, contracts, methods, and vocab files required by t
 
 Required behavior:
 
+- Execute `builder/docs/tools/shared-materials.md` before each external evidence need: query by product/process/need,
+  read bounded fragments, assess applicability, supplement gaps and register reusable material. Local hits do not
+  waive original verification, independent-source or counterevidence checks.
+
 - Use Markdown as the authored source.
 - Preserve bilingual alignment.
 - Use UUID-only Tiangong references.

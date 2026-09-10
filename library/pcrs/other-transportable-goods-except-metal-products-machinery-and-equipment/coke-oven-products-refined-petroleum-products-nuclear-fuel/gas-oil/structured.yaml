@@ -1,10 +1,998 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "33360"
-  title: "Gas oil"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.coke-oven-products-refined-petroleum-products-nuclear-fuel.gas-oil"
+  classification_refs: "CPC 3.0 33360, Gas oil"
+  covered_products: "Gas oil / diesel oil middle distillates; straight-run, cracked, hydrotreated, or blended gas oil; gas oil containing a declared biodiesel or other biogenic blend component"
+  excluded_products: "Crude petroleum; kerosene and jet fuel; residual fuel oil; marine fuel represented without a matching gas-oil grade declaration; neat biodiesel; a regional diesel grade extrapolated beyond its declared specification and market"
+  representative_product: "Generic petroleum-refinery gas oil / diesel oil production mix meeting a declared intended-market specification"
+  production_route: "Crude or other refinery feed receipt and preparation; atmospheric and/or vacuum distillation; applicable conversion and hydrotreating; blending and product finishing; storage and loading"
+  market_state: "Finished liquid fuel, at the declared refinery or connected terminal delivery gate, with batch or production-period quality and composition declared"
+functional_unit:
+  what: "Gas oil / diesel oil meeting the declared intended-market product specification and delivery state"
+  how_much: "1 kg net delivered product"
+  how_well: "Measured delivered mass with product grade and intended use, origin and refinery route, sulphur content, density and reference temperature, biogenic component identity and share, and delivery gate declared"
+  how_long_or_cycle: "One representative production campaign or reporting period with reconciled feed, production, stock-change, and delivery records"
+  reference_flow_link: "The reference flow is the loaded gas-oil product output from storage_and_terminal_delivery"
+system_boundary:
+  rules:
+    - rule_id: boundary_refinery_operations
+      applies_to: "foreground refinery production"
+      rule: "Include feedstock receipt and preparation, atmospheric and vacuum distillation as applicable, conversion and hydrotreating used for the represented streams, blending and finishing, storage, stock changes, and loading at the declared terminal gate."
+      source_ids:
+        - eu-refining-bat-2014-738
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased crude, secondary feedstocks, hydrogen, electricity, fuels, steam, water, additives, and blend components"
+      rule: "Record each purchased input as an explicit product flow and link it to an upstream dataset matching its origin, technology, and delivery state; do not replace upstream supply with unreferenced elementary flows."
+      source_ids:
+        - eu-refining-bat-2014-738
+    - rule_id: boundary_direct_releases
+      applies_to: "controlled refinery units and storage"
+      rule: "Include measured or reconciled direct emissions to air and water, process off-gases, sour water, wastewater, spent catalysts, sludges, and other wastes attributable to the represented operations."
+      source_ids:
+        - eu-refining-bat-2014-738
+    - rule_id: boundary_delivery_gate
+      applies_to: "reference product"
+      rule: "End the default foreground boundary when net gas-oil mass is loaded at the declared refinery or connected terminal; model downstream distribution and combustion separately when required by the study."
+      source_ids:
+        - eu-refining-bat-2014-738
+    - rule_id: boundary_category_integrity
+      applies_to: "dataset applicability"
+      rule: "Do not use a single regional road-diesel, marine-gas-oil, supplier, or neat-biodiesel dataset as the complete category; disclose the intended market and blend composition and select only matching datasets."
+      source_ids:
+        - unsd-cpc-3-33360
+        - eu-fuel-quality-98-70-consolidated-2023
+boundary_abstraction:
+  declared_starting_condition: "refinery feedstocks received at the represented refinery boundary"
+  starting_condition_role: "upstream-linked product inputs with origin, assay or grade, and delivery state declared"
+  product_classification_scope: "CPC 3.0 33360, gas oil / diesel oil middle distillates and declared diesel-oil-based blends"
+  recursive_input_rule: "a purchased or transferred gas-oil input in the same category remains an explicit product input with its own upstream dataset and is not recursively reconstructed inside this foreground package"
+  upstream_dataset_requirement: "match crude or secondary feed origin, production route, geography, quality, and delivery state; separately match hydrogen, utilities, additives, and biogenic components"
+  disclosure: "state crude/feedstock source, refinery configuration, atmospheric and vacuum stream contribution, conversion and hydrotreating route, sulphur, density, blend composition, allocation, stock change, and delivery gate"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Diesel oil"
+    uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "intended market and product grade"
+    - "applicable specification and geography"
+    - "fossil feedstock and crude-origin basis"
+    - "refinery configuration"
+    - "atmospheric and vacuum fraction contribution"
+    - "conversion route"
+    - "hydrotreating status"
+    - "sulphur content and test basis"
+    - "density and reference temperature"
+    - "biogenic component identity and share on a declared mass-or-volume basis"
+    - "additive content where material"
+    - "refinery allocation method"
+    - "delivery gate and loaded state"
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product and product intermediates"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report net mass and normalize all inventory results to 1 kg of gas oil loaded at the declared delivery gate."
+  - id: volume_to_mass
+    applies_to: "volume-based feed, blend, stock, or delivery records"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert volume to mass only with the measured or specification-supported density for the same batch and a stated reference temperature; do not apply an undeclared generic diesel density."
+  - id: sulphur_measurement
+    applies_to: "feed streams, treated streams, blend components, and finished gas oil"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "mg/kg or declared mass fraction"
+    rule: "Record sampling point, analytical method, reporting basis, and measured sulphur content; a jurisdiction-specific limit is a qualifier, not a category-wide default."
+  - id: biogenic_share
+    applies_to: "gas oil containing biodiesel or another biogenic component"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg/kg or explicitly declared volume fraction"
+    rule: "State component identity, renewable feedstock route, measured blend quantity, and whether the reported share is mass- or volume-based; keep fossil and biogenic upstream burdens separately traceable."
+  - id: energy_conversion
+    applies_to: "optional energy-based reporting"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ/kg"
+    rule: "Use a batch-, grade-, or supplier-specific net calorific value and state its source and measurement basis; retain mass as the PCR reference property."
+process_map:
+  - id: feedstock_receipt_and_preparation
+    name: "Feedstock receipt and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always; include desalting or equivalent preparation when operated"
+    role: "foreground"
+    quantitative_reference: "prepared refinery feed"
+  - id: primary_distillation
+    name: "Atmospheric and vacuum distillation"
+    inclusion: "required"
+    inclusion_condition: "Atmospheric distillation is required; include vacuum distillation when a vacuum fraction contributes to represented gas oil or its conversion feed"
+    role: "foreground"
+    quantitative_reference: "gas-oil-range streams leaving distillation"
+  - id: conversion_and_hydrotreating
+    name: "Conversion and hydrotreating"
+    inclusion: "conditional"
+    inclusion_condition: "Include every cracking, hydrocracking, hydrotreating, sweetening, or other treatment unit whose stream contributes to the final gas oil"
+    role: "foreground"
+    quantitative_reference: "treated gas-oil blend components"
+  - id: blending_and_product_finishing
+    name: "Blending and product finishing"
+    inclusion: "required"
+    inclusion_condition: "Always; include all fossil and biogenic blend components and additives"
+    role: "foreground"
+    quantitative_reference: "finished gas oil sent to storage"
+  - id: storage_and_terminal_delivery
+    name: "Storage and terminal delivery"
+    inclusion: "required"
+    inclusion_condition: "Always to the declared loaded-product gate"
+    role: "foreground"
+    quantitative_reference: "net loaded reference product"
+process_inventory:
+  - id: feedstock_receipt_and_preparation
+    label: "Feedstock receipt and preparation"
+    inputs:
+      product:
+        - row_id: received_refinery_feedstocks
+          role: "Crude oil and other refinery feedstocks received"
+          name: "Select origin- and grade-specific crude petroleum or refinery-feed product flows"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record every crude slate component, condensate, secondary feedstock, and imported intermediate crossing the refinery boundary. Preserve supplier or origin, assay or grade, fossil or biogenic nature, delivered mass, density basis, and upstream provider."
+          amount:
+            expression: "measured received mass corrected for transfers, water, sediment, and stock change on a consistent basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared refinery feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feedstock_receipt
+              source_ids: []
+            ranges: []
+        - row_id: feedstock_preparation_inputs
+          role: "Preparation utilities and materials"
+          name: "Select utility- and material-specific product flows"
+          flow_type: "product"
+          property_unit: "Native flow property and unit, converted to the declared process basis"
+          description: "Record electricity, steam, fuels, water, chemicals, and other material inputs used for receiving, heating, desalting, and preparation."
+          amount:
+            expression: "metered or purchase-reconciled quantity attributable to feedstock preparation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared refinery feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_unit_utilities
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_refinery_feed
+          role: "Prepared refinery feed"
+          name: "Prepared refinery feed, internal refinery transfer"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass passed to primary distillation and identify the preparation steps performed."
+          amount:
+            expression: "measured transfer mass reconciled to feed receipts, recovered hydrocarbons, water removal, and stock change"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "process output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_feedstock_receipt
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: preparation_waste
+          role: "Desalter sludge and preparation waste"
+          name: "Select waste-specific flows"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record sludge, solids, and other preparation wastes by destination and treatment route."
+          amount:
+            expression: "measured or shipment-reconciled waste mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared refinery feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_water_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: primary_distillation
+    label: "Atmospheric and vacuum distillation"
+    inputs:
+      product:
+        - row_id: distillation_feed
+          role: "Prepared refinery feed to distillation"
+          name: "Prepared refinery feed, internal refinery transfer"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record atmospheric and vacuum unit feed separately so the origin of each gas-oil-range fraction remains traceable."
+          amount:
+            expression: "measured unit feed by atmospheric or vacuum train"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg gas-oil-range stream leaving distillation"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_distillation_streams
+              source_ids:
+                - eu-refining-bat-2014-738
+            ranges: []
+        - row_id: distillation_utilities
+          role: "Distillation utilities"
+          name: "Select utility-specific product flows"
+          flow_type: "product"
+          property_unit: "Native flow property and unit"
+          description: "Record furnace fuel, electricity, steam, cooling water, and other utilities assigned to atmospheric and vacuum distillation."
+          amount:
+            expression: "metered unit consumption or documented unit-level engineering balance"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg gas-oil-range stream leaving distillation"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_unit_utilities
+              source_ids:
+                - eu-refining-bat-2014-738
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: distilled_gas_oil_streams
+          role: "Atmospheric and vacuum gas-oil-range streams"
+          name: "Gas-oil-range intermediate, internal refinery transfer"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each atmospheric or vacuum fraction separately with its measured mass, distillation identity, destination, sulphur content, and density basis."
+          amount:
+            expression: "measured stream mass reconciled to unit feed and all distillation outputs"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_distillation_streams
+              source_ids:
+                - unsd-cpc-3-33360
+                - eu-refining-bat-2014-738
+            ranges: []
+        - row_id: other_distillation_products
+          role: "Other distillation products"
+          name: "Select co-product-specific product flows"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record gases, naphtha, kerosene, residues, and other co-products required to close the unit mass balance and support allocation."
+          amount:
+            expression: "measured co-product mass by stream"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refinery_yield_balance
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: distillation_waste_streams
+          role: "Sour water and distillation wastes"
+          name: "Select waste-specific flows"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record sour water and other waste streams routed to treatment or disposal."
+          amount:
+            expression: "measured transfer or treatment-reconciled quantity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg gas-oil-range stream leaving distillation"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_water_records
+              source_ids:
+                - eu-refining-bat-2014-738
+            ranges: []
+      elementary:
+        - row_id: distillation_air_emissions
+          role: "Direct distillation emissions to air"
+          name: "Select pollutant-specific elementary flows to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record combustion and process emissions released to air after treatment, including the applicable monitored pollutants and reporting basis."
+          amount:
+            expression: "monitored or mass-balance-derived release attributable to distillation units"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg gas-oil-range stream leaving distillation"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-refining-bat-2014-738
+            ranges: []
+  - id: conversion_and_hydrotreating
+    label: "Conversion and hydrotreating"
+    inputs:
+      product:
+        - row_id: treatment_feed_streams
+          role: "Gas-oil streams sent to conversion or treatment"
+          name: "Gas-oil-range intermediate, internal or purchased product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each straight-run, cracked, vacuum, or imported gas-oil stream entering conversion, hydrotreating, sweetening, or other product treatment."
+          amount:
+            expression: "measured feed mass by treatment unit and stream origin"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg treated gas-oil component"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_operation
+              source_ids:
+                - eu-refining-bat-2014-738
+            ranges: []
+        - row_id: hydrogen_and_treatment_inputs
+          role: "Hydrogen and treatment inputs"
+          name: "Select hydrogen, catalyst, chemical, and utility-specific product flows"
+          flow_type: "product"
+          property_unit: "Native flow property and unit"
+          description: "Record purchased or refinery-produced hydrogen, catalysts, chemicals, electricity, fuels, steam, and water used by each included unit."
+          amount:
+            expression: "metered, issued, or inventory-reconciled quantity by treatment unit"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg treated gas-oil component"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_operation
+              source_ids:
+                - eu-refining-bat-2014-738
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: treated_gas_oil_components
+          role: "Treated gas-oil blend components"
+          name: "Treated gas-oil component, internal refinery transfer"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record treated output by unit with mass, sulphur content, density basis, and routing to blending."
+          amount:
+            expression: "measured treated-product mass by contributing stream"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_operation
+              source_ids:
+                - eu-refining-bat-2014-738
+            ranges: []
+        - row_id: treatment_coproducts
+          role: "Recovered sulphur and other treatment co-products"
+          name: "Select co-product-specific product flows"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record recovered sulphur and other saleable outputs only when their product status and destination are documented; otherwise classify them as waste."
+          amount:
+            expression: "measured co-product mass leaving the treatment system"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_operation
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: treatment_wastes
+          role: "Spent catalysts, spent caustic, and treatment wastes"
+          name: "Select waste-specific flows"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record each waste with mass, hazardous status where applicable, and treatment destination."
+          amount:
+            expression: "measured issue, replacement, or shipment mass allocated to the reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg treated gas-oil component"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_water_records
+              source_ids:
+                - eu-refining-bat-2014-738
+            ranges: []
+      elementary:
+        - row_id: treatment_direct_releases
+          role: "Direct treatment emissions and discharged water emissions"
+          name: "Select pollutant-specific elementary flows to air or water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record pollutant-specific releases after gas and water treatment, without double counting streams transferred internally to treatment."
+          amount:
+            expression: "monitored, sampled, or reconciled release attributable to included treatment units"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg treated gas-oil component"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-refining-bat-2014-738
+            ranges: []
+  - id: blending_and_product_finishing
+    label: "Blending and product finishing"
+    inputs:
+      product:
+        - row_id: fossil_blend_components
+          role: "Fossil gas-oil blend components"
+          name: "Select component-specific gas-oil product or internal flows"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record every fossil middle-distillate component by origin, process route, mass, density basis, and sulphur content."
+          amount:
+            expression: "measured batch or continuous-blend component mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg finished gas oil sent to storage"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blending_and_quality
+              source_ids: []
+            ranges: []
+        - row_id: biogenic_components_and_additives
+          role: "Biogenic components and additives"
+          name: "Select component-specific biodiesel, other biogenic component, and additive product flows"
+          flow_type: "product"
+          property_unit: "Mass / kg, with any source volume retained and converted using component-specific density"
+          description: "Record biodiesel or other biogenic components and additives separately, including identity, upstream route, mass or volume, density basis, and blend-share basis. Enter zero only when records demonstrate that no such component was used."
+          amount:
+            expression: "measured component addition by batch or reporting period"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg finished gas oil sent to storage"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blending_and_quality
+              source_ids:
+                - unsd-cpc-3-33360
+                - eu-fuel-quality-98-70-consolidated-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_gas_oil
+          role: "Finished gas oil before terminal stock adjustment"
+          name: "Diesel oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "Record finished product mass and quality by batch or production period, including intended market, grade, specification, sulphur content, density and temperature, biogenic share, and additive disclosure."
+          amount:
+            expression: "measured blend output passing the declared quality release"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blending_and_quality
+              source_ids:
+                - unsd-cpc-3-33360
+                - eu-fuel-quality-98-70-consolidated-2023
+            ranges: []
+      waste:
+        - row_id: blending_waste
+          role: "Off-specification product and blending waste"
+          name: "Select destination-specific product or waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record off-specification material as an internal rework stream, saleable downgraded product, or waste according to its actual destination; do not count the same mass twice."
+          amount:
+            expression: "measured off-specification quantity by disposition"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg finished gas oil sent to storage"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blending_and_quality
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: storage_and_terminal_delivery
+    label: "Storage and terminal delivery"
+    inputs:
+      product:
+        - row_id: gas_oil_to_storage
+          role: "Finished gas oil entering storage"
+          name: "Diesel oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "Record product transferred into the represented tank system and retain batch identity and quality status."
+          amount:
+            expression: "measured transfer mass into storage"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net loaded gas oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_and_delivery
+              source_ids: []
+            ranges: []
+        - row_id: storage_loading_utilities
+          role: "Storage and loading utilities"
+          name: "Select utility-specific product flows"
+          flow_type: "product"
+          property_unit: "Native flow property and unit"
+          description: "Record electricity, fuels, and other utilities used for tank operation, recirculation, pumping, and loading."
+          amount:
+            expression: "metered or equipment-record-based quantity attributable to represented storage and loading"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net loaded gas oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_unit_utilities
+              source_ids:
+                - eu-refining-bat-2014-738
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: loaded_gas_oil_reference_product
+          role: "Net gas oil loaded at the declared terminal gate"
+          name: "Diesel oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "This is the reference product. Reconcile loaded mass to tank stock change, transfers, returns, off-specification disposition, and measured losses for the same reporting period."
+          amount:
+            expression: "net custody-transfer mass loaded at the declared gate"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_and_delivery
+              source_ids:
+                - unsd-cpc-3-33360
+            ranges: []
+      waste:
+        - row_id: terminal_wastes
+          role: "Tank bottoms and terminal wastes"
+          name: "Select waste-specific flows"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record tank bottoms, contaminated water, and other terminal wastes by destination."
+          amount:
+            expression: "measured removal or shipment quantity allocated to the reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net loaded gas oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_water_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: terminal_air_releases
+          role: "Storage and loading releases to air"
+          name: "Select pollutant-specific elementary flows to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or engineering-reconciled pollutant-specific releases from tanks and loading after any recovery or control."
+          amount:
+            expression: "monitored or documented loss-model result using site-specific throughput, tank, control, and product data"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net loaded gas oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-refining-bat-2014-738
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "unit operations and independently metered streams"
+    rule: "First avoid allocation by subdividing the refinery into feed preparation, distillation, conversion/treatment, blending, and terminal operations and directly assigning measured inputs and releases where causal records exist."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical_relationship
+    applies_to: "inseparable multifunctional operations"
+    rule: "When subdivision or system expansion is not practicable, use a documented, quantifiable physical relationship relevant to the function delivered; explain why the relationship represents the burden driver."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_refinery_shared_burdens
+    applies_to: "refinery-wide utilities, shared treatment, and upstream crude burdens"
+    rule: "State the refinery model, co-product set, allocation basis, time period, prices or physical data where applicable, treatment of negative or zero-value outputs, and a sensitivity case for materially influential choices; do not silently apply mass, energy, or economic allocation."
+    source_ids:
+      - jrc-refinery-allocation-2017
+      - eu-pef-2021-2279
+  - rule_id: allocation_product_or_waste_status
+    applies_to: "recovered sulphur, off-specification material, sludges, spent catalysts, and other secondary outputs"
+    rule: "Classify each output from its documented legal and market destination; apply the chosen allocation or waste-treatment rule consistently and prevent double counting of rework or recovered products."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_biogenic_components
+    applies_to: "blended gas oil containing biogenic material"
+    rule: "Attach component-specific upstream burdens to the measured fossil and biogenic component quantities before allocating shared blending and terminal burdens; disclose the mass- or volume-share conversion."
+    source_ids:
+      - unsd-cpc-3-33360
+      - eu-fuel-quality-98-70-consolidated-2023
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_feedstock_receipt
+      process_id: "feedstock_receipt_and_preparation"
+      flow_role: "received and prepared refinery feed"
+      record_type: "custody-transfer, assay, and stock record"
+      raw_fields: "supplier; origin; crude or feed grade; fossil or biogenic status; mass; volume; density; temperature; water and sediment; receipt date; tank; stock change"
+      collection_method: "calibrated custody meter, weighbridge, laboratory assay, and tank reconciliation"
+      unit: "kg; m3; kg/m3"
+      frequency: "each receipt and daily tank balance"
+      temporal_coverage: "complete reporting period plus opening and closing stock"
+      site_scope: "represented refinery feed system"
+      aggregation_rule: "reconcile receipts, transfers, removals, and stock change; convert volume only at matched density and temperature"
+      quality_evidence: "calibration; assay report; supplier document; signed stock reconciliation"
+    - protocol_id: cp_distillation_streams
+      process_id: "primary_distillation"
+      flow_role: "atmospheric and vacuum feed and product streams"
+      record_type: "unit operating and laboratory record"
+      raw_fields: "unit; stream id; atmospheric or vacuum origin; mass flow; density; temperature; distillation characterization; sulphur; destination; operating hours"
+      collection_method: "calibrated flow meters, laboratory sampling, and data historian"
+      unit: "kg; kg/h; kg/m3; mg/kg"
+      frequency: "continuous with batch or shift quality sample"
+      temporal_coverage: "complete reporting period"
+      site_scope: "every atmospheric and vacuum train contributing to gas oil"
+      aggregation_rule: "time-integrate streams and reconcile all unit inputs, products, internal recycle, water, and losses"
+      quality_evidence: "meter calibration; sample chain; historian completeness; unit balance sign-off"
+    - protocol_id: cp_treatment_operation
+      process_id: "conversion_and_hydrotreating"
+      flow_role: "treatment feed, hydrogen, catalysts, utilities, treated product, and co-products"
+      record_type: "unit operation, issue, and quality record"
+      raw_fields: "unit; technology; feed streams; output streams; mass; hydrogen; catalyst; energy; water; inlet and outlet sulphur; density; co-product destination; operating hours"
+      collection_method: "meters, laboratory results, catalyst inventory, and unit historian"
+      unit: "kg; kg/h; kWh; MJ; m3; mg/kg"
+      frequency: "continuous or per batch with period inventory reconciliation"
+      temporal_coverage: "complete reporting period"
+      site_scope: "every contributing conversion or treatment unit"
+      aggregation_rule: "integrate by unit, reconcile feed and outputs, and preserve stream routing to blending"
+      quality_evidence: "meter calibration; lab QA; catalyst issue records; signed unit balance"
+    - protocol_id: cp_blending_and_quality
+      process_id: "blending_and_product_finishing"
+      flow_role: "fossil components, biogenic components, additives, finished gas oil, and off-specification material"
+      record_type: "blend recipe, meter, tank, and certificate-of-analysis record"
+      raw_fields: "batch; component identity and origin; mass; volume; density and temperature; fossil or biogenic status; blend-share basis; additives; sulphur; grade; intended market; applicable specification; disposition"
+      collection_method: "calibrated component meters, tank reconciliation, and accredited or controlled laboratory analysis"
+      unit: "kg; m3; kg/m3; mg/kg; mass or volume percent"
+      frequency: "each blend batch or continuous-blend campaign"
+      temporal_coverage: "all released and off-specification production in reporting period"
+      site_scope: "all blending systems contributing to reference product"
+      aggregation_rule: "reconcile component inputs to finished, rework, downgraded, waste, and stock outputs; calculate shares on declared basis"
+      quality_evidence: "meter calibration; recipe authorization; certificate of analysis; batch release"
+    - protocol_id: cp_storage_and_delivery
+      process_id: "storage_and_terminal_delivery"
+      flow_role: "storage input, stock change, returns, losses, and loaded reference product"
+      record_type: "tank gauge and custody-transfer record"
+      raw_fields: "tank; batch; opening and closing stock; transfers; returns; loaded mass and volume; density; temperature; loading point; delivery mode; time; grade"
+      collection_method: "calibrated tank gauging and custody-transfer meter"
+      unit: "kg; m3; kg/m3"
+      frequency: "each transfer and loading; daily stock"
+      temporal_coverage: "complete reporting period plus opening and closing stock"
+      site_scope: "represented refinery or connected terminal"
+      aggregation_rule: "loaded output equals inputs plus net stock withdrawal minus returns, rework, wastes, and losses on a consistent mass basis"
+      quality_evidence: "meter calibration; tank table; delivery ticket; signed stock balance"
+    - protocol_id: cp_unit_utilities
+      process_id: "all_included_processes"
+      flow_role: "electricity, fuel, steam, water, and material utilities"
+      record_type: "meter, invoice, and engineering balance"
+      raw_fields: "unit; utility identity; quantity; meter; allocation tag; operating hours; provider; delivery state"
+      collection_method: "dedicated meter preferred; documented engineering balance or invoice reconciliation otherwise"
+      unit: "native flow unit"
+      frequency: "continuous or invoice period"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all included units and shared systems"
+      aggregation_rule: "directly assign dedicated use; allocate only documented shared use under section 7"
+      quality_evidence: "meter calibration; invoice; balance owner; allocation worksheet"
+    - protocol_id: cp_direct_emissions
+      process_id: "all_included_processes"
+      flow_role: "direct releases to air and water"
+      record_type: "continuous monitor, sample, flare, vent, and loss-model record"
+      raw_fields: "source; pollutant; concentration; flow; duration; control status; detection limit; calculation method; release compartment"
+      collection_method: "continuous monitoring, representative sampling, or documented site-specific engineering calculation"
+      unit: "kg; mg/Nm3; mg/L and supporting activity units"
+      frequency: "continuous or permit/sample frequency; event-specific for flares and incidents"
+      temporal_coverage: "complete reporting period including abnormal events"
+      site_scope: "all included units, tanks, loading points, and final discharges"
+      aggregation_rule: "integrate pollutant mass after controls and prevent double counting internal transfers to treatment"
+      quality_evidence: "monitor calibration; accredited analysis; event log; calculation review"
+    - protocol_id: cp_waste_and_water_records
+      process_id: "all_included_processes"
+      flow_role: "wastewater, sludge, spent catalyst, tank bottoms, and other waste"
+      record_type: "transfer, treatment, and shipment record"
+      raw_fields: "source unit; material identity; mass or volume; composition; hazardous status; destination; recovery or disposal route; date"
+      collection_method: "meter, scale, manifest, and treatment-plant reconciliation"
+      unit: "kg; m3"
+      frequency: "each transfer or shipment"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all included units and on-site treatment interfaces"
+      aggregation_rule: "sum by source, material, and destination; reconcile internal transfer against final treatment output"
+      quality_evidence: "scale calibration; waste manifest; treatment acceptance; mass balance"
+    - protocol_id: cp_refinery_yield_balance
+      process_id: "all_included_processes"
+      flow_role: "refinery products, co-products, internal transfers, and stock"
+      record_type: "production accounting record"
+      raw_fields: "stream; source unit; destination; mass; density; stock change; saleable or waste status; price or physical allocation variable when used"
+      collection_method: "reconciled refinery production accounting"
+      unit: "kg; declared allocation variable"
+      frequency: "daily or accounting period"
+      temporal_coverage: "complete reporting period"
+      site_scope: "represented refinery and product slate"
+      aggregation_rule: "close refinery-wide mass and yield balance before normalization and allocation"
+      quality_evidence: "signed production balance; allocation dataset; discrepancy explanation"
+  calculation_rules:
+    - id: normalize_to_reference_mass
+      applies_to: "all inventory rows"
+      rule: "normalized amount = reporting-period amount divided by net kg of loaded reference gas oil"
+      inputs:
+        - "relevant collection protocol"
+        - cp_storage_and_delivery
+      output: "amount per 1 kg loaded gas oil"
+      source_ids: []
+    - id: convert_volume_with_density
+      applies_to: "volume-based feed, component, stock, and delivery records"
+      rule: "mass = observed volume multiplied by density corrected or measured at the same declared reference temperature"
+      inputs:
+        - cp_feedstock_receipt
+        - cp_blending_and_quality
+        - cp_storage_and_delivery
+      output: "kg on a consistent temperature basis"
+      source_ids: []
+    - id: reconcile_process_mass
+      applies_to: "each included unit and the refinery-wide balance"
+      rule: "input mass plus opening stock = product, co-product, waste, direct mass release, and closing stock; explain residuals above the facility QA criterion"
+      inputs:
+        - "all process collection protocols"
+        - cp_refinery_yield_balance
+      output: "signed unit and refinery mass-balance result"
+      source_ids: []
+    - id: calculate_biogenic_share
+      applies_to: "finished blended gas oil"
+      rule: "biogenic share = measured biogenic component quantity divided by total finished blend quantity on one declared mass or volume basis; apply component-specific density before converting bases"
+      inputs:
+        - cp_blending_and_quality
+      output: "biogenic component share and component-resolved upstream inventory"
+      source_ids:
+        - unsd-cpc-3-33360
+        - eu-fuel-quality-98-70-consolidated-2023
+    - id: calculate_sulphur_balance
+      applies_to: "distillation, treatment, blending, and final product"
+      rule: "reconcile sulphur entering in feed and components with sulphur in products, recovered sulphur, wastes, water, and air releases using measured contents and masses"
+      inputs:
+        - cp_distillation_streams
+        - cp_treatment_operation
+        - cp_blending_and_quality
+        - cp_direct_emissions
+        - cp_waste_and_water_records
+      output: "sulphur balance and unexplained residual"
+      source_ids:
+        - eu-refining-bat-2014-738
+    - id: apply_allocation
+      applies_to: "multifunctional refinery operations"
+      rule: "allocated burden = unassigned shared burden multiplied by the documented allocation factor after direct assignment; factors across the declared co-product set shall reconcile to one"
+      inputs:
+        - cp_refinery_yield_balance
+        - cp_unit_utilities
+        - cp_direct_emissions
+      output: "allocated inventory and sensitivity results per product"
+      source_ids:
+        - eu-pef-2021-2279
+        - jrc-refinery-allocation-2017
+    - id: calculate_net_loaded_output
+      applies_to: "storage and terminal delivery"
+      rule: "net loaded mass = custody-transfer loadings minus documented returns, with tank stock change, rework, wastes, and losses reconciled for the same period"
+      inputs:
+        - cp_storage_and_delivery
+      output: "kg reference product at declared gate"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product and blend components"
+      requirement: "Product grade, intended market, specification, origin, route, sulphur, density and temperature, biogenic share basis, and delivery gate shall be complete and internally consistent."
+      evidence: "batch release, certificate of analysis, blend recipe, and delivery ticket"
+    - id: dq_refinery_configuration
+      applies_to: "process map"
+      requirement: "List every contributing unit, technology, stream connection, operating period, and bypass; justify every conditional exclusion."
+      evidence: "current process-flow diagram, unit roster, historian tags, and signed applicability review"
+    - id: dq_measurement
+      applies_to: "mass, volume, density, quality, utility, and emission records"
+      requirement: "Use calibrated instruments or controlled analytical methods; record detection limits, missing periods, substitutions, and corrections."
+      evidence: "calibration certificates, laboratory QA, data-completeness report, and correction log"
+    - id: dq_temporal_reconciliation
+      applies_to: "production period"
+      requirement: "Feed, production, utility, emissions, waste, stock, and delivery data shall cover the same period and include opening and closing stock."
+      evidence: "period-close reconciliation and timestamp coverage report"
+    - id: dq_allocation
+      applies_to: "multi-output refinery burdens"
+      requirement: "Preserve direct assignment, co-product set, allocation factors and variables, data period, and sensitivity results in an auditable worksheet."
+      evidence: "allocation workbook, production balance, price or physical-variable source, and reviewer sign-off"
+    - id: dq_upstream_matching
+      applies_to: "purchased product flows"
+      requirement: "Each provider dataset shall match the declared origin, technology, quality, and delivery state or disclose the mismatch and sensitivity."
+      evidence: "provider metadata and applicability assessment"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "Confirm the selected flow UUID, Mass property UUID, Units of mass UUID, 1 kg reference amount, and all required qualifiers are present."
+    source_ids:
+      - unsd-cpc-3-33360
+  - rule_id: validate_category_scope
+    applies_to: "dataset applicability"
+    rule: "Reject use as a category-wide dataset when the package represents only one regional diesel grade, marine grade, supplier formulation, or neat biodiesel without an explicit narrower scope."
+    source_ids:
+      - unsd-cpc-3-33360
+      - eu-fuel-quality-98-70-consolidated-2023
+  - rule_id: validate_route_and_boundary
+    applies_to: "process coverage"
+    rule: "Confirm feed origin, refinery configuration, atmospheric and vacuum contribution, conversion and hydrotreating status, blending, storage, and loaded gate; every omitted conditional unit shall have a documented non-applicability reason."
+    source_ids:
+      - eu-refining-bat-2014-738
+  - rule_id: validate_quality_measurements
+    applies_to: "finished product and contributing streams"
+    rule: "Confirm sulphur and density values have sample or record identifiers, methods, units, reference temperature where relevant, and the same product-period basis as the inventory."
+    source_ids:
+      - eu-fuel-quality-98-70-consolidated-2023
+  - rule_id: validate_biogenic_content
+    applies_to: "blended gas oil"
+    rule: "Confirm component identity, renewable feedstock route, measured quantity, mass-or-volume basis, density conversion where used, and separate upstream provider; prohibit an undeclared zero assumption."
+    source_ids:
+      - unsd-cpc-3-33360
+      - eu-fuel-quality-98-70-consolidated-2023
+  - rule_id: validate_mass_and_sulphur_balance
+    applies_to: "unit and refinery balances"
+    rule: "Require reconciled mass and sulphur balances, documented residuals, and consistent stock changes before normalization."
+    source_ids:
+      - eu-refining-bat-2014-738
+  - rule_id: validate_allocation
+    applies_to: "multi-output burdens"
+    rule: "Confirm direct assignment precedes allocation, the co-product set and factors reconcile, the chosen relationship is justified, and materially influential allocation choices have a sensitivity result."
+    source_ids:
+      - eu-pef-2021-2279
+      - jrc-refinery-allocation-2017
+  - rule_id: validate_releases_and_wastes
+    applies_to: "foreground inventory completeness"
+    rule: "Confirm direct air and water releases, internal treatment transfers, final discharges, spent catalysts, sludges, and terminal losses are covered without double counting."
+    source_ids:
+      - eu-refining-bat-2014-738
+  - rule_id: validate_upstream_providers
+    applies_to: "purchased inputs"
+    rule: "Confirm crude, secondary feed, hydrogen, utilities, additives, and biogenic components have matching provider datasets or an explicit documented data gap."
+    source_ids:
+      - eu-refining-bat-2014-738
+published_dataset_profile:
+  dataset_role: "unit_process or aggregated refinery-gate production dataset with transparent process and allocation detail"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "gas-oil production and supply studies whose feedstock origin, refinery route, product grade, intended market, blend composition, geography, period, allocation, and terminal gate match the dataset"
+  excluded_use: "unqualified global gas-oil proxy; substitution for neat biodiesel; automatic substitution for a regional road-diesel or marine-fuel grade; combustion or downstream distribution not modelled as separate stages"
+  required_metadata: "reference-flow UUIDs; CPC scope; refinery and terminal geography; reporting period; feedstock origin; refinery configuration; atmospheric and vacuum contribution; treatment route; sulphur; density and temperature; biogenic share basis; specification; intended market; allocation; delivery gate"
+  required_quality_disclosure: "measurement coverage and calibration; mass and sulphur reconciliation; stock treatment; emission and waste coverage; provider matching; allocation factors and sensitivity; data gaps and substitutions"
+  update_trigger: "material change in crude slate, refinery configuration, contributing stream routes, hydrotreating, product specification, sulphur or blend formulation, allocation method, terminal gate, provider datasets, or reporting-period representativeness"
+data_sources:
+  - id: "unsd-cpc-3-33360"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Explanatory Notes, subclass 33360, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-09)"
+    used_for: "category identity; middle-distillate scope; gas oil / diesel oil terminology; treatment of diesel-oil and biodiesel mixtures"
+  - id: "eu-refining-bat-2014-738"
+    type: "standard"
+    reference: "Commission Implementing Decision 2014/738/EU establishing BAT conclusions for refining mineral oil and gas, http://data.europa.eu/eli/dec_impl/2014/738/2014-10-28 (retrieved 2026-08-09)"
+    used_for: "refinery process decomposition; atmospheric and vacuum distillation; hydrogen-consuming processes; product treatment; storage, blending, loading; emissions and waste coverage"
+  - id: "eu-fuel-quality-98-70-consolidated-2023"
+    type: "standard"
+    reference: "Directive 98/70/EC consolidated 20 November 2023, https://eur-lex.europa.eu/eli/dir/1998/70/2023-11-20/eng/pdf (retrieved 2026-08-09)"
+    used_for: "intended-market and specification qualifiers; sulphur and FAME disclosure context; prohibition on treating one jurisdictional specification as universal"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279, Product Environmental Footprint method, http://data.europa.eu/eli/reco/2021/2279/2021-12-30 (retrieved 2026-08-09)"
+    used_for: "allocation hierarchy; subdivision, system expansion, physical relationship, and fallback relationship requirements"
+  - id: "jrc-refinery-allocation-2017"
+    type: "literature"
+    reference: "Moretti et al., Analysis of standard and innovative methods for allocating upstream and refinery GHG emissions to oil products, JRC105041, DOI 10.1016/j.apenergy.2017.08.183, https://publications.jrc.ec.europa.eu/repository/handle/JRC105041 (retrieved 2026-08-09)"
+    used_for: "refinery-product allocation alternatives, transparency, and sensitivity requirements"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:5a511c82472b5116d213c7d9e333900ce91b9a168a054f289ee7b80b69f43362"
+  generated_content_sha256: "sha256:602c3842666b19f1c37a36c75c496ea0d854819da0cf6cd4f04e6e6749ba18fc"

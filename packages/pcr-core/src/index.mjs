@@ -23,7 +23,10 @@ import {
   inspectProjectionIntegrity,
   projectionNotRequiredState,
 } from "./projection-integrity.mjs";
-import { materialProjectionCompletenessIssues } from "./projection-completeness.mjs";
+import {
+  hasDeclaredUnresolvedReferenceProductFlow,
+  materialProjectionCompletenessIssues,
+} from "./projection-completeness.mjs";
 import { findPcrIdAlias } from "./pcr-id-aliases.mjs";
 import {
   assertPcrReadContextFresh,
@@ -609,6 +612,24 @@ export function buildGuidance({ root, pcrId, context = null }) {
   return buildGuidanceForOperation({ root: root ?? context?.root, pcrId, operation: "guidance", context });
 }
 
+export function getVerifiedPcrProjection({ root, pcrId, context = null }) {
+  root = root ?? context?.root;
+  const snapshot = getCurrentPcrSnapshot({ root, pcrId, context });
+  const { pcr, structured, structuredPath } = snapshot;
+  assertPcrUsable({ pcr, operation: "guidance" });
+  if (!structured) {
+    throw new Error(
+      `PCR ${pcrId} passed readiness without a verified structured projection.`,
+    );
+  }
+  return {
+    pcr: structuredClone(pcr),
+    readiness: structuredClone(pcr.readiness),
+    source_structured: toPosix(path.relative(root, structuredPath)),
+    structured: structuredClone(structured),
+  };
+}
+
 function buildGuidanceForOperation({ root, pcrId, operation, context = null }) {
   const snapshot = getCurrentPcrSnapshot({ root, pcrId, context });
   const { pcr, structured, structuredPath } = snapshot;
@@ -986,7 +1007,12 @@ function currentPcrSnapshot(root, entry, context = null) {
   });
   let projection;
   try {
-    projection = inspectPcrProjection({ root, pcr, artifacts: snapshotFiles.artifacts });
+    projection = inspectPcrProjection({
+      root,
+      pcr,
+      manifest: snapshotFiles.manifest,
+      artifacts: snapshotFiles.artifacts,
+    });
   } catch (error) {
     projection = failedProjectionInspection({ root, pcr, error });
   }
@@ -1406,7 +1432,7 @@ function pcrFromManifest({ root, pcrDir, manifest }) {
   return pcr;
 }
 
-function inspectPcrProjection({ root, pcr, artifacts }) {
+function inspectPcrProjection({ root, pcr, manifest, artifacts }) {
   const pcrDir = path.join(root, pcr.path);
   const structuredPath = path.join(pcrDir, "structured.yaml");
   const structuredArtifact = artifacts["structured.yaml"];
@@ -1526,7 +1552,11 @@ function inspectPcrProjection({ root, pcr, artifacts }) {
     structuredPath,
     structuredAvailable: true,
     completenessIssues: schemaResult.valid
-      ? materialProjectionCompletenessIssues(structured, { expectedPcrId: pcr.id })
+      ? materialProjectionCompletenessIssues(structured, {
+          expectedPcrId: pcr.id,
+          allowUnresolvedProductFlowUuid:
+            hasDeclaredUnresolvedReferenceProductFlow(structured, manifest),
+        })
       : [],
   };
 }

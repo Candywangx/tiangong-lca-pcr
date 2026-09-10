@@ -5,10 +5,13 @@ import { fileURLToPath } from "node:url";
 const reportSchemaPath = fileURLToPath(new URL("../schemas/goal-author-report.schema.json", import.meta.url));
 
 export function readAuthorReportSchema() {
-  return JSON.parse(readFileSync(reportSchemaPath, "utf8"));
+  // Runtime v1 reports may omit the additive field; Codex requires every wire property.
+  const schema = JSON.parse(readFileSync(reportSchemaPath, "utf8"));
+  schema.required = [...new Set([...schema.required, "boundary_review"])];
+  return schema;
 }
 
-export function compileAuthorPrompt({ task, policyPromptPath, verifiedCommonUuids = [], verifiedSourceReceipts = [], tools = {} }) {
+export function compileAuthorPrompt({ task, policyPromptPath, verifiedCommonUuids = [], verifiedSourceReceipts = [], tools = {}, materials = null }) {
   const policyBytes = readFileSync(policyPromptPath);
   const policySha256 = `sha256:${createHash("sha256").update(policyBytes).digest("hex")}`;
   const allowedFiles = ["manifest.yaml", "pcr.en-US.md", "pcr.zh-CN.md", "structured.yaml"]
@@ -29,21 +32,26 @@ Assignment
 - Queue action: ${task.queue_action}
 - Goal policy fingerprint: ${policySha256}
 - Classification precheck: ${formatItems(task.precheck_results)}
+- Previous structured gate findings: ${formatJson(task.pending_gate_findings ?? [])}
+- Previous validation details: ${task.validation_result ? JSON.stringify(task.validation_result) : "none supplied"}
 - Official source seeds: ${formatJson(task.official_source_seeds ?? [])}
 - Receipt-backed reusable UUID audits: ${formatJson(receiptBackedCommonUuids)}
 - Hash-verified original-source cache receipts relevant to these seeds: ${formatJson(verifiedSourceReceipts)}
 
 Exact write boundary
-You may modify and commit exactly these four files, and nothing else:
+You may modify and commit exactly these four repository files:
 ${allowedFiles.map((entry) => `- ${entry}`).join("\n")}
 
 Do not modify mappings, aliases, indexes, catalog, viewer artifacts, ADRs, Builder code, schemas, vocabularies, tests, package files, dependencies, or any other PCR. Do not copy methodology, inventory, numbers, ranges, or sources from another PCR. Other PCRs may be inspected only for identity/path existence.
+The shared materials store is a production-side exception: query/read/register source files and fragment evidence there; never commit them or copy runtime paths/logs into canonical PCR files.
+
+${materialsInstructions(materials)}
 
 Required repository contracts
 Read AGENTS.md, builder/AGENTS.md, builder/docs/index.md, the create/translate workflows, evidence/source, Markdown, manifest, structured-projection, UUID-reference contracts, and the reference-flow, inventory-flow, process-map, measurement-unit, range, and source-evidence method notes named by the Goal policy. Read only vocabularies actually used by this PCR.
 
 Method and evidence
-- Establish a semantic product boundary; a CPC leaf alone is not permission to duplicate canonical PCR identity. If an existing material PCR covers the boundary, stop editing and return a machine report describing map_existing or manual review.
+- Establish a semantic product boundary; a CPC leaf alone is not permission to duplicate canonical PCR identity. If an existing material PCR covers the boundary, stop editing and return an explicit boundary_review request using overlapping_pcr_identity for manual adjudication.
 - Verify final evidence against official pages, PDFs, DOI landing/full text, standards, regulations, institutional reports, or peer-reviewed full text. Search/OpenAlex titles, abstracts, snippets, and metadata are discovery only.
 - Never invent a DOI, URL, standard, regulation, author, year, number, UUID, or source id. Do not add "codex" to a source id unless the source is actually Codex Alimentarius.
 - Every inventory row is one concrete atomic physical, chemical, waste, or energy exchange. Reject umbrella choices such as energy carriers, utilities, fuels, electricity/steam/fuel, packaging materials, cleaning chemicals, wastewater and residues, emissions to air, other materials/wastes, or a future route choice. Use inclusion_condition for conditional routes.
@@ -66,7 +74,7 @@ node --env-file-if-exists=${credentialsEnvFile} ${receiptCli} finalize --config 
 
 Each decision must include a non-empty general_comment_review. Each finalized receipt binds the exact query, ranked candidate UUIDs/match metadata, tool version, non-sensitive endpoint id, raw-result SHA-256, every state_code=100 direct-read identity/property/unit-group/response hash, and candidate rejection reasons. Include every receipt id in hybrid_search_receipt_ids; link each adopted UUID with hybrid_search_receipt_id, each rejected candidate with receipt_id plus the same reason_code/reason, and each no_exact_candidate/manual_review_required unresolved row with hybrid_search_receipt_ids. A hybrid_search: true boolean is never evidence and is rejected. tiangong_cli_unavailable is an infrastructure-level retryable failure: stop UUID authoring and report the tool failure; never use it to bulk-mark unresolved rows.
 
-Use hybrid search for candidate discovery, then directly read every adopted candidate with public state_code=100. Audit English and Chinese baseName, flow type, classification, property, unit group, product state, geography, technology, and generalComment. Never promote a proxy or unverified UUID to final. If no exact reference product or inventory flow exists, keep UUID empty and record the row as unresolved with an allowed reason code; this does not block the PCR. For every PCR, inventory total must equal UUID-matched rows plus explicitly unresolved rows. Use the directly read TianGong Chinese baseName for UUID-bearing Chinese rows.
+Use hybrid search for candidate discovery, then directly read every adopted candidate with public state_code=100. Audit English and Chinese baseName, flow type, classification, property, unit group, product state, geography, technology, and generalComment. Never promote a proxy or unverified UUID to final. If no exact reference product or inventory flow exists, keep UUID empty and record the row as unresolved with an allowed reason code; this does not block the PCR. For every PCR, inventory total must equal UUID-matched rows plus explicitly unresolved rows. Use the directly read TianGong Chinese baseName for UUID-bearing Chinese rows. If the direct read has no Chinese baseName, set report uuid_audits[].base_name_zh to the exact empty string, retain the canonical English baseName in the Chinese Selected flow, and state in semantic_review that the TianGong Chinese baseName is unavailable; never invent an official Chinese name.
 - Record every UUID-empty inventory row, including an unresolved reference product row, under manifest review_metadata.unresolved.inventory_flow_uuids as { row_id, reason_code, explanation }. The same row ids and reasons must appear in the author report inventory.unresolved array. Do not substitute a differently named manifest field; the Harness reads this exact path.
 
 Range override (authoritative over the Goal policy file)
@@ -78,7 +86,15 @@ Range override (authoritative over the Goal policy file)
 - Record each such need under manifest review_metadata.unresolved.range_evidence_needs; do not invent a numeric range merely to remove a lint warning.
 - Regulatory or standard limits are conformance/specification rules, not empirical ranges. A reasoned_estimate is provisional, source-id-free, and used only when it has real modeling or QA value.
 
-Authoring sequence and commit
+Boundary-review request
+For normal PCR results, set boundary_review to null and follow every authoring and quality requirement below. If the semantic product boundary remains unresolved or overlaps an existing material PCR, stop authoring and set boundary_review to an object with reason_code semantic_boundary_unresolved or overlapping_pcr_identity, a substantive summary of at least 20 characters, nonempty questions, and nonempty evidence entries with locator and observation. This requests unadjudicated manual review; it does not establish a completed PCR, map_existing decision, or accepted classification mapping.
+- Preserve the assigned CPC, PCR path, queue_action, and files containing the exact four authorized paths. Set commit_sha to the actual current HEAD even when no new commit was made. Leave partial authorized work intact for review.
+- Make no final inventory claims: set inventory total_rows, matched_rows, and unresolved_rows to 0 and unresolved to an empty array. Set uuid_audits and ranges to empty arrays and reference_product_uuid_confirmed to false; do not claim adopted final UUIDs or quantitative ranges.
+- Make no alignment, sync or validation success claims: set bilingual.aligned and every structured_sync flag to false, and bilingual inventory row counts to 0. Set validate.ok to false, exit_code to -1, known_shared_artifact_only to false, and summary to "not run: boundary review requested" for unperformed validation.
+- Searches already performed may appear in boundary_review.evidence as unadjudicated claims, not as final UUID adoption or verified methodology. Keep all other report fields accurate and use empty arrays where nothing was performed. Do not run sync, validate, or create a PCR completion commit merely to submit this request.
+- Missing UUIDs, insufficient range evidence, and infrastructure outages are not boundary-review reasons. Report infrastructure failures accurately through the existing failure path.
+
+Authoring sequence and commit (normal PCR results with boundary_review null)
 1. Author manifest.yaml, canonical pcr.en-US.md, and aligned pcr.zh-CN.md.
 2. Generate structured.yaml only with: npm run pcr:sync-structured -- --pcr ${task.pcr_path}
 3. Run the same sync command again and require no diff.
@@ -97,4 +113,26 @@ function formatItems(value = []) {
 
 function formatJson(value) {
   return value.length > 0 ? JSON.stringify(value) : "none supplied";
+}
+
+function materialsInstructions(materials) {
+  const cli = fileURLToPath(new URL("../cli/materials.mjs", import.meta.url));
+  const quote = value => `'${String(value).replaceAll("'", "'\\''")}'`;
+  const command = `node ${quote(cli)}`;
+  const root = materials ? ` --root ${quote(materials.root)}` : "";
+  return `Shared source preparation — run before every external evidence need
+Read builder/docs/tools/shared-materials.md. ${materials ? "The Harness has already executed this bounded product query:" : "Begin with a local query; the CLI resolves the shared Git common directory."}
+${materials ? JSON.stringify({ root: materials.root, total_candidates: materials.total_candidates, next_offset: materials.next_offset, issues: materials.issues, candidates: materials.candidates.map(c => ({ id: c.id, title: c.source?.title.slice(0, 160), version: c.source?.version.slice(0, 100), state: c.state, reuse_original: c.reuse_original, reuse_extraction: c.reuse_extraction, gaps: c.gaps, fragments: c.fragments?.slice(0, 3).map(f => f.id) })) }) : ""}
+1. Refine the product query by actual process and specific need (ranges, functional unit, boundary, allocation or collection requirements):
+   ${command} query${root} --product '<product>' --process '<process>' --need '<specific question>' --limit 5
+   Also query a known DOI/URL before fetching it. Pass --request /tmp/material-use.json for route, state, basis, unit, required_version and extractor requirements.
+2. Read only relevant candidates: ${command} read${root} --id <record-id> --fragment <fragment-id> --request /tmp/material-use.json
+   For an unverified extraction use --start-line N --end-line N (at most 100 lines/8192 bytes), retain original page/table/cell locations and footnotes, and verify against the original. Metadata is discovery only; it still needs content acquisition. A verified fragment does not verify an entire publication.
+3. Check reuse_original/reuse_extraction and gaps. Reuse available valid original bytes without refetching the same version; reuse valid extraction without rerunning its tool. Never adopt a number on a local hit alone: check product, route, process, state, units, normalization, temporal relevance and limitations. Keep facts, case observations, conversions and inference distinct. A prior PCR conclusion or review approval is not evidence for this PCR.
+4. Use existing external discovery/acquisition/extraction tools for uncovered, stale, mismatched or conflicting questions. Continue required independent-source and counterevidence checks; one case cannot establish an industry range. Do not repeat an already covered query merely because the author task changed. Keep unresolved gaps explicit.
+5. Register each newly acquired original promptly (so another task can avoid downloading it), then register extraction and individually verified fragments:
+   ${command} register${root} --input /tmp/material-registration.json
+   Use the documented JSON fields, actual acquisition/verification times and extractor versions. The tool computes content hashes; do not invent provenance. Register metadata-only seeds as such. Do not store secrets or authenticated URLs. Only source citations and supported rules belong in PCR content; preparation files stay in the shared store or /tmp.
+Local candidate hits are not adopted-evidence counts. Program checks cover integrity/version compatibility; you remain responsible for semantic applicability and evidence sufficiency. No new review stage or publication gate is added.
+`;
 }

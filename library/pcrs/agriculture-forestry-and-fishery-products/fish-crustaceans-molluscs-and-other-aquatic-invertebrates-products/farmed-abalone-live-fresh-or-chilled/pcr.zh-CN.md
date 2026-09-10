@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Abalone `7b973a02-b45b-4f5a-a640-a9b5ae65584b` |
+| 参考产品流 | 鲍鱼 `7b973a02-b45b-4f5a-a640-a9b5ae65584b` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -113,7 +113,7 @@ sync_with: pcr.en-US.md
 
 本行记录进入前景生产路径的外购幼鲍、转入的中间培育苗种，或由亲鲍繁育得到的苗种。
 
-- 选定流：Abalone `7b973a02-b45b-4f5a-a640-a9b5ae65584b`
+- 选定流：鲍鱼 `7b973a02-b45b-4f5a-a640-a9b5ae65584b`
 - 流属性/单位：Mass or count with mean mass / kg or item
 - 数量规则：进入声明养成批次的实测苗种或幼鲍数量和质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -136,7 +136,7 @@ sync_with: pcr.en-US.md
 
 本行覆盖场内育苗和中间培育使用的计量工艺水、海水或循环系统补充水。
 
-- 选定流：Process water `ec205030-248c-496f-9cf2-06d9d26dc6ff`
+- 选定流：工艺用水 `ec205030-248c-496f-9cf2-06d9d26dc6ff`
 - 流属性/单位：Mass or volume / kg or m3
 - 数量规则：实测取水量、补充水量或循环更换水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -214,7 +214,7 @@ sync_with: pcr.en-US.md
 
 本输出将声明的苗种或幼鲍带入养成阶段。
 
-- 选定流：Abalone `7b973a02-b45b-4f5a-a640-a9b5ae65584b`
+- 选定流：鲍鱼 `7b973a02-b45b-4f5a-a640-a9b5ae65584b`
 - 流属性/单位：Mass or count with mean mass / kg or item
 - 数量规则：育苗转移损失后的投放质量或数量
 - 数值来源模式：计算值（`calculated_value`）
@@ -251,7 +251,7 @@ sync_with: pcr.en-US.md
 
 本行将投放幼鲍转入声明的养成系统。
 
-- 选定流：Abalone `7b973a02-b45b-4f5a-a640-a9b5ae65584b`
+- 选定流：鲍鱼 `7b973a02-b45b-4f5a-a640-a9b5ae65584b`
 - 流属性/单位：Mass or count with mean mass / kg or item
 - 数量规则：按养殖单元记录的投放幼鲍质量或数量
 - 数值来源模式：计算值（`calculated_value`）
@@ -273,7 +273,7 @@ sync_with: pcr.en-US.md
 
 本行记录供给鲍鱼养殖单元的海带、Laminaria、Gracilaria 或其他大型藻类饲料。
 
-- 选定流：Laminaria `a79a3a63-1c4a-4cd4-83cc-5f3bc3cb70af`
+- 选定流：海带 `a79a3a63-1c4a-4cd4-83cc-5f3bc3cb70af`
 - 流属性/单位：Mass / kg wet or dry basis declared
 - 数量规则：投入养殖单元的实测饲料量，声明湿基或干基，并在重要时记录剩料
 - 数值来源模式：前景记录（`foreground_record`）
@@ -296,7 +296,7 @@ sync_with: pcr.en-US.md
 
 当配合颗粒或混合饲料补充或替代大型藻类饲料时使用本行。
 
-- 选定流：Fry feed `3b09065d-9675-4dad-8d0e-1035b5cca324`
+- 选定流：鱼苗饲料 `3b09065d-9675-4dad-8d0e-1035b5cca324`
 - 流属性/单位：Mass / kg as-fed or dry basis declared
 - 数量规则：按产品和批次记录的实测饲料投入，并保留供应商配方或饲料类别
 - 数值来源模式：前景记录（`foreground_record`）
@@ -319,7 +319,7 @@ sync_with: pcr.en-US.md
 
 本行记录陆基或循环养成系统的泵送海水、补充水或供应水。对于开放海区增养殖或网箱系统，仅记录前景可控的泵送、冲洗或供应水。
 
-- 选定流：Process water `ec205030-248c-496f-9cf2-06d9d26dc6ff`
+- 选定流：工艺用水 `ec205030-248c-496f-9cf2-06d9d26dc6ff`
 - 流属性/单位：Mass or volume / kg or m3
 - 数量规则：计量取水、泵送量或补充水量，并声明系统类型
 - 数值来源模式：前景记录（`foreground_record`）
@@ -365,7 +365,7 @@ sync_with: pcr.en-US.md
 
 本行覆盖作业船、叉车、发电机、场内车辆或直接控制维护活动使用的柴油或其他燃料。
 
-- 选定流：Diesel oil `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性/单位：Fuel quantity / L, kg, or MJ
 - 数量规则：实测燃料采购、油罐记录、船舶日志或分摊场内车辆燃料
 - 数值来源模式：前景记录（`foreground_record`）
@@ -389,7 +389,7 @@ sync_with: pcr.en-US.md
 
 本行记录养成期间移除的死亡物、贝壳、破损产品、捕食者损伤个体和有机残留。
 
-- 选定流：Abalone shells `8caae24b-92f0-4ece-b1de-730bfbe4d9da`
+- 选定流：鲍鱼壳 `8caae24b-92f0-4ece-b1de-730bfbe4d9da`
 - 流属性/单位：Mass / kg
 - 数量规则：实测死亡数量、死亡质量、贝壳残留和处置或回收路径
 - 数值来源模式：前景记录（`foreground_record`）
@@ -412,7 +412,7 @@ sync_with: pcr.en-US.md
 
 当养殖场存在点源排放或可控水处理过程时，本行记录排放水、污泥、沉降固体或废水处理输出。
 
-- 选定流：Wastewater `bc2cd1d5-69d5-42d7-818f-38a69ebb18ef`
+- 选定流：废水 `bc2cd1d5-69d5-42d7-818f-38a69ebb18ef`
 - 流属性/单位：Volume or mass / m3 or kg
 - 数量规则：实测排放体积，或由取水量扣除循环量和留存水量计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -437,7 +437,7 @@ sync_with: pcr.en-US.md
 
 仅当前景养殖场直接燃烧燃料且过程数据集未已承载燃烧排放时纳入本行。
 
-- 选定流：carbon dioxide (fossil) `041f5d0e-6556-11dd-ad8b-0800200c9a66`
+- 选定流：二氧化碳（化石源） `041f5d0e-6556-11dd-ad8b-0800200c9a66`
 - 流属性/单位：Mass / kg
 - 数量规则：当前景过程建模直接燃烧时，由计量燃料记录和选定排放因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -463,7 +463,7 @@ sync_with: pcr.en-US.md
 
 本行记录最终分级、活体暂养、冷藏或包装损失之前的养成输出。
 
-- 选定流：Abalone `7b973a02-b45b-4f5a-a640-a9b5ae65584b`
+- 选定流：鲍鱼 `7b973a02-b45b-4f5a-a640-a9b5ae65584b`
 - 流属性/单位：Mass / kg
 - 数量规则：按批次、等级和产品形态实测的采收活质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -500,7 +500,7 @@ sync_with: pcr.en-US.md
 
 本行将采收规格鲍鱼转入分级、净化、活体暂养、冷藏和包装。
 
-- 选定流：Abalone `7b973a02-b45b-4f5a-a640-a9b5ae65584b`
+- 选定流：鲍鱼 `7b973a02-b45b-4f5a-a640-a9b5ae65584b`
 - 流属性/单位：Mass / kg
 - 数量规则：进入包装的实测采收质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -523,7 +523,7 @@ sync_with: pcr.en-US.md
 
 本行记录采收后的净化、暂养、冰融水或活体暂养系统用水。
 
-- 选定流：Process water `ec205030-248c-496f-9cf2-06d9d26dc6ff`
+- 选定流：工艺用水 `ec205030-248c-496f-9cf2-06d9d26dc6ff`
 - 流属性/单位：Mass or volume / kg or m3
 - 数量规则：净化、暂养、活体保持、冷藏和清洗用水或冰的实测使用量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -567,7 +567,7 @@ sync_with: pcr.en-US.md
 
 本行记录随产品跨越前景边界的袋、箱、内衬、保温容器、冰袋、标签和托盘。
 
-- 选定流：Plastic Packaging Box and Container `7eb7726d-f3e5-4d23-b24d-dde3f34ff35a`
+- 选定流：塑料包装箱及容器 `7eb7726d-f3e5-4d23-b24d-dde3f34ff35a`
 - 流属性/单位：Mass or item count / kg or item
 - 数量规则：实测包装件数和材料质量；计数记录必须包含容量或皮重
 - 数值来源模式：前景记录（`foreground_record`）
@@ -591,7 +591,7 @@ sync_with: pcr.en-US.md
 
 本行记录非市场化产品、包装阶段死亡物、破碎贝壳、适用时的去壳残留和拒收个体。
 
-- 选定流：Abalone shells `8caae24b-92f0-4ece-b1de-730bfbe4d9da`
+- 选定流：鲍鱼壳 `8caae24b-92f0-4ece-b1de-730bfbe4d9da`
 - 流属性/单位：Mass / kg
 - 数量规则：按去向和原因实测拒收质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -614,7 +614,7 @@ sync_with: pcr.en-US.md
 
 本行记录来自清洗、净化、暂养、冷藏或活体保持操作的排放水。
 
-- 选定流：Wastewater `bc2cd1d5-69d5-42d7-818f-38a69ebb18ef`
+- 选定流：废水 `bc2cd1d5-69d5-42d7-818f-38a69ebb18ef`
 - 流属性/单位：Volume or mass / m3 or kg
 - 数量规则：实测或计算排放体积和处理路径
 - 数值来源模式：计算值（`calculated_value`）
@@ -644,7 +644,7 @@ sync_with: pcr.en-US.md
 
 本行是声明的参考产品输出。
 
-- 选定流：Abalone `7b973a02-b45b-4f5a-a640-a9b5ae65584b`
+- 选定流：鲍鱼 `7b973a02-b45b-4f5a-a640-a9b5ae65584b`
 - 流属性/单位：Mass / kg
 - 数量规则：分级和包装后的实测市场化活、鲜或冷藏产品质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -667,7 +667,7 @@ sync_with: pcr.en-US.md
 
 仅当低等级活、鲜或冷藏鲍鱼仍作为同一产品族内的独立等级销售时使用本行。
 
-- 选定流：Abalone `7b973a02-b45b-4f5a-a640-a9b5ae65584b`
+- 选定流：鲍鱼 `7b973a02-b45b-4f5a-a640-a9b5ae65584b`
 - 流属性/单位：Mass / kg
 - 数量规则：按等级和去向实测的可销售低等级质量
 - 数值来源模式：前景记录（`foreground_record`）

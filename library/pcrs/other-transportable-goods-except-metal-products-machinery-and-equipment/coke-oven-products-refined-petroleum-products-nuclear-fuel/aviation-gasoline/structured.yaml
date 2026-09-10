@@ -1,10 +1,760 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "33312"
-  title: "Aviation gasoline"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.coke-oven-products-refined-petroleum-products-nuclear-fuel.aviation-gasoline"
+  classification_refs: "CPC 3.0:33312, Aviation gasoline, exact semantic context; mapping acceptance is governed outside this PCR"
+  covered_products: "Finished aviation gasoline for spark-ignition reciprocating aircraft engines, including declared leaded and unleaded grades that conform to the stated applicable specification"
+  excluded_products: "Aviation turbine fuel, gasoline-type jet fuel, automotive gasoline, unfinished refinery blendstocks sold as such, and generic aviation fuel without a declared fuel specification and grade"
+  representative_product: "One kilogram of specification-conforming finished aviation gasoline released at the blending facility gate"
+  production_route: "Receipt of specification-relevant blend components and additives; controlled blending and additive injection; batch testing and release; on-site storage and loading"
+  market_state: "Finished liquid fuel, production mix at plant gate, with specification, grade, lead status, oxygenate status, and location declared"
+functional_unit:
+  what: "Finished aviation gasoline released for spark-ignition reciprocating aircraft-engine use"
+  how_much: "1 kg"
+  how_well: "Conforms to the declared applicable aviation-gasoline specification and grade, with batch-release evidence retained"
+  how_long_or_cycle: "One representative reporting period, normalized from released production batches"
+  reference_flow_link: "aviation_gasoline_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_required_operations
+      applies_to: "foreground production"
+      rule: "Include component receipt, blending, additive injection, batch quality release, on-site storage, and loading through the declared plant gate, together with associated utilities, wastes, spills, and direct emissions."
+      source_ids:
+        - faa-ac-20-24d
+        - epa-ap42-5-1
+        - epa-ap42-5-2
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased inputs"
+      rule: "Represent blend components, additives, purchased utilities, water, and included inbound transport with linked upstream datasets; do not treat their upstream burdens as zero."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_direct_emissions
+      applies_to: "blending, storage, and loading"
+      rule: "Collect or calculate site-specific direct releases, including equipment leaks, tank losses, loading losses, spills, and wastewater transfers. Use facility conditions and control performance when applying an engineering method."
+      source_ids:
+        - epa-ap42-5-1
+        - epa-ap42-5-2
+    - rule_id: boundary_excluded_use
+      applies_to: "downstream system"
+      rule: "Exclude downstream distribution beyond the declared gate, aircraft fuelling, fuel combustion, aircraft operation, and maintenance unless a broader study adds them as separately reported processes."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Aviation-gasoline blend components, grade-specific additives, utilities, and other materials are received at the foreground blending operation; any on-site production of a component is separately identified"
+  starting_condition_role: "Foreground gate-to-gate production starting point for finished aviation-gasoline blending and release"
+  product_classification_scope: "Finished aviation gasoline for spark-ignition reciprocating aircraft engines; classification references provide context but do not define canonical PCR identity"
+  recursive_input_rule: "Finished aviation gasoline returned for reblending or rework is recorded once as a separate input with its prior dataset reference and mass; do not recursively expand the same PCR inside the same foreground system"
+  upstream_dataset_requirement: "Link representative upstream datasets for each purchased blend component, additive, energy carrier, water supply, and inbound transport included by the study goal"
+  disclosure: "Declare facility and location, reporting period, specification and grade, lead and oxygenate status, formulation route, whether blend components are produced on site, storage and loading configuration, vapor-control status, and all boundary exclusions"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Aviation gasoline"
+    uuid: "60324705-7a75-4213-82e6-30e7b9a24bc9"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "applicable fuel specification and edition"
+    - grade
+    - "lead status and measured or declared lead content"
+    - "oxygenate status"
+    - "formulation route"
+    - "production location"
+    - "reporting period"
+    - "batch-release status"
+    - "product temperature and measured density when volume records are converted to mass"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product and all mass-normalized inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize every reported inventory amount to 1 kg of released aviation gasoline. Preserve source measurements and conversion records."
+  - id: volume_to_mass
+    applies_to: "liquid throughput or loss recorded by volume"
+    required_property_ref:
+      name: "Measured batch density and measured volume"
+      uuid: ""
+    required_unit: "kg after conversion"
+    rule: "Convert volume to mass only with density measured or documented for the relevant product, temperature, and batch. Do not use an undeclared generic density."
+  - id: batch_mass_balance
+    applies_to: "blending, storage, and loading"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile component receipts, internal transfers, released product, rework, off-spec material, wastewater-borne product, spills, and evaporative or fugitive losses over the same reporting period."
+  - id: quality_identity
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Declared specification-grade properties"
+      uuid: ""
+    required_unit: "specification units"
+    rule: "Retain the batch certificate or equivalent release record proving the declared aviation-gasoline specification and grade. Grade-specific limits are taken from the declared specification rather than embedded as a universal PCR value."
+process_map:
+  - id: blending_release
+    name: "Aviation-gasoline blending, additive injection, testing, and release; Tiangong process 64853250-d002-406b-9226-77f1e17fd630"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground production and batch release"
+    quantitative_reference: "1 kg released aviation gasoline"
+  - id: storage_loading
+    name: "Released-product storage and plant-gate loading"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground storage and dispatch"
+    quantitative_reference: "1 kg aviation gasoline delivered at the declared plant gate"
+process_inventory:
+  - id: blending_release
+    label: "Aviation-gasoline blending, additive injection, testing, and release; Tiangong process 64853250-d002-406b-9226-77f1e17fd630"
+    inputs:
+      product:
+        - row_id: base_blend_components
+          role: "Aviation-gasoline base blend components"
+          name: "Site-selected product flows for the actual aviation-gasoline blend components"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each blend component separately where records permit, including the component identity, supplier or on-site source, mass, batch, and upstream dataset. Aggregation into one blending-pool input is allowed only with the component composition disclosed."
+          amount:
+            expression: "measured component mass charged to released batches"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released aviation gasoline"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_components
+              source_ids:
+                - faa-ac-20-24d
+                - astm-d910
+            ranges:
+              - role: qa_guardrail
+                lower: "0.8"
+                upper: "1.2"
+                unit: "kg/kg released aviation gasoline"
+                basis: "total blend-component mass charged per kg released product before separate accounting of rework and losses"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: grade_specific_additives
+          role: "Grade-specific additive package"
+          name: "Site-selected product flows for the actual grade-specific additives"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each additive actually used and preserve its function, grade applicability, lead or metal content where relevant, supplier, batch, and mass. Do not assume that all aviation-gasoline grades use the same additive package."
+          amount:
+            expression: "measured additive mass injected into released batches"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released aviation gasoline"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_components
+              source_ids:
+                - faa-ac-20-24d
+                - astm-d910
+                - faa-pafi-fuel-best-practices
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.1"
+                unit: "kg/kg released aviation gasoline"
+                basis: "broad initial screen for all separately metered grade-specific additives"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: blending_electricity
+          role: "Purchased electricity"
+          name: "Site-selected electricity supply product flow"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity used for component receipt, blending, pumping, additive injection, testing, and release. Apply the electricity mix appropriate to the facility and reporting period."
+          amount:
+            expression: "metered or invoice-reconciled electricity attributable to the blending and release process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released aviation gasoline"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blending_utilities
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kWh/kg released aviation gasoline"
+                basis: "broad first-pass screen for blending, pumping, testing, and release electricity"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: blending_water
+          role: "Process and cleaning water"
+          name: "Site-selected water supply product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water that crosses the process boundary for equipment cleaning, laboratory work, spill response, or other production uses; exclude unrelated site water by subdivision."
+          amount:
+            expression: "measured or allocated water use attributable to released aviation-gasoline batches"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released aviation gasoline"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blending_utilities
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "kg/kg released aviation gasoline"
+                basis: "broad first-pass screen for process, laboratory, and cleaning water"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: aviation_gasoline_output
+          role: "Released aviation gasoline"
+          name: "Aviation gasoline"
+          flow_type: "product"
+          flow_ref:
+            uuid: "60324705-7a75-4213-82e6-30e7b9a24bc9"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The reference product is released only after the declared batch specification and grade have been verified. The normalized amount is derived from released batch mass, not from nominal vessel capacity."
+          amount:
+            expression: "released aviation-gasoline mass divided by the released aviation-gasoline mass for the reporting period"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg released aviation gasoline"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finished_product_release
+              source_ids:
+                - faa-ac-20-24d
+                - astm-d910
+            ranges: []
+      waste:
+        - row_id: off_spec_and_spill_waste
+          role: "Off-specification material and unrecovered spill"
+          name: "Site-selected waste flows matching the actual material and treatment route"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record off-specification material, contaminated product, laboratory discard, and unrecovered spill as separate waste flows when their treatment routes differ. Material returned to the blend is recorded as rework rather than waste."
+          amount:
+            expression: "measured mass sent to each waste treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released aviation gasoline"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_rework
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg/kg released aviation gasoline"
+                basis: "broad first-pass screen for material leaving the foreground system as waste"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: blending_wastewater
+          role: "Process wastewater"
+          name: "Site-selected wastewater flow matching the actual treatment route"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater crossing the foreground boundary, including measured volume or mass and treatment destination. Account separately for recovered hydrocarbon returned to production."
+          amount:
+            expression: "measured wastewater sent to treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released aviation gasoline"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_rework
+              source_ids:
+                - epa-ap42-5-1
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "kg/kg released aviation gasoline"
+                basis: "broad first-pass screen for wastewater sent to treatment"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: blending_air_emissions
+          role: "Direct releases to air from blending equipment"
+          name: "Site-selected elementary flows for the substances released to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or engineering-calculated releases from vents, equipment leaks, displaced vapors, and spills. Report named elementary substances where the monitoring or calculation method supports disaggregation; do not report one generic VOC total as if it were a complete speciated inventory."
+          amount:
+            expression: "monitored release or site-specific engineering calculation using actual throughput, material properties, equipment, controls, and operating conditions"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released aviation gasoline"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_air_emissions
+              source_ids:
+                - epa-ap42-5-1
+                - epa-ap42-5-2
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.1"
+                unit: "kg/kg released aviation gasoline"
+                basis: "broad first-pass screen for total mass of direct air releases before substance-level review"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: storage_loading
+    label: "Released-product storage and plant-gate loading"
+    inputs:
+      product:
+        - row_id: released_product_to_storage
+          role: "Released aviation gasoline transferred into storage"
+          name: "Aviation gasoline"
+          flow_type: "product"
+          flow_ref:
+            uuid: "60324705-7a75-4213-82e6-30e7b9a24bc9"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the internal transfer of specification-released aviation gasoline into the storage and loading stage. This is an internal foreground link and is not recursively expanded as another product system."
+          amount:
+            expression: "measured mass transferred into released-product storage"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg aviation gasoline loaded at the plant gate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_loading_throughput
+              source_ids:
+                - epa-ap42-5-2
+            ranges:
+              - role: qa_guardrail
+                lower: "0.9"
+                upper: "1.1"
+                unit: "kg/kg product loaded at the plant gate"
+                basis: "storage input mass reconciled with loaded product, inventory change, rework, spill, and evaporation"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: storage_loading_electricity
+          role: "Storage and loading electricity"
+          name: "Site-selected electricity supply product flow"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity for tank circulation, pumping, instrumentation, vapor control, and loading attributable to released aviation gasoline."
+          amount:
+            expression: "metered or invoice-reconciled electricity attributable to storage and loading"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg aviation gasoline loaded at the plant gate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_loading_utilities
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kWh/kg product loaded at the plant gate"
+                basis: "broad first-pass screen for storage circulation, vapor control, and loading electricity"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: plant_gate_aviation_gasoline
+          role: "Aviation gasoline delivered at the plant gate"
+          name: "Aviation gasoline"
+          flow_type: "product"
+          flow_ref:
+            uuid: "60324705-7a75-4213-82e6-30e7b9a24bc9"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the measured mass loaded into the custody-transfer container or conveyance at the declared plant gate. The product retains the same declared specification, grade, and batch-release identity."
+          amount:
+            expression: "loaded custody-transfer mass normalized to 1 kg at the plant gate"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "1 kg aviation gasoline loaded at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_loading_throughput
+              source_ids:
+                - faa-ac-20-24d
+                - astm-d910
+            ranges: []
+      waste:
+        - row_id: storage_loading_waste
+          role: "Storage slop and loading spill waste"
+          name: "Site-selected waste flows matching actual material and treatment route"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record slop, contaminated drainage, and unrecovered loading spill sent to treatment. Separately record material recovered to rework."
+          amount:
+            expression: "measured mass sent to treatment from storage and loading"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg aviation gasoline loaded at the plant gate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_loading_losses
+              source_ids:
+                - epa-ap42-5-2
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.1"
+                unit: "kg/kg product loaded at the plant gate"
+                basis: "broad first-pass screen for material leaving storage and loading as waste"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: storage_loading_air_emissions
+          role: "Storage and loading releases to air"
+          name: "Site-selected elementary flows for the substances released to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record breathing, working, standing, loading, and fugitive losses using monitoring or a site-specific engineering method. Preserve throughput, temperature, vapor pressure, loading method, vapor-control collection efficiency, control efficiency, and downtime inputs when they are used."
+          amount:
+            expression: "monitored release or site-specific engineering calculation for storage and loading"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg aviation gasoline loaded at the plant gate"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_loading_losses
+              source_ids:
+                - epa-ap42-5-2
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.1"
+                unit: "kg/kg product loaded at the plant gate"
+                basis: "broad first-pass screen for total direct air releases before substance-level review"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "shared refinery or terminal operations"
+    rule: "Avoid allocation by separately metering or otherwise subdividing aviation-gasoline blending, testing, storage, loading, and emission-control activities whenever technically possible."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical_driver
+    applies_to: "non-subdividable shared utilities and operations"
+    rule: "When subdivision is not possible, allocate using a documented causal physical driver such as metered energy, equipment operating time, batch mass throughput, tank occupancy, or loading throughput. Apply the same driver consistently to inputs and direct emissions."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_other_relationship
+    applies_to: "remaining multifunctional burdens"
+    rule: "Use another relationship, including economic allocation, only when subdivision and a relevant physical relationship are not feasible. Disclose values, period, formula, affected flows, and a sensitivity result."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_rework_and_waste
+    applies_to: "rework, off-spec product, recovered vapor, and waste"
+    rule: "Return-to-blend material remains within the mass balance without an avoided-product credit. Assign waste treatment according to the declared treatment route and do not credit recovered material unless a separately justified downstream substitution model is included."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_batch_components
+      process_id: "blending_release"
+      flow_role: "base_blend_components; grade_specific_additives"
+      record_type: "batch tickets, tank gauges, mass meters, formulation sheets, supplier records"
+      raw_fields: "batch_id; component_id; supplier_or_on_site_source; mass; unit; additive_function; specification; grade; lead_content; oxygenate_status; timestamp"
+      collection_method: "reconcile charged masses to formulation and batch records"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all blending trains in scope"
+      aggregation_rule: "sum accepted charges and normalize by released product mass"
+      quality_evidence: "calibrated meter or gauge records; signed formulation; supplier lot traceability"
+    - protocol_id: cp_blending_utilities
+      process_id: "blending_release"
+      flow_role: "blending_electricity; blending_water"
+      record_type: "submeter, invoice, laboratory and cleaning logs"
+      raw_fields: "meter_id; opening; closing; unit; timestamp; process_scope; allocation_driver"
+      collection_method: "direct submetering preferred; otherwise documented subdivision or causal allocation"
+      unit: "kWh; kg"
+      frequency: "continuous or each billing period"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all blending, testing, and cleaning operations in scope"
+      aggregation_rule: "subtract unrelated loads, aggregate, then normalize by released product mass"
+      quality_evidence: "meter calibration; invoice reconciliation; allocation worksheet"
+    - protocol_id: cp_finished_product_release
+      process_id: "blending_release"
+      flow_role: "aviation_gasoline_output"
+      record_type: "batch release certificate and custody or tank mass records"
+      raw_fields: "batch_id; released_mass; unit; specification; edition; grade; lead_status; lead_content; oxygenate_status; test_results; release_decision; timestamp"
+      collection_method: "verify specification-grade identity and sum only released product"
+      unit: "kg"
+      frequency: "each released batch"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all released batches in scope"
+      aggregation_rule: "sum released mass; retain rejected and reworked batches separately"
+      quality_evidence: "signed certificate; laboratory accreditation or QA record; calibrated mass or density-volume measurement"
+    - protocol_id: cp_waste_and_rework
+      process_id: "blending_release"
+      flow_role: "off_spec_and_spill_waste; blending_wastewater"
+      record_type: "waste manifests, spill logs, wastewater meters, rework tickets"
+      raw_fields: "event_or_batch_id; material_identity; mass_or_volume; density; destination; treatment_route; rework_status; timestamp"
+      collection_method: "measure each exit and reconcile with batch mass balance"
+      unit: "kg"
+      frequency: "each event and monthly reconciliation"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all blending-related waste and wastewater"
+      aggregation_rule: "aggregate by material and route; convert volume with measured density"
+      quality_evidence: "manifest or meter; incident record; treatment receipt; mass-balance reconciliation"
+    - protocol_id: cp_direct_air_emissions
+      process_id: "blending_release"
+      flow_role: "blending_air_emissions"
+      record_type: "monitoring results, leak surveys, throughput and engineering-calculation inputs"
+      raw_fields: "source_id; substance; measured_concentration_or_factor; throughput; vapor_pressure; temperature; control_status; collection_efficiency; control_efficiency; downtime; result_mass; method"
+      collection_method: "direct monitoring preferred; otherwise site-specific documented engineering calculation"
+      unit: "kg"
+      frequency: "monitoring schedule plus each material event"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all vents, leaks, displaced vapors, and spills in scope"
+      aggregation_rule: "aggregate by named substance and normalize by released product mass"
+      quality_evidence: "method reference; instrument QA; input records; calculation workbook"
+    - protocol_id: cp_storage_loading_throughput
+      process_id: "storage_loading"
+      flow_role: "released_product_to_storage; plant_gate_aviation_gasoline"
+      record_type: "tank inventory, transfer meter, custody-transfer and batch records"
+      raw_fields: "tank_id; batch_id; opening_mass; receipts; loaded_mass; closing_mass; density; temperature; timestamp"
+      collection_method: "reconcile storage inventory change and custody transfers"
+      unit: "kg"
+      frequency: "each transfer with monthly reconciliation"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all released-product tanks and loading racks in scope"
+      aggregation_rule: "mass balance by tank and batch; normalize to loaded plant-gate mass"
+      quality_evidence: "calibrated transfer meter; gauge record; custody document; reconciliation sign-off"
+    - protocol_id: cp_storage_loading_utilities
+      process_id: "storage_loading"
+      flow_role: "storage_loading_electricity"
+      record_type: "submeter and invoice records"
+      raw_fields: "meter_id; opening; closing; unit; timestamp; equipment_scope; allocation_driver"
+      collection_method: "direct submetering preferred; otherwise documented causal allocation"
+      unit: "kWh"
+      frequency: "continuous or each billing period"
+      temporal_coverage: "complete reporting period"
+      site_scope: "tanks, pumps, vapor control, and loading equipment in scope"
+      aggregation_rule: "aggregate attributable use and normalize by loaded mass"
+      quality_evidence: "meter calibration; invoice reconciliation; allocation worksheet"
+    - protocol_id: cp_storage_loading_losses
+      process_id: "storage_loading"
+      flow_role: "storage_loading_waste; storage_loading_air_emissions"
+      record_type: "tank and loading logs, spill records, vapor-control logs, monitoring and calculation inputs"
+      raw_fields: "tank_or_rack_id; substance_or_material; throughput; temperature; vapor_pressure; loading_method; control_status; collection_efficiency; control_efficiency; downtime; waste_mass; emission_mass; timestamp"
+      collection_method: "monitoring or site-specific storage and loading calculation plus material reconciliation"
+      unit: "kg"
+      frequency: "each loading event where available and monthly reconciliation"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all tanks and loading racks in scope"
+      aggregation_rule: "aggregate by substance or waste route and normalize by loaded mass"
+      quality_evidence: "control-device record; inspection log; incident record; method and calculation workbook"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every inventory row"
+      rule: "normalized amount = reporting-period amount / reporting-period plant-gate loaded aviation-gasoline mass"
+      inputs:
+        - "collected flow amount"
+        - "loaded reference-product mass"
+      output: "amount per 1 kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_volume_to_mass
+      applies_to: "liquid records measured by volume"
+      rule: "mass = measured volume × density measured or documented for the relevant batch and temperature"
+      inputs:
+        - volume
+        - density
+        - temperature
+        - "batch identity"
+      output: "kg"
+      source_ids:
+        - astm-d910
+    - id: calc_batch_mass_balance
+      applies_to: "blending and storage stages"
+      rule: "opening inventory + receipts + transfers in = closing inventory + released or loaded product + transfers out + rework + waste + wastewater-borne product + direct losses; investigate and disclose residual imbalance"
+      inputs:
+        - inventory
+        - throughput
+        - rework
+        - waste
+        - wastewater
+        - spill
+        - "and emission records"
+      output: "reconciled mass balance and residual"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_direct_air_release
+      applies_to: "blending, storage, and loading emissions"
+      rule: "use measured mass where available; otherwise apply a documented engineering method with the actual liquid properties, throughput, equipment, loading method, control collection efficiency, control efficiency, and downtime"
+      inputs:
+        - "monitoring or facility-specific method inputs"
+      output: "kg of each named substance released"
+      source_ids:
+        - epa-ap42-5-1
+        - epa-ap42-5-2
+    - id: calc_shared_operation_allocation
+      applies_to: "shared utilities and direct emissions"
+      rule: "subdivide first; if impossible, allocated amount = shared amount × documented causal physical driver share; use another relationship only with justification and sensitivity"
+      inputs:
+        - "shared amount"
+        - "driver totals"
+        - "product driver"
+        - "allocation justification"
+      output: "amount assigned to aviation gasoline"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Every released batch must retain its applicable specification and edition, grade, lead status, oxygenate status, test results, and release decision."
+      evidence: "batch certificate and laboratory QA records; faa-ac-20-24d; astm-d910"
+    - id: dq_primary_data
+      applies_to: "foreground activity data"
+      requirement: "Use facility- and reporting-period-specific batch, meter, inventory, waste, and emission records. Identify any secondary or modelled substitution and its affected rows."
+      evidence: "source records and substitution register; eu-pef-2021-2279"
+    - id: dq_completeness
+      applies_to: "foreground inventory"
+      requirement: "Cover all environmentally relevant material, energy, waste, and elementary flows within the declared boundary, including fugitive, storage, loading, spill, and wastewater routes."
+      evidence: "completeness reconciliation and mass balance; eu-pef-2021-2279; epa-ap42-5-1; epa-ap42-5-2"
+    - id: dq_representativeness
+      applies_to: "dataset profile"
+      requirement: "Report technological, geographical, and time representativeness and precision for the foreground data; identify differences between the dataset and the declared product route."
+      evidence: "data-quality assessment; eu-pef-2021-2279"
+    - id: dq_traceability
+      applies_to: "calculations and allocation"
+      requirement: "Retain raw fields, units, conversions, calculation versions, allocation drivers, control performance, and reviewer sign-off sufficient to reproduce every normalized amount."
+      evidence: "calculation workbook, meter records, method references, and review record"
+validation_rules:
+  - rule_id: validation_identity
+    applies_to: "reference flow and dataset metadata"
+    rule: "Fail if the Tiangong reference product flow UUID, Mass flow-property UUID, Units-of-mass UUID, specification, grade, lead status, oxygenate status, production location, or reporting period is missing or inconsistent."
+    source_ids:
+      - faa-ac-20-24d
+      - astm-d910
+  - rule_id: validation_reference_amount
+    applies_to: "quantitative reference"
+    rule: "Confirm that the plant-gate product output is exactly 1 kg after normalization and that all volume-to-mass conversions retain batch density and temperature evidence."
+    source_ids:
+      - astm-d910
+  - rule_id: validation_process_coverage
+    applies_to: "process inventory"
+    rule: "Confirm that blending and release plus storage and loading are represented, or explicitly document why a separately linked process replaces one of them without creating a gap."
+    source_ids:
+      - epa-ap42-5-1
+      - epa-ap42-5-2
+  - rule_id: validation_mass_balance
+    applies_to: "blending and storage"
+    rule: "Reconcile component, product, inventory-change, rework, waste, wastewater, spill, and direct-loss masses over one consistent period; report the residual and investigation rather than forcing closure."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validation_direct_emissions
+    applies_to: "air, water, and waste releases"
+    rule: "Confirm that site-specific releases and control performance are collected or calculated and that a generic factor is not used without the required facility inputs and applicability statement."
+    source_ids:
+      - epa-ap42-5-1
+      - epa-ap42-5-2
+  - rule_id: validation_allocation
+    applies_to: "shared operations"
+    rule: "Confirm subdivision was attempted first and every remaining allocation has a stated driver, formula, period, affected flows, and sensitivity where another relationship is used."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validation_reasoned_estimates
+    applies_to: "provisional ranges"
+    rule: "Treat every reasoned_estimate range as a screening flag only. It must not replace foreground values, define a conformance limit, or support a public comparative assertion."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground data package for finished aviation-gasoline production, publishable as a secondary_dataset or background_dataset after review"
+  downstream_use: "Process and lifecyclemodel construction for specification-declared aviation gasoline at a refinery or terminal plant gate"
+  allowed_use: "Attributional modelling of the declared production route, grade, facility geography, technology, and reporting period; upstream linkage to actual blend components and utilities"
+  excluded_use: "Aircraft combustion or operation; downstream distribution beyond the declared gate; substitution for turbine fuel, automotive gasoline, another aviation-gasoline grade, or an unspecified geography or technology without review; public comparative assertions based on provisional ranges"
+  required_metadata: "canonical PCR id; reference flow UUID; specification and edition; grade; lead and oxygenate status; formulation route; facility and geography; reporting period; batch coverage; component origin; storage and loading configuration; vapor-control status; allocation method; upstream dataset references"
+  required_quality_disclosure: "primary-data share; technological, geographical, and time representativeness; precision; mass-balance residual; missing or modelled flows; provisional ranges used only for screening; source and control-method limitations"
+  update_trigger: "Change in product specification or grade, formulation or additive package, lead or oxygenate status, component origin, facility technology, storage or vapor control, allocation method, reporting period representativeness, or any material data gap"
+data_sources:
+  - id: "faa-ac-20-24d"
+    type: "official_guidance"
+    reference: "U.S. Federal Aviation Administration, AC 20-24D, Approval of Propulsion Fuels, Additives, and Lubricating Oils, https://www.faa.gov/documentLibrary/media/Advisory_Circular/AC_20-24D.pdf, retrieved 2026-08-09"
+    used_for: "Aviation-gasoline scope, reciprocating spark-ignition use, D910 primacy, grade and fuel-specification disclosure"
+  - id: "astm-d910"
+    type: "standard"
+    reference: "ASTM International, D910, Standard Specification for Leaded Aviation Gasolines, https://store.astm.org/standards/d910, retrieved 2026-08-09"
+    used_for: "Declared grade identity and grade-specific physical, chemical, performance, and test requirements only when D910 is the declared applicable specification"
+  - id: "faa-pafi-fuel-best-practices"
+    type: "official_guidance"
+    reference: "U.S. Federal Aviation Administration, PAFI Fuel Development and Testing Best Practices, https://www.faa.gov/sites/faa.gov/files/PAFI_Fuel_Development_Best%20Practices.pdf, retrieved 2026-08-09"
+    used_for: "Grade-specific formulation and batch-property evidence; values apply only when the corresponding declared grade and test context match"
+  - id: "epa-ap42-5-1"
+    type: "official_guidance"
+    reference: "U.S. Environmental Protection Agency, AP-42 Section 5.1 Petroleum Refining, https://gaftp.epa.gov/ap42/ch05/s01/final/c05s01_jan1995.pdf, retrieved 2026-08-09"
+    used_for: "Refinery process boundary, equipment leaks, spills, drains, wastewater-related releases, monitoring and control context"
+  - id: "epa-ap42-5-2"
+    type: "official_guidance"
+    reference: "U.S. Environmental Protection Agency, AP-42 Section 5.2 Transportation and Marketing of Petroleum Liquids, https://www.epa.gov/sites/default/files/2020-09/documents/5.2_transportation_and_marketing_of_petroleum_liquids.pdf, retrieved 2026-08-09"
+    used_for: "Storage and loading loss mechanisms, facility-specific calculation inputs, vapor collection and control records"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission, Recommendation (EU) 2021/2279, Product Environmental Footprint Method, https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30, retrieved 2026-08-09"
+    used_for: "Functional-unit structure, completeness, primary data, allocation hierarchy, representativeness, precision, and transparent data-gap disclosure"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:c202231128b697fd45aa2c567783ae7fe9e4183c91cda27f736f25d48dbba051"
+  generated_content_sha256: "sha256:4bf6bcd9d8802a41dd069d11e041cc7619448f49a9da785bbc0951ac14c36e44"

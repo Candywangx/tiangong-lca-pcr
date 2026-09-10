@@ -40,7 +40,7 @@ test("parsePcrMarkdownToStructured reads localized Chinese flow cards", () => {
 
 清洗水作为输入产品流记录。
 
-- 选定流：Process water \`ec205030-248c-496f-9cf2-06d9d26dc6ff\`
+- 选定流：过程水 \`ec205030-248c-496f-9cf2-06d9d26dc6ff\`
 - 流属性/单位：Mass / kg
 - 数量规则：计量用水量
 - 数值来源模式：前景记录（\`foreground_record\`）

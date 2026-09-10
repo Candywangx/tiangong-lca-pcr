@@ -169,7 +169,10 @@ test("the legacy monolith remains callable for compatibility but split deploymen
 
     assert.equal(data.catalog_scope, "all");
     assert.ok(data.pcr_count > materialData.pcr_count);
-    assert.ok(JSON.stringify(materialData).length < JSON.stringify(data).length);
+    assert.ok(
+      JSON.stringify(materialData).length < JSON.stringify(data).length,
+      "Expected default material data to remain smaller than all-scope data",
+    );
     assert.ok(scaffolds.length > 0);
     for (const scaffold of scaffolds) {
       assert.equal(Object.hasOwn(scaffold, "markdown"), false);

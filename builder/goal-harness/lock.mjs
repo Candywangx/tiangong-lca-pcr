@@ -162,6 +162,26 @@ function retireDeadLock({ stateDir, lockPath, existing, faultInjector }) {
 }
 
 function completeStaleRetirement({ stateDir, lockPath, retiredDir, existing, faultInjector }) {
+  const completePath = path.join(retiredDir, "complete.json");
+  if (existsSync(completePath)) {
+    verifyRetirementComplete(completePath, existing.bytes);
+    return;
+  }
+  const current = tryReadGoalLock(lockPath);
+  if (current && !current.bytes.equals(existing.bytes)) {
+    throw new GoalHarnessError("GOAL_LOCKED", "Goal lock was replaced before stale-lock retirement.", { lock_path: lockPath });
+  }
+  return withRetirementClaim(retiredDir, faultInjector, () => {
+    // A preceding owner may have completed retirement while we acquired the claim.
+    if (existsSync(completePath)) {
+      verifyRetirementComplete(completePath, existing.bytes);
+      return;
+    }
+    return completeOwnedStaleRetirement({ stateDir, lockPath, retiredDir, existing, faultInjector });
+  });
+}
+
+function completeOwnedStaleRetirement({ stateDir, lockPath, retiredDir, existing, faultInjector }) {
   cleanupLegacyRecoveryClaim(retiredDir, faultInjector);
   const retiredOwner = path.join(retiredDir, "owner.json");
   let capturedOwner = false;
@@ -222,6 +242,72 @@ function completeStaleRetirement({ stateDir, lockPath, retiredDir, existing, fau
   } catch (error) {
     if (error?.code === "ENOENT") throw lockedRace("Goal lock changed while stale-lock retirement was in progress.", lockPath, error);
     throw error;
+  }
+}
+
+// Claim slots and their release markers are immutable. A new generation is allowed
+// only after the preceding owner died or durably released ownership; no unlink/CAS
+// race is introduced recursively while serializing stale goal-lock removal.
+function withRetirementClaim(retiredDir, faultInjector, callback) {
+  const bytes = Buffer.from(`${JSON.stringify({ schema_version: 1, pid: process.pid, token: randomUUID(), acquired_at: new Date().toISOString() })}\n`);
+  let generation = 1;
+  while (Number.isSafeInteger(generation)) {
+    const claimPath = path.join(retiredDir, `claim-${String(generation).padStart(12, "0")}.json`);
+    const releasePath = `${claimPath}.released`;
+    const existing = tryReadPathSnapshot(claimPath, "stale-retirement ownership claim");
+    if (existing) {
+      let holder;
+      try { holder = JSON.parse(existing.bytes); } catch {
+        throw new GoalHarnessError("GOAL_LOCKED", "Stale-retirement ownership claim is malformed.", { claim_path: claimPath });
+      }
+      if (!isTrustedRecoveryHolder(holder)) {
+        throw new GoalHarnessError("GOAL_LOCKED", "Stale-retirement ownership claim is untrusted.", { claim_path: claimPath });
+      }
+      if (existsSync(releasePath)) {
+        verifyExactFile(releasePath, retirementClaimReleaseBytes(existing.bytes), "stale-retirement ownership release");
+      } else if (!processIsDefinitelyGone(holder.pid)) {
+        throw new GoalHarnessError("GOAL_LOCKED", "A live process owns stale-lock retirement.", { claim_path: claimPath, holder });
+      }
+      generation += 1;
+      continue;
+    }
+    if (!publishRetirementClaimArtifact(claimPath, bytes, faultInjector, true)) continue;
+    try {
+      return callback();
+    } finally {
+      const releaseBytes = retirementClaimReleaseBytes(bytes);
+      if (!publishRetirementClaimArtifact(releasePath, releaseBytes, faultInjector)) {
+        verifyExactFile(releasePath, releaseBytes, "stale-retirement ownership release");
+      }
+      faultInjector("after_retirement_claim_released", { claim_path: claimPath });
+    }
+  }
+  throw new GoalHarnessError("GOAL_LOCKED", "Stale-retirement claim generations exhausted.");
+}
+
+function retirementClaimReleaseBytes(bytes) {
+  return Buffer.from(`${JSON.stringify({ schema_version: 1, claim_sha256: createHash("sha256").update(bytes).digest("hex") })}\n`);
+}
+
+function publishRetirementClaimArtifact(target, bytes, faultInjector, claim = false) {
+  const stagePath = path.join(path.dirname(target), `.claim-${randomUUID()}.tmp`);
+  let descriptor;
+  try {
+    descriptor = openSync(stagePath, fsConstants.O_WRONLY | fsConstants.O_CREAT | fsConstants.O_EXCL | fsConstants.O_NOFOLLOW, 0o600);
+    writeAll(descriptor, bytes, claim ? { faultInjector, beforePhase: "before_retirement_claim_write_chunk", afterPhase: "after_retirement_claim_write_chunk" } : {});
+    fsyncSync(descriptor);
+    closeSync(descriptor);
+    descriptor = undefined;
+    try { linkSync(stagePath, target); } catch (error) {
+      if (error?.code === "EEXIST") return false;
+      throw error;
+    }
+    fsyncDirectory(path.dirname(target));
+    if (claim) faultInjector("after_retirement_claim_published", { claim_path: target });
+    return true;
+  } finally {
+    if (descriptor !== undefined) closeSync(descriptor);
+    try { unlinkSync(stagePath); } catch (error) { if (error?.code !== "ENOENT") throw error; }
   }
 }
 
@@ -395,7 +481,7 @@ function assertRetirementDirectory(retiredDir, lockPath) {
   try { entries = readdirSync(retiredDir); } catch (error) {
     throw lockedRace("Cannot inspect stale-lock retirement contents.", retiredDir, error);
   }
-  const trusted = /^(?:owner\.json|complete\.json|recovery\.lock|recovery-dead-[a-f0-9]{64}\.json|recovery-torn-[a-f0-9]{64}\.bin|\.complete-[a-f0-9-]+\.tmp)$/u;
+  const trusted = /^(?:owner\.json|complete\.json|recovery\.lock|recovery-dead-[a-f0-9]{64}\.json|recovery-torn-[a-f0-9]{64}\.bin|claim-\d{12,16}\.json(?:\.released)?|\.claim-[a-f0-9-]+\.tmp|\.complete-[a-f0-9-]+\.tmp)$/u;
   if (entries.some((entry) => !trusted.test(entry))) {
     throw new GoalHarnessError("GOAL_LOCKED", "Stale-lock retirement claim has an untrusted shape.", { lock_path: lockPath, retired_dir: retiredDir });
   }

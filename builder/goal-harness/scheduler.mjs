@@ -3,13 +3,14 @@ import { createHash } from "node:crypto";
 const ACTIVE_AUTHOR_STATES = new Set(["preflight", "authoring", "authoring_repair", "author_review"]);
 
 export function activeAuthorCount(tasks) {
-  return tasks.filter((task) => ACTIVE_AUTHOR_STATES.has(task.state)).length;
+  return tasks.filter((task) => ACTIVE_AUTHOR_STATES.has(task.state) &&
+    (!task.coordinator_hold || ["authoring", "authoring_repair"].includes(task.state))).length;
 }
 
 export function dispatchCandidates(tasks, { slots }) {
   const available = Math.max(0, slots - activeAuthorCount(tasks));
   return tasks
-    .filter((task) => task.state === "queued")
+    .filter((task) => task.state === "queued" && !task.coordinator_hold)
     .sort(compareQueueOrder)
     .slice(0, available);
 }

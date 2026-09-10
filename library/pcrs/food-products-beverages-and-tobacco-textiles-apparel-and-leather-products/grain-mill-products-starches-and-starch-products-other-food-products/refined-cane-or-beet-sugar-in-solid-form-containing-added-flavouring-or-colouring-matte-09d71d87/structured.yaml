@@ -1,10 +1,1936 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23530"
-  title: "Refined cane or beet sugar, in solid form, containing added flavouring or colouring matter; maple sugar and maple syrup"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.refined-cane-or-beet-sugar-in-solid-form-containing-added-flavouring-or-colouring-matte-09d71d87"
+  classification_refs: "CPC 3.0: 23530"
+  covered_products: "Family A formulated solid refined cane or beet sugar with added flavouring or colouring matter; Family B maple syrup and solid maple sugar"
+  excluded_products: "Unflavoured and uncoloured refined sugar; raw sugar; molasses; artificial maple-flavoured syrup; maple cream, taffy, candy, and other sugar confectionery"
+  representative_product: "Packaged maple syrup at the manufacturing gate; the concrete dataset shall replace this representative identity with its single declared product"
+  production_route: "Mutually exclusive Family A purchased-refined-sugar formulation route or Family B received-maple-sap concentration route"
+  market_state: "Packaged solid formulated sugar, packaged maple sugar, or packaged maple syrup at the manufacturing gate"
+functional_unit:
+  what: "Supply of one declared packaged product covered by this PCR at the manufacturing gate"
+  how_much: "1 kg net product, excluding packaging"
+  how_well: "Meets the declared formulation, physical state, soluble-solids or moisture specification, food-safety release criteria, and market specification"
+  how_long_or_cycle: "One completed manufacturing batch or campaign normalized to 1 kg released product"
+  reference_flow_link: "Net mass of the single released product after final quality hold and before distribution"
+system_boundary:
+  rules:
+    - rule_id: sb_route_exclusivity
+      applies_to: "foreground system"
+      rule: "Model exactly one of Family A or Family B. Do not include inactive-family processes or assume both families occur."
+      source_ids:
+        - unsd-cpc-3-0-structure-2024
+    - rule_id: sb_family_a_start
+      applies_to: "Family A"
+      rule: "Start at purchased refined sugar receipt and include formulation, mixing or coating, conditional drying, cleaning, and packaging through released product."
+      source_ids:
+        - unsd-cpc-3-0-structure-2024
+        - eu-pef-method-2021
+    - rule_id: sb_family_b_start
+      applies_to: "Family B"
+      rule: "Start at maple sap receipt and include filtration, evaporation/concentration, cleaning, packaging, and crystallization only for solid maple sugar."
+      source_ids:
+        - cornell-maple-beginners-notebook-2019
+        - penn-state-maple-syrup-production
+    - rule_id: sb_complete_foreground
+      applies_to: "selected route"
+      rule: "Record all known material, water, energy, product, waste, wastewater, sludge, and direct elementary flows for included foreground operations."
+      source_ids:
+        - eu-pef-method-2021
+    - rule_id: sb_stationary_combustion
+      applies_to: "on-site heat generation"
+      rule: "Record each combusted fuel separately and calculate direct carbon dioxide, methane, and nitrous oxide; distinguish fossil and biogenic carbon dioxide."
+      source_ids:
+        - ipcc-2006-stationary-combustion
+        - checkoway-et-al-maple-footprint-2024
+boundary_abstraction:
+  declared_starting_condition: "Family A: purchased refined cane or beet sugar accepted at the formulation site. Family B: maple sap accepted at the sugarhouse or processing site."
+  starting_condition_role: "Foreground gate input; upstream production is represented by linked supplier or background datasets."
+  product_classification_scope: "One declared product within CPC 3.0 subclass 23530; the subclass contains two methodologically distinct product families."
+  recursive_input_rule: "If a same-category intermediate crosses the boundary, record its exact product identity and supplier dataset once and exclude the upstream processes already represented by that dataset; do not recursively reapply this PCR."
+  upstream_dataset_requirement: "Family A requires upstream datasets for refined cane sugar, refined beet sugar, ingredients, utilities, fuels, and packaging. Family B requires upstream datasets for maple sap, filtration materials, utilities, fuels, and packaging."
+  disclosure: "Declare the selected family and product state, starting condition, included substeps, drying/crystallization/RO status, heat source and fuels, packaging bill of materials, site, period, and any excluded or shared operation."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Maple syrup"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product_family A or B"
+    - "exact product name"
+    - "cane sugar"
+    - "beet sugar"
+    - "or declared blend for Family A"
+    - "flavouring and colouring status for Family A"
+    - "syrup or solid_sugar for Family B"
+    - "maple species or sap source"
+    - "formulation code"
+    - "drying applied or not"
+    - "filtration technology"
+    - "reverse osmosis applied or not"
+    - "evaporator and heat technology"
+    - "fuel types"
+    - "packaging configuration"
+    - geography
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all exchanges to 1 kg net released product; packaging mass is excluded from the reference amount and recorded separately."
+  - id: route_specific_denominator
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Mass or energy as stated by the row"
+      uuid: ""
+    required_unit: "kg, kWh, or MJ"
+    rule: "Use only the selected family and product-state route in the denominator; do not average Family A and Family B or syrup and solid maple sugar."
+  - id: wet_dry_mass_disclosure
+    applies_to: "sugar and maple product masses"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "State whether each mass is as-received, wet, dry, or net packaged mass and retain the corresponding moisture or soluble-solids test record."
+  - id: fuel_energy_conversion
+    applies_to: "each on-site fuel"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Retain purchased mass or volume, density when needed, and net calorific value; calculate energy separately for each fuel without combining fuel ledgers."
+  - id: electricity_and_heat_separation
+    applies_to: "electricity, steam, and heat"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Record purchased electricity, purchased steam, purchased heat, and internally generated heat or steam as separate exchanges; document every conversion factor."
+process_map:
+  - id: route_a_formulation
+    name: "Family A formulation, mixing/coating, and conditional drying"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when product_family: A; drying rows apply only when drying occurs."
+    role: "Foreground conversion of purchased refined sugar"
+    quantitative_reference: "kg formulated sugar leaving the operation"
+  - id: route_b_maple_processing
+    name: "Family B sap filtration, evaporation, and conditional crystallization"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when product_family: B; crystallization output applies only to solid maple sugar."
+    role: "Foreground conversion of received maple sap"
+    quantitative_reference: "kg maple syrup or maple sugar leaving the operation"
+  - id: onsite_heat_generation
+    name: "On-site stationary heat or steam generation"
+    inclusion: "conditional"
+    inclusion_condition: "Include when any selected-route operation combusts fuel on site."
+    role: "Support-energy production and direct emissions"
+    quantitative_reference: "MJ useful heat or kg steam delivered"
+  - id: equipment_cleaning
+    name: "Equipment cleaning and sanitation"
+    inclusion: "required"
+    inclusion_condition: "Include cleaning attributable to the selected route and reporting period."
+    role: "Shared foreground support process"
+    quantitative_reference: "kg released selected-route product"
+  - id: packaging
+    name: "Route-specific final packaging"
+    inclusion: "required"
+    inclusion_condition: "Include only packaging used for the single declared product."
+    role: "Final foreground packaging and release"
+    quantitative_reference: "1 kg net released product"
+process_inventory:
+  - id: route_a_formulation
+    label: "Family A formulation, mixing/coating, and conditional drying"
+    inputs:
+      product:
+        - row_id: a_refined_cane_sugar
+          role: "Purchased refined cane sugar"
+          name: "Refined cane sugar"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured accepted mass; zero when only beet sugar is used"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg formulated sugar output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_a_bom
+              source_ids: []
+            ranges: []
+        - row_id: a_refined_beet_sugar
+          role: "Purchased refined beet sugar"
+          name: "Refined beet sugar"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured accepted mass; zero when only cane sugar is used"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg formulated sugar output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_a_bom
+              source_ids: []
+            ranges: []
+        - row_id: a_flavouring
+          role: "Added flavouring"
+          name: "Food flavouring preparation"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured formulation addition by exact commercial ingredient"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg formulated sugar output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_a_bom
+              source_ids: []
+            ranges: []
+        - row_id: a_colour
+          role: "Added colour"
+          name: "Food colour additive"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured formulation addition by exact colour substance or preparation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg formulated sugar output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_a_bom
+              source_ids: []
+            ranges: []
+        - row_id: a_anticaking_silica
+          role: "Anti-caking agent"
+          name: "Silicon dioxide, food grade"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured formulation addition; not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg formulated sugar output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_a_bom
+              source_ids: []
+            ranges: []
+        - row_id: a_carrier_maltodextrin
+          role: "Flavour or colour carrier"
+          name: "Maltodextrin"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured carrier addition; not applicable when the purchased preparation contains no separately added carrier"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg formulated sugar output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_a_bom
+              source_ids: []
+            ranges: []
+        - row_id: a_process_water
+          role: "Formulation water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "metered or batch-weighed water added to liquid coating or formulation; not applicable for wholly dry mixing"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg formulated sugar output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_a_operations
+              source_ids: []
+            ranges: []
+        - row_id: a_electricity
+          role: "Electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "submetered use for dosing, mixing, coating, conveying, ventilation, and drying when applicable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg formulated sugar output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_a_operations
+              source_ids: []
+            ranges: []
+        - row_id: a_purchased_steam
+          role: "Purchased steam"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "metered purchased steam used in coating or drying; not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg formulated sugar output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_a_operations
+              source_ids: []
+            ranges: []
+        - row_id: a_purchased_heat
+          role: "Purchased heat"
+          name: "Thermal energy"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "metered purchased heat used in coating or drying; not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg formulated sugar output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_a_operations
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: a_bulk_product
+          role: "Formulated refined sugar ready for packaging"
+          name: "Formulated refined sugar"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured accepted output after mixing/coating and after drying when drying applies"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per batch or campaign"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_a_operations
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: a_product_loss
+          role: "Family A product loss"
+          name: "Off-spec formulated sugar"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured spills, retained powder, coating overspray, rejects, and unrecovered start-up/shutdown sugar leaving as this single waste stream"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg formulated sugar output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_release
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: route_b_maple_processing
+    label: "Family B sap filtration, evaporation, and conditional crystallization"
+    inputs:
+      product:
+        - row_id: b_maple_sap
+          role: "Received maple sap"
+          name: "Maple sap"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured accepted sap mass at the foreground gate"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg maple product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_b_operations
+              source_ids:
+                - cornell-maple-beginners-notebook-2019
+            ranges: []
+        - row_id: b_filter_aid
+          role: "Filter aid"
+          name: "Diatomaceous earth, food grade"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured filter-aid addition; not applicable when no filter aid is used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg maple product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_b_operations
+              source_ids:
+                - cornell-maple-beginners-notebook-2019
+            ranges: []
+        - row_id: b_filter_paper
+          role: "Disposable filter medium"
+          name: "Cellulose filter paper"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured consumed filter-paper mass; not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg maple product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_b_operations
+              source_ids:
+                - penn-state-maple-syrup-production
+            ranges: []
+        - row_id: b_filter_cloth
+          role: "Reusable filter medium make-up"
+          name: "Polyester filter cloth"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured make-up mass allocated over documented service life; not applicable when absent"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg maple product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_route_b_operations
+              source_ids:
+                - penn-state-maple-syrup-production
+            ranges: []
+        - row_id: b_process_water
+          role: "Process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "metered water used for filter preparation, backwash, or product-contact processing, excluding separately recorded cleaning water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg maple product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_b_operations
+              source_ids: []
+            ranges: []
+        - row_id: b_electricity
+          role: "Electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "submetered use for pumps, filtration, optional reverse osmosis, evaporation auxiliaries, and crystallization when applicable"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg maple product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_b_operations
+              source_ids:
+                - checkoway-et-al-maple-footprint-2024
+            ranges: []
+        - row_id: b_purchased_steam
+          role: "Purchased steam"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "metered purchased steam for evaporation or crystallization; not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg maple product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_b_operations
+              source_ids: []
+            ranges: []
+        - row_id: b_purchased_heat
+          role: "Purchased heat"
+          name: "Thermal energy"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "metered purchased heat for evaporation or crystallization; not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg maple product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_b_operations
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: b_bulk_maple_syrup
+          role: "Bulk maple syrup"
+          name: "Maple syrup"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured accepted syrup output after concentration and final filtration; not applicable for solid maple sugar after complete further conversion"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per batch or campaign"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_b_operations
+              source_ids:
+                - cornell-maple-beginners-notebook-2019
+            ranges: []
+        - row_id: b_bulk_maple_sugar
+          role: "Bulk granulated maple sugar"
+          name: "Granulated maple sugar"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured accepted sugar after syrup concentration, crystallization, stirring, and screening; applicable only to solid maple sugar"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per batch or campaign"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_b_operations
+              source_ids:
+                - cornell-maple-beginners-notebook-2019
+            ranges: []
+      waste:
+        - row_id: b_filtration_residue
+          role: "Filtration residue"
+          name: "Sugar sand with spent diatomaceous earth"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured wet residue removed from syrup filtration; record sugar sand without filter aid as a separate dataset row when that is the actual waste"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg maple product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_release
+              source_ids:
+                - penn-state-maple-syrup-production
+            ranges: []
+        - row_id: b_spent_filter_paper
+          role: "Spent filter paper"
+          name: "Spent cellulose filter paper"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured discarded filter paper mass; not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg maple product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_release
+              source_ids: []
+            ranges: []
+        - row_id: b_spent_filter_cloth
+          role: "Spent polyester filter cloth"
+          name: "Spent polyester filter cloth"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured discarded cloth mass allocated to its recorded service; not applicable when absent"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg maple product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_and_release
+              source_ids: []
+            ranges: []
+        - row_id: b_wastewater
+          role: "Maple-process wastewater"
+          name: "Wastewater from maple processing"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "metered or mass-balanced process wastewater excluding separately recorded cleaning wastewater"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg maple product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_release
+              source_ids: []
+            ranges: []
+        - row_id: b_syrup_product_loss
+          role: "Family B syrup product loss"
+          name: "Off-spec maple syrup"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured off-spec maple syrup; applicable only when Family B produces syrup"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg maple product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_release
+              source_ids: []
+            ranges: []
+        - row_id: b_sugar_product_loss
+          role: "Family B sugar product loss"
+          name: "Off-spec maple sugar"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured off-spec solid maple sugar; applicable only when Family B includes crystallization and solid-sugar finishing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg maple product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_release
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: b_water_vapour
+          role: "Evaporated process water"
+          name: "Water vapour to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "calculated from measured sap, product, liquid waste, and retained-water mass balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg maple product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_route_b_operations
+              source_ids: []
+            ranges: []
+  - id: onsite_heat_generation
+    label: "On-site stationary heat or steam generation"
+    inputs:
+      product:
+        - row_id: heat_natural_gas
+          role: "Natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured quantity converted with documented net calorific value; not applicable when absent"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per MJ useful heat or kg steam delivered to the selected route"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fuel_and_heat
+              source_ids: []
+            ranges: []
+        - row_id: heat_lpg
+          role: "Liquefied petroleum gas"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured quantity converted with documented net calorific value; not applicable when absent"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per MJ useful heat or kg steam delivered to the selected route"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fuel_and_heat
+              source_ids: []
+            ranges: []
+        - row_id: heat_fuel_oil
+          role: "Fuel oil"
+          name: "Distillate fuel oil"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured quantity converted with documented net calorific value; not applicable when absent"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per MJ useful heat or kg steam delivered to the selected route"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fuel_and_heat
+              source_ids:
+                - checkoway-et-al-maple-footprint-2024
+            ranges: []
+        - row_id: heat_fuelwood
+          role: "Fuelwood"
+          name: "Fuelwood"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured dry or as-fired mass converted with documented moisture and net calorific value; not applicable when absent"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per MJ useful heat or kg steam delivered to the selected route"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fuel_and_heat
+              source_ids:
+                - checkoway-et-al-maple-footprint-2024
+            ranges: []
+        - row_id: heat_boiler_water
+          role: "Boiler feedwater"
+          name: "Boiler feedwater"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "metered make-up water entering on-site steam generation; not applicable for direct dry heat"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg steam delivered"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_and_heat
+              source_ids: []
+            ranges: []
+        - row_id: heat_electricity
+          role: "Heat-generation electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "submetered burner, fan, pump, feed, and control electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per MJ useful heat or kg steam delivered"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_and_heat
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: heat_steam_output
+          role: "Internally generated steam"
+          name: "Steam from on-site boiler"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured delivered steam energy; not applicable when only direct heat is generated"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per reporting period"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_and_heat
+              source_ids: []
+            ranges: []
+        - row_id: heat_output
+          role: "Internally generated thermal energy"
+          name: "Thermal energy from on-site combustion"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured or efficiency-calculated useful heat delivered; not applicable when only metered steam is transferred"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per reporting period"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fuel_and_heat
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: heat_wood_ash
+          role: "Wood-combustion ash"
+          name: "Wood ash from boiler"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured ash sent to the declared treatment; not applicable when fuelwood is absent"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per MJ useful heat or kg steam delivered"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_release
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: heat_co2_fossil
+          role: "Fossil carbon dioxide"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "calculate separately from each fossil fuel energy input and applicable emission factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per MJ useful heat or kg steam delivered"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - ipcc-2006-stationary-combustion
+            ranges: []
+        - row_id: heat_co2_biogenic
+          role: "Biogenic carbon dioxide"
+          name: "Carbon dioxide, biogenic, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "calculate separately from fuelwood energy input and applicable emission factor; not applicable when fuelwood is absent"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per MJ useful heat or kg steam delivered"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - ipcc-2006-stationary-combustion
+            ranges: []
+        - row_id: heat_ch4
+          role: "Methane"
+          name: "Methane to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "sum fuel-specific methane emissions calculated from each combusted fuel and technology factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per MJ useful heat or kg steam delivered"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - ipcc-2006-stationary-combustion
+            ranges: []
+        - row_id: heat_n2o
+          role: "Nitrous oxide"
+          name: "Nitrous oxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "sum fuel-specific nitrous oxide emissions calculated from each combusted fuel and technology factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per MJ useful heat or kg steam delivered"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - ipcc-2006-stationary-combustion
+            ranges: []
+  - id: equipment_cleaning
+    label: "Equipment cleaning and sanitation"
+    inputs:
+      product:
+        - row_id: cleaning_water
+          role: "Cleaning water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "metered water attributable to selected-route cleaning and sanitation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning
+              source_ids: []
+            ranges: []
+        - row_id: cleaning_naoh
+          role: "Alkaline cleaning agent"
+          name: "Sodium hydroxide solution"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured formulated-product mass and concentration; not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning
+              source_ids: []
+            ranges: []
+        - row_id: cleaning_peracetic_acid
+          role: "Sanitizing agent"
+          name: "Peracetic acid solution"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured formulated-product mass and concentration; not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning
+              source_ids: []
+            ranges: []
+        - row_id: cleaning_electricity
+          role: "Cleaning electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "submetered electricity for clean-in-place pumps and sanitation equipment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning
+              source_ids: []
+            ranges: []
+        - row_id: cleaning_steam
+          role: "Cleaning steam"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "metered steam used for sanitation; not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: cleaning_wastewater
+          role: "Cleaning wastewater"
+          name: "Wastewater from equipment cleaning"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "metered discharge or inlet-water mass balance, kept separate from maple-process wastewater"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning
+              source_ids: []
+            ranges: []
+        - row_id: cleaning_sludge
+          role: "Wastewater-treatment sludge"
+          name: "Sludge from on-site wastewater treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured wet mass with solids content and treatment destination; not applicable when treatment is off site and no sludge leaves the foreground"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_release
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: packaging
+    label: "Route-specific final packaging"
+    inputs:
+      product:
+        - row_id: pack_in_a_product
+          role: "Family A bulk product"
+          name: "Formulated refined sugar"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured transfer to packaging; applicable only to Family A"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: pack_in_maple_syrup
+          role: "Bulk maple syrup"
+          name: "Maple syrup"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured transfer to packaging; applicable only to Family B syrup"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: pack_in_maple_sugar
+          role: "Bulk maple sugar"
+          name: "Granulated maple sugar"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured transfer to packaging; applicable only to Family B solid sugar"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: pack_glass_container
+          role: "Glass primary container"
+          name: "Glass food container"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured purchased mass allocated to released units; not applicable when absent"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: pack_pet_container
+          role: "PET primary container"
+          name: "Polyethylene terephthalate bottle"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured purchased mass allocated to released units; not applicable when absent"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: pack_hdpe_container
+          role: "HDPE primary container"
+          name: "High-density polyethylene bottle"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured purchased mass allocated to released units; not applicable when absent"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: pack_steel_can
+          role: "Steel primary container"
+          name: "Tinplate steel food can"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured purchased mass allocated to released units; not applicable when absent"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: pack_paper_bag
+          role: "Paper primary bag"
+          name: "Kraft paper food bag"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured purchased mass allocated to released units; not applicable when absent"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: pack_ldpe_pouch
+          role: "LDPE primary pouch"
+          name: "Low-density polyethylene food pouch"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured purchased mass allocated to released units; not applicable when absent"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: pack_metal_closure
+          role: "Metal closure"
+          name: "Tinplate steel closure"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "counted closure mass converted from verified unit mass; not applicable when absent"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: pack_pp_closure
+          role: "Plastic closure"
+          name: "Polypropylene closure"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "counted closure mass converted from verified unit mass; not applicable when absent"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: pack_paper_label
+          role: "Paper label"
+          name: "Paper label"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "counted label mass converted from verified unit mass; not applicable when absent"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: pack_corrugated_case
+          role: "Corrugated shipping case"
+          name: "Corrugated fibreboard box"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "purchased case mass allocated by packed units; not applicable when absent"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: pack_stretch_film
+          role: "Pallet stretch film"
+          name: "Low-density polyethylene stretch film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured film mass allocated by palletized released product; not applicable when absent"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: pack_wood_pallet
+          role: "Wooden pallet"
+          name: "Wooden pallet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "purchased or pooled pallet mass allocated by documented trips and released product; not applicable when absent"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: pack_electricity
+          role: "Packaging electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "submetered filling, sealing, labelling, and palletizing electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packaged_formulated_sugar
+          role: "Packaged formulated refined sugar"
+          name: "Packaged formulated refined sugar"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured net released product; applicable only to Family A"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "reference amount 1 kg"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_release
+              source_ids: []
+            ranges: []
+        - row_id: packaged_maple_syrup
+          role: "Packaged maple syrup"
+          name: "Maple syrup"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured net released product; applicable only to Family B syrup"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "reference amount 1 kg"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_release
+              source_ids:
+                - cornell-maple-beginners-notebook-2019
+            ranges: []
+        - row_id: packaged_maple_sugar
+          role: "Packaged maple sugar"
+          name: "Packaged granulated maple sugar"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured net released product; applicable only to Family B solid sugar"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "reference amount 1 kg"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_release
+              source_ids:
+                - cornell-maple-beginners-notebook-2019
+            ranges: []
+      waste:
+        - row_id: pack_formulated_sugar_loss
+          role: "Formulated-sugar packaging loss"
+          name: "Formulated refined sugar lost during packaging"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured unrecovered Family A product lost at filling, sealing, inspection, and changeover"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_release
+              source_ids: []
+            ranges: []
+        - row_id: pack_maple_syrup_loss
+          role: "Maple-syrup packaging loss"
+          name: "Maple syrup lost during packaging"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured unrecovered maple syrup lost at filling, sealing, inspection, and changeover"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_release
+              source_ids: []
+            ranges: []
+        - row_id: pack_maple_sugar_loss
+          role: "Maple-sugar packaging loss"
+          name: "Maple sugar lost during packaging"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured unrecovered solid maple sugar lost at filling, sealing, inspection, and changeover"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_release
+              source_ids: []
+            ranges: []
+        - row_id: pack_waste_glass
+          role: "Waste glass packaging"
+          name: "Waste glass food container"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured rejected or broken glass packaging sent to its declared destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_release
+              source_ids: []
+            ranges: []
+        - row_id: pack_waste_pet
+          role: "Waste PET packaging"
+          name: "Waste polyethylene terephthalate packaging"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured rejected PET packaging sent to its declared destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_release
+              source_ids: []
+            ranges: []
+        - row_id: pack_waste_hdpe
+          role: "Waste HDPE packaging"
+          name: "Waste high-density polyethylene packaging"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured rejected HDPE packaging sent to its declared destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_release
+              source_ids: []
+            ranges: []
+        - row_id: pack_waste_steel
+          role: "Waste steel packaging"
+          name: "Waste tinplate steel packaging"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured rejected cans and closures sent to the declared destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_release
+              source_ids: []
+            ranges: []
+        - row_id: pack_waste_paper_bag
+          role: "Waste kraft-paper bag"
+          name: "Waste kraft paper food bag"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured rejected kraft-paper food bags sent to their declared destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_release
+              source_ids: []
+            ranges: []
+        - row_id: pack_waste_paper_label
+          role: "Waste paper label"
+          name: "Waste paper label"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured rejected paper labels sent to their declared destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_release
+              source_ids: []
+            ranges: []
+        - row_id: pack_waste_corrugated_case
+          role: "Waste corrugated case"
+          name: "Waste corrugated fibreboard box"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured rejected corrugated fibreboard boxes sent to their declared destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_release
+              source_ids: []
+            ranges: []
+        - row_id: pack_waste_ldpe
+          role: "Waste LDPE packaging"
+          name: "Waste low-density polyethylene film"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured rejected pouches and stretch film sent to the declared destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_release
+              source_ids: []
+            ranges: []
+        - row_id: pack_waste_wood_pallet
+          role: "Waste wooden pallets"
+          name: "Waste wooden pallet"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This card records the named atomic exchange for the stated route condition."
+          amount:
+            expression: "measured pallets leaving the reuse pool for treatment, allocated to the selected product"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_and_release
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: alloc_subdivide_routes
+    applies_to: "all foreground operations"
+    rule: "First subdivide Family A, Family B, syrup, solid sugar, and packaging lines using meters, batch records, and production time; never allocate burdens across the two product families by default."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: alloc_internal_heat
+    applies_to: "on-site heat generation"
+    rule: "Assign metered steam or useful heat directly to the consuming route; allocate only the unmetered remainder using a documented physical driver such as delivered energy."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: alloc_shared_cleaning
+    applies_to: "equipment cleaning"
+    rule: "Assign recipe- or campaign-specific cleaning directly; otherwise allocate shared cleaning using recorded cleaning time, vessel volume, or product-contact area and disclose the selected physical driver."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: alloc_recovered_material
+    applies_to: "recovered product, filter residue, ash, and packaging waste"
+    rule: "Treat a material as a co-product only when it has a documented beneficial use and economic or functional value; otherwise model it as waste with its treatment. Report avoided-burden or recycling substitution only in a separate declared scenario."
+    source_ids:
+      - eu-pef-method-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_route_a_bom
+      process_id: "route_a_formulation"
+      flow_role: "each Family A ingredient"
+      record_type: "formulation and receipt records"
+      raw_fields: "ingredient identity; supplier; lot; accepted mass; addition mass; formulation code"
+      collection_method: "reconcile controlled recipe, scale tickets, and inventory issues"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "full declared reporting period"
+      site_scope: "each formulation site and product"
+      aggregation_rule: "sum each ingredient separately and divide by accepted formulated output"
+      quality_evidence: "calibrated scale records; recipe approval; supplier specification; inventory reconciliation"
+    - protocol_id: cp_route_a_operations
+      process_id: "route_a_formulation"
+      flow_role: "water, electricity, steam, heat, and output"
+      record_type: "meter and batch records"
+      raw_fields: "meter start/end; batch id; drying status; input/output mass; moisture; rejects"
+      collection_method: "submeter or allocate from documented physical driver"
+      unit: "kg; kWh; MJ"
+      frequency: "each batch or meter interval"
+      temporal_coverage: "full declared reporting period"
+      site_scope: "each formulation line"
+      aggregation_rule: "aggregate only batches of the same declared product and route"
+      quality_evidence: "meter calibration; batch sheets; moisture tests; allocation worksheet"
+    - protocol_id: cp_route_b_operations
+      process_id: "route_b_maple_processing"
+      flow_role: "sap, filtration materials, utilities, and maple outputs"
+      record_type: "scale, meter, and process records"
+      raw_fields: "sap mass; initial/final soluble solids; RO status; filter media; evaporation output; crystallization status; syrup/sugar mass"
+      collection_method: "direct measurement with hydrometer/refractometer and equipment logs as applicable"
+      unit: "kg; kWh; MJ"
+      frequency: "each boil or batch"
+      temporal_coverage: "complete declared maple campaign"
+      site_scope: "each sugarhouse and technology route"
+      aggregation_rule: "aggregate only equivalent syrup or solid-sugar routes"
+      quality_evidence: "instrument calibration; boil log; filter log; product release record"
+    - protocol_id: cp_fuel_and_heat
+      process_id: "onsite_heat_generation"
+      flow_role: "each fuel and delivered heat/steam"
+      record_type: "invoice, tank, scale, moisture, and meter records"
+      raw_fields: "fuel identity; mass or volume; density; moisture; net calorific value; steam/heat delivery"
+      collection_method: "reconcile purchases and inventory change; convert each fuel separately"
+      unit: "kg; m3; MJ; kWh"
+      frequency: "each delivery and reporting interval"
+      temporal_coverage: "full declared reporting period"
+      site_scope: "each combustion unit"
+      aggregation_rule: "calculate each fuel energy separately before summing delivered energy"
+      quality_evidence: "invoices; tank/scale calibration; calorific-value source; boiler meter; efficiency evidence"
+    - protocol_id: cp_cleaning
+      process_id: "equipment_cleaning"
+      flow_role: "water, cleaning agents, energy, wastewater"
+      record_type: "clean-in-place and sanitation logs"
+      raw_fields: "route served; water; chemical product; concentration; electricity; steam; discharge"
+      collection_method: "meter, weigh, or use validated dosing records"
+      unit: "kg; kWh; MJ"
+      frequency: "each cleaning event"
+      temporal_coverage: "full declared reporting period"
+      site_scope: "each shared or dedicated cleaning system"
+      aggregation_rule: "direct assignment first; otherwise apply declared physical allocation driver"
+      quality_evidence: "cleaning log; dosing calibration; chemical specification; discharge meter"
+    - protocol_id: cp_packaging
+      process_id: "packaging"
+      flow_role: "each packaging component and packaging energy"
+      record_type: "purchase, specification, count, and line records"
+      raw_fields: "material identity; unit mass; units used; rejects; reuse trips; electricity"
+      collection_method: "verify component mass and reconcile purchases, stocks, and packed units"
+      unit: "kg; count; kWh"
+      frequency: "each packaging lot and reporting interval"
+      temporal_coverage: "full declared reporting period"
+      site_scope: "each packaging line and product"
+      aggregation_rule: "calculate each component separately per kg net released product"
+      quality_evidence: "supplier specification; sample weighing; stock reconciliation; line meter"
+    - protocol_id: cp_waste_and_release
+      process_id: "all"
+      flow_role: "products, losses, residues, wastewater, sludge, ash, and packaging wastes"
+      record_type: "scale, discharge, treatment, and release records"
+      raw_fields: "stream identity; wet mass; dry solids when relevant; destination; released product mass"
+      collection_method: "weigh or meter each stream and reconcile with mass balance"
+      unit: "kg"
+      frequency: "each batch or disposal event"
+      temporal_coverage: "full declared reporting period"
+      site_scope: "each site and product"
+      aggregation_rule: "keep streams separate by physical identity and destination"
+      quality_evidence: "scale/meter calibration; waste transfer note; product release; mass-balance worksheet"
+  calculation_rules:
+    - id: calc_normalize_reference
+      applies_to: "all exchanges"
+      rule: "normalized exchange = route-attributable exchange / net released mass of the single declared product"
+      inputs:
+        - "exchange amount"
+        - "released product mass"
+      output: "amount per 1 kg reference product"
+      source_ids:
+        - eu-pef-method-2021
+    - id: calc_fuel_energy
+      applies_to: "each fuel"
+      rule: "fuel energy = measured fuel quantity × documented density when needed × net calorific value; calculate by fuel before aggregation"
+      inputs:
+        - "fuel mass or volume"
+        - density
+        - moisture
+        - "net calorific value"
+      output: "MJ by fuel"
+      source_ids:
+        - ipcc-2006-stationary-combustion
+    - id: calc_combustion_emissions
+      applies_to: "CO2, CH4, and N2O"
+      rule: "emission by gas and fuel = fuel energy × applicable fuel/technology emission factor; sum only after retaining fuel-resolved calculations"
+      inputs:
+        - "MJ by fuel"
+        - "emission factor by gas and fuel"
+      output: "kg CO2 fossil; kg CO2 biogenic; kg CH4; kg N2O"
+      source_ids:
+        - ipcc-2006-stationary-combustion
+    - id: calc_mass_balance
+      applies_to: "each selected route"
+      rule: "mass-balance difference = total measured mass inputs - products - separately measured wastes - wastewater - accounted evaporation or retained water; investigate unexplained differences"
+      inputs:
+        - "ingredient or sap inputs"
+        - water
+        - products
+        - wastes
+        - wastewater
+        - "water vapour"
+      output: "route mass-balance residual"
+      source_ids: []
+    - id: calc_packaging_mass
+      applies_to: "each packaging component"
+      rule: "component mass = verified unit mass × consumed units, adjusted for documented reusable trips where applicable"
+      inputs:
+        - "unit mass"
+        - "units consumed"
+        - "reuse trips"
+        - "released product"
+      output: "kg component per 1 kg product"
+      source_ids:
+        - eu-pef-method-2021
+  data_quality_requirements:
+    - id: dq_route_identity
+      applies_to: "dataset"
+      requirement: "Declare exactly one family, one final product state, one formulation or maple route, and the included conditional steps."
+      evidence: "product master; process flow diagram; batch/campaign records"
+    - id: dq_completeness
+      applies_to: "foreground inventory"
+      requirement: "Reconcile all known inputs and outputs, including utilities, every actual fuel, each ingredient, each packaging component, losses, filter residues, wastewater, sludge, ash, and direct emissions."
+      evidence: "reconciled ledgers; meters; waste transfer records; mass balance"
+    - id: dq_representativeness
+      applies_to: "activity data"
+      requirement: "Use records representative of the declared site, technology, geography, product, and period; explain exclusions, substitutions, shutdowns, and abnormal campaigns."
+      evidence: "data-quality assessment and retained raw records"
+    - id: dq_atomic_identity
+      applies_to: "flows"
+      requirement: "Confirm one Tiangong flow UUID for each concrete exchange before review or publication; add any actual ingredient, fuel, cleaning chemical, packaging component, waste, or emission not represented here as its own row."
+      evidence: "direct-read flow record and identity review"
+    - id: dq_range_evidence
+      applies_to: "quantitative ranges"
+      requirement: "Do not create a range from one case or duplicate a single value as equal bounds. Any later empirical range requires at least two independent original sources with compatible boundary, unit, and basis."
+      evidence: "source comparison and range-inference note"
+validation_rules:
+  - rule_id: val_one_family
+    applies_to: "dataset"
+    rule: "Pass only when exactly one of Family A or Family B is selected and inactive-family exchanges are absent."
+    source_ids:
+      - unsd-cpc-3-0-structure-2024
+  - rule_id: val_product_state
+    applies_to: "Family B"
+    rule: "Pass only when syrup or solid_sugar is declared; require crystallization for solid_sugar and prohibit it as a default syrup step."
+    source_ids:
+      - cornell-maple-beginners-notebook-2019
+  - rule_id: val_family_a_steps
+    applies_to: "Family A"
+    rule: "Require purchased refined sugar, each actual flavouring/colour/anti-caking/carrier input, mixing or coating, conditional drying disclosure, product loss, cleaning, and packaging."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: val_family_b_steps
+    applies_to: "Family B"
+    rule: "Require maple sap receipt, filtration media, filtration residue, evaporation/concentration, product loss, wastewater, cleaning, packaging, and conditional crystallization disclosure."
+    source_ids:
+      - cornell-maple-beginners-notebook-2019
+      - penn-state-maple-syrup-production
+  - rule_id: val_fuels_and_emissions
+    applies_to: "on-site combustion"
+    rule: "Require a separate input for every actual fuel and fuel-resolved calculations for fossil CO2, biogenic CO2 when biomass is used, CH4, and N2O."
+    source_ids:
+      - ipcc-2006-stationary-combustion
+  - rule_id: val_packaging_atomicity
+    applies_to: "packaging"
+    rule: "Require every actual primary, closure, label, secondary, tertiary, and reusable packaging component as a separate material flow and every physically separate packaging-waste stream as a separate output."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: val_reference_mass
+    applies_to: "reference product"
+    rule: "Require 1 kg net released product with the Mass and Units of mass UUIDs stated in section 3; packaging shall not be included in the reference mass."
+    source_ids: []
+  - rule_id: val_mass_balance
+    applies_to: "each route"
+    rule: "Require an explained route mass-balance residual and prohibit hiding product loss, filter residue, wastewater, sludge, packaging waste, or evaporation in an unclassified difference."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: val_range_provenance
+    applies_to: "ranges"
+    rule: "Reject equal lower/upper bounds copied from one value and reject inferred empirical ranges without at least two independent compatible original sources."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground manufacturing dataset for one declared product and route"
+  downstream_use: "secondary_dataset; background_dataset after review, UUID completion, and context-specific representativeness assessment"
+  allowed_use: "Product-specific LCI, LCA, EPD, footprint, process, and lifecyclemodel work for the declared site, technology, geography, period, family, product state, and packaging configuration"
+  excluded_use: "Averaging Family A with Family B; representing upstream sugar production or maple cultivation/tapping; representing confectionery or artificial maple-flavoured syrup; comparative claims without equivalent boundaries and review"
+  required_metadata: "PCR id; product family and state; exact product identity; formulation or sap source; included steps; drying, RO, filtration, crystallization, heat and fuel technologies; packaging bill of materials; site; geography; period; allocation; flow UUIDs; source and data-quality references"
+  required_quality_disclosure: "Primary-data share; measurement methods; calibration; temporal, geographical, and technological representativeness; allocation; mass-balance residual; missing UUIDs; proxies; exclusions; uncertainty; unresolved range evidence"
+  update_trigger: "Change in family or product state, formulation, sap source, filtration/RO/evaporation/crystallization technology, fuel or electricity supply, packaging, allocation, site, reporting period, product specification, flow UUID, or material source evidence"
+data_sources:
+  - id: "unsd-cpc-3-0-structure-2024"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Draft Structure of the Central Product Classification, Version 3.0, subclass 23530, https://unstats.un.org/UNSDWebsite/statcom/session_55/documents/BG-4e-draft-CPC-structure-E.pdf (retrieved 2026-08-24)"
+    used_for: "Official category title and evidence that the subclass contains the formulated refined-sugar family and the maple sugar/syrup family"
+  - id: "cornell-maple-beginners-notebook-2019"
+    type: "extension_guidance"
+    reference: "Cornell Maple Program, Maple Syrup Production: Beginner's Notebook, 1st ed., https://mapleresearch.org/wp-content/uploads/Beginner-Notebook-1st-Edition.pdf (retrieved 2026-08-24)"
+    used_for: "Maple sap processing, filtration, evaporation, granular maple sugar crystallization/stirring/screening, and airtight packaging decomposition"
+  - id: "penn-state-maple-syrup-production"
+    type: "extension_guidance"
+    reference: "Penn State Extension, Maple Syrup Production, https://extension.psu.edu/maple-syrup-production (retrieved 2026-08-24)"
+    used_for: "Pre-boil sap filtration, evaporation equipment and heat source, sugar-sand filtration, filter media, and filling containers"
+  - id: "checkoway-et-al-maple-footprint-2024"
+    type: "literature"
+    reference: "Checkoway, Lewis, and Keoleian, Carbon and Energy Footprinting across Archetypes for U.S. Maple Syrup Production, Environmental Science & Technology 58(49), DOI: 10.1021/acs.est.4c03067; OpenAlex: W4403183730"
+    used_for: "Evidence that maple production routes vary by RO, electricity, fuel oil, fuelwood, scale, and equipment; supports route-specific energy and fuel collection rather than a default range"
+  - id: "eu-pef-method-2021"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279, Annex I Product Environmental Footprint Method, https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng (retrieved 2026-08-24)"
+    used_for: "Company-specific bill of materials and manufacturing inputs/outputs, data quality, packaging, subdivision, physical allocation, and transparent reporting"
+  - id: "ipcc-2006-stationary-combustion"
+    type: "method_factor"
+    reference: "IPCC, 2006 Guidelines for National Greenhouse Gas Inventories, Volume 2 Energy, Chapter 2 Stationary Combustion, https://archive.ipcc-nggip.iges.or.jp/public/2006gl/pdf/2_Volume2/V2_2_Ch2_Stationary_Combustion.pdf (retrieved 2026-08-24)"
+    used_for: "Fuel-specific energy activity data and direct CO2, CH4, and N2O calculation method"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:607c8248be2bffe3de0fae948ca52236329538aed6c1a21de63c405d82f24a8a"
+  generated_content_sha256: "sha256:6619e2c7d8e6680839e070d9b81030b52d72ac0a06ea9587ed5760d3392d7fe4"

@@ -1,10 +1,948 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "48263"
-  title: "Gas, liquid or electricity supply or production meters"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.medical-appliances-precision-and-optical-instruments-watches-and-clocks.gas-liquid-or-electricity-supply-or-production-meters"
+  classification_refs: "CPC 3.0: 48263 (exact)"
+  covered_products: "Finished gas, water, other-liquid, or active-electrical-energy supply or production meters; mechanical, electronic, and smart/connected variants; meter-integrated displays, communication and power functions; enclosures, seals, and installation accessories delivered with the meter"
+  excluded_products: "Stand-alone sensors or test instruments; separately sold parts and subassemblies; thermal energy meters; data concentrators, gateways not delivered as part of the meter, head-end systems, billing or energy-management software and services; field installation and network operation"
+  representative_product: "A finished, calibrated, legally conforming supply or production meter at the manufacturer plant gate, with the selected medium, duty, metering technology, metrological class, interfaces, power arrangement, enclosure, and delivered accessories declared"
+  production_route: "Meter body and measuring-element fabrication or procurement; mechanical/electronic subassembly; final assembly and configuration; calibration, verification and final test; cleaning, marking, packaging, and dispatch"
+  market_state: "Finished, calibrated and packaged meter at the manufacturer plant gate, before field installation and use"
+functional_unit:
+  what: "A finished, calibrated gas, liquid, or active-electrical-energy supply or production meter conforming to the declared product variant"
+  how_much: "1 kg net finished product mass"
+  how_well: "Meets the declared applicable legal-metrology regime, metrological or accuracy class, rated measuring range, medium compatibility, installation configuration, enclosure rating, communication configuration, and power configuration"
+  how_long_or_cycle: "One declared production batch and model or configuration revision; service life and operational energy are outside this manufacturing reference flow and shall be modelled separately when required"
+  reference_flow_link: "The reference output of packaging_and_dispatch, normalized to 1 kg net finished product excluding packaging"
+system_boundary:
+  rules:
+    - rule_id: boundary_manufacturing_scope
+      applies_to: "Cradle-to-manufacturer-gate meter production"
+      rule: "Include production and inbound transport of materials, components, subassemblies, product and packaging assembly, configuration, calibration and verification, final testing, cleaning, marking, packaging, manufacturing waste and direct emissions through delivery to the manufacturer's last logistics platform."
+      source_ids:
+        - pep-ecopassport-pcr-ed4
+    - rule_id: boundary_variant_integrity
+      applies_to: "Product family coverage"
+      rule: "Preserve the required medium, duty, technology, metrological class, communication, power, enclosure, installation and accessory qualifiers. Do not use a smart electricity meter, stand-alone sensor, component, or backend service as a proxy for the whole category."
+      source_ids:
+        - eu-mid-2014-32-eu
+        - oiml-r46-2012
+        - oiml-r49-2024
+        - oiml-r117-2019
+        - oiml-r137-2012
+    - rule_id: boundary_cutoff_control
+      applies_to: "Assessable inputs and outputs"
+      rule: "Include all assessable inputs and outputs with primary or secondary data. Any exclusion shall be documented and shall satisfy the applicable mass, energy and impact cut-off tests without hiding significant materials or components."
+      source_ids:
+        - pep-ecopassport-pcr-ed4
+    - rule_id: boundary_use_and_services
+      applies_to: "Field installation, use, communication infrastructure and end of life"
+      rule: "Exclude field installation, measured utility supply, operational own-energy use, data concentrators, telecommunications and backend services, maintenance, replacement and end of life from this manufacturing data package; model them as explicit downstream scenarios when the study requires them."
+      source_ids:
+        - pep-ecopassport-pcr-ed4
+        - iea-4e-smart-metering-consumption-2013
+boundary_abstraction:
+  declared_starting_condition: "Purchased raw materials, parts and subassemblies at their supplier gates, with medium-, technology- and model-specific identity and quantities"
+  starting_condition_role: "Upstream product inputs to meter component fabrication, subassembly, and final assembly"
+  product_classification_scope: "Finished CPC 3.0 48263 meters only; separately sold parts, stand-alone sensors and service systems remain outside the canonical product scope"
+  recursive_input_rule: "If a complete meter in this same category is used as an input, record it as an explicit reused or remanufactured complete-meter input with its own upstream dataset and declared prior state; do not recursively reproduce its manufacture inside the current meter process"
+  upstream_dataset_requirement: "Each material, component, subassembly, packaging item, energy carrier, test medium and treatment service requires a geographically and technologically representative upstream dataset or a documented data gap"
+  disclosure: "Declare factory sites, production period, medium and duty, metering principle, mechanical/electronic/smart technology, metrological class and rated conditions, communication and power configurations, enclosure and mounting, delivered accessories, supplier-data coverage, exclusions, allocation, yield and calibration or test boundary"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Gas, liquid or electricity supply or production meters"
+    uuid: "138fcae3-ed55-4a92-a456-38674b3e0d47"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "measured medium and"
+    - "for liquids"
+    - "liquid family"
+    - "supply or production duty"
+    - mechanical
+    - electronic
+    - "or smart/connected technology"
+    - "measuring principle"
+    - "metrological or accuracy class and governing regime"
+    - "rated measuring range and pressure"
+    - "voltage/current"
+    - temperature
+    - "or other applicable rated conditions"
+    - "communication protocol and module boundary"
+    - internal
+    - mains
+    - external
+    - "or battery power arrangement"
+    - "enclosure material and ingress/environmental rating"
+    - "mounting arrangement"
+    - "included seals"
+    - fittings
+    - cables
+    - antennas
+    - "communication modules"
+    - "power supplies"
+    - batteries
+    - "and installation accessories"
+    - "net product mass"
+    - "production geography and batch period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report 1 kg net finished meter mass. Exclude packaging mass, installation consumables not delivered with the meter, and remote communication or backend equipment outside the declared product boundary."
+  - id: count_to_mass_conversion
+    applies_to: "Production records reported by unit count"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert item counts using measured or controlled bill-of-material net mass for the same model and configuration revision. Retain item count, sampled or specified mass per item, sampling basis, and conversion calculation."
+  - id: delivered_accessory_mass
+    applies_to: "Accessories, batteries, external power supplies, antennas, fittings, cables, seals, and mounting items delivered with the meter"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Include delivered accessories in component inputs and product mass; identify each accessory family separately. Do not include site-supplied items or shared network equipment unless explicitly delivered as part of the declared meter."
+  - id: variant_weighting
+    applies_to: "Multi-model or multi-site aggregation"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Aggregate only with production-mass weighting from the declared period and retain results by medium, duty, technology, metrological class, communication, power, enclosure, and accessory configuration."
+  - id: test_media_units
+    applies_to: "Calibration and verification media or electrical test energy"
+    required_property_ref:
+      name: "Original measured property plus documented conversion property"
+      uuid: ""
+    required_unit: "Original calibrated unit and reported normalized unit"
+    rule: "Preserve the original test-record unit. Convert gas or liquid volumes, masses, and electrical energy only with documented conditions, density or conversion factors, and uncertainty; do not convert the reference product away from kg."
+process_map:
+  - id: component_fabrication_and_subassembly
+    name: "Component fabrication and subassembly"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Foreground and supplier-linked manufacture of mechanical measuring elements, bodies, electronics, communication and power functions, enclosures and delivered accessories"
+    quantitative_reference: "kg conforming meter subassemblies transferred to final assembly"
+  - id: final_assembly_and_configuration
+    name: "Final assembly and configuration"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Assembly of the declared meter, firmware or register configuration, sealing preparation and identification"
+    quantitative_reference: "kg assembled unverified meter"
+  - id: calibration_verification_and_test
+    name: "Calibration, legal-metrology verification and final test"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Medium- and technology-specific calibration, verification, environmental or functional test, adjustment, sealing and acceptance"
+    quantitative_reference: "kg accepted calibrated meter"
+  - id: packaging_and_dispatch
+    name: "Cleaning, marking, packaging and dispatch"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Final cleaning and marking, inclusion of declared accessories and documentation, packaging and delivery to the manufacturer logistics platform"
+    quantitative_reference: "1 kg net finished packaged meter output, excluding packaging mass"
+process_inventory:
+  - id: component_fabrication_and_subassembly
+    label: "Component fabrication and subassembly"
+    inputs:
+      product:
+        - row_id: mechanical_meter_components
+          role: "Mechanical body, measuring elements and fluid-contact parts"
+          name: "Mechanical meter bodies and measuring elements, variant-specific"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record all purchased or internally produced bodies, measuring chambers, rotors, diaphragms, turbines, ultrasonic paths, current or voltage sensing elements, terminals, valves and other measuring elements applicable to the selected medium and principle."
+          amount:
+            expression: "Sum accepted input mass from the controlled bill of materials and production issue records for the declared model and batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished meter output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_component_mass
+              source_ids:
+                - pep-ecopassport-pcr-ed4
+                - oiml-r49-2024
+                - oiml-r117-2019
+                - oiml-r137-2012
+            ranges: []
+        - row_id: electronic_register_components
+          role: "Electronic, display and register components"
+          name: "Electronic, display and register components, variant-specific"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record printed circuit assemblies, metrology chips, displays, memory, registers, sensors and connectors when the selected meter is electronic or smart; record zero with a documented not-applicable reason for wholly mechanical variants."
+          amount:
+            expression: "Sum accepted component mass from the controlled bill of materials and purchase or issue records"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net finished meter output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_component_mass
+              source_ids:
+                - pep-ecopassport-pcr-ed4
+                - oiml-r46-2012
+                - iea-4e-smart-metering-consumption-2013
+            ranges: []
+        - row_id: communication_components
+          role: "Communication modules and interfaces"
+          name: "Communication modules and interfaces, variant-specific"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record integrated or delivered radio, cellular, power-line carrier, wired bus, optical or local-interface hardware and antennas. Exclude remote gateways, concentrators, telecom networks and backend systems not delivered with the meter."
+          amount:
+            expression: "Measured mass from bill-of-material and purchase records for the declared communication configuration"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished meter output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_component_mass
+              source_ids:
+                - iea-4e-smart-metering-consumption-2013
+            ranges: []
+        - row_id: power_supply_components
+          role: "Power supplies and batteries"
+          name: "Power supply and battery components, variant-specific"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record internal or delivered mains power supplies, external power units, backup batteries, primary cells and energy-harvesting components according to the declared power configuration."
+          amount:
+            expression: "Measured mass from the controlled bill of materials and purchase records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished meter output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_component_mass
+              source_ids:
+                - pep-ecopassport-pcr-ed4
+                - iea-4e-smart-metering-consumption-2013
+            ranges: []
+        - row_id: enclosure_and_accessories
+          role: "Enclosures, seals and delivered installation accessories"
+          name: "Enclosures, seals and installation accessories, variant-specific"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record enclosure parts, windows, gaskets, seals, terminal covers, fittings, flanges, cables, mounting hardware and other installation accessories delivered with the declared meter."
+          amount:
+            expression: "Measured accepted mass from the bill of materials, kit list and issue records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished meter output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_component_mass
+              source_ids:
+                - pep-ecopassport-pcr-ed4
+                - oiml-r49-2024
+            ranges: []
+        - row_id: fabrication_electricity
+          role: "Fabrication electricity"
+          name: "Electricity, factory supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity for machining, forming, molding, surface treatment, printed-circuit or electronic subassembly, welding and subassembly operations within this process."
+          amount:
+            expression: "Metered process electricity minus substantiated non-product loads, allocated according to section 7"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming meter subassembly output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - pep-ecopassport-pcr-ed4
+            ranges: []
+        - row_id: fabrication_water_auxiliaries
+          role: "Fabrication water and process auxiliaries"
+          name: "Fabrication water and process auxiliaries, site-specific"
+          flow_type: "product"
+          property_unit: "Supplier property and unit; water reported in kg or m3 with conversion conditions retained"
+          description: "Record water, cleaning agents, machining fluids, plating chemicals, solder and other process auxiliaries that cross the foreground boundary."
+          amount:
+            expression: "Metered, purchased or inventory-change quantity attributable to component fabrication and subassembly"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming meter subassembly output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_materials_and_water
+              source_ids:
+                - pep-ecopassport-pcr-ed4
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: conforming_meter_subassemblies
+          role: "Conforming meter subassemblies"
+          name: "Conforming meter subassemblies, variant-specific"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass transferred to final assembly, keeping mechanical, electronic, communication, power, enclosure and accessory configuration identifiers."
+          amount:
+            expression: "Measured accepted transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg conforming meter subassembly output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_output_and_scrap
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: fabrication_scrap
+          role: "Fabrication scrap and rejected components"
+          name: "Fabrication scrap and rejected components, waste-family-specific"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Separate metal, plastic, electronic, battery, hazardous and other waste streams and record their treatment destinations; do not credit avoided virgin production inside the foreground process."
+          amount:
+            expression: "Weighed waste dispatch plus inventory change, reconciled with process material balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming meter subassembly output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_output_and_scrap
+              source_ids:
+                - pep-ecopassport-pcr-ed4
+            ranges: []
+      elementary:
+        - row_id: fabrication_direct_emissions
+          role: "Direct fabrication emissions"
+          name: "Direct emissions to air, water or soil, substance-specific"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or permit-calculated releases from coating, plating, soldering, cleaning, combustion or other included foreground operations by elementary-flow identity."
+          amount:
+            expression: "Measured or permit-method quantity attributable to included production"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming meter subassembly output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions
+              source_ids: []
+            ranges: []
+  - id: final_assembly_and_configuration
+    label: "Final assembly and configuration"
+    inputs:
+      product:
+        - row_id: assembly_components
+          role: "Meter subassemblies and purchased final-assembly parts"
+          name: "Meter subassemblies and purchased assembly parts, variant-specific"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the configuration-specific mechanical, electronic, communication, power, enclosure, sealing and accessory inputs entering final assembly without replacing them by a generic smart-meter proxy."
+          amount:
+            expression: "Measured issued mass reconciled to accepted assembly output and waste"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg assembled unverified meter output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_records
+              source_ids: []
+            ranges: []
+        - row_id: assembly_energy_auxiliaries
+          role: "Assembly electricity and auxiliaries"
+          name: "Assembly energy and auxiliaries, site-specific"
+          flow_type: "product"
+          property_unit: "Supplier property and unit"
+          description: "Record electricity, compressed air, fasteners, solder, adhesives, lubricants and cleaning materials used for assembly, firmware or register loading, configuration and identification."
+          amount:
+            expression: "Metered, purchased or inventory-change quantity attributable to the assembly line"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg assembled unverified meter output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - pep-ecopassport-pcr-ed4
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: assembled_unverified_meter
+          role: "Assembled unverified meter"
+          name: "Assembled unverified supply or production meter"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record assembled meters transferred to calibration and verification, retaining model, medium, duty, technology, metrological class target, communication, power, enclosure and accessory identifiers."
+          amount:
+            expression: "Measured accepted transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg assembled unverified meter output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: assembly_waste
+          role: "Assembly rejects and waste"
+          name: "Assembly rejects and waste, waste-family-specific"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected parts, solder and adhesive waste, cleaning waste and other assembly waste by treatment route."
+          amount:
+            expression: "Weighed or controlled disposal quantity reconciled with assembly material balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg assembled unverified meter output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_output_and_scrap
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: calibration_verification_and_test
+    label: "Calibration, legal-metrology verification and final test"
+    inputs:
+      product:
+        - row_id: meters_for_verification
+          role: "Assembled meters awaiting verification"
+          name: "Assembled unverified supply or production meter"
+          flow_type: "product"
+          property_unit: "Mass / kg and supplementary item count"
+          description: "Record the mass and count entering calibration and test by product variant and test route."
+          amount:
+            expression: "Measured transfer mass and count"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted calibrated meter output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_calibration_batch_records
+              source_ids: []
+            ranges: []
+        - row_id: calibration_media_energy
+          role: "Calibration media, test energy and consumables"
+          name: "Calibration media, test energy and consumables, medium-specific"
+          flow_type: "product"
+          property_unit: "Original calibrated property and unit"
+          description: "Record electricity or simulated electrical load, water, air, gas, liquid test media, reference-standard operation, seals and other consumables according to the applicable meter type and test plan. Preserve original measurement units and test conditions."
+          amount:
+            expression: "Metered or controlled test-bench consumption allocated to accepted and rejected meters in the batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg accepted calibrated meter output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_calibration_resources
+              source_ids:
+                - oiml-r46-2012
+                - oiml-r49-2024
+                - oiml-r117-2019
+                - oiml-r137-2012
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_calibrated_meter
+          role: "Accepted calibrated meter"
+          name: "Accepted calibrated supply or production meter"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record accepted output only after the applicable accuracy, rated-condition, software or register, communication, power and sealing checks are complete."
+          amount:
+            expression: "Measured accepted mass and count linked to calibration and verification records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted calibrated meter output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_calibration_batch_records
+              source_ids:
+                - eu-mid-2014-32-eu
+                - oiml-r46-2012
+                - oiml-r49-2024
+                - oiml-r117-2019
+                - oiml-r137-2012
+            ranges: []
+      waste:
+        - row_id: calibration_rejects
+          role: "Failed meters and spent test consumables"
+          name: "Calibration rejects and spent consumables, waste-family-specific"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record failed units, replacement parts, spent seals and test consumables by rework, recycling, treatment or disposal route; returned rework shall not be double counted as new material input."
+          amount:
+            expression: "Weighed or controlled quantity linked to test-batch disposition records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted calibrated meter output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_calibration_batch_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: released_calibration_media
+          role: "Released calibration media"
+          name: "Released calibration medium, substance-specific"
+          flow_type: "elementary"
+          property_unit: "Original measured property and unit"
+          description: "Record direct release of test water, gas or other liquid to the environment only when it crosses the technosphere boundary; otherwise record recovery, recirculation or treatment as product or waste flows."
+          amount:
+            expression: "Metered discharge minus recovered or recirculated quantity, with conditions documented"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted calibrated meter output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_calibration_resources
+              source_ids: []
+            ranges: []
+  - id: packaging_and_dispatch
+    label: "Cleaning, marking, packaging and dispatch"
+    inputs:
+      product:
+        - row_id: accepted_meter_and_accessories
+          role: "Accepted meters and delivered accessories"
+          name: "Accepted calibrated meter and delivered accessory kit"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record calibrated meters plus the exact seals, fittings, cables, antennas, power supplies, batteries, mounting items and documentation delivered in the declared product configuration."
+          amount:
+            expression: "Measured kit mass and count from packing records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished meter output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_dispatch
+              source_ids: []
+            ranges: []
+        - row_id: packaging_materials_energy
+          role: "Packaging materials and dispatch energy"
+          name: "Packaging materials and dispatch energy, material- or carrier-specific"
+          flow_type: "product"
+          property_unit: "Supplier property and unit"
+          description: "Record primary and secondary packaging, labels, manuals, pallets, reusable packaging losses, cleaning materials, electricity and fuels used through the manufacturer's last logistics platform."
+          amount:
+            expression: "Purchased or issued packaging quantity and metered energy attributable to dispatched product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished meter output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_dispatch
+              source_ids:
+                - pep-ecopassport-pcr-ed4
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_meter_output
+          role: "Finished gas, liquid or electricity supply or production meter"
+          name: "Gas, liquid or electricity supply or production meters"
+          flow_type: "product"
+          flow_ref:
+            uuid: "138fcae3-ed55-4a92-a456-38674b3e0d47"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the PCR reference output. It includes the selected finished meter and delivered accessories but excludes packaging mass from the 1 kg reference amount."
+          amount:
+            expression: "1 kg net finished product mass"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net finished meter output"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: packaging_dispatch_waste
+          role: "Packaging and dispatch waste"
+          name: "Packaging and dispatch waste, waste-family-specific"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record offcuts, damaged packaging, rejected labels and other waste generated before dispatch by material and treatment route."
+          amount:
+            expression: "Weighed or controlled disposal quantity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished meter output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_dispatch
+              source_ids:
+                - pep-ecopassport-pcr-ed4
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "Multi-product component, assembly, calibration and packaging lines"
+    rule: "Prefer meter-, line-, batch- or process-level metering and subdivision. Separate electricity, water, auxiliaries, rejects and emissions when direct records are available."
+    source_ids:
+      - pep-ecopassport-pcr-ed4
+  - rule_id: allocation_physical_then_economic
+    applies_to: "Unavoidable shared foreground burdens"
+    rule: "Use a physical driver that represents process causality, such as machine time, test-bench time, processed mass or item count. Use economic allocation only when no defensible physical driver exists, and disclose the method and sensitivity."
+    source_ids:
+      - pep-ecopassport-pcr-ed4
+  - rule_id: allocation_rework_and_scrap
+    applies_to: "Rework, manufacturing scrap and waste treatment"
+    rule: "Return internal rework to the originating process without double counting. Assign burdens through the point waste leaves the foreground boundary; do not apply avoided-virgin-material credits inside the reference product inventory."
+    source_ids:
+      - pep-ecopassport-pcr-ed4
+  - rule_id: allocation_variant_weighting
+    applies_to: "Product-family and multi-site datasets"
+    rule: "Weight site and variant records by net finished production mass for the declared period and retain production totals by required qualifier. Do not average across media or technologies when the result would conceal materially different bills of materials, test routes or energy use."
+    source_ids:
+      - pep-ecopassport-pcr-ed4
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_bom_component_mass
+      process_id: "component_fabrication_and_subassembly"
+      flow_role: "Variant-specific material, component, communication, power, enclosure and accessory inputs"
+      record_type: "Controlled BOM, purchase and issue records, component mass measurement"
+      raw_fields: "model_revision; medium; duty; technology; metrological_class; component_family; material; supplier; quantity; mass_per_item; accepted_mass; communication_configuration; power_configuration; enclosure; accessory_inclusion"
+      collection_method: "Reconcile controlled BOM to purchase or issue records; weigh representative parts where supplier mass is absent; preserve model and revision"
+      unit: "kg and item"
+      frequency: "Each BOM revision and production batch"
+      temporal_coverage: "At least the declared production period"
+      site_scope: "Every contributing factory and supplier-data scope"
+      aggregation_rule: "Sum accepted input mass by component family and divide by net finished product mass; production-mass weight sites and variants only after qualifier stratification"
+      quality_evidence: "Approved BOM; scale calibration; purchase or issue records; sampling record; supplier declarations"
+    - protocol_id: cp_process_energy
+      process_id: "component_fabrication_and_subassembly_final_assembly_and_configuration_packaging_and_dispatch"
+      flow_role: "Electricity, fuel, compressed air and other process energy"
+      record_type: "Submeter, utility invoice and operating log"
+      raw_fields: "meter_id; energy_carrier; opening_reading; closing_reading; operating_hours; line; batch; non_product_load; allocation_driver"
+      collection_method: "Prefer submetering; otherwise reconcile invoices to line operating records and document allocation"
+      unit: "kWh, MJ, kg or m3 in original carrier unit"
+      frequency: "Per shift or batch, aggregated monthly"
+      temporal_coverage: "At least 12 consecutive representative months or the full shorter campaign"
+      site_scope: "Every contributing production site"
+      aggregation_rule: "Subtract substantiated non-product loads, allocate by causal driver, then normalize to accepted process output"
+      quality_evidence: "Meter calibration; invoice reconciliation; operating logs; allocation worksheet"
+    - protocol_id: cp_process_materials_and_water
+      process_id: "component_fabrication_and_subassembly_final_assembly_and_configuration"
+      flow_role: "Water, chemicals and process auxiliaries"
+      record_type: "Meter, purchase, issue, tank and inventory records"
+      raw_fields: "material_id; opening_stock; purchases; closing_stock; process_return; water_meter; batch; concentration; density; temperature"
+      collection_method: "Use direct metering or mass balance; retain original units and conversion conditions"
+      unit: "kg, L or m3 as measured"
+      frequency: "Per batch or monthly"
+      temporal_coverage: "Declared production period"
+      site_scope: "Every contributing production site"
+      aggregation_rule: "Consumption equals opening stock plus purchases minus closing stock minus documented returns; normalize to accepted process output"
+      quality_evidence: "Calibrated meter; inventory reconciliation; supplier specification; conversion record"
+    - protocol_id: cp_process_output_and_scrap
+      process_id: "component_fabrication_and_subassembly_final_assembly_and_configuration"
+      flow_role: "Accepted output, rejects, scrap and waste"
+      record_type: "Production count, scale ticket, waste manifest and inventory record"
+      raw_fields: "process_id; model_revision; input_mass; accepted_mass; accepted_count; rework_return; waste_mass; waste_family; treatment_route"
+      collection_method: "Weigh accepted output and separated waste; reconcile count-to-mass conversion and internal rework"
+      unit: "kg and item"
+      frequency: "Per batch"
+      temporal_coverage: "Declared production period"
+      site_scope: "Every contributing production site"
+      aggregation_rule: "Accepted output plus waste plus documented stock change shall reconcile with measured input within the stated uncertainty"
+      quality_evidence: "Scale calibration; batch traveller; waste manifest; reconciliation report"
+    - protocol_id: cp_direct_emissions
+      process_id: "component_fabrication_and_subassembly_final_assembly_and_configuration"
+      flow_role: "Direct emissions to air, water and soil"
+      record_type: "Continuous monitor, stack or effluent test, permit calculation and operating record"
+      raw_fields: "substance; compartment; concentration; flow_rate; operating_time; calculation_method; detection_limit; batch_or_period"
+      collection_method: "Use measured releases or the applicable documented permit method; subtract no control credit unless physically measured"
+      unit: "kg or original regulated unit"
+      frequency: "As monitored or at permit frequency"
+      temporal_coverage: "Declared production period"
+      site_scope: "Each emitting site"
+      aggregation_rule: "Integrate concentration and flow over operation; allocate by causal process driver and normalize to accepted output"
+      quality_evidence: "Calibration and laboratory report; permit method; operating log; uncertainty statement"
+    - protocol_id: cp_assembly_records
+      process_id: "final_assembly_and_configuration"
+      flow_role: "Assembly inputs, configured output and assembly rejects"
+      record_type: "Batch traveller, issue record, configuration log and mass record"
+      raw_fields: "model_revision; medium; duty; technology; metrological_class_target; communication; power; enclosure; accessory_kit; input_mass; output_mass; count; reject_mass"
+      collection_method: "Link component issues and configuration logs to each batch; weigh transfer output and rejects"
+      unit: "kg and item"
+      frequency: "Per batch"
+      temporal_coverage: "Declared production period"
+      site_scope: "Every assembly site"
+      aggregation_rule: "Sum by exact configuration, reconcile mass, then normalize to assembled output"
+      quality_evidence: "Traceable batch identifier; approved configuration; scale calibration; reject disposition"
+    - protocol_id: cp_calibration_batch_records
+      process_id: "calibration_verification_and_test"
+      flow_role: "Calibration input, accepted meters, rework and rejects"
+      record_type: "Calibration certificate, test-bench log, verification record and disposition log"
+      raw_fields: "meter_serial_or_batch; model_revision; medium; duty; principle; metrological_class; rated_range; rated_conditions; test_standard; test_result; adjustment; seal; software_or_register_version; input_mass; accepted_mass; reject_mass"
+      collection_method: "Link each meter or statistically governed batch to the applicable test plan and acceptance record"
+      unit: "kg, item and original metrology units"
+      frequency: "Every meter or governed batch"
+      temporal_coverage: "Declared production period"
+      site_scope: "Every calibration or test site"
+      aggregation_rule: "Aggregate only accepted meters with the same test route and required qualifiers; retain rework and rejection separately"
+      quality_evidence: "Reference-standard traceability; test-bench calibration; certificate or verification record; acceptance signature"
+    - protocol_id: cp_calibration_resources
+      process_id: "calibration_verification_and_test"
+      flow_role: "Test media, electrical load, reference-standard operation and consumables"
+      record_type: "Test-bench meter and resource log"
+      raw_fields: "medium; source; opening_reading; closing_reading; recirculated_quantity; recovered_quantity; discharged_quantity; pressure; temperature; density; electrical_energy; test_hours; accepted_mass"
+      collection_method: "Meter batch-level resource use; record recirculation and recovery separately; retain original conditions and units"
+      unit: "Original calibrated unit"
+      frequency: "Per test batch"
+      temporal_coverage: "Declared production period"
+      site_scope: "Every calibration or test site"
+      aggregation_rule: "Net input equals gross supplied minus recovered return; discharged amount equals measured release after recirculation; normalize to accepted output"
+      quality_evidence: "Meter calibration; environmental conditions; conversion factors; balance check"
+    - protocol_id: cp_packaging_and_dispatch
+      process_id: "packaging_and_dispatch"
+      flow_role: "Delivered product kit, packaging, labels, manuals, energy and pre-dispatch waste"
+      record_type: "Packing list, BOM, purchase or issue record, scale and logistics record"
+      raw_fields: "model_revision; meter_mass; accessory_mass; packaging_material; packaging_mass; reusable_packaging; label_and_manual_mass; energy; dispatched_count; waste_mass"
+      collection_method: "Weigh the net meter kit separately from packaging; reconcile issued packaging and dispatch records"
+      unit: "kg, item and energy carrier unit"
+      frequency: "Per batch or dispatch lot"
+      temporal_coverage: "Declared production period"
+      site_scope: "Every packaging and dispatch site"
+      aggregation_rule: "Normalize product and packaging separately to 1 kg net finished product; do not add packaging mass to the reference amount"
+      quality_evidence: "Scale calibration; packing list; packaging specification; dispatch record; waste manifest"
+  calculation_rules:
+    - id: calc_net_reference_mass
+      applies_to: "Packaged reference product"
+      rule: "Net reference mass equals finished meter plus delivered accessory mass, excluding all primary, secondary and transport packaging"
+      inputs:
+        - meter_mass
+        - delivered_accessory_mass
+        - packaging_mass
+      output: "kg net finished product"
+      source_ids:
+        - pep-ecopassport-pcr-ed4
+    - id: calc_count_to_mass
+      applies_to: "Count-based production records"
+      rule: "Mass equals accepted item count multiplied by measured or controlled net mass per item for the same model and revision"
+      inputs:
+        - accepted_count
+        - mass_per_item
+        - sampling_basis
+      output: "kg product or component"
+      source_ids: []
+    - id: calc_process_normalization
+      applies_to: "Every process inventory row"
+      rule: "Normalized amount equals attributable process amount divided by accepted process output mass, then multiplied by 1 kg"
+      inputs:
+        - attributable_amount
+        - accepted_output_mass
+      output: "amount per kg accepted output"
+      source_ids: []
+    - id: calc_test_media_balance
+      applies_to: "Calibration gas or liquid"
+      rule: "Net consumed or discharged medium equals gross supplied minus measured recovered or recirculated return, with volume-to-mass conversion only when temperature, pressure and density or conversion method are documented"
+      inputs:
+        - gross_supply
+        - recovered_return
+        - recirculated_quantity
+        - discharge
+        - temperature
+        - pressure
+        - density_or_factor
+      output: "net medium amount per kg accepted meter"
+      source_ids:
+        - oiml-r49-2024
+        - oiml-r117-2019
+        - oiml-r137-2012
+    - id: calc_variant_site_weighting
+      applies_to: "Multi-variant or multi-site dataset"
+      rule: "Weighted result equals the sum of each stratified site-variant result multiplied by its net finished production mass, divided by total net finished production mass"
+      inputs:
+        - site_variant_result
+        - site_variant_production_mass
+        - qualifier_stratum
+      output: "production-mass-weighted result with retained qualifier distribution"
+      source_ids:
+        - pep-ecopassport-pcr-ed4
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product and all aggregated variants"
+      requirement: "Preserve medium, supply or production duty, mechanical/electronic/smart technology, measuring principle, metrological class and rated range, communication, power, enclosure, mounting and delivered-accessory configuration"
+      evidence: "Approved product specification, controlled BOM, type-approval or conformity record, and production-volume table"
+    - id: dq_metrological_traceability
+      applies_to: "Calibration, verification and final test"
+      requirement: "Use traceable reference standards and the applicable test plan; retain environmental and operating conditions, software or register version when applicable, adjustments, acceptance and uncertainty records"
+      evidence: "Calibration certificates, test-bench calibration, verification report and batch or serial traceability"
+    - id: dq_mass_balance
+      applies_to: "Component fabrication, assembly, calibration and packaging"
+      requirement: "Reconcile measured inputs, accepted output, internal rework, stock change, waste and direct releases; document uncertainty and unresolved imbalance"
+      evidence: "Process-level mass-balance worksheet, scale calibration and disposition records"
+    - id: dq_temporal_and_site_coverage
+      applies_to: "Foreground production"
+      requirement: "Cover all contributing sites and at least 12 consecutive representative months unless the complete production campaign is shorter; disclose ramp-up, abnormal shutdowns and missing periods"
+      evidence: "Site list, production calendar, meter coverage table and exception log"
+    - id: dq_supplier_and_background_coverage
+      applies_to: "Materials, components, subassemblies, packaging, energy, test media and treatment"
+      requirement: "Use representative upstream datasets and disclose supplier-specific data coverage, geography, technology, age and proxies; do not treat a narrow smart-meter dataset as representative of all variants"
+      evidence: "Supplier declarations, dataset register, data-gap list and proxy justification"
+    - id: dq_completeness_and_cutoff
+      applies_to: "All assessable inputs and outputs"
+      requirement: "Quantify and justify exclusions against the applicable mass, energy and environmental-impact cut-off criteria and systematically include significant materials and components"
+      evidence: "Completeness calculation, exclusion register and sensitivity check; pep-ecopassport-pcr-ed4"
+validation_rules:
+  - rule_id: validation_reference_identity
+    applies_to: "Reference flow"
+    rule: "The product-flow UUID, Mass property UUID, Units of mass UUID and kg unit shall match section 3; the output shall be a finished meter, not a part, sensor or service."
+    source_ids: []
+  - rule_id: validation_required_qualifiers
+    applies_to: "Dataset identity"
+    rule: "Reject a data package missing the measured medium, duty, technology, principle, metrological class and rated conditions, communication, power, enclosure, mounting, delivered accessories, net mass, geography or period."
+    source_ids:
+      - eu-mid-2014-32-eu
+      - oiml-r46-2012
+      - oiml-r49-2024
+      - oiml-r117-2019
+      - oiml-r137-2012
+  - rule_id: validation_process_coverage
+    applies_to: "Foreground inventory"
+    rule: "Require component and subassembly, final assembly and configuration, calibration and verification, and packaging and dispatch processes, with conditional electronic, communication, power and medium-specific resources explicitly present or documented not applicable."
+    source_ids:
+      - pep-ecopassport-pcr-ed4
+      - iea-4e-smart-metering-consumption-2013
+  - rule_id: validation_mass_and_yield
+    applies_to: "Process balances"
+    rule: "Confirm inputs, accepted output, rework, stock change, waste and direct releases reconcile within documented measurement uncertainty and that rejects are not hidden in accepted yield."
+    source_ids:
+      - pep-ecopassport-pcr-ed4
+  - rule_id: validation_calibration_traceability
+    applies_to: "Accepted product output"
+    rule: "Confirm each accepted meter or governed batch links to the applicable test plan, traceable standard, rated conditions, metrological class, result, adjustment, software or register version when applicable, seal and acceptance record."
+    source_ids:
+      - eu-mid-2014-32-eu
+      - oiml-r46-2012
+      - oiml-r49-2024
+      - oiml-r117-2019
+      - oiml-r137-2012
+  - rule_id: validation_cutoff_and_sources
+    applies_to: "Completeness and evidence"
+    rule: "Confirm every exclusion is quantified and justified, significant materials and components are retained, all non-default method constraints cite valid source ids, and all foreground rows link to records or calculations."
+    source_ids:
+      - pep-ecopassport-pcr-ed4
+  - rule_id: validation_variant_aggregation
+    applies_to: "Product families and sites"
+    rule: "Reject aggregation that combines materially different media, duties, technologies or configurations without qualifier-stratified records, production-mass weights and a sensitivity or variability disclosure."
+    source_ids:
+      - pep-ecopassport-pcr-ed4
+published_dataset_profile:
+  dataset_role: "Foreground manufacturing data package for a declared finished supply or production meter variant"
+  downstream_use: "secondary_dataset; background_dataset; input to a downstream process or lifecyclemodel that adds distribution, installation, measured utility service, operational own-energy and communications, maintenance, replacement, and end-of-life scenarios"
+  allowed_use: "Cradle-to-manufacturer-gate modelling of the exact declared meter variant or a transparent production-weighted family that preserves all required qualifiers"
+  excluded_use: "Proxying the entire category with one smart electricity meter, one gas or water meter, a stand-alone sensor, a component, or a backend service; comparative metering-service claims without function, accuracy, capacity, service life and use-phase scenarios"
+  required_metadata: "PCR id and version state; product model and revision; medium and liquid family; supply or production duty; mechanical/electronic/smart technology and principle; metrological class, rated range and applicable regime; communication and power configuration; enclosure and mounting; delivered accessories; net mass; sites and period; reference-flow UUIDs; allocation; data-source and foreground-record lineage"
+  required_quality_disclosure: "BOM and supplier-data coverage; foreground meter coverage; site and temporal representativeness; calibration and verification traceability; mass-balance closure and uncertainty; exclusions and cut-off checks; allocation; proxy datasets; variant weights; missing data and sensitivity"
+  update_trigger: "Change in measured medium or duty, measuring principle, metrological class or rated range, material or component design, communication or power configuration, enclosure or delivered accessories, factory route, calibration method, supplier or background dataset, allocation, or production mix that materially changes the inventory"
+data_sources:
+  - id: "pep-ecopassport-pcr-ed4"
+    type: "standard"
+    reference: "PEP Ecopassport, Product Category Rules for Electrical, Electronic and HVAC-R Products, PEP-PCR-ed4-EN-2021 09 06, https://register.pep-ecopassport.org/documents/public/PCR-4-EN (retrieved 2026-08-09)"
+    used_for: "Manufacturing and life-cycle boundary, materials and components, packaging, cut-off, allocation, foreground reporting and data quality"
+  - id: "eu-mid-2014-32-eu"
+    type: "official_guidance"
+    reference: "European Parliament and Council, Directive 2014/32/EU on measuring instruments, https://eur-lex.europa.eu/eli/dir/2014/32/oj (retrieved 2026-08-09)"
+    used_for: "Meter-family scope, conformity, rated-condition, accuracy-class and manufacturer documentation requirements"
+  - id: "oiml-r46-2012"
+    type: "standard"
+    reference: "OIML R 46-1/-2:2012, Active electrical energy meters, https://www.oiml.org/en/files/pdf_r/r046-1-2-e12.pdf/@@download/file/R046-1-2-e12.pdf (retrieved 2026-08-09)"
+    used_for: "Electrical-meter technology, metrological and performance testing, rated conditions, bidirectional and software-controlled configurations"
+  - id: "oiml-r49-2024"
+    type: "standard"
+    reference: "OIML R 49-1:2024, Water meters for cold potable water and hot water, https://www.oiml.org/en/files/pdf_r/r049-1-e24.pdf (retrieved 2026-08-09)"
+    used_for: "Water-meter materials, construction, installation, metrological requirements and testing"
+  - id: "oiml-r117-2019"
+    type: "standard"
+    reference: "OIML R 117-1:2019, Dynamic measuring systems for liquids other than water, https://www.oiml.org/en/files/pdf_r/r117-1-e19.pdf (retrieved 2026-08-09)"
+    used_for: "Other-liquid meter scope, measuring-system constituents, rated conditions, metrological requirements and testing"
+  - id: "oiml-r137-2012"
+    type: "standard"
+    reference: "OIML R 137-1&2:2012, Gas meters, https://www.oiml.org/en/files/pdf_r/r137-1-2-e12.pdf/@@download/file/R137-1-2-e12.pdf (retrieved 2026-08-09)"
+    used_for: "Gas families, pressure and flow ranges, accuracy classes, rated conditions, metrological tests and software-controlled meter requirements"
+  - id: "iea-4e-smart-metering-consumption-2013"
+    type: "official_guidance"
+    reference: "IEA 4E, Smart Metering Consumption, Appendix C English report, 2013, https://www.iea-4e.org/wp-content/uploads/2021/01/APPENDIX_C_Smart_Metering_Consumption_english.pdf (retrieved 2026-08-09)"
+    used_for: "Smart/electronic-meter conditional branch only: metering, communication, hardware, additional features, power supply, own-energy and downstream communication-infrastructure separation"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:0f5c3c1936cbfc155b169e30af9397f1d58b515c48bfd8b96503f3a1110b7c94"
+  generated_content_sha256: "sha256:d7d7f408e88ac8f3991dd35dc4f44a7e53165318c20deaf45651ea64959244db"

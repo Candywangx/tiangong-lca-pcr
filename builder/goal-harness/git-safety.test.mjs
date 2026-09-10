@@ -145,6 +145,32 @@ test("CAS landing is idempotent and fails closed on a dirty-main conflict", () =
   }
 });
 
+test("CAS landing uses validated commit bytes after the integration worktree is edited", () => {
+  const root = fixtureRepo();
+  try {
+    const relative = "library/pcrs/category/item/manifest.yaml";
+    const baseline = git(root, ["rev-parse", "HEAD"]);
+    const source = path.join(root, ".worktrees/integration");
+    git(root, ["worktree", "add", "--detach", source, baseline]);
+    writeFileSync(path.join(source, relative), "validated methodology\n");
+    git(source, ["add", "--", relative]);
+    git(source, ["commit", "-qm", "validated integration"]);
+    const integrationCommit = git(source, ["rev-parse", "HEAD"]);
+    const stateDir = path.join(root, "state/commit-landing");
+    const expected = captureExpectedFiles(root, [relative]);
+    writeFileSync(path.join(source, relative), "unvalidated post-review edit\n");
+
+    const result = landFilesCas({ projectRoot: root, sourceRoot: source, sourceCommit: integrationCommit,
+      paths: [relative], expected, stateDir, snapshotId: "snapshot-pinned" });
+
+    assert.equal(readFileSync(path.join(root, relative), "utf8"), "validated methodology\n");
+    assert.equal(readFileSync(path.join(source, relative), "utf8"), "unvalidated post-review edit\n");
+    assert.equal(result.status, "landed");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("baseline fingerprints support generated files larger than Node's default child-process buffer", () => {
   const root = fixtureRepo();
   try {
@@ -186,6 +212,18 @@ test("CAS landing resumes an interrupted prepared journal without overwriting a 
       expected,
       sources: [{ repoPath: relative, absolutePath: path.join(source, relative), fingerprint: sourceFingerprint }],
     }, null, 2)}\n`);
+
+    const journalPath = path.join(operationDir, "journal.json");
+    for (const status of ["prepared", "applying"]) {
+      const journal = JSON.parse(readFileSync(journalPath, "utf8"));
+      writeFileSync(journalPath, `${JSON.stringify({ ...journal, status }, null, 2)}\n`);
+      const beforeJournal = readFileSync(journalPath);
+      const beforeDestination = readFileSync(path.join(root, relative));
+      const preview = landFilesCas({ projectRoot: root, sourceRoot: source, paths: [relative], expected, stateDir, snapshotId: "snapshot-recover", dryRun: true });
+      assert.deepEqual(readFileSync(path.join(root, relative)), beforeDestination);
+      assert.deepEqual(readFileSync(journalPath), beforeJournal);
+      assert.equal(preview.status, "dry_run");
+    }
 
     const recovered = landFilesCas({ projectRoot: root, sourceRoot: source, paths: [relative], expected, stateDir, snapshotId: "snapshot-recover" });
     assert.equal(recovered.status, "recovered_landing");

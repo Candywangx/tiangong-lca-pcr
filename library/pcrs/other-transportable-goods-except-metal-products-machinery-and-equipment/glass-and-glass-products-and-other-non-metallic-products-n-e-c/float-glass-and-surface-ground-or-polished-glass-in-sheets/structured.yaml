@@ -1,10 +1,989 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "37113"
-  title: "Float glass and surface ground or polished glass, in sheets"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.glass-and-glass-products-and-other-non-metallic-products-n-e-c.float-glass-and-surface-ground-or-polished-glass-in-sheets"
+  classification_refs: "CPC 3.0 37113, exact"
+  covered_products: "Unworked sheets of float glass and surface-ground or polished glass; ordinary clear, low-iron, body-tinted or opacified variants; online-coated ribbon only when declared"
+  excluded_products: "Cast, rolled, drawn or blown sheet glass classified elsewhere; worked sheet glass; tempered or laminated safety glass; insulating glass units; mirrors; offline/downstream-coated or fabricated glazing products"
+  representative_product: "Declared mass of saleable, quality-accepted sheet glass at the factory gate"
+  production_route: "Batch preparation, melting/refining, float forming on molten tin, annealing, conditional surface grinding/polishing or online coating, inspection, cutting, cullet return and packing"
+  market_state: "Unworked sheets, jumbo sheets or cut-to-size stock sheets as delivered; dimensions and packing state declared"
+functional_unit:
+  what: "Saleable float glass or applicable surface-ground/polished glass sheets matching the declared kind and delivery state"
+  how_much: "1,000 kg net accepted product at the declared factory gate"
+  how_well: "Glass kind, processing state, thickness, dimensions, density basis, iron content or optical specification, coating status, cullet statement and quality-acceptance basis declared"
+  how_long_or_cycle: "One reporting period representative of continuous production, normally at least 12 consecutive months"
+  reference_flow_link: "Tiangong process identity candidate d6c1bf92-3556-448b-92d3-b8485d4c8e89; identity only, with no inventory values inherited"
+system_boundary:
+  rules:
+    - rule_id: boundary_inputs
+      applies_to: "cradle-to-gate foreground data package"
+      rule: "Include receiving and preparation of virgin batch materials, separately identified cullet, fuels, electricity, water, process gases, tin make-up, coating or polishing materials when applicable, and packaging."
+      source_ids:
+        - nga-flat-glass-pcr-2020
+        - eu-jrc-glass-bref-2013
+    - rule_id: boundary_core
+      applies_to: "required manufacturing"
+      rule: "Include batching, melting/refining, float forming on molten tin, annealing, inspection, edge trimming, cutting, internal cullet return, quality rejection and packing."
+      source_ids:
+        - eu-jrc-glass-bref-2013
+        - eurofloat-epd-2024
+        - vitro-flat-glass-epd-2024
+    - rule_id: boundary_conditionals
+      applies_to: "route-specific manufacturing"
+      rule: "Include online coating and surface grinding/polishing only when performed before the declared gate; record them as separate conditional processes."
+      source_ids:
+        - unsd-hs-7005
+        - eu-jrc-glass-bref-2013
+    - rule_id: boundary_gate
+      applies_to: "delivery state"
+      rule: "End at the factory gate with quality-accepted, unworked sheets in the declared jumbo or cut stock-sheet and packing state."
+      source_ids:
+        - nga-flat-glass-pcr-2020
+        - eurofloat-epd-2024
+    - rule_id: boundary_exclusions
+      applies_to: "downstream products and use/end-of-life"
+      rule: "Exclude tempering, heat strengthening, laminating, insulating-unit assembly, silvering/mirror manufacture, offline/downstream coating, installation, use and end-of-life; model any brought-in operation separately and do not relabel it as category-wide float-glass production."
+      source_ids:
+        - unsd-cpc-3-0-explanatory-notes-2025
+        - unsd-hs-7005
+        - nga-flat-glass-pcr-2020
+    - rule_id: boundary_cutoff
+      applies_to: "omitted flows"
+      rule: "Seek complete mass and energy balance. Any cutoff shall be disclosed and justified; a flow expected to be environmentally relevant shall be included regardless of mass."
+      source_ids:
+        - nga-flat-glass-pcr-2020
+boundary_abstraction:
+  declared_starting_condition: "batch_materials_and_cullet_received_at_float_glass_site"
+  starting_condition_role: "purchased_or_transferred_inputs_to_continuous_flat_glass_manufacture"
+  product_classification_scope: "CPC 3.0 37113, unworked float or surface-ground/polished glass in sheets"
+  recursive_input_rule: "same-category glass input shall remain visible as purchased or transferred cullet/sheet input and shall not be silently absorbed into the reference output"
+  upstream_dataset_requirement: "link purchased materials, fuels, electricity, water, gases and packaging to geographically and technologically appropriate upstream datasets"
+  disclosure: "identify product mix, glass kind, thickness mix, coating/polishing route, cullet origin, furnace and energy carriers, site(s), period, gate and included packaging"
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Float glass and surface ground or polished glass, in sheets"
+    uuid: "1b43024e-16ea-42d2-830d-329c4a2abc3d"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200b9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "glass kind: ordinary clear"
+    - low-iron
+    - "tinted or opacified"
+    - "float or surface-ground/polished state"
+    - "nominal and measured thickness"
+    - "accepted area and net mass"
+    - "measured density or declared conversion basis"
+    - "iron content or applicable light-transmittance specification and test method"
+    - "online coating present/absent and chemistry/function when present"
+    - internal
+    - "pre-consumer external and post-consumer cullet fractions"
+    - "furnace type and fuel/electricity carriers"
+    - "tin-bath and annealing route"
+    - "cutting yield"
+    - "delivered sheet dimensions and packing state"
+    - geography
+    - "reporting period"
+    - "factory gate"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "net accepted reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize every exchange to 1,000 kg of saleable, quality-accepted sheets after edge trimming and rejection; exclude packing mass."
+  - id: area_mass_conversion
+    applies_to: "conversion between area and mass"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use mass = accepted area × measured mean thickness × measured product density. If measured density is unavailable for soda-lime-silicate glass, 2,500 kg/m3 may be used only as the EN 572-1 conventional calculation value and must be disclosed; do not use it for a different composition without evidence."
+  - id: thickness_area_records
+    applies_to: "each saleable product group"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record accepted area and thickness distribution by product group; do not convert a mixed-thickness output using one undeclared nominal thickness."
+  - id: cullet_fraction
+    applies_to: "batch cullet statement"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg/kg batch"
+    rule: "Calculate internal, pre-consumer external and post-consumer cullet separately on a dry batch-input mass basis; report their sum and do not count internally returned edge trim as external recycled content."
+  - id: cutting_yield
+    applies_to: "inspection and cutting"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg/kg ribbon input"
+    rule: "Cutting yield equals net accepted unpacked sheet mass divided by annealed ribbon mass entering inspection/cutting for the same reporting boundary."
+  - id: optical_iron_declaration
+    applies_to: "product identity and performance qualifier"
+    required_property_ref:
+      name: "declared test property"
+      uuid: ""
+    required_unit: "declared method unit"
+    rule: "Declare either measured total iron/iron-oxide content or an applicable light-transmittance specification and test method. Low-iron, tinted and coated variants shall not inherit ordinary-clear performance."
+process_map:
+  - id: batch_preparation
+    name: "Batch material and cullet preparation"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground"
+    quantitative_reference: "prepared batch delivered to melting"
+  - id: melting_refining
+    name: "Furnace melting and refining"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground"
+    quantitative_reference: "molten glass delivered to forming"
+  - id: float_forming
+    name: "Tin-bath float forming"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground"
+    quantitative_reference: "glass ribbon leaving the tin bath"
+  - id: annealing
+    name: "Annealing lehr"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground"
+    quantitative_reference: "annealed ribbon entering inspection"
+  - id: surface_finishing
+    name: "Surface grinding or polishing"
+    inclusion: "conditional"
+    inclusion_condition: "include only for a declared surface-ground or polished product"
+    role: "foreground"
+    quantitative_reference: "finished ribbon delivered to inspection/cutting"
+  - id: online_coating
+    name: "Online hot-ribbon coating"
+    inclusion: "conditional"
+    inclusion_condition: "include only when an online coating is present within the declared gate"
+    role: "foreground"
+    quantitative_reference: "online-coated ribbon"
+  - id: inspection_cutting_packing
+    name: "Inspection, edge trimming, cutting and packing"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground"
+    quantitative_reference: "1,000 kg accepted unpacked sheet product"
+process_inventory:
+  - id: batch_preparation
+    label: "Batch material and cullet preparation"
+    inputs:
+      product:
+        - row_id: virgin_batch_materials
+          role: "Virgin batch materials"
+          name: "Site-selected virgin glass batch material flows, one row per material in the produced dataset"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record silica sand, soda ash, limestone, dolomite and every minor batch constituent as separate site-selected product flows; preserve composition and moisture records rather than using an undeclared generic batch."
+          amount:
+            expression: "dry mass charged by constituent"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net accepted sheet product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_materials
+              source_ids:
+                - eu-jrc-glass-bref-2013
+            ranges: []
+        - row_id: cullet_inputs
+          role: "Internal and external cullet"
+          name: "Site-selected glass cullet product flows separated by origin"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record internal return cullet, pre-consumer external cullet and post-consumer cullet as distinct inputs. Supplier or site classification evidence is required for external fractions."
+          amount:
+            expression: "dry charged mass by cullet origin"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg total dry batch input and per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cullet_inputs
+              source_ids:
+                - nga-flat-glass-pcr-2020
+                - eu-jrc-glass-bref-2013
+            ranges:
+              - role: qa_guardrail
+                lower: "0.10"
+                upper: "0.40"
+                unit: "kg/kg total batch input"
+                basis: "total cullet charged to a float furnace divided by total batch input"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - eu-jrc-glass-bref-2013
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_batch
+          role: "Prepared batch"
+          name: "Prepared flat-glass batch"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The mixed batch output carries the measured constituent and cullet masses to the melting process."
+          amount:
+            expression: "calculated from charged constituents, retained moisture corrections and preparation losses"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "batch transferred to melting per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch_materials
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: melting_refining
+    label: "Furnace melting and refining"
+    inputs:
+      product:
+        - row_id: furnace_fuels
+          role: "Furnace fuels"
+          name: "Site-selected natural gas, fuel oil or other furnace fuel flows"
+          flow_type: "product"
+          property_unit: "Energy / MJ lower heating value, with physical units retained"
+          description: "Record each fuel by lower heating value and physical quantity; identify oxy-fuel, air-fuel, electric-boost or other furnace configuration."
+          amount:
+            expression: "metered fuel consumption by carrier"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per tonne molten glass and per 1,000 kg reference product"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carriers
+              source_ids:
+                - eu-jrc-glass-bref-2013
+            ranges:
+              - role: qa_guardrail
+                lower: "5.2"
+                upper: "8.7"
+                unit: "GJ/t molten glass"
+                basis: "total melting energy input reported for furnace melting"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - eu-jrc-glass-bref-2013
+        - row_id: melting_electricity
+          role: "Purchased electricity"
+          name: "Site- and market-appropriate electricity supply flow"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity separately from fuels, including electric boosting and furnace auxiliaries assigned to this process; use the supplier or residual/grid mix required by the study framework."
+          amount:
+            expression: "metered electricity assigned to melting and refining"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per tonne molten glass and per 1,000 kg reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carriers
+              source_ids:
+                - nga-flat-glass-pcr-2020
+                - eu-jrc-glass-bref-2013
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: molten_refined_glass
+          role: "Molten refined glass"
+          name: "Molten refined flat glass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record molten glass transferred to the tin bath from furnace production and mass-balance records."
+          amount:
+            expression: "calculated mass transferred from furnace to forming"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_furnace_mass_balance
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: direct_furnace_emissions
+          role: "Direct furnace emissions"
+          name: "Site-selected elementary flow for each emitted substance and compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record carbon dioxide from fuel and carbonate decomposition and monitored nitrogen oxides, sulfur oxides, particulate matter and other permit-relevant releases as separate elementary flows."
+          amount:
+            expression: "monitored or calculated annual emission by substance, with method identified"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-jrc-glass-bref-2013
+            ranges: []
+  - id: float_forming
+    label: "Tin-bath float forming"
+    inputs:
+      product:
+        - row_id: tin_bath_operating_inputs
+          role: "Tin-bath gases and tin make-up"
+          name: "Site-selected tin, nitrogen, hydrogen and sulfur-dioxide supply flows, one row per material in the produced dataset"
+          flow_type: "product"
+          property_unit: "Mass / kg or gas volume converted with declared conditions"
+          description: "Record nitrogen, hydrogen, sulfur dioxide and tin make-up actually used to maintain the bath atmosphere and equipment; do not assume these inputs are zero."
+          amount:
+            expression: "metered, purchased or inventory-adjusted use"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per tonne ribbon leaving the tin bath and per 1,000 kg reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_materials
+              source_ids:
+                - eu-jrc-glass-bref-2013
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: float_glass_ribbon
+          role: "Float glass ribbon"
+          name: "Float glass ribbon"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The ribbon output records actual mass and thickness distribution after float forming."
+          amount:
+            expression: "calculated or measured ribbon mass transferred to the lehr"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ribbon_output
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: annealing
+    label: "Annealing lehr"
+    inputs:
+      product:
+        - row_id: annealing_energy
+          role: "Lehr fuel and electricity"
+          name: "Site-selected lehr fuel and electricity supply flows"
+          flow_type: "product"
+          property_unit: "Energy / MJ and kWh"
+          description: "Record lehr fuel and electricity separately by carrier using meters or a documented allocation from shared utilities."
+          amount:
+            expression: "metered or documented shared-utility assignment by carrier"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per tonne annealed ribbon and per 1,000 kg reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carriers
+              source_ids:
+                - eu-jrc-glass-bref-2013
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: annealed_ribbon
+          role: "Annealed ribbon"
+          name: "Annealed flat-glass ribbon"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the ribbon mass entering finishing or inspection and retain thickness/product group linkage."
+          amount:
+            expression: "calculated or measured mass leaving the lehr"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ribbon_output
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: surface_finishing
+    label: "Surface grinding or polishing"
+    inputs:
+      product:
+        - row_id: surface_finishing_inputs
+          role: "Surface-finishing materials and utilities"
+          name: "Site-selected abrasive, water and electricity flows"
+          flow_type: "product"
+          property_unit: "Mass / kg, water / m3 and energy / kWh"
+          description: "When this route applies, record abrasives, water, electricity and other consumables separately and declare the treated surface and removed thickness."
+          amount:
+            expression: "measured consumption attributable to surface grinding or polishing"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg surface-finished output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditional_process_inputs
+              source_ids:
+                - unsd-cpc-3-0-explanatory-notes-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: surface_finished_ribbon
+          role: "Surface-finished ribbon"
+          name: "Surface-ground or polished glass ribbon"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record accepted ground or polished glass mass and route it to inspection/cutting; declare whether one or both faces were treated."
+          amount:
+            expression: "measured accepted output mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg surface-finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditional_process_outputs
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: online_coating
+    label: "Online hot-ribbon coating"
+    inputs:
+      product:
+        - row_id: online_coating_inputs
+          role: "Online coating precursors and utilities"
+          name: "Site-selected coating precursor, carrier-gas and utility flows"
+          flow_type: "product"
+          property_unit: "Mass / kg and energy / kWh or MJ"
+          description: "When an online coating is present, record precursor chemistry, carrier gases and energy within this process. Offline or later coating is outside this PCR boundary."
+          amount:
+            expression: "metered or reconciled consumption for online coating"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg online-coated output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditional_process_inputs
+              source_ids:
+                - unsd-hs-7005
+                - eu-jrc-glass-bref-2013
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: online_coated_ribbon
+          role: "Online-coated ribbon"
+          name: "Online-coated float glass ribbon"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record coated ribbon mass and declare coating chemistry/function, coated face and quality acceptance; do not apply it to uncoated production."
+          amount:
+            expression: "measured accepted output mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg online-coated reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditional_process_outputs
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: inspection_cutting_packing
+    label: "Inspection, edge trimming, cutting and packing"
+    inputs:
+      product:
+        - row_id: packing_and_cutting_inputs
+          role: "Packaging materials and finishing electricity"
+          name: "Site-selected electricity and packaging material flows, one row per input in the produced dataset"
+          flow_type: "product"
+          property_unit: "Energy / kWh and mass / kg"
+          description: "Record electricity for inspection/cutting and each packaging material. Packaging remains an input but is excluded from net reference-product mass."
+          amount:
+            expression: "metered electricity and purchased/issued packaging mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_packing_inputs
+              source_ids:
+                - nga-flat-glass-pcr-2020
+                - eurofloat-epd-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_sheet_glass
+          role: "Accepted sheet glass"
+          name: "Float glass and surface ground or polished glass, in sheets"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1b43024e-16ea-42d2-830d-329c4a2abc3d"
+          property_unit: "Mass / kg"
+          description: "This is the reference product output after inspection and cutting, before including packaging mass."
+          amount:
+            expression: "sum accepted sheet masses at the declared dimensions and thicknesses; normalize to 1,000 kg"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg net accepted unpacked sheet product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_accepted_sheet_output
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: cutting_cullet_and_rejects
+          role: "Edge trim, rejects and breakage"
+          name: "Site-selected glass cullet or waste flow by destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure edge trim, offcuts, quality rejects and breakage. Record the internal-remelt fraction separately from cullet transferred outside the site and final waste treatment."
+          amount:
+            expression: "measured mass by cause and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg ribbon entering inspection/cutting and per 1,000 kg reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_yield
+              source_ids:
+                - nga-flat-glass-pcr-2020
+                - eu-jrc-glass-bref-2013
+            ranges:
+              - role: qa_guardrail
+                lower: "0.80"
+                upper: "1.00"
+                unit: "kg accepted sheet/kg annealed ribbon input"
+                basis: "net accepted unpacked sheets divided by ribbon entering inspection/cutting"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "product groups, lines and conditional processes"
+    rule: "First avoid allocation through meter separation, production-line or campaign subdivision, and separate modelling of online coating or surface finishing."
+    source_ids:
+      - nga-flat-glass-pcr-2020
+  - rule_id: allocation_recycled_glass
+    applies_to: "internal and external cullet"
+    rule: "Internal edge trim and rejects returned within the site carry forward the burdens already inside the system and receive no recycled-content credit. External cullet shall use the recycled-material convention required by the declared study framework, with origin and any collection/processing burdens disclosed."
+    source_ids:
+      - nga-flat-glass-pcr-2020
+  - rule_id: allocation_shared_energy
+    applies_to: "shared furnace, utilities and lehr"
+    rule: "After subdivision is exhausted, allocate shared mass/energy-driven burdens by a documented physical relationship such as mass, energy demand or operating time that reflects causality."
+    source_ids:
+      - nga-flat-glass-pcr-2020
+  - rule_id: allocation_coproducts
+    applies_to: "saleable co-products"
+    rule: "If a co-product with material economic value remains and physical causality cannot be established, use economic allocation with contemporaneous prices and disclose a sensitivity result."
+    source_ids:
+      - nga-flat-glass-pcr-2020
+  - rule_id: allocation_no_avoided_burden
+    applies_to: "exported cullet, heat or by-products"
+    rule: "Do not subtract an avoided burden inside the core product inventory unless the declared LCA framework explicitly requires system expansion; report exports and method separately."
+    source_ids:
+      - nga-flat-glass-pcr-2020
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_batch_materials
+      process_id: "batch_preparation"
+      flow_role: "virgin batch materials and prepared batch"
+      record_type: "batch ticket and stock reconciliation"
+      raw_fields: "material id; supplier; wet mass; moisture; dry mass; formulation; batch id"
+      collection_method: "calibrated scale plus stock reconciliation"
+      unit: "kg dry"
+      frequency: "per batch and monthly reconciliation"
+      temporal_coverage: "representative reporting period, normally 12 months"
+      site_scope: "each included float line/site"
+      aggregation_rule: "sum dry constituent masses and normalize to accepted output"
+      quality_evidence: "scale calibration; batch tickets; purchase/stock records"
+    - protocol_id: cp_cullet_inputs
+      process_id: "batch_preparation"
+      flow_role: "internal and external cullet"
+      record_type: "cullet charge and origin record"
+      raw_fields: "mass; internal/external; pre/post-consumer; contamination; supplier; batch"
+      collection_method: "calibrated scale and origin documentation"
+      unit: "kg dry"
+      frequency: "per charge or lot"
+      temporal_coverage: "same period as output"
+      site_scope: "each included site"
+      aggregation_rule: "sum by origin; calculate fractions on total dry batch input"
+      quality_evidence: "scale calibration; supplier declarations; internal return log"
+    - protocol_id: cp_energy_carriers
+      process_id: "melting_refining_annealing"
+      flow_role: "fuel and electricity"
+      record_type: "meter, invoice and lower-heating-value record"
+      raw_fields: "carrier; physical quantity; energy; meter id; process assignment; supplier/grid mix"
+      collection_method: "calibrated meter; invoice reconciliation; documented shared-meter allocation"
+      unit: "MJ LHV; kWh"
+      frequency: "continuous/monthly"
+      temporal_coverage: "same period as output"
+      site_scope: "each furnace and included utilities"
+      aggregation_rule: "sum by carrier and allocate only after subdivision"
+      quality_evidence: "meter calibration; invoices; allocation worksheet"
+    - protocol_id: cp_furnace_mass_balance
+      process_id: "melting_refining"
+      flow_role: "molten refined glass"
+      record_type: "furnace production balance"
+      raw_fields: "batch input; cullet; volatilization estimate; pull rate; transferred mass; period"
+      collection_method: "production controls reconciled to mass inputs and outputs"
+      unit: "kg"
+      frequency: "shift/daily, monthly reconciliation"
+      temporal_coverage: "same period as output"
+      site_scope: "each furnace"
+      aggregation_rule: "reconcile furnace pull to downstream ribbon and losses"
+      quality_evidence: "control-system export; signed reconciliation"
+    - protocol_id: cp_direct_emissions
+      process_id: "melting_refining"
+      flow_role: "direct furnace emissions"
+      record_type: "stack monitoring and calculation record"
+      raw_fields: "substance; compartment; concentration; gas flow; fuel/carbonate input; method; uncertainty"
+      collection_method: "continuous/periodic monitoring or documented mass/emission calculation"
+      unit: "kg"
+      frequency: "permit frequency, aggregated monthly"
+      temporal_coverage: "same period as output"
+      site_scope: "each included stack"
+      aggregation_rule: "calculate by substance and normalize to accepted output"
+      quality_evidence: "monitoring QA/QC; laboratory report; calculation file"
+    - protocol_id: cp_process_materials
+      process_id: "float_forming"
+      flow_role: "tin-bath operating inputs"
+      record_type: "meter and stock record"
+      raw_fields: "material; purchase; opening/closing stock; replenishment; gas conditions"
+      collection_method: "meter or inventory reconciliation"
+      unit: "kg; Nm3 with conditions"
+      frequency: "continuous/monthly"
+      temporal_coverage: "same period as output"
+      site_scope: "each tin bath"
+      aggregation_rule: "convert gas volume with declared conditions and sum by flow"
+      quality_evidence: "meter calibration; inventory reconciliation"
+    - protocol_id: cp_ribbon_output
+      process_id: "float_forming_annealing"
+      flow_role: "ribbon output"
+      record_type: "line production record"
+      raw_fields: "timestamp; width; length; thickness; density basis; mass; product group"
+      collection_method: "line sensors reconciled with weighbridge/product records"
+      unit: "m2; mm; kg"
+      frequency: "continuous"
+      temporal_coverage: "same period as output"
+      site_scope: "each included line"
+      aggregation_rule: "calculate mass by group and reconcile to accepted output plus cullet"
+      quality_evidence: "sensor calibration; production reports"
+    - protocol_id: cp_conditional_process_inputs
+      process_id: "surface_finishing_online_coating"
+      flow_role: "conditional process inputs"
+      record_type: "meter, recipe and issue record"
+      raw_fields: "product group; material; chemistry; quantity; meter; treated area/mass"
+      collection_method: "process meter and material issue reconciliation"
+      unit: "kg; m3; kWh; MJ"
+      frequency: "per campaign/monthly"
+      temporal_coverage: "same period as conditional output"
+      site_scope: "each applicable process"
+      aggregation_rule: "sum only for products receiving the operation"
+      quality_evidence: "recipes; meter calibration; issue records"
+    - protocol_id: cp_conditional_process_outputs
+      process_id: "surface_finishing_online_coating"
+      flow_role: "conditional process output"
+      record_type: "production and quality record"
+      raw_fields: "input mass; accepted output; rejects; treated face; removed thickness or coating specification"
+      collection_method: "production system and quality inspection"
+      unit: "kg; m2; mm"
+      frequency: "per lot/campaign"
+      temporal_coverage: "same period as output"
+      site_scope: "each applicable process"
+      aggregation_rule: "sum accepted output by declared treatment"
+      quality_evidence: "inspection/test reports; production records"
+    - protocol_id: cp_cutting_packing_inputs
+      process_id: "inspection_cutting_packing"
+      flow_role: "cutting electricity and packaging"
+      record_type: "meter and material issue record"
+      raw_fields: "electricity; material id; issue mass; returned stock; product group"
+      collection_method: "submeter or documented allocation plus stock reconciliation"
+      unit: "kWh; kg"
+      frequency: "monthly"
+      temporal_coverage: "same period as output"
+      site_scope: "each cutting/packing area"
+      aggregation_rule: "sum by input and normalize to accepted output"
+      quality_evidence: "meter data; purchase/stock reconciliation"
+    - protocol_id: cp_cutting_yield
+      process_id: "inspection_cutting_packing"
+      flow_role: "edge trim, rejects and breakage"
+      record_type: "cutting and rejection log"
+      raw_fields: "ribbon input mass; accepted mass; edge trim; reject reason; breakage; internal return; external destination"
+      collection_method: "line mass/area records and calibrated scales"
+      unit: "kg"
+      frequency: "shift/lot, monthly reconciliation"
+      temporal_coverage: "same period as output"
+      site_scope: "each included line"
+      aggregation_rule: "yield = accepted mass / ribbon input; reconcile every residual by destination"
+      quality_evidence: "scale/sensor calibration; rejection and transfer records"
+    - protocol_id: cp_accepted_sheet_output
+      process_id: "inspection_cutting_packing"
+      flow_role: "accepted reference product"
+      record_type: "shipment, packing and quality record"
+      raw_fields: "product group; glass kind; state; thickness; dimensions; area; net mass; packing mass; coating; optical/iron result"
+      collection_method: "calibrated scale or validated area-thickness-density calculation linked to acceptance"
+      unit: "kg; m2; mm"
+      frequency: "per pack/lot"
+      temporal_coverage: "same period as inputs"
+      site_scope: "each included cutting and packing area"
+      aggregation_rule: "sum net accepted mass by product group; exclude packing mass"
+      quality_evidence: "calibration; calculation check; test certificate; shipment record"
+  calculation_rules:
+    - id: calc_area_mass
+      applies_to: "sheet mass from geometry"
+      rule: "mass_kg = accepted_area_m2 × mean_thickness_m × density_kg_per_m3; retain unrounded intermediate values"
+      inputs:
+        - cp_ribbon_output
+        - cp_accepted_sheet_output
+      output: "kg sheet glass"
+      source_ids:
+        - en-572-1-2012
+    - id: calc_cullet_fraction
+      applies_to: "cullet content"
+      rule: "cullet fraction by origin = dry cullet mass by origin / total dry batch-input mass; total cullet is the sum of origin fractions"
+      inputs:
+        - cp_batch_materials
+        - cp_cullet_inputs
+      output: "kg/kg dry batch input"
+      source_ids:
+        - nga-flat-glass-pcr-2020
+        - eu-jrc-glass-bref-2013
+    - id: calc_cutting_yield
+      applies_to: "inspection/cutting yield"
+      rule: "cutting yield = net accepted unpacked sheet mass / annealed ribbon mass entering inspection/cutting"
+      inputs:
+        - cp_ribbon_output
+        - cp_cutting_yield
+        - cp_accepted_sheet_output
+      output: "kg/kg ribbon input"
+      source_ids: []
+    - id: calc_reference_normalization
+      applies_to: "all inventory exchanges"
+      rule: "normalized exchange = reporting-period exchange × 1,000 kg / reporting-period net accepted reference-product mass"
+      inputs:
+        - "all applicable collection protocols"
+      output: "exchange per 1,000 kg reference product"
+      source_ids: []
+    - id: calc_mass_balance
+      applies_to: "each process and full foreground system"
+      rule: "input mass = product output + internally transferred cullet + exported waste + releases + documented stock change; explain non-measured residuals"
+      inputs:
+        - batch
+        - furnace
+        - ribbon
+        - "cutting and output records"
+      output: "reconciled mass balance and residual"
+      source_ids:
+        - eu-jrc-glass-bref-2013
+  data_quality_requirements:
+    - id: dq_representativeness
+      applies_to: "foreground period and product mix"
+      requirement: "Use a period representative of stable continuous operation, normally at least 12 consecutive months; disclose shutdowns, rebuilds, abnormal campaigns and product-mix weighting."
+      evidence: "dated production and operating records"
+    - id: dq_primary_data
+      applies_to: "controlled foreground processes"
+      requirement: "Use primary site data for all included operations under operational control and report coverage by mass and energy."
+      evidence: "meters, batch records, production records and coverage calculation"
+    - id: dq_identity
+      applies_to: "each declared product group"
+      requirement: "Link ordinary/low-iron/tinted state, ground/polished state, coating status, thickness, dimensions and optical/iron evidence to the output group."
+      evidence: "specification, test certificate and production master data"
+    - id: dq_energy
+      applies_to: "furnace, lehr and auxiliaries"
+      requirement: "Keep fuels and electricity separate, state heating-value basis, electricity mix and shared-meter allocation; do not infer a fuel/electricity split from sector totals."
+      evidence: "meter/invoice reconciliation and allocation worksheet"
+    - id: dq_mass_balance
+      applies_to: "batch through saleable sheet"
+      requirement: "Reconcile dry batch, cullet, molten/ribbon transfers, accepted output, internal returns, exported waste, emissions and stock change; investigate material residuals."
+      evidence: "signed mass-balance worksheet"
+    - id: dq_secondary_data
+      applies_to: "upstream datasets"
+      requirement: "Select temporally, geographically and technologically representative datasets and document substitutions and data age."
+      evidence: "dataset register and data-quality assessment"
+    - id: dq_reasoned_estimate
+      applies_to: "provisional cutting-yield QA range"
+      requirement: "Treat the 0.80–1.00 range only as a replaceable author screening value; it is neither a default inventory value nor a performance, legal or conformance threshold."
+      evidence: "explicit estimate label and replacement review"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference product"
+    rule: "The product resolves to CPC 3.0 37113 and declares glass kind, applicable surface state, thickness, dimensions, delivery state and online-coating status."
+    source_ids:
+      - unsd-cpc-3-0-explanatory-notes-2025
+      - unsd-hs-7005
+  - rule_id: validate_reference_flow
+    applies_to: "reference flow"
+    rule: "Net accepted unpacked output equals 1,000 kg and uses product flow 1b43024e-16ea-42d2-830d-329c4a2abc3d, Mass property 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass group 93a60a57-a4c8-11da-a746-0800200b9a66, and kg."
+    source_ids: []
+  - rule_id: validate_area_mass
+    applies_to: "geometry conversion"
+    rule: "Every area-to-mass conversion identifies area, thickness and density; use of 2,500 kg/m3 is limited to the disclosed EN 572-1 conventional soda-lime-silicate calculation value."
+    source_ids:
+      - en-572-1-2012
+  - rule_id: validate_optical_iron
+    applies_to: "product qualifier"
+    rule: "Iron content or applicable light-transmittance evidence is product-group specific and identifies the test/specification method; no category-wide value is inferred."
+    source_ids:
+      - en-572-1-2012
+  - rule_id: validate_cullet
+    applies_to: "cullet statement"
+    rule: "Internal, pre-consumer external and post-consumer cullet masses and fractions are separately reported and reconcile to total dry batch input."
+    source_ids:
+      - nga-flat-glass-pcr-2020
+      - eu-jrc-glass-bref-2013
+  - rule_id: validate_processes
+    applies_to: "process map"
+    rule: "Melting/fuels/electricity, tin bath, annealing and inspection/cutting are present; surface finishing and online coating are included only when applicable and remain separately visible."
+    source_ids:
+      - eu-jrc-glass-bref-2013
+  - rule_id: validate_yield
+    applies_to: "cutting and mass balance"
+    rule: "Ribbon input, accepted output, internal return, external waste and stock change reconcile, and cutting yield is reported; a value outside the reasoned-estimate screen triggers review but not automatic nonconformance."
+    source_ids: []
+  - rule_id: validate_exclusions
+    applies_to: "scope protection"
+    rule: "Tempering, laminating, insulating-unit assembly, mirrors, offline coating and downstream fabrication are excluded or modelled as explicitly separate downstream processes; photovoltaic cover glass is not generalized to the whole category."
+    source_ids:
+      - unsd-hs-7005
+      - nga-flat-glass-pcr-2020
+  - rule_id: validate_sources
+    applies_to: "evidence and estimates"
+    rule: "Every source ID resolves in the data-source register, site measurements retain quality evidence, and any reasoned estimate is labelled provisional and replaceable."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_unit_process_or_aggregated_cradle_to_gate_process"
+  downstream_use: "upstream material dataset for photovoltaic-module cover-glass, building-envelope and automotive-glazing studies when the declared product qualifiers match"
+  allowed_use: "unworked CPC 37113 sheet glass matching glass kind, thickness, optical/iron specification, online-coating status, geography, technology, period and factory gate"
+  excluded_use: "direct representation of tempered, laminated, insulating, mirrored, offline-coated, fabricated or single-purpose photovoltaic glass without additional specific processes and evidence"
+  required_metadata: "reference UUIDs; CPC code; glass kind; surface state; thickness/area/mass basis; density basis; iron or optical specification; online coating; cullet origin fractions; furnace and energy carriers; tin bath; annealing; cutting yield; delivery and packing state; geography; period; allocation; boundary"
+  required_quality_disclosure: "primary-data coverage; meter/calibration evidence; mass and energy reconciliation; product-mix weighting; upstream dataset choices; cutoff; allocation; estimate replacements; data-quality assessment"
+  update_trigger: "furnace rebuild or fuel switch; material electricity mix change; formulation or cullet-source change; coating/polishing route change; product-mix or thickness shift; boundary/allocation change; reporting data older than the declared validity period"
+data_sources:
+  - id: "unsd-cpc-3-0-explanatory-notes-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 explanatory notes, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (accessed 2026-08-08)"
+    used_for: "authoritative CPC 37113 identity and separation from adjacent glass-product subclasses"
+  - id: "unsd-hs-7005"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, HS 2017 heading 7005 detail, https://unstats.un.org/unsd/classifications/Econ/Detail/EN/2089/7005 (accessed 2026-08-08)"
+    used_for: "unworked sheet scope and conditional absorbent, reflecting or non-reflecting layer context"
+  - id: "nga-flat-glass-pcr-2020"
+    type: "standard"
+    reference: "National Glass Association and NSF International, Product Category Rule for Environmental Product Declarations: NGA PCR for Flat Glass, Version 2.0, September 2020, https://www.glass.org/sites/default/files/2021-10/pcr_flat_glass_2020.pdf (accessed 2026-08-08; expired 2025-09-30)"
+    used_for: "historical category method evidence for declared mass, boundary, cutoff, allocation, cullet and primary-data rules; not asserted as current conformity authority"
+  - id: "environdec-cpcr-009-flat-glass"
+    type: "official_guidance"
+    reference: "International EPD System, c-PCR-009 Flat glass products, valid through 2030-04-07, https://www.environdec.com/pcr-library/pcr2019-14-c-pcr-009 (accessed 2026-08-08)"
+    used_for: "current flat-glass PCR landscape and need to use a more specific applicable program rule for an EPD claim"
+  - id: "eu-jrc-glass-bref-2013"
+    type: "official_guidance"
+    reference: "European Commission JRC/EIPPCB, Best Available Techniques Reference Document for the Manufacture of Glass, 2013, https://op.europa.eu/en/publication-detail/-/publication/ff8a3955-d0d0-46f5-8a15-4b638896cb56 (accessed 2026-08-08)"
+    used_for: "float-process decomposition, materials, cullet, energy, emissions, tin bath, annealing and sector QA ranges"
+  - id: "en-572-1-2012"
+    type: "standard"
+    reference: "EN 572-1:2012, Glass in building — Basic soda lime silicate glass products — Part 1: Definitions and general physical and mechanical properties, public preview https://cdn.standards.iteh.ai/samples/37400/fe7c33b74a5747198946b44e88108b42/SIST-EN-572-1-2012.pdf (accessed 2026-08-08)"
+    used_for: "float-glass definition, conventional 2,500 kg/m3 calculation density and optical-property test context"
+  - id: "eurofloat-epd-2024"
+    type: "dataset"
+    reference: "Glas Trösch / IBU, Environmental Product Declaration: Float glass in construction EUROFLOAT, 2024, https://www.euroglas.com/fileadmin/user_upload/Service/Nachweise_und_Zertifikate/Umwelt_und_Qualitaetszertifikate/Float_glass_in_construction_EUROFLOAT.pdf (accessed 2026-08-08)"
+    used_for: "manufacturer-specific corroboration of batch–furnace–tin bath–lehr–inspection/cutting route and delivery states; no category-wide default values"
+  - id: "vitro-flat-glass-epd-2024"
+    type: "dataset"
+    reference: "Vitro Architectural Glass, Environmental Product Declaration: Flat Glass Products, 2024, https://www.vitroglazings.com/media/nf0nm25r/vitro-epd-flat-glass-products.pdf (accessed 2026-08-08)"
+    used_for: "manufacturer-specific corroboration of clear, low-iron and tinted variants and process sequence; no category-wide default values"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:41a31bc105ab79a3a025cfd1e6a923e2d34a24e086e0c95c8d51266dca5b0d71"
+  generated_content_sha256: "sha256:f07ad51e64e09adf3b80039b08c2594e76179e014f45eb92c939e328d8a5d2b5"

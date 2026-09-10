@@ -1,10 +1,1903 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21439"
-  title: "Other fruit juices, n.e.c."
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.other-fruit-juices-n-e-c"
+  classification_refs: "CPC 3.0: 21439, Other fruit juices, n.e.c."
+  covered_products: "Lemon, lime, mandarin, apricot, blackcurrant, cherry, coconut, pear, date, fig, raspberry, guava, gooseberry, mango, peach, prune, tamarind, lychee, passion-fruit and other fruit juices not separately classified; mixtures of fruit juices; directly expressed, reconstituted-from-concentrate, and concentrated market states when declared."
+  excluded_products: "Orange juice; grapefruit juice; pineapple juice; grape juice; apple juice; vegetable juice; fruit nectar; fruit purée sold as purée; fermented or alcoholic beverages; non-juice flavoured drinks."
+  representative_product: "Unfermented, single-strength passion-fruit juice in its declared saleable factory-gate packaging."
+  production_route: "Fruit receipt, washing and preparation; mechanical size reduction and extraction when fruit is the starting material; optional enzymatic treatment, clarification, aroma recovery, concentration or reconstitution; stabilization; filling and packaging; conditional cold storage; sanitation and wastewater management."
+  market_state: "Bulk or packaged; single-strength or concentrated; directly expressed or reconstituted; clear or cloudy; shelf-stable, chilled, or frozen, as declared."
+functional_unit:
+  what: "Supply unfermented other fruit juice that retains the essential physical, chemical, organoleptic, and nutritional characteristics of the declared fruit or fruit mixture."
+  how_much: "1,000 kg of saleable other fruit juice at the processing-site factory gate."
+  how_well: "Conforms to the declared fruit species or mixture, route, concentration state, soluble-solids value, clarity, preservation treatment, packaging format, and storage condition."
+  how_long_or_cycle: "One production lot delivered at the factory gate; no use-stage duration is assigned."
+  reference_flow_link: "The reference product output row is reference_product_other_fruit_juice in stabilization_packaging."
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_operations
+      applies_to: "processing_site"
+      rule: "Include receipt, washing, preparation, extraction when applicable, formulation, clarification, concentration or reconstitution when applicable, stabilization, packaging, onsite storage, sanitation, onsite wastewater treatment, and all direct releases controlled by the processing site."
+      source_ids:
+        - conidi-2020-fruit-juice-membranes
+        - fao-2001-fruit-juice-processing
+        - codex-cxc-1-1969
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased_inputs"
+      rule: "Keep fruit, juice, concentrate, ingredients, processing aids, packaging components, electricity, steam, fuel, refrigerants, water, and offsite waste-treatment services as explicit product or waste exchanges linked to appropriate upstream datasets."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_no_silent_cutoff
+      applies_to: "inventory_completeness"
+      rule: "Do not omit a material, energy, waste, or direct-emission exchange merely because it is small; any exclusion must be quantified, justified, and disclosed against the study's applicable cut-off rule."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_distribution
+      applies_to: "downstream_boundary"
+      rule: "End the default foreground dataset at the factory gate. Distribution, retail refrigeration, consumer storage, consumption, and packaging end-of-life require separately declared downstream scenarios."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Sound fruit received at the processor, or purchased fruit juice or fruit-juice concentrate received for blending, reconstitution, or further processing."
+  starting_condition_role: "Foreground gate; cultivation and production of purchased juice or concentrate are upstream."
+  product_classification_scope: "Other fruit juices, n.e.c., including listed minor-fruit juices and fruit-juice mixtures, excluding the five separately classified fruit juices and non-juice products."
+  recursive_input_rule: "Purchased juice or concentrate that falls within the same product category remains an explicit product input; do not recursively recreate its upstream production inside this foreground process."
+  upstream_dataset_requirement: "Link every purchased fruit, juice, concentrate, ingredient, processing aid, utility, refrigerant, packaging component, and offsite treatment service to a geographically and technologically representative upstream dataset."
+  disclosure: "Declare fruit species and mixture, starting material, concentration state, route, preservation, packaging, storage, site geography, reference period, exclusions, allocation, and whether residues are products or wastes."
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Passion-fruit juice"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "fruit species and botanical or common name"
+    - "mixture composition by mass"
+    - "directly expressed"
+    - reconstituted
+    - "or concentrated route"
+    - "measured soluble solids in °Brix and measurement temperature"
+    - "clear or cloudy"
+    - "pulp or cells restored"
+    - "preservation treatment"
+    - "packaging format and bill of materials"
+    - shelf-stable
+    - chilled
+    - "or frozen condition"
+    - "production geography"
+    - "reference period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product and all mass-dimension inventory rows"
+    required_property_ref:
+      name: "Mass ; Units of mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize the saleable reference product to 1,000 kg. Preserve measured wet mass for fruit, juice, ingredients, packaging, residues, wastes, refrigerants, and direct mass emissions."
+  - id: soluble_solids_declaration
+    applies_to: "reference product and reconstitution or concentration control"
+    required_property_ref:
+      name: "soluble solids"
+      uuid: ""
+    required_unit: "°Brix"
+    rule: "Record the measured °Brix, measurement temperature, analytical method, fruit species, and whether the juice is directly expressed, reconstituted, or concentrated; do not substitute a generic category value for a species-specific specification."
+  - id: energy_conversion
+    applies_to: "electricity, steam, and fuel"
+    required_property_ref:
+      name: "energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Preserve the invoiced or metered unit and conversion factor; do not combine electricity, purchased steam, and natural gas into one energy row."
+  - id: water_measurement
+    applies_to: "process, reconstitution, and sanitation water"
+    required_property_ref:
+      name: "volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Record each water use by process meter, batch record, or defensible allocation from a shared meter and identify recycled water separately from incoming water."
+  - id: effluent_load_measurement
+    applies_to: "direct water emissions"
+    required_property_ref:
+      name: "mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Calculate each reported pollutant load from matched effluent volume and concentration records; do not report wastewater volume as a substitute for an individual pollutant load."
+process_map:
+  - id: fruit_receiving_preparation
+    name: "Fruit receiving and preparation"
+    inclusion: "conditional"
+    inclusion_condition: "Required when whole or prepared fruit enters the foreground site."
+    role: "foreground preparation"
+    quantitative_reference: "kg prepared fruit transferred to extraction"
+  - id: juice_extraction_separation
+    name: "Juice extraction and primary separation"
+    inclusion: "conditional"
+    inclusion_condition: "Required when juice is mechanically extracted from fruit at the foreground site."
+    role: "foreground conversion"
+    quantitative_reference: "kg raw juice transferred to finishing"
+  - id: formulation_finishing
+    name: "Formulation, clarification, concentration or reconstitution"
+    inclusion: "required"
+    inclusion_condition: "At least the operations actually used by the declared route are included."
+    role: "foreground finishing"
+    quantitative_reference: "kg stabilized bulk juice transferred to packaging"
+  - id: stabilization_packaging
+    name: "Stabilization, filling and packaging"
+    inclusion: "required"
+    inclusion_condition: "Include the declared thermal, non-thermal or aseptic stabilization and the actual bulk or retail packaging route."
+    role: "foreground production"
+    quantitative_reference: "kg saleable reference product"
+  - id: cold_storage
+    name: "Chilled or frozen storage"
+    inclusion: "conditional"
+    inclusion_condition: "Required when the declared market state uses controlled-temperature storage before the factory gate."
+    role: "foreground storage"
+    quantitative_reference: "kg packaged juice released from storage"
+  - id: sanitation_wastewater
+    name: "Sanitation and wastewater management"
+    inclusion: "required"
+    inclusion_condition: "Include cleaning and disinfection for all in-scope operations and onsite wastewater treatment when present."
+    role: "foreground support"
+    quantitative_reference: "allocation to in-scope production during the reference period"
+process_inventory:
+  - id: fruit_receiving_preparation
+    label: "Fruit receiving and preparation"
+    inputs:
+      product:
+        - row_id: fruit_received
+          role: "Sound fruit received"
+          name: "Fresh passion fruit"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record each fruit species as a separate exchange when a mixture is produced."
+          amount:
+            expression: "measured accepted fruit mass at site receipt before washing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_batch_balance
+              source_ids:
+                - codex-cxs-247-2005
+                - fao-2001-fruit-juice-processing
+            ranges: []
+        - row_id: fruit_wash_water
+          role: "Fruit-washing water"
+          name: "Potable water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record incoming water used directly to wash fruit."
+          amount:
+            expression: "metered or batch-recorded incoming wash water, net of separately measured recycled water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_batch_balance
+              source_ids:
+                - fao-2001-fruit-juice-processing
+            ranges: []
+        - row_id: fruit_wash_sodium_hypochlorite
+          role: "Fruit-wash sodium hypochlorite"
+          name: "Sodium hypochlorite"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record this sanitizer only when sodium hypochlorite is actually dosed to fruit-washing water."
+          amount:
+            expression: "purchased active product mass reconciled with dosing records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_batch_balance
+              source_ids:
+                - fao-2001-fruit-juice-processing
+            ranges: []
+        - row_id: receiving_electricity
+          role: "Receiving electricity"
+          name: "Electricity, grid mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for conveyors, washers, sorting, trimming, peeling, destoning, and size reduction assigned to this process."
+          amount:
+            expression: "submetered electricity or documented allocation from a shared meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_batch_balance
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_fruit
+          role: "Prepared fruit"
+          name: "Prepared passion fruit"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record the cleaned and physically prepared fruit transferred to extraction."
+          amount:
+            expression: "measured transfer mass or batch mass balance"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_receiving_batch_balance
+              source_ids:
+                - conidi-2020-fruit-juice-membranes
+            ranges: []
+      waste:
+        - row_id: rejected_fruit
+          role: "Rejected fruit"
+          name: "Rejected passion fruit waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record fruit rejected during receipt, sorting, trimming, peeling, destoning, or preparation when it leaves as waste."
+          amount:
+            expression: "measured waste mass by destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_batch_balance
+              source_ids:
+                - esparza-2020-fruit-vegetable-waste
+            ranges: []
+        - row_id: fruit_wash_wastewater
+          role: "Fruit-wash wastewater"
+          name: "Fruit-wash wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record wash water leaving this process for onsite or offsite treatment."
+          amount:
+            expression: "metered discharge or water balance assigned to fruit washing"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_receiving_batch_balance
+              source_ids:
+                - conidi-2020-fruit-juice-membranes
+            ranges: []
+      elementary:
+        []
+  - id: juice_extraction_separation
+    label: "Juice extraction and primary separation"
+    inputs:
+      product:
+        - row_id: prepared_fruit_input
+          role: "Prepared fruit input"
+          name: "Prepared passion fruit"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record prepared fruit entering milling, crushing, grinding, pulping, or pressing."
+          amount:
+            expression: "measured transfer mass from preparation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_batch_balance
+              source_ids:
+                - conidi-2020-fruit-juice-membranes
+            ranges: []
+        - row_id: pectinase_input
+          role: "Pectinase input"
+          name: "Pectinase enzyme preparation"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record pectinase only when it is used for maceration, liquefaction, extraction, or clarification."
+          amount:
+            expression: "batch dosing record reconciled with inventory movement"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_batch_balance
+              source_ids:
+                - codex-cxs-247-2005
+                - conidi-2020-fruit-juice-membranes
+            ranges: []
+        - row_id: extraction_water
+          role: "Extraction water"
+          name: "Potable water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record water added during maceration or extraction only when it becomes a process input."
+          amount:
+            expression: "metered or batch-dosed extraction water"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_batch_balance
+              source_ids:
+                - conidi-2020-fruit-juice-membranes
+            ranges: []
+        - row_id: extraction_electricity
+          role: "Extraction electricity"
+          name: "Electricity, grid mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for milling, crushing, pulping, pressing, pumping, centrifugation, and primary filtration."
+          amount:
+            expression: "submetered electricity or documented allocation from a shared meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_batch_balance
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: raw_juice
+          role: "Raw extracted juice"
+          name: "Raw passion-fruit juice"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record juice transferred from extraction to finishing before stabilization."
+          amount:
+            expression: "measured transfer mass or batch mass balance"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_extraction_batch_balance
+              source_ids:
+                - conidi-2020-fruit-juice-membranes
+            ranges: []
+        - row_id: recovered_fruit_aroma
+          role: "Recovered fruit aroma"
+          name: "Recovered passion-fruit aroma"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record aroma recovered from the same kind of fruit only when it leaves extraction as a separately managed co-product or intermediate."
+          amount:
+            expression: "measured recovered mass"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_batch_balance
+              source_ids:
+                - codex-cxs-247-2005
+                - conidi-2020-fruit-juice-membranes
+            ranges: []
+        - row_id: fruit_pomace_coproduct
+          role: "Fruit pomace co-product"
+          name: "Passion-fruit pomace"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Use this product row only when pomace is sold or transferred for a documented beneficial use and therefore is not waste."
+          amount:
+            expression: "measured wet mass by documented destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_batch_balance
+              source_ids:
+                - esparza-2020-fruit-vegetable-waste
+            ranges: []
+      waste:
+        - row_id: fruit_pomace_waste
+          role: "Fruit pomace waste"
+          name: "Passion-fruit pomace waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Use this waste row when pomace is discarded or sent to waste treatment rather than transferred as a co-product."
+          amount:
+            expression: "measured wet mass by treatment destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_batch_balance
+              source_ids:
+                - esparza-2020-fruit-vegetable-waste
+            ranges: []
+        - row_id: extraction_wastewater
+          role: "Extraction wastewater"
+          name: "Juice-extraction wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record liquid reject or equipment drainage generated during extraction, separate from sanitation wastewater when separately measured."
+          amount:
+            expression: "metered discharge or process water balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_extraction_batch_balance
+              source_ids:
+                - conidi-2020-fruit-juice-membranes
+            ranges: []
+      elementary:
+        []
+  - id: formulation_finishing
+    label: "Formulation, clarification, concentration or reconstitution"
+    inputs:
+      product:
+        - row_id: raw_juice_input
+          role: "Raw juice input"
+          name: "Raw passion-fruit juice"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record foreground-extracted or purchased single-strength juice entering finishing."
+          amount:
+            expression: "measured transfer or purchase mass by fruit species"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_material_utility_balance
+              source_ids:
+                - codex-cxs-247-2005
+            ranges: []
+        - row_id: fruit_juice_concentrate
+          role: "Fruit-juice concentrate"
+          name: "Passion-fruit juice concentrate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record each purchased concentrate by fruit species when the juice is reconstituted or blended from concentrate."
+          amount:
+            expression: "received mass reconciled with batch formulation records and measured °Brix"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_material_utility_balance
+              source_ids:
+                - codex-cxs-247-2005
+            ranges: []
+        - row_id: reconstitution_water
+          role: "Reconstitution water"
+          name: "Potable water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record potable water incorporated into juice reconstituted from concentrate."
+          amount:
+            expression: "batch-dosed or metered water incorporated into product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_material_utility_balance
+              source_ids:
+                - codex-cxs-247-2005
+            ranges: []
+        - row_id: bentonite_clarifier
+          role: "Bentonite clarifier"
+          name: "Bentonite"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record bentonite only when it is actually used as a clarifying or filtration aid."
+          amount:
+            expression: "batch dosing record reconciled with stock movement"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_material_utility_balance
+              source_ids:
+                - codex-cxs-247-2005
+            ranges: []
+        - row_id: diatomaceous_earth_filter_aid
+          role: "Diatomaceous-earth filter aid"
+          name: "Diatomaceous earth"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record diatomaceous earth only when used in filtration."
+          amount:
+            expression: "batch dosing record reconciled with stock movement"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_material_utility_balance
+              source_ids:
+                - codex-cxs-247-2005
+            ranges: []
+        - row_id: finishing_electricity
+          role: "Finishing electricity"
+          name: "Electricity, grid mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for pumping, centrifugation, filtration, membrane separation, homogenization, cooling, and controls."
+          amount:
+            expression: "submetered electricity or documented allocation from a shared meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_material_utility_balance
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: purchased_steam
+          role: "Purchased steam"
+          name: "Steam, purchased"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record purchased steam used for evaporation, heating, pasteurization, or cleaning heat in this process."
+          amount:
+            expression: "metered purchased steam; exclude steam generated from natural gas already represented by the fuel row"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_material_utility_balance
+              source_ids:
+                - conidi-2020-fruit-juice-membranes
+            ranges: []
+        - row_id: natural_gas
+          role: "Natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record natural gas only when it is combusted onsite for process heat or steam generation assigned to finishing."
+          amount:
+            expression: "metered fuel at lower or higher heating value with the basis declared"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_material_utility_balance
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: finishing_refrigerant_r134a
+          role: "Finishing refrigerant R-134a"
+          name: "1,1,1,2-Tetrafluoroethane (R-134a)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record R-134a make-up assigned to finishing equipment only when that refrigerant is installed."
+          amount:
+            expression: "reconciled refrigerant purchases, additions, recovery, and inventory change"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing_material_utility_balance
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: finishing_refrigerant_ammonia
+          role: "Finishing refrigerant ammonia"
+          name: "Ammonia, anhydrous (R-717)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record anhydrous ammonia make-up assigned to finishing equipment only when ammonia refrigeration is installed."
+          amount:
+            expression: "reconciled refrigerant purchases, additions, recovery, and inventory change"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing_material_utility_balance
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: stabilized_bulk_juice
+          role: "Stabilized bulk juice"
+          name: "Stabilized passion-fruit juice"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record bulk juice transferred to filling after the declared finishing and stabilization operations."
+          amount:
+            expression: "measured transfer mass and °Brix reconciled with formulation and concentration records"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing_material_utility_balance
+              source_ids:
+                - codex-cxs-247-2005
+                - conidi-2020-fruit-juice-membranes
+            ranges: []
+      waste:
+        - row_id: clarification_solids
+          role: "Clarification solids"
+          name: "Fruit-juice clarification solids"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record separated suspended solids when they leave as waste."
+          amount:
+            expression: "measured wet mass by treatment destination"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_material_utility_balance
+              source_ids:
+                - conidi-2020-fruit-juice-membranes
+                - esparza-2020-fruit-vegetable-waste
+            ranges: []
+        - row_id: spent_filter_aid
+          role: "Spent diatomaceous earth"
+          name: "Spent diatomaceous earth"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record spent diatomaceous earth separately after filtration."
+          amount:
+            expression: "measured wet mass by treatment destination"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_material_utility_balance
+              source_ids:
+                - codex-cxs-247-2005
+            ranges: []
+        - row_id: spent_bentonite
+          role: "Spent bentonite"
+          name: "Spent bentonite"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record spent bentonite separately after clarification."
+          amount:
+            expression: "measured wet mass by treatment destination"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_material_utility_balance
+              source_ids:
+                - codex-cxs-247-2005
+            ranges: []
+        - row_id: finishing_wastewater
+          role: "Finishing wastewater"
+          name: "Fruit-juice finishing wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record evaporator condensate, membrane permeate rejected from reuse, and process drainage as wastewater only when they share the declared treatment destination."
+          amount:
+            expression: "metered discharge or process water balance by destination"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing_material_utility_balance
+              source_ids:
+                - conidi-2020-fruit-juice-membranes
+            ranges: []
+      elementary:
+        - row_id: boiler_carbon_dioxide_fossil
+          role: "Fossil carbon dioxide from boiler"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record direct fossil carbon dioxide only for onsite natural-gas combustion assigned to this process."
+          amount:
+            expression: "measured emission or fuel use multiplied by a documented facility or regulatory factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_release_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: boiler_methane
+          role: "Methane from boiler"
+          name: "Methane, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record direct methane from onsite natural-gas combustion separately from carbon dioxide."
+          amount:
+            expression: "measured emission or fuel use multiplied by a documented facility or regulatory factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_release_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: boiler_nitrous_oxide
+          role: "Nitrous oxide from boiler"
+          name: "Dinitrogen monoxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record direct nitrous oxide from onsite combustion as an individual emission."
+          amount:
+            expression: "measured emission or fuel use multiplied by a documented facility or regulatory factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_release_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: boiler_nitrogen_oxides
+          role: "Nitrogen oxides from boiler"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record direct nitrogen oxides from the applicable stack test, continuous monitor, permit inventory, or documented factor."
+          amount:
+            expression: "measured or documented-factor emission assigned to juice production"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_release_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: boiler_sulfur_dioxide
+          role: "Sulfur dioxide from boiler"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record direct sulfur dioxide when reported for the onsite combustion source."
+          amount:
+            expression: "measured or documented-factor emission assigned to juice production"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_release_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: boiler_particulate_matter_2_5
+          role: "Fine particulate matter from boiler"
+          name: "Particulate matter, diameter below 2.5 µm, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record direct fine particulate matter from onsite combustion separately from gaseous pollutants."
+          amount:
+            expression: "measured or documented-factor emission assigned to juice production"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_release_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: finishing_r134a_emission
+          role: "R-134a emission from finishing"
+          name: "1,1,1,2-Tetrafluoroethane (R-134a) to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record R-134a leaked from finishing refrigeration as an elementary emission."
+          amount:
+            expression: "refrigerant mass balance assigned to finishing equipment"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_release_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: finishing_ammonia_emission
+          role: "Ammonia emission from finishing"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record ammonia leaked from finishing refrigeration as an elementary emission."
+          amount:
+            expression: "refrigerant mass balance assigned to finishing equipment"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_release_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+  - id: stabilization_packaging
+    label: "Stabilization, filling and packaging"
+    inputs:
+      product:
+        - row_id: stabilized_juice_input
+          role: "Stabilized juice input"
+          name: "Stabilized passion-fruit juice"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record juice entering the declared thermal, non-thermal, aseptic, filling, and packaging sequence."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom_balance
+              source_ids:
+                - fao-2001-fruit-juice-processing
+            ranges: []
+        - row_id: pet_bottle
+          role: "PET bottle"
+          name: "Polyethylene terephthalate bottle"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record the PET bottle body separately when the declared packaging route uses PET bottles."
+          amount:
+            expression: "product-specific bill of materials reconciled with packaging issues and inventory change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom_balance
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: polypropylene_closure
+          role: "Polypropylene closure"
+          name: "Polypropylene bottle closure"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record the polypropylene closure separately from the bottle body."
+          amount:
+            expression: "product-specific bill of materials reconciled with packaging issues and inventory change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom_balance
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: polyethylene_label
+          role: "Polyethylene label"
+          name: "Polyethylene bottle label"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record the polyethylene label or sleeve separately when used."
+          amount:
+            expression: "product-specific bill of materials reconciled with packaging issues and inventory change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom_balance
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: corrugated_board_case
+          role: "Corrugated-board case"
+          name: "Corrugated board case"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record corrugated secondary packaging separately from primary packaging."
+          amount:
+            expression: "product-specific bill of materials reconciled with packaging issues and inventory change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom_balance
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: wooden_pallet
+          role: "Wooden pallet"
+          name: "Wooden pallet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record pallet mass attributable to the shipment, accounting separately for documented reuse."
+          amount:
+            expression: "shipment record multiplied by attributable pallet mass and declared reuse accounting"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_bom_balance
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_electricity
+          role: "Packaging electricity"
+          name: "Electricity, grid mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for stabilization equipment assigned here, container handling, filling, sealing, coding, and case packing."
+          amount:
+            expression: "submetered electricity or documented allocation from a shared meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom_balance
+              source_ids:
+                - fao-2001-fruit-juice-processing
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_other_fruit_juice
+          role: "Reference product: other fruit juice"
+          name: "Passion-fruit juice"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This is the saleable reference product in the declared concentration, preservation, packaging, and storage state."
+          amount:
+            expression: "measured saleable output mass normalized by calc_reference_normalization to 1,000 kg"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_bom_balance
+              source_ids:
+                - codex-cxs-247-2005
+            ranges: []
+      waste:
+        - row_id: off_spec_juice
+          role: "Off-specification juice"
+          name: "Off-specification fruit juice waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record saleable juice losses and rejected finished product separately from wastewater."
+          amount:
+            expression: "measured rejected product mass by treatment destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom_balance
+              source_ids:
+                - esparza-2020-fruit-vegetable-waste
+            ranges: []
+        - row_id: waste_pet
+          role: "Waste PET"
+          name: "Waste polyethylene terephthalate"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record rejected PET bottle material separately from other packaging waste."
+          amount:
+            expression: "measured packaging scrap mass by treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom_balance
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: waste_polypropylene
+          role: "Waste polypropylene"
+          name: "Waste polypropylene"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record rejected polypropylene closures separately from other packaging waste."
+          amount:
+            expression: "measured packaging scrap mass by treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom_balance
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: waste_polyethylene
+          role: "Waste polyethylene"
+          name: "Waste polyethylene"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record rejected polyethylene labels or sleeves separately from other packaging waste."
+          amount:
+            expression: "measured packaging scrap mass by treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom_balance
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: waste_corrugated_board
+          role: "Waste corrugated board"
+          name: "Waste corrugated board"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record rejected corrugated board separately from plastic packaging waste."
+          amount:
+            expression: "measured packaging scrap mass by treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom_balance
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      elementary:
+        []
+  - id: cold_storage
+    label: "Chilled or frozen storage"
+    inputs:
+      product:
+        - row_id: packaged_juice_input
+          role: "Packaged juice entering cold storage"
+          name: "Packaged passion-fruit juice"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record packaged juice entering controlled-temperature storage before the factory gate."
+          amount:
+            expression: "warehouse receipt mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_energy_refrigerant
+              source_ids:
+                - fao-2001-fruit-juice-processing
+            ranges: []
+        - row_id: cold_storage_electricity
+          role: "Cold-storage electricity"
+          name: "Electricity, grid mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for chilled or frozen storage assigned by measured occupancy and storage time."
+          amount:
+            expression: "submetered electricity allocated by documented mass-time occupancy"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_energy_refrigerant
+              source_ids:
+                - fao-2001-fruit-juice-processing
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: cold_storage_refrigerant_r134a
+          role: "Cold-storage refrigerant R-134a"
+          name: "1,1,1,2-Tetrafluoroethane (R-134a)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record R-134a make-up only when that refrigerant is installed in cold storage."
+          amount:
+            expression: "refrigerant inventory balance assigned to cold-storage equipment"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_energy_refrigerant
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: cold_storage_refrigerant_ammonia
+          role: "Cold-storage refrigerant ammonia"
+          name: "Ammonia, anhydrous (R-717)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record anhydrous ammonia make-up only when ammonia refrigeration is installed in cold storage."
+          amount:
+            expression: "refrigerant inventory balance assigned to cold-storage equipment"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_energy_refrigerant
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cold_stored_packaged_juice
+          role: "Cold-stored packaged juice"
+          name: "Packaged passion-fruit juice, cold stored"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record packaged juice released from controlled-temperature storage at the factory gate."
+          amount:
+            expression: "warehouse issue mass reconciled with storage losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_energy_refrigerant
+              source_ids:
+                - fao-2001-fruit-juice-processing
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: cold_storage_r134a_emission
+          role: "R-134a emission from cold storage"
+          name: "1,1,1,2-Tetrafluoroethane (R-134a) to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record R-134a leaked from cold-storage refrigeration as an elementary emission."
+          amount:
+            expression: "refrigerant mass balance assigned to cold-storage equipment"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_energy_refrigerant
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: cold_storage_ammonia_emission
+          role: "Ammonia emission from cold storage"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record ammonia leaked from cold-storage refrigeration as an elementary emission."
+          amount:
+            expression: "refrigerant mass balance assigned to cold-storage equipment"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_energy_refrigerant
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+  - id: sanitation_wastewater
+    label: "Sanitation and wastewater management"
+    inputs:
+      product:
+        - row_id: sanitation_water
+          role: "Sanitation water"
+          name: "Potable water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record incoming water used for equipment, line, container, and facility cleaning and rinsing."
+          amount:
+            expression: "sanitation meter or cycle-level water record assigned to in-scope production"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_wastewater_records
+              source_ids:
+                - codex-cxc-1-1969
+            ranges: []
+        - row_id: sanitation_sodium_hydroxide
+          role: "Sodium hydroxide cleaner"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record sodium hydroxide only when used in an alkaline cleaning cycle."
+          amount:
+            expression: "purchased product mass reconciled with concentration, cycle volume, and stock records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_wastewater_records
+              source_ids:
+                - codex-cxc-1-1969
+            ranges: []
+        - row_id: sanitation_nitric_acid
+          role: "Nitric-acid cleaner"
+          name: "Nitric acid"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record nitric acid only when used in an acid cleaning cycle."
+          amount:
+            expression: "purchased product mass reconciled with concentration, cycle volume, and stock records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_wastewater_records
+              source_ids:
+                - codex-cxc-1-1969
+            ranges: []
+        - row_id: sanitation_peracetic_acid
+          role: "Peracetic-acid disinfectant"
+          name: "Peracetic acid"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record peracetic acid only when it is the disinfectant used after cleaning."
+          amount:
+            expression: "purchased product mass reconciled with concentration, cycle volume, and stock records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_wastewater_records
+              source_ids:
+                - codex-cxc-1-1969
+            ranges: []
+        - row_id: sanitation_electricity
+          role: "Sanitation electricity"
+          name: "Electricity, grid mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for clean-in-place pumps, washers, and onsite wastewater equipment."
+          amount:
+            expression: "submetered electricity or documented allocation from a shared meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_wastewater_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: sanitation_steam
+          role: "Sanitation steam"
+          name: "Steam, purchased"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record purchased steam used directly for sanitation, separate from process steam."
+          amount:
+            expression: "metered purchased steam assigned to sanitation cycles"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_wastewater_records
+              source_ids:
+                - codex-cxc-1-1969
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: sanitation_wastewater
+          role: "Sanitation wastewater"
+          name: "Sanitation wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record combined cleaning and rinsing water leaving for onsite or offsite treatment."
+          amount:
+            expression: "metered discharge or water balance assigned to sanitation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sanitation_wastewater_records
+              source_ids:
+                - codex-cxc-1-1969
+            ranges: []
+        - row_id: wastewater_sludge
+          role: "Wastewater-treatment sludge"
+          name: "Fruit-juice wastewater-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record dewatered sludge from onsite wastewater treatment by actual destination."
+          amount:
+            expression: "measured wet mass with dry-matter content retained as quality evidence"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_wastewater_records
+              source_ids:
+                - esparza-2020-fruit-vegetable-waste
+            ranges: []
+        - row_id: wastewater_screenings
+          role: "Wastewater screenings"
+          name: "Fruit-juice wastewater screenings"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record coarse solids removed by onsite wastewater screens separately from sludge."
+          amount:
+            expression: "measured wet mass by treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_wastewater_records
+              source_ids:
+                - esparza-2020-fruit-vegetable-waste
+            ranges: []
+      elementary:
+        - row_id: wastewater_treatment_methane
+          role: "Methane from onsite wastewater treatment"
+          name: "Methane, biogenic, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record methane emitted from onsite wastewater treatment as an individual air emission."
+          amount:
+            expression: "measured emission or treated organic load multiplied by a documented facility or regulatory factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_release_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: wastewater_treatment_nitrous_oxide
+          role: "Nitrous oxide from onsite wastewater treatment"
+          name: "Dinitrogen monoxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record nitrous oxide emitted from onsite wastewater treatment separately from methane."
+          amount:
+            expression: "measured emission or treated nitrogen load multiplied by a documented facility or regulatory factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_release_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: effluent_chemical_oxygen_demand
+          role: "Effluent chemical oxygen demand"
+          name: "Chemical oxygen demand to freshwater"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record chemical oxygen demand discharged to receiving water only when onsite treatment discharges directly."
+          amount:
+            expression: "matched effluent volume and laboratory concentration records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_release_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: effluent_total_nitrogen
+          role: "Effluent total nitrogen"
+          name: "Total nitrogen to freshwater"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record total nitrogen discharged to receiving water as a separate pollutant load."
+          amount:
+            expression: "matched effluent volume and laboratory concentration records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_release_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: effluent_total_phosphorus
+          role: "Effluent total phosphorus"
+          name: "Total phosphorus to freshwater"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record total phosphorus discharged to receiving water as a separate pollutant load."
+          amount:
+            expression: "matched effluent volume and laboratory concentration records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_release_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "shared_operations"
+    rule: "Avoid allocation by submetering or subdividing fruit species, product routes, batches, packaging lines, storage, sanitation, and wastewater operations wherever directly attributable records can be obtained."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical_second
+    applies_to: "unavoidable_shared_burdens"
+    rule: "When subdivision is not feasible, use a documented physical relationship that represents the causal use of the shared input or service; mass, operating time, metered volume, or mass-time occupancy may be used only when it is relevant to that shared operation."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_economic_last
+    applies_to: "co_products"
+    rule: "If no relevant physical relationship can be justified for saleable juice, recovered aroma, or pomace co-products, allocate remaining shared burdens by consistent factory-gate economic value using a representative price period and disclose currency, period, quantities, and sensitivity."
+    source_ids:
+      - eu-pef-2021-2279
+      - esparza-2020-fruit-vegetable-waste
+  - rule_id: allocation_waste_destination
+    applies_to: "residues_and_wastes"
+    rule: "Classify each residue once as a product or waste according to its documented destination. Do not simultaneously use the pomace product and pomace waste rows for the same mass, and do not credit avoided products inside the default attributional foreground dataset."
+    source_ids:
+      - esparza-2020-fruit-vegetable-waste
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_receiving_batch_balance
+      process_id: "fruit_receiving_preparation"
+      flow_role: "received fruit, preparation inputs, prepared fruit, rejects, wash wastewater"
+      record_type: "weighbridge, batch, meter, dosing, and waste records"
+      raw_fields: "fruit species; supplier; accepted kg; rejected kg; prepared kg; wash-water m3; sanitizer kg; electricity kWh; wastewater m3; destination"
+      collection_method: "reconcile batch records with monthly purchase, meter, and waste totals"
+      unit: "kg; m3; kWh"
+      frequency: "each batch with monthly reconciliation"
+      temporal_coverage: "representative continuous 12-month period or full seasonal campaign"
+      site_scope: "all in-scope receiving and preparation lines"
+      aggregation_rule: "sum by fruit species and route, then normalize with calc_reference_normalization"
+      quality_evidence: "calibrated scales and meters; supplier tickets; stock reconciliation; waste transfer notes"
+    - protocol_id: cp_extraction_batch_balance
+      process_id: "juice_extraction_separation"
+      flow_role: "extraction inputs, juice, aroma, pomace, wastewater"
+      record_type: "batch, meter, dosing, transfer, and waste records"
+      raw_fields: "prepared fruit kg; enzyme kg; water m3; electricity kWh; raw juice kg and °Brix; aroma kg; pomace kg and destination; wastewater m3"
+      collection_method: "close mass and water balances for each extraction route"
+      unit: "kg; m3; kWh; °Brix"
+      frequency: "each batch with monthly reconciliation"
+      temporal_coverage: "representative continuous 12-month period or full seasonal campaign"
+      site_scope: "all in-scope extraction lines"
+      aggregation_rule: "keep species and route separate before reference-flow normalization"
+      quality_evidence: "calibrated scales and meters; laboratory °Brix; dosing logs; transfer and destination records"
+    - protocol_id: cp_finishing_material_utility_balance
+      process_id: "formulation_finishing"
+      flow_role: "juice formulation, aids, utilities, refrigerants, bulk output, finishing wastes"
+      record_type: "batch recipe, stock, meter, refrigerant, transfer, and waste records"
+      raw_fields: "juice and concentrate kg and °Brix; water m3; each aid kg; electricity kWh; steam MJ; natural gas MJ; refrigerant additions and recovery kg; bulk juice kg and °Brix; wastes kg or m3"
+      collection_method: "reconcile formulation and concentration balances with utility and stock records"
+      unit: "kg; m3; kWh; MJ; °Brix"
+      frequency: "each batch; utilities at least monthly"
+      temporal_coverage: "representative continuous 12-month period or full seasonal campaign"
+      site_scope: "all in-scope finishing equipment"
+      aggregation_rule: "calculate species-specific soluble-solids and mass balance before aggregation"
+      quality_evidence: "calibrated instruments; recipes; invoices; stock reconciliation; refrigerant service logs; laboratory records"
+    - protocol_id: cp_packaging_bom_balance
+      process_id: "stabilization_packaging"
+      flow_role: "juice input, actual packaging components, electricity, product and packaging rejects"
+      record_type: "bill of materials, packaging issue, line meter, production, warehouse, and scrap records"
+      raw_fields: "juice input kg; each component identity and kg; electricity kWh; saleable output kg; off-spec juice kg; each scrap material kg and destination"
+      collection_method: "reconcile product-specific BoM and packaging issues with saleable units, inventory change, and scrap"
+      unit: "kg; kWh"
+      frequency: "each product run with monthly reconciliation"
+      temporal_coverage: "representative continuous 12-month period or full seasonal campaign"
+      site_scope: "all in-scope stabilization and packaging lines"
+      aggregation_rule: "preserve every packaging component as an individual exchange before normalization"
+      quality_evidence: "approved BoM; purchase and issue records; line counts; calibrated scales; scrap transfer notes"
+    - protocol_id: cp_storage_energy_refrigerant
+      process_id: "cold_storage"
+      flow_role: "stored product, electricity, refrigerant and leakage"
+      record_type: "warehouse, submeter, occupancy, and refrigerant-service records"
+      raw_fields: "product kg; entry and release times; temperature setpoint; electricity kWh; installed refrigerant; additions, recovery, and inventory change kg"
+      collection_method: "allocate submetered energy by documented mass-time occupancy and close refrigerant mass balance"
+      unit: "kg; kg·day; kWh; °C"
+      frequency: "warehouse movement continuously; energy monthly; refrigerant per service event and annually"
+      temporal_coverage: "representative continuous 12-month period or full seasonal campaign"
+      site_scope: "all in-scope cold rooms and refrigeration systems"
+      aggregation_rule: "normalize only the occupancy and refrigerant share attributable to the declared product"
+      quality_evidence: "warehouse logs; calibrated temperature and energy meters; service invoices; leak checks"
+    - protocol_id: cp_sanitation_wastewater_records
+      process_id: "sanitation_wastewater"
+      flow_role: "sanitation inputs, wastewater, sludge and screenings"
+      record_type: "cleaning-cycle, purchase, meter, treatment, laboratory, and waste records"
+      raw_fields: "water m3; each cleaner and disinfectant kg; electricity kWh; steam MJ; wastewater m3; sludge and screenings kg; destinations; treatment operation"
+      collection_method: "reconcile cleaning cycles and treatment records with purchase, meter, and waste totals"
+      unit: "kg; m3; kWh; MJ"
+      frequency: "each cleaning cycle; treatment and laboratory frequency required by permit; monthly reconciliation"
+      temporal_coverage: "representative continuous 12-month period or full seasonal campaign"
+      site_scope: "all in-scope production lines and onsite treatment"
+      aggregation_rule: "allocate shared sanitation by documented cycle time or cleaned production and keep treatment destinations separate"
+      quality_evidence: "approved cleaning procedures; chemical stock reconciliation; calibrated meters; laboratory certificates; waste transfer notes"
+    - protocol_id: cp_direct_release_records
+      process_id: "formulation_finishing"
+      flow_role: "each onsite air or water elementary emission"
+      record_type: "stack, continuous-monitor, permit, refrigerant, wastewater, fuel, and laboratory records"
+      raw_fields: "source; substance; measured concentration or factor; gas, fuel, refrigerant, or effluent activity; sampling time; calculation basis"
+      collection_method: "calculate each substance separately from matched activity and concentration or a documented factor"
+      unit: "kg; source activity unit"
+      frequency: "per measurement, service event, or permit frequency with annual reconciliation"
+      temporal_coverage: "same period as foreground activity data"
+      site_scope: "all in-scope direct release points"
+      aggregation_rule: "assign by direct process record first, otherwise by documented causal physical allocation"
+      quality_evidence: "laboratory reports; monitor QA; permit submissions; fuel and refrigerant reconciliation; calculation sheets"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "normalized amount = period amount × 1,000 kg / saleable reference-product kg from the same period and scope"
+      inputs:
+        - "period exchange amount"
+        - "saleable output kg"
+      output: "exchange per 1,000 kg reference product"
+      source_ids: []
+    - id: calc_juice_mass_balance
+      applies_to: "each production route"
+      rule: "reconcile fruit, purchased juice, concentrate, incorporated water, aids, saleable juice, co-products, wastes, retained stock, and measured losses; investigate unexplained imbalance before publication"
+      inputs:
+        - "matched mass and stock records"
+      output: "closed route-specific mass balance"
+      source_ids:
+        - codex-cxs-247-2005
+        - fao-2001-fruit-juice-processing
+    - id: calc_reconstitution_control
+      applies_to: "reconstituted juice"
+      rule: "verify final measured °Brix and species-specific formulation against concentrate and incorporated-water records; retain the applicable product specification and method"
+      inputs:
+        - "concentrate mass and °Brix"
+        - water
+        - "final juice mass and °Brix"
+      output: "verified reconstitution record"
+      source_ids:
+        - codex-cxs-247-2005
+    - id: calc_packaging_bom
+      applies_to: "packaging inputs"
+      rule: "component mass = issued component count × verified unit mass, reconciled with opening stock, purchases, closing stock, saleable units, and component-specific scrap"
+      inputs:
+        - "product-specific BoM"
+        - counts
+        - "unit masses"
+        - "stock and scrap"
+      output: "kg of each packaging component per reference flow"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_refrigerant_loss
+      applies_to: "each refrigeration system"
+      rule: "direct refrigerant emission = opening inventory + purchases + additions − recovered amount − closing inventory, with unexplained differences investigated"
+      inputs:
+        - "refrigerant inventory and service records"
+      output: "kg of each refrigerant emitted"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_effluent_load
+      applies_to: "each direct water pollutant"
+      rule: "pollutant load = sum of matched effluent volume × laboratory concentration with unit conversion and sampling coverage disclosed"
+      inputs:
+        - "effluent volume"
+        - "substance concentration"
+        - "sampling coverage"
+      output: "kg of one pollutant discharged"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Retain fruit species or mixture, route, °Brix and temperature, clarity, preservation, package, storage state, geography, and reference period; verify applicable identity and authenticity requirements."
+      evidence: "product specification; recipe; laboratory report; label; codex-cxs-247-2005"
+    - id: dq_company_specific_foreground
+      applies_to: "manufacturing activity"
+      requirement: "Use company-specific activity data for product formulation, manufacturing utilities, packaging BoM, waste composition, and direct emissions; explain any secondary estimate."
+      evidence: "meters; invoices; stock records; BoM; laboratory and emissions records; eu-pef-2021-2279"
+    - id: dq_temporal_coverage
+      applies_to: "all foreground rows"
+      requirement: "Cover a representative continuous 12-month period or the full seasonal campaign, disclose downtime and excluded campaigns, and align numerator and denominator periods."
+      evidence: "dated source records and reconciliation worksheet"
+    - id: dq_completeness
+      applies_to: "process and exchange coverage"
+      requirement: "Confirm every applicable process and every material, energy, waste, and direct-emission exchange is represented; retain a quantified justification for every exclusion."
+      evidence: "signed completeness checklist; mass, water, energy, and packaging reconciliations; eu-pef-2021-2279"
+    - id: dq_representativeness
+      applies_to: "foreground and linked upstream data"
+      requirement: "Assess technological, geographical, and time representativeness and precision; identify proxy datasets and their limitations."
+      evidence: "data-quality assessment and dataset metadata; eu-pef-2021-2279"
+    - id: dq_waste_destination
+      applies_to: "residues and waste"
+      requirement: "Record actual destination, product-versus-waste status, moisture or dry matter where relevant, and transfer evidence without assigning the same mass to two routes."
+      evidence: "weigh tickets; contracts; transfer notes; treatment invoices; esparza-2020-fruit-vegetable-waste"
+validation_rules:
+  - rule_id: validate_identity_scope
+    applies_to: "product_identity"
+    rule: "The declared product must be unfermented fruit juice within CPC 21439 and must not be one of the five separately classified juices, vegetable juice, nectar, purée sold as purée, or an alcoholic or non-juice drink."
+    source_ids:
+      - unstats-cpc-3-21439
+      - codex-cxs-247-2005
+  - rule_id: validate_reference_flow
+    applies_to: "reference_product"
+    rule: "The output must normalize to 1,000 kg using the confirmed mass property and unit group, and all required product qualifiers must be present."
+    source_ids:
+      - codex-cxs-247-2005
+  - rule_id: validate_route_processes
+    applies_to: "process_coverage"
+    rule: "Every process used by the declared route must appear, including sanitation; direct-fruit routes require receiving and extraction, reconstituted routes require concentrate and incorporated-water records, and chilled or frozen routes require cold storage."
+    source_ids:
+      - conidi-2020-fruit-juice-membranes
+      - fao-2001-fruit-juice-processing
+      - codex-cxc-1-1969
+  - rule_id: validate_atomic_inventory
+    applies_to: "inventory_rows"
+    rule: "Each ingredient, aid, packaging component, electricity supply, purchased steam, fuel, refrigerant, waste, and direct emission must be represented as one atomic exchange; collection labels and combined carrier rows are nonconforming."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_no_double_count
+    applies_to: "utilities_and_residues"
+    rule: "Purchased steam and fuel used to generate onsite steam must not represent the same heat, and a residue mass must not be recorded simultaneously as both co-product and waste."
+    source_ids:
+      - eu-pef-2021-2279
+      - esparza-2020-fruit-vegetable-waste
+  - rule_id: validate_balances
+    applies_to: "mass_water_packaging"
+    rule: "Species- and route-specific mass, reconstitution, packaging, water, refrigerant, and waste balances must be reconciled and unexplained differences documented before release."
+    source_ids:
+      - codex-cxs-247-2005
+      - eu-pef-2021-2279
+  - rule_id: validate_direct_releases
+    applies_to: "elementary_flows"
+    rule: "Every direct air or water release must identify one substance, release compartment, calculation method, matched activity record, and evidence source; wastewater volume alone does not represent its pollutant loads."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_ranges
+    applies_to: "quantitative_ranges"
+    rule: "No empirical or QA range may be added until at least two independent, original, boundary-compatible sources support the same unit and normalization basis; absent evidence remains an unresolved range need rather than an invented value."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for other fruit juice, n.e.c., at the processing-site factory gate."
+  downstream_use: "secondary_dataset; background_dataset after review and publication."
+  allowed_use: "Product-specific LCI and lifecycle models whose fruit species or mixture, concentration state, route, preservation, packaging, storage, geography, technology, and period are compatible with the dataset."
+  excluded_use: "Generic substitution for separately classified juices; use for nectar, vegetable juice, purée, fermented beverages, or non-juice drinks; comparative assertions without equivalent product qualifiers and downstream boundaries."
+  required_metadata: "canonical PCR id; fruit species or mixture; route and starting material; °Brix and measurement temperature; clarity; preservation; packaging BoM; storage state; site geography; reference period; technology; allocation; waste destinations; exclusions; data sources; unresolved identities and limitations"
+  required_quality_disclosure: "foreground coverage and reconciliation; meter and record quality; representativeness and precision; upstream proxies; allocation sensitivity; laboratory and emissions methods; cut-offs; unresolved flow UUIDs and unresolved range evidence"
+  update_trigger: "Change in fruit species or formulation, starting material, concentration or preservation technology, package, storage regime, energy or refrigerant system, waste destination, allocation, site geography, or representative reference period; or resolution of material UUID or range-evidence gaps."
+data_sources:
+  - id: "unstats-cpc-3-21439"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division. Central Product Classification Version 3.0, subclass 21439, Other fruit juices, n.e.c. https://unstats.un.org/unsd/classifications/Econ/CPC (accessed 2026-08-24)."
+    used_for: "classification scope and exclusions; the official CPC 2.1 explanatory note for the unchanged subclass was also checked for the enumerated fruit examples and fruit-juice mixtures"
+  - id: "codex-cxs-247-2005"
+    type: "standard"
+    reference: "Codex Alimentarius. General Standard for Fruit Juices and Nectars, CXS 247-2005, amended 2025. https://openknowledge.fao.org/handle/20.500.14283/cd9081en (accessed 2026-08-24)."
+    used_for: "fruit-juice identity, direct and reconstituted routes, species and mixture rules, °Brix and authenticity, processing aids"
+  - id: "codex-cxc-1-1969"
+    type: "standard"
+    reference: "FAO and WHO. 2023. General Principles of Food Hygiene, CXC 1-1969. https://www.fao.org/fao-who-codexalimentarius/codex-texts/codes-of-practice/en/ (accessed 2026-08-24)."
+    used_for: "sanitation, cleaning and disinfection, waste management, process description, monitoring and records"
+  - id: "fao-2001-fruit-juice-processing"
+    type: "official_guidance"
+    reference: "Bates, R.P., Morris, J.R. and Crandall, P.G. 2001. Principles and Practices of Small- and Medium-scale Fruit Juice Processing. FAO Agricultural Services Bulletin 146. https://www.fao.org/4/y2515e/y2515e00.htm (accessed 2026-08-24)."
+    used_for: "process decomposition, washing, extraction, separation, thermal stabilization, packaging, refrigeration and storage"
+  - id: "conidi-2020-fruit-juice-membranes"
+    type: "literature"
+    reference: "Conidi, C., Castro-Muñoz, R. and Cassano, A. 2020. Membrane-Based Operations in the Fruit Juice Processing Industry: A Review. Beverages 6(1):18. https://doi.org/10.3390/beverages6010018."
+    used_for: "original full-text verification of conventional process sequence, water and enzyme inputs, solid residue and wastewater, clarification, concentration, pasteurization and membrane alternatives"
+  - id: "esparza-2020-fruit-vegetable-waste"
+    type: "literature"
+    reference: "Esparza, I., Jiménez-Moreno, N., Bimbela, F., Ancín-Azpilicueta, C. and Gandía, L.M. 2020. Fruit and Vegetable Waste Management: Conventional and Emerging Approaches. Journal of Environmental Management 265:110510. https://doi.org/10.1016/j.jenvman.2020.110510."
+    used_for: "original accepted-manuscript verification of fruit and vegetable waste definitions, destination-specific inventory, conventional treatment and valorization routes"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission. Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, Annex I Product Environmental Footprint method. http://data.europa.eu/eli/reco/2021/2279/oj (accessed 2026-08-24)."
+    used_for: "company-specific bill of materials and manufacturing data, inventory completeness, allocation hierarchy, direct-emission records, data quality and disclosure"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:cf4aa1cd7eb2073911007caa47016738e83b6b6b95bb016ddd8a5c94b6acc12c"
+  generated_content_sha256: "sha256:7fa5d4b3818cd38ffdd9a0ab558116de4ecdcaef2ae7013390e33afdad85bb93"

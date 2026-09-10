@@ -1,11 +1,12 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, unlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 
 import { GoalEventStore } from "./event-store.mjs";
+import { withGoalLock } from "./lock.mjs";
 import {
   assertAcceptedMappingDecision,
   materializeAuthorCommitTree,
@@ -33,6 +34,218 @@ const boundedPcrs = [
 function git(root, args) {
   return execFileSync("git", args, { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
 }
+
+function withIntegrationFixture(run) {
+  const root = mkdtempSync(path.join(tmpdir(), "tiangong-integration-concurrency-"));
+  const stateDir = path.join(root, "state");
+  const pcrPath = "library/pcrs/metal/example";
+  const allowedFiles = ["manifest.yaml", "pcr.en-US.md", "pcr.zh-CN.md", "structured.yaml"].map((name) => `${pcrPath}/${name}`);
+  try {
+    git(root, ["init", "-q"]);
+    git(root, ["config", "user.name", "Goal Test"]);
+    git(root, ["config", "user.email", "goal@example.invalid"]);
+    writeFileSync(path.join(root, ".gitignore"), ".worktrees/\nstate/\nlibrary/.pcr-builder-state/\npackages/pcr-viewer/dist/\n");
+    mkdirSync(path.join(root, pcrPath), { recursive: true });
+    mkdirSync(path.join(root, "classifications/mappings"), { recursive: true });
+    writeFileSync(path.join(root, allowedFiles[0]), "id: pcr.metal.example\ncontent_maturity: authored_methodology\nclassification_refs:\n  - system: cpc\n    version: '3.0'\n    code: '41111'\n    mapping_type: exact\n");
+    for (const file of allowedFiles.slice(1)) writeFileSync(path.join(root, file), "fixture\n");
+    writeFileSync(path.join(root, "classifications/mappings/cpc-3.0-to-pcr.yaml"), "schema_version: 2\nclassification_system: CPC\nclassification_version: '3.0'\nstatus: current\nmappings: []\n");
+    git(root, ["add", "."]);
+    git(root, ["commit", "-qm", "fixture baseline"]);
+    const commit = git(root, ["rev-parse", "HEAD"]);
+    const task = { id: "one", cpc_code: "41111", product_name_en: "Example", pcr_id: "pcr.metal.example", pcr_path: pcrPath, allowed_files: allowedFiles, author_commit: commit, state: "integration_pending" };
+    const snapshot = { id: "snapshot-concurrency", goal_id: "fixture", task_ids: [task.id], author_commits: [commit], state: "integration_pending", created_at: "2026-09-08T00:00:00Z" };
+    const store = new GoalEventStore({ stateDir });
+    store.initialize({ goal_id: "fixture", baseline: { commit }, tasks: [task, { id: "two", state: "authoring" }], snapshots: [snapshot] });
+    const config = { goal_id: "fixture", project_root: root, target_category_relative: "library/pcrs/metal", classification_system: "cpc", classification_version: "3.0", integration: { decided_by: "maintainer" } };
+    return run({ root, stateDir, store, config, commit, task, snapshot });
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+}
+
+function fixtureBuild({ cwd, name }) {
+  if (name === "viewer_build") {
+    mkdirSync(path.join(cwd, "packages/pcr-viewer/dist"), { recursive: true });
+    writeFileSync(path.join(cwd, "packages/pcr-viewer/dist/.tiangong-pcr-viewer-build"), "fixture\n");
+  }
+  return { name, exit_code: 0 };
+}
+
+function integrateFixtureSnapshot(options) {
+  return integrateGoalSnapshot({ artifactStoreProbe: () => {}, viewerPublisher: () => {}, ...options });
+}
+
+for (const taskState of ["integrating", "integrated"]) {
+  test(`legacy validated snapshot with ${taskState} tasks is not offered as ready to land`, () => {
+    withIntegrationFixture(({ stateDir, store, config, snapshot, task }) => {
+      store.append({ event_id: "legacy-snapshot-completed", type: "snapshot_replaced", payload: { snapshot: { ...snapshot, state: "validated" } } });
+      store.append({ event_id: "legacy-task-interrupted", type: "task_replaced", payload: { task: { ...task, state: taskState } } });
+      assert.throws(() => integrateFixtureSnapshot({ config, stateDir, snapshotId: snapshot.id }), (error) => error.code === "GOAL_INTEGRATION_FINALIZATION_INCOMPLETE");
+      assert.equal(store.rebuild().tasks[0].state, taskState);
+    });
+  });
+}
+
+test("integration build permits queue state updates while rejecting a concurrent integration", () => {
+  withIntegrationFixture(({ root, stateDir, store, config, commit }) => {
+    const stoppedAfterProbe = new Error("fixture stops before expensive builds");
+    let queueUpdated = false;
+    assert.throws(() => integrateFixtureSnapshot({ config, stateDir, commandRunner: () => {
+      withGoalLock(stateDir, "queue-probe", () => {
+        new GoalEventStore({ stateDir }).append({ event_id: "probe-stop", type: "scheduling_stopped", payload: {} });
+        queueUpdated = true;
+      });
+      assert.throws(() => integrateFixtureSnapshot({ config, stateDir }), (error) => error.code === "GOAL_LOCKED");
+      throw stoppedAfterProbe;
+    } }), (error) => error === stoppedAfterProbe);
+    assert.equal(queueUpdated, true);
+    assert.equal(store.rebuild().stopped, true);
+    assert.equal(store.rebuild().snapshots[0].state, "retryable_failure");
+    assert.equal(git(root, ["rev-parse", "HEAD"]), commit);
+    assert.equal(git(root, ["status", "--porcelain"]), "");
+  });
+});
+
+test("successful integration preserves another author's result, next snapshot, and dirty main", () => {
+  withIntegrationFixture(({ root, stateDir, store, config, commit }) => {
+    writeFileSync(path.join(root, "user.txt"), "staged user data\n");
+    git(root, ["add", "user.txt"]);
+    writeFileSync(path.join(root, "user.txt"), "unstaged user data\n");
+    const index = readFileSync(path.join(root, ".git/index"));
+    const status = git(root, ["status", "--porcelain"]);
+    const result = integrateFixtureSnapshot({ config, stateDir, commandRunner: (command) => {
+      if (command.name === "aliases_build") withGoalLock(stateDir, "author-review", () => {
+        store.append({ event_id: "other-reviewed", type: "task_replaced", payload: { task: { id: "two", state: "valid_result" } } });
+        store.append({ event_id: "next-snapshot", type: "snapshot_created", payload: { id: "snapshot-next", state: "integration_pending", task_ids: ["two"] } });
+        assert.throws(() => integrateFixtureSnapshot({ config, stateDir, snapshotId: "snapshot-next" }), (error) => error.code === "GOAL_LOCKED");
+      });
+      return fixtureBuild(command);
+    } });
+    assert.equal(result.status, "validated");
+    const state = store.rebuild();
+    assert.equal(state.tasks[0].state, "validated");
+    assert.equal(state.tasks[1].state, "valid_result");
+    assert.equal(state.snapshots[1].state, "integration_pending");
+    assert.ok(store.readEvents().every((event, index) => event.sequence === index + 1));
+    assert.equal(git(root, ["rev-parse", "HEAD"]), commit);
+    assert.equal(git(root, ["status", "--porcelain"]), status);
+    assert.deepEqual(readFileSync(path.join(root, ".git/index")), index);
+    assert.equal(readFileSync(path.join(root, "user.txt"), "utf8"), "unstaged user data\n");
+  });
+});
+
+for (const failBuild of [false, true]) {
+  for (const replace of ["task", "snapshot"]) {
+    test(`${failBuild ? "failed" : "successful"} integration cannot overwrite concurrent selected ${replace} changes`, () => {
+      withIntegrationFixture(({ root, stateDir, store, config }) => {
+        const commandRunner = (command) => {
+          if (command.name === "aliases_build") withGoalLock(stateDir, "conflict-probe", () => {
+            const state = store.rebuild();
+            if (replace === "task") store.append({ event_id: "selected-task-changed", type: "task_replaced", payload: { task: { ...state.tasks[0], review_marker: "changed" } } });
+            else store.append({ event_id: "selected-snapshot-changed", type: "snapshot_replaced", payload: { snapshot: { ...state.snapshots[0], review_marker: "changed" } } });
+          });
+          if (failBuild) throw new Error("fixture build failure");
+          return fixtureBuild(command);
+        };
+        assert.throws(() => integrateFixtureSnapshot({ config, stateDir, commandRunner }), (error) => error.code === "GOAL_INTEGRATION_STATE_CONFLICT");
+        const state = store.rebuild();
+        assert.equal((replace === "task" ? state.tasks[0] : state.snapshots[0]).review_marker, "changed");
+        assert.equal(state.snapshots[0].state, "integrating");
+        assert.equal(listCommittedRepositoryValidations({ projectRoot: root }).length, 0);
+      });
+    });
+  }
+  test(`${failBuild ? "failed" : "successful"} build resumes finalization after lock contention without repeating commands`, () => {
+    withIntegrationFixture(({ stateDir, store, config }) => {
+      let calls = 0;
+      const commandRunner = (command) => {
+        calls += 1;
+        if (command.name === "smoke_guidance") {
+          writeFileSync(path.join(stateDir, "goal.lock"), JSON.stringify({ pid: process.pid, token: "fixture-owned", operation: "author-review" }));
+          if (failBuild) throw new Error("fixture validation failed");
+        }
+        return fixtureBuild(command);
+      };
+      assert.throws(() => integrateFixtureSnapshot({ config, stateDir, commandRunner }), (error) => error.code === "GOAL_LOCKED");
+      assert.equal(store.rebuild().snapshots[0].state, "integrating");
+      assert.equal(calls, 7);
+      unlinkSync(path.join(stateDir, "goal.lock"));
+      const resume = () => integrateFixtureSnapshot({ config, stateDir, commandRunner: () => assert.fail("completed command must not run again") });
+      if (failBuild) assert.throws(resume, (error) => error.code === "GOAL_INTEGRATION_COMMAND_FAILED");
+      else assert.equal(resume().status, "validated");
+      assert.equal(store.rebuild().snapshots[0].state, failBuild ? "retryable_failure" : "validated");
+    });
+  });
+}
+
+test("completed integration refuses recovery after output bytes change", () => {
+  withIntegrationFixture(({ stateDir, store, config }) => {
+    assert.throws(() => integrateFixtureSnapshot({ config, stateDir, commandRunner: (command) => {
+      if (command.name === "smoke_guidance") writeFileSync(path.join(stateDir, "goal.lock"), JSON.stringify({ pid: process.pid, token: "fixture-owned" }));
+      return fixtureBuild(command);
+    } }), (error) => error.code === "GOAL_LOCKED");
+    unlinkSync(path.join(stateDir, "goal.lock"));
+    const worktree = store.rebuild().snapshots[0].worktree_path;
+    writeFileSync(path.join(worktree, "library/pcrs/metal/example/manifest.yaml"), "changed after validation\n");
+    assert.throws(() => integrateFixtureSnapshot({ config, stateDir, commandRunner: () => assert.fail("must not build") }), (error) => error.code === "GOAL_INTEGRATION_COMPLETION_CONFLICT");
+    assert.equal(store.rebuild().snapshots[0].state, "integrating");
+  });
+});
+
+for (const changeOutput of [false, true]) {
+  test(`repository acceptance before interrupted Goal finalization ${changeOutput ? "rejects changed output" : "recovers without rerunning gates"}`, () => {
+    withIntegrationFixture(({ root, stateDir, store, config }) => {
+      const append = GoalEventStore.prototype.append;
+      let interrupted = false;
+      GoalEventStore.prototype.append = function (event) {
+        if (!interrupted && event.type === "integration_finalized") {
+          interrupted = true;
+          throw new Error("fixture interruption after repository acceptance");
+        }
+        return append.call(this, event);
+      };
+      try {
+        assert.throws(() => integrateFixtureSnapshot({ config, stateDir, commandRunner: fixtureBuild }), /fixture interruption/u);
+      } finally {
+        GoalEventStore.prototype.append = append;
+      }
+      assert.equal(listCommittedRepositoryValidations({ projectRoot: root }).length, 1);
+      assert.equal(store.rebuild().snapshots[0].state, "integrating");
+      if (changeOutput) {
+        writeFileSync(path.join(store.rebuild().snapshots[0].worktree_path, "library/pcrs/metal/example/manifest.yaml"), "changed after repository acceptance\n");
+      }
+      const resume = () => integrateFixtureSnapshot({ config, stateDir, commandRunner: () => assert.fail("completed gates must not run again") });
+      if (changeOutput) {
+        assert.throws(resume, (error) => error.code === "GOAL_INTEGRATION_COMPLETION_CONFLICT");
+        assert.equal(store.rebuild().snapshots[0].state, "integrating");
+      } else {
+        const result = resume();
+        assert.equal(result.status, "validated");
+        assert.equal(result.snapshot.repository_sequence, 1);
+        assert.deepEqual(result.snapshot.changed_pcr_ids, ["pcr.metal.example"]);
+        assert.equal(store.rebuild().tasks[0].state, "validated");
+        assert.equal(listCommittedRepositoryValidations({ projectRoot: root }).length, 1);
+      }
+    });
+  });
+}
+
+test("Viewer publication retries after durable finalization without repeating integration gates", () => {
+  withIntegrationFixture(({ root, stateDir, store, config }) => {
+    assert.throws(() => integrateFixtureSnapshot({ config, stateDir, commandRunner: fixtureBuild, viewerPublisher: () => { throw new Error("fixture publication outage"); } }),
+      (error) => error.code === "GOAL_VIEWER_PUBLICATION_FAILED");
+    assert.equal(store.rebuild().snapshots[0].state, "validated");
+    let published = 0;
+    const result = integrateFixtureSnapshot({ config, stateDir, commandRunner: () => assert.fail("completed gates must not run again"), viewerPublisher: ({ snapshotId }) => {
+      assert.equal(snapshotId, store.rebuild().snapshots[0].id);
+      published += 1;
+    } });
+    assert.equal(result.status, "validated");
+    assert.equal(published, 1);
+    assert.equal(listCommittedRepositoryValidations({ projectRoot: root }).length, 1);
+  });
+});
 
 test("accepted mapping gate requires material identity, reviewed relation, and durable acceptance metadata", () => {
   const entry = {

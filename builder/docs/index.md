@@ -30,6 +30,11 @@ Use this index to choose the smallest relevant builder context.
 - `tools/goal-harness.md`: persistent local batch scheduling, synthetic dirty baselines, visible Codex worktree
   authors, machine quality gates, serial integration, recovery, and CAS landing.
 
+## Planning Artifacts
+
+- `../planning/cpc-product-chain-pilot.yaml` is the reviewed source for the CPC product-chain pilot. Run
+  `npm run cpc-chains:build` to regenerate its Markdown report and `npm run cpc-chains:check` to verify it is current.
+
 ## Methods
 
 Read method notes only when the active workflow or PCR topic needs them:

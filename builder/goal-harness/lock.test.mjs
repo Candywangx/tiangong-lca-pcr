@@ -26,22 +26,26 @@ function runContenders(stateDir, count = 6) {
   const attemptedDir = path.join(stateDir, "contender-attempts");
   mkdirSync(attemptedDir);
   return Promise.all(Array.from({ length: count }, (_, index) =>
-    spawnLockProcess(`import { readdirSync, writeFileSync } from "node:fs";
+    spawnLockProcess(`import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { withGoalLock } from ${JSON.stringify(lockModuleUrl)};
+let entered = null;
 try {
   const value = withGoalLock(${JSON.stringify(stateDir)}, "race", () => {
+    entered = { contender: ${index}, pid: process.pid, at: Date.now(), owner: JSON.parse(readFileSync(${JSON.stringify(path.join(stateDir, "goal.lock"))}, "utf8")) };
+    try {
     // Keep the winner's lease until every other process has attempted acquisition.
     // A fixed sleep can expire before a slow child starts, allowing a valid second owner.
     const deadline = Date.now() + 10000;
     while (readdirSync(${JSON.stringify(attemptedDir)}).length < ${count - 1}) {
-      if (Date.now() >= deadline) throw new Error("Concurrent contenders did not finish while the winner held its lease");
+      if (Date.now() >= deadline) throw new Error("Concurrent contenders did not finish while the winner held its lease; completed: " + readdirSync(${JSON.stringify(attemptedDir)}).join(","));
       Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 5);
     }
     return "entered";
+    } finally { entered.exited_at = Date.now(); }
   });
-  process.stdout.write(JSON.stringify({ ok: true, value }));
+  process.stdout.write(JSON.stringify({ ok: true, value, entered }));
 } catch (error) {
-  process.stdout.write(JSON.stringify({ ok: false, code: error.code, message: error.message }));
+  process.stdout.write(JSON.stringify({ ok: false, code: error.code, message: error.message, entered }));
   process.exitCode = 1;
 } finally {
   writeFileSync(${JSON.stringify(path.join(attemptedDir, `${index}.done`))}, "done");
@@ -56,6 +60,84 @@ try {
 function deadLease(token = "stale-token") {
   return { schema_version: 1, token, pid: 2147483647, operation: "integrate", acquired_at: "2026-09-04T00:00:00.000Z" };
 }
+
+test("a paused stale reclaimer cannot unlink a successor's live lease after its final comparison", async () => {
+  const stateDir = mkdtempSync(path.join(tmpdir(), "goal-stale-final-unlink-"));
+  const lockPath = path.join(stateDir, "goal.lock");
+  const marker = name => path.join(stateDir, name);
+  const children = [];
+  const start = source => {
+    const child = spawn(process.execPath, ["--input-type=module", "-e", source], { stdio: ["ignore", "pipe", "pipe"] });
+    const result = { child, finished: false, stdout: "", stderr: "" };
+    child.stdout.on("data", data => { result.stdout += data; });
+    child.stderr.on("data", data => { result.stderr += data; });
+    result.closed = new Promise(resolve => child.on("close", code => { result.finished = true; result.code = code; resolve(); }));
+    children.push(result);
+    return result;
+  };
+  const waitUntil = async (condition, description) => {
+    const deadline = Date.now() + 10000;
+    while (!condition()) {
+      if (Date.now() >= deadline) throw new Error(`Timed out waiting for ${description}: ${JSON.stringify(children.map(({ stdout, stderr, finished }) => ({ stdout, stderr, finished })))}`);
+      await new Promise(resolve => setTimeout(resolve, 5));
+    }
+  };
+  try {
+    writeFileSync(lockPath, `${JSON.stringify(deadLease())}\n`);
+    const first = start(`import fs from "node:fs";
+import { syncBuiltinESMExports } from "node:module";
+import { withGoalLock } from ${JSON.stringify(lockModuleUrl)};
+const unlink = fs.unlinkSync;
+let paused = false;
+fs.unlinkSync = function(file) {
+  if (file === ${JSON.stringify(lockPath)} && !paused) {
+    paused = true;
+    fs.writeFileSync(${JSON.stringify(marker("paused"))}, "ready");
+    const deadline = Date.now() + 10000;
+    while (!fs.existsSync(${JSON.stringify(marker("resume-first"))})) {
+      if (Date.now() >= deadline) throw new Error("parent did not release paused unlink");
+      Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 5);
+    }
+  }
+  return unlink(file);
+};
+syncBuiltinESMExports();
+try { withGoalLock(${JSON.stringify(stateDir)}, "first", () => fs.writeFileSync(${JSON.stringify(marker("first-entered"))}, "entered")); }
+catch (error) { if (error.code !== "GOAL_LOCKED") throw error; }
+`);
+    await waitUntil(() => existsSync(marker("paused")) || first.finished, "first reclaimer's final unlink");
+    assert.equal(first.finished, false, first.stderr);
+    const second = start(`import fs from "node:fs";
+import { withGoalLock } from ${JSON.stringify(lockModuleUrl)};
+try {
+  withGoalLock(${JSON.stringify(stateDir)}, "second", () => {
+    fs.writeFileSync(${JSON.stringify(marker("second-entered"))}, fs.readFileSync(${JSON.stringify(lockPath)}));
+    const deadline = Date.now() + 10000;
+    while (!fs.existsSync(${JSON.stringify(marker("release-second"))})) {
+      if (Date.now() >= deadline) throw new Error("parent did not release second owner");
+      Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 5);
+    }
+  });
+} catch (error) { if (error.code !== "GOAL_LOCKED") throw error; }
+`);
+    await waitUntil(() => existsSync(marker("second-entered")) || second.finished, "successor acquisition result");
+    writeFileSync(marker("resume-first"), "resume");
+    await waitUntil(() => first.finished, "paused reclaimer completion");
+    assert.equal(first.code, 0, first.stderr);
+    assert.equal(Number(existsSync(marker("first-entered"))) + Number(existsSync(marker("second-entered"))), 1,
+      "Both callbacks entered while the successor retained its lease");
+    if (existsSync(marker("second-entered"))) {
+      assert.deepEqual(readFileSync(lockPath), readFileSync(marker("second-entered")));
+    }
+    writeFileSync(marker("release-second"), "release");
+    await waitUntil(() => second.finished, "successor completion");
+    assert.equal(second.code, 0, second.stderr);
+  } finally {
+    for (const result of children) if (!result.finished) result.child.kill("SIGTERM");
+    await Promise.all(children.map(result => result.closed));
+    rmSync(stateDir, { recursive: true, force: true });
+  }
+});
 
 test("a dead process lock is archived and recovered without weakening live lock exclusion", () => {
   const stateDir = mkdtempSync(path.join(tmpdir(), "goal-stale-lock-"));
@@ -77,6 +159,40 @@ test("a dead process lock is archived and recovered without weakening live lock 
     );
   } finally {
     rmSync(stateDir, { recursive: true, force: true });
+  }
+});
+
+test("retirement ownership survives claim publication crashes and releases without reusing claim slots", async () => {
+  for (const phase of ["after_retirement_claim_write_chunk", "after_retirement_claim_published", "after_retirement_claim_released"]) {
+    const stateDir = mkdtempSync(path.join(tmpdir(), "goal-retirement-claim-crash-"));
+    try {
+      const stale = deadLease(phase);
+      writeFileSync(path.join(stateDir, "goal.lock"), `${JSON.stringify(stale)}\n`);
+      const crashed = await spawnLockProcess(`import { withGoalLock } from ${JSON.stringify(lockModuleUrl)};
+let chunks = 0;
+withGoalLock(${JSON.stringify(stateDir)}, "claim-crash", () => { throw new Error("crash hook not reached"); }, {
+  faultInjector(actual) {
+    if (actual === "before_retirement_claim_write_chunk") return { max_bytes: 1 };
+    if (actual === ${JSON.stringify(phase)} && (actual !== "after_retirement_claim_write_chunk" || ++chunks === 5)) process.exit(86);
+  },
+});`);
+      assert.equal(crashed.code, 86, `${phase}: ${crashed.stderr}`);
+      const [retired] = readdirSync(path.join(stateDir, "lock-history"));
+      const retiredDir = path.join(stateDir, "lock-history", retired);
+      const claimsBefore = readdirSync(retiredDir).filter(name => /^claim-\d+\.json$/.test(name));
+      const retained = Object.fromEntries(claimsBefore.map(name => [name, readFileSync(path.join(retiredDir, name))]));
+      for (const bytes of Object.values(retained)) assert.ok(JSON.parse(bytes).pid > 0);
+      const results = await runContenders(stateDir);
+      assert.equal(results.filter(entry => entry.ok).length, 1, `${phase}: ${JSON.stringify(results)}`);
+      assert.ok(results.filter(entry => !entry.ok).every(entry => entry.code === "GOAL_LOCKED"), `${phase}: ${JSON.stringify(results)}`);
+      for (const [name, bytes] of Object.entries(retained)) assert.deepEqual(readFileSync(path.join(retiredDir, name)), bytes);
+      if (phase === "after_retirement_claim_published") {
+        assert.ok(readdirSync(retiredDir).filter(name => /^claim-\d+\.json$/.test(name)).length >= 2);
+      }
+      assert.deepEqual(JSON.parse(readFileSync(path.join(retiredDir, "owner.json"))), stale);
+    } finally {
+      rmSync(stateDir, { recursive: true, force: true });
+    }
   }
 });
 
@@ -242,8 +358,8 @@ withGoalLock(${JSON.stringify(stateDir)}, "boundary-crash", () => "must not run"
       assert.equal(crashing.code, 86, `${phase} was not reached`);
 
       const results = await runContenders(stateDir);
-      assert.equal(results.filter((entry) => entry.ok).length, 1, phase);
-      assert.ok(results.filter((entry) => !entry.ok).every((entry) => entry.code === "GOAL_LOCKED"), phase);
+      assert.equal(results.filter((entry) => entry.ok).length, 1, `${phase}: ${JSON.stringify(results)}`);
+      assert.ok(results.filter((entry) => !entry.ok).every((entry) => entry.code === "GOAL_LOCKED"), `${phase}: ${JSON.stringify(results)}`);
       assert.equal(existsSync(lockPath), false, phase);
       const [retired] = readdirSync(path.join(stateDir, "lock-history"));
       assert.deepEqual(JSON.parse(readFileSync(path.join(stateDir, "lock-history", retired, "owner.json"), "utf8")), stale, phase);
@@ -475,8 +591,8 @@ withGoalLock(${JSON.stringify(stateDir)}, "publish-crash", () => "must not run",
       assert.ok(readdirSync(stateDir).some((name) => name.startsWith(".goal-lock-acquire-")), `${phase} did not retain crash evidence`);
 
       const results = await runContenders(stateDir);
-      assert.equal(results.filter((entry) => entry.ok).length, 1, phase);
-      assert.ok(results.filter((entry) => !entry.ok).every((entry) => entry.code === "GOAL_LOCKED"), phase);
+      assert.equal(results.filter((entry) => entry.ok).length, 1, `${phase}: ${JSON.stringify(results)}`);
+      assert.ok(results.filter((entry) => !entry.ok).every((entry) => entry.code === "GOAL_LOCKED"), `${phase}: ${JSON.stringify(results)}`);
       assert.equal(existsSync(lockPath), false, phase);
     } finally {
       rmSync(stateDir, { recursive: true, force: true });

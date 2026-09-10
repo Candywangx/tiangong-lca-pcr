@@ -11,6 +11,27 @@
     "cartesian_expansion_review", "methodology_necessity_approved", "commit_sha", "unresolved_issues"
   ],
   "properties": {
+    "boundary_review": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["reason_code", "summary", "questions", "evidence"],
+      "properties": {
+        "reason_code": { "type": "string", "enum": ["semantic_boundary_unresolved", "overlapping_pcr_identity"] },
+        "summary": { "type": "string", "minLength": 20 },
+        "questions": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "evidence": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["locator", "observation"],
+            "properties": {
+              "locator": { "type": "string", "minLength": 1 },
+              "observation": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    },
     "schema_version": { "type": "integer", "const": 1 },
     "cpc_code": { "type": "string", "pattern": "^[0-9]+$" },
     "product_name_en": { "type": "string", "minLength": 1 },
@@ -19,7 +40,7 @@
     "queue_action": { "type": "string", "enum": ["create_new", "promote_legacy"] },
     "files": { "type": "array", "minItems": 4, "maxItems": 4, "items": { "$ref": "#/$defs/repoPath" } },
     "sources": { "type": "array", "items": { "$ref": "#/$defs/source" } },
-    "hybrid_search_receipt_ids": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "hybrid_search_receipt_ids": { "type": "array", "items": { "$ref": "#/$defs/receiptId" } },
     "uuid_audits": { "type": "array", "items": { "$ref": "#/$defs/uuidAudit" } },
     "rejected_uuid_candidates": { "type": "array", "items": { "$ref": "#/$defs/rejectedUuid" } },
     "inventory": {
@@ -70,6 +91,7 @@
     "unresolved_issues": { "type": "array", "items": { "type": "string", "minLength": 1 } }
   },
   "$defs": {
+    "receiptId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$" },
     "repoPath": { "type": "string", "minLength": 1 },
     "source": {
       "type": "object", "additionalProperties": false,
@@ -89,10 +111,10 @@
       "required": ["uuid", "hybrid_search_receipt_id", "state_code", "base_name_en", "base_name_zh", "flow_type", "classification", "property", "unit_group", "semantic_review"],
       "properties": {
         "uuid": { "type": "string", "format": "uuid" },
-        "hybrid_search_receipt_id": { "type": "string", "minLength": 1 },
+        "hybrid_search_receipt_id": { "$ref": "#/$defs/receiptId" },
         "state_code": { "type": "integer", "const": 100 },
         "base_name_en": { "type": "string", "minLength": 1 },
-        "base_name_zh": { "type": "string", "minLength": 1 },
+        "base_name_zh": { "type": "string", "description": "Exact state_code=100 Chinese baseName; use an empty string when TianGong provides none." },
         "flow_type": { "type": "string", "minLength": 1 },
         "classification": { "type": "string" },
         "property": { "type": "string", "minLength": 1 },
@@ -105,7 +127,7 @@
       "required": ["uuid", "receipt_id", "reason_code", "reason"],
       "properties": {
         "uuid": { "type": "string", "format": "uuid" },
-        "receipt_id": { "type": "string", "minLength": 1 },
+        "receipt_id": { "$ref": "#/$defs/receiptId" },
         "reason_code": { "type": "string", "enum": ["semantic_mismatch", "classification_mismatch", "product_state_mismatch", "flow_type_mismatch", "property_or_unit_mismatch", "state_not_public", "not_exact_candidate", "manual_review_required"] },
         "reason": { "type": "string", "minLength": 1 }
       }
@@ -117,7 +139,7 @@
         "row_id": { "type": "string", "minLength": 1 },
         "reason_code": { "type": "string", "enum": ["no_exact_candidate", "semantic_mismatch", "classification_mismatch", "product_state_mismatch", "flow_type_mismatch", "property_or_unit_mismatch", "state_not_public", "internal_intermediate_needs_new_flow", "tiangong_lookup_rate_limited", "tiangong_cli_unavailable", "manual_review_required"] },
         "explanation": { "type": "string", "minLength": 1 },
-        "hybrid_search_receipt_ids": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+        "hybrid_search_receipt_ids": { "type": "array", "items": { "$ref": "#/$defs/receiptId" } }
       }
     },
     "range": {

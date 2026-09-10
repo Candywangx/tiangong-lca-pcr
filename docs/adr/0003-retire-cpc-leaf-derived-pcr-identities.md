@@ -30,13 +30,14 @@ lastReviewedCommit: 41e00bafd03530af7871e4620e59862dd779473e
 ## 决策
 
 将未被接受为 canonical material PCR 的 CPC 3.0 leaf-derived PCR id 登记为 legacy alias，而不再把它们
-视为 canonical PCR identity。初始 inventory 包含 2,874 条 alias；每条记录同时保存旧 id、旧目录、终点
+视为 canonical PCR identity。初始 inventory 包含 2,874 条 alias；CPC `21111` 接受为 material 后降为
+2,873 条，CPC `02211` 接受为 material 后当前为 2,872 条；每条记录同时保存旧 id、旧目录、终点
 locator、退役原因和本决策引用。
 
-当前 2,874 条 alias 的终点均为对应的 `classification_coverage` coordinate。它们只回答“这个旧名字原来
+当前 2,872 条 alias 的终点均为对应的 `classification_coverage` coordinate。它们只回答“这个旧名字原来
 来自哪个分类 leaf”，不会自动把该 leaf 解析成 PCR，也不会把第一个候选方法学当成 canonical target。
 
-三个已经明确接受的 material PCR（CPC `01111`、`04412`、`04911`）继续保留原 canonical id，不进入
+五个已经明确接受的 material PCR（CPC `01111`、`02211`、`04412`、`04911`、`21111`）继续保留原 canonical id，不进入
 alias registry。未来如果一个旧 id 被明确替换为另一个 material PCR，可以使用 `canonical_pcr` 终点，但
 必须有独立审核决定，且 target 必须是 material、不能是另一个 alias source。
 

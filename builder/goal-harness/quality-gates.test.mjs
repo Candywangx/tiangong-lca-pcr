@@ -1,12 +1,13 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import Ajv2020 from "ajv/dist/2020.js";
 
 import { assertAuthorQuality, validateAuthorReport } from "./author-gates.mjs";
+import { readAuthorReportSchema } from "./prompt-compiler.mjs";
 
 test("author report response schema avoids keywords rejected by Codex Structured Outputs", async () => {
-  const schemaUrl = new URL("../schemas/goal-author-report.schema.json", import.meta.url);
-  const schema = JSON.parse(await readFile(schemaUrl, "utf8"));
+  const schema = readAuthorReportSchema();
   const visit = (value, path = "$") => {
     if (!value || typeof value !== "object") return;
     for (const keyword of ["not", "uniqueItems"]) {
@@ -15,7 +16,7 @@ test("author report response schema avoids keywords rejected by Codex Structured
     if (typeof value.pattern === "string") {
       assert.equal(value.pattern.includes("(?"), false, `${path}.pattern must not use unsupported regex lookaround`);
     }
-    if (value.type === "object" && value.properties) {
+    if ((value.type === "object" || value.type?.includes?.("object")) && value.properties) {
       assert.deepEqual(
         [...(value.required ?? [])].sort(),
         Object.keys(value.properties).sort(),
@@ -26,6 +27,60 @@ test("author report response schema avoids keywords rejected by Codex Structured
   };
   visit(schema);
 });
+
+test("runtime v1 author reports remain valid without boundary_review", async () => {
+  const schema = JSON.parse(await readFile(new URL("../schemas/goal-author-report.schema.json", import.meta.url), "utf8"));
+  assert.equal(schema.required.includes("boundary_review"), false);
+  assert.equal(Object.hasOwn(report(), "boundary_review"), false);
+  assert.equal(validateAuthorReport(report()).valid, true);
+});
+
+test("runtime schema accepts null and complete explicit boundary-review requests", () => {
+  assert.equal(validateAuthorReport(report({ boundary_review: null })).valid, true);
+  for (const reason_code of ["semantic_boundary_unresolved", "overlapping_pcr_identity"]) {
+    assert.equal(validateAuthorReport(report({ boundary_review: boundaryReview({ reason_code }) })).valid, true);
+  }
+});
+
+test("compiled wire schema validates reports with null or explicit review and rejects omission", () => {
+  const ajv = new Ajv2020({ allErrors: true, strict: true });
+  ajv.addFormat("uuid", /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu);
+  const validate = ajv.compile(readAuthorReportSchema());
+  assert.equal(validate(report()), false);
+  assert.ok(validate.errors.some((error) => error.keyword === "required" && error.params.missingProperty === "boundary_review"));
+  assert.equal(validate(report({ boundary_review: null })), true);
+  assert.equal(validate(report({ boundary_review: boundaryReview() })), true);
+});
+
+test("boundary-review schema rejects incomplete, unsupported and empty evidence requests", () => {
+  const invalid = [
+    {}, "manual review", boundaryReview({ reason_code: "tiangong_cli_unavailable" }),
+    boundaryReview({ reason_code: "no_exact_candidate" }), boundaryReview({ summary: "too short" }),
+    boundaryReview({ questions: [] }), boundaryReview({ questions: [""] }),
+    boundaryReview({ evidence: [] }), boundaryReview({ evidence: [{}] }),
+    boundaryReview({ evidence: [{ locator: "", observation: "Boundary is ambiguous." }] }),
+    boundaryReview({ evidence: [{ locator: "source.pdf", observation: "" }] }),
+    boundaryReview({ unexpected: true }),
+  ];
+  for (const key of ["reason_code", "summary", "questions", "evidence"]) {
+    const request = boundaryReview();
+    delete request[key];
+    invalid.push(request);
+  }
+  for (const boundary_review of invalid) {
+    assert.equal(validateAuthorReport(report({ boundary_review })).valid, false, JSON.stringify(boundary_review));
+  }
+});
+
+function boundaryReview(overrides = {}) {
+  return {
+    reason_code: "semantic_boundary_unresolved",
+    summary: "The source does not establish a distinct methodology boundary for these parts.",
+    questions: ["Does this parts family require a separate canonical methodology?"],
+    evidence: [{ locator: "https://example.invalid/cpc.pdf", observation: "The category groups parts with differing production routes." }],
+    ...overrides,
+  };
+}
 
 const pcrPath = "library/pcrs/metal-products-machinery-and-equipment/basic-metals/pig-iron";
 const files = ["manifest.yaml", "pcr.en-US.md", "pcr.zh-CN.md", "structured.yaml"].map((file) => `${pcrPath}/${file}`);
@@ -92,6 +147,64 @@ test("author report schema and semantic accounting accept a complete report", ()
   const result = assertAuthorQuality({ report: report(), authorizedFiles: files, changedFiles: files, inventoryRows: rows() });
   assert.equal(result.valid, true);
   assert.equal(result.counts.total, 2);
+});
+
+test("an unavailable TianGong Chinese baseName is recorded exactly and uses the canonical fallback name", () => {
+  const candidate = report();
+  candidate.uuid_audits[0].base_name_zh = "";
+  candidate.uuid_audits[0].semantic_review = "TianGong Chinese baseName is unavailable; the canonical English baseName is retained.";
+  const inventoryRows = rows();
+  inventoryRows.zh[0].name = "Pig iron";
+
+  assert.equal(validateAuthorReport(candidate).valid, true);
+  assert.equal(assertAuthorQuality({ report: candidate, authorizedFiles: files, changedFiles: files, inventoryRows }).valid, true);
+});
+
+test("an unavailable TianGong Chinese baseName rejects an invented official name", () => {
+  const candidate = report();
+  candidate.uuid_audits[0].base_name_zh = "";
+  candidate.uuid_audits[0].semantic_review = "TianGong Chinese baseName is unavailable; the canonical English baseName is retained.";
+
+  assert.throws(
+    () => assertAuthorQuality({ report: candidate, authorizedFiles: files, changedFiles: files, inventoryRows: rows() }),
+    (error) => error.details.findings.some((finding) => finding.code === "ZH_FLOW_NAME_CANONICAL_FALLBACK_REQUIRED"),
+  );
+});
+
+test("an unavailable TianGong Chinese baseName requires an explicit audit explanation", () => {
+  const candidate = report();
+  candidate.uuid_audits[0].base_name_zh = "";
+  candidate.uuid_audits[0].semantic_review = "Exact public flow identity checked.";
+  const inventoryRows = rows();
+  inventoryRows.zh[0].name = "Pig iron";
+
+  assert.throws(
+    () => assertAuthorQuality({ report: candidate, authorizedFiles: files, changedFiles: files, inventoryRows }),
+    (error) => error.details.findings.some((finding) => finding.code === "ZH_FLOW_NAME_UNAVAILABLE_EXPLANATION_MISSING"),
+  );
+});
+
+test("author report schema rejects malformed receipt ids in every reference location", () => {
+  const malformed = "receipt-1 后续使用这个值";
+  const cases = [
+    (candidate) => { candidate.hybrid_search_receipt_ids[0] = malformed; },
+    (candidate) => { candidate.uuid_audits[0].hybrid_search_receipt_id = malformed; },
+    (candidate) => {
+      candidate.rejected_uuid_candidates = [{
+        uuid: "22222222-2222-4222-8222-222222222222",
+        receipt_id: malformed,
+        reason_code: "not_exact_candidate",
+        reason: "The candidate is not an exact semantic match.",
+      }];
+    },
+    (candidate) => { candidate.inventory.unresolved[0].hybrid_search_receipt_ids[0] = malformed; },
+  ];
+
+  for (const mutate of cases) {
+    const candidate = structuredClone(report());
+    mutate(candidate);
+    assert.equal(validateAuthorReport(candidate).valid, false);
+  }
 });
 
 test("report rejects total rows that do not equal matched plus unresolved", () => {

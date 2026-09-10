@@ -1,9 +1,11 @@
 import { spawn } from "node:child_process";
 import { readFileSync, realpathSync } from "node:fs";
 import path from "node:path";
+import { homedir } from "node:os";
 import { StringDecoder } from "node:string_decoder";
 
 import { GoalHarnessError } from "./errors.mjs";
+import { readRecoveredSessionTurn } from "./session-recovery.mjs";
 
 export class CodexAppServerAdapter {
   constructor({
@@ -14,6 +16,7 @@ export class CodexAppServerAdapter {
     webSocketFactory = (url) => new WebSocket(url),
     requestTimeoutMs = 30_000,
     environment = process.env,
+    sessionsRoot = path.join(environment.CODEX_HOME || path.join(homedir(), ".codex"), "sessions"),
   } = {}) {
     this.command = command;
     this.args = args;
@@ -22,6 +25,7 @@ export class CodexAppServerAdapter {
     this.webSocketFactory = webSocketFactory;
     this.requestTimeoutMs = requestTimeoutMs;
     this.environment = environment;
+    this.sessionsRoot = sessionsRoot;
     this.child = null;
     this.socket = null;
     this.connected = false;
@@ -42,6 +46,7 @@ export class CodexAppServerAdapter {
 
   async createAuthorTask({
     worktreePath,
+    additionalWorkspaceRoots = [],
     title,
     prompt,
     outputSchema,
@@ -56,7 +61,7 @@ export class CodexAppServerAdapter {
       await this.connect();
       const started = await this.request("thread/start", compact({
         cwd: worktreePath,
-        runtimeWorkspaceRoots: [worktreePath],
+        runtimeWorkspaceRoots: [...new Set([worktreePath, ...additionalWorkspaceRoots])],
         ephemeral: false,
         approvalPolicy,
         sandbox,
@@ -71,11 +76,11 @@ export class CodexAppServerAdapter {
       const turn = await this.request("turn/start", compact({
         threadId,
         cwd: worktreePath,
-        runtimeWorkspaceRoots: [worktreePath],
+        runtimeWorkspaceRoots: [...new Set([worktreePath, ...additionalWorkspaceRoots])],
         input: [{ type: "text", text: prompt }],
         outputSchema,
         clientUserMessageId,
-        sandboxPolicy: authorSandboxPolicy(worktreePath, receiptStateDir),
+        sandboxPolicy: authorSandboxPolicy(worktreePath, receiptStateDir, additionalWorkspaceRoots),
       }));
       const turnId = turn?.turn?.id;
       if (!turnId) {
@@ -99,22 +104,31 @@ export class CodexAppServerAdapter {
   async startRepairTurn({
     threadId,
     worktreePath,
+    additionalWorkspaceRoots = [],
     prompt,
     outputSchema,
     clientUserMessageId = null,
     receiptStateDir = null,
   }) {
     try {
-      await this.resumeThread({ threadId });
-      const turn = await this.request("turn/start", compact({
+      await this.connect();
+      const params = compact({
         threadId,
         cwd: worktreePath,
-        runtimeWorkspaceRoots: [worktreePath],
+        runtimeWorkspaceRoots: [...new Set([worktreePath, ...additionalWorkspaceRoots])],
         input: [{ type: "text", text: prompt }],
         outputSchema,
         clientUserMessageId,
-        sandboxPolicy: authorSandboxPolicy(worktreePath, receiptStateDir),
-      }));
+        sandboxPolicy: authorSandboxPolicy(worktreePath, receiptStateDir, additionalWorkspaceRoots),
+      });
+      let turn;
+      try {
+        turn = await this.request("turn/start", params);
+      } catch (error) {
+        if (!/thread not found/iu.test(error?.message ?? "")) throw error;
+        await this.request("thread/resume", { threadId, persistExtendedHistory: true });
+        turn = await this.request("turn/start", params);
+      }
       const turnId = turn?.turn?.id;
       if (!turnId) throw new Error("turn/start returned no turn.id");
       return { thread_id: threadId, turn_id: turnId };
@@ -141,10 +155,21 @@ export class CodexAppServerAdapter {
     }
   }
 
-  async readThread({ threadId, includeTurns = true }) {
+  async readThread({ threadId, includeTurns = true, expectedTurnId = null, worktreePath = null }) {
     try {
       await this.connect();
-      return await this.request("thread/read", { threadId, includeTurns });
+      const response = await this.request("thread/read", { threadId, includeTurns });
+      if (includeTurns && expectedTurnId && worktreePath && response.thread?.status?.type === "idle"
+        && !response.thread.turns?.some((turn) => turn.id === expectedTurnId)) {
+        if (response.thread.id !== threadId || response.thread.cwd !== worktreePath) {
+          throw new GoalHarnessError("GOAL_SESSION_RECOVERY_INVALID", "Codex thread identity or worktree changed.");
+        }
+        const recovered = readRecoveredSessionTurn({ sessionPath: response.thread.path,
+          sessionsRoot: this.sessionsRoot, threadId, turnId: expectedTurnId, worktreePath });
+        if (recovered) return { ...response, session_recovery: recovered.audit,
+          thread: { ...response.thread, turns: [...(response.thread.turns ?? []), recovered.turn] } };
+      }
+      return response;
     } catch (error) {
       throw visibleTaskError("thread/read", error, this.stderr);
     }
@@ -311,12 +336,13 @@ export class CodexAppServerAdapter {
   }
 }
 
-function authorSandboxPolicy(worktreePath, receiptStateDir) {
+function authorSandboxPolicy(worktreePath, receiptStateDir, additionalWorkspaceRoots = []) {
   return {
     type: "workspaceWrite",
     writableRoots: [...new Set([
       worktreePath,
       receiptStateDir,
+      ...additionalWorkspaceRoots,
       ...linkedWorktreeGitWritableRoots(worktreePath),
     ].filter(Boolean))],
     networkAccess: true,

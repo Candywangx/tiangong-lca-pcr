@@ -177,13 +177,15 @@ function currentPreActivationSourceStatus(projectRoot, record) {
 function projectPreActivationUnavailable({ projectRoot, record }) {
   const stateDir = path.join(projectRoot, "library", ".pcr-builder-state", "goals", record.goal_id);
   if (!existsSync(path.join(stateDir, "initial-state.json"))) return;
-  const store = new GoalEventStore({ stateDir });
-  const snapshot = store.rebuild().snapshots?.find((entry) => entry.id === record.harness_snapshot_id);
-  if (!snapshot) return;
-  store.append({
-    event_id: `viewer-pre-activation-${String(record.repository_sequence).padStart(12, "0")}-${record.source_status}`,
-    type: "viewer_snapshot_unavailable",
-    payload: record,
+  return withGoalLock(stateDir, "viewer-pre-activation-project", () => {
+    const store = new GoalEventStore({ stateDir });
+    const snapshot = store.rebuild().snapshots?.find((entry) => entry.id === record.harness_snapshot_id);
+    if (!snapshot) return;
+    store.append({
+      event_id: `viewer-pre-activation-${String(record.repository_sequence).padStart(12, "0")}-${record.source_status}`,
+      type: "viewer_snapshot_unavailable",
+      payload: record,
+    });
   });
 }
 
@@ -549,37 +551,39 @@ export function projectViewerPublication({ projectRoot, publication }) {
   if (!existsSync(path.join(stateDir, "initial-state.json"))) {
     return { status: "goal_state_unavailable", goal_id: publication.goal_id, snapshot_id: publication.harness_snapshot_id };
   }
-  const store = new GoalEventStore({ stateDir });
-  const state = store.rebuild();
-  const snapshot = state.snapshots?.find((entry) => entry.id === publication.harness_snapshot_id);
-  if (!snapshot || snapshot.repository_sequence !== publication.repository_sequence || snapshot.integration_commit !== publication.integration_commit) {
-    throw new GoalHarnessError("GOAL_VIEWER_PUBLICATION_PROJECTION_CONFLICT", "Viewer publication cannot be projected onto a different Goal validation identity.", {
-      goal_id: publication.goal_id,
-      snapshot_id: publication.harness_snapshot_id,
-      repository_sequence: publication.repository_sequence,
-      viewer_sequence: publication.viewer_sequence,
-    });
-  }
-  if (snapshot.viewer_publication === "published") {
-    if (snapshot.viewer_manifest_ref !== publication.manifest_ref || snapshot.viewer_sequence !== publication.viewer_sequence) {
-      throw new GoalHarnessError("GOAL_VIEWER_PUBLICATION_PROJECTION_CONFLICT", "Goal snapshot carries a different Viewer publication identity.");
+  return withGoalLock(stateDir, "viewer-publication-project", () => {
+    const store = new GoalEventStore({ stateDir });
+    const state = store.rebuild();
+    const snapshot = state.snapshots?.find((entry) => entry.id === publication.harness_snapshot_id);
+    if (!snapshot || snapshot.repository_sequence !== publication.repository_sequence || snapshot.integration_commit !== publication.integration_commit) {
+      throw new GoalHarnessError("GOAL_VIEWER_PUBLICATION_PROJECTION_CONFLICT", "Viewer publication cannot be projected onto a different Goal validation identity.", {
+        goal_id: publication.goal_id,
+        snapshot_id: publication.harness_snapshot_id,
+        repository_sequence: publication.repository_sequence,
+        viewer_sequence: publication.viewer_sequence,
+      });
     }
-    return { status: "already_projected", goal_id: publication.goal_id, snapshot_id: publication.harness_snapshot_id };
-  }
-  store.append({
-    event_id: `viewer-publication-${String(publication.repository_sequence).padStart(12, "0")}`,
-    type: "viewer_snapshot_published",
-    payload: {
-      snapshot_id: publication.harness_snapshot_id,
-      repository_sequence: publication.repository_sequence,
-      viewer_sequence: publication.viewer_sequence,
-      integration_commit: publication.integration_commit,
-      manifest_ref: publication.manifest_ref,
-      viewer_snapshot_id: publication.viewer_snapshot_id,
-      published_at: publication.published_at,
-    },
+    if (snapshot.viewer_publication === "published") {
+      if (snapshot.viewer_manifest_ref !== publication.manifest_ref || snapshot.viewer_sequence !== publication.viewer_sequence) {
+        throw new GoalHarnessError("GOAL_VIEWER_PUBLICATION_PROJECTION_CONFLICT", "Goal snapshot carries a different Viewer publication identity.");
+      }
+      return { status: "already_projected", goal_id: publication.goal_id, snapshot_id: publication.harness_snapshot_id };
+    }
+    store.append({
+      event_id: `viewer-publication-${String(publication.repository_sequence).padStart(12, "0")}`,
+      type: "viewer_snapshot_published",
+      payload: {
+        snapshot_id: publication.harness_snapshot_id,
+        repository_sequence: publication.repository_sequence,
+        viewer_sequence: publication.viewer_sequence,
+        integration_commit: publication.integration_commit,
+        manifest_ref: publication.manifest_ref,
+        viewer_snapshot_id: publication.viewer_snapshot_id,
+        published_at: publication.published_at,
+      },
+    });
+    return { status: "projected", goal_id: publication.goal_id, snapshot_id: publication.harness_snapshot_id };
   });
-  return { status: "projected", goal_id: publication.goal_id, snapshot_id: publication.harness_snapshot_id };
 }
 
 export function writeViewerLandingProvenance({ publication, landingState, landedAt = null }) {

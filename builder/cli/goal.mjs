@@ -82,7 +82,7 @@ function requiredValue(argv, index, option) {
   return value;
 }
 
-function renderHuman(envelope) {
+export function renderHuman(envelope) {
   const result = envelope.result;
   if (envelope.command === "plan") {
     const summary = result.plan.summary;
@@ -96,6 +96,25 @@ function renderHuman(envelope) {
   }
   if (envelope.command === "uuid-audit") {
     return `Goal UUID audit: ${result.affected.length} affected; ${result.requeued.length} requeued${result.applied ? " (applied)" : " (dry run)"}.\nNext: ${envelope.next_action}\n`;
+  }
+  if (envelope.command === "start" || envelope.command === "resume") {
+    const validResults = result.harvest?.valid_results ?? [];
+    const failures = result.harvest?.failures ?? [];
+    const dispatched = result.dispatched ?? [];
+    const validCodes = validResults.map((entry) => entry.cpc_code).filter(Boolean).join(", ") || "none";
+    const dispatchedCodes = dispatched.map((entry) => entry.cpc_code).filter(Boolean).join(", ") || "none";
+    return `Goal ${envelope.command}: ${validResults.length} valid, ${failures.length} failed, ${dispatched.length} dispatched.\nValid CPCs: ${validCodes}\nDispatched CPCs: ${dispatchedCodes}\nNext: ${envelope.next_action}\n`;
+  }
+  if (envelope.command === "integrate") {
+    const snapshot = result.snapshot ?? {};
+    const checks = snapshot.command_results ?? [];
+    const passed = checks.filter((entry) => entry.exit_code === 0).length;
+    return `Goal integrate: ${snapshot.id ?? "unknown snapshot"} ${snapshot.state ?? (envelope.dry_run ? "dry_run" : "unknown")}.\nCommit: ${snapshot.integration_commit ?? "not created"}\nChecks: ${passed}/${checks.length} passed.\nNext: ${envelope.next_action}\n`;
+  }
+  if (envelope.command === "land") {
+    const snapshotId = result.snapshot?.id ?? result.snapshot_id ?? "unknown snapshot";
+    const pathCount = result.paths?.length ?? Object.keys(result.path_fingerprints ?? {}).length;
+    return `Goal land: ${result.status ?? "unknown"} ${snapshotId}.\nCommit: ${result.snapshot?.integration_commit ?? "not available"}\nPaths: ${pathCount}.\nNext: ${envelope.next_action}\n`;
   }
   return `${JSON.stringify(result, null, 2)}\nNext: ${envelope.next_action}\n`;
 }

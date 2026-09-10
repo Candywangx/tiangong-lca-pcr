@@ -1,10 +1,799 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "01142"
-  title: "Sorghum, other"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.sorghum-other"
+  classification_refs: "CPC 3.0:01142, Sorghum, other (exact)"
+  covered_products: "Sorghum species, mainly Sorghum vulgare, S. guineense, and S. dura, grown for non-seed harvested grain and delivered as unprocessed grain at the farm gate"
+  excluded_products: "Sorghum grown specifically for seed; sweet sorghum (Sorghum saccharatum); forage-only or biomass routes not delivering the representative grain; processed sorghum products; downstream feed, food, beverage, or biofuel manufacture"
+  representative_product: "Harvested non-seed sorghum grain, unprocessed, at the farm gate"
+  production_route: "Annual open-field cultivation, rainfed or irrigated, with harvest and conditional on-farm cleaning, drying, and storage before the declared farm-gate point"
+  market_state: "Unprocessed harvested grain at a declared moisture content and declared cleanliness or grade"
+functional_unit:
+  what: "Net mass of harvested non-seed sorghum grain delivered at the declared farm-gate reference point"
+  how_much: "1,000 kg"
+  how_well: "Product is not seed or sweet sorghum; moisture content, foreign matter or grade, and included conditioning are declared"
+  how_long_or_cycle: "One declared crop cycle; the data period shall include the full rotation cycle when rotation materially affects inputs, yield, residues, or soil emissions"
+  reference_flow_link: "The final included foreground process shall provide exactly 1,000 kg of the Tiangong product flow stated below"
+system_boundary:
+  rules:
+    - rule_id: include_cultivation_operations
+      applies_to: "foreground field cultivation"
+      rule: "Include land preparation, sowing, stand establishment, nutrient and soil-amendment application, crop protection, irrigation, field energy, harvest, and directly controlled field operations."
+      source_ids:
+        - fao-leap-feed-2016
+        - icrisat-sorghum-handbook-2020
+    - rule_id: include_upstream_inputs
+      applies_to: "purchased inputs"
+      rule: "Record each purchased input crossing the foreground boundary and link it to a representative upstream dataset; do not replace a foreground quantity with a generic background amount."
+      source_ids:
+        - fao-leap-feed-2016
+    - rule_id: include_field_emissions
+      applies_to: "managed field"
+      rule: "Include applicable direct and indirect soil emissions, emissions from fertilizer and residue management, land-use or soil-carbon changes required by the study method, and direct on-farm combustion emissions not already represented elsewhere."
+      source_ids:
+        - fao-leap-feed-2016
+        - ipcc-2019-managed-soils
+    - rule_id: conditional_postharvest
+      applies_to: "on-farm post-harvest activities"
+      rule: "Include cleaning, drying, handling, and storage only when performed before the declared farm-gate reference point, and reconcile incoming grain, outgoing grain, water loss, screenings, rejects, and other outputs."
+      source_ids:
+        - fao-leap-feed-2016
+        - icrisat-sorghum-handbook-2020
+    - rule_id: exclude_downstream_processing
+      applies_to: "downstream systems"
+      rule: "Exclude transport after the declared farm gate and all milling, feed manufacture, food or beverage processing, biofuel conversion, use, and end-of-life unless the study explicitly adds those systems outside this PCR."
+      source_ids:
+        - fao-leap-feed-2016
+    - rule_id: justify_exclusions
+      applies_to: "cut-off and omissions"
+      rule: "Identify, quantify where practicable, and justify every excluded material, energy, emission, and process; exclusions shall not be used to hide a known material contributor."
+      source_ids:
+        - fao-leap-feed-2016
+boundary_abstraction:
+  declared_starting_condition: "Managed field at the start of the declared crop or rotation accounting period, with prior land use, soil condition, and standing crop-residue condition declared"
+  starting_condition_role: "Foreground starting condition for data collection; it does not erase prior land-use, soil-carbon, or rotation effects required by the chosen LCA method"
+  product_classification_scope: "CPC 3.0 01142 non-seed sorghum grain; seed sorghum, sweet sorghum, forage-only routes, and processed sorghum products remain outside this PCR"
+  recursive_input_rule: "Externally sourced non-seed sorghum grain used within the foreground system remains a visible product input with its own upstream dataset and shall not be treated as an origin-free instance of this PCR"
+  upstream_dataset_requirement: "Seed, fertilizers, manure or amendments carrying upstream burdens, crop-protection products, water supply, fuels, electricity, heat, machinery services, packaging, and transport to the farm shall use representative upstream datasets when they cross the system boundary"
+  disclosure: "Declare geography, field or farm coverage, crop year and rotation, cultivar or species, prior land use, rainfed or irrigated status, harvested area, yield, harvest and reference moisture, residue fate, included post-harvest operations, allocation, exclusions, and method or factor versions"
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Sorghum, other"
+    uuid: "ff8b6c96-9f97-4952-8832-abfbc4295b65"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - geography
+    - "field or farm scope"
+    - "crop year or season"
+    - "cultivar or species"
+    - "rainfed or irrigated route"
+    - "rotation and prior land use"
+    - "harvested area"
+    - "harvest yield"
+    - "harvest moisture"
+    - "reference moisture"
+    - "included cleaning"
+    - drying
+    - "or storage"
+    - "residue fate"
+    - "co-product allocation method"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize the final included process to exactly 1,000 kg net sorghum mass at the declared reference moisture; preserve the measured as-received mass and moisture."
+  - id: moisture_basis
+    applies_to: "Grain, screenings, and residues"
+    required_property_ref:
+      name: "Mass and moisture fraction"
+      uuid: ""
+    required_unit: "kg and kg water/kg wet material"
+    rule: "Report whether each mass is wet, dry, or adjusted to a declared moisture; any conversion shall conserve dry matter and retain the measured moisture record."
+  - id: yield_area_basis
+    applies_to: "Field cultivation"
+    required_property_ref:
+      name: "Mass and area"
+      uuid: ""
+    required_unit: "kg and ha"
+    rule: "Record harvested area and gross and marketable mass before normalizing per 1,000 kg; do not infer area from a global average yield."
+  - id: nutrient_basis
+    applies_to: "Fertilizers, manure, residues, and soil amendments"
+    required_property_ref:
+      name: "Product mass and nutrient mass"
+      uuid: ""
+    required_unit: "kg product and kg nutrient"
+    rule: "Preserve product amount, nutrient analysis, and N/P/K basis separately; do not treat formulated product mass as nutrient mass."
+  - id: water_basis
+    applies_to: "Irrigation water"
+    required_property_ref:
+      name: "Mass or metered volume"
+      uuid: ""
+    required_unit: "kg or m3"
+    rule: "Preserve the metered volume when available; if converted to mass, declare the density assumption and retain the raw reading."
+  - id: energy_basis
+    applies_to: "Fuel, electricity, and heat"
+    required_property_ref:
+      name: "Delivered mass, volume, or energy"
+      uuid: ""
+    required_unit: "kg, L, kWh, or MJ"
+    rule: "Preserve the purchased or metered unit and document all conversion factors and heating-value bases."
+process_map:
+  - id: field_cultivation
+    name: "Sorghum field cultivation and harvest"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Foreground crop establishment, management, harvest, and managed-soil emission accounting"
+    quantitative_reference: "Measured field and crop-cycle records normalized to the mass reaching the final included process"
+  - id: on_farm_postharvest
+    name: "On-farm cleaning, drying, handling, and storage"
+    inclusion: "conditional"
+    inclusion_condition: "Include when any operation occurs before the declared farm-gate reference point or changes product moisture, mass, cleanliness, or losses"
+    role: "Foreground conditioning and storage before delivery"
+    quantitative_reference: "Measured input-output and energy balance normalized to 1,000 kg final reference product"
+process_inventory:
+  - id: field_cultivation
+    label: "Sorghum field cultivation and harvest"
+    inputs:
+      product:
+        - row_id: sorghum_seed
+          role: "Sowing seed"
+          name: "Sorghum, seed"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0ad65fec-228e-47cf-8d8d-6d00f56c18ed"
+          property_unit: "Mass / kg"
+          description: "Record purchased or retained sowing seed entering the field process. The selected Tiangong flow is explicitly the seed product and is not the reference product."
+          amount:
+            expression: "Measured mass of viable seed sown, including re-sowing, allocated to the harvested area represented by the data package"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg final reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_field_inputs
+              source_ids: []
+            ranges: []
+        - row_id: nutrient_and_amendment_inputs
+          role: "Fertilizers, manure, and soil amendments"
+          name: "Product-specific fertilizer, manure, lime, urea, or soil-amendment flow selected for the foreground record"
+          flow_type: "product"
+          property_unit: "Mass / kg product and kg nutrient"
+          description: "Record each product separately with formulation, nutrient content, application rate, placement, and timing. Select the exact Tiangong product flow for the reported formulation; no universal fertilizer UUID is prescribed by this PCR."
+          amount:
+            expression: "Measured purchased and applied product mass, nutrient analysis, and field allocation; include unused returns and losses separately where material"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg final reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_field_inputs
+              source_ids:
+                - fao-leap-feed-2016
+            ranges: []
+        - row_id: crop_protection_inputs
+          role: "Crop-protection products"
+          name: "Product-specific crop-protection flow; generic Pesticide is a fallback identity only when no exact formulation flow exists"
+          flow_type: "product"
+          flow_ref:
+            uuid: "23a65bba-3eb5-406c-ad26-6841bd151f9c"
+          property_unit: "Mass / kg formulated product and kg active ingredient"
+          description: "Record herbicides, insecticides, fungicides, biological controls, and seed treatments separately by formulated product and active ingredient when applied."
+          amount:
+            expression: "Measured formulated-product amount applied and active-ingredient content, including repeat applications"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg final reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_field_inputs
+              source_ids:
+                - fao-leap-feed-2016
+            ranges: []
+        - row_id: irrigation_water
+          role: "Irrigation water"
+          name: "Irrigation water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7b6bcebb-c84d-46b1-9568-1c1c9c6c8701"
+          property_unit: "Mass / kg, with raw metered m3 retained"
+          description: "Record irrigation withdrawals and deliveries when the route is irrigated; keep source, withdrawal point, delivery point, and losses distinguishable."
+          amount:
+            expression: "Metered or otherwise documented irrigation water delivered to the represented field, with conversion and conveyance boundary declared"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg final reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_field_inputs
+              source_ids:
+                - fao-leap-feed-2016
+            ranges: []
+        - row_id: field_diesel
+          role: "Diesel used by field machinery"
+          name: "Diesel oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg, with purchased L retained where applicable"
+          description: "Record diesel consumed by directly controlled cultivation and harvest machinery. Do not also add direct combustion emissions when the linked combustion dataset already contains them."
+          amount:
+            expression: "Measured fuel issue, purchase, or machine-use record allocated to the represented field operations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg final reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_field_inputs
+              source_ids: []
+            ranges: []
+        - row_id: field_other_energy
+          role: "Electricity and other field energy"
+          name: "Energy-carrier-specific Tiangong product flow matching the foreground record"
+          flow_type: "product"
+          property_unit: "Energy or delivered product property / kWh, MJ, kg, or L"
+          description: "Record electricity, other fuels, and contracted machinery energy separately when used by irrigation, field operations, or harvest."
+          amount:
+            expression: "Metered, invoiced, or equipment-log amount by energy carrier and operation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg final reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_field_inputs
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: harvested_sorghum
+          role: "Harvested non-seed sorghum grain"
+          name: "Sorghum, other"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ff8b6c96-9f97-4952-8832-abfbc4295b65"
+          property_unit: "Mass / kg"
+          description: "Record gross and marketable harvested grain and moisture. This row carries the reference amount only when field cultivation is the final included foreground process."
+          amount:
+            expression: "Measured harvested mass adjusted only through the declared dry-matter-conserving moisture calculation; set final output to 1,000 kg when no later foreground process is included"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg final reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_harvest_outputs
+              source_ids: []
+            ranges: []
+        - row_id: harvested_residues
+          role: "Harvested sorghum residues and co-products"
+          name: "Site-specific sorghum residue or biomass flow; no universal UUID is selected"
+          flow_type: "product"
+          property_unit: "Mass / kg wet and kg dry matter"
+          description: "Record straw, stover, panicles, or other harvested biomass only when removed from the field or managed as a co-product. Biomass retained or incorporated on the field remains in residue-management and emission calculations."
+          amount:
+            expression: "Measured or calculated removed biomass by use and destination, with moisture and nutrient content retained"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg final reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_harvest_outputs
+              source_ids:
+                - fao-leap-feed-2016
+                - ipcc-2019-managed-soils
+            ranges: []
+      waste:
+        - row_id: field_wastes
+          role: "Field and harvest wastes leaving the field"
+          name: "Waste-specific Tiangong flow matching the recorded material and treatment destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record destroyed grain, collected contaminated material, packaging, and other waste only when it crosses the field-process boundary; retain destination and treatment route."
+          amount:
+            expression: "Measured waste mass by type and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg final reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_harvest_outputs
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: managed_soil_n2o
+          role: "Direct and indirect nitrous oxide from managed soil"
+          name: "nitrous oxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "29061478-6556-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg N2O"
+          description: "Calculate direct and indirect N2O from applicable synthetic and organic N inputs, crop-residue N, mineralization terms, volatilization, and leaching or runoff according to the declared IPCC tier or a justified regional method."
+          amount:
+            expression: "Apply the declared IPCC or reviewed regional equations to collected N activity data, retain N2O-N intermediate results, and convert N2O-N to N2O with 44/28"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg final reference product"
+              kind: "n_input"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_emission_activity
+              source_ids:
+                - ipcc-2019-managed-soils
+            ranges:
+              - role: qa_guardrail
+                lower: "0.002"
+                upper: "0.018"
+                unit: "kg N2O-N/kg applicable N input"
+                basis: "per kg N entering the applicable direct managed-soil EF1 term; use disaggregated or higher-tier factors when required"
+                basis_kind: "n_input"
+                evidence_kind: "external_source"
+                source_ids:
+                  - ipcc-2019-managed-soils
+        - row_id: managed_soil_ammonia
+          role: "Ammonia and nitrogen volatilization"
+          name: "ammonia"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-96ae-0050c2490048"
+          property_unit: "Mass / kg NH3 or kg N, as required by the selected method"
+          description: "Record ammonia or other volatilized N needed by the chosen direct and indirect emission method without duplicating background fertilizer-manufacturing emissions."
+          amount:
+            expression: "Calculate from collected N application by fertilizer or amendment type using the declared method and partitioning factors"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg final reference product"
+              kind: "n_input"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_emission_activity
+              source_ids:
+                - ipcc-2019-managed-soils
+            ranges: []
+        - row_id: managed_soil_n_leaching
+          role: "Nitrogen leaching and runoff"
+          name: "Compartment-specific nitrogen or nitrate elementary flow selected for the receiving water compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg N or kg nitrate, with species basis declared"
+          description: "Record nitrogen leaching and runoff only where the declared method and site conditions indicate that the pathway occurs."
+          amount:
+            expression: "Calculate from collected N activity data and the declared leaching or runoff method; preserve the conversion between N and chemical-species mass"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg final reference product"
+              kind: "n_input"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_emission_activity
+              source_ids:
+                - ipcc-2019-managed-soils
+            ranges: []
+        - row_id: lime_urea_co2
+          role: "Carbon dioxide from lime and urea application"
+          name: "Compartment-specific carbon dioxide elementary flow selected for the declared method"
+          flow_type: "elementary"
+          property_unit: "Mass / kg CO2"
+          description: "Record CO2 from lime and urea application when those products are used and the chosen inventory method requires the pathway."
+          amount:
+            expression: "Calculate from collected lime and urea application by product type using the declared IPCC or reviewed regional method"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg final reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_emission_activity
+              source_ids:
+                - ipcc-2019-managed-soils
+            ranges: []
+  - id: on_farm_postharvest
+    label: "On-farm cleaning, drying, handling, and storage"
+    inputs:
+      product:
+        - row_id: incoming_harvested_sorghum
+          role: "Harvested sorghum entering on-farm conditioning"
+          name: "Sorghum, other"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ff8b6c96-9f97-4952-8832-abfbc4295b65"
+          property_unit: "Mass / kg"
+          description: "Record the internal transfer from field cultivation and any separately sourced grain. Separately sourced grain remains visible with its own upstream dataset."
+          amount:
+            expression: "Measured incoming mass, moisture, and source lot before cleaning, drying, or storage"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg final reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_postharvest_balance
+              source_ids: []
+            ranges: []
+        - row_id: postharvest_energy
+          role: "Electricity and thermal energy for conditioning"
+          name: "Energy-carrier-specific Tiangong product flow matching the foreground record"
+          flow_type: "product"
+          property_unit: "Energy or delivered product property / kWh, MJ, kg, or L"
+          description: "Record each electricity, fuel, and heat carrier used for cleaning, conveying, drying, aeration, and storage."
+          amount:
+            expression: "Metered, invoiced, or equipment-log amount by operation and energy carrier"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg conditioned sorghum output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_postharvest_balance
+              source_ids:
+                - fao-leap-feed-2016
+                - icrisat-sorghum-handbook-2020
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: farm_gate_sorghum
+          role: "Conditioned sorghum at the farm gate"
+          name: "Sorghum, other"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ff8b6c96-9f97-4952-8832-abfbc4295b65"
+          property_unit: "Mass / kg"
+          description: "This is the reference product when on-farm post-harvest conditioning is included."
+          amount:
+            expression: "Exactly 1,000 kg net output at the declared reference moisture and cleanliness or grade"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg final reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges:
+              - role: allowed_range
+                lower: "1000"
+                upper: "1000"
+                unit: "kg"
+                basis: "final reference product at declared reference moisture"
+                basis_kind: "reference_flow"
+                evidence_kind: "identity_reference"
+                source_ids: []
+      waste:
+        - row_id: postharvest_waste
+          role: "Screenings, rejected grain, and post-harvest waste"
+          name: "Waste-specific Tiangong flow matching the material and destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record removed foreign matter, screenings, spoiled grain, dust collected as waste, and packaging waste separately by destination; saleable co-products remain product outputs."
+          amount:
+            expression: "Measured or mass-balance-calculated output by type, moisture, and destination"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conditioned sorghum output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_postharvest_balance
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: drying_water_release
+          role: "Water removed during drying"
+          name: "Compartment-appropriate water or water-vapour elementary flow when required by the dataset convention"
+          flow_type: "elementary"
+          property_unit: "Mass / kg water"
+          description: "Calculate water removed from the measured incoming and outgoing grain moisture balance; do not count it as product loss."
+          amount:
+            expression: "Dry-matter-conserving difference between incoming and outgoing grain water plus separately measured water releases"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conditioned sorghum output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_postharvest_balance
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: avoid_allocation_by_subdivision
+    applies_to: "separable fields, operations, lots, and products"
+    rule: "Subdivide field, harvest, and post-harvest records wherever the relevant inputs and outputs can be separately measured."
+    source_ids:
+      - fao-leap-feed-2016
+  - rule_id: apply_biophysical_causality
+    applies_to: "inseparable joint production"
+    rule: "When subdivision is not feasible, prefer a documented biophysical causal relationship that reflects how inputs and emissions change with the joint products."
+    source_ids:
+      - fao-leap-feed-2016
+  - rule_id: fallback_economic_allocation
+    applies_to: "inseparable co-products without defensible biophysical causality"
+    rule: "Use representative economic allocation only when a causal basis is unavailable; declare price source, geography, averaging period, moisture and quality basis, and sensitivity."
+    source_ids:
+      - fao-leap-feed-2016
+  - rule_id: residue_status_decision
+    applies_to: "sorghum straw, stover, screenings, and other residues"
+    rule: "Classify each residue as retained biomass, waste, or co-product according to actual management and market function before allocation; a residue left on the field is not a zero-burden exported product."
+    source_ids:
+      - fao-leap-feed-2016
+      - ipcc-2019-managed-soils
+  - rule_id: allocation_mass_balance
+    applies_to: "allocated output set"
+    rule: "Apply one allocation rule to a complete, moisture-consistent output set and verify that allocated shares sum to one; report unallocated results when required for review."
+    source_ids:
+      - fao-leap-feed-2016
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_field_inputs
+      process_id: "field_cultivation"
+      flow_role: "seed, fertilizers, amendments, crop protection, irrigation, fuel, electricity, and other field energy"
+      record_type: "invoices, issue logs, application logs, meter readings, machinery logs"
+      raw_fields: "field_id; operation; date; product_id; formulation; nutrient_or_active_content; quantity; raw_unit; treated_area; irrigation_source; meter_start; meter_end; equipment"
+      collection_method: "Reconcile purchase, stock, application, meter, and machinery records to each represented field and crop cycle"
+      unit: "kg; kg nutrient; kg active ingredient; m3; L; kWh; MJ; ha"
+      frequency: "Each application or operation"
+      temporal_coverage: "Full crop cycle and full rotation period where material"
+      site_scope: "All fields and directly controlled operations represented by the package"
+      aggregation_rule: "Sum by field, product, and operation; convert only with documented factors; normalize after yield and allocation are resolved"
+      quality_evidence: "invoices; calibrated-meter records; application logs; equipment logs; stock reconciliation"
+    - protocol_id: cp_harvest_outputs
+      process_id: "field_cultivation"
+      flow_role: "harvested grain, residues, co-products, and field waste"
+      record_type: "weighbridge tickets, yield monitor, moisture tests, area records, destination logs"
+      raw_fields: "field_id; harvest_date; harvested_area; gross_mass; marketable_mass; moisture; residue_mass; residue_moisture; destination; waste_mass"
+      collection_method: "Reconcile harvested mass and area across all represented fields and retain moisture by lot"
+      unit: "kg; kg dry matter; fraction moisture; ha"
+      frequency: "Each harvest lot"
+      temporal_coverage: "Complete harvest for the represented crop cycle"
+      site_scope: "All represented fields and storage-transfer points"
+      aggregation_rule: "Sum by lot and field; conserve dry matter for moisture conversion; retain excluded and lost masses"
+      quality_evidence: "scale calibration; moisture-method record; ticket or yield-monitor export; destination evidence"
+    - protocol_id: cp_emission_activity
+      process_id: "field_cultivation"
+      flow_role: "managed-soil N2O, volatilization, leaching or runoff, and lime or urea CO2"
+      record_type: "nutrient applications, residue records, soil and climate data, method parameters"
+      raw_fields: "N_by_source; application_date; fertilizer_type; organic_N; residue_dry_mass; residue_N_content; lime_type_mass; urea_mass; soil_class; climate_class; leaching_condition; factor_id"
+      collection_method: "Assemble activity data from cp_field_inputs and cp_harvest_outputs; select one declared IPCC tier or reviewed regional method and retain every factor"
+      unit: "kg N; kg product; kg dry matter; kg C; dimensionless factors"
+      frequency: "Each activity event, aggregated once per crop cycle"
+      temporal_coverage: "Full crop cycle and method-required lag or rotation period"
+      site_scope: "All represented managed fields"
+      aggregation_rule: "Apply equations once per pathway; retain N2O-N before 44/28 conversion and prevent overlap between direct and indirect terms"
+      quality_evidence: "source records; factor table and version; formula workbook or reproducible calculation; reviewer check"
+    - protocol_id: cp_postharvest_balance
+      process_id: "on_farm_postharvest"
+      flow_role: "incoming grain, conditioned grain, energy, screenings, waste, and water removal"
+      record_type: "scale tickets, moisture tests, meters, fuel and heat logs, storage records"
+      raw_fields: "lot_id; input_mass; input_moisture; output_mass; output_moisture; screenings_mass; reject_mass; energy_carrier; energy_amount; storage_days; destination"
+      collection_method: "Maintain lot-level input-output, moisture, and energy balance for each included operation"
+      unit: "kg; fraction moisture; kWh; MJ; L; day"
+      frequency: "Each lot and meter period"
+      temporal_coverage: "All included conditioning and storage before farm gate"
+      site_scope: "All on-farm equipment and stores represented by the package"
+      aggregation_rule: "Conserve dry matter, sum energy by carrier and operation, and normalize to final output"
+      quality_evidence: "calibrated scales and moisture meter; utility or fuel records; lot reconciliation; storage log"
+  calculation_rules:
+    - id: normalize_to_reference_mass
+      applies_to: "all foreground inventory rows"
+      rule: "normalized amount = crop-cycle amount × 1,000 kg / allocated final sorghum mass at reference moisture"
+      inputs:
+        - "crop-cycle amount"
+        - "allocated final mass"
+        - "reference moisture"
+      output: "amount per 1,000 kg reference product"
+      source_ids: []
+    - id: convert_moisture_basis
+      applies_to: "grain and biomass mass"
+      rule: "m_at_reference = m_measured × (1 - moisture_measured) / (1 - moisture_reference); use mass fractions and retain both moisture observations"
+      inputs:
+        - "measured wet mass"
+        - "measured moisture fraction"
+        - "reference moisture fraction"
+      output: "mass at declared reference moisture"
+      source_ids: []
+    - id: calculate_ipcc_managed_soil_emissions
+      applies_to: "managed-soil N pathways"
+      rule: "Apply the declared IPCC tier or reviewed regional equations to synthetic and organic N, crop-residue N, applicable soil-N mineralization, volatilization, and leaching or runoff; convert N2O-N to N2O using 44/28"
+      inputs:
+        - "N activity data"
+        - "residue data"
+        - "soil and climate class"
+        - "method factors"
+      output: "direct and indirect N2O plus reported N pathways"
+      source_ids:
+        - ipcc-2019-managed-soils
+    - id: calculate_lime_urea_co2
+      applies_to: "lime and urea application"
+      rule: "Apply the declared IPCC or reviewed regional method separately by lime material and urea mass; do not merge this pathway with upstream manufacture"
+      inputs:
+        - "lime mass and type"
+        - "urea mass"
+        - "method factors"
+      output: "field CO2 from lime and urea application"
+      source_ids:
+        - ipcc-2019-managed-soils
+    - id: calculate_allocation_shares
+      applies_to: "inseparable co-products"
+      rule: "Derive shares from the declared causal or economic basis and divide each product basis by the sum across the complete co-product set"
+      inputs:
+        - "complete co-product quantities"
+        - "causal parameter or representative prices"
+      output: "allocation shares summing to 1"
+      source_ids:
+        - fao-leap-feed-2016
+    - id: screen_yield_context
+      applies_to: "reported field yield"
+      rule: "Compare foreground yield only with matching geography, crop definition, and period in an official dataset; a difference is a review flag, not a replacement value or conformance failure"
+      inputs:
+        - "foreground yield"
+        - geography
+        - year
+        - "official comparator"
+      output: "documented plausibility review"
+      source_ids:
+        - faostat-crops-livestock
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and inputs"
+      requirement: "Product identity, Tiangong UUID, flow type, classification, property, and unit shall match the actual material or service; fallback identities shall be disclosed."
+      evidence: "UUID readback and product or supplier specification"
+    - id: dq_primary_foreground
+      applies_to: "directly controlled processes"
+      requirement: "Use primary activity data for foreground field and on-farm post-harvest processes wherever possible."
+      evidence: "source-record index and data-collection coverage statement"
+    - id: dq_temporal
+      applies_to: "crop and rotation data"
+      requirement: "Cover the full crop cycle and the full rotation when material; use multiple-year data or disclose variability when one year is not representative."
+      evidence: "crop calendar, rotation record, represented years, and variability statement"
+    - id: dq_geography_technology
+      applies_to: "all inputs and operations"
+      requirement: "Represent the actual geography, irrigation route, cultivation practice, equipment, energy carriers, and post-harvest technology."
+      evidence: "field list, technology description, and upstream dataset selection record"
+    - id: dq_completeness
+      applies_to: "inventory"
+      requirement: "Reconcile all relevant resources, emissions, products, residues, and wastes within the boundary and document every exclusion."
+      evidence: "material and energy balance, system diagram, and exclusion register"
+    - id: dq_precision_uncertainty
+      applies_to: "measured and calculated values"
+      requirement: "Retain instrument resolution, sampling method, variability, assumptions, and uncertainty or a justified range for material values."
+      evidence: "calibration, sampling and uncertainty records"
+    - id: dq_method_traceability
+      applies_to: "calculated emissions and allocation"
+      requirement: "Retain method name, version, factor source, equations, intermediate values, and allocation sensitivity."
+      evidence: "reproducible calculation artifact and factor register"
+    - id: dq_moisture_balance
+      applies_to: "grain and residues"
+      requirement: "Retain measured moisture and dry-matter balance for every conversion, loss, or conditioning step."
+      evidence: "moisture tests and lot-level mass-balance record"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "final reference flow"
+    rule: "Require product flow ff8b6c96-9f97-4952-8832-abfbc4295b65, Mass property 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, kg, and exactly 1,000 kg from one final included foreground process."
+    source_ids:
+      - unsd-cpc-3-01142
+  - rule_id: validate_product_scope
+    applies_to: "product classification"
+    rule: "Reject seed sorghum, sweet sorghum, forage-only routes, and processed sorghum products as the reference product for this PCR."
+    source_ids:
+      - unsd-cpc-3-01142
+  - rule_id: validate_required_qualifiers
+    applies_to: "dataset metadata"
+    rule: "Fail conformance when any required reference-flow qualifier is missing or when harvest and reference moisture are ambiguous."
+    source_ids:
+      - fao-leap-feed-2016
+      - icrisat-sorghum-handbook-2020
+  - rule_id: validate_process_completeness
+    applies_to: "process inventory"
+    rule: "Require field cultivation and harvest; require post-harvest records when conditioning or storage occurs before farm gate; require upstream links for purchased inputs and justified exclusions."
+    source_ids:
+      - fao-leap-feed-2016
+  - rule_id: validate_mass_moisture_balance
+    applies_to: "field and post-harvest outputs"
+    rule: "Reconcile dry matter across grain, residues, co-products, wastes, screenings, and water removal; unexplained imbalance shall be investigated and disclosed."
+    source_ids:
+      - icrisat-sorghum-handbook-2020
+  - rule_id: validate_allocation
+    applies_to: "co-product systems"
+    rule: "Require subdivision or a declared allocation basis, a complete output set, shares summing to one, and sensitivity when economic allocation is used."
+    source_ids:
+      - fao-leap-feed-2016
+  - rule_id: validate_emission_method
+    applies_to: "managed-soil and amendment emissions"
+    rule: "Require complete activity data, one non-overlapping declared method, explicit factor versions, correct N and chemical-species conversions, and 44/28 conversion from N2O-N to N2O."
+    source_ids:
+      - ipcc-2019-managed-soils
+  - rule_id: validate_no_double_counting
+    applies_to: "energy and field emissions"
+    rule: "Reject double counting between product-input background datasets, direct combustion, managed-soil pathways, and post-harvest operations."
+    source_ids:
+      - fao-leap-feed-2016
+      - ipcc-2019-managed-soils
+  - rule_id: validate_data_quality
+    applies_to: "foreground package"
+    rule: "Require evidence for representativeness, completeness, consistency, precision or uncertainty, methodological appropriateness, source coverage, and every proxy."
+    source_ids:
+      - fao-leap-feed-2016
+  - rule_id: validate_screening_values
+    applies_to: "QA ranges and statistical comparisons"
+    rule: "Treat ranges and external yield comparisons as QA flags only; they shall not overwrite foreground values or become conformance thresholds unless a reviewed geography-specific rule explicitly says so."
+    source_ids:
+      - faostat-crops-livestock
+      - ipcc-2019-managed-soils
+published_dataset_profile:
+  dataset_role: "Foreground agricultural production package eligible, after review, for publication as a secondary_dataset or background_dataset"
+  downstream_use: "Process and lifecyclemodel construction for farm-gate non-seed sorghum grain and downstream systems that consume it"
+  allowed_use: "Attributional LCA, supply-chain modelling, hotspot analysis, and non-comparative reporting within the declared geography, time, technology, moisture, and allocation scope"
+  excluded_use: "Seed production, sweet or forage sorghum, processed products, unsupported geography or technology transfer, and public comparative assertions without applicable review requirements"
+  required_metadata: "PCR id and version; product and Tiangong identities; geography; field and farm scope; crop year and rotation; cultivar or species; prior land use; irrigation route; area and yield; moisture basis; included operations; residue fate; allocation; upstream dataset identities; method and factor versions"
+  required_quality_disclosure: "Primary-data coverage; temporal, geographic, and technological representativeness; exclusions and proxies; mass and moisture reconciliation; uncertainty; emission-factor tier; allocation sensitivity; unresolved identities and range gaps"
+  update_trigger: "Material change in product scope, Tiangong identity, cultivation or conditioning route, geography, yield or moisture basis, allocation, emission method, evidence, or foreground-data quality"
+data_sources:
+  - id: "unsd-cpc-3-01142"
+    type: "standard"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Explanatory Notes, subclass 01142, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-07)"
+    used_for: "Product scope, included sorghum species, and exclusions for seed and sweet sorghum"
+  - id: "fao-leap-feed-2016"
+    type: "official_guidance"
+    reference: "FAO LEAP Partnership, Environmental performance of animal feeds supply chains: Guidelines for assessment, 2016, https://openknowledge.fao.org/server/api/core/bitstreams/040bf0e7-e652-4eda-807c-37172c403671/content (retrieved 2026-08-07)"
+    used_for: "Crop-production boundary, activity coverage, foreground data, allocation order, completeness, uncertainty, and data-quality rules"
+  - id: "ipcc-2019-managed-soils"
+    type: "official_guidance"
+    reference: "IPCC, 2019 Refinement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories, Volume 4, Chapter 11, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf (retrieved 2026-08-07)"
+    used_for: "Managed-soil direct and indirect N2O pathways, N activity data, crop residues, volatilization, leaching or runoff, lime and urea CO2, and EF1 screening range"
+  - id: "icrisat-sorghum-handbook-2020"
+    type: "handbook"
+    reference: "ICRISAT, Handbook on Sorghum Production for North Eastern Nigeria, https://oar.icrisat.org/11531/1/Handbook%20on%20Sorghum%20production%20for%20NE%20printed%20version.pdf (retrieved 2026-08-07)"
+    used_for: "Sorghum-specific candidate operations from land preparation through harvest, drying, and storage; moisture and storage context; not used as a universal input-rate default"
+  - id: "faostat-crops-livestock"
+    type: "dataset"
+    reference: "FAO, FAOSTAT Production: Crops and livestock products, https://data.apps.fao.org/catalog/dataset/crop-production-yield-harvested-area-and-processed-global-national-annual-faostat (retrieved 2026-08-07)"
+    used_for: "Geography- and year-matched harvested-area, production, and yield plausibility context; not a foreground replacement or conformance threshold"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:acc79eb1947d8c766b52ebcd57d42b0afc20eaf9074cd868b48ba1fefd91818d"
+  generated_content_sha256: "sha256:8071c39be220b53ec8d78fa6762266c499ba5f26a0015a1a5b4ac302ae28d3db"

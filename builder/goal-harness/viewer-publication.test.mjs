@@ -7,6 +7,7 @@ import test from "node:test";
 import { pathToFileURL } from "node:url";
 
 import { GoalEventStore } from "./event-store.mjs";
+import { withGoalLock } from "./lock.mjs";
 import {
   commitRepositoryValidation,
   reserveRepositoryCandidate,
@@ -55,7 +56,7 @@ function fixture({ baselineFiles = {} } = {}) {
   return { root, baseline, artifactStore, config };
 }
 
-function commitValidation({ root, parent, goalId, snapshotId, content }) {
+function commitValidation({ root, parent, goalId, snapshotId, content, tasks = [] }) {
   const candidate = reserveRepositoryCandidate({
     projectRoot: root,
     goalId,
@@ -73,8 +74,8 @@ function commitValidation({ root, parent, goalId, snapshotId, content }) {
   new GoalEventStore({ stateDir }).initialize({
     goal_id: goalId,
     baseline: { commit: parent },
-    tasks: [],
-    snapshots: [{ id: snapshotId, goal_id: goalId, task_ids: [], state: "integrating", worktree_path: landingSource }],
+    tasks,
+    snapshots: [{ id: snapshotId, goal_id: goalId, task_ids: tasks.map(task => task.id), state: "integrating", worktree_path: landingSource }],
   });
   return commitRepositoryValidation({
     projectRoot: root,
@@ -84,7 +85,7 @@ function commitValidation({ root, parent, goalId, snapshotId, content }) {
     snapshotProjection: {
       id: snapshotId,
       goal_id: goalId,
-      task_ids: [],
+      task_ids: tasks.map(task => task.id),
       state: "validated",
       integration_commit: commit,
       base_commit: parent,
@@ -319,6 +320,61 @@ test("publishes the next repository sequence from an exact detached pinned sourc
   }
 });
 
+test("Viewer publication defers Goal projection while its writer lock is held and retries without republishing", () => {
+  const { root, baseline, config } = fixture();
+  try {
+    commitValidation({ root, parent: baseline, goalId: "goal-a", snapshotId: "snapshot-a", content: "accepted" });
+    const stateDir = path.join(root, "library/.pcr-builder-state/goals/goal-a");
+    const store = new GoalEventStore({ stateDir });
+    let builds = 0;
+    const publishSnapshot = (options) => {
+      builds += 1;
+      return { manifestRef: `sha256:${"8".repeat(64)}`, sequence: options.sequence };
+    };
+    withGoalLock(stateDir, "author-review", () => {
+      store.append({ event_id: "operator-stop", type: "scheduling_stopped", payload: {} });
+      assert.throws(() => publishPendingViewerSnapshots({ config, publishSnapshot }), (error) => error.code === "GOAL_LOCKED");
+      assert.equal(store.rebuild().snapshots[0].viewer_publication, "pending");
+      assert.equal(store.readEvents().filter((event) => event.type === "viewer_snapshot_published").length, 0);
+    });
+    assert.equal(listViewerPublications({ projectRoot: root }).length, 1);
+    publishPendingViewerSnapshots({ config, publishSnapshot });
+    assert.equal(builds, 1);
+    assert.equal(store.rebuild().stopped, true);
+    assert.equal(store.rebuild().snapshots[0].viewer_publication, "published");
+    assert.equal(store.readEvents().filter((event) => event.type === "viewer_snapshot_published").length, 1);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("pre-activation Viewer projection respects the earlier Goal writer lock and preserves queue changes", () => {
+  const { root, baseline, config } = fixture();
+  try {
+    const first = commitValidation({ root, parent: baseline, goalId: "goal-a", snapshotId: "snapshot-a", content: "first" });
+    commitValidation({ root, parent: first.integration_commit, goalId: "goal-b", snapshotId: "snapshot-b", content: "second" });
+    const stateDir = path.join(root, "library/.pcr-builder-state/goals/goal-a");
+    const store = new GoalEventStore({ stateDir });
+    let builds = 0;
+    const publish = () => publishPendingViewerSnapshots({ config: { ...config, goal_id: "goal-b" }, snapshotId: "snapshot-b", publishSnapshot: (options) => {
+      builds += 1;
+      return { manifestRef: `sha256:${"9".repeat(64)}`, sequence: options.sequence };
+    } });
+    withGoalLock(stateDir, "author-review", () => {
+      store.append({ event_id: "operator-stop", type: "scheduling_stopped", payload: {} });
+      assert.throws(publish, (error) => error.code === "GOAL_LOCKED");
+      assert.equal(store.readEvents().filter((event) => event.type === "viewer_snapshot_unavailable").length, 0);
+    });
+    assert.equal(builds, 0);
+    publish();
+    assert.equal(builds, 1);
+    assert.equal(store.rebuild().stopped, true);
+    assert.equal(store.readEvents().filter((event) => event.type === "viewer_snapshot_unavailable").length, 1);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("landing is repository ordered across Goals and requires the Viewer publication", () => {
   const { root, baseline, artifactStore, config: baseConfig } = fixture();
   try {
@@ -516,6 +572,84 @@ test("landing head recovery is durable after a crash between head CAS and Goal p
     rmSync(root, { recursive: true, force: true });
   }
 });
+
+test("landing recovery completes tasks and fingerprints after the landed snapshot event alone persisted", () => {
+  const { root, baseline, config } = fixture();
+  const append = GoalEventStore.prototype.append;
+  try {
+    commitValidation({ root, parent: baseline, goalId: "goal-a", snapshotId: "snapshot-a", content: "accepted",
+      tasks: [{ id: "task-a", state: "integrating" }] });
+    publishAll(config);
+    const stateDir = path.join(root, "library/.pcr-builder-state/goals/goal-a");
+    GoalEventStore.prototype.append = function (event) {
+      const result = append.call(this, event);
+      if (event.event_id === "snapshot-a-landed") throw Object.assign(new Error("crash"), { code: "TEST_CRASH" });
+      return result;
+    };
+    assert.throws(() => landGoalSnapshot({ config, stateDir, artifactStoreVerifier: () => true }), error => error.code === "TEST_CRASH");
+    GoalEventStore.prototype.append = append;
+    const store = new GoalEventStore({ stateDir });
+    assert.equal(store.rebuild().snapshots[0].state, "landed");
+    assert.equal(store.rebuild().tasks[0].state, "validated");
+
+    assert.equal(landGoalSnapshot({ config, stateDir, snapshotId: "snapshot-a", artifactStoreVerifier: () => true }).status, "already_landed");
+
+    const recovered = store.rebuild();
+    assert.equal(recovered.tasks[0].state, "completed");
+    const head = JSON.parse(readFileSync(path.join(root, "library/.pcr-builder-state/repository-coordinator/landing/head.json"), "utf8"));
+    assert.deepEqual(recovered.landed_path_fingerprints, head.path_fingerprints);
+    const events = readFileSync(store.eventsPath);
+    landGoalSnapshot({ config, stateDir, snapshotId: "snapshot-a", artifactStoreVerifier: () => true });
+    assert.deepEqual(readFileSync(store.eventsPath), events);
+  } finally {
+    GoalEventStore.prototype.append = append;
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+for (const interruption of ["prepared", "head_committed", "prepared_with_committed_head"]) {
+  test(`landing dry-run preserves repository and Goal state after ${interruption} interruption`, () => {
+    const { root, baseline, artifactStore, config } = fixture();
+    try {
+      commitValidation({ root, parent: baseline, goalId: "goal-a", snapshotId: "snapshot-a", content: "accepted" });
+      publishAll(config);
+      const stateDir = path.join(root, "library/.pcr-builder-state/goals/goal-a");
+      const landingDir = path.join(root, "library/.pcr-builder-state/repository-coordinator/landing");
+      const journalPath = path.join(landingDir, "journal.json");
+      assert.throws(() => landGoalSnapshot({
+        config, stateDir, artifactStoreVerifier: () => true,
+        faultInjector(phase) {
+          if (phase === (interruption === "prepared" ? "after_repository_landing_prepared" : "after_repository_landing_head")) {
+            throw Object.assign(new Error("crash"), { code: "TEST_CRASH" });
+          }
+        },
+      }), (error) => error.code === "TEST_CRASH");
+      if (interruption === "prepared_with_committed_head") {
+        const journal = JSON.parse(readFileSync(journalPath, "utf8"));
+        writeFileSync(journalPath, `${JSON.stringify({ ...journal, phase: "prepared" }, null, 2)}\n`);
+      }
+      const publication = listViewerPublications({ projectRoot: root })[0];
+      const paths = [journalPath, path.join(landingDir, "head.json"),
+        path.join(stateDir, "events.jsonl"), path.join(stateDir, "state.json"),
+        path.join(stateDir, "landings/snapshot-a/journal.json"),
+        path.join(artifactStore, "provenance", `${publication.viewer_snapshot_id}.json`),
+        path.join(root, "tracked.txt"), path.join(root, ".gitignore")];
+      const capture = () => paths.map(file => existsSync(file) ? readFileSync(file).toString("base64") : null);
+      const before = capture();
+
+      const preview = landGoalSnapshot({ config, stateDir, artifactStoreVerifier: () => true, dryRun: true });
+
+      assert.deepEqual(capture(), before);
+      assert.equal(preview.status, "dry_run");
+      assert.equal(new GoalEventStore({ stateDir }).rebuild().snapshots[0].state, "validated");
+      assert.equal(landGoalSnapshot({ config, stateDir, artifactStoreVerifier: () => true }).status,
+        interruption === "prepared" ? "landed" : "already_landed");
+      assert.equal(new GoalEventStore({ stateDir }).rebuild().snapshots[0].state, "landed");
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+}
 
 test("landing head exact-byte CAS rejects pointer substitution before touching repository files", () => {
   const { root, baseline, config } = fixture();

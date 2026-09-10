@@ -95,28 +95,125 @@ When constructing a foreground data package, the items listed in `Required quali
 
 ##### Product flows
 
-###### Milk and permitted milk-derived materials (`received_milk_materials`)
+###### Raw milk received (`raw_milk_received`)
 
-Record the accepted mass of milk, milk powders, cream or cream powders, milkfat products, and any permitted protein-adjustment materials delivered to the plant. Keep each materially distinct input as a separate implemented flow row; no non-reference inventory-flow UUID is assigned in this candidate PCR.
+Record accepted raw milk delivered to the plant as its own product input; do not combine it with another milk-derived material.
 
-- Selected flow: Unresolved Tiangong product flow for each actual milk or milk-derived input
+- Selected flow: Raw milk
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: Accepted scale or calibrated meter quantity, net of rejected deliveries, normalized to accepted reference product
+- Amount rule: accepted scale or calibrated-meter quantity, net of rejected deliveries
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg accepted net evaporated milk
 - Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_material_receipts`
 - Sources: `codex-cxs-281-1971`
-- Range: Provisional raw-material mass-balance QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 1.0
-  - Upper: 5.0
-  - Unit: kg/kg reference product
-  - Basis: broad first-pass accepted milk and milk-derived input mass per 1 kg evaporated milk
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Milk powder received (`milk_powder_received`)
+
+Record accepted milk powder delivered to the plant as its own product input; do not combine it with another milk-derived material.
+
+- Selected flow: Milk powder
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: accepted scale or calibrated-meter quantity, net of rejected deliveries
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_material_receipts`
+- Sources: `codex-cxs-281-1971`
+
+###### Cream received (`cream_received`)
+
+Record accepted cream delivered to the plant as its own product input; do not combine it with another milk-derived material.
+
+- Selected flow: Cream
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: accepted scale or calibrated-meter quantity, net of rejected deliveries
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_material_receipts`
+- Sources: `codex-cxs-281-1971`
+
+###### Cream powder received (`cream_powder_received`)
+
+Record accepted cream powder delivered to the plant as its own product input; do not combine it with another milk-derived material.
+
+- Selected flow: Cream powder
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: accepted scale or calibrated-meter quantity, net of rejected deliveries
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_material_receipts`
+- Sources: `codex-cxs-281-1971`
+
+###### Anhydrous milk fat received (`anhydrous_milk_fat_received`)
+
+Record accepted anhydrous milk fat delivered to the plant as its own product input; do not combine it with another milk-derived material.
+
+- Selected flow: Anhydrous milk fat
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: accepted scale or calibrated-meter quantity, net of rejected deliveries
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_material_receipts`
+- Sources: `codex-cxs-281-1971`
+
+###### Milk retentate received (`milk_retentate_received`)
+
+Record accepted milk retentate delivered to the plant as its own product input; do not combine it with another milk-derived material.
+
+- Selected flow: Milk retentate
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: accepted scale or calibrated-meter quantity, net of rejected deliveries
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_material_receipts`
+- Sources: `codex-cxs-281-1971`
+
+###### Milk permeate received (`milk_permeate_received`)
+
+Record accepted milk permeate delivered to the plant as its own product input; do not combine it with another milk-derived material.
+
+- Selected flow: Milk permeate
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: accepted scale or calibrated-meter quantity, net of rejected deliveries
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_material_receipts`
+- Sources: `codex-cxs-281-1971`
+
+###### Lactose received (`lactose_received`)
+
+Record accepted lactose delivered to the plant as its own product input; do not combine it with another milk-derived material.
+
+- Selected flow: Lactose
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: accepted scale or calibrated-meter quantity, net of rejected deliveries
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_material_receipts`
+- Sources: `codex-cxs-281-1971`
 
 ##### Waste flows
 
@@ -126,37 +223,29 @@ Record the accepted mass of milk, milk powders, cream or cream powders, milkfat 
 
 ##### Product flows
 
-###### Accepted milk released to preparation (`accepted_milk_to_preparation`)
+###### Accepted raw milk released to preparation (`accepted_raw_milk_to_preparation`)
 
-Calculate accepted material transferred from receipt records and storage-tank changes, excluding rejected deliveries and documented receipt losses.
+Calculate accepted raw milk transferred from receipt and storage, excluding rejected delivery mass and documented storage losses.
 
-- Selected flow: Unresolved intermediate product flow
+- Selected flow: Raw milk
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: accepted receipts plus opening inventory minus closing inventory, rejects, and documented receipt losses
+- Amount rule: accepted raw-milk receipts plus opening inventory minus closing inventory, rejected deliveries, and documented storage losses
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg accepted net evaporated milk
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_material_receipts`
-- Range: Provisional transfer-mass QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 1.0
-  - Upper: 5.0
-  - Unit: kg/kg reference product
-  - Basis: broad first-pass accepted material transferred to preparation
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Waste flows
 
-###### Rejected milk and receiving losses (`receiving_losses`)
+###### Raw milk lost during receipt and storage (`raw_milk_receiving_waste`)
 
-Record rejected material, spills, tank or line residues not recovered, and sampling losses by actual destination.
+Record raw milk spilled, sampled, retained in lines, or otherwise lost after acceptance, with the actual destination retained.
 
-- Selected flow: Unresolved Tiangong waste flow by actual material and destination
+- Selected flow: Waste raw milk
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: measured or mass-balance-derived receiving losses
+- Amount rule: measured or mass-balance-derived raw-milk loss after the declared plant gate
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg accepted net evaporated milk
@@ -164,14 +253,6 @@ Record rejected material, spills, tank or line residues not recovered, and sampl
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_waste_and_effluent`
 - Sources: `eu-fdm-bat-2019-2031`
-- Range: Provisional receiving-loss QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.20
-  - Unit: kg/kg reference product
-  - Basis: broad first-pass receiving loss per 1 kg evaporated milk
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Elementary flows
 
@@ -181,13 +262,13 @@ Record rejected material, spills, tank or line residues not recovered, and sampl
 
 ##### Product flows
 
-###### Accepted milk and composition-adjustment inputs (`standardization_inputs`)
+###### Accepted raw milk entering preparation (`accepted_raw_milk_input`)
 
-Record accepted milk plus cream, skim milk, milk solids, retentate, permeate, lactose, potable water, salt, and technologically justified additives actually used. Preserve the whey-protein-to-casein relationship where the declared product standard requires it.
+Record raw milk issued to the declared batch only when used by the product formulation.
 
-- Selected flow: Unresolved Tiangong product flow for each actual input
+- Selected flow: Raw milk
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: metered, weighed, or batch-recipe quantity reconciled to batch records
+- Amount rule: weighed or metered batch-recipe quantity reconciled to issue and return records
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Product-specific (`product_specific`)
 - Normalization basis: per 1 kg accepted net evaporated milk
@@ -195,14 +276,141 @@ Record accepted milk plus cream, skim milk, milk solids, retentate, permeate, la
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_material_receipts`
 - Sources: `codex-cxs-281-1971`
-- Range: Provisional adjustment-input QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 2.0
-  - Unit: kg/kg reference product
-  - Basis: broad first-pass mass of composition-adjustment inputs in addition to transferred milk
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Milk powder used for composition adjustment (`milk_powder_adjustment`)
+
+Record milk powder issued to the declared batch only when used by the product formulation.
+
+- Selected flow: Milk powder
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: weighed or metered batch-recipe quantity reconciled to issue and return records
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_material_receipts`
+- Sources: `codex-cxs-281-1971`
+
+###### Cream used for composition adjustment (`cream_adjustment`)
+
+Record cream issued to the declared batch only when used by the product formulation.
+
+- Selected flow: Cream
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: weighed or metered batch-recipe quantity reconciled to issue and return records
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_material_receipts`
+- Sources: `codex-cxs-281-1971`
+
+###### Cream powder used for composition adjustment (`cream_powder_adjustment`)
+
+Record cream powder issued to the declared batch only when used by the product formulation.
+
+- Selected flow: Cream powder
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: weighed or metered batch-recipe quantity reconciled to issue and return records
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_material_receipts`
+- Sources: `codex-cxs-281-1971`
+
+###### Anhydrous milk fat used for composition adjustment (`anhydrous_milk_fat_adjustment`)
+
+Record anhydrous milk fat issued to the declared batch only when used by the product formulation.
+
+- Selected flow: Anhydrous milk fat
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: weighed or metered batch-recipe quantity reconciled to issue and return records
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_material_receipts`
+- Sources: `codex-cxs-281-1971`
+
+###### Milk retentate used for protein adjustment (`milk_retentate_adjustment`)
+
+Record milk retentate issued to the declared batch only when used by the product formulation.
+
+- Selected flow: Milk retentate
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: weighed or metered batch-recipe quantity reconciled to issue and return records
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_material_receipts`
+- Sources: `codex-cxs-281-1971`
+
+###### Milk permeate used for composition adjustment (`milk_permeate_adjustment`)
+
+Record milk permeate issued to the declared batch only when used by the product formulation.
+
+- Selected flow: Milk permeate
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: weighed or metered batch-recipe quantity reconciled to issue and return records
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_material_receipts`
+- Sources: `codex-cxs-281-1971`
+
+###### Lactose used for protein adjustment (`lactose_adjustment`)
+
+Record lactose issued to the declared batch only when used by the product formulation.
+
+- Selected flow: Lactose
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: weighed or metered batch-recipe quantity reconciled to issue and return records
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_material_receipts`
+- Sources: `codex-cxs-281-1971`
+
+###### Potable water used for reconstitution (`potable_water_adjustment`)
+
+Record potable water issued to the declared batch only when used by the product formulation.
+
+- Selected flow: Potable water
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: weighed or metered batch-recipe quantity reconciled to issue and return records
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_material_receipts`
+- Sources: `codex-cxs-281-1971`
+
+###### Sodium chloride added to the product (`sodium_chloride_adjustment`)
+
+Record sodium chloride issued to the declared batch only when used by the product formulation.
+
+- Selected flow: Sodium chloride
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: weighed or metered batch-recipe quantity reconciled to issue and return records
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_material_receipts`
+- Sources: `codex-cxs-281-1971`
 
 ##### Waste flows
 
@@ -212,13 +420,13 @@ Record accepted milk plus cream, skim milk, milk solids, retentate, permeate, la
 
 ##### Product flows
 
-###### Standardized heat-treated milk (`standardized_heat_treated_milk`)
+###### Standardized heat-treated milk transferred to concentration (`standardized_heat_treated_milk`)
 
-Calculate standardized milk transferred to concentration from measured batch inputs, samples, separator outputs, line hold-up, and losses; retain composition and time-temperature control records.
+Calculate the single standardized milk stream transferred to concentration from measured batch inputs, composition results, samples, hold-up, and losses.
 
-- Selected flow: Unresolved intermediate product flow
+- Selected flow: Standardized heat-treated milk
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: reconciled mass transferred to the concentration step
+- Amount rule: reconciled mass of standardized heat-treated milk transferred to concentration
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Product-specific (`product_specific`)
 - Normalization basis: per 1 kg accepted net evaporated milk
@@ -226,24 +434,16 @@ Calculate standardized milk transferred to concentration from measured batch inp
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_composition_and_yield`
 - Sources: `codex-cxs-281-1971`, `eu-fdm-bat-2019-2031`
-- Range: Provisional standardized-milk QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 1.0
-  - Upper: 5.0
-  - Unit: kg/kg reference product
-  - Basis: broad first-pass standardized milk transferred to concentration
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Waste flows
 
-###### Separator sediment and preparation losses (`preparation_residues`)
+###### Separator sediment from milk clarification (`separator_sediment`)
 
-Record separator sediment, filter residues, off-spec preparation material, and unrecovered line residues by actual treatment route.
+Record the mass of sediment removed by clarification or separation when that operation is used, keeping its treatment destination.
 
-- Selected flow: Unresolved Tiangong waste flow by actual residue
+- Selected flow: Milk separator sediment
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: measured residue or preparation-step mass-balance difference
+- Amount rule: measured waste mass or mass-balance-derived quantity, recorded with its actual treatment or recovery destination
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg accepted net evaporated milk
@@ -251,14 +451,21 @@ Record separator sediment, filter residues, off-spec preparation material, and u
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_waste_and_effluent`
 - Sources: `eu-fdm-bat-2019-2031`
-- Range: Provisional preparation-residue QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.20
-  - Unit: kg/kg reference product
-  - Basis: broad first-pass preparation residue per 1 kg evaporated milk
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Off-spec milk from preparation (`offspec_preparation_milk`)
+
+Record off-spec standardized milk, preparation samples, and unrecovered milk hold-up as one waste-milk exchange, excluding separator sediment.
+
+- Selected flow: Waste milk
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured waste mass or mass-balance-derived quantity, recorded with its actual treatment or recovery destination
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_waste_and_effluent`
+- Sources: `eu-fdm-bat-2019-2031`
 
 ##### Elementary flows
 
@@ -268,11 +475,11 @@ Record separator sediment, filter residues, off-spec preparation material, and u
 
 ##### Product flows
 
-###### Standardized milk to concentration (`milk_to_concentration`)
+###### Standardized milk entering concentration (`milk_to_concentration`)
 
 Record the mass of standardized heat-treated milk entering the evaporator or other declared concentration system.
 
-- Selected flow: Unresolved intermediate product flow
+- Selected flow: Standardized heat-treated milk
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: transfer-meter or reconciled batch quantity entering concentration
 - Value mode: Foreground record (`foreground_record`)
@@ -281,22 +488,14 @@ Record the mass of standardized heat-treated milk entering the evaporator or oth
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_composition_and_yield`
-- Range: Provisional concentration-feed QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 1.0
-  - Upper: 5.0
-  - Unit: kg/kg reference product
-  - Basis: broad first-pass concentration feed per 1 kg evaporated milk
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Thermal energy or fuel for concentration (`concentration_thermal_energy`)
+###### Industrial steam for concentration (`concentration_steam`)
 
-Record steam, hot water, or fuel attributable to heating and concentration. Separate purchased thermal energy from on-site fuel combustion and retain the allocation and heating-value basis.
+Record industrial steam attributable to this process as a separate energy-carrier input and apply this card only when that supply is used.
 
-- Selected flow: Unresolved energy-carrier or fuel flow for the actual supply
-- Flow property / unit: Energy / MJ, or as metered with documented conversion
-- Amount rule: metered use or engineering allocation from boiler and steam records
+- Selected flow: Industrial steam
+- Flow property / unit: Energy / MJ
+- Amount rule: metered use or documented engineering allocation from utility and operating records
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Technology-specific (`technology_specific`)
 - Normalization basis: per 1 kg accepted net evaporated milk
@@ -304,22 +503,89 @@ Record steam, hot water, or fuel attributable to heating and concentration. Sepa
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_energy_and_utilities`
 - Sources: `eu-fdm-bat-2019-2031`
-- Range: Provisional thermal-energy QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.1
-  - Upper: 30
-  - Unit: MJ/kg reference product
-  - Basis: deliberately broad first-pass thermal energy attributable to concentration
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Purchased industrial heat for concentration (`concentration_purchased_heat`)
+
+Record purchased industrial heat attributable to this process as a separate energy-carrier input and apply this card only when that supply is used.
+
+- Selected flow: Purchased industrial heat
+- Flow property / unit: Energy / MJ
+- Amount rule: metered use or documented engineering allocation from utility and operating records
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_energy_and_utilities`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Natural gas for on-site concentration heat (`concentration_natural_gas`)
+
+Record natural gas attributable to this process as a separate energy-carrier input and apply this card only when that supply is used.
+
+- Selected flow: Natural gas
+- Flow property / unit: Energy / MJ
+- Amount rule: metered use or documented engineering allocation from utility and operating records
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_energy_and_utilities`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Diesel fuel for on-site concentration heat (`concentration_diesel`)
+
+Record diesel fuel attributable to this process as a separate energy-carrier input and apply this card only when that supply is used.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Energy / MJ
+- Amount rule: metered use or documented engineering allocation from utility and operating records
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_energy_and_utilities`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Light fuel oil for on-site concentration heat (`concentration_light_fuel_oil`)
+
+Record light fuel oil attributable to this process as a separate energy-carrier input and apply this card only when that supply is used.
+
+- Selected flow: Light fuel oil
+- Flow property / unit: Energy / MJ
+- Amount rule: metered use or documented engineering allocation from utility and operating records
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_energy_and_utilities`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Liquefied petroleum gas for on-site concentration heat (`concentration_lpg`)
+
+Record liquefied petroleum gas attributable to this process as a separate energy-carrier input and apply this card only when that supply is used.
+
+- Selected flow: Liquefied petroleum gas
+- Flow property / unit: Energy / MJ
+- Amount rule: metered use or documented engineering allocation from utility and operating records
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_energy_and_utilities`
+- Sources: `eu-fdm-bat-2019-2031`
 
 ###### Electricity for concentration and homogenization (`concentration_electricity`)
 
-Record metered or allocated electricity for pumps, vacuum systems, evaporation, homogenization, refrigeration, and controls attributable to this process.
+Record electricity, medium voltage attributable to this process as a separate energy-carrier input and apply this card only when that supply is used.
 
-- Selected flow: Unresolved electricity product flow for the declared grid or supply
+- Selected flow: Electricity, medium voltage
 - Flow property / unit: Energy / kWh
-- Amount rule: submetered electricity or documented engineering allocation
+- Amount rule: metered use or documented engineering allocation from utility and operating records
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Technology-specific (`technology_specific`)
 - Normalization basis: per 1 kg accepted net evaporated milk
@@ -327,14 +593,6 @@ Record metered or allocated electricity for pumps, vacuum systems, evaporation, 
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_energy_and_utilities`
 - Sources: `eu-fdm-bat-2019-2031`
-- Range: Provisional electricity QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.01
-  - Upper: 5.0
-  - Unit: kWh/kg reference product
-  - Basis: deliberately broad first-pass process electricity attributable to concentration and homogenization
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Waste flows
 
@@ -346,11 +604,11 @@ Record metered or allocated electricity for pumps, vacuum systems, evaporation, 
 
 ###### Concentrated milk transferred to filling (`concentrated_milk_to_filling`)
 
-Calculate concentrated milk output from measured transfer mass and solids data, accounting for samples, retained material, internal rework, and losses.
+Calculate concentrated milk output from measured transfer mass and solids data, accounting for samples, hold-up, internal rework, and waste milk.
 
-- Selected flow: Unresolved intermediate product flow
+- Selected flow: Concentrated milk
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: measured transfer mass reconciled to solids and water balance
+- Amount rule: measured concentrated-milk transfer mass reconciled to the mass-and-solids balance
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Product-specific (`product_specific`)
 - Normalization basis: per 1 kg accepted net evaporated milk
@@ -358,22 +616,14 @@ Calculate concentrated milk output from measured transfer mass and solids data, 
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_composition_and_yield`
 - Sources: `codex-cxs-281-1971`
-- Range: Provisional concentrate-yield QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.8
-  - Upper: 1.5
-  - Unit: kg/kg reference product
-  - Basis: broad first-pass concentrated milk transferred to final filling
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Recovered evaporator condensate (`recovered_condensate`)
+###### Evaporator condensate recovered for reuse (`recovered_evaporator_condensate`)
 
-Record condensate recovered for permitted reuse as a separate internal or exported product flow and identify the receiving use; exclude the same quantity from wastewater and elementary release rows.
+Record condensate recovered for a declared internal or external use and exclude the same quantity from wastewater and elementary-release rows.
 
-- Selected flow: Unresolved water product flow for the actual recovered condensate
+- Selected flow: Evaporator condensate
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: condensate meter reading or water balance
+- Amount rule: condensate meter reading or the recovered portion of the documented water balance
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg accepted net evaporated milk
@@ -381,24 +631,16 @@ Record condensate recovered for permitted reuse as a separate internal or export
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_water_and_cleaning`
 - Sources: `eu-fdm-bat-2019-2031`
-- Range: Provisional recovered-condensate QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 4.0
-  - Unit: kg/kg reference product
-  - Basis: broad first-pass condensate recovered from concentration
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Waste flows
 
-###### Condensate routed to wastewater treatment (`condensate_to_wastewater`)
+###### Evaporator condensate sent to wastewater treatment (`condensate_wastewater`)
 
-Record only condensate actually routed to wastewater treatment or sewer, net of recovered condensate.
+Record only evaporator condensate routed to wastewater treatment or sewer, net of recovered condensate.
 
-- Selected flow: Unresolved wastewater flow for condensate destination
+- Selected flow: Dairy process wastewater
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: meter reading or water-balance remainder by destination
+- Amount rule: metered condensate discharge or the destination-specific water-balance remainder
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg accepted net evaporated milk
@@ -406,24 +648,76 @@ Record only condensate actually routed to wastewater treatment or sewer, net of 
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_water_and_cleaning`
 - Sources: `eu-fdm-bat-2019-2031`
-- Range: Provisional condensate-to-wastewater QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 4.0
-  - Unit: kg/kg reference product
-  - Basis: broad first-pass condensate routed to wastewater
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Elementary flows
 
-###### Direct emissions from on-site energy generation (`onsite_energy_emissions`)
+###### Fossil carbon dioxide from on-site fuel combustion (`combustion_fossil_carbon_dioxide_air`)
 
-When fuel is combusted on-site, implement separate pollutant-specific elementary-flow rows using verified Tiangong flow identities and measured or reviewed fuel-specific emission factors. No aggregate emissions UUID or numerical range is assigned here because the actual fuel and control technology are unresolved.
+Record fossil carbon dioxide emitted from on-site combustion of the fuel inputs above; do not attach this row to purchased steam or purchased heat.
 
-- Selected flow: Unresolved pollutant-specific elementary flow
-- Flow property / unit: Mass / kg for each pollutant
-- Amount rule: measured emission or fuel quantity multiplied by a documented reviewed emission factor
+- Selected flow: Carbon dioxide, fossil, to air
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured emission or relevant activity quantity multiplied by a documented, reviewed technology-specific factor
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Fuel inventory (`fuel_inventory`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_energy_and_utilities`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Carbon monoxide from on-site fuel combustion (`combustion_carbon_monoxide_air`)
+
+Record carbon monoxide emitted from on-site combustion when measured or supported by a reviewed fuel- and technology-specific factor.
+
+- Selected flow: Carbon monoxide to air
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured emission or relevant activity quantity multiplied by a documented, reviewed technology-specific factor
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Fuel inventory (`fuel_inventory`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_energy_and_utilities`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Nitrogen oxides from on-site fuel combustion (`combustion_nitrogen_oxides_air`)
+
+Record nitrogen oxides emitted from on-site combustion when measured or supported by a reviewed fuel- and technology-specific factor.
+
+- Selected flow: Nitrogen oxides to air
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured emission or relevant activity quantity multiplied by a documented, reviewed technology-specific factor
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Fuel inventory (`fuel_inventory`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_energy_and_utilities`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Sulfur oxides from on-site fuel combustion (`combustion_sulfur_oxides_air`)
+
+Record sulfur oxides emitted from on-site combustion when measured or supported by a reviewed fuel- and technology-specific factor.
+
+- Selected flow: Sulfur oxides to air
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured emission or relevant activity quantity multiplied by a documented, reviewed technology-specific factor
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Fuel inventory (`fuel_inventory`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_energy_and_utilities`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Particulate matter from on-site fuel combustion (`combustion_particulate_matter_air`)
+
+Record particulate matter emitted from on-site combustion when measured or supported by a reviewed fuel- and technology-specific factor.
+
+- Selected flow: Particulate matter to air
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured emission or relevant activity quantity multiplied by a documented, reviewed technology-specific factor
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Technology-specific (`technology_specific`)
 - Normalization basis: per 1 kg accepted net evaporated milk
@@ -438,11 +732,11 @@ When fuel is combusted on-site, implement separate pollutant-specific elementary
 
 ##### Product flows
 
-###### Concentrated milk to filling (`concentrated_milk_input`)
+###### Concentrated milk entering filling (`concentrated_milk_input`)
 
-Record concentrated milk entering the declared filling and heat-stabilization route.
+Record concentrated milk entering the declared filling and commercial heat-stabilization route.
 
-- Selected flow: Unresolved intermediate product flow
+- Selected flow: Concentrated milk
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - Amount rule: calibrated transfer-meter or filler mass entering the line
 - Value mode: Foreground record (`foreground_record`)
@@ -451,22 +745,14 @@ Record concentrated milk entering the declared filling and heat-stabilization ro
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_output_and_packaging`
-- Range: Provisional filling-input QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 1.0
-  - Upper: 1.5
-  - Unit: kg/kg reference product
-  - Basis: broad first-pass concentrated milk entering filling
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Primary and secondary packaging (`packaging_materials`)
+###### Tinplate can body (`tinplate_can_body`)
 
-Record each packaging material by actual mass, including cans, closures, labels, cartons, aseptic packs, or other declared formats; do not include packaging mass in the reference product mass.
+Record the mass of tinplate steel can issued to accepted packed product; apply only to packaging routes that use this component.
 
-- Selected flow: Unresolved Tiangong product flow for each packaging material
+- Selected flow: Tinplate steel can body
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: purchase or issue records reconciled to packed units and packaging scrap
+- Amount rule: issued component mass minus returned usable stock, reconciled to packed units and component scrap
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Product-specific (`product_specific`)
 - Normalization basis: per 1 kg accepted net evaporated milk
@@ -474,22 +760,89 @@ Record each packaging material by actual mass, including cans, closures, labels,
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_output_and_packaging`
 - Sources: `eu-fdm-bat-2019-2031`
-- Range: Provisional packaging-mass QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.001
-  - Upper: 0.50
-  - Unit: kg/kg reference product
-  - Basis: deliberately broad first-pass total packaging mass
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Energy for filling, stabilization, and cooling (`final_process_energy`)
+###### Tinplate can end or lid (`tinplate_can_end`)
 
-Record electricity, steam, hot water, cooling, or fuel attributable to filling, commercial heat stabilization, and cooling as separate implemented energy-carrier rows.
+Record the mass of tinplate steel closure issued to accepted packed product; apply only to packaging routes that use this component.
 
-- Selected flow: Unresolved energy-carrier or electricity flow for each actual supply
-- Flow property / unit: Energy / kWh or MJ as applicable
-- Amount rule: submetered use or documented engineering allocation
+- Selected flow: Tinplate steel can end
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: issued component mass minus returned usable stock, reconciled to packed units and component scrap
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_output_and_packaging`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Paper label (`paper_label`)
+
+Record the mass of paper label issued to accepted packed product; apply only to packaging routes that use this component.
+
+- Selected flow: Paper label
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: issued component mass minus returned usable stock, reconciled to packed units and component scrap
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_output_and_packaging`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Corrugated shipping case (`corrugated_case`)
+
+Record the mass of corrugated fibreboard box issued to accepted packed product; apply only to packaging routes that use this component.
+
+- Selected flow: Corrugated fibreboard box
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: issued component mass minus returned usable stock, reconciled to packed units and component scrap
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_output_and_packaging`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Aseptic composite carton (`aseptic_carton`)
+
+Record the mass of aseptic composite carton issued to accepted packed product; apply only to packaging routes that use this component.
+
+- Selected flow: Aseptic composite carton
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: issued component mass minus returned usable stock, reconciled to packed units and component scrap
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_output_and_packaging`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Plastic closure (`plastic_closure`)
+
+Record the mass of polyethylene closure issued to accepted packed product; apply only to packaging routes that use this component.
+
+- Selected flow: Polyethylene closure
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: issued component mass minus returned usable stock, reconciled to packed units and component scrap
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_output_and_packaging`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Electricity for filling, heat stabilization, and cooling (`final_process_electricity`)
+
+Record electricity, medium voltage attributable to this process as a separate energy-carrier input and apply this card only when that supply is used.
+
+- Selected flow: Electricity, medium voltage
+- Flow property / unit: Energy / kWh
+- Amount rule: metered use or documented engineering allocation from utility and operating records
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Technology-specific (`technology_specific`)
 - Normalization basis: per 1 kg accepted net evaporated milk
@@ -497,14 +850,141 @@ Record electricity, steam, hot water, cooling, or fuel attributable to filling, 
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_energy_and_utilities`
 - Sources: `eu-fdm-bat-2019-2031`
-- Range: Provisional final-process energy QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.01
-  - Upper: 20
-  - Unit: MJ-equivalent/kg reference product
-  - Basis: deliberately broad first-pass energy for filling, heat stabilization, and cooling after documented conversion
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Industrial steam for final heat stabilization (`final_process_steam`)
+
+Record industrial steam attributable to this process as a separate energy-carrier input and apply this card only when that supply is used.
+
+- Selected flow: Industrial steam
+- Flow property / unit: Energy / MJ
+- Amount rule: metered use or documented engineering allocation from utility and operating records
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_energy_and_utilities`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Purchased industrial heat for final heat stabilization (`final_process_purchased_heat`)
+
+Record purchased industrial heat attributable to this process as a separate energy-carrier input and apply this card only when that supply is used.
+
+- Selected flow: Purchased industrial heat
+- Flow property / unit: Energy / MJ
+- Amount rule: metered use or documented engineering allocation from utility and operating records
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_energy_and_utilities`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Natural gas for direct final-process heat (`final_process_natural_gas`)
+
+Record natural gas attributable to this process as a separate fuel input and apply this card only when fuel is combusted directly for filling, heat stabilization, or cooling.
+
+- Selected flow: Natural gas
+- Flow property / unit: Energy / MJ
+- Amount rule: metered use or documented engineering allocation from utility and operating records
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_energy_and_utilities`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Diesel fuel for direct final-process heat (`final_process_diesel`)
+
+Record diesel fuel attributable to this process as a separate fuel input and apply this card only when fuel is combusted directly for filling, heat stabilization, or cooling.
+
+- Selected flow: Diesel fuel
+- Flow property / unit: Energy / MJ
+- Amount rule: metered use or documented engineering allocation from utility and operating records
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_energy_and_utilities`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Light fuel oil for direct final-process heat (`final_process_light_fuel_oil`)
+
+Record light fuel oil attributable to this process as a separate fuel input and apply this card only when fuel is combusted directly for filling, heat stabilization, or cooling.
+
+- Selected flow: Light fuel oil
+- Flow property / unit: Energy / MJ
+- Amount rule: metered use or documented engineering allocation from utility and operating records
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_energy_and_utilities`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Liquefied petroleum gas for direct final-process heat (`final_process_lpg`)
+
+Record liquefied petroleum gas attributable to this process as a separate fuel input and apply this card only when fuel is combusted directly for filling, heat stabilization, or cooling.
+
+- Selected flow: Liquefied petroleum gas
+- Flow property / unit: Energy / MJ
+- Amount rule: metered use or documented engineering allocation from utility and operating records
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_energy_and_utilities`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Ammonia refrigerant make-up (`ammonia_refrigerant_input`)
+
+Record ammonia charged or added to the attributable cooling system; apply only when ammonia is the declared refrigerant.
+
+- Selected flow: Ammonia, refrigerant grade
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured purchase, charge, or make-up mass allocated to the declared production period
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_energy_and_utilities`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Carbon dioxide refrigerant make-up (`carbon_dioxide_refrigerant_input`)
+
+Record carbon dioxide charged or added to the attributable cooling system; apply only when carbon dioxide is the declared refrigerant.
+
+- Selected flow: Carbon dioxide, refrigerant grade
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured purchase, charge, or make-up mass allocated to the declared production period
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_energy_and_utilities`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Water refrigerant make-up (`water_refrigerant_input`)
+
+Record water charged or added to the attributable cooling system; apply only when water is the declared refrigerant.
+
+- Selected flow: Water, refrigerant use
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured purchase, charge, or make-up mass allocated to the declared production period
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_energy_and_utilities`
+- Sources: `eu-fdm-bat-2019-2031`
 
 ##### Waste flows
 
@@ -528,24 +1008,24 @@ This is the quantitative reference output. Determine accepted net product mass a
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_output_and_packaging`
 - Sources: `codex-cxs-281-1971`
-- Range: Reference-output normalization check
+- Range: Reference-output normalization identity
   - Range role: Allowed range (`allowed_range`)
   - Lower: 1.0
   - Upper: 1.0
   - Unit: kg/kg reference product
-  - Basis: normalized accepted reference output
+  - Basis: exact normalized accepted reference output, not an empirical observation
   - Basis kind: Reference flow (`reference_flow`)
   - Evidence kind: Calculated from collection (`calculated_from_collection`)
 
 ##### Waste flows
 
-###### Off-spec product and filling losses (`final_product_losses`)
+###### Off-spec evaporated milk and filling losses (`offspec_evaporated_milk`)
 
-Record start-up, shutdown, changeover, overfill, sampling, leakage, and rejected finished product by recovery, rework, treatment, or disposal route.
+Record start-up, shutdown, overfill, sampling, leakage, and rejected finished milk as one waste-milk exchange with its actual fate.
 
-- Selected flow: Unresolved Tiangong waste flow by actual material and destination
+- Selected flow: Waste evaporated milk
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: filler and reject records reconciled to product mass balance
+- Amount rule: measured waste mass or mass-balance-derived quantity, recorded with its actual treatment or recovery destination
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg accepted net evaporated milk
@@ -553,22 +1033,14 @@ Record start-up, shutdown, changeover, overfill, sampling, leakage, and rejected
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_waste_and_effluent`
 - Sources: `eu-fdm-bat-2019-2031`
-- Range: Provisional final-product-loss QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.30
-  - Unit: kg/kg reference product
-  - Basis: broad first-pass filling and finished-product loss
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Packaging scrap (`packaging_scrap`)
+###### Tinplate packaging scrap (`waste_tinplate_packaging`)
 
-Record damaged, trimmed, rejected, or unused packaging by material and actual recovery or disposal route.
+Record rejected or damaged tinplate can bodies and ends by measured mass and actual recovery or disposal route.
 
-- Selected flow: Unresolved Tiangong waste flow for each packaging material
+- Selected flow: Waste tinplate steel
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: packaging issues minus packed-product packaging and returned usable stock
+- Amount rule: measured waste mass or mass-balance-derived quantity, recorded with its actual treatment or recovery destination
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg accepted net evaporated milk
@@ -576,16 +1048,188 @@ Record damaged, trimmed, rejected, or unused packaging by material and actual re
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_output_and_packaging`
 - Sources: `eu-fdm-bat-2019-2031`
-- Range: Provisional packaging-scrap QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.10
-  - Unit: kg/kg reference product
-  - Basis: broad first-pass packaging scrap
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Paper-label scrap (`waste_paper_labels`)
+
+Record rejected, trimmed, or unused paper labels by measured mass and actual recovery or disposal route.
+
+- Selected flow: Waste paper labels
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured waste mass or mass-balance-derived quantity, recorded with its actual treatment or recovery destination
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_output_and_packaging`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Corrugated-case scrap (`waste_corrugated_cases`)
+
+Record damaged or unused corrugated cases by measured mass and actual recovery or disposal route.
+
+- Selected flow: Waste corrugated fibreboard
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured waste mass or mass-balance-derived quantity, recorded with its actual treatment or recovery destination
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_output_and_packaging`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Plastic-closure scrap (`waste_plastic_closures`)
+
+Record rejected or unused polyethylene closures by measured mass and actual recovery or disposal route.
+
+- Selected flow: Waste polyethylene
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured waste mass or mass-balance-derived quantity, recorded with its actual treatment or recovery destination
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_output_and_packaging`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Aseptic-carton scrap (`waste_aseptic_cartons`)
+
+Record rejected, trimmed, or unused aseptic composite cartons by measured mass and actual recovery or disposal route.
+
+- Selected flow: Waste aseptic composite carton
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured waste mass or mass-balance-derived quantity, recorded with its actual treatment or recovery destination
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_output_and_packaging`
+- Sources: `eu-fdm-bat-2019-2031`
 
 ##### Elementary flows
+
+###### Ammonia refrigerant released to air (`ammonia_refrigerant_air`)
+
+Calculate ammonia leakage to air from charge, recovery, make-up, and inventory records; apply only to an ammonia refrigeration route.
+
+- Selected flow: Ammonia to air
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured release or refrigerant mass balance for the attributable cooling system
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_energy_and_utilities`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Carbon dioxide refrigerant released to air (`carbon_dioxide_refrigerant_air`)
+
+Calculate carbon dioxide refrigerant leakage to air from charge, recovery, make-up, and inventory records; apply only to a carbon dioxide refrigeration route.
+
+- Selected flow: Carbon dioxide to air
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured release or refrigerant mass balance for the attributable cooling system
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_energy_and_utilities`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Water refrigerant released to air (`water_refrigerant_air`)
+
+Calculate water-refrigerant loss to air from charge, recovery, make-up, and inventory records; apply only to a water-refrigerant route.
+
+- Selected flow: Water vapour to air
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured release or refrigerant mass balance for the attributable cooling system
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_energy_and_utilities`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Fossil carbon dioxide from direct final-process fuel combustion (`final_combustion_fossil_carbon_dioxide_air`)
+
+Record fossil carbon dioxide emitted from direct combustion of final-process fuel inputs; do not attach this row to electricity, purchased steam, or purchased heat.
+
+- Selected flow: Carbon dioxide, fossil, to air
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured emission or relevant fuel quantity multiplied by a documented, reviewed technology-specific factor
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Fuel inventory (`fuel_inventory`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_energy_and_utilities`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Carbon monoxide from direct final-process fuel combustion (`final_combustion_carbon_monoxide_air`)
+
+Record carbon monoxide emitted from direct final-process fuel combustion when measured or supported by a reviewed fuel- and technology-specific factor.
+
+- Selected flow: Carbon monoxide to air
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured emission or relevant fuel quantity multiplied by a documented, reviewed technology-specific factor
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Fuel inventory (`fuel_inventory`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_energy_and_utilities`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Nitrogen oxides from direct final-process fuel combustion (`final_combustion_nitrogen_oxides_air`)
+
+Record nitrogen oxides emitted from direct final-process fuel combustion when measured or supported by a reviewed fuel- and technology-specific factor.
+
+- Selected flow: Nitrogen oxides to air
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured emission or relevant fuel quantity multiplied by a documented, reviewed technology-specific factor
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Fuel inventory (`fuel_inventory`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_energy_and_utilities`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Sulfur oxides from direct final-process fuel combustion (`final_combustion_sulfur_oxides_air`)
+
+Record sulfur oxides emitted from direct final-process fuel combustion when measured or supported by a reviewed fuel- and technology-specific factor.
+
+- Selected flow: Sulfur oxides to air
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured emission or relevant fuel quantity multiplied by a documented, reviewed technology-specific factor
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Fuel inventory (`fuel_inventory`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_energy_and_utilities`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Particulate matter from direct final-process fuel combustion (`final_combustion_particulate_matter_air`)
+
+Record particulate matter emitted from direct final-process fuel combustion when measured or supported by a reviewed fuel- and technology-specific factor.
+
+- Selected flow: Particulate matter to air
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured emission or relevant fuel quantity multiplied by a documented, reviewed technology-specific factor
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Fuel inventory (`fuel_inventory`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_energy_and_utilities`
+- Sources: `eu-fdm-bat-2019-2031`
 
 ### Process: Cleaning and wastewater management (`cleaning_and_wastewater_management`)
 
@@ -593,13 +1237,13 @@ Record damaged, trimmed, rejected, or unused packaging by material and actual re
 
 ##### Product flows
 
-###### Cleaning and process water (`cleaning_water`)
+###### Potable process and cleaning water (`potable_process_water`)
 
-Record potable or treated water for clean-in-place systems, equipment and area cleaning, cooling make-up, and other attributable uses. Record recovered evaporator condensate separately and credit only its actual reuse.
+Record fresh potable water used for clean-in-place systems, equipment and area cleaning, and attributable process service; exclude separately metered recovered condensate.
 
-- Selected flow: Unresolved Tiangong water product flow for the actual supply
+- Selected flow: Potable water
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: submetered water plus documented allocation, net of separately metered recovered-water use
+- Amount rule: submetered water plus documented allocation, net of separately recorded recovered-water use
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg accepted net evaporated milk
@@ -607,22 +1251,14 @@ Record potable or treated water for clean-in-place systems, equipment and area c
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_water_and_cleaning`
 - Sources: `eu-fdm-bat-2019-2031`
-- Range: Provisional cleaning-water QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.1
-  - Upper: 30
-  - Unit: kg/kg reference product
-  - Basis: deliberately broad first-pass attributable process and cleaning water
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Cleaning agents and disinfectants (`cleaning_chemicals`)
+###### Sodium hydroxide cleaning agent (`sodium_hydroxide_cleaner`)
 
-Record each detergent, acid, alkali, sanitizer, and disinfectant by purchased-product mass or volume with concentration and density conversion retained.
+Record sodium hydroxide supplied to attributable cleaning cycles when used, retaining supplied concentration and density.
 
-- Selected flow: Unresolved Tiangong product flow for each actual chemical
-- Flow property / unit: Mass / kg of supplied product
-- Amount rule: issue records or dosing-system totals allocated to evaporated-milk production
+- Selected flow: Sodium hydroxide
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: dosing-system or issue-record mass of supplied sodium hydroxide solution, with concentration and density retained
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg accepted net evaporated milk
@@ -630,14 +1266,51 @@ Record each detergent, acid, alkali, sanitizer, and disinfectant by purchased-pr
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_water_and_cleaning`
 - Sources: `eu-fdm-bat-2019-2031`
-- Range: Provisional cleaning-chemical QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.20
-  - Unit: kg supplied product/kg reference product
-  - Basis: deliberately broad first-pass attributable cleaning-agent mass
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Nitric acid cleaning agent (`nitric_acid_cleaner`)
+
+Record nitric acid supplied to attributable cleaning cycles when used, retaining supplied concentration and density.
+
+- Selected flow: Nitric acid
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: dosing-system or issue-record mass of supplied nitric acid solution, with concentration and density retained
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_water_and_cleaning`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Peracetic acid disinfectant (`peracetic_acid_disinfectant`)
+
+Record peracetic acid supplied to attributable sanitation cycles when used, retaining supplied concentration and density.
+
+- Selected flow: Peracetic acid
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: dosing-system or issue-record mass of supplied peracetic acid solution, with concentration and density retained
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_water_and_cleaning`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Sodium hypochlorite disinfectant (`sodium_hypochlorite_disinfectant`)
+
+Record sodium hypochlorite supplied to attributable sanitation cycles when used, retaining supplied concentration and density.
+
+- Selected flow: Sodium hypochlorite
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: dosing-system or issue-record mass of supplied sodium hypochlorite solution, with concentration and density retained
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_water_and_cleaning`
+- Sources: `eu-fdm-bat-2019-2031`
 
 ##### Waste flows
 
@@ -649,13 +1322,13 @@ Record each detergent, acid, alkali, sanitizer, and disinfectant by purchased-pr
 
 ##### Waste flows
 
-###### Process and cleaning wastewater to treatment (`process_wastewater`)
+###### Dairy process wastewater sent to treatment (`dairy_process_wastewater`)
 
-Record wastewater sent to on-site treatment, an external treatment system, or sewer by destination. Include cleaning water, product-containing rinses, and condensate routed to wastewater, avoiding duplication with separately recovered condensate.
+Record wastewater sent to on-site treatment, sewer, or external treatment as one destination-tagged waste flow; include product-containing rinses and avoid overlap with recovered condensate.
 
-- Selected flow: Unresolved Tiangong wastewater flow for the actual destination
+- Selected flow: Dairy process wastewater
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: effluent meter or water balance, with destination split and product-loss content disclosed
+- Amount rule: effluent meter or water balance, split by treatment destination
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg accepted net evaporated milk
@@ -663,22 +1336,14 @@ Record wastewater sent to on-site treatment, an external treatment system, or se
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_waste_and_effluent`
 - Sources: `eu-fdm-bat-2019-2031`
-- Range: Provisional wastewater QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 30
-  - Unit: kg/kg reference product
-  - Basis: deliberately broad first-pass wastewater sent to treatment or sewer
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Wastewater-treatment sludge (`wastewater_sludge`)
+###### Biological wastewater-treatment sludge (`biological_wastewater_sludge`)
 
-When on-site treatment is operated, record dewatered sludge or other residuals by measured mass, dry-matter content, and actual recovery or disposal destination.
+When on-site biological treatment is operated, record dispatched dewatered sludge with wet mass, dry-matter content, and actual recovery or disposal destination.
 
-- Selected flow: Unresolved Tiangong waste flow for the actual sludge
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg wet and dry-matter basis declared
-- Amount rule: measured dispatched mass with dry-matter conversion where available
+- Selected flow: Biological wastewater sludge
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured dispatched sludge mass with dry-matter conversion retained
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg accepted net evaporated milk
@@ -686,24 +1351,16 @@ When on-site treatment is operated, record dewatered sludge or other residuals b
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_waste_and_effluent`
 - Sources: `eu-fdm-bat-2019-2031`
-- Range: Provisional treatment-sludge QA guardrail
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 0.20
-  - Unit: kg wet sludge/kg reference product
-  - Basis: broad first-pass on-site treatment residual
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
 ##### Elementary flows
 
-###### Treated effluent released to the environment (`treated_effluent_release`)
+###### Treated effluent water released to freshwater (`treated_effluent_water_freshwater`)
 
-When the reporting site releases treated effluent directly, implement water and pollutant-specific elementary-flow rows using verified Tiangong identities and measured concentration and discharge-volume records. If wastewater leaves for external treatment, keep it as a waste flow and do not also report a direct elementary release.
+Record the water mass released directly to freshwater after on-site treatment; do not also report the same water as wastewater sent to external treatment.
 
-- Selected flow: Unresolved water and pollutant-specific elementary flows
-- Flow property / unit: Mass / kg for water and each pollutant
-- Amount rule: measured discharge volume multiplied by measured pollutant concentration, with unit and density conversions documented
+- Selected flow: Water to freshwater
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured discharge volume converted to mass with documented density
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg accepted net evaporated milk
@@ -712,6 +1369,65 @@ When the reporting site releases treated effluent directly, implement water and 
 - Collection protocol: `cp_waste_and_effluent`
 - Sources: `eu-fdm-bat-2019-2031`
 
+###### Chemical oxygen demand released to freshwater (`chemical_oxygen_demand_freshwater`)
+
+Record the chemical-oxygen-demand load in directly released treated effluent from matched discharge volume and representative concentration.
+
+- Selected flow: Chemical oxygen demand to freshwater
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: matched discharge volume multiplied by measured chemical oxygen demand concentration after unit conversion
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_waste_and_effluent`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Nitrate released to freshwater (`nitrate_freshwater`)
+
+Record nitrate in directly released treated effluent when monitored, using matched discharge volume and representative nitrate concentration.
+
+- Selected flow: Nitrate to freshwater
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: matched discharge volume multiplied by measured nitrate concentration after unit conversion
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_waste_and_effluent`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Phosphate released to freshwater (`phosphate_freshwater`)
+
+Record phosphate in directly released treated effluent when monitored, using matched discharge volume and representative phosphate concentration.
+
+- Selected flow: Phosphate to freshwater
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: matched discharge volume multiplied by measured phosphate concentration after unit conversion
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_waste_and_effluent`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Chloride released to freshwater (`chloride_freshwater`)
+
+Record chloride in directly released treated effluent when monitored, using matched discharge volume and representative chloride concentration.
+
+- Selected flow: Chloride to freshwater
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: matched discharge volume multiplied by measured chloride concentration after unit conversion
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg accepted net evaporated milk
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_waste_and_effluent`
+- Sources: `eu-fdm-bat-2019-2031`
 ## 7. Allocation and Co-product Handling
 
 | rule_id | Applies to | Rule | source_ids |
@@ -754,7 +1470,7 @@ When the reporting site releases treated effluent directly, implement water and 
 | `dq_temporal` | All foreground data | Use a declared period representative of the product and technology, covering every eligible lot or campaign and all material operating modes; identify maintenance, shutdown, start-up, and abnormal events and justify exclusions. | production calendar; meter series; event log; exclusion record; technological, geographical, temporal, and precision review consistent with `eu-pef-2021-2279` |
 | `dq_completeness` | Material and utility balance | Include all material measured foreground inputs, outputs, wastes, and direct emissions; explicitly list and justify every omitted flow and never omit hazardous or legally controlled releases through a generic cut-off. | completeness calculation; omitted-flow register; reviewer sign-off; `eu-pef-2021-2279` data-quality review |
 | `dq_mass_balance` | Receipt through released product | Define a site- and batch-specific investigation threshold before validation; investigate every unexplained total-mass or milk-solids difference that exceeds that threshold and retain the corrective-action decision. No universal percentage is prescribed by this PCR. | signed mass-and-solids balance; documented site threshold; corrective-action record |
-| `dq_source_replacement` | All provisional ranges | Treat every `reasoned_estimate` range as a non-binding candidate QA screen; replace it with foreground empirical distributions or reviewed product-specific evidence before publication-critical use. | range review log; foreground distribution; approved source record |
+| `dq_range_evidence` | Important inventory flows | Do not author an empirical range from a single publication, plant, batch, scenario, or point value. Require at least two independent original sources with compatible foreground boundary, unit, and normalization basis, or a reviewed foreground distribution; otherwise keep the range evidence gap unresolved. Exact reference-flow normalization identities are not empirical ranges. | original source texts; boundary-and-unit compatibility review; foreground distribution; unresolved-range register |
 
 ## 9. Validation Rules
 
@@ -765,7 +1481,7 @@ When the reporting site releases treated effluent directly, implement water and 
 | `validate_process_coverage` | Foreground process map | Fail if receipt, standardization/heat treatment, concentration, final filling/heat stabilization/cooling, or attributable cleaning is omitted without a documented route-specific explanation. | `eu-fdm-bat-2019-2031` |
 | `validate_mass_and_solids_balance` | Material balance | Flag total-mass or milk-solids imbalance above the declared site- and batch-specific investigation threshold and fail if the difference is unexplained, if internal rework is double-counted, or if removed water routes overlap. | `codex-cxs-281-1971`, `eu-fdm-bat-2019-2031` |
 | `validate_wastewater_route` | Waste and elementary flows | Fail if the same wastewater or condensate is reported both as a waste flow to treatment and as a direct elementary release, or if product-containing losses and cleaning compounds have no destination. | `eu-fdm-bat-2019-2031` |
-| `validate_provisional_ranges` | Inventory amounts and QA | Flag any foreground result outside a provisional QA guardrail for investigation, but do not replace the foreground value or treat a `reasoned_estimate` as an allowed range; fail publication review if provisional publication-critical constraints lack accepted evidence. |  |
+| `validate_range_evidence` | Inventory amount ranges | Fail if an empirical range copies a single case or point value, lacks at least two independent boundary-, unit-, and basis-compatible original sources, or is presented without its inference and applicability. Permit an exact lower-equals-upper value only for a declared physical, specification, or normalization identity. |  |
 | `validate_allocation` | Shared operations and co-products | Fail if shared-operation allocation, exported co-products, internal rework, or recovery credits are material but the method, driver, fractions, quantities, and sensitivity are not disclosed and reconciled. | `eu-pef-2021-2279` |
 
 ## 10. Published Dataset Profile
@@ -777,7 +1493,7 @@ When the reporting site releases treated effluent directly, implement water and 
 | allowed_use | Product carbon-footprint or LCA studies that combine this factory-gate dataset with representative upstream milk, material, energy, packaging, transport, and downstream scenarios and preserve the declared product qualifiers |
 | excluded_use | Stand-alone cradle-to-grave claim; sweetened condensed milk, concentrated cream, milk powder, dairy analogue, or flavoured-product proxy; comparative assertion without equivalent composition, boundary, allocation, geography, technology, and data period |
 | required_metadata | canonical PCR id; reference UUIDs; product subclass and composition; milk species and material route; reconstitution status; plant geography; technology and heat-stabilization route; packaging; production period; boundary; allocation; upstream datasets; data owners; review status |
-| required_quality_disclosure | primary-data share; meter and laboratory coverage; temporal and site coverage; mass-and-solids balance closure; water and energy allocation; waste and wastewater destinations; unresolved UUIDs; provisional ranges; exclusions; uncertainty and reviewer decisions |
+| required_quality_disclosure | primary-data share; meter and laboratory coverage; temporal and site coverage; mass-and-solids balance closure; water and energy allocation; waste and wastewater destinations; unresolved UUIDs and range-evidence gaps; exclusions; uncertainty and reviewer decisions |
 | update_trigger | material change in formulation, milk source, composition class, concentration or sterilization technology, packaging, plant energy or water system, allocation, waste route, product-flow identity, applicable standard, or a change exceeding the dataset owner's significance threshold |
 
 ## 11. Data Sources

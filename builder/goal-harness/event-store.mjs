@@ -8,6 +8,7 @@ import {
   openSync,
   readFileSync,
   renameSync,
+  statSync,
   writeFileSync,
 } from "node:fs";
 import path from "node:path";
@@ -21,6 +22,7 @@ export class GoalEventStore {
     this.initialPath = path.join(stateDir, "initial-state.json");
     this.statePath = path.join(stateDir, "state.json");
     this.clock = clock;
+    this.projectionCache = null;
   }
 
   initialize(initialState) {
@@ -40,7 +42,8 @@ export class GoalEventStore {
     if (!existsSync(this.initialPath)) {
       throw new GoalHarnessError("GOAL_STATE_UNINITIALIZED", `Goal state is not initialized: ${this.stateDir}`);
     }
-    const events = this.readEvents();
+    const projection = this.loadVerifiedProjection();
+    const events = projection.events;
     const duplicate = events.find((event) => event.event_id === input.event_id);
     if (duplicate) {
       const expected = stableJson({ type: input.type, payload: input.payload ?? {} });
@@ -61,7 +64,13 @@ export class GoalEventStore {
     };
     const event = { ...unsigned, hash: sha256(stableJson(unsigned)) };
     durableAppend(this.eventsPath, `${JSON.stringify(event)}\n`);
-    atomicWriteJson(this.statePath, this.rebuild());
+    const state = reduceEvent(projection.state, event);
+    atomicWriteJson(this.statePath, state);
+    this.projectionCache = {
+      signature: eventLogSignature(this.eventsPath),
+      events: [...events, event],
+      state,
+    };
     return event;
   }
 
@@ -89,8 +98,17 @@ export class GoalEventStore {
   }
 
   rebuild() {
+    return this.loadVerifiedProjection().state;
+  }
+
+  loadVerifiedProjection() {
+    const signature = eventLogSignature(this.eventsPath);
+    if (this.projectionCache?.signature === signature) return this.projectionCache;
     const initial = JSON.parse(readFileSync(this.initialPath, "utf8"));
-    return this.readEvents().reduce(reduceEvent, initial);
+    const events = this.readEvents();
+    const projection = { signature, events, state: events.reduce(reduceEvent, initial) };
+    this.projectionCache = projection;
+    return projection;
   }
 }
 
@@ -147,6 +165,10 @@ function reduceEvent(state, event) {
           viewer_source_status: event.payload.source_status,
         }
       : snapshot);
+  } else if (event.type === "integration_finalized") {
+    next.snapshots = (next.snapshots ?? []).map((snapshot) => snapshot.id === event.payload.snapshot.id ? event.payload.snapshot : snapshot);
+    const replacements = new Map(event.payload.tasks.map((task) => [task.id, task]));
+    next.tasks = (next.tasks ?? []).map((task) => replacements.get(task.id) ?? task);
   } else if (event.type === "task_replaced") {
     next.tasks = (next.tasks ?? []).map((task) => task.id === event.payload.task.id ? event.payload.task : task);
   } else if (event.type === "verified_common_uuids_updated") {
@@ -202,4 +224,9 @@ function stableJson(value) {
 
 function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
+}
+
+function eventLogSignature(filePath) {
+  const stats = statSync(filePath, { bigint: true });
+  return `${stats.dev}:${stats.ino}:${stats.size}:${stats.mtimeNs}:${stats.ctimeNs}`;
 }

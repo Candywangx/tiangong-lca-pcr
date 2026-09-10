@@ -48,7 +48,10 @@ test("UUID audit compares public direct-read identity to the author report", () 
   bad.uuid_audits[0].base_name_zh = "错误名称";
   assert.throws(
     () => auditReportedUuids({ report: bad, tiangongCliRoot: "/unused", runner: () => direct, supportRunner }),
-    (error) => error.code === "GOAL_UUID_DIRECT_AUDIT_MISMATCH",
+    (error) => error.code === "GOAL_UUID_DIRECT_AUDIT_MISMATCH"
+      && error.details.findings[0].expected.base_name_zh === "生铁"
+      && error.details.findings[0].claimed.base_name_zh === "错误名称"
+      && /direct-read identity/u.test(error.details.findings[0].remediation),
   );
   const wrongUnitGroup = structuredClone(report);
   wrongUnitGroup.uuid_audits[0].unit_group = "Units of volume";

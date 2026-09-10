@@ -98,6 +98,79 @@ client message id, turn id, timestamps, old/new commits, and findings are persis
 second turn for the same repair. A replacement task is allowed only after the configured repair limit or a recorded
 thread/worktree/commit recovery failure.
 
+### Explicit boundary review and coordinator holds
+
+An author may return a non-null `boundary_review` with reason
+`semantic_boundary_unresolved` or `overlapping_pcr_identity`, a substantive summary,
+open questions, and evidence locators with observations. These observations are
+unverified author claims, not accepted methodology or positive mapping evidence.
+Ordinary completed-PCR reports use null; legacy reports may omit the field.
+Free-text `manual_review_required` never substitutes for this explicit request.
+
+The independent boundary auditor verifies task identity, actual HEAD and baseline
+ancestry, authorized committed and dirty paths, and bounded no-follow file hashes.
+It preserves partial four-file work without accepting it. A referral cannot claim
+final inventory rows, adopted UUIDs, ranges, reference UUID confirmation, bilingual
+alignment, sync or validation success. UUID infrastructure failure remains a retryable
+failure, not a boundary-review workaround. Its report hash is explicitly canonical
+JSON; it is distinct from the exact persisted report-byte hash used below.
+
+For legacy reports needing coordinator inspection, the bounded library APIs in
+`builder/goal-harness/coordinator-hold.mjs` are `holdCoordinatorTask`,
+`releaseCoordinatorTask`, and `coordinatorTaskSha256`. Both operations take:
+
+```js
+{
+  stateDir, task_id, operation_id, coordinator, reason,
+  expected_task_sha256, expected_report_sha256, dry_run: true
+}
+```
+
+Compute the task SHA using `coordinatorTaskSha256` on the current task rebuilt from
+`GoalEventStore`, and the report SHA-256 on exact bytes at that task's `report_path`.
+Inspect both before authorizing the operation. A dry run performs validation without
+appending an event or changing the state projection; set `dry_run: false` on the same
+request to apply. Use a new operation id and fresh hashes for release. Do not edit
+`state.json` or reset retry/repair counters to accomplish either operation.
+
+Only `authoring`, `authoring_repair`, `author_review`, `repair_requested`, and
+`retryable_failure` tasks with a persisted report are eligible. Accepted or integrated
+results require the correction workflow instead. The operation holds the Goal lock,
+checks task/report CAS, rejects unsafe or larger-than-1-MiB report files, and appends
+an audited `task_replaced` event. Linux descriptor-anchored no-follow reads are required;
+unsupported secure traversal fails closed. Exact retries return the original receipt
+without reinstating an old task snapshot; operation-id reuse with different input fails.
+
+The audit retains actor, UTC time, reason, task/report hashes, current execution
+provenance and separate report-path recording provenance. An older report does not
+thereby become evidence from the current turn. Release clears `coordinator_hold` and
+appends the hold/release pair to `coordinator_hold_history`, preserving execution
+fields, counters, threads, worktrees and reports.
+
+The scheduling contract is separate from the hold receipt: held tasks must be
+excluded from normal dispatch, repairs, retry replacements and dry-run selection.
+A held running turn continues and occupies its slot without automatic timeout
+interruption. Its terminal report is retained at `author_review` without acceptance;
+that terminal held task no longer occupies an author slot. Release permits review
+again, not automatic acceptance. A valid explicit boundary referral is recorded as
+unadjudicated `manual_review`, retaining its original queue action and file/report
+provenance; it is not one of the six valid results and creates no accepted mapping.
+
+For rollout, stop dispatch first, retain active turns and existing results, verify
+the hold and referral scheduling tests and full validate, then run authenticated
+doctor. Inspect legacy reports read-only and pin their current task/report hashes
+before any explicit hold. Do not infer referrals from old report prose or rewrite
+old reports. Validate one eligible original-thread outcome before restoring the
+rolling pool; exhausted repair budgets remain visible for coordinator inspection
+and must not be reset to manufacture a pilot.
+
+If an idle visible thread omits the expected repair turn from its history, the adapter can recover that completed
+turn from the local Codex session path returned by app-server. It requires a regular, non-symlink UTF-8 JSONL file
+under the configured Codex home `sessions/`, matching session thread/worktree identity, and exactly one terminal
+completion matching the final-answer message for the requested turn. Active threads and incomplete reports are never
+accepted by this recovery. The Goal records the session SHA-256 and turn identity; all ordinary author quality gates
+still run. The session contents are not copied into PCR files.
+
 ## Dirty baseline and landing
 
 The harness uses a temporary `GIT_INDEX_FILE`, `git write-tree`, and `git commit-tree` to capture only approved current
@@ -113,6 +186,14 @@ landed descendants become the cumulative base. Diverged histories or dirty runti
 keeps the validated viewer/test optimization active without rewriting the original synthetic baseline or touching the
 dirty primary working tree.
 
+The approved runtime paths also include the shared-materials CLI, implementation, tests, and create-PCR guidance.
+Run `goal:start` or `goal:resume` from the clean, committed checkout containing the desired Harness version (or invoke
+that checkout's `builder/cli/goal.mjs` directly); a GitHub push alone does not update another local checkout or an
+existing Goal runtime. New dispatches query the shared store and pass bounded candidates plus explicit query/read/register
+commands to authors. Existing author turns keep their original prompts; subsequent repair turns receive the updated
+instructions from the coordinator. The default materials directory is the Git common directory's `pcr-materials/`,
+shared across linked worktrees; `tools.materials_root` can override it. See [shared materials](shared-materials.md).
+
 Landing is staged and journaled. Every destination path is compared with the baseline or the last successfully landed
 snapshot. Any byte mismatch produces `GOAL_LAND_CAS_CONFLICT` with exact paths and does not overwrite newer user
 content. Author worktrees are retained after stop and successful landing for audit.
@@ -122,8 +203,9 @@ content. Author worktrees are retained after stop and successful landing for aud
 The Harness starts one Goal-owned detached `codex app-server --listen ws://127.0.0.1:<port>` process idempotently and
 records its PID, loopback endpoint, and logs under the ignored Goal state directory. Short-lived CLI invocations use
 Node's WebSocket client for the initialize handshake, `project/list`, durable non-ephemeral `thread/start`,
-`thread/name/set`, `turn/start` with an output Schema, and `thread/read`/`thread/resume`. Closing a CLI client does not
-interrupt author turns.
+`thread/name/set`, `turn/start` with an output Schema, and `thread/read`. Repair turns call `turn/start` directly on
+the existing durable thread; they do not call `thread/resume` first because that would restart an interrupted prior
+turn before queuing the repair. Closing a CLI client does not interrupt author turns.
 Each thread is bound to one independent Git worktree and the current visible Codex project. If this interface or project binding is
 unavailable, dispatch stops with `GOAL_CODEX_VISIBLE_TASK_UNAVAILABLE` or `GOAL_CODEX_PROJECT_UNAVAILABLE`. There is
 no fallback to `codex exec`, hidden subagents, or multiple writers in one directory.
@@ -188,6 +270,14 @@ and author validation. Search/OpenAlex summaries are discovery-only evidence.
 Integration is serial. It accepts only reviewed `exact`, `broader`, `narrower`, or `proxy` edges to material PCRs with
 accepted status, decision maker, UTC time, and a durable generated ADR. It then runs aliases, catalog, coverage/viewer,
 full validation, and public list/resolve/guidance checks before CAS landing is permitted.
+An integration-specific operation lock remains held during the full build, while the Goal state lock is released
+between preparation and finalization so author review/refill can proceed. Completion is durably recorded under
+`integration-completions/<snapshot-id>/<operation-id>.json` before state finalization. The versioned, hashed record
+binds the prepared snapshot/tasks, author commits, worktree, output fingerprints, and command results. Resume verifies
+the worktree and selected-state CAS before applying one atomic `integration_finalized` event; a busy state lock does
+not discard successful commands. Do not remove live locks or completion records. Changed outputs or selected tasks
+fail closed. Older snapshots whose validated state disagrees with task states report
+`GOAL_INTEGRATION_FINALIZATION_INCOMPLETE` and require evidence review rather than automatic landing advice.
 The viewer derivation may be restored only from a same-input cache whose PCR, mapping, alias, catalog, coverage,
 viewer-code, and core-code SHA-256 fingerprint and output-tree hash both match. Corruption rebuilds safely. Full
 `npm run validate` still runs once for every six-result snapshot; its lint phase performs the authoritative

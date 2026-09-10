@@ -1,10 +1,980 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41513"
-  title: "Wire of copper"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.wire-of-copper"
+  classification_refs: "CPC 3.0 41513, Wire of copper"
+  covered_products: "Uninsulated individual round or profiled wire of copper or copper alloy, in hard-drawn, intermediate, annealed, or soft temper, before stranding or incorporation into a downstream component; metallic surface treatment only when explicitly declared and inventoried"
+  excluded_products: "Copper wire rod; stranded, bunched, roped, or cabled conductor; insulated or enamelled wire and cable; winding, cable-core, harness, busbar, photovoltaic-cable, charging-cable, and other downstream assemblies"
+  representative_product: "Uncoated bare individual copper wire produced from copper wire rod by drawing, with annealing included when required by the declared temper"
+  production_route: "Purchased or transferred copper/copper-alloy wire rod; conditional surface preparation; rod breakdown and intermediate or fine drawing; conditional annealing; cleaning, inspection, spooling, and packaging"
+  market_state: "Bare individual wire on coil, reel, or spool at the manufacturing factory gate, before stranding, insulation, or component assembly"
+functional_unit:
+  what: "Conforming uninsulated individual copper or copper-alloy wire with the declared grade, dimensions, temper, surface state, and manufacturing route"
+  how_much: "1,000 kg net mass of conforming wire at the factory gate, excluding reel, spool, and packaging mass"
+  how_well: "Meets the declared product specification for composition or purity, dimensions and tolerances, temper, surface condition, and applicable electrical and mechanical properties"
+  how_long_or_cycle: "Production during the declared reporting period; no use-phase service is included"
+  reference_flow_link: "Factory-gate output of finishing_inspection_and_packaging"
+system_boundary:
+  rules:
+    - rule_id: boundary_start_at_wire_rod
+      applies_to: "Foreground starting condition"
+      rule: "Start at receipt or internal transfer of copper or copper-alloy wire rod and disclose grade, source facility or supplier, production route, and primary/recycled-content basis where available."
+      source_ids:
+        - astm-b250-2026
+        - asm-copper-wire-cable-1998
+    - rule_id: boundary_include_foreground_operations
+      applies_to: "Foreground manufacturing"
+      rule: "Include surface preparation when used, all drawing passes represented by the dataset, conditional annealing, cleaning, cooling, inspection, spooling, packaging, utilities, auxiliaries, yield losses, wastes, and onsite treatment attributable to the wire."
+      source_ids:
+        - bechem-wire-drawing
+        - asm-copper-wire-cable-1998
+    - rule_id: boundary_recursive_wire_input
+      applies_to: "Same-category input"
+      rule: "If purchased or transferred drawn wire already classified in CPC 41513 is an input, record it as a disclosed product input and do not recursively reproduce its drawing operations in the receiving foreground process."
+      source_ids:
+        - unsd-cpc-3-0-2025
+    - rule_id: boundary_upstream_wire_rod
+      applies_to: "Upstream supply"
+      rule: "Link wire rod to an upstream dataset matching grade or composition, geography, technology, and declared primary/secondary route; do not substitute a narrow or contradictory identity merely to obtain a UUID."
+      source_ids:
+        - ica-copper-environmental-profile-2023
+        - aoyama-copper-wire-annealing-1989
+    - rule_id: boundary_exclude_downstream_products
+      applies_to: "Product-category end point"
+      rule: "End at uninsulated individual wire before stranding, bunching, cabling, insulation, winding-component fabrication, cable-core manufacture, or harness assembly. Do not extrapolate a bare-wire dataset to these downstream products."
+      source_ids:
+        - unsd-cpc-3-0-2025
+        - astm-b8-2023
+        - iec-60228-2023
+    - rule_id: boundary_surface_variant
+      applies_to: "Surface treatment"
+      rule: "Treat uncoated bare wire as representative. Include metallic surface treatment only when explicitly declared and inventoried; exclude polymeric, enamel, or other electrical insulation."
+      source_ids:
+        - astm-b1-2018
+        - astm-b3-2024
+boundary_abstraction:
+  declared_starting_condition: "copper_or_copper_alloy_wire_rod_at_receipt_or_internal_transfer"
+  starting_condition_role: "disclosed_foreground_input_and_upstream_link"
+  product_classification_scope: "CPC 3.0 41513, individual wire of copper; ends before CPC 42942 stranded copper products and CPC group 463 insulated wire and cable"
+  recursive_input_rule: "A same-category drawn-wire input is recorded as a declared product input with supplier and product qualifiers; its prior drawing is represented only by the linked upstream dataset."
+  upstream_dataset_requirement: "Match the rod's grade or composition, source geography, technology, primary/secondary route, and reference period; document any proxy and its expected direction of bias."
+  disclosure: "Declare rod supplier or internal source, rod grade and dimensions, cathode/secondary route information where available, surface preparation, drawing sequence, annealing state, surface treatment, and the exact factory gate."
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "copper wire"
+    uuid: "4f197beb-7b3b-11dd-ad8b-0800200c9a66"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "copper or copper-alloy grade and governing specification"
+    - "purity or composition"
+    - "nominal diameter or cross-sectional area and tolerance"
+    - "round or profiled shape"
+    - "individual-wire or pre-stranding state"
+    - "declared temper state (hard-drawn / intermediate / annealed / soft)"
+    - "bare surface and any metallic treatment"
+    - "wire-rod source and production route"
+    - "primary and recycled-content basis where claimed"
+    - "production geography and reference period"
+    - "declared conductivity or resistivity and mechanical-property basis where specified"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report 1,000 kg net conforming wire; exclude reel, spool, pallet, and packaging mass."
+  - id: metal_mass_balance
+    applies_to: "Copper-bearing inputs and outputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record gross wire-rod input, conforming wire, internal return, exported scrap, off-specification wire, residues, and unresolved variance on one dry-metal mass basis."
+  - id: diameter_area_basis
+    applies_to: "Product dimensions"
+    required_property_ref:
+      name: "Declared geometric basis"
+      uuid: ""
+    required_unit: "mm or mm2"
+    rule: "Declare nominal diameter for round wire or cross-sectional dimensions and area for profiled wire, including the applicable tolerance and measurement method."
+  - id: electricity_measurement
+    applies_to: "Drawing, annealing, preparation, and finishing electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Use submetered electricity where available; otherwise allocate a documented line or machine meter by measured operating time, machine load, or mass throughput."
+  - id: fuel_energy_measurement
+    applies_to: "Direct thermal energy"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert measured fuel quantities using a declared net calorific value and retain the original fuel quantity and conversion source."
+  - id: auxiliary_net_use
+    applies_to: "Lubricant, emulsion, cleaning agent, pickling agent, process gas, and water"
+    required_property_ref:
+      name: "Mass or volume appropriate to the record"
+      uuid: ""
+    required_unit: "kg, L, or m3"
+    rule: "Report net foreground consumption from receipts, opening and closing inventory, recovery, recycle, and disposal records; do not report circulating charge as consumption."
+process_map:
+  - id: rod_receipt_and_preparation
+    name: "Wire-rod receipt and surface preparation"
+    inclusion: "required"
+    inclusion_condition: "Surface cleaning, mechanical descaling, or pickling flows are recorded when performed"
+    role: "foreground"
+    quantitative_reference: "prepared wire rod transferred to drawing"
+  - id: wire_drawing
+    name: "Rod breakdown and wire drawing"
+    inclusion: "required"
+    inclusion_condition: "Always included for wire made from rod"
+    role: "foreground"
+    quantitative_reference: "drawn individual wire transferred to the next stage"
+  - id: annealing
+    name: "Intermediate or final annealing"
+    inclusion: "conditional"
+    inclusion_condition: "Included when annealing is performed to achieve drawability or the declared temper"
+    role: "foreground"
+    quantitative_reference: "annealed wire transferred to finishing"
+  - id: finishing_inspection_and_packaging
+    name: "Finishing, inspection, and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always included through the declared factory gate"
+    role: "foreground"
+    quantitative_reference: "1,000 kg conforming copper wire output"
+process_inventory:
+  - id: rod_receipt_and_preparation
+    label: "Wire-rod receipt and surface preparation"
+    inputs:
+      product:
+        - row_id: copper_wire_rod_input
+          role: "Copper or copper-alloy wire rod"
+          name: "Copper or copper-alloy wire rod"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the gross metal-bearing rod crossing the foreground boundary. No default UUID is assigned until an identity matching the declared grade, route, dimensions, and quantitative reference is confirmed."
+          amount:
+            expression: "measured gross rod input on the declared metal-mass basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming copper wire output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rod_input_records
+              source_ids:
+                - astm-b250-2026
+                - asm-copper-wire-cable-1998
+            ranges: []
+        - row_id: surface_preparation_chemicals
+          role: "Surface-preparation chemicals"
+          name: "Surface-preparation chemical by substance or formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record cleaning, descaling, or pickling agents only when consumed by the declared route, separated by substance or formulation."
+          amount:
+            expression: "net consumed mass from issue, inventory, return, and disposal records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming copper wire output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_preparation_records
+              source_ids:
+                - bechem-wire-drawing
+            ranges: []
+        - row_id: surface_preparation_water
+          role: "Surface-preparation water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record freshwater or supplied process water used for cleaning, rinsing, or pickling and distinguish gross circulation from net intake."
+          amount:
+            expression: "measured or balanced net water intake"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming copper wire output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_preparation_records
+              source_ids:
+                - bechem-wire-drawing
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_wire_rod_output
+          role: "Prepared wire rod"
+          name: "Prepared copper or copper-alloy wire rod"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the metal mass transferred to the first drawing pass after any surface preparation."
+          amount:
+            expression: "measured transfer mass or calculated mass balance from rod input and preparation losses"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "process reference"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stage_mass_balance_records
+              source_ids:
+                - asm-copper-wire-cable-1998
+            ranges: []
+      waste:
+        - row_id: preparation_residue_output
+          role: "Preparation residues and removed scale"
+          name: "Copper-bearing preparation residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record collected oxide, scale, sludge, and copper-bearing cleaning residues by treatment destination."
+          amount:
+            expression: "measured collected waste mass, including moisture-basis disclosure where material"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming copper wire output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_recovery_records
+              source_ids:
+                - bechem-wire-drawing
+            ranges: []
+        - row_id: spent_preparation_bath_output
+          role: "Spent preparation bath or rinse"
+          name: "Spent preparation bath or rinse"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent cleaning or pickling bath and rinse-water waste when discharged or sent to treatment."
+          amount:
+            expression: "measured or balanced mass sent to onsite or offsite treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming copper wire output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_recovery_records
+              source_ids:
+                - bechem-wire-drawing
+            ranges: []
+      elementary:
+        []
+  - id: wire_drawing
+    label: "Rod breakdown and wire drawing"
+    inputs:
+      product:
+        - row_id: prepared_rod_to_drawing
+          role: "Prepared rod or prior-pass wire"
+          name: "Prepared copper or copper-alloy rod or prior-pass wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the copper-bearing transfer entering the represented drawing sequence."
+          amount:
+            expression: "measured transfer mass or calculated stage balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "process reference"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stage_mass_balance_records
+              source_ids:
+                - asm-copper-wire-cable-1998
+            ranges: []
+        - row_id: drawing_electricity
+          role: "Drawing electricity"
+          name: "Electricity supplied to drawing"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Include rod breakdown, intermediate and fine drawing, capstans, pumps, cooling, filtration, and line auxiliaries represented by the meter boundary."
+          amount:
+            expression: "submetered use or documented allocation from a shared meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming copper wire output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drawing_energy_records
+              source_ids:
+                - bechem-wire-drawing
+            ranges: []
+        - row_id: drawing_lubricant
+          role: "Drawing lubricant or emulsion"
+          name: "Drawing lubricant or emulsion component"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each lubricant, emulsion concentrate, additive, and make-up component separately; do not count the circulating bath charge as consumed material."
+          amount:
+            expression: "net consumed mass from issue, inventory, recovery, and disposal records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming copper wire output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drawing_auxiliary_records
+              source_ids:
+                - bechem-wire-drawing
+            ranges: []
+        - row_id: drawing_process_water
+          role: "Drawing cooling and process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record make-up and discharged water for drawing cooling, emulsion preparation, and cleaning, excluding closed-loop recirculation."
+          amount:
+            expression: "measured or balanced net water intake"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming copper wire output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drawing_auxiliary_records
+              source_ids:
+                - bechem-wire-drawing
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: drawn_wire_output
+          role: "Drawn copper wire"
+          name: "Drawn copper or copper-alloy wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record wire leaving the represented drawing sequence before conditional annealing or finishing."
+          amount:
+            expression: "measured transfer mass or calculated stage balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "process reference"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stage_mass_balance_records
+              source_ids:
+                - astm-b1-2018
+                - bechem-wire-drawing
+            ranges: []
+      waste:
+        - row_id: drawing_copper_scrap
+          role: "Drawing breaks and copper scrap"
+          name: "Copper-bearing drawing scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record breaks, end cuts, start-up wire, and other copper-bearing drawing scrap, distinguishing internal return from offsite recovery."
+          amount:
+            expression: "measured mass by destination and internal-return status"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming copper wire output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_recovery_records
+              source_ids:
+                - iso-14044-2006
+            ranges: []
+        - row_id: spent_drawing_fluid
+          role: "Spent drawing emulsion and wastewater"
+          name: "Spent drawing fluid and wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent drawing fluid, filter residue, and wastewater by onsite or offsite treatment route."
+          amount:
+            expression: "measured or balanced mass leaving the drawing loop for treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming copper wire output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_recovery_records
+              source_ids:
+                - bechem-wire-drawing
+            ranges: []
+      elementary:
+        []
+  - id: annealing
+    label: "Intermediate or final annealing"
+    inputs:
+      product:
+        - row_id: hard_drawn_wire_to_annealing
+          role: "Hard-drawn wire to annealing"
+          name: "Hard-drawn copper or copper-alloy wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the wire mass entering batch, strand, resistance, induction, or other declared annealing equipment."
+          amount:
+            expression: "measured transfer mass or calculated stage balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "process reference"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stage_mass_balance_records
+              source_ids:
+                - astm-b3-2024
+                - aoyama-copper-wire-annealing-1989
+            ranges: []
+        - row_id: annealing_electricity
+          role: "Annealing electricity"
+          name: "Electricity supplied to annealing"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for heating, drives, protective-atmosphere equipment, cooling, drying, and included auxiliaries."
+          amount:
+            expression: "submetered use or documented allocation from a shared meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming copper wire output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_annealing_energy_records
+              source_ids:
+                - bechem-wire-drawing
+            ranges: []
+        - row_id: annealing_fuel_and_auxiliaries
+          role: "Annealing fuel and process auxiliaries"
+          name: "Annealing fuel or process auxiliary by substance"
+          flow_type: "product"
+          property_unit: "Mass or energy / kg or MJ"
+          description: "Record direct fuel, protective atmosphere gas, cooling or annealing fluid, and make-up water as separate flows when used."
+          amount:
+            expression: "measured net consumption by fuel, gas, fluid, or water type"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming copper wire output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_annealing_auxiliary_records
+              source_ids:
+                - bechem-wire-drawing
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: annealed_wire_output
+          role: "Annealed copper wire"
+          name: "Annealed copper or copper-alloy wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record wire transferred from annealing to finishing with the achieved temper and surface state declared."
+          amount:
+            expression: "measured transfer mass or calculated stage balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "process reference"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stage_mass_balance_records
+              source_ids:
+                - astm-b3-2024
+                - aoyama-copper-wire-annealing-1989
+            ranges: []
+      waste:
+        - row_id: annealing_waste_output
+          role: "Annealing scrap and spent fluid"
+          name: "Annealing scrap or spent fluid by material"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record annealing rejects, copper scrap, spent fluid, and wastewater separately by material and destination."
+          amount:
+            expression: "measured mass by material, treatment destination, and internal-return status"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming copper wire output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_recovery_records
+              source_ids:
+                - bechem-wire-drawing
+            ranges: []
+      elementary:
+        []
+  - id: finishing_inspection_and_packaging
+    label: "Finishing, inspection, and packaging"
+    inputs:
+      product:
+        - row_id: wire_to_finishing
+          role: "Drawn or annealed wire to finishing"
+          name: "Drawn or annealed copper or copper-alloy wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the wire mass entering cleaning, drying, dimensional and property inspection, spooling, and packing."
+          amount:
+            expression: "measured transfer mass or calculated stage balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "process reference"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stage_mass_balance_records
+              source_ids:
+                - astm-b1-2018
+                - astm-b3-2024
+                - astm-b250-2026
+            ranges: []
+        - row_id: packaging_materials
+          role: "Packaging materials"
+          name: "Packaging material by material and item type"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record reels, spools, coils, liners, wraps, pallets, and other packaging separately from the reference-product mass."
+          amount:
+            expression: "measured or purchasing-record mass supplied to conforming product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming copper wire output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: conforming_copper_wire_output
+          role: "Conforming copper wire at factory gate"
+          name: "copper wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197beb-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "This is the reference product. Record only uninsulated individual wire meeting the declared grade, dimensions, temper, surface state, and quality specification."
+          amount:
+            expression: "measured net conforming product mass excluding reel, spool, pallet, and packaging"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg conforming copper wire output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_output_and_quality_records
+              source_ids:
+                - unsd-cpc-3-0-2025
+                - astm-b1-2018
+                - astm-b3-2024
+                - astm-b250-2026
+            ranges: []
+      waste:
+        - row_id: finishing_copper_scrap
+          role: "Off-specification wire and end cuts"
+          name: "Off-specification copper wire and end cuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected wire and end cuts separately from conforming output and distinguish rework, internal return, and offsite recovery."
+          amount:
+            expression: "measured mass by disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming copper wire output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_recovery_records
+              source_ids:
+                - iso-14044-2006
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "Multi-product lines"
+    rule: "Prefer submetering, batch records, and subdivision by drawing line, diameter family, alloy, and temper before applying allocation."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_shared_utilities_physical
+    applies_to: "Shared electricity, fuel, water, and auxiliaries"
+    rule: "Allocate residual shared inputs by a documented physical driver that reflects consumption, such as machine operating time and load, metered line demand, or mass throughput; do not default to revenue."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_internal_scrap_closed_loop
+    applies_to: "Internal copper return"
+    rule: "Track internally returned copper separately and do not count it as both an external waste output and a new external raw-material input. Include remelting or reprocessing utilities and losses when they occur inside the declared boundary."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_exported_scrap_no_avoided_burden
+    applies_to: "Copper scrap leaving the boundary"
+    rule: "Report exported scrap by mass, composition, condition, and destination. Do not apply an avoided-burden credit by default; any alternative allocation shall be separately declared and sensitivity-tested."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_rework
+    applies_to: "Reworked off-specification wire"
+    rule: "Assign the additional drawing, annealing, finishing, and handling inputs to the product system that generates the rework, using recorded rework mass and operations."
+    source_ids:
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_rod_input_records
+      process_id: "rod_receipt_and_preparation"
+      flow_role: "Copper or copper-alloy wire rod"
+      record_type: "receiving or internal-transfer record"
+      raw_fields: "lot id; supplier or source; grade; composition or purity; diameter; mass; date; primary/recycled-content basis if claimed"
+      collection_method: "calibrated scale or weighbridge reconciled to inventory"
+      unit: "kg"
+      frequency: "per lot or transfer"
+      temporal_coverage: "full reporting period"
+      site_scope: "all represented wire-production sites"
+      aggregation_rule: "sum matching lots; preserve grade and route strata; normalize by conforming output"
+      quality_evidence: "scale calibration; lot certificate; supplier declaration; inventory reconciliation"
+    - protocol_id: cp_surface_preparation_records
+      process_id: "rod_receipt_and_preparation"
+      flow_role: "Surface-preparation chemicals and water"
+      record_type: "chemical issue, bath, and meter record"
+      raw_fields: "substance; concentration where relevant; opening stock; receipts; closing stock; recovery; disposal; water intake; batch or line"
+      collection_method: "inventory balance and calibrated meter"
+      unit: "kg; m3"
+      frequency: "per batch with monthly reconciliation"
+      temporal_coverage: "full reporting period"
+      site_scope: "each represented preparation line"
+      aggregation_rule: "calculate net consumption; separate circulation from make-up and discharge"
+      quality_evidence: "stock reconciliation; meter calibration; bath log; waste manifest"
+    - protocol_id: cp_drawing_energy_records
+      process_id: "wire_drawing"
+      flow_role: "Drawing electricity"
+      record_type: "electricity meter and production log"
+      raw_fields: "meter id; opening and closing reading; line; machine state; operating time; wire mass; product family"
+      collection_method: "line submeter or documented shared-meter allocation"
+      unit: "kWh"
+      frequency: "continuous or per shift"
+      temporal_coverage: "full reporting period including representative operating states"
+      site_scope: "each represented drawing line"
+      aggregation_rule: "subtract excluded loads; aggregate by product stratum; normalize by conforming output"
+      quality_evidence: "meter calibration; energy bill reconciliation; allocation worksheet"
+    - protocol_id: cp_drawing_auxiliary_records
+      process_id: "wire_drawing"
+      flow_role: "Drawing lubricant, emulsion, and process water"
+      record_type: "issue, inventory, bath, and water-meter record"
+      raw_fields: "formulation; concentrate; additives; opening stock; receipts; closing stock; recovered quantity; disposal; water intake"
+      collection_method: "inventory balance, purchase/issue record, and meter"
+      unit: "kg; m3"
+      frequency: "per issue or batch with monthly reconciliation"
+      temporal_coverage: "full reporting period"
+      site_scope: "each represented drawing line"
+      aggregation_rule: "report net consumption; exclude circulating charge; normalize by conforming output"
+      quality_evidence: "inventory reconciliation; formulation data; meter calibration; treatment record"
+    - protocol_id: cp_annealing_energy_records
+      process_id: "annealing"
+      flow_role: "Annealing electricity and fuel"
+      record_type: "meter, fuel, and production log"
+      raw_fields: "equipment; batch or run; electricity; fuel quantity; calorific value; operating time; wire mass; temper"
+      collection_method: "equipment submeter, fuel meter, or documented shared-meter allocation"
+      unit: "kWh; MJ"
+      frequency: "per batch or continuous run"
+      temporal_coverage: "full reporting period including start-up and normal operation"
+      site_scope: "each represented annealing unit"
+      aggregation_rule: "aggregate by annealing route and temper; normalize by conforming output"
+      quality_evidence: "meter calibration; fuel invoice; calorific-value source; allocation worksheet"
+    - protocol_id: cp_annealing_auxiliary_records
+      process_id: "annealing"
+      flow_role: "Protective gas, fluid, and water"
+      record_type: "issue, inventory, flow-meter, and treatment record"
+      raw_fields: "substance; quantity; opening and closing stock; recovery; discharge; batch or run"
+      collection_method: "inventory balance and calibrated flow meter"
+      unit: "kg; m3"
+      frequency: "per batch or shift with monthly reconciliation"
+      temporal_coverage: "full reporting period"
+      site_scope: "each represented annealing unit"
+      aggregation_rule: "report net consumption and discharge by substance; normalize by conforming output"
+      quality_evidence: "inventory reconciliation; meter calibration; treatment record"
+    - protocol_id: cp_stage_mass_balance_records
+      process_id: "rod_receipt_and_preparation_wire_drawing_annealing_finishing_inspection_and_packaging"
+      flow_role: "Interstage copper-bearing transfers"
+      record_type: "production, coil, reel, and scale record"
+      raw_fields: "lot or coil id; input mass; output mass; breaks; end cuts; rejects; internal return; exported scrap; date"
+      collection_method: "calibrated scale plus production tracking"
+      unit: "kg"
+      frequency: "per lot, coil, or batch"
+      temporal_coverage: "full reporting period"
+      site_scope: "all represented foreground stages"
+      aggregation_rule: "reconcile each stage and the total metal balance; preserve rework and internal-return loops"
+      quality_evidence: "scale calibration; lot genealogy; production reconciliation"
+    - protocol_id: cp_waste_and_recovery_records
+      process_id: "rod_receipt_and_preparation_wire_drawing_annealing_finishing_inspection_and_packaging"
+      flow_role: "Copper scrap, residues, spent fluid, and wastewater"
+      record_type: "waste, recovery, and treatment record"
+      raw_fields: "material; mass; moisture basis where relevant; composition; internal return; rework; carrier; destination; treatment"
+      collection_method: "calibrated scale, tank balance, manifest, and internal-return ledger"
+      unit: "kg"
+      frequency: "per movement with monthly reconciliation"
+      temporal_coverage: "full reporting period"
+      site_scope: "all represented foreground stages and onsite treatment"
+      aggregation_rule: "aggregate by material and destination; do not net internal return against exported waste"
+      quality_evidence: "scale calibration; manifest; treatment invoice; internal-return reconciliation"
+    - protocol_id: cp_packaging_records
+      process_id: "finishing_inspection_and_packaging"
+      flow_role: "Packaging materials"
+      record_type: "bill of materials, issue, and purchasing record"
+      raw_fields: "material; item type; item mass; quantity; reuse status; product lot"
+      collection_method: "measured item mass or supplier specification reconciled to issues"
+      unit: "kg"
+      frequency: "per product lot with monthly reconciliation"
+      temporal_coverage: "full reporting period"
+      site_scope: "represented packing operations"
+      aggregation_rule: "sum packaging by material; exclude from reference-product mass"
+      quality_evidence: "bill of materials; supplier specification; issue reconciliation"
+    - protocol_id: cp_final_output_and_quality_records
+      process_id: "finishing_inspection_and_packaging"
+      flow_role: "Conforming copper wire"
+      record_type: "final scale, test, and release record"
+      raw_fields: "lot or coil id; net wire mass; grade; composition or purity evidence; diameter or area; tolerance; shape; temper; surface state; conductivity or resistivity where specified; mechanical tests where specified; disposition"
+      collection_method: "calibrated scale and applicable product test methods"
+      unit: "kg"
+      frequency: "per released lot or coil"
+      temporal_coverage: "full reporting period"
+      site_scope: "all represented product families and sites"
+      aggregation_rule: "sum only conforming released mass matching declared qualifiers; retain strata"
+      quality_evidence: "scale and test-equipment calibration; certificate of analysis; release record"
+  calculation_rules:
+    - id: normalize_to_reference_output
+      applies_to: "All inventory flows"
+      rule: "normalized amount = reporting-period flow quantity / reporting-period conforming wire mass × 1,000 kg"
+      inputs:
+        - "relevant collection protocol"
+        - cp_final_output_and_quality_records
+      output: "inventory amount per 1,000 kg conforming wire"
+      source_ids:
+        - iso-14044-2006
+    - id: calculate_total_metal_yield
+      applies_to: "Total foreground metal balance"
+      rule: "total yield = conforming wire mass / gross copper-bearing rod and same-category wire input mass"
+      inputs:
+        - cp_rod_input_records
+        - cp_stage_mass_balance_records
+        - cp_final_output_and_quality_records
+      output: "dimensionless yield with reporting-period basis"
+      source_ids:
+        - iso-14044-2006
+    - id: reconcile_copper_mass
+      applies_to: "Each stage and total foreground system"
+      rule: "input copper-bearing mass = conforming and intermediate output + exported scrap + treatment residue + inventory change + documented internal loop adjustment + unresolved variance"
+      inputs:
+        - cp_rod_input_records
+        - cp_stage_mass_balance_records
+        - cp_waste_and_recovery_records
+        - cp_final_output_and_quality_records
+      output: "reconciled mass-balance table and variance"
+      source_ids:
+        - iso-14044-2006
+    - id: calculate_net_auxiliary_use
+      applies_to: "Circulating lubricant, emulsion, bath, gas, and water systems"
+      rule: "net use = opening inventory + receipts - closing inventory - recovered amount transferred out; report discharge separately and document the balance boundary"
+      inputs:
+        - cp_surface_preparation_records
+        - cp_drawing_auxiliary_records
+        - cp_annealing_auxiliary_records
+      output: "net auxiliary input and separately reported discharge"
+      source_ids:
+        - bechem-wire-drawing
+    - id: allocate_shared_energy
+      applies_to: "Shared energy meter"
+      rule: "allocated energy = shared-meter net energy × documented physical driver for the product stratum / total driver over the same meter period"
+      inputs:
+        - cp_drawing_energy_records
+        - cp_annealing_energy_records
+      output: "allocated kWh or MJ by product stratum"
+      source_ids:
+        - iso-14044-2006
+    - id: separate_internal_copper_return
+      applies_to: "Internal copper scrap loop"
+      rule: "record the internal-return mass and associated onsite reprocessing once; exclude the same mass from external waste and external raw-material totals"
+      inputs:
+        - cp_stage_mass_balance_records
+        - cp_waste_and_recovery_records
+      output: "internal-loop disclosure and non-double-counted inventory"
+      source_ids:
+        - iso-14044-2006
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product and represented strata"
+      requirement: "Grade, purity or composition, dimensions, shape, individual-wire state, temper, surface state, and governing specification shall be traceable to released lots."
+      evidence: "certificates, lot genealogy, test records, and release records; astm-b1-2018; astm-b3-2024; astm-b250-2026"
+    - id: dq_rod_provenance
+      applies_to: "Wire-rod input"
+      requirement: "Supplier or internal source, grade, dimensions, geography, technology route, and primary/recycled-content basis where claimed shall be documented; proxy gaps shall be disclosed."
+      evidence: "receiving records, certificates, supplier declarations, upstream dataset metadata; ica-copper-environmental-profile-2023"
+    - id: dq_energy_separation
+      applies_to: "Drawing and annealing"
+      requirement: "Drawing and annealing energy shall be reported separately. Shared-meter allocation shall retain meter coverage, driver, and reconciliation evidence."
+      evidence: "meter records, calibration, production logs, and allocation worksheets"
+    - id: dq_auxiliary_coverage
+      applies_to: "Lubrication, cleaning, pickling, water, and process gas"
+      requirement: "Net consumption and discharge shall be supported by inventory or meter balances, with circulating charge distinguished from consumption."
+      evidence: "stock, issue, bath, meter, recovery, and treatment records; bechem-wire-drawing"
+    - id: dq_yield_and_scrap
+      applies_to: "Copper mass balance"
+      requirement: "Conforming output, rework, internal return, exported scrap, residues, and unresolved variance shall be reported without double counting and by destination."
+      evidence: "stage balances, scale calibration, manifests, and internal-return ledger"
+    - id: dq_temporal_site_coverage
+      applies_to: "Dataset reporting period"
+      requirement: "Data shall cover the declared period and all represented sites, product families, start-ups, and material operating states; exclusions and abnormal events shall be disclosed."
+      evidence: "coverage matrix, production records, maintenance and event logs"
+    - id: dq_no_category_extrapolation
+      applies_to: "Representativeness claim"
+      requirement: "A dataset for one alloy, grade, diameter family, temper, or route shall identify its represented share and shall not claim the whole CPC category without a documented coverage assessment."
+      evidence: "production mix and representativeness assessment"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "Confirm the Tiangong product-flow, Mass property, Units of mass group, and kg unit; verify all required product qualifiers and the uninsulated individual-wire state are declared."
+    source_ids:
+      - unsd-cpc-3-0-2025
+      - astm-b1-2018
+      - astm-b3-2024
+      - astm-b250-2026
+  - rule_id: validate_reference_mass
+    applies_to: "Reference amount"
+    rule: "Confirm the reference output is exactly 1,000 kg net conforming wire and excludes reel, spool, pallet, and packaging mass."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_process_energy
+    applies_to: "Drawing and conditional annealing"
+    rule: "Confirm drawing energy is present and annealing energy is present when annealing occurs; check meter scope, allocation driver, and consistency with production records."
+    source_ids:
+      - bechem-wire-drawing
+  - rule_id: validate_yield_and_scrap
+    applies_to: "Metal mass balance"
+    rule: "Recalculate stage and total yield; confirm internal return, rework, exported scrap, residues, and unresolved variance are separately visible and not double counted."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_auxiliary_and_waste
+    applies_to: "Lubrication, preparation, cooling, and annealing systems"
+    rule: "Confirm lubricant or emulsion, cleaning or pickling agents when used, water, process gas when used, spent fluid, wastewater, and treatment routes are recorded on a net-consumption or discharge basis."
+    source_ids:
+      - bechem-wire-drawing
+  - rule_id: validate_boundary_exclusions
+    applies_to: "Product scope"
+    rule: "Reject use as a category-wide default for stranded or bunched conductor, insulated or enamelled wire and cable, winding components, cable cores, photovoltaic or charging cable, harnesses, and other downstream assemblies."
+    source_ids:
+      - unsd-cpc-3-0-2025
+      - astm-b8-2023
+      - iec-60228-2023
+  - rule_id: validate_upstream_rod
+    applies_to: "Wire-rod dataset"
+    rule: "Confirm the upstream rod dataset matches the declared grade/composition, source, geography, technology, and primary/secondary route or that each proxy limitation is disclosed."
+    source_ids:
+      - ica-copper-environmental-profile-2023
+      - aoyama-copper-wire-annealing-1989
+  - rule_id: validate_temporal_completeness
+    applies_to: "Foreground evidence"
+    rule: "Confirm data cover the declared period, represented sites and product strata, and material operating states; flag unexplained omissions or unrepresentative sampling."
+    source_ids:
+      - iso-14044-2006
+published_dataset_profile:
+  dataset_role: "foreground_manufacturing_data_package"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Uninsulated individual copper or copper-alloy wire datasets whose grade, composition, dimensions, shape, temper, surface state, rod route, geography, time period, and factory gate match the declared profile"
+  excluded_use: "Category-wide default without representativeness evidence; stranded or bunched conductors; insulated or enamelled wire and cable; windings; cable cores; photovoltaic or charging cable; harnesses; downstream assemblies"
+  required_metadata: "Reference-flow UUID and amount; grade and governing specification; purity or composition; diameter or area and tolerance; shape; individual-wire state; temper; surface state; rod source and route; primary/recycled-content claim basis; geography; reference period; process coverage; allocation; yield; internal scrap handling"
+  required_quality_disclosure: "Collection coverage; meter and scale calibration; shared-resource allocation; copper mass-balance variance; yield; rework and internal return; upstream rod proxy limitations; product-stratum representativeness; omitted and abnormal operations"
+  update_trigger: "Material change in grade or alloy family, rod source or route, product dimensions, temper, surface treatment, drawing or annealing technology, energy supply, lubricant or cleaning system, yield, scrap handling, site geography, reporting period, or data quality"
+data_sources:
+  - id: "unsd-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *Central Product Classification Version 3.0 Explanatory Notes*, 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-08)"
+    used_for: "CPC 41513 identity and separation from stranded copper products and insulated wire/cable"
+  - id: "astm-b1-2018"
+    type: "standard"
+    reference: "ASTM International, ASTM B1-13(2018), *Standard Specification for Hard-Drawn Copper Wire*, https://doi.org/10.1520/B0001-13R18 (retrieved 2026-08-08)"
+    used_for: "Hard-drawn round bare copper-wire product identity, dimensions, mechanical properties, and resistivity context"
+  - id: "astm-b3-2024"
+    type: "standard"
+    reference: "ASTM International, ASTM B3-13(2024), *Standard Specification for Soft or Annealed Copper Wire*, https://doi.org/10.1520/B0003-13R24 (retrieved 2026-08-08)"
+    used_for: "Soft or annealed round bare copper-wire identity, purity, dimensions, surface, mechanical properties, and resistivity context"
+  - id: "astm-b250-2026"
+    type: "standard"
+    reference: "ASTM International, ASTM B250/B250M-26, *Standard Specification for General Requirements for Wrought Copper-Alloy Wire*, https://doi.org/10.1520/B0250_B0250M-26 (retrieved 2026-08-08)"
+    used_for: "Copper-alloy wire input, working and annealing route, composition, dimensions, mechanical and electrical property context"
+  - id: "astm-b8-2023"
+    type: "standard"
+    reference: "ASTM International, ASTM B8-23, *Standard Specification for Concentric-Lay-Stranded Copper Conductors, Hard, Medium-Hard, or Soft*, https://doi.org/10.1520/B0008-23 (retrieved 2026-08-08)"
+    used_for: "Identification of stranded conductor as a downstream product excluded from the representative wire boundary"
+  - id: "iec-60228-2023"
+    type: "standard"
+    reference: "IEC, IEC 60228:2023, *Conductors of insulated cables*, https://webstore.iec.ch/en/publication/71891 (retrieved 2026-08-08)"
+    used_for: "Finished-cable conductor context and exclusion from bare individual-wire product claims"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO, ISO 14044:2006, *Environmental management — Life cycle assessment — Requirements and guidelines*, https://www.iso.org/standard/38498.html (current edition confirmed; retrieved 2026-08-08)"
+    used_for: "LCI boundary, allocation, mass-balance, data-quality, and validation method basis"
+  - id: "asm-copper-wire-cable-1998"
+    type: "handbook"
+    reference: "ASM International, *Copper Wire and Cable*, DOI 10.31399/asm.hb.mhde2.a0003133, https://dl.asminternational.org/handbooks/edited-volume/49/chapter-abstract/594856/Copper-Wire-and-Cable (retrieved 2026-08-08)"
+    used_for: "Wire-rod fabrication, surface preparation, drawing, annealing, and downstream insulation process decomposition"
+  - id: "bechem-wire-drawing"
+    type: "extension_guidance"
+    reference: "CARL BECHEM GmbH, *Lubrication solutions for wire drawing*, https://www.bechem.de/_Resources/Persistent/d/d/8/a/dd8ab883aa680d193e272b78e3dc7d0ca77920c0/BECHEM_Wire_Drawing_en.pdf (retrieved 2026-08-08)"
+    used_for: "Rod breakdown, drawing lubrication and cooling, cleaning, inline annealing, drying, and spooling flow identification; no quantitative default used"
+  - id: "aoyama-copper-wire-annealing-1989"
+    type: "literature"
+    reference: "Aoyama et al., “Effect of Heat Treatment on Mechanical Properties of Cold Drawn Copper Wire,” *Journal of the Japan Institute of Metals and Materials* 53(4), 1989, https://doi.org/10.2320/jinstmet1952.53.4_452 (retrieved 2026-08-08)"
+    used_for: "Relationship of rod impurities, cold drawing, annealing, microstructure, conductivity, and mechanical properties; no quantitative default used"
+  - id: "ica-copper-environmental-profile-2023"
+    type: "dataset"
+    reference: "International Copper Association, *Copper Environmental Profile*, 2023, https://copperalliance.org/wp-content/uploads/2023/05/ICA-LCI-GlobalSummary-202305-F.pdf (retrieved 2026-08-08)"
+    used_for: "Upstream copper supply and primary/secondary route metadata context; no numerical inventory copied"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f375e413b22b5930feaae26c1af45d4bd2f6d6189d7eb0bb171bd09968f55f02"
+  generated_content_sha256: "sha256:f2b0a7b531196c250fd6f5399437bef1577964a9a9997e49ab2345c0d34dedae"
