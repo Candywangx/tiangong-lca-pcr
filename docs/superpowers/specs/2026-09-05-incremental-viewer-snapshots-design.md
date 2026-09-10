@@ -397,4 +397,3 @@ free.
 
 These costs are accepted in exchange for bounded integration latency, lazy browser loading, exact historical views,
 and atomic rollback. The full rebuild/check path remains the independent defense against incremental drift.
-
