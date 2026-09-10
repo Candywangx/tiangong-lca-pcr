@@ -143,6 +143,10 @@ function reduceEvent(state, event) {
     next.snapshots = (next.snapshots ?? []).map((snapshot) => snapshot.id === event.payload.snapshot.id ? event.payload.snapshot : snapshot);
     const replacements = new Map(event.payload.tasks.map((task) => [task.id, task]));
     next.tasks = (next.tasks ?? []).map((task) => replacements.get(task.id) ?? task);
+  } else if (event.type === "snapshot_reconciled") {
+    next.snapshots = [...(next.snapshots ?? []).map(s => s.id === event.payload.previous_snapshot.id ? event.payload.previous_snapshot : s), event.payload.snapshot];
+    const replacements = new Map(event.payload.tasks.map(task => [task.id, task]));
+    next.tasks = (next.tasks ?? []).map(task => replacements.get(task.id) ?? task);
   } else if (event.type === "task_replaced") {
     next.tasks = (next.tasks ?? []).map((task) => task.id === event.payload.task.id ? event.payload.task : task);
   } else if (event.type === "verified_common_uuids_updated") {

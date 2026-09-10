@@ -59,6 +59,26 @@ write a stable error code and details to stderr, and include a next action.
 
 ## State and recovery
 
+### Approved dirty-main reconciliation
+
+`builder/goal-harness/reconciliation.mjs` exposes `planReconciliation` and `applyReconciliation` for a coordinator
+recovering a validated, unlanded snapshot after an explicitly approved external change. Planning takes `config`,
+`stateDir`, `snapshotId`, exact `inputPaths` (canonical PCR files, mapping/index files and ADRs), and optional
+`deliveryPaths` from the narrow runtime allowlist. It returns a SHA-256-bound plan. Applying takes that unchanged
+`plan`, an explicit `approvalReference`, and optional `dryRun`; it never infers approval from a CAS error.
+
+The audited representation is delivery truth: user approval, input hashes, HEAD, author evidence and predecessor
+snapshot are pinned. Its only promotion is a fresh fully validated integration followed by CAS. Changed input or
+evidence invalidates the plan, requiring review; it never silently refreshes an expectation. Tests use disposable
+Git repositories before this API is used on a production Goal.
+
+Stop scheduling and wait for active authors first. A temporary Git index captures only approved files over the
+effective integration baseline, without changing main HEAD, branch, index or files. One hash-chained event preserves
+the old snapshot as `superseded` and queues the same author commits in a new snapshot. All old worktrees and completion
+receipts remain. Repeating the same approved plan is idempotent. Integration reruns every normal validation and smoke
+check. Landing checks original author-file CAS expectations, approved changed-input expectations, untouched preserved
+inputs, and exact committed source bytes; approved reconciliation is not permission to overwrite a later edit.
+
 Runtime state is stored at:
 
 ```text

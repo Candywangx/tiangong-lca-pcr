@@ -16,6 +16,7 @@ import { GoalEventStore } from "./event-store.mjs";
 import { withGoalLock } from "./lock.mjs";
 import { assertRepoPath, resolveRepoPath } from "./paths.mjs";
 import { applyTaskTransition } from "./state-machine.mjs";
+import { assertReconciliationInputs } from "./reconciliation.mjs";
 
 const GIT_BLOB_MAX_BUFFER = 256 * 1024 * 1024;
 
@@ -58,7 +59,13 @@ export function landGoalSnapshot({ config, stateDir, snapshotId = null, dryRun =
       throw new GoalHarnessError("GOAL_LAND_NOT_READY", `Snapshot ${snapshot.id} is not fully validated.`);
     }
     const expectedFromBaseline = captureExpectedFilesFromCommitAllowMissing(config.project_root, state.baseline.commit, snapshot.changed_files);
-    const expected = { ...expectedFromBaseline, ...(state.landed_path_fingerprints ?? {}) };
+    const expected = { ...expectedFromBaseline, ...(state.landed_path_fingerprints ?? {}), ...(snapshot.reconciliation?.expected_inputs ?? {}) };
+    if (snapshot.reconciliation) {
+      // Non-output inputs must also remain unchanged since the approved validation baseline.
+      assertReconciliationInputs({ projectRoot: config.project_root, expected: Object.fromEntries(Object.entries(snapshot.reconciliation.expected_inputs).filter(([file]) => !snapshot.changed_files.includes(file))) });
+      const sourceExpected = captureExpectedFilesFromCommit(config.project_root, snapshot.integration_commit, snapshot.changed_files);
+      assertReconciliationInputs({ projectRoot: snapshot.worktree_path, expected: sourceExpected });
+    }
     const result = landFilesCas({
       projectRoot: config.project_root,
       sourceRoot: snapshot.worktree_path,

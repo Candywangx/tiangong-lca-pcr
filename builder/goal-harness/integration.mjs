@@ -173,7 +173,7 @@ export function integrateGoalSnapshot({ config, stateDir, snapshotId = null, all
     const prior = state.snapshots.find((entry) => entry.id !== snapshot.id && ["integrating", "validated"].includes(entry.state));
     if (prior) throw new GoalHarnessError("GOAL_INTEGRATION_NOT_READY", `Finish and land prior snapshot ${prior.id} before starting another integration.`);
 
-    const baseCommit = selectIntegrationBaseCommit(state, { projectRoot: config.project_root });
+    const baseCommit = snapshot.reconciliation?.base_commit ?? selectIntegrationBaseCommit(state, { projectRoot: config.project_root });
     const workspace = prepareIntegrationWorkspace({ config, snapshot, baseCommit });
     const { worktreePath, branch, integrationAttempt } = workspace;
 
@@ -253,7 +253,7 @@ export function integrateGoalSnapshot({ config, stateDir, snapshotId = null, all
       ...snapshot,
       state: "validated",
       integration_commit: integrationCommit,
-      changed_files: integratedFiles,
+      changed_files: [...new Set([...integratedFiles, ...(snapshot.reconciliation?.delivery_paths ?? [])])].sort(),
       decision_ref: decision.decision_ref,
       accepted_codes: decision.additions.map((entry) => entry.code),
       command_results: commandResults,
