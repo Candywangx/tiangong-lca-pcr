@@ -2,6 +2,7 @@ import { execFileSync } from "node:child_process";
 import { createHash, randomUUID } from "node:crypto";
 import {
   closeSync,
+  constants as fsConstants,
   existsSync,
   fsyncSync,
   lstatSync,
@@ -11,11 +12,13 @@ import {
   readdirSync,
   renameSync,
   rmSync,
+  statSync,
+  unlinkSync,
+  writeSync,
   writeFileSync,
 } from "node:fs";
 import path from "node:path";
 
-import { ViewerSnapshotStore } from "../../packages/pcr-viewer/scripts/snapshot-store.mjs";
 import { GoalEventStore } from "./event-store.mjs";
 import { GoalHarnessError } from "./errors.mjs";
 import { withGoalLock } from "./lock.mjs";
@@ -25,10 +28,10 @@ import {
 } from "./repository-coordinator.mjs";
 
 const SHA256_REF = /^sha256:[a-f0-9]{64}$/u;
-const VIEWER_STORE_COMPATIBILITY_VERSION = "viewer-harness-compat-v1";
 const PINNED_PUBLISHER_API_VERSION = 1;
 const PINNED_PUBLISHER_WORKER = path.join(import.meta.dirname, "pinned-viewer-publisher-worker.mjs");
 const PINNED_PUBLISHER_MODULE = "packages/pcr-viewer/scripts/build-viewer-data.mjs";
+const PINNED_STORE_MODULE = "packages/pcr-viewer/scripts/snapshot-store.mjs";
 
 export function viewerPublicationStateDir(projectRoot) {
   return path.join(repositoryCoordinatorStateDir(projectRoot), "viewer-publication");
@@ -36,14 +39,7 @@ export function viewerPublicationStateDir(projectRoot) {
 
 export function probeViewerArtifactStore({ config, capabilityProbe = null }) {
   const artifactStore = requireArtifactStore(config);
-  const store = new ViewerSnapshotStore({
-    root: artifactStore,
-    generatorVersion: VIEWER_STORE_COMPATIBILITY_VERSION,
-    capabilityProbe,
-    // The capability probe does not read retained snapshots.
-    sourceVerifier: () => true,
-  });
-  return store.probe();
+  return probeArtifactStoreCapabilities({ artifactStore, capabilityProbe });
 }
 
 export function listViewerPublications({ projectRoot }) {
@@ -473,7 +469,7 @@ export function reconstructViewerArtifactStore({ config, publications, publishSn
       throw error;
     }
     rmSync(backupStore, { recursive: true, force: true });
-    verifyArtifactStoreHead({ config, publications });
+    if (publishSnapshot === null) verifyArtifactStoreHead({ config, publications });
     return { rebuilt: true, sequences: publications.map((entry) => entry.repository_sequence) };
   } finally {
     rmSync(temporaryStore, { recursive: true, force: true });
@@ -481,13 +477,9 @@ export function reconstructViewerArtifactStore({ config, publications, publishSn
 }
 
 function verifyArtifactStoreHead({ config, publications }) {
-  const store = new ViewerSnapshotStore({
-    root: requireArtifactStore(config),
-    generatorVersion: VIEWER_STORE_COMPATIBILITY_VERSION,
-    sourceVerifier: createCoordinatorArtifactSourceVerifier(config),
-  });
-  const active = store.readActive();
   const latest = publications.at(-1);
+  const validation = publicationValidationForOuter(config, latest);
+  const { active } = inspectPinnedViewerStore({ config, validation, manifestRef: latest.manifest_ref });
   if (active.sequence !== latest.viewer_sequence || active.snapshot_id !== latest.viewer_snapshot_id || active.manifest_ref !== latest.manifest_ref) {
     throw new GoalHarnessError("GOAL_VIEWER_ARTIFACT_HEAD_CONFLICT", "Durable Viewer active pointer differs from repository publication history.");
   }
@@ -524,15 +516,7 @@ export function verifyPublishedViewerArtifact({ config, publication, publication
   if (!validation || validation.integration_commit !== publication.integration_commit) {
     throw new GoalHarnessError("GOAL_VIEWER_PUBLICATION_PROVENANCE_INVALID", "Viewer publication does not match repository validation truth.");
   }
-  const store = new ViewerSnapshotStore({
-    root: requireArtifactStore(config),
-    generatorVersion: VIEWER_STORE_COMPATIBILITY_VERSION,
-    sourceVerifier: () => {
-      verifyPinnedSource({ projectRoot: config.project_root, validation });
-      return true;
-    },
-  });
-  const manifest = store.readManifest(publication.manifest_ref);
+  const { manifest, history } = inspectPinnedViewerStore({ config, validation, manifestRef: publication.manifest_ref });
   if (manifest.snapshot_id !== publication.viewer_snapshot_id || manifest.goal_id !== publication.goal_id ||
       manifest.harness_snapshot_id !== publication.harness_snapshot_id || manifest.sequence !== publication.viewer_sequence ||
       manifest.captured_at !== publication.captured_at || manifest.validated_at !== validation.validated_at ||
@@ -541,7 +525,6 @@ export function verifyPublishedViewerArtifact({ config, publication, publication
       manifest.capture.validation_state !== "validated") {
     throw new GoalHarnessError("GOAL_VIEWER_PUBLICATION_PROVENANCE_INVALID", "Retained Viewer manifest capture differs from the coordinator publication record.");
   }
-  const history = store.readHistory();
   if (!history.entries.some((entry) => entry.sequence === manifest.sequence && entry.manifest_ref === publication.manifest_ref)) {
     throw new GoalHarnessError("GOAL_VIEWER_PUBLICATION_PROVENANCE_INVALID", "Viewer publication is not retained in durable history.");
   }
@@ -863,13 +846,16 @@ function preflightPublicationRecovery({ config, stateDir, now, faultInjector = (
           "Viewer artifact journal differs from the exact manifest and source captured by the Harness.",
         );
       }
-      assertPreparedManifestContent({ config, outer });
+      const validation = publicationValidationForOuter(config, outer);
+      assertPreparedManifestContent({ config, outer, validation });
       return {
         recover_inner: true,
-        recovery_validation: publicationValidationForOuter(config, outer),
+        recovery_validation: validation,
         recovery_publisher_contract: {
           api_version: outer.expected_publisher_api_version,
           generator_version: outer.expected_viewer_generator_version,
+          manifest_schema_version: outer.expected_manifest_schema_version,
+          schema_contract_sha256: outer.expected_schema_contract_sha256,
         },
       };
     }
@@ -923,27 +909,34 @@ function abandonReservedInnerJournal({ config, outer, forceStaleLock, artifactAb
   ) {
     throw innerMismatch("Reserved Viewer publication identity differs from coordinator truth.");
   }
-  const store = new ViewerSnapshotStore({
-    root: requireArtifactStore(config),
-    generatorVersion: VIEWER_STORE_COMPATIBILITY_VERSION,
-    sourceVerifier: createCoordinatorArtifactSourceVerifier(config),
-  });
   try {
-    const abandonment = store.abandonPreparedJournal({
-      expected: {
-        snapshot_id: outer.viewer_snapshot_id,
-        sequence: outer.viewer_sequence,
-        goal_id: outer.goal_id,
-        harness_snapshot_id: outer.harness_snapshot_id,
-        captured_at: outer.captured_at,
-        validated_at: validation.validated_at,
-        source_ref: outer.source_ref,
-        integration_commit: outer.integration_commit,
-        base_commit: validation.expected_old_head,
-        tree_hash: outer.tree_hash,
+    const abandonment = withPinnedSourceWorktree({
+      projectRoot: config.project_root,
+      validation,
+      read(sourceRoot) {
+        return runPinnedViewerWorker({
+          sourceRoot,
+          operation: "abandon_prepared",
+          options: {
+            root: sourceRoot,
+            artifactStore: requireArtifactStore(config),
+            expected: {
+              snapshot_id: outer.viewer_snapshot_id,
+              sequence: outer.viewer_sequence,
+              goal_id: outer.goal_id,
+              harness_snapshot_id: outer.harness_snapshot_id,
+              captured_at: outer.captured_at,
+              validated_at: validation.validated_at,
+              source_ref: outer.source_ref,
+              integration_commit: outer.integration_commit,
+              base_commit: validation.expected_old_head,
+              tree_hash: outer.tree_hash,
+            },
+            forceStaleLock,
+            failurePhase: artifactAbandonFailurePhase,
+          },
+        }).result;
       },
-      forceStaleLock,
-      failurePhase: artifactAbandonFailurePhase,
     });
     if (!abandonment.abandoned) throw new Error("Prepared Viewer journal disappeared before abandonment.");
     return { recover_inner: false, republish_required: true, abandonment };
@@ -1017,15 +1010,26 @@ function assertPreparedOuterIdentity(outer) {
   }
 }
 
-function assertPreparedManifestContent({ config, outer }) {
-  const store = new ViewerSnapshotStore({
-    root: requireArtifactStore(config),
-    generatorVersion: VIEWER_STORE_COMPATIBILITY_VERSION,
-    sourceVerifier: createCoordinatorArtifactSourceVerifier(config),
-  });
+function assertPreparedManifestContent({ config, outer, validation }) {
   let manifest;
   try {
-    manifest = store.readManifest(outer.expected_manifest_ref);
+    manifest = withPinnedSourceWorktree({
+      projectRoot: config.project_root,
+      validation,
+      read(sourceRoot) {
+        const response = runPinnedViewerWorker({
+          sourceRoot,
+          operation: "inspect_manifest",
+          options: {
+            root: sourceRoot,
+            artifactStore: requireArtifactStore(config),
+            manifestRef: outer.expected_manifest_ref,
+          },
+        });
+        assertPinnedPublisherContract(response.publisher_contract, response.manifest);
+        return response.manifest;
+      },
+    });
   } catch (error) {
     throw new GoalHarnessError(
       "GOAL_VIEWER_PUBLICATION_MANIFEST_SUBSTITUTED",
@@ -1065,8 +1069,9 @@ function innerJournalIdentitySha256(journal) {
 
 function runPinnedViewerWorker({ sourceRoot, operation, options }) {
   const modulePath = path.join(sourceRoot, ...PINNED_PUBLISHER_MODULE.split("/"));
-  if (!existsSync(modulePath)) {
-    throw new GoalHarnessError("GOAL_VIEWER_PINNED_PUBLISHER_MISSING", "Pinned integration commit does not contain the Viewer publisher module.");
+  const storeModulePath = path.join(sourceRoot, ...PINNED_STORE_MODULE.split("/"));
+  if (!existsSync(modulePath) || !existsSync(storeModulePath)) {
+    throw new GoalHarnessError("GOAL_VIEWER_PINNED_PUBLISHER_MISSING", "Pinned integration commit does not contain the Viewer publisher and artifact-store modules.");
   }
   let response;
   try {
@@ -1076,6 +1081,7 @@ function runPinnedViewerWorker({ sourceRoot, operation, options }) {
       input: JSON.stringify({
         operation,
         module_path: modulePath,
+        store_module_path: storeModulePath,
         import_nonce: `${Date.now()}-${randomUUID()}`,
         options,
       }),
@@ -1112,6 +1118,30 @@ function assertPinnedPublisherContract(contract, manifest) {
   }
 }
 
+function inspectPinnedViewerStore({ config, validation, manifestRef }) {
+  return withPinnedSourceWorktree({
+    projectRoot: config.project_root,
+    validation,
+    read(sourceRoot) {
+      const response = runPinnedViewerWorker({
+        sourceRoot,
+        operation: "inspect_store",
+        options: {
+          root: sourceRoot,
+          artifactStore: requireArtifactStore(config),
+          manifestRef,
+        },
+      });
+      // An uncaptured reservation can still see the preceding publisher's active manifest.
+      // Its caller must check active identity before treating it as the reserved publication.
+      if (manifestRef !== undefined && manifestRef !== null) {
+        assertPinnedPublisherContract(response.publisher_contract, response.manifest);
+      }
+      return { active: response.active, history: response.history, manifest: response.manifest };
+    },
+  });
+}
+
 function recoverPinnedViewerSnapshot({ config, validation, expectedPublisherContract, forceStaleLock }) {
   if (!validation) {
     throw new GoalHarnessError("GOAL_VIEWER_PUBLICATION_RECOVERY_AMBIGUOUS", "Pinned Viewer recovery lacks an exact repository validation source.");
@@ -1127,11 +1157,14 @@ function recoverPinnedViewerSnapshot({ config, validation, expectedPublisherCont
           root: sourceRoot,
           artifactStore: requireArtifactStore(config),
           forceStaleLock,
+          expectedPublisherContract,
         },
       });
       if (
         response.publisher_contract.generator_version !== expectedPublisherContract?.generator_version ||
-        response.publisher_contract.api_version !== expectedPublisherContract?.api_version
+        response.publisher_contract.api_version !== expectedPublisherContract?.api_version ||
+        response.publisher_contract.manifest_schema_version !== expectedPublisherContract?.manifest_schema_version ||
+        response.publisher_contract.schema_contract_sha256 !== expectedPublisherContract?.schema_contract_sha256
       ) {
         throw new GoalHarnessError("GOAL_VIEWER_PINNED_PUBLISHER_INCOMPATIBLE", "Pinned Viewer recovery implementation differs from the publisher captured by the Harness journal.");
       }
@@ -1204,21 +1237,8 @@ function validationSummary(validation) {
 function publicationFromReservedActive({ config, journal, now }) {
   const activePath = path.join(requireArtifactStore(config), "active.json");
   if (!existsSync(activePath)) return null;
-  const activation = requireViewerActivation(config.project_root);
-  const validations = listCommittedRepositoryValidations({ projectRoot: config.project_root, sourceVerificationFromSequence: activation.repository_sequence });
-  const validation = validations.find((entry) => entry.repository_sequence === journal.repository_sequence);
-  if (!validation || validation.integration_commit !== journal.integration_commit) {
-    throw new GoalHarnessError("GOAL_VIEWER_PUBLICATION_JOURNAL_INVALID", "Reserved Viewer publication no longer matches repository validation truth.");
-  }
-  const store = new ViewerSnapshotStore({
-    root: requireArtifactStore(config),
-    generatorVersion: VIEWER_STORE_COMPATIBILITY_VERSION,
-    sourceVerifier: () => {
-      verifyPinnedSource({ projectRoot: config.project_root, validation });
-      return true;
-    },
-  });
-  const active = store.readActive();
+  const validation = publicationValidationForOuter(config, journal);
+  const { active, history, manifest } = inspectPinnedViewerStore({ config, validation, manifestRef: journal.expected_manifest_ref });
   if (active.sequence !== journal.viewer_sequence || active.snapshot_id !== journal.viewer_snapshot_id) return null;
   if (!SHA256_REF.test(journal.expected_manifest_ref ?? "")) {
     throw new GoalHarnessError("GOAL_VIEWER_PUBLICATION_RECOVERY_AMBIGUOUS", "An active Viewer pointer cannot be adopted from a reservation that never captured its exact manifest reference.");
@@ -1229,7 +1249,6 @@ function publicationFromReservedActive({ config, journal, now }) {
       actual_manifest_ref: active.manifest_ref,
     });
   }
-  const manifest = store.readManifest(active.manifest_ref);
   if (manifest.snapshot_id !== journal.viewer_snapshot_id || manifest.goal_id !== journal.goal_id ||
       manifest.harness_snapshot_id !== journal.harness_snapshot_id || manifest.sequence !== journal.viewer_sequence ||
       manifest.captured_at !== journal.captured_at || manifest.validated_at !== validation.validated_at ||
@@ -1237,11 +1256,12 @@ function publicationFromReservedActive({ config, journal, now }) {
       manifest.capture.tree_hash !== journal.tree_hash || manifest.capture.base_commit !== validation.expected_old_head ||
       stableJson(manifest.capture) !== stableJson(journal.expected_manifest_capture) ||
       stableJson(manifest.source) !== stableJson(journal.expected_manifest_source) ||
+      manifest.schema_version !== journal.expected_manifest_schema_version ||
+      manifest.generator_version !== journal.expected_viewer_generator_version ||
       manifest.generator_contract_sha256 !== journal.expected_generator_contract_sha256 ||
       manifest.schema_contract_sha256 !== journal.expected_schema_contract_sha256) {
     throw new GoalHarnessError("GOAL_VIEWER_PUBLICATION_MANIFEST_SUBSTITUTED", "The retained Viewer manifest content differs from the exact capture recorded by the Harness journal.");
   }
-  const history = store.readHistory();
   if (!history.entries.some((entry) => entry.sequence === journal.viewer_sequence && entry.manifest_ref === journal.expected_manifest_ref)) {
     throw new GoalHarnessError("GOAL_VIEWER_PUBLICATION_MANIFEST_SUBSTITUTED", "The exact Viewer manifest is not present in durable history.");
   }
@@ -1314,6 +1334,73 @@ function requireArtifactStore(config) {
     throw new GoalHarnessError("GOAL_VIEWER_ARTIFACT_STORE_REQUIRED", "Goal Harness configuration requires artifact_store for durable Viewer history.");
   }
   return path.resolve(config.artifact_store);
+}
+
+function probeArtifactStoreCapabilities({ artifactStore, capabilityProbe }) {
+  mkdirSync(artifactStore, { recursive: true });
+  assertArtifactDirectory(artifactStore, "artifact store");
+  for (const part of ["objects", "manifests", "routes", "history", "staging", "locks"]) {
+    const directory = path.join(artifactStore, part);
+    try { mkdirSync(directory); } catch (error) { if (error?.code !== "EEXIST") throw error; }
+    assertArtifactDirectory(directory, `artifact store ${part}`);
+  }
+  for (const leaf of ["active.json", "history-head.json", "journal.json"]) {
+    const file = path.join(artifactStore, leaf);
+    if (!pathEntryExists(file)) continue;
+    const stat = lstatSync(file);
+    if (!stat.isFile() || stat.isSymbolicLink()) {
+      throw new GoalHarnessError("VIEWER_STORE_CAPABILITY_UNAVAILABLE", `Artifact store ${leaf} must be a regular file or absent.`);
+    }
+  }
+  if (statSync(path.join(artifactStore, "staging")).dev !== statSync(artifactStore).dev) {
+    throw new GoalHarnessError("VIEWER_STORE_CROSS_FILESYSTEM", "Artifact-store staging must be on the same filesystem as the store root.");
+  }
+  fsyncDirectory(artifactStore);
+  const probe = path.join(artifactStore, "staging", `.harness-probe-${process.pid}-${randomUUID()}`);
+  const renamed = `${probe}.renamed`;
+  let descriptor = null;
+  try {
+    descriptor = openSync(probe, fsConstants.O_WRONLY | fsConstants.O_CREAT | fsConstants.O_EXCL | fsConstants.O_NOFOLLOW, 0o600);
+    writeSync(descriptor, Buffer.from("probe\n"));
+    fsyncSync(descriptor);
+    closeSync(descriptor);
+    descriptor = null;
+    let createIfAbsent = false;
+    try {
+      const duplicate = openSync(probe, fsConstants.O_WRONLY | fsConstants.O_CREAT | fsConstants.O_EXCL | fsConstants.O_NOFOLLOW, 0o600);
+      closeSync(duplicate);
+    } catch (error) {
+      createIfAbsent = error?.code === "EEXIST";
+    }
+    if (!createIfAbsent) throw new GoalHarnessError("VIEWER_STORE_CAPABILITY_UNAVAILABLE", "Artifact store create-if-absent capability probe failed.");
+    renameSync(probe, renamed);
+    const renamedStat = lstatSync(renamed);
+    if (!renamedStat.isFile() || renamedStat.isSymbolicLink()) {
+      throw new GoalHarnessError("VIEWER_STORE_CAPABILITY_UNAVAILABLE", "Artifact store atomic rename capability probe failed.");
+    }
+    fsyncDirectory(path.dirname(renamed));
+  } finally {
+    if (descriptor !== null) closeSync(descriptor);
+    for (const file of [probe, renamed]) {
+      try { unlinkSync(file); } catch (error) { if (error?.code !== "ENOENT") throw error; }
+    }
+  }
+  if (capabilityProbe) {
+    const reported = capabilityProbe({ root: artifactStore });
+    for (const capability of ["fsync", "atomicRename", "createIfAbsent"]) {
+      if (reported?.[capability] !== true) {
+        throw new GoalHarnessError("VIEWER_STORE_CAPABILITY_UNAVAILABLE", `Artifact store capability probe rejected ${capability} capability.`);
+      }
+    }
+  }
+  return Object.freeze({ root: artifactStore, same_filesystem: true, fsync: true, atomic_rename: true, create_if_absent: true });
+}
+
+function assertArtifactDirectory(directory, label) {
+  const stat = lstatSync(directory);
+  if (!stat.isDirectory() || stat.isSymbolicLink()) {
+    throw new GoalHarnessError("VIEWER_STORE_CAPABILITY_UNAVAILABLE", `${label} must be a real directory.`);
+  }
 }
 
 function assertPublicationStore(publications, artifactStore) {

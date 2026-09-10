@@ -22,19 +22,35 @@ function spawnLockProcess(source) {
   });
 }
 
-function runContender(stateDir, holdMilliseconds = 80) {
-  return spawnLockProcess(`import { withGoalLock } from ${JSON.stringify(lockModuleUrl)};
+function runContenders(stateDir, count = 6) {
+  const attemptedDir = path.join(stateDir, "contender-attempts");
+  mkdirSync(attemptedDir);
+  return Promise.all(Array.from({ length: count }, (_, index) =>
+    spawnLockProcess(`import { readdirSync, writeFileSync } from "node:fs";
+import { withGoalLock } from ${JSON.stringify(lockModuleUrl)};
 try {
-  const value = withGoalLock(${JSON.stringify(stateDir)}, "race", () => { Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ${holdMilliseconds}); return "entered"; });
+  const value = withGoalLock(${JSON.stringify(stateDir)}, "race", () => {
+    // Keep the winner's lease until every other process has attempted acquisition.
+    // A fixed sleep can expire before a slow child starts, allowing a valid second owner.
+    const deadline = Date.now() + 10000;
+    while (readdirSync(${JSON.stringify(attemptedDir)}).length < ${count - 1}) {
+      if (Date.now() >= deadline) throw new Error("Concurrent contenders did not finish while the winner held its lease");
+      Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 5);
+    }
+    return "entered";
+  });
   process.stdout.write(JSON.stringify({ ok: true, value }));
 } catch (error) {
   process.stdout.write(JSON.stringify({ ok: false, code: error.code, message: error.message }));
   process.exitCode = 1;
+} finally {
+  writeFileSync(${JSON.stringify(path.join(attemptedDir, `${index}.done`))}, "done");
 }`).then(({ stdout, stderr }) => {
-    assert.equal(stderr, "");
-    assert.notEqual(stdout, "");
-    return JSON.parse(stdout);
-  });
+      assert.equal(stderr, "");
+      assert.notEqual(stdout, "");
+      return JSON.parse(stdout);
+    }),
+  ));
 }
 
 function deadLease(token = "stale-token") {
@@ -225,7 +241,7 @@ withGoalLock(${JSON.stringify(stateDir)}, "boundary-crash", () => "must not run"
 });`);
       assert.equal(crashing.code, 86, `${phase} was not reached`);
 
-      const results = await Promise.all(Array.from({ length: 6 }, () => runContender(stateDir)));
+      const results = await runContenders(stateDir);
       assert.equal(results.filter((entry) => entry.ok).length, 1, phase);
       assert.ok(results.filter((entry) => !entry.ok).every((entry) => entry.code === "GOAL_LOCKED"), phase);
       assert.equal(existsSync(lockPath), false, phase);
@@ -267,7 +283,7 @@ withGoalLock(${JSON.stringify(stateDir)}, "capture-dead-recovery", () => "must n
     assert.equal(existsSync(recoveryPath), true);
     assert.deepEqual(readFileSync(archivePath), recovery);
 
-    const results = await Promise.all(Array.from({ length: 6 }, () => runContender(stateDir)));
+    const results = await runContenders(stateDir);
     assert.equal(results.filter((entry) => entry.ok).length, 1);
     assert.ok(results.filter((entry) => !entry.ok).every((entry) => entry.code === "GOAL_LOCKED"));
     assert.equal(existsSync(recoveryPath), false);
@@ -396,7 +412,7 @@ test("repeated concurrent stale retirement returns only stable lock outcomes", a
     const stateDir = mkdtempSync(path.join(tmpdir(), `goal-stale-stress-${round}-`));
     try {
       writeFileSync(path.join(stateDir, "goal.lock"), `${JSON.stringify(deadLease(`stress-${round}`))}\n`);
-      const results = await Promise.all(Array.from({ length: 6 }, () => runContender(stateDir, 30)));
+      const results = await runContenders(stateDir);
       assert.equal(results.filter((entry) => entry.ok).length, 1, `round ${round}`);
       assert.ok(results.filter((entry) => !entry.ok).every((entry) => entry.code === "GOAL_LOCKED"), `round ${round}`);
     } finally {
@@ -458,7 +474,7 @@ withGoalLock(${JSON.stringify(stateDir)}, "publish-crash", () => "must not run",
       }
       assert.ok(readdirSync(stateDir).some((name) => name.startsWith(".goal-lock-acquire-")), `${phase} did not retain crash evidence`);
 
-      const results = await Promise.all(Array.from({ length: 6 }, () => runContender(stateDir)));
+      const results = await runContenders(stateDir);
       assert.equal(results.filter((entry) => entry.ok).length, 1, phase);
       assert.ok(results.filter((entry) => !entry.ok).every((entry) => entry.code === "GOAL_LOCKED"), phase);
       assert.equal(existsSync(lockPath), false, phase);

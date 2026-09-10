@@ -258,6 +258,15 @@ function recoverFromDivergentCurrentCheckout({ root, config }) {
 
   const currentGenerator = path.join(root, "packages/pcr-viewer/scripts/build-viewer-data.mjs");
   writeFileSync(currentGenerator, `${readFileSync(currentGenerator, "utf8")}\nthrow new Error("CURRENT_CHECKOUT_GENERATOR_MUST_NOT_LOAD");\n`);
+  for (const relativePath of [
+    "packages/pcr-viewer/scripts/snapshot-store.mjs",
+    "packages/pcr-viewer/scripts/snapshot-format.mjs",
+    "packages/pcr-core/src/index.mjs",
+  ]) {
+    const currentModule = path.join(root, relativePath);
+    writeFileSync(currentModule, `${readFileSync(currentModule, "utf8")}\nthrow new Error("CURRENT_CHECKOUT_ARTIFACT_CODE_MUST_NOT_LOAD");\n`);
+  }
+  writeFileSync(path.join(root, "packages/pcr-viewer/schemas/viewer-snapshot-manifest.schema.json"), "not-current-schema\n");
   const currentStatic = path.join(root, "packages/pcr-viewer/static/index.html");
   writeFileSync(currentStatic, `${readFileSync(currentStatic, "utf8")}\n<!-- divergent-current-ui -->\n`);
   const [currentPcr] = git(root, ["ls-files", ":(glob)library/pcrs/**/pcr.en-US.md"]).split("\n").filter(Boolean);
@@ -323,9 +332,10 @@ test("landing is repository ordered across Goals and requires the Viewer publica
     const configB = { ...publishConfig, goal_id: "goal-b" };
     const stateA = path.join(root, "library/.pcr-builder-state/goals/goal-a");
     const stateB = path.join(root, "library/.pcr-builder-state/goals/goal-b");
+    // This synthetic publication fixture contains no pinned Viewer implementation.
     assert.throws(
       () => landGoalSnapshot({ config: configA, stateDir: stateA, snapshotId: "snapshot-a" }),
-      (error) => error.name === "ViewerSnapshotStoreError" || String(error.code).startsWith("VIEWER_") || error.code === "GOAL_VIEWER_ARTIFACT_HEAD_CONFLICT",
+      (error) => error.code === "GOAL_VIEWER_PINNED_PUBLISHER_MISSING",
     );
     const verifiedArtifacts = () => true;
     assert.throws(
@@ -658,7 +668,54 @@ test("recovery keeps Goal publication pending when a committed coordinator recor
   }
 });
 
-test("real publisher recovery abandons uncommitted inner payloads and republishes only pinned source", { timeout: 240_000 }, () => {
+test("reserved publication recovery retries after a pinned generator version change", { timeout: 420_000 }, () => {
+  const parent = mkdtempSync(path.join(tmpdir(), "goal-viewer-generator-change-"));
+  const root = path.join(parent, "repo");
+  const source = path.resolve(import.meta.dirname, "../..");
+  try {
+    execFileSync("git", ["clone", "--shared", "-q", source, root], { stdio: "ignore" });
+    symlinkSync(path.join(source, "node_modules"), path.join(root, "node_modules"), "dir");
+    git(root, ["config", "user.name", "Goal Test"]);
+    git(root, ["config", "user.email", "goal@example.invalid"]);
+    const baseline = git(root, ["rev-parse", "HEAD"]);
+    const config = { project_root: root, goal_id: "goal-a", artifact_store: path.join(parent, "viewer-history") };
+    const first = commitFullTreeValidation({ root, parent: baseline, goalId: "goal-a", snapshotId: "snapshot-a", content: "first" });
+    const published = publishPendingViewerSnapshots({ config });
+
+    const generatorPath = "packages/pcr-viewer/scripts/build-viewer-data.mjs";
+    const nextVersion = `${VIEWER_INCREMENTAL_GENERATOR_VERSION}-next`;
+    const generator = readFileSync(path.join(root, generatorPath), "utf8");
+    const nextGenerator = generator.replace(
+      `export const VIEWER_INCREMENTAL_GENERATOR_VERSION = "${VIEWER_INCREMENTAL_GENERATOR_VERSION}";`,
+      `export const VIEWER_INCREMENTAL_GENERATOR_VERSION = "${nextVersion}";`,
+    );
+    assert.notEqual(nextGenerator, generator);
+    writeFileSync(path.join(root, generatorPath), nextGenerator);
+    git(root, ["add", generatorPath]);
+    commitFullTreeValidation({ root, parent: first.integration_commit, goalId: "goal-b", snapshotId: "snapshot-b", content: "second" });
+    const nextConfig = { ...config, goal_id: "goal-b" };
+    assert.throws(
+      () => publishPendingViewerSnapshots({
+        config: nextConfig,
+        faultInjector(phase) { if (phase === "after_reserved") throw Object.assign(new Error("crash"), { code: "TEST_CRASH" }); },
+      }),
+      (error) => error.code === "TEST_CRASH",
+    );
+    const recovered = recoverViewerPublications({ config: nextConfig });
+    assert.deepEqual(recovered.publications.map((entry) => entry.viewer_sequence), [1, 2]);
+    assert.equal(recovered.publications[0].manifest_ref, published.publication.manifest_ref);
+    const store = new ViewerSnapshotStore({ root: config.artifact_store, generatorVersion: nextVersion, sourceVerifier: () => true });
+    assert.equal(store.readManifest(store.readActive().manifest_ref).generator_version, nextVersion);
+    assert.deepEqual(
+      recoverViewerPublications({ config: nextConfig }).publications.map((entry) => entry.manifest_ref),
+      recovered.publications.map((entry) => entry.manifest_ref),
+    );
+  } finally {
+    rmSync(parent, { recursive: true, force: true });
+  }
+});
+
+test("real publisher recovery abandons uncommitted inner payloads and republishes only pinned source", { timeout: 420_000 }, () => {
   const parent = mkdtempSync(path.join(tmpdir(), "goal-viewer-real-"));
   const root = path.join(parent, "repo");
   const source = path.resolve(import.meta.dirname, "../..");
@@ -706,6 +763,18 @@ test("real publisher recovery abandons uncommitted inner payloads and republishe
     assert.deepEqual(readFileSync(innerJournalPath), innerJournalBytes);
     const pendingState = new GoalEventStore({ stateDir: path.join(root, "library/.pcr-builder-state/goals/goal-a") }).rebuild();
     assert.equal(pendingState.snapshots[0].viewer_publication, "pending");
+    for (const mismatch of [
+      { expected_publisher_api_version: 2 },
+      { expected_viewer_generator_version: "substituted-generator" },
+      { expected_manifest_schema_version: 2 },
+      { expected_schema_contract_sha256: `sha256:${"e".repeat(64)}` },
+    ]) {
+      writeFileSync(journalPath, `${JSON.stringify({ ...prepared, ...mismatch }, null, 2)}\n`);
+      assert.throws(() => recoverViewerPublications({ config }));
+      assert.equal(existsSync(path.join(config.artifact_store, "active.json")), false);
+      assert.equal(existsSync(path.join(config.artifact_store, "history-head.json")), false);
+      assert.deepEqual(readFileSync(innerJournalPath), innerJournalBytes);
+    }
     writeFileSync(journalPath, preparedBytes);
     const recovered = recoverViewerPublications({ config });
     assert.equal(recovered.publications[0].manifest_ref, prepared.expected_manifest_ref);
@@ -795,6 +864,15 @@ test("real publisher recovery abandons uncommitted inner payloads and republishe
     assert.doesNotMatch(recoveredUi, /divergent-current-ui/u);
     const retry = recoverViewerPublications({ config: { ...config, goal_id: "goal-b" } });
     assert.deepEqual(retry.publications.map((entry) => entry.manifest_ref), recoveredPublication.publications.map((entry) => entry.manifest_ref));
+
+    rmSync(config.artifact_store, { recursive: true, force: true });
+    const reconstructed = recoverFromDivergentCurrentCheckout({ root, config: { ...config, goal_id: "goal-b" } });
+    assert.deepEqual(
+      reconstructed.publications.map((entry) => entry.manifest_ref),
+      recoveredPublication.publications.map((entry) => entry.manifest_ref),
+    );
+    const reconstructedStore = new ViewerSnapshotStore({ root: config.artifact_store, generatorVersion: VIEWER_INCREMENTAL_GENERATOR_VERSION, sourceVerifier: () => true });
+    assert.equal(reconstructedStore.readActive().manifest_ref, recoveredPublication.publications.at(-1).manifest_ref);
   } finally {
     rmSync(parent, { recursive: true, force: true });
   }
@@ -814,7 +892,7 @@ test("deleted artifact reconstruction rebuilds only the published prefix and lea
     assert.deepEqual(direct.sequences, [1]);
 
     rmSync(config.artifact_store, { recursive: true, force: true });
-    const recovered = recoverViewerPublications({ config, publishSnapshot: publishFastValidViewerSnapshot });
+    const recovered = recoverViewerPublications({ config, publishSnapshot: publishFastValidViewerSnapshot, artifactStoreVerifier: () => true });
     assert.deepEqual(recovered.reconstruction.sequences, [1]);
     assert.deepEqual(recovered.publications.map((entry) => entry.repository_sequence), [1]);
 
