@@ -177,6 +177,14 @@ lifecycle, revise, and publish mutations use per-PCR lock/journal/stage/backup s
 `library/.pcr-builder-state/`; recover interrupted state with `pcr:recover`, and use `--force-stale-lock` only after
 confirming no writer is active.
 
+Local batch production uses the `goal:*` Harness commands and persistent state under
+`library/.pcr-builder-state/goals/<goal-id>/`. Authors must be durable visible Codex app-server tasks, one PCR per
+independent worktree; never fall back to hidden agents or shared-directory writers. Synthetic dirty baselines may
+include only configured repository roots and exact untracked allowlists without changing the user's real index or
+branch. Author commits are limited to one PCR's four canonical files. Shared mappings, aliases, indexes, catalog,
+coverage, viewer derivatives, and accepted-mapping ADRs are updated only by serial integration snapshots and land
+through exact-byte compare-and-swap. `goal:stop` preserves worktrees and results.
+
 Stable machine tokens are authored only in `builder/vocab/*.yaml`. Do not hand-edit the generated runtime constants
 or controlled-vocabulary Schema under `packages/pcr-core/`; run `npm run vocab:generate`, and keep token validity
 separate from lifecycle, readiness, evidence, and other cross-field policy.
