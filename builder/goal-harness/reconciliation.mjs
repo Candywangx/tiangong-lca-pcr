@@ -11,6 +11,7 @@ import { withGoalLock } from "./lock.mjs";
 import { assertRepoPath, resolveRepoPath } from "./paths.mjs";
 import { selectGoalRuntimeBaseCommit } from "./runtime-baseline.mjs";
 import { applyTaskTransition } from "./state-machine.mjs";
+import { selectRepositoryIntegrationHead } from "./repository-coordinator.mjs";
 
 const shared = new Set(["classifications/mappings/cpc-3.0-to-pcr.yaml", "classifications/aliases/pcr-id-aliases.yaml", "classifications/indexes/cpc-3.0-coverage.json", "library/catalog.yaml", "library/indexes/pcr-index.yaml"]);
 const runtimeDelivery = new Set(["packages/pcr-core/src/projection-completeness.mjs"]);
@@ -41,7 +42,7 @@ export function planReconciliation({ config, stateDir, snapshotId, inputPaths, d
     schema_version: 1, goal_id: config.goal_id, project_root: config.project_root,
     snapshot_id: snapshotId, snapshot_sha256: hash(snapshot), task_sha256: hash(tasks),
     main_head: git(config.project_root, ["rev-parse", "HEAD"]),
-    base_commit: selectGoalRuntimeBaseCommit(state, { projectRoot: config.project_root }),
+    base_commit: selectRepositoryIntegrationHead({ projectRoot: config.project_root, fallbackHead: selectGoalRuntimeBaseCommit(state, { projectRoot: config.project_root }) }),
     input_paths: inputs, delivery_paths: delivery,
     expected_inputs: captureExpectedFiles(config.project_root, [...inputs, ...delivery]),
   };

@@ -58,6 +58,7 @@ export function loadGoalConfig({ configPath }) {
     target_category_path: realpathSync(targetPath),
     target_category_relative: toRepoPath(path.relative(projectRoot, realpathSync(targetPath))),
     policy_prompt_path: realpathSync(config.policy_prompt_path),
+    artifact_store: path.resolve(config.artifact_store),
   });
 }
 

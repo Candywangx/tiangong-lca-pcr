@@ -90,6 +90,10 @@ export function hasClassificationCoverage({ root, system, version }) {
 }
 
 export function readClassificationCoverage({ root, system, version }) {
+  return readClassificationCoverageSnapshot({ root, system, version }).document;
+}
+
+export function readClassificationCoverageSnapshot({ root, system, version }) {
   const normalizedRoot = path.resolve(root);
   const normalized = normalizeClassification({ system, version });
   const coveragePath = classificationCoveragePath({
@@ -143,7 +147,11 @@ export function readClassificationCoverage({ root, system, version }) {
     root: normalizedRoot,
     source: relativePath,
   });
-  return structuredClone(coverage);
+  return Object.freeze({
+    document: structuredClone(coverage),
+    relative_path: relativePath,
+    sha256: exactByteSha256(coverageSource.bytes),
+  });
 }
 
 export function getClassificationCoverageSummary({ root, system, version }) {

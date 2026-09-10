@@ -18,6 +18,12 @@ import { createSyntheticBaseline } from "./synthetic-baseline.mjs";
 import { authenticatedHybridSearchDryRunCheck, ensureCorepackToolPath } from "./tooling.mjs";
 import { auditGoalUuidResults } from "./uuid-enrichment-audit.mjs";
 import { ensureGoalRuntimeBaseline } from "./runtime-baseline.mjs";
+import {
+  publishAllPendingViewerSnapshots,
+  publishPendingViewerSnapshots,
+  probeViewerArtifactStore,
+  recoverViewerPublications,
+} from "./viewer-publication.mjs";
 
 const HARNESS_SOURCE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 
@@ -30,6 +36,8 @@ export async function runGoalCommand(command, options) {
   if (command === "resume") return startCommand({ ...options, resume: true });
   if (command === "integrate") return integrateCommand(options);
   if (command === "land") return landCommand(options);
+  if (command === "viewer-publish") return viewerPublishCommand(options);
+  if (command === "viewer-recover") return viewerRecoverCommand(options);
   if (command === "uuid-audit") return uuidAuditCommand(options);
   throw new GoalHarnessError("GOAL_COMMAND_UNKNOWN", `Unknown Goal command: ${command ?? "<missing>"}`);
 }
@@ -43,6 +51,11 @@ export async function doctorCommand({ configPath }) {
   checks.push(moduleCheck("ajv", config.project_root));
   checks.push(pathCheck("policy_prompt", config.policy_prompt_path, "file"));
   checks.push(pathCheck("target_category", config.target_category_path, "directory"));
+  try {
+    checks.push({ name: "viewer_artifact_store", ok: true, detail: probeViewerArtifactStore({ config }) });
+  } catch (error) {
+    checks.push({ name: "viewer_artifact_store", ok: false, detail: { code: error.code ?? "GOAL_VIEWER_STORE_PROBE_FAILED", message: error.message } });
+  }
   if (config.tools.tiangong_cli_root) {
     checks.push(pathCheck("tiangong_cli_root", config.tools.tiangong_cli_root, "directory"));
     checks.push(commandCheck(process.execPath, ["bin/tiangong-lca.js", "--version"], "tiangong_cli", { cwd: config.tools.tiangong_cli_root }));
@@ -71,7 +84,7 @@ export async function doctorCommand({ configPath }) {
     }));
   }
   const packageDocument = JSON.parse(readFileSync(path.join(config.project_root, "package.json"), "utf8"));
-  for (const script of ["validate", "pcr:sync-structured", "aliases:build", "aliases:check", "catalog:build", "catalog:check", "viewer:build", "tiangong-pcr"]) {
+  for (const script of ["validate", "pcr:sync-structured", "aliases:build", "aliases:check", "catalog:build", "catalog:check", "viewer:build", "goal:viewer-publish", "goal:viewer-recover", "tiangong-pcr"]) {
     checks.push({ name: `npm_script:${script}`, ok: Boolean(packageDocument.scripts?.[script]), detail: packageDocument.scripts?.[script] ?? null });
   }
   const codexCheck = commandCheck(config.tools.codex, ["--version"], "codex");
@@ -184,6 +197,10 @@ export async function startCommand({ configPath, slots = null, dryRun = false, r
     if (resume) throw new GoalHarnessError("GOAL_NOT_PLANNED", `Goal state does not exist: ${config.goal_id}`);
     planCommand({ configPath, dryRun: false });
   }
+  if (resume && !dryRun) {
+    recoverViewerPublications({ config });
+    publishAllPendingViewerSnapshots({ config });
+  }
   const runtime = ensureCorepackToolPath(stateDir);
   const runtimeBaseline = dryRun ? null : ensureGoalRuntimeBaseline({
     projectRoot: config.project_root,
@@ -264,6 +281,18 @@ export function landCommand({ configPath, snapshotId = null, dryRun = false }) {
   const stateDir = goalStateDir(config);
   if (!existsSync(path.join(stateDir, "initial-state.json"))) throw new GoalHarnessError("GOAL_NOT_PLANNED", `Goal state does not exist: ${config.goal_id}`);
   return landGoalSnapshot({ config, stateDir, snapshotId, dryRun });
+}
+
+export function viewerPublishCommand({ configPath, snapshotId = null }) {
+  const config = requireConfig(configPath);
+  return snapshotId
+    ? publishPendingViewerSnapshots({ config, snapshotId })
+    : publishAllPendingViewerSnapshots({ config });
+}
+
+export function viewerRecoverCommand({ configPath, forceStaleLock = false }) {
+  const config = requireConfig(configPath);
+  return recoverViewerPublications({ config, forceStaleLock });
 }
 
 export function uuidAuditCommand({ configPath, apply = false }) {

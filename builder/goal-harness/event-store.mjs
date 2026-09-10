@@ -139,6 +139,32 @@ function reduceEvent(state, event) {
     next.snapshots = [...(next.snapshots ?? []), event.payload];
   } else if (event.type === "snapshot_replaced") {
     next.snapshots = (next.snapshots ?? []).map((snapshot) => snapshot.id === event.payload.snapshot.id ? event.payload.snapshot : snapshot);
+  } else if (event.type === "repository_validation_projected") {
+    next.snapshots = (next.snapshots ?? []).map((snapshot) => snapshot.id === event.payload.snapshot_id
+      ? { ...snapshot, ...event.payload.projection }
+      : snapshot);
+    const projectedTasks = new Map((event.payload.tasks ?? []).map((task) => [task.id, task]));
+    next.tasks = (next.tasks ?? []).map((task) => projectedTasks.get(task.id) ?? task);
+  } else if (event.type === "viewer_snapshot_published") {
+    next.snapshots = (next.snapshots ?? []).map((snapshot) => snapshot.id === event.payload.snapshot_id
+      ? {
+          ...snapshot,
+          viewer_publication: "published",
+          viewer_manifest_ref: event.payload.manifest_ref,
+          viewer_snapshot_id: event.payload.viewer_snapshot_id,
+          viewer_sequence: event.payload.viewer_sequence,
+          viewer_published_at: event.payload.published_at,
+        }
+      : snapshot);
+  } else if (event.type === "viewer_snapshot_unavailable") {
+    next.snapshots = (next.snapshots ?? []).map((snapshot) => snapshot.id === event.payload.harness_snapshot_id
+      ? {
+          ...snapshot,
+          viewer_publication: "pre_activation_unavailable",
+          viewer_unavailable_reason: event.payload.reason,
+          viewer_source_status: event.payload.source_status,
+        }
+      : snapshot);
   } else if (event.type === "integration_finalized") {
     next.snapshots = (next.snapshots ?? []).map((snapshot) => snapshot.id === event.payload.snapshot.id ? event.payload.snapshot : snapshot);
     const replacements = new Map(event.payload.tasks.map((task) => [task.id, task]));

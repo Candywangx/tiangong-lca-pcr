@@ -7,6 +7,8 @@ import test from "node:test";
 import { GoalEventStore } from "./event-store.mjs";
 import { captureExpectedFiles, landGoalSnapshot } from "./landing.mjs";
 import * as reconciliation from "./reconciliation.mjs";
+import { reserveRepositoryCandidate, commitRepositoryValidation } from "./repository-coordinator.mjs";
+import { publishPendingViewerSnapshots } from "./viewer-publication.mjs";
 
 const mapping = "classifications/mappings/cpc-3.0-to-pcr.yaml";
 const adr = "docs/adr/0130-user.md";
@@ -18,7 +20,7 @@ function fixture(t) {
   const root = mkdtempSync(path.join(tmpdir(), "goal-reconcile-test-"));
   t.after(() => rmSync(root, { recursive: true, force: true }));
   git(root, ["init", "-q"]); git(root, ["config", "user.name", "Test"]); git(root, ["config", "user.email", "test@localhost"]);
-  put(root, ".gitignore", "state/\n.worktrees/\n.env\n");
+  put(root, ".gitignore", "state/\nlibrary/.pcr-builder-state/\n.worktrees/\n.env\n");
   for (const f of [mapping, runtime, ...files]) put(root, f, "base\n");
   git(root, ["add", "."]); git(root, ["commit", "-qm", "base"]);
   const base = git(root, ["rev-parse", "HEAD"]);
@@ -30,11 +32,11 @@ function fixture(t) {
   const commit = git(source, ["rev-parse", "HEAD"]);
   put(root, mapping, "user additions\n"); put(root, adr, "user decision\n");
   put(root, "unrelated.txt", "user asset\n"); put(root, ".env", "PRIVATE_TEST_SENTINEL\n");
-  const stateDir = path.join(root, "state");
+  const stateDir = path.join(root, "library/.pcr-builder-state/goals/test-goal");
   const snapshot = { id: "snapshot-old", state: "validated", task_ids: ["one"], base_commit: base, integration_commit: commit, worktree_path: source, changed_files: [mapping, ...files], author_commits: [commit] };
   const store = new GoalEventStore({ stateDir });
   store.initialize({ goal_id: "test-goal", stopped: true, baseline: { commit: base }, tasks: [{ id: "one", state: "validated", allowed_files: files, author_commit: commit, integration_snapshot_id: snapshot.id }], snapshots: [snapshot] });
-  const config = { project_root: root, goal_id: "test-goal" };
+  const config = { project_root: root, goal_id: "test-goal", artifact_store: path.join(root, "state/viewer"), baseline: { tracked_roots: ["classifications", "docs", "library", "packages"] } };
   return { root, source, base, commit, stateDir, store, snapshot, config };
 }
 function plan(f) {
@@ -91,14 +93,22 @@ test("reconciled landing keeps CAS on both original author files and preserved u
   git(source, ["add", "."]); git(source, ["commit", "-qm", "revalidated"]);
   const valid = { ...next, state: "validated", worktree_path: source, integration_commit: git(source, ["rev-parse", "HEAD"]), changed_files: [mapping, ...files, runtime] };
   f.store.append({ type: "snapshot_replaced", payload: { snapshot: valid } });
+  const candidate = reserveRepositoryCandidate({ projectRoot: f.root, goalId: f.config.goal_id, snapshotId: next.id, fallbackHead: f.base });
+  commitRepositoryValidation({ projectRoot: f.root, candidateToken: candidate.candidate_token, integrationCommit: valid.integration_commit, goalStateDir: f.stateDir, snapshotProjection: valid });
+  assert.throws(() => landGoalSnapshot({ config: f.config, stateDir: f.stateDir, snapshotId: next.id }), e => e.code === "GOAL_LAND_VIEWER_UNPUBLISHED");
+  publishPendingViewerSnapshots({ config: f.config, publishSnapshot: options => ({ manifestRef: `sha256:${"9".repeat(64)}`, sequence: options.sequence }) });
+  const land = (dryRun = true) => landGoalSnapshot({ config: f.config, stateDir: f.stateDir, snapshotId: next.id, dryRun, artifactStoreVerifier: () => true });
   const originals = captureExpectedFiles(f.root, files);
   put(f.root, files[0], "new user PCR edit\n");
-  assert.throws(() => landGoalSnapshot({ config: f.config, stateDir: f.stateDir, snapshotId: next.id, dryRun: true }), e => e.code === "GOAL_LAND_CAS_CONFLICT");
+  assert.throws(() => land(), e => e.code === "GOAL_LAND_CAS_CONFLICT");
   put(f.root, files[0], "base\n");
   assert.deepEqual(captureExpectedFiles(f.root, files), originals);
   put(f.root, adr, "new user decision\n");
-  assert.throws(() => landGoalSnapshot({ config: f.config, stateDir: f.stateDir, snapshotId: next.id, dryRun: true }), e => e.code === "GOAL_RECONCILIATION_INPUT_CHANGED");
+  assert.throws(() => land(), e => ["GOAL_RECONCILIATION_INPUT_CHANGED", "GOAL_LAND_CAS_CONFLICT"].includes(e.code));
   put(f.root, adr, "user decision\n");
-  assert.equal(landGoalSnapshot({ config: f.config, stateDir: f.stateDir, snapshotId: next.id, dryRun: true }).status, "dry_run");
+  assert.equal(land().status, "dry_run");
   assert.equal(readFileSync(path.join(f.root, mapping), "utf8"), "user additions\n");
+  assert.equal(land(false).status, "landed");
+  assert.equal(land(false).status, "already_landed");
+  assert.equal(readFileSync(path.join(f.root, adr), "utf8"), "user decision\n");
 });

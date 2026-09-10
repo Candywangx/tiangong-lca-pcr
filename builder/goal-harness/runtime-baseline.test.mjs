@@ -25,6 +25,10 @@ test("installed author runtime includes the working shared-materials CLI and aut
     "builder/docs/workflows/create-pcr.md",
     "builder/docs/prompts/codex-create-pcr.md",
     "builder/docs/prompts/claude-create-pcr.md",
+    "packages/pcr-core/src/read-context.mjs",
+    "packages/pcr-viewer/scripts/snapshot-store.mjs",
+    "packages/pcr-viewer/schemas/viewer-active.schema.json",
+    "packages/pcr-viewer/viewer-snapshot.test.mjs",
   ];
   try {
     git(root, ["init", "-q"]);

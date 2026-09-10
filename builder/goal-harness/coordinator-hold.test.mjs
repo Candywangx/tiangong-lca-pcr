@@ -212,11 +212,13 @@ test("report replacement during bounded read is rejected", (t) => {
   const f = fixture(t);
   const request = f.request();
   const originalRead = fs.readSync;
+  const reportIdentity = fs.statSync(f.reportPath);
   let replaced = false;
   t.after(() => { fs.readSync = originalRead; syncBuiltinESMExports(); });
   fs.readSync = function (...args) {
     const count = originalRead.apply(this, args);
-    if (!replaced) {
+    const readIdentity = fs.fstatSync(args[0]);
+    if (!replaced && readIdentity.dev === reportIdentity.dev && readIdentity.ino === reportIdentity.ino) {
       replaced = true;
       fs.renameSync(f.reportPath, `${f.reportPath}.old`);
       fs.writeFileSync(f.reportPath, '{"substituted":true}');

@@ -1,0 +1,320 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "viewer-object",
+  "oneOf": [
+    { "$ref": "#/$defs/uiBundleObject" },
+    { "$ref": "#/$defs/pcrDetailObject" },
+    { "$ref": "#/$defs/catalogEntryObject" },
+    { "$ref": "#/$defs/aliasEntryObject" },
+    { "$ref": "#/$defs/coverageEntryObject" },
+    { "$ref": "#/$defs/catalogShardObject" },
+    { "$ref": "#/$defs/aliasShardObject" },
+    { "$ref": "#/$defs/coverageShardObject" },
+    { "$ref": "#/$defs/catalogRootObject" },
+    { "$ref": "#/$defs/aliasRootObject" },
+    { "$ref": "#/$defs/coverageRootObject" },
+    { "$ref": "#/$defs/historyPageObject" }
+  ],
+  "$defs": {
+    "ref": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "text": { "type": "string", "minLength": 1 },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["generator_contract_sha256", "schema_contract_sha256", "source_fingerprint", "release_revision_marker"],
+      "properties": {
+        "generator_contract_sha256": { "$ref": "#/$defs/ref" },
+        "schema_contract_sha256": { "$ref": "#/$defs/ref" },
+        "source_fingerprint": { "$ref": "#/$defs/ref" },
+        "release_revision_marker": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/ref" }] }
+      }
+    },
+    "base": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "object_kind", "identity", "entry"],
+      "properties": {
+        "schema_version": { "const": 1 },
+        "object_kind": { "type": "string" },
+        "identity": { "$ref": "#/$defs/identity" },
+        "entry": { "type": "object" }
+      }
+    },
+    "markdown": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["en-US", "zh-CN"],
+      "properties": {
+        "en-US": { "type": ["string", "null"] },
+        "zh-CN": { "type": ["string", "null"] }
+      }
+    },
+    "title": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["en-US", "zh-CN"],
+      "properties": {
+        "en-US": { "type": ["string", "null"] },
+        "zh-CN": { "type": ["string", "null"] }
+      }
+    },
+    "coordinate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["system", "version"],
+      "properties": {
+        "system": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" },
+        "version": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$" }
+      }
+    },
+    "aliasTarget": {
+      "oneOf": [
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["kind", "classification_system", "classification_version", "code"],
+          "properties": {
+            "kind": { "const": "classification_coverage" },
+            "classification_system": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" },
+            "classification_version": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$" },
+            "code": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$" }
+          }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["kind", "pcr_id"],
+          "properties": {
+            "kind": { "const": "canonical_pcr" },
+            "pcr_id": { "type": "string", "pattern": "^pcr\\." }
+          }
+        }
+      ]
+    },
+    "refMap": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/ref" }
+    },
+    "shardItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "object_ref"],
+      "properties": { "id": { "$ref": "#/$defs/text" }, "object_ref": { "$ref": "#/$defs/ref" } }
+    },
+    "coverageShardItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "coverage_entry_ref"],
+      "properties": { "code": { "$ref": "#/$defs/text" }, "coverage_entry_ref": { "$ref": "#/$defs/ref" } }
+    },
+    "classificationRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["system", "version", "code"],
+      "properties": {
+        "system": { "$ref": "#/$defs/text" },
+        "version": { "$ref": "#/$defs/text" },
+        "code": { "$ref": "#/$defs/text" },
+        "title": { "$ref": "#/$defs/text" },
+        "mapping_type": { "$ref": "#/$defs/text" }
+      }
+    },
+    "languages": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canonical", "available"],
+      "properties": {
+        "canonical": { "$ref": "#/$defs/text" },
+        "available": { "type": "array", "items": { "$ref": "#/$defs/text" }, "uniqueItems": true }
+      }
+    },
+    "translationStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "en-US": { "$ref": "#/$defs/text" },
+        "zh-CN": { "$ref": "#/$defs/text" }
+      }
+    },
+    "uiBundleObject": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        { "type": "object", "properties": { "object_kind": { "const": "ui_bundle" }, "entry": {
+          "type": "object", "additionalProperties": false, "required": ["id", "asset_url"],
+          "properties": { "id": { "$ref": "#/$defs/text" }, "asset_url": { "type": "string" } }
+        } } }
+      ]
+    },
+    "pcrDetailObject": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        { "type": "object", "properties": { "object_kind": { "const": "pcr_detail" }, "entry": {
+          "type": "object", "additionalProperties": false, "required": ["id", "markdown", "guidance"],
+          "properties": {
+            "id": { "$ref": "#/$defs/text" },
+            "markdown": { "$ref": "#/$defs/markdown" },
+            "guidance": {
+              "allOf": [
+                { "$ref": "https://tiangong-lca.org/schemas/pcr/v1/guidance-output.schema.json" },
+                { "$ref": "#/$defs/noGenerationMetadata" }
+              ]
+            }
+          }
+        } } }
+      ]
+    },
+    "catalogEntryObject": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        { "type": "object", "properties": { "object_kind": { "const": "catalog_entry" }, "entry": {
+          "type": "object", "additionalProperties": false,
+          "required": ["id", "path", "title", "status", "version", "content_maturity", "languages", "translation_status", "classification_refs", "record_kind", "readiness", "search_text"],
+          "properties": {
+            "id": { "$ref": "#/$defs/text" }, "path": { "type": "string" }, "title": { "$ref": "#/$defs/title" },
+            "status": { "$ref": "#/$defs/text" }, "version": { "type": ["string", "null"] }, "content_maturity": { "type": ["string", "null"] },
+            "languages": { "$ref": "#/$defs/languages" }, "translation_status": { "$ref": "#/$defs/translationStatus" },
+            "classification_refs": { "type": "array", "items": { "$ref": "#/$defs/classificationRef" } },
+            "record_kind": { "$ref": "#/$defs/text" },
+            "readiness": { "$ref": "https://tiangong-lca.org/schemas/pcr/v1/readiness.schema.json" },
+            "search_text": { "$ref": "#/$defs/text" }
+          }
+        } } }
+      ]
+    },
+    "aliasEntryObject": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        { "type": "object", "properties": { "object_kind": { "const": "alias_entry" }, "entry": {
+          "type": "object", "additionalProperties": false,
+          "required": ["id", "locator", "source_pcr_path", "target", "reason", "decision_ref"],
+          "properties": {
+            "id": { "$ref": "#/$defs/text" },
+            "locator": { "$ref": "#/$defs/text" },
+            "source_pcr_path": { "type": "string", "pattern": "^library/pcrs/" },
+            "target": { "$ref": "#/$defs/aliasTarget" },
+            "reason": { "enum": ["empty_scaffold_migration", "canonical_pcr_replacement"] },
+            "decision_ref": { "$ref": "#/$defs/text" }
+          }
+        } } }
+      ]
+    },
+    "coverageEntryObject": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        { "type": "object", "properties": { "object_kind": { "const": "coverage_entry" }, "entry": {
+          "type": "object", "additionalProperties": false,
+          "required": ["coordinate", "code", "pcr_id", "label", "path_codes", "path_titles", "coverage_status", "mapping", "legacy_reference"],
+          "properties": {
+            "coordinate": { "$ref": "#/$defs/coordinate" },
+            "code": { "$ref": "#/$defs/text" },
+            "pcr_id": { "type": ["string", "null"] },
+            "label": { "$ref": "#/$defs/text" },
+            "path_codes": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/text" } },
+            "path_titles": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/text" } },
+            "coverage_status": { "$ref": "https://tiangong-lca.org/schemas/pcr/v1/controlled-vocabulary.schema.json#/$defs/classification_coverage_status" },
+            "mapping": { "anyOf": [{ "$ref": "https://tiangong-lca.org/schemas/pcr/v1/classification-coverage.schema.json#/$defs/mapping" }, { "type": "null" }] },
+            "legacy_reference": { "anyOf": [{ "$ref": "https://tiangong-lca.org/schemas/pcr/v1/classification-coverage.schema.json#/$defs/legacyReference" }, { "type": "null" }] }
+          }
+        } } }
+      ]
+    },
+    "catalogShardObject": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        { "type": "object", "properties": { "object_kind": { "const": "catalog_shard" }, "entry": {
+          "type": "object", "additionalProperties": false, "required": ["prefix", "entries"],
+          "properties": { "prefix": { "$ref": "#/$defs/text" }, "entries": { "type": "array", "items": { "$ref": "#/$defs/shardItem" } } }
+        } } }
+      ]
+    },
+    "aliasShardObject": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        { "type": "object", "properties": { "object_kind": { "const": "alias_shard" }, "entry": {
+          "type": "object", "additionalProperties": false, "required": ["prefix", "entries"],
+          "properties": { "prefix": { "$ref": "#/$defs/text" }, "entries": { "type": "array", "items": { "$ref": "#/$defs/shardItem" } } }
+        } } }
+      ]
+    },
+    "coverageShardObject": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        { "type": "object", "properties": { "object_kind": { "const": "coverage_shard" }, "entry": {
+          "type": "object", "additionalProperties": false, "required": ["coordinate", "prefix", "entries"],
+          "properties": {
+            "coordinate": { "$ref": "#/$defs/coordinate" }, "prefix": { "$ref": "#/$defs/text" },
+            "entries": { "type": "array", "items": { "$ref": "#/$defs/coverageShardItem" } }
+          }
+        } } }
+      ]
+    },
+    "catalogRootObject": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        { "type": "object", "properties": { "object_kind": { "const": "catalog_root" }, "entry": {
+          "type": "object", "additionalProperties": false, "required": ["shards", "details"],
+          "properties": { "shards": { "$ref": "#/$defs/refMap" }, "details": { "$ref": "#/$defs/refMap" } }
+        } } }
+      ]
+    },
+    "aliasRootObject": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        { "type": "object", "properties": { "object_kind": { "const": "alias_root" }, "entry": {
+          "type": "object", "additionalProperties": false, "required": ["shards", "entries"],
+          "properties": { "shards": { "$ref": "#/$defs/refMap" }, "entries": { "$ref": "#/$defs/refMap" } }
+        } } }
+      ]
+    },
+    "coverageRootObject": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        { "type": "object", "properties": { "object_kind": { "const": "coverage_root" }, "entry": {
+          "type": "object", "additionalProperties": false, "required": ["shards", "entries"],
+          "properties": { "shards": { "$ref": "#/$defs/refMap" }, "entries": { "$ref": "#/$defs/refMap" } }
+        } } }
+      ]
+    },
+    "historyPageObject": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        { "type": "object", "properties": { "object_kind": { "const": "history_page" }, "entry": {
+          "type": "object", "additionalProperties": false, "required": ["entries", "previous_page_ref"],
+          "properties": {
+            "entries": { "type": "array", "minItems": 1, "maxItems": 64, "items": {
+              "type": "object", "additionalProperties": false, "required": ["sequence", "manifest_ref"],
+              "properties": { "sequence": { "type": "integer", "minimum": 1 }, "manifest_ref": { "$ref": "#/$defs/ref" } }
+            } },
+            "previous_page_ref": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/ref" }] }
+          }
+        } } }
+      ]
+    },
+    "noGenerationMetadata": {
+      "allOf": [
+        {
+          "not": {
+            "type": "object",
+            "anyOf": [
+              { "type": "object", "required": ["generated_at"], "properties": { "generated_at": true } },
+              { "type": "object", "required": ["generated_at_utc"], "properties": { "generated_at_utc": true } },
+              { "type": "object", "required": ["generation_timestamp"], "properties": { "generation_timestamp": true } }
+            ]
+          }
+        },
+        {
+          "if": { "type": "object" },
+          "then": {
+            "type": "object",
+            "additionalProperties": { "$ref": "#/$defs/noGenerationMetadata" }
+          }
+        },
+        {
+          "if": { "type": "array" },
+          "then": {
+            "type": "array",
+            "items": { "$ref": "#/$defs/noGenerationMetadata" }
+          }
+        }
+      ]
+    }
+  }
+}
