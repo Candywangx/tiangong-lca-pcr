@@ -21,6 +21,7 @@ import {
   recoverViewerPublications,
 } from "./viewer-publication.mjs";
 import { landGoalSnapshot } from "./landing.mjs";
+import { createPublisherFixture } from "./viewer-test-fixture.mjs";
 import { VIEWER_INCREMENTAL_GENERATOR_VERSION } from "../../packages/pcr-viewer/scripts/build-viewer-data.mjs";
 import { ViewerSnapshotStore } from "../../packages/pcr-viewer/scripts/snapshot-store.mjs";
 
@@ -807,8 +808,7 @@ test("reserved publication recovery retries after a pinned generator version cha
   const root = path.join(parent, "repo");
   const source = path.resolve(import.meta.dirname, "../..");
   try {
-    execFileSync("git", ["clone", "--shared", "-q", source, root], { stdio: "ignore" });
-    symlinkSync(path.join(source, "node_modules"), path.join(root, "node_modules"), "dir");
+    createPublisherFixture({ root, source });
     git(root, ["config", "user.name", "Goal Test"]);
     git(root, ["config", "user.email", "goal@example.invalid"]);
     const baseline = git(root, ["rev-parse", "HEAD"]);
@@ -854,8 +854,7 @@ test("real publisher recovery abandons uncommitted inner payloads and republishe
   const root = path.join(parent, "repo");
   const source = path.resolve(import.meta.dirname, "../..");
   try {
-    execFileSync("git", ["clone", "--shared", "-q", source, root], { stdio: "ignore" });
-    symlinkSync(path.join(source, "node_modules"), path.join(root, "node_modules"), "dir");
+    createPublisherFixture({ root, source });
     git(root, ["config", "user.name", "Goal Test"]);
     git(root, ["config", "user.email", "goal@example.invalid"]);
     writeFileSync(path.join(root, "tracked.txt"), "baseline\n");

@@ -79,6 +79,18 @@ receipts remain. Repeating the same approved plan is idempotent. Integration rer
 check. Landing checks original author-file CAS expectations, approved changed-input expectations, untouched preserved
 inputs, and exact committed source bytes; approved reconciliation is not permission to overwrite a later edit.
 
+Repository-coordinated integration still reserves an accepted-head candidate, commits repository validation in order,
+publishes the pinned Viewer snapshot and requires publication before landing. Reconciliation cannot bypass those
+steps. Runtime installation includes the tracked Viewer generator, schemas and core read-context dependencies so
+an author/integration worktree cannot mix old package code with the coordinated Harness.
+
+Viewer recovery tests use `viewer-test-fixture.mjs`: the real pinned publisher, worker, schemas and one four-file PCR,
+one accepted mapping and one coverage leaf. No failure-injection assertions are skipped. On the September 10 local
+baseline, the full main test suite took 697.6 seconds (922 tests; 918 passed, 4 existing skips). After the compatible
+Harness merge and small-fixture replacement it took 32.9 seconds (935 tests; 931 passed, the same 4 skips). These are
+test-runner durations; complete `npm run validate` additionally runs all lint/build checks. Each production snapshot
+still executes that complete command, the bounded Viewer candidate check and consumer smoke checks before publishing.
+
 Runtime state is stored at:
 
 ```text
