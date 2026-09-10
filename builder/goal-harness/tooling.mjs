@@ -42,7 +42,7 @@ export function authenticatedHybridSearchDryRunCheck({
       if (lastResult.ok) {
         return attempt === 1 ? lastResult : { ...lastResult, detail: { ...lastResult.detail, attempts: attempt } };
       }
-      if (attempt < attempts) sleeper(retryDelayMs);
+      if (attempt < attempts) sleeper(retryDelayMs * attempt);
     }
     return { ...lastResult, detail: { ...lastResult.detail, attempts } };
   } finally {

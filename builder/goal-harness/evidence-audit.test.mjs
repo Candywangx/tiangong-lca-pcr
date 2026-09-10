@@ -5,6 +5,7 @@ import path from "node:path";
 import test from "node:test";
 
 import { auditReportedUuids, mergeVerifiedCommonUuids, verifySourceLocators } from "./evidence-audit.mjs";
+import { GoalHarnessError } from "./errors.mjs";
 
 test("legacy hybrid_search booleans never enter the verified common UUID cache", () => {
   const legacy = { uuid: "11111111-1111-4111-8111-111111111111", base_name_en: "Alternating current", hybrid_search: true };
@@ -59,6 +60,174 @@ test("UUID audit compares public direct-read identity to the author report", () 
     () => auditReportedUuids({ report: wrongUnitGroup, tiangongCliRoot: "/unused", runner: () => direct, supportRunner }),
     (error) => error.code === "GOAL_UUID_DIRECT_AUDIT_MISMATCH" && error.details.mismatches.includes("unit_group"),
   );
+});
+
+test("UUID audit reads one shared public flow-property and unit-group identity only once", () => {
+  const firstUuid = "11111111-1111-4111-8111-111111111111";
+  const secondUuid = "22222222-2222-4222-8222-222222222222";
+  const report = { uuid_audits: [firstUuid, secondUuid].map((uuid) => ({
+    uuid, hybrid_search_receipt_id: `receipt-${uuid[0]}`, state_code: 100,
+    base_name_en: "Electricity", base_name_zh: "电力", flow_type: "product",
+    classification: "CPC 17100", property: "Mass", unit_group: "Units of mass",
+    semantic_review: "Exact public product flow.",
+  })) };
+  const direct = (uuid) => ({
+    state_code: 100,
+    flow: { flowDataSet: {
+      flowInformation: { dataSetInformation: {
+        "common:UUID": uuid,
+        name: { baseName: [{ "@xml:lang": "en", "#text": "Electricity" }, { "@xml:lang": "zh", "#text": "电力" }] },
+        classificationInformation: { "common:classification": { "common:class": [{ "@classId": "17100", "#text": "Electricity" }] } },
+      } },
+      modellingAndValidation: { LCIMethod: { typeOfDataSet: "Product flow" } },
+      flowProperties: { flowProperty: [{ referenceToFlowPropertyDataSet: {
+        "@refObjectId": "93a60a56-a3c8-11da-a746-0800200b9a66",
+        "@version": "03.00.003",
+        "common:shortDescription": [{ "@xml:lang": "en", "#text": "Mass" }],
+      } }] },
+    } },
+  });
+  let supportReads = 0;
+  const result = auditReportedUuids({
+    report,
+    tiangongCliRoot: "/unused",
+    runner: ({ uuid }) => direct(uuid),
+    supportRunner: () => {
+      supportReads += 1;
+      return {
+        flow_property: { id: "93a60a56-a3c8-11da-a746-0800200b9a66", state_code: 100, name_en: "Mass" },
+        unit_group: { id: "93a60a57-a4c8-11da-a746-0800200c9a66", state_code: 100, name_en: "Units of mass", name_zh: "质量", reference_unit: "kg" },
+      };
+    },
+  });
+  assert.equal(result.length, 2);
+  assert.equal(supportReads, 1);
+});
+
+test("UUID audit retries a transient public flow read with bounded linear backoff", () => {
+  const uuid = "11111111-1111-4111-8111-111111111111";
+  const report = { uuid_audits: [{
+    uuid, hybrid_search_receipt_id: "receipt-1", state_code: 100,
+    base_name_en: "Pig iron", base_name_zh: "生铁", flow_type: "product",
+    classification: "CPC 41111", property: "Mass", unit_group: "Units of mass", semantic_review: "exact",
+  }] };
+  const direct = {
+    state_code: 100,
+    flow: { flowDataSet: {
+      flowInformation: { dataSetInformation: {
+        "common:UUID": uuid,
+        name: { baseName: [{ "@xml:lang": "en", "#text": "Pig iron" }, { "@xml:lang": "zh", "#text": "生铁" }] },
+        classificationInformation: { "common:classification": { "common:class": [{ "@classId": "41111", "#text": "Pig iron" }] } },
+      } },
+      modellingAndValidation: { LCIMethod: { typeOfDataSet: "Product flow" } },
+      flowProperties: { flowProperty: [{ referenceToFlowPropertyDataSet: { "@refObjectId": "93a60a56-a3c8-11da-a746-0800200b9a66", "common:shortDescription": [{ "@xml:lang": "en", "#text": "Mass" }] } }] },
+    } },
+  };
+  let attempts = 0;
+  const waits = [];
+  const result = auditReportedUuids({
+    report,
+    tiangongCliRoot: "/unused",
+    retryAttempts: 3,
+    retryDelayMs: 7,
+    sleeper: (milliseconds) => waits.push(milliseconds),
+    runner: () => {
+      attempts += 1;
+      if (attempts < 3) throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "transient read failure");
+      return direct;
+    },
+    supportRunner: () => ({
+      flow_property: { id: "93a60a56-a3c8-11da-a746-0800200b9a66", state_code: 100, name_en: "Mass" },
+      unit_group: { id: "93a60a57-a4c8-11da-a746-0800200c9a66", state_code: 100, name_en: "Units of mass", name_zh: "质量", reference_unit: "kg" },
+    }),
+  });
+  assert.equal(result.length, 1);
+  assert.equal(attempts, 3);
+  assert.deepEqual(waits, [7, 14]);
+});
+
+test("UUID audit retries a transient public property read without retrying semantic mismatches", () => {
+  const uuid = "11111111-1111-4111-8111-111111111111";
+  const report = { uuid_audits: [{
+    uuid, hybrid_search_receipt_id: "receipt-1", state_code: 100,
+    base_name_en: "Pig iron", base_name_zh: "生铁", flow_type: "product",
+    classification: "CPC 41111", property: "Mass", unit_group: "Units of mass", semantic_review: "exact",
+  }] };
+  const direct = {
+    state_code: 100,
+    flow: { flowDataSet: {
+      flowInformation: { dataSetInformation: {
+        "common:UUID": uuid,
+        name: { baseName: [{ "@xml:lang": "en", "#text": "Pig iron" }, { "@xml:lang": "zh", "#text": "生铁" }] },
+        classificationInformation: { "common:classification": { "common:class": [{ "@classId": "41111", "#text": "Pig iron" }] } },
+      } },
+      modellingAndValidation: { LCIMethod: { typeOfDataSet: "Product flow" } },
+      flowProperties: { flowProperty: [{ referenceToFlowPropertyDataSet: { "@refObjectId": "93a60a56-a3c8-11da-a746-0800200b9a66", "common:shortDescription": [{ "@xml:lang": "en", "#text": "Mass" }] } }] },
+    } },
+  };
+  let supportAttempts = 0;
+  const result = auditReportedUuids({
+    report,
+    tiangongCliRoot: "/unused",
+    retryDelayMs: 0,
+    sleeper: () => {},
+    runner: () => direct,
+    supportRunner: () => {
+      supportAttempts += 1;
+      if (supportAttempts === 1) throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "transient support failure");
+      return {
+        flow_property: { id: "93a60a56-a3c8-11da-a746-0800200b9a66", state_code: 100, name_en: "Mass" },
+        unit_group: { id: "93a60a57-a4c8-11da-a746-0800200c9a66", state_code: 100, name_en: "Units of mass", name_zh: "质量", reference_unit: "kg" },
+      };
+    },
+  });
+  assert.equal(result.length, 1);
+  assert.equal(supportAttempts, 2);
+
+  let directAttempts = 0;
+  const bad = structuredClone(report);
+  bad.uuid_audits[0].base_name_zh = "错误名称";
+  assert.throws(
+    () => auditReportedUuids({
+      report: bad,
+      tiangongCliRoot: "/unused",
+      retryDelayMs: 0,
+      sleeper: () => {},
+      runner: () => (directAttempts += 1, direct),
+      supportRunner: () => ({
+        flow_property: { id: "93a60a56-a3c8-11da-a746-0800200b9a66", state_code: 100, name_en: "Mass" },
+        unit_group: { id: "93a60a57-a4c8-11da-a746-0800200c9a66", state_code: 100, name_en: "Units of mass", name_zh: "质量", reference_unit: "kg" },
+      }),
+    }),
+    (error) => error.code === "GOAL_UUID_DIRECT_AUDIT_MISMATCH",
+  );
+  assert.equal(directAttempts, 1);
+});
+
+test("UUID audit fails closed with the stable infrastructure code after bounded retries are exhausted", () => {
+  const uuid = "11111111-1111-4111-8111-111111111111";
+  const report = { uuid_audits: [{
+    uuid, hybrid_search_receipt_id: "receipt-1", state_code: 100,
+    base_name_en: "Pig iron", base_name_zh: "生铁", flow_type: "product",
+    classification: "CPC 41111", property: "Mass", unit_group: "Units of mass", semantic_review: "exact",
+  }] };
+  let attempts = 0;
+  assert.throws(
+    () => auditReportedUuids({
+      report,
+      tiangongCliRoot: "/unused",
+      retryAttempts: 3,
+      retryDelayMs: 0,
+      sleeper: () => {},
+      runner: () => {
+        attempts += 1;
+        throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "upstream unavailable", { credentials_redacted: true });
+      },
+      supportRunner: () => assert.fail("support must not run without a flow response"),
+    }),
+    (error) => error.code === "GOAL_UUID_DIRECT_READ_FAILED" && error.details.attempts === 3,
+  );
+  assert.equal(attempts, 3);
 });
 
 test("UUID audit accepts explicit no-product-classification and annotated property evidence for elementary flows", () => {
