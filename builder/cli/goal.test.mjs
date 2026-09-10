@@ -49,6 +49,7 @@ cpc_selector:
   mode: target_category
   value: all
 policy_prompt_path: ${root}/policy.txt
+artifact_store: ${root}/viewer-artifacts
 baseline:
   tracked_roots:
     - library
@@ -108,6 +109,8 @@ test("CLI provides help and stable JSON failures with clean stdout", () => {
   const help = run(["--help"], path.resolve("."));
   assert.match(help, /goal\.mjs doctor|goal:doctor/u);
   assert.match(help, /uuid-audit/u);
+  assert.match(run(["viewer-publish", "--help"], path.resolve(".")), /viewer-publish --config/u);
+  assert.match(run(["viewer-recover", "--help"], path.resolve(".")), /viewer-recover --config.*force-stale-lock/u);
   const failure = spawnSync(process.execPath, [cliPath, "unknown", "--format", "json"], { encoding: "utf8" });
   assert.notEqual(failure.status, 0);
   assert.equal(failure.stdout, "");
@@ -115,6 +118,21 @@ test("CLI provides help and stable JSON failures with clean stdout", () => {
   assert.equal(error.ok, false);
   assert.equal(error.error.code, "GOAL_COMMAND_UNKNOWN");
   assert.equal(typeof error.next_action, "string");
+});
+
+test("Viewer publication and recovery commands use the configured durable store", () => {
+  const { root, configPath } = fixture();
+  try {
+    const published = JSON.parse(run(["viewer-publish", "--config", configPath, "--format", "json"], root));
+    assert.equal(published.result.status, "up_to_date");
+    const recovered = JSON.parse(run(["viewer-recover", "--config", configPath, "--force-stale-lock", "--format", "json"], root));
+    assert.equal(recovered.result.status, "clean");
+    const packageDocument = JSON.parse(readFileSync(path.resolve("package.json"), "utf8"));
+    assert.equal(packageDocument.scripts["goal:viewer-publish"], "node builder/cli/goal.mjs viewer-publish");
+    assert.equal(packageDocument.scripts["goal:viewer-recover"], "node builder/cli/goal.mjs viewer-recover");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 });
 
 test("resume human output is a bounded summary and does not serialize the full Goal state", async () => {

@@ -6,8 +6,7 @@ import path from "node:path";
 import test from "node:test";
 
 import { createSyntheticBaseline } from "./synthetic-baseline.mjs";
-import { captureExpectedFiles, captureExpectedFilesFromCommit, landFilesCas, landGoalSnapshot } from "./landing.mjs";
-import { GoalEventStore } from "./event-store.mjs";
+import { captureExpectedFiles, captureExpectedFilesFromCommit, landFilesCas } from "./landing.mjs";
 import { ensureGoalWorktree } from "./worktrees.mjs";
 
 function git(root, args) {
@@ -146,7 +145,7 @@ test("CAS landing is idempotent and fails closed on a dirty-main conflict", () =
   }
 });
 
-test("Goal landing uses validated commit bytes after the integration worktree is edited", () => {
+test("CAS landing uses validated commit bytes after the integration worktree is edited", () => {
   const root = fixtureRepo();
   try {
     const relative = "library/pcrs/category/item/manifest.yaml";
@@ -158,20 +157,15 @@ test("Goal landing uses validated commit bytes after the integration worktree is
     git(source, ["commit", "-qm", "validated integration"]);
     const integrationCommit = git(source, ["rev-parse", "HEAD"]);
     const stateDir = path.join(root, "state/commit-landing");
-    const store = new GoalEventStore({ stateDir });
-    store.initialize({
-      goal_id: "fixture", baseline: { commit: baseline }, tasks: [],
-      snapshots: [{ id: "snapshot-pinned", state: "validated", integration_commit: integrationCommit,
-        worktree_path: source, changed_files: [relative], task_ids: [] }],
-    });
+    const expected = captureExpectedFiles(root, [relative]);
     writeFileSync(path.join(source, relative), "unvalidated post-review edit\n");
 
-    const result = landGoalSnapshot({ config: { project_root: root }, stateDir });
+    const result = landFilesCas({ projectRoot: root, sourceRoot: source, sourceCommit: integrationCommit,
+      paths: [relative], expected, stateDir, snapshotId: "snapshot-pinned" });
 
     assert.equal(readFileSync(path.join(root, relative), "utf8"), "validated methodology\n");
     assert.equal(readFileSync(path.join(source, relative), "utf8"), "unvalidated post-review edit\n");
-    assert.equal(result.snapshot.integration_commit, integrationCommit);
-    assert.equal(store.rebuild().snapshots[0].state, "landed");
+    assert.equal(result.status, "landed");
   } finally {
     rmSync(root, { recursive: true, force: true });
   }

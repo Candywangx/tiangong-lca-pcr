@@ -2,15 +2,21 @@ import { createServer } from "node:http";
 import { createReadStream, existsSync, realpathSync, statSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  recoverViewerDeployment,
+  resolveViewerDeploymentGeneration,
+} from "./viewer-deployment.mjs";
 
 const packageRoot = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
 const defaultRoot = path.join(packageRoot, "dist");
 
 function cliOptions(argv) {
-  const options = { root: defaultRoot, port: 4173, host: "127.0.0.1" };
+  const options = { root: defaultRoot, port: 4173, host: "127.0.0.1", help: false };
   for (let index = 0; index < argv.length; index += 1) {
     const token = argv[index];
-    if (token === "--root") {
+    if (token === "--help" || token === "-h") {
+      options.help = true;
+    } else if (token === "--root") {
       options.root = path.resolve(requiredOptionValue(argv, index, token));
       index += 1;
     } else if (token === "--port") {
@@ -28,27 +34,39 @@ function cliOptions(argv) {
 
 export function serveViewer({ root = defaultRoot, port = 4173, host = "127.0.0.1" } = {}) {
   const requestedRoot = path.resolve(root);
-  const resolvedRoot = existsSync(requestedRoot) ? realpathSync(requestedRoot) : requestedRoot;
+  recoverViewerDeployment({ outDir: requestedRoot });
   const resolvedPort = validPort(port);
-  const indexPath = path.join(resolvedRoot, "index.html");
+  const initialRoot = resolveViewerDeploymentGeneration(requestedRoot);
+  const indexPath = path.join(initialRoot, "index.html");
   if (!existsSync(indexPath)) {
-    throw new Error(`Viewer build not found at ${resolvedRoot}. Run npm run viewer:build first.`);
+    throw new Error(`Viewer build not found at ${initialRoot}. Run npm run viewer:build first.`);
   }
 
   const server = createServer((request, response) => {
-    const requestUrl = new URL(request.url ?? "/", "http://localhost");
+    // Resolve the atomic pointer once. Every path check and stream for this
+    // request is then pinned to one immutable generation.
+    let resolvedRoot;
+    try {
+      resolvedRoot = resolveViewerDeploymentGeneration(requestedRoot);
+    } catch {
+      response.writeHead(503);
+      response.end("Viewer deployment unavailable");
+      return;
+    }
     let relativePath;
     try {
-      relativePath = requestUrl.pathname === "/" ? "index.html" : decodeURIComponent(requestUrl.pathname.slice(1));
+      relativePath = canonicalRequestPath(request.url ?? "/");
     } catch (error) {
-      if (error instanceof URIError) {
-        response.writeHead(400);
-        response.end("Bad request");
-        return;
-      }
-      throw error;
+      response.writeHead(error?.statusCode === 403 ? 403 : 400);
+      response.end(error?.statusCode === 403 ? "Forbidden" : "Bad request");
+      return;
     }
-    const filePath = path.resolve(resolvedRoot, relativePath);
+    if (/^(?:locks|staging)(?:\/|$)|^journal\.json$/u.test(relativePath)) {
+      response.writeHead(404);
+      response.end("Not found");
+      return;
+    }
+    const filePath = path.resolve(resolvedRoot, ...relativePath.split("/"));
 
     if (!isInsideOrEqual(resolvedRoot, filePath)) {
       response.writeHead(403);
@@ -62,7 +80,7 @@ export function serveViewer({ root = defaultRoot, port = 4173, host = "127.0.0.1
     }
 
     const canonicalFilePath = realpathSync(filePath);
-    if (!isInsideOrEqual(resolvedRoot, canonicalFilePath)) {
+    if (!isInsideOrEqual(resolvedRoot, canonicalFilePath) || canonicalFilePath !== filePath) {
       response.writeHead(403);
       response.end("Forbidden");
       return;
@@ -73,7 +91,10 @@ export function serveViewer({ root = defaultRoot, port = 4173, host = "127.0.0.1
       return;
     }
 
-    response.writeHead(200, { "Content-Type": contentType(canonicalFilePath) });
+    response.writeHead(200, {
+      "Content-Type": contentType(canonicalFilePath),
+      "Cache-Control": cacheControl(relativePath),
+    });
     createReadStream(canonicalFilePath).pipe(response);
   });
 
@@ -84,6 +105,33 @@ export function serveViewer({ root = defaultRoot, port = 4173, host = "127.0.0.1
   });
 
   return server;
+}
+
+function canonicalRequestPath(requestTarget) {
+  const rawTarget = String(requestTarget);
+  const queryIndex = rawTarget.indexOf("?");
+  const rawPath = queryIndex === -1 ? rawTarget : rawTarget.slice(0, queryIndex);
+  if (!rawPath.startsWith("/") || rawPath.includes("#")) throw requestPathError(400);
+  if (rawPath === "/") return "index.html";
+  if (/\\|%(?:2f|5c)/iu.test(rawPath)) throw requestPathError(403);
+  let decoded;
+  try {
+    decoded = decodeURIComponent(rawPath);
+  } catch {
+    throw requestPathError(400);
+  }
+  if (decoded.includes("\0")) throw requestPathError(400);
+  const segments = decoded.slice(1).split("/");
+  if (segments.some((segment) => segment === "" || segment === "." || segment === "..")) {
+    throw requestPathError(403);
+  }
+  const canonicalEncodedPath = `/${segments.map((segment) => encodeURIComponent(segment)).join("/")}`;
+  if (rawPath !== canonicalEncodedPath) throw requestPathError(403);
+  return segments.join("/");
+}
+
+function requestPathError(statusCode) {
+  return Object.assign(new Error("Viewer request path is not canonical."), { statusCode });
 }
 
 function requiredOptionValue(argv, index, option) {
@@ -128,7 +176,42 @@ function contentType(filePath) {
 }
 
 if (isCliMain(import.meta.url)) {
-  serveViewer(cliOptions(process.argv.slice(2)));
+  const options = cliOptions(process.argv.slice(2));
+  if (options.help) {
+    console.log(`Usage: node packages/pcr-viewer/scripts/serve-viewer.mjs [options]
+
+Serve a split PCR Viewer deployment with mutable entrypoints and immutable snapshot objects.
+
+Options:
+  --root <path>  Viewer deployment cache root (default: packages/pcr-viewer/dist)
+  --host <host>  Listen address (default: 127.0.0.1)
+  --port <port>  Listen port, including 0 for an ephemeral port (default: 4173)
+  -h, --help     Show this help`);
+  } else {
+    const { help: _help, ...serverOptions } = options;
+    serveViewer(serverOptions);
+  }
+}
+
+function cacheControl(relativePath) {
+  const normalized = String(relativePath).replaceAll("\\", "/");
+  if (
+    normalized === "active.json" ||
+    normalized === "history-head.json" ||
+    /^provenance\/[^/]+\.json$/u.test(normalized)
+  ) {
+    return "no-cache";
+  }
+  if (
+    /^manifests\/[a-f0-9]{64}\.json$/u.test(normalized) ||
+    /^objects\/[a-f0-9]{64}\.json$/u.test(normalized) ||
+    /^routes\/[a-f0-9]{64}\.json$/u.test(normalized) ||
+    /^history\/[a-f0-9]{64}\.json$/u.test(normalized) ||
+    /^ui\/[a-f0-9]{64}\//u.test(normalized)
+  ) {
+    return "public, max-age=31536000, immutable";
+  }
+  return "no-cache";
 }
 
 function isCliMain(moduleUrl) {

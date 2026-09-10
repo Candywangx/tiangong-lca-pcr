@@ -14,11 +14,14 @@ Usage:
   node builder/cli/goal.mjs resume --config <goal.yaml> [--dry-run]
   node builder/cli/goal.mjs integrate --config <goal.yaml> [--snapshot <id>] [--allow-partial] [--dry-run]
   node builder/cli/goal.mjs land --config <goal.yaml> [--snapshot <id>] [--dry-run]
+  node builder/cli/goal.mjs viewer-publish --config <goal.yaml> [--snapshot <id>]
+  node builder/cli/goal.mjs viewer-recover --config <goal.yaml> [--force-stale-lock]
   node builder/cli/goal.mjs stop --config <goal.yaml>
   node builder/cli/goal.mjs uuid-audit --config <goal.yaml> [--apply] [--format human|json]
 
 Package aliases: goal:doctor, goal:plan, goal:start, goal:status, goal:resume,
-goal:integrate, goal:land, goal:stop, goal:uuid-audit.
+goal:integrate, goal:land, goal:viewer-publish, goal:viewer-recover, goal:stop,
+goal:uuid-audit.
 
 Commands are idempotent. JSON failures keep stdout empty and emit a stable error code on stderr.
 `;
@@ -53,7 +56,7 @@ export async function main(argv = process.argv.slice(2), io = process) {
 function parseArgs(argv) {
   if (argv.length === 0 || argv.includes("--help") || argv.includes("-h")) return { help: true, format: "human", dryRun: false };
   const command = argv[0];
-  const options = { command, configPath: null, format: "human", dryRun: false, slots: null, snapshotId: null, allowPartial: false, apply: false, help: false };
+  const options = { command, configPath: null, format: "human", dryRun: false, slots: null, snapshotId: null, allowPartial: false, apply: false, forceStaleLock: false, help: false };
   for (let index = 1; index < argv.length; index += 1) {
     const token = argv[index];
     if (token === "--dry-run") options.dryRun = true;
@@ -63,6 +66,7 @@ function parseArgs(argv) {
     else if (token === "--snapshot") options.snapshotId = requiredValue(argv, ++index, token);
     else if (token === "--allow-partial") options.allowPartial = true;
     else if (token === "--apply") options.apply = true;
+    else if (token === "--force-stale-lock") options.forceStaleLock = true;
     else throw new GoalHarnessError("GOAL_OPTION_UNKNOWN", `Unknown option: ${token}`);
   }
   if (!["human", "json"].includes(options.format)) throw new GoalHarnessError("GOAL_FORMAT_INVALID", `Invalid format: ${options.format}`);

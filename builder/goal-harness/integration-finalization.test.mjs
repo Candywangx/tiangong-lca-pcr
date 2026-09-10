@@ -108,3 +108,47 @@ test("one completion event atomically finalizes selected tasks and preserves con
     rmSync(stateDir, { recursive: true, force: true });
   }
 });
+
+
+test("repository rejection finalizes a completed build once and replays its atomic failure", () => {
+  const stateDir = mkdtempSync(path.join(tmpdir(), "goal-completion-rejection-"));
+  try {
+    const record = fixtureRecord();
+    const store = new GoalEventStore({ stateDir });
+    store.initialize({ goal_id: "fixture", tasks: record.prepared_tasks, snapshots: [record.prepared_snapshot] });
+    completion.persistIntegrationCompletion({ stateDir, record });
+    let resolutions = 0;
+    const resolveFinalization = (completed) => {
+      resolutions += 1;
+      return {
+        ...completed,
+        snapshot: { ...completed.snapshot, state: "retryable_failure", failure_code: "GOAL_REPOSITORY_CANDIDATE_STALE", failure_message: "Repository advanced." },
+        tasks: completed.prepared_tasks,
+      };
+    };
+    completion.finalizeIntegrationCompletion({ stateDir, record, resolveFinalization });
+    completion.finalizeIntegrationCompletion({ stateDir, record, resolveFinalization });
+    assert.equal(resolutions, 1);
+    assert.equal(store.readEvents().length, 1);
+    assert.equal(store.rebuild().snapshots[0].state, "retryable_failure");
+    assert.equal(store.rebuild().tasks[0].state, "integrating");
+    assert.equal(completion.readIntegrationCompletion({ stateDir, snapshotId: record.snapshot.id, operationId: record.operation_id }).snapshot.state, "validated");
+  } finally {
+    rmSync(stateDir, { recursive: true, force: true });
+  }
+});
+
+test("repository finalization cannot substitute completed build results", () => {
+  const stateDir = mkdtempSync(path.join(tmpdir(), "goal-completion-substitution-"));
+  try {
+    const record = fixtureRecord();
+    const store = new GoalEventStore({ stateDir });
+    store.initialize({ goal_id: "fixture", tasks: record.prepared_tasks, snapshots: [record.prepared_snapshot] });
+    assert.throws(() => completion.finalizeIntegrationCompletion({ stateDir, record, resolveFinalization: (completed) => ({
+      ...completed, snapshot: { ...completed.snapshot, changed_files: ["unrelated.txt"] },
+    }) }), (error) => error.code === "GOAL_INTEGRATION_COMPLETION_CORRUPT");
+    assert.equal(store.readEvents().length, 0);
+  } finally {
+    rmSync(stateDir, { recursive: true, force: true });
+  }
+});

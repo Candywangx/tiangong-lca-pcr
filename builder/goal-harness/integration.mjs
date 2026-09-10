@@ -11,8 +11,19 @@ import { withGoalLock } from "./lock.mjs";
 import { buildIntegrationSnapshot } from "./scheduler.mjs";
 import { applyTaskTransition } from "./state-machine.mjs";
 import { ensureGoalWorktree } from "./worktrees.mjs";
-import { runCachedViewerBuild } from "./derived-cache.mjs";
 import { selectGoalRuntimeBaseCommit } from "./runtime-baseline.mjs";
+import {
+  commitRepositoryValidation,
+  listCommittedRepositoryValidations,
+  projectRepositoryValidation,
+  recoverRepositoryCoordinator,
+  reserveRepositoryCandidate,
+  selectRepositoryIntegrationHead,
+} from "./repository-coordinator.mjs";
+import {
+  probeViewerArtifactStore,
+  publishAllPendingViewerSnapshots,
+} from "./viewer-publication.mjs";
 import { finalizeIntegrationCompletion, persistIntegrationCompletion, readIntegrationCompletion } from "./integration-completion.mjs";
 
 const MAPPING_RELATIONS = new Set(["exact", "broader", "narrower", "proxy"]);
@@ -71,7 +82,9 @@ function mappingEdgeIdentity(entry) {
 }
 
 export function selectIntegrationBaseCommit(state, { projectRoot = null } = {}) {
-  return selectGoalRuntimeBaseCommit(state, { projectRoot });
+  const goalBase = selectGoalRuntimeBaseCommit(state, { projectRoot });
+  if (!projectRoot) return goalBase;
+  return selectRepositoryIntegrationHead({ projectRoot, fallbackHead: goalBase });
 }
 
 export function materializeAuthorCommitTree({ worktreePath, authorCommit, allowedFiles }) {
@@ -114,107 +127,140 @@ export function prepareIntegrationWorkspace({ config, snapshot, baseCommit }) {
   return { worktreePath, branch, integrationAttempt, preservedWorktreePaths: [...new Set(preservedWorktreePaths)] };
 }
 
-export function integrateGoalSnapshot({ config, stateDir, snapshotId = null, allowPartial = false, dryRun = false, commandRunner = runCommand }) {
+export function integrateGoalSnapshot({
+  config,
+  stateDir,
+  snapshotId = null,
+  allowPartial = false,
+  dryRun = false,
+  commandRunner = runCommand,
+  artifactStoreProbe = probeViewerArtifactStore,
+  viewerPublisher = publishAllPendingViewerSnapshots,
+}) {
   return withGoalLock(path.join(stateDir, "integration-operation"), "integrate", () => {
     const prepared = withGoalLock(stateDir, "integration-prepare", () => {
-    const store = new GoalEventStore({ stateDir });
-    let state = store.rebuild();
-    let snapshot = selectSnapshot(state, snapshotId);
-    if (!snapshot && allowPartial) {
-      const candidate = buildIntegrationSnapshot({
-        goalId: config.goal_id,
-        tasks: state.tasks,
-        batchSize: config.integration_batch_size ?? 6,
-        snapshots: state.snapshots ?? [],
-        allowPartial: true,
-      });
-      if (candidate) {
-        snapshot = { ...candidate, state: "integration_pending", created_at: new Date().toISOString(), partial: candidate.task_ids.length < (config.integration_batch_size ?? 6) };
-        if (!dryRun) {
-          store.append({ event_id: `${snapshot.id}-created`, type: "snapshot_created", payload: snapshot });
-          for (const taskId of snapshot.task_ids) {
-            state = store.rebuild();
-            let task = state.tasks.find((entry) => entry.id === taskId);
-            task = applyTaskTransition(task, { transition_id: `${snapshot.id}-${taskId}-pending`, to: "integration_pending", at: new Date().toISOString() });
-            task = { ...task, integration_snapshot_id: snapshot.id };
-            store.append({ event_id: `${snapshot.id}-${taskId}-assigned`, type: "task_replaced", payload: { task } });
-          }
-          state = store.rebuild();
-          snapshot = state.snapshots.find((entry) => entry.id === snapshot.id);
+      const store = new GoalEventStore({ stateDir });
+      if (!dryRun) {
+        recoverRepositoryCoordinator({ projectRoot: config.project_root, repairGoalProjections: false });
+        for (const record of listCommittedRepositoryValidations({ projectRoot: config.project_root })) {
+          if (record.goal_id !== config.goal_id) continue;
+          const current = store.rebuild().snapshots.find((entry) => entry.id === record.harness_snapshot_id);
+          // The operation receipt owns selected-state CAS until its atomic finalization.
+          // Repository recovery must not project over that pre-state first.
+          if (current?.state === "integrating" && current.operation_id &&
+              readIntegrationCompletion({ stateDir, snapshotId: current.id, operationId: current.operation_id })) continue;
+          projectRepositoryValidation({ goalStateDir: stateDir, record });
         }
       }
-    }
-    if (!snapshot) {
-      throw new GoalHarnessError("GOAL_INTEGRATION_NOT_READY", "No pending six-result integration snapshot is available.", { allow_partial: allowPartial });
-    }
-    if (["validated", "landed"].includes(snapshot.state)) {
-      const expectedState = snapshot.state === "landed" ? "completed" : "validated";
-      const incomplete = snapshot.task_ids.filter((taskId) => state.tasks.find((task) => task.id === taskId)?.state !== expectedState);
-      if (incomplete.length > 0) {
-        throw new GoalHarnessError("GOAL_INTEGRATION_FINALIZATION_INCOMPLETE", "Snapshot and task completion states disagree; inspect legacy finalization evidence before landing or retrying.", { snapshot_id: snapshot.id, task_ids: incomplete });
+      let state = store.rebuild();
+      let snapshot = selectSnapshot(state, snapshotId);
+      if (!snapshot && allowPartial) {
+        const candidate = buildIntegrationSnapshot({
+          goalId: config.goal_id,
+          tasks: state.tasks,
+          batchSize: config.integration_batch_size ?? 6,
+          snapshots: state.snapshots ?? [],
+          allowPartial: true,
+        });
+        if (candidate) {
+          snapshot = { ...candidate, state: "integration_pending", created_at: new Date().toISOString(), partial: candidate.task_ids.length < (config.integration_batch_size ?? 6) };
+          if (!dryRun) {
+            store.append({ event_id: `${snapshot.id}-created`, type: "snapshot_created", payload: snapshot });
+            for (const taskId of snapshot.task_ids) {
+              state = store.rebuild();
+              let task = state.tasks.find((entry) => entry.id === taskId);
+              task = applyTaskTransition(task, { transition_id: `${snapshot.id}-${taskId}-pending`, to: "integration_pending", at: new Date().toISOString() });
+              task = { ...task, integration_snapshot_id: snapshot.id };
+              store.append({ event_id: `${snapshot.id}-${taskId}-assigned`, type: "task_replaced", payload: { task } });
+            }
+            state = store.rebuild();
+            snapshot = state.snapshots.find((entry) => entry.id === snapshot.id);
+          }
+        }
       }
-      return { snapshot, status: `already_${snapshot.state}`, next_action: snapshot.state === "validated" ? "Run goal:land for this validated snapshot." : "Continue the remaining Goal queue." };
-    }
-    if (!dryRun && snapshot.state === "integrating" && snapshot.operation_id) {
-      const completion = readIntegrationCompletion({ stateDir, snapshotId: snapshot.id, operationId: snapshot.operation_id });
-      if (completion) return { completion };
-    }
-    const tasks = snapshot.task_ids.map((taskId) => state.tasks.find((task) => task.id === taskId));
-    if (tasks.some((task) => !task)) {
-      throw new GoalHarnessError("GOAL_INTEGRATION_STATE_INVALID", `Snapshot ${snapshot.id} references a missing task.`);
-    }
-    const commandPlan = integrationCommands(config, tasks);
-    if (dryRun) {
-      return { snapshot, tasks: tasks.map(publicTask), commands: commandPlan, status: "dry_run", next_action: "Repeat goal:integrate without --dry-run." };
-    }
-    if (!config.integration?.decided_by) {
-      throw new GoalHarnessError("GOAL_MAPPING_DECIDER_REQUIRED", "integration.decided_by is required before accepted mapping publication.");
-    }
-    const prior = state.snapshots.find((entry) => entry.id !== snapshot.id && ["integrating", "validated"].includes(entry.state));
-    if (prior) throw new GoalHarnessError("GOAL_INTEGRATION_NOT_READY", `Finish and land prior snapshot ${prior.id} before starting another integration.`);
+      if (!snapshot) {
+        throw new GoalHarnessError("GOAL_INTEGRATION_NOT_READY", "No pending six-result integration snapshot is available.", { allow_partial: allowPartial });
+      }
+      if (["validated", "landed"].includes(snapshot.state)) {
+        const expectedState = snapshot.state === "landed" ? "completed" : "validated";
+        const incomplete = snapshot.task_ids.filter((taskId) => state.tasks.find((task) => task.id === taskId)?.state !== expectedState);
+        if (incomplete.length > 0) {
+          throw new GoalHarnessError("GOAL_INTEGRATION_FINALIZATION_INCOMPLETE", "Snapshot and task completion states disagree; inspect legacy finalization evidence before landing or retrying.", { snapshot_id: snapshot.id, task_ids: incomplete });
+        }
+        if (!dryRun && snapshot.state === "validated" && snapshot.repository_sequence && snapshot.viewer_publication !== "published") {
+          return { resumePublication: snapshot };
+        }
+        return { snapshot, status: `already_${snapshot.state}`, next_action: snapshot.state === "validated" ? "Run goal:land for this validated snapshot." : "Continue the remaining Goal queue." };
+      }
+      if (!dryRun && snapshot.state === "integrating" && snapshot.operation_id) {
+        const completion = readIntegrationCompletion({ stateDir, snapshotId: snapshot.id, operationId: snapshot.operation_id });
+        if (completion) return { completion };
+      }
+      const tasks = snapshot.task_ids.map((taskId) => state.tasks.find((task) => task.id === taskId));
+      if (tasks.some((task) => !task)) {
+        throw new GoalHarnessError("GOAL_INTEGRATION_STATE_INVALID", `Snapshot ${snapshot.id} references a missing task.`);
+      }
+      const commandPlan = integrationCommands(config, tasks);
+      if (dryRun) {
+        return { snapshot, tasks: tasks.map(publicTask), commands: commandPlan, status: "dry_run", next_action: "Repeat goal:integrate without --dry-run." };
+      }
+      if (!config.integration?.decided_by) {
+        throw new GoalHarnessError("GOAL_MAPPING_DECIDER_REQUIRED", "integration.decided_by is required before accepted mapping publication.");
+      }
+      artifactStoreProbe({ config });
+      const prior = state.snapshots.find((entry) => entry.id !== snapshot.id && ["integrating", "validated"].includes(entry.state));
+      if (prior) throw new GoalHarnessError("GOAL_INTEGRATION_NOT_READY", `Finish and land prior snapshot ${prior.id} before starting another integration.`);
 
-    const baseCommit = selectIntegrationBaseCommit(state, { projectRoot: config.project_root });
-    const workspace = prepareIntegrationWorkspace({ config, snapshot, baseCommit });
-    const { worktreePath, branch, integrationAttempt } = workspace;
+      const goalBase = selectGoalRuntimeBaseCommit(state, { projectRoot: config.project_root });
+      const candidate = reserveRepositoryCandidate({
+        projectRoot: config.project_root,
+        goalId: config.goal_id,
+        snapshotId: snapshot.id,
+        fallbackHead: goalBase,
+      });
+      const baseCommit = candidate.observed_integration_head;
+      const workspace = prepareIntegrationWorkspace({ config, snapshot, baseCommit });
+      const { worktreePath, branch, integrationAttempt } = workspace;
 
-    snapshot = {
-      ...snapshot,
-      state: "integrating",
-      worktree_path: worktreePath,
-      branch,
-      base_commit: baseCommit,
-      integration_attempt: integrationAttempt,
-      preserved_worktree_paths: workspace.preservedWorktreePaths,
-      started_at: snapshot.started_at ?? new Date().toISOString(),
-      last_attempt_started_at: new Date().toISOString(),
-      operation_id: randomUUID(),
-    };
-    store.append({ event_id: `${snapshot.operation_id}-integrating`, type: "snapshot_replaced", payload: { snapshot } });
-    for (const selected of tasks) {
+      snapshot = {
+        ...snapshot,
+        state: "integrating",
+        worktree_path: worktreePath,
+        branch,
+        base_commit: baseCommit,
+        repository_candidate_token: candidate.candidate_token,
+        observed_repository_head: candidate.observed_integration_head,
+        integration_attempt: integrationAttempt,
+        preserved_worktree_paths: workspace.preservedWorktreePaths,
+        started_at: snapshot.started_at ?? new Date().toISOString(),
+        last_attempt_started_at: new Date().toISOString(),
+        operation_id: randomUUID(),
+        changed_pcr_ids: tasks.map((entry) => entry.pcr_id).filter(Boolean).sort(),
+      };
+      store.append({ event_id: `${snapshot.operation_id}-integrating`, type: "snapshot_replaced", payload: { snapshot } });
+      for (const selected of tasks) {
+        state = store.rebuild();
+        let task = state.tasks.find((entry) => entry.id === selected.id);
+        if (task.state === "integration_pending") {
+          task = applyTaskTransition(task, { transition_id: `${snapshot.id}-${task.id}-integrating`, to: "integrating", at: new Date().toISOString() });
+          store.append({ event_id: `${snapshot.operation_id}-${task.id}-integration-started`, type: "task_replaced", payload: { task } });
+        }
+      }
       state = store.rebuild();
-      let task = state.tasks.find((entry) => entry.id === selected.id);
-      if (task.state === "integration_pending") {
-        task = applyTaskTransition(task, { transition_id: `${snapshot.id}-${task.id}-integrating`, to: "integrating", at: new Date().toISOString() });
-        store.append({ event_id: `${snapshot.operation_id}-${task.id}-integration-started`, type: "task_replaced", payload: { task } });
-      }
-    }
-    state = store.rebuild();
-    return { snapshot, tasks, preparedTasks: tasks.map((selected) => state.tasks.find((task) => task.id === selected.id)), commandPlan, worktreePath, baseCommit };
+      return { snapshot, tasks, preparedTasks: tasks.map((selected) => state.tasks.find((task) => task.id === selected.id)), commandPlan, worktreePath, baseCommit };
     });
+    if (prepared.resumePublication) return publishValidatedSnapshot({ config, stateDir, snapshot: prepared.resumePublication, viewerPublisher });
     if (prepared.completion) {
       verifyCompletionWorktree(prepared.completion);
-      finalizeIntegrationCompletion({ stateDir, record: prepared.completion });
-      if (prepared.completion.snapshot.state === "retryable_failure") {
-        throw new GoalHarnessError(prepared.completion.snapshot.failure_code, prepared.completion.snapshot.failure_message);
-      }
-      return { snapshot: prepared.completion.snapshot, status: "validated", command_results: prepared.completion.command_results, next_action: "Run goal:land after reviewing the recovered snapshot and CAS preview." };
+      const snapshot = finalizeRepositoryIntegration({ config, stateDir, record: prepared.completion });
+      return publishValidatedSnapshot({ config, stateDir, snapshot, viewerPublisher });
     }
     if (!prepared.worktreePath) return prepared;
     const { tasks, preparedTasks, commandPlan, worktreePath, baseCommit } = prepared;
     let { snapshot } = prepared;
 
     const headBefore = git(worktreePath, ["rev-parse", "HEAD"]);
-    if (!snapshot.integration_commit && headBefore === baseCommit && gitStatus(worktreePath).length === 0) {
+    if (headBefore === baseCommit && gitStatus(worktreePath).length === 0) {
       for (const selected of tasks) {
         materializeAuthorCommitTree({
           worktreePath,
@@ -228,9 +274,7 @@ export function integrateGoalSnapshot({ config, stateDir, snapshotId = null, all
     try {
       for (const command of commandPlan) {
         const execute = () => commandRunner({ cwd: worktreePath, command: command.command, args: command.args, name: command.name });
-        commandResults.push(command.name === "viewer_build"
-          ? runCachedViewerBuild({ root: worktreePath, stateDir, runner: execute })
-          : execute());
+        commandResults.push(execute());
       }
     } catch (error) {
       snapshot = { ...snapshot, state: "retryable_failure", failure_code: error.code ?? "GOAL_INTEGRATION_COMMAND_FAILED", failure_message: error.message, command_results: commandResults };
@@ -249,7 +293,7 @@ export function integrateGoalSnapshot({ config, stateDir, snapshotId = null, all
     }
     const integrationCommit = git(worktreePath, ["rev-parse", "HEAD"]);
     const integratedFiles = gitZ(worktreePath, ["diff", "--name-only", "-z", baseCommit, integrationCommit, "--"]);
-    snapshot = {
+    const validationProjection = {
       ...snapshot,
       state: "validated",
       integration_commit: integrationCommit,
@@ -257,6 +301,7 @@ export function integrateGoalSnapshot({ config, stateDir, snapshotId = null, all
       decision_ref: decision.decision_ref,
       accepted_codes: decision.additions.map((entry) => entry.code),
       command_results: commandResults,
+      changed_pcr_ids: tasks.map((entry) => entry.pcr_id).filter(Boolean).sort(),
       validated_at: new Date().toISOString(),
     };
     const finalizedTasks = preparedTasks.map((selected) => {
@@ -268,11 +313,61 @@ export function integrateGoalSnapshot({ config, stateDir, snapshotId = null, all
       }
       return task;
     });
-    const record = completionRecord({ config, prepared, snapshot, tasks: finalizedTasks, commandResults });
+    const record = completionRecord({ config, prepared, snapshot: validationProjection, tasks: finalizedTasks, commandResults });
     persistIntegrationCompletion({ stateDir, record });
-    finalizeIntegrationCompletion({ stateDir, record });
-    return { snapshot, status: "validated", command_results: commandResults, next_action: "Run goal:land after reviewing the validated snapshot and CAS preview." };
+    snapshot = finalizeRepositoryIntegration({ config, stateDir, record });
+    return publishValidatedSnapshot({ config, stateDir, snapshot, viewerPublisher });
   });
+}
+
+function finalizeRepositoryIntegration({ config, stateDir, record }) {
+  const state = finalizeIntegrationCompletion({
+    stateDir,
+    record,
+    resolveFinalization(completed) {
+      if (completed.snapshot.state !== "validated") return completed;
+      try {
+        commitRepositoryValidation({
+          projectRoot: config.project_root,
+          candidateToken: completed.prepared_snapshot.repository_candidate_token,
+          integrationCommit: completed.snapshot.integration_commit,
+          snapshotProjection: completed.snapshot,
+        });
+      } catch (error) {
+        // A stale candidate was rejected before repository mutation. Other errors
+        // retain the successful receipt for coordinator recovery and retry.
+        if (error.code !== "GOAL_REPOSITORY_CANDIDATE_STALE") throw error;
+        return {
+          ...completed,
+          snapshot: { ...completed.snapshot, state: "retryable_failure", failure_code: error.code, failure_message: error.message },
+          tasks: completed.prepared_tasks,
+        };
+      }
+      return completed;
+    },
+  });
+  const snapshot = state.snapshots.find((entry) => entry.id === record.snapshot.id);
+  if (snapshot.state === "retryable_failure") throw new GoalHarnessError(snapshot.failure_code, snapshot.failure_message);
+  return withGoalLock(stateDir, "integration-project-repository", () => {
+    const validation = listCommittedRepositoryValidations({ projectRoot: config.project_root })
+      .find((entry) => entry.candidate_token === record.prepared_snapshot.repository_candidate_token);
+    projectRepositoryValidation({ goalStateDir: stateDir, record: validation });
+    return new GoalEventStore({ stateDir }).rebuild().snapshots.find((entry) => entry.id === snapshot.id);
+  });
+}
+
+function publishValidatedSnapshot({ config, stateDir, snapshot, viewerPublisher }) {
+  try {
+    viewerPublisher({ config, snapshotId: snapshot.id });
+  } catch (error) {
+    throw new GoalHarnessError(
+      "GOAL_VIEWER_PUBLICATION_FAILED",
+      `Repository validation is durable, but Viewer publication remains pending: ${error.message}`,
+      { cause_code: error.code ?? null, snapshot_id: snapshot.id, repository_sequence: snapshot.repository_sequence },
+    );
+  }
+  snapshot = new GoalEventStore({ stateDir }).rebuild().snapshots.find((entry) => entry.id === snapshot.id);
+  return { snapshot, status: "validated", command_results: snapshot.command_results, next_action: "Run goal:land after reviewing the validated and published Viewer snapshot and CAS preview." };
 }
 
 function completionRecord({ config, prepared, snapshot, tasks, commandResults }) {
@@ -359,7 +454,7 @@ function integrationCommands(config, tasks) {
   return [
     { name: "aliases_build", command: "npm", args: ["run", "aliases:build"] },
     { name: "catalog_build", command: "npm", args: ["run", "catalog:build"] },
-    { name: "viewer_build", command: "npm", args: ["run", "viewer:build"] },
+    { name: "viewer_candidate_check", command: "node", args: ["packages/pcr-viewer/scripts/build-viewer-data.mjs", "candidate", ...tasks.flatMap((task) => ["--pcr", task.pcr_id]), "--format", "json"] },
     { name: "validate", command: "npm", args: ["run", "validate"] },
     { name: "smoke_list", command: "npm", args: ["--silent", "run", "tiangong-pcr", "--", "list", "--path-prefix", prefix, "--format", "json"] },
     { name: "smoke_resolve", command: "npm", args: ["--silent", "run", "tiangong-pcr", "--", "resolve", "--classification", `${config.classification_system}:${config.classification_version}:${selected.cpc_code}`, "--format", "json"] },
@@ -385,7 +480,8 @@ function runCommand({ cwd, command, args, name }) {
 
 function selectSnapshot(state, snapshotId) {
   if (snapshotId) return state.snapshots.find((snapshot) => snapshot.id === snapshotId) ?? null;
-  return state.snapshots.find((snapshot) => ["integration_pending", "integrating", "retryable_failure"].includes(snapshot.state)) ?? null;
+  return state.snapshots.find((snapshot) => ["integration_pending", "integrating", "retryable_failure"].includes(snapshot.state)) ??
+    state.snapshots.find((snapshot) => snapshot.state === "validated" && snapshot.repository_sequence && snapshot.viewer_publication !== "published") ?? null;
 }
 
 function allocateDecisionRef(root, goalId, snapshotId) {

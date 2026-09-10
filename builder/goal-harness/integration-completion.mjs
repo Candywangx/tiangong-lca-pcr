@@ -55,14 +55,17 @@ export function readIntegrationCompletion({ stateDir, snapshotId, operationId })
   }
 }
 
-export function finalizeIntegrationCompletion({ stateDir, record }) {
+export function finalizeIntegrationCompletion({ stateDir, record, resolveFinalization = (completed) => completed }) {
   assertRecord(record);
   return withGoalLock(stateDir, "integration-finalize", () => {
     const store = new GoalEventStore({ stateDir });
-    const event = { event_id: `${record.operation_id}-finalized`, type: "integration_finalized", payload: { snapshot: record.snapshot, tasks: record.tasks } };
-    // Reconcile a durable completion before testing its now-obsolete pre-state.
-    if (store.readEvents().some((entry) => entry.event_id === event.event_id)) {
-      store.append(event);
+    const eventId = `${record.operation_id}-finalized`;
+    // A repository CAS can reject a completed build as stale. Its atomic failure
+    // event is authoritative on replay; do not repeat the repository side effect.
+    const existing = store.readEvents().find((entry) => entry.event_id === eventId);
+    if (existing) {
+      if (existing.type !== "integration_finalized") throw corrupt("Completion event identity was reused.");
+      assertFinalizationOutcome(record, { ...record, snapshot: existing.payload.snapshot, tasks: existing.payload.tasks });
       return store.rebuild();
     }
     const state = store.rebuild();
@@ -71,9 +74,32 @@ export function finalizeIntegrationCompletion({ stateDir, record }) {
     if (state.goal_id !== record.goal_id || !isDeepStrictEqual(snapshot, record.prepared_snapshot) || !isDeepStrictEqual(tasks, record.prepared_tasks)) {
       throw new GoalHarnessError("GOAL_INTEGRATION_STATE_CONFLICT", "Selected snapshot or author tasks changed during integration; completion was preserved without overwriting state.");
     }
-    store.append(event);
+    // External acceptance happens only after selected-state CAS, while the short
+    // Goal lock still prevents either selected record from changing.
+    const finalized = resolveFinalization(record);
+    assertFinalizationOutcome(record, finalized);
+    store.append({ event_id: eventId, type: "integration_finalized", payload: { snapshot: finalized.snapshot, tasks: finalized.tasks } });
     return store.rebuild();
   });
+}
+
+function assertFinalizationOutcome(record, finalized) {
+  assertRecord(finalized);
+  if (isDeepStrictEqual(record, finalized)) return;
+  const rejected = {
+    ...record,
+    snapshot: {
+      ...record.snapshot,
+      state: "retryable_failure",
+      failure_code: finalized.snapshot.failure_code,
+      failure_message: finalized.snapshot.failure_message,
+    },
+    tasks: record.prepared_tasks,
+  };
+  if (record.snapshot.state !== "validated" || typeof rejected.snapshot.failure_code !== "string" ||
+      typeof rejected.snapshot.failure_message !== "string" || !isDeepStrictEqual(finalized, rejected)) {
+    throw corrupt("Finalization changed the completed operation instead of accepting or rejecting it.");
+  }
 }
 
 function completionPath(stateDir, snapshotId, operationId) {
