@@ -1,10 +1,1692 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "24320"
-  title: "Malt, whether or not roasted"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.beverages.malt-whether-or-not-roasted"
+  classification_refs: "CPC 3.0: 24320 Malt, whether or not roasted (exact)"
+  covered_products: "Dried cereal malt and roasted cereal malt; pale, coloured, crystal/caramel, smoked, and specialty malt when made by controlled cereal germination and declared thermal treatment"
+  excluded_products: "Unmalted roasted grain; malt extract, malt syrup, maltose syrup, malt flour, beer, spirits, prepared foods, cereal cultivation, and generic malting services"
+  representative_product: "Cereal malt, dried or roasted, at the maltings dispatch gate"
+  production_route: "Declared cereal receipt and cleaning; steeping; germination; kilning or declared direct-roasting route; conditional roasting/smoking; cooling, deculming, blending, storage, and dispatch"
+  market_state: "Dry, food- or brewing-grade whole-kernel malt, bulk or packaged, with cereal species, malt style, colour, moisture, treatment route, and dispatch form declared"
+functional_unit:
+  what: "Provision of dry cereal malt, whether ordinarily kilned or roasted, at the maltings dispatch gate"
+  how_much: "1,000 kg net saleable malt, excluding packaging"
+  how_well: "Meets the declared cereal identity, malt style, moisture, colour, extract or intended-use specification, food-safety release criteria, and packaging integrity"
+  how_long_or_cycle: "One completed production lot through release; storage duration and shelf life are declared qualifiers"
+  reference_flow_link: "cereal_malt_dried_or_roasted_at_maltings_gate"
+system_boundary:
+  rules:
+    - rule_id: boundary_complete_malting
+      applies_to: "maltings_foreground"
+      rule: "Include cleaning and grading, steeping, germination, kilning or declared alternative thermal route, conditional roasting, cooling, deculming, storage/blending, dispatch preparation, sanitation, utilities, residues, wastewater, and direct emissions."
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+        - evans-malting-efficiency-2024
+    - rule_id: boundary_roasted_route
+      applies_to: "roasted_and_crystal_malt"
+      rule: "Declare whether the roaster receives green malt or previously kilned malt and include the actual saccharification, roasting, cooling, aspiration, and emission-control operations."
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+        - prado-specialty-malts-2021
+    - rule_id: boundary_food_hygiene
+      applies_to: "food_contact_operations"
+      rule: "Apply documented good hygiene practices and hazard-based controls to grain receipt, process water, sanitation, pest control, storage, and product release."
+      source_ids:
+        - fao-who-cxc-1-1969
+    - rule_id: boundary_upstream_downstream
+      applies_to: "lifecycle_model"
+      rule: "Keep cultivation and incoming transport upstream and brewing, distilling, further food processing, distribution, use, and end of life downstream; connect them only when the study expands beyond the maltings gate."
+      source_ids:
+        - unsd-cpc-v3-2025
+        - eu-pef-method-2021
+boundary_abstraction:
+  declared_starting_condition: "Food- or brewing-grade cereal grain received at the maltings gate, with species, variety, crop year, origin, moisture, and upstream coverage declared"
+  starting_condition_role: "Foreground entry point for grain cleaning, steeping, germination, thermal treatment, finishing, and dispatch"
+  product_classification_scope: "Dry cereal malt whether ordinarily kilned or roasted; excludes unmalted roasted grain and further-processed malt extracts, syrups, flours, beverages, and foods"
+  recursive_input_rule: "Purchased green, kilned, or roasted malt used for further treatment is recorded once as an upstream product input and is not recursively reconstructed inside the receiving process."
+  upstream_dataset_requirement: "Link each cereal species, electricity supply, steam, purchased heat, fuel, refrigerant, chemical, packaging material, inbound transport, and off-site treatment service to a representative upstream dataset."
+  disclosure: "Declare cereal and malt style, starting grain state, route, thermal profiles, site and period, utilities, cleaning chemicals, refrigerants, co-products, wastes, wastewater destination, direct emissions, packaging, allocation, and outsourced steps."
+reference_flow_definition:
+  reference_amount: "1,000 kg net product"
+  product_flow_ref:
+    name: "Cereal malt, dried or roasted"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "cereal species and variety"
+    - "grain origin and crop year"
+    - ordinary-kilned
+    - "crystal/caramel"
+    - roasted
+    - "or smoked route"
+    - "steeping and germination conditions"
+    - "kilning and roasting time-temperature-moisture profile"
+    - "finished moisture and colour"
+    - "extract or intended-use specification where applicable"
+    - "rootlet and screening destination"
+    - "bulk or packaging configuration"
+    - geography
+    - technology
+    - "data period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference malt and mass-normalised exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalise to 1,000 kg net released malt; exclude packaging and keep input grain, intermediate green malt, rootlets, screenings, dust, and losses on separately measured as-received and dry-matter bases."
+  - id: malt_moisture_basis
+    applies_to: "Grain and malt mass balance"
+    required_property_ref:
+      name: "Mass and moisture fraction"
+      uuid: ""
+    required_unit: "kg and %"
+    rule: "Retain as-received mass and measured moisture for incoming grain, green malt, kilned/roasted malt, and saleable output; use the malt-specific moisture method declared by the producer."
+  - id: water_separation
+    applies_to: "Steeping, germination spray, cleaning, and utility water"
+    required_property_ref:
+      name: "Mass or volume"
+      uuid: ""
+    required_unit: "kg or m3"
+    rule: "Meter each use separately; preserve raw volume and density assumptions when converted to mass."
+  - id: energy_separation
+    applies_to: "Electricity, steam, purchased heat, and fuels"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Keep electricity, steam, purchased heat, natural gas, gas oil, and fuel oil as separate exchanges; retain lower- or higher-heating-value basis and conversion factors."
+  - id: refrigerant_mass
+    applies_to: "Each refrigerant charge and loss"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record each refrigerant separately by chemical identity; calculate atmospheric loss from stock reconciliation and service records."
+  - id: packaging_mass
+    applies_to: "Each packaging component"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record paper, polyethylene, polypropylene, corrugated board, stretch film, and wood pallets as separate placed-on-market masses."
+  - id: wastewater_load
+    applies_to: "Each direct water emission"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Calculate COD, total nitrogen, total phosphorus, and total suspended solids separately from matched discharge volume and concentration records."
+process_map:
+  - id: base_malt_production
+    name: "Grain receiving, cleaning, steeping, germination, and drying"
+    inclusion: "required"
+    inclusion_condition: "All products; direct-roasted crystal malt declares that roasting replaces final kilning"
+    role: "Converts declared cereal grain into stable base or green malt"
+    quantitative_reference: "1,000 kg net saleable malt"
+  - id: roasting
+    name: "Roasting, caramelisation, or smoking"
+    inclusion: "conditional"
+    inclusion_condition: "Included for roasted, crystal/caramel, coloured, or smoked malt"
+    role: "Produces declared specialty colour and flavour"
+    quantitative_reference: "1,000 kg net saleable malt"
+  - id: finishing_dispatch
+    name: "Cooling, deculming, blending, storage, packing, and dispatch"
+    inclusion: "required"
+    inclusion_condition: "All products; packaging cards apply only to actual dispatch configuration"
+    role: "Produces released bulk or packaged malt"
+    quantitative_reference: "1,000 kg net saleable malt"
+  - id: sanitation_wastewater
+    name: "Cleaning, disinfection, and wastewater handling"
+    inclusion: "required"
+    inclusion_condition: "Include attributable operations and allocate shared systems transparently"
+    role: "Records sanitation resources and treatment outputs"
+    quantitative_reference: "1,000 kg net saleable malt"
+process_inventory:
+  - id: base_malt_production
+    label: "Grain receiving, cleaning, steeping, germination, and drying"
+    inputs:
+      product:
+        - row_id: barley_grain_input
+          role: "Barley grain"
+          name: "Barley grain"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Barley grain is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Net accepted barley mass from calibrated receiving scales"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - evans-malting-efficiency-2024
+            ranges: []
+        - row_id: wheat_grain_input
+          role: "Wheat grain"
+          name: "Wheat grain"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Wheat grain is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Net accepted wheat mass from calibrated receiving scales"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - bauer-malting-parameters-2022
+            ranges: []
+        - row_id: rye_grain_input
+          role: "Rye grain"
+          name: "Rye grain"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Rye grain is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Net accepted rye mass from calibrated receiving scales"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: oat_grain_input
+          role: "Oat grain"
+          name: "Oat grain"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Oat grain is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Net accepted oat mass from calibrated receiving scales"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: sorghum_grain_input
+          role: "Sorghum grain"
+          name: "Sorghum grain"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sorghum grain is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Net accepted sorghum mass from calibrated receiving scales"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: steeping_water
+          role: "Steeping water"
+          name: "Potable process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Steeping water is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Metered water charged to wet steeps and germination sprays"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - evans-malting-efficiency-2024
+            ranges: []
+        - row_id: base_malt_electricity
+          role: "Electricity for the malting line"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for the malting line is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Metered or sub-metered electricity for handling, aeration, turning, pumps, fans, controls, and refrigeration"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - evans-malting-efficiency-2024
+            ranges: []
+        - row_id: kilning_steam
+          role: "Purchased steam for kilning"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased steam for kilning is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Metered purchased steam delivered to kiln heat exchangers"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: kilning_purchased_heat
+          role: "Purchased heat for kilning"
+          name: "Purchased heat"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased heat for kilning is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Metered non-steam heat delivered to the kiln"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: kilning_natural_gas
+          role: "Natural gas combusted for kilning"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas combusted for kilning is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Metered natural gas on the declared heating-value basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - evans-malting-efficiency-2024
+            ranges: []
+        - row_id: kilning_gas_oil
+          role: "Gas oil combusted for kilning"
+          name: "Gas oil"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Gas oil combusted for kilning is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Metered gas-oil use on the declared heating-value basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: kilning_fuel_oil
+          role: "Fuel oil combusted for kilning"
+          name: "Fuel oil"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Fuel oil combusted for kilning is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Metered fuel-oil use on the declared heating-value basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: ammonia_makeup
+          role: "Ammonia refrigerant makeup"
+          name: "Ammonia"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Ammonia refrigerant makeup is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Makeup mass assigned from refrigeration service and stock records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+        - row_id: r134a_makeup
+          role: "Refrigerant R134a makeup"
+          name: "Refrigerant R134a"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Refrigerant R134a makeup is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Makeup mass assigned from refrigeration service and stock records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+        - row_id: r404a_makeup
+          role: "Refrigerant R404A makeup"
+          name: "Refrigerant R404A"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Refrigerant R404A makeup is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Makeup mass assigned from refrigeration service and stock records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: base_malt_output
+          role: "Kilned or green malt transferred"
+          name: "Cereal malt, declared intermediate state"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Kilned or green malt transferred is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Measured transfer mass with moisture and route state recorded"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - evans-malting-efficiency-2024
+            ranges: []
+      waste:
+        - row_id: cereal_screenings
+          role: "Cereal screenings"
+          name: "Cereal screenings"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Cereal screenings is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Measured screenings mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: collected_cereal_dust
+          role: "Collected cereal dust"
+          name: "Cereal dust waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Collected cereal dust is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Measured dust removed from aspiration and filtration equipment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: spent_steep_water
+          role: "Spent steep water"
+          name: "Malting steep wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Spent steep water is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Metered discharge to the declared treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - evans-malting-efficiency-2024
+            ranges: []
+      elementary:
+        - row_id: kiln_fossil_co2
+          role: "Fossil carbon dioxide from kiln combustion"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide from kiln combustion is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Calculate separately for each fuel from measured use and an approved factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: germination_biogenic_co2
+          role: "Biogenic carbon dioxide from germination"
+          name: "Carbon dioxide, biogenic, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Biogenic carbon dioxide from germination is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Measured or carbon-mass-balance estimate of grain respiration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - evans-malting-efficiency-2024
+            ranges: []
+        - row_id: kiln_nox
+          role: "Nitrogen oxides from kiln combustion"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Nitrogen oxides from kiln combustion is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Stack measurement or fuel-specific calculation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: kiln_so2
+          role: "Sulfur dioxide from kiln combustion"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide from kiln combustion is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Stack measurement or sulfur-content calculation for the actual fuel"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: base_malt_pm
+          role: "Particulate matter from handling and kilning"
+          name: "Particulate matter to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Particulate matter from handling and kilning is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Measured channelled and estimated fugitive particulate mass after controls"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: base_malt_nmvoc
+          role: "Non-methane volatile organic compounds from germination and kilning"
+          name: "Non-methane volatile organic compounds to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Non-methane volatile organic compounds from germination and kilning is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Measured channelled mass or documented estimate for included vents"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: ammonia_to_air
+          role: "Ammonia refrigerant released to air"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Ammonia refrigerant released to air is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Refrigerant loss from stock reconciliation"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+        - row_id: r134a_to_air
+          role: "Refrigerant R134a released to air"
+          name: "Refrigerant R134a to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Refrigerant R134a released to air is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Refrigerant loss from stock reconciliation"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+        - row_id: r404a_to_air
+          role: "Refrigerant R404A released to air"
+          name: "Refrigerant R404A to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Refrigerant R404A released to air is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Refrigerant loss from stock reconciliation"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+  - id: roasting
+    label: "Roasting, caramelisation, or smoking"
+    inputs:
+      product:
+        - row_id: green_malt_to_roaster
+          role: "Green malt for crystal-malt roasting"
+          name: "Green cereal malt"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Green malt for crystal-malt roasting is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Measured green-malt charge with moisture recorded"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_roasting_batch_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - prado-specialty-malts-2021
+            ranges: []
+        - row_id: kilned_malt_to_roaster
+          role: "Kilned malt for dry roasting"
+          name: "Kilned cereal malt"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Kilned malt for dry roasting is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Measured kilned-malt charge with moisture recorded"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_roasting_batch_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - prado-specialty-malts-2021
+            ranges: []
+        - row_id: roasting_electricity
+          role: "Electricity for roasting"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for roasting is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Metered electricity for roaster drives, fans, aspiration, and cooling"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: roasting_natural_gas
+          role: "Natural gas combusted for roasting"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas combusted for roasting is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Metered natural gas on the declared heating-value basis"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - prado-specialty-malts-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: roasted_malt_output
+          role: "Roasted malt"
+          name: "Roasted cereal malt"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Roasted malt is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Measured cooled output with moisture, colour, and roast profile recorded"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_roasting_batch_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - prado-specialty-malts-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: roasting_fossil_co2
+          role: "Fossil carbon dioxide from roasting"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide from roasting is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Calculate from measured roasting fuel by fuel type"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: roasting_pm
+          role: "Particulate matter from roasting"
+          name: "Particulate matter to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Particulate matter from roasting is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Measured or calculated discharge after aspiration controls"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: roasting_nmvoc
+          role: "Non-methane volatile organic compounds from roasting"
+          name: "Non-methane volatile organic compounds to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Non-methane volatile organic compounds from roasting is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Measured channelled discharge or documented estimate"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - prado-specialty-malts-2021
+            ranges: []
+  - id: finishing_dispatch
+    label: "Cooling, deculming, blending, storage, packing, and dispatch"
+    inputs:
+      product:
+        - row_id: finishing_electricity
+          role: "Electricity for finishing and dispatch"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for finishing and dispatch is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Metered electricity for cooling, deculming, conveying, blending, storage ventilation, and packing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - evans-malting-efficiency-2024
+            ranges: []
+        - row_id: paper_sack
+          role: "Paper sack"
+          name: "Paper sack"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Paper sack is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Placed-on-market paper-sack mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: polyethylene_liner
+          role: "Polyethylene liner"
+          name: "Polyethylene liner"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Polyethylene liner is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Placed-on-market liner mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: polypropylene_fibc
+          role: "Polypropylene flexible intermediate bulk container"
+          name: "Polypropylene flexible intermediate bulk container"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Polypropylene flexible intermediate bulk container is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Placed-on-market FIBC mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_cardboard
+          role: "Corrugated cardboard"
+          name: "Corrugated cardboard"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Corrugated cardboard is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Placed-on-market corrugated-board mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: polyethylene_stretch_film
+          role: "Polyethylene stretch film"
+          name: "Polyethylene stretch film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Polyethylene stretch film is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Placed-on-market stretch-film mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: wood_pallet
+          role: "Wood pallet"
+          name: "Wood pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Wood pallet is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Net new or loss-replacement pallet mass assigned to dispatched malt"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: saleable_malt
+          role: "Saleable cereal malt"
+          name: "Cereal malt, dried or roasted"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Saleable cereal malt is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "1,000 kg released net malt after rootlet removal, dust and reject losses"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - mass-balance-identity
+            ranges: []
+        - row_id: malt_rootlets
+          role: "Malt rootlets sold as feed material"
+          name: "Malt rootlets"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Malt rootlets sold as feed material is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Measured rootlet mass by destination; classify as co-product only when transferred for beneficial use"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - habschied-malting-byproducts-2020
+            ranges: []
+      waste:
+        - row_id: off_spec_malt
+          role: "Off-specification malt"
+          name: "Off-specification cereal malt waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Off-specification malt is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Measured rejected malt mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids: []
+            ranges: []
+        - row_id: collected_malt_dust
+          role: "Collected malt dust"
+          name: "Malt dust waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Collected malt dust is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Measured dust removed during deculming, conveying, blending, and packing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - evans-malting-efficiency-2024
+            ranges: []
+      elementary:
+        - row_id: finishing_pm
+          role: "Particulate matter from finishing"
+          name: "Particulate matter to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Particulate matter from finishing is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Measured channelled and estimated fugitive mass after dust controls"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+  - id: sanitation_wastewater
+    label: "Cleaning, disinfection, and wastewater handling"
+    inputs:
+      product:
+        - row_id: sanitation_water
+          role: "Sanitation water"
+          name: "Potable process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sanitation water is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Metered water used for cleaning and disinfection"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - fao-who-cxc-1-1969
+            ranges: []
+        - row_id: sodium_hydroxide_cleaner
+          role: "Sodium hydroxide cleaner"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sodium hydroxide cleaner is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Active sodium-hydroxide mass from issued formulation and concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chemical_records
+              source_ids:
+                - fao-who-cxc-1-1969
+            ranges: []
+        - row_id: nitric_acid_cleaner
+          role: "Nitric acid cleaner"
+          name: "Nitric acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Nitric acid cleaner is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Active nitric-acid mass from issued formulation and concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chemical_records
+              source_ids:
+                - fao-who-cxc-1-1969
+            ranges: []
+        - row_id: peracetic_acid_disinfectant
+          role: "Peracetic acid disinfectant"
+          name: "Peracetic acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Peracetic acid disinfectant is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Active peracetic-acid mass from issued formulation and concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chemical_records
+              source_ids:
+                - fao-who-cxc-1-1969
+            ranges: []
+        - row_id: sodium_hypochlorite_disinfectant
+          role: "Sodium hypochlorite disinfectant"
+          name: "Sodium hypochlorite"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sodium hypochlorite disinfectant is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Active sodium-hypochlorite mass from issued formulation and concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chemical_records
+              source_ids:
+                - fao-who-cxc-1-1969
+            ranges: []
+        - row_id: wastewater_electricity
+          role: "Electricity for wastewater treatment"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for wastewater treatment is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Metered or allocated electricity for attributable treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: maltings_wastewater
+          role: "Maltings wastewater"
+          name: "Maltings wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Maltings wastewater is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Metered wastewater sent to the declared treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: wastewater_sludge
+          role: "Wastewater treatment sludge"
+          name: "Wastewater treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Wastewater treatment sludge is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Measured wet and dry sludge mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: chemical_container_waste
+          role: "Empty chemical container waste"
+          name: "Empty chemical container waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Empty chemical container waste is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Measured discarded container mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids:
+                - fao-who-cxc-1-1969
+            ranges: []
+      elementary:
+        - row_id: cod_to_water
+          role: "Chemical oxygen demand to water"
+          name: "Chemical oxygen demand to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Chemical oxygen demand to water is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Matched discharge volume multiplied by COD concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: total_nitrogen_to_water
+          role: "Total nitrogen to water"
+          name: "Total nitrogen to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Total nitrogen to water is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Matched discharge volume multiplied by total-nitrogen concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: total_phosphorus_to_water
+          role: "Total phosphorus to water"
+          name: "Total phosphorus to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Total phosphorus to water is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Matched discharge volume multiplied by total-phosphorus concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: tss_to_water
+          role: "Total suspended solids to water"
+          name: "Total suspended solids to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Total suspended solids to water is recorded as a separate atomic exchange at this process boundary; determine its quantity with the rule below."
+          amount:
+            expression: "Matched discharge volume multiplied by total-suspended-solids concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable malt"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "process_subdivision"
+    rule: "Avoid allocation by sub-metering route-specific batches, utilities, roasting, packaging, wastewater, and emissions."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_rootlets
+    applies_to: "rootlets_and_screenings"
+    rule: "Treat rootlets or screenings as co-products only when they leave for a documented beneficial use; first apply system expansion or a justified subdivision. If allocation remains, use a disclosed physical dry-mass relationship when it reflects causality; otherwise use economic allocation with period-matched prices and sensitivity analysis."
+    source_ids:
+      - eu-pef-method-2021
+      - habschied-malting-byproducts-2020
+  - rule_id: allocation_waste
+    applies_to: "wastes_and_treatment"
+    rule: "Do not allocate burdens to discarded dust, sludge, off-spec malt, or wastewater; assign collection and treatment burdens to malt production until the waste or recovery system boundary is reached."
+    source_ids:
+      - eu-pef-method-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass_balance
+      process_id: "base_malt_production_finishing_dispatch"
+      flow_role: "cereal inputs, intermediate malt, saleable malt"
+      record_type: "weighbridge, batch and laboratory records"
+      raw_fields: "species; variety; lot; wet mass; moisture; transfer/output mass; rejects"
+      collection_method: "calibrated scales and malt-specific moisture test"
+      unit: "kg; %"
+      frequency: "each lot/batch"
+      temporal_coverage: "representative 12 months or full campaign"
+      site_scope: "all included lines"
+      aggregation_rule: "moisture-correct only when dry-matter comparison is required; normalise to released malt"
+      quality_evidence: "calibration, laboratory method, reconciliation"
+    - protocol_id: cp_route_conditions
+      process_id: "base_malt_production_roasting"
+      flow_role: "steeping, germination, kilning, roasting"
+      record_type: "control-system historian and batch sheet"
+      raw_fields: "wet/dry periods; temperature; grain moisture; airflow; duration; kiln/roast profile; colour"
+      collection_method: "direct sensors and batch records"
+      unit: "h; °C; %; airflow unit"
+      frequency: "continuous plus batch release"
+      temporal_coverage: "every represented batch"
+      site_scope: "each vessel/kiln/roaster"
+      aggregation_rule: "retain profiles and mass-weight batches"
+      quality_evidence: "sensor calibration, release record"
+    - protocol_id: cp_water_records
+      process_id: "all"
+      flow_role: "steeping and sanitation water"
+      record_type: "meter and batch ticket"
+      raw_fields: "meter start/end; purpose; batch; reuse; discharge"
+      collection_method: "calibrated sub-meter or batch measurement"
+      unit: "kg or m3"
+      frequency: "each batch/daily"
+      temporal_coverage: "representative period"
+      site_scope: "each use area"
+      aggregation_rule: "sum by purpose; do not net reused water without both transfers"
+      quality_evidence: "meter calibration and water-quality record"
+    - protocol_id: cp_energy_records
+      process_id: "all"
+      flow_role: "electricity, steam, purchased heat"
+      record_type: "utility meters and invoices"
+      raw_fields: "carrier; meter; quantity; unit; pressure/temperature for steam/heat"
+      collection_method: "calibrated meter and invoice reconciliation"
+      unit: "kWh or MJ"
+      frequency: "continuous/monthly"
+      temporal_coverage: "representative period"
+      site_scope: "all included equipment"
+      aggregation_rule: "allocate shared use by defensible operating driver"
+      quality_evidence: "meter checks and invoice reconciliation"
+    - protocol_id: cp_fuel_records
+      process_id: "base_malt_production_roasting"
+      flow_role: "each fuel"
+      record_type: "meter, tank and invoice"
+      raw_fields: "fuel identity; quantity; density; heating-value basis; batch/period"
+      collection_method: "calibrated meter or stock balance"
+      unit: "kg, m3, MJ"
+      frequency: "daily/monthly"
+      temporal_coverage: "representative period"
+      site_scope: "each combustion unit"
+      aggregation_rule: "convert each fuel separately to MJ"
+      quality_evidence: "invoice, stock and heating-value evidence"
+    - protocol_id: cp_refrigerant_records
+      process_id: "base_malt_production"
+      flow_role: "each refrigerant"
+      record_type: "equipment and service log"
+      raw_fields: "chemical; charge; additions; recovery; disposal; leak event"
+      collection_method: "annual stock reconciliation"
+      unit: "kg"
+      frequency: "each service event/annual"
+      temporal_coverage: "representative period"
+      site_scope: "each circuit"
+      aggregation_rule: "loss = additions + opening stock - recovered - closing stock"
+      quality_evidence: "signed service logs"
+    - protocol_id: cp_roasting_batch_records
+      process_id: "roasting"
+      flow_role: "roasted-route materials and output"
+      record_type: "batch and laboratory record"
+      raw_fields: "input state/mass/moisture; time-temperature profile; output mass/moisture/colour"
+      collection_method: "scales, historian and EBC/declared tests"
+      unit: "kg; %; °C; h; colour unit"
+      frequency: "each batch"
+      temporal_coverage: "all represented roast batches"
+      site_scope: "each roaster and specialty-malt line"
+      aggregation_rule: "mass-weight by saleable output"
+      quality_evidence: "test method and batch release"
+    - protocol_id: cp_packaging_records
+      process_id: "finishing_dispatch"
+      flow_role: "each packaging component"
+      record_type: "bill of materials and issue record"
+      raw_fields: "component; material; unit mass; count; reuse/loss"
+      collection_method: "supplier mass plus line count"
+      unit: "kg"
+      frequency: "each SKU/batch"
+      temporal_coverage: "representative period"
+      site_scope: "all dispatch forms"
+      aggregation_rule: "component mass × net count, with reuse separately modelled"
+      quality_evidence: "supplier specification and count reconciliation"
+    - protocol_id: cp_chemical_records
+      process_id: "sanitation_wastewater"
+      flow_role: "each cleaner/disinfectant"
+      record_type: "issue, concentration and sanitation log"
+      raw_fields: "product; active ingredient; concentration; issued mass; returned mass; use"
+      collection_method: "inventory reconciliation"
+      unit: "kg active substance"
+      frequency: "each sanitation event"
+      temporal_coverage: "representative period"
+      site_scope: "all included systems"
+      aggregation_rule: "active mass = net formulation mass × active fraction"
+      quality_evidence: "SDS/specification and issue log"
+    - protocol_id: cp_residue_records
+      process_id: "all"
+      flow_role: "each co-product and waste"
+      record_type: "scales and transfer notes"
+      raw_fields: "residue identity; wet/dry mass; moisture; destination; revenue/status"
+      collection_method: "calibrated scale and destination record"
+      unit: "kg"
+      frequency: "each transfer"
+      temporal_coverage: "representative period"
+      site_scope: "all included lines"
+      aggregation_rule: "aggregate separately by identity and destination"
+      quality_evidence: "weigh ticket and receiver evidence"
+    - protocol_id: cp_wastewater_records
+      process_id: "base_malt_production_sanitation_wastewater"
+      flow_role: "wastewater and each pollutant"
+      record_type: "flow meter and matched sample"
+      raw_fields: "volume; COD; TN; TP; TSS; sampling time; destination"
+      collection_method: "continuous flow plus representative composite sample"
+      unit: "m3; mg/L; kg"
+      frequency: "continuous and permit/sample frequency"
+      temporal_coverage: "representative period"
+      site_scope: "each outfall"
+      aggregation_rule: "load = matched volume × concentration"
+      quality_evidence: "laboratory accreditation and flow calibration"
+    - protocol_id: cp_air_emissions
+      process_id: "base_malt_production_roasting_finishing_dispatch"
+      flow_role: "each direct air emission"
+      record_type: "stack test, CEMS, dust capture and fuel record"
+      raw_fields: "source; operating time; flow; concentration; fuel; control efficiency"
+      collection_method: "direct measurement preferred; approved factor otherwise"
+      unit: "kg"
+      frequency: "permit frequency and each represented fuel/route"
+      temporal_coverage: "representative period"
+      site_scope: "each source"
+      aggregation_rule: "calculate each pollutant separately"
+      quality_evidence: "test report, factor reference and operating log"
+  calculation_rules:
+    - id: calc_normalise
+      applies_to: "all exchanges"
+      rule: "exchange per reference flow = period exchange × 1,000 / released net malt mass"
+      inputs:
+        - "period exchange"
+        - "released malt mass"
+      output: "exchange per 1,000 kg malt"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_dry_matter
+      applies_to: "grain and malt"
+      rule: "dry matter = as-received mass × (1 - moisture fraction)"
+      inputs:
+        - mass
+        - moisture
+      output: "kg dry matter"
+      source_ids:
+        - mass-balance-identity
+        - ebc-analytica-malt
+    - id: calc_refrigerant_loss
+      applies_to: "each refrigerant"
+      rule: "loss = opening stock + additions - recovered - closing stock"
+      inputs:
+        - "stock and service records"
+      output: "kg chemical released"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_water_pollutant
+      applies_to: "each water pollutant"
+      rule: "load = matched discharge volume × concentration with unit conversion"
+      inputs:
+        - m3
+        - "mg/L"
+      output: "kg pollutant"
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+    - id: calc_combustion
+      applies_to: "each fuel and pollutant"
+      rule: "emission = measured fuel activity × pollutant-specific approved factor when direct measurement is unavailable"
+      inputs:
+        - "fuel activity"
+        - factor
+      output: "kg pollutant"
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product"
+      requirement: "Preserve cereal species/variety, crop year, malt style, thermal route, moisture, colour, and dispatch form; do not average ordinary and roasted routes without disclosed production weighting."
+      evidence: "batch release and product specification"
+    - id: dq_completeness
+      applies_to: "foreground inventory"
+      requirement: "Reconcile grain, water, dry matter, saleable malt, rootlets, screenings, dust, wastewater, sludge, and other losses; keep every utility, fuel, refrigerant, chemical, packaging material, waste, and emission atomic."
+      evidence: "signed balances and exception log"
+    - id: dq_temporal
+      applies_to: "all data"
+      requirement: "Use a representative 12-month period or complete campaign and explain shutdowns, abnormal batches, and product-mix changes."
+      evidence: "dated meters, invoices and batch records"
+    - id: dq_hygiene
+      applies_to: "product-contact operations"
+      requirement: "Retain water suitability, sanitation verification, pest control, hazard analysis, corrective action, and release evidence."
+      evidence: "GHP/HACCP records"
+    - id: dq_method
+      applies_to: "malt quality"
+      requirement: "Declare the method used for moisture, colour, extract, modification/friability, and other claimed attributes."
+      evidence: "EBC, MEBAK, or equivalent validated method record"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "dataset_metadata"
+    rule: "Reject a package that does not identify cereal species, malt style, ordinary-kilned versus roasted/crystal/smoked route, finished moisture, and bulk or packaging form."
+    source_ids:
+      - unsd-cpc-v3-2025
+      - ebc-analytica-malt
+  - rule_id: validate_steeping_context
+    applies_to: "steeping_and_germination"
+    rule: "Require actual wet/dry periods, temperatures, moisture and duration. Use 12-16 °C, one to two days, and 42-45 % grain moisture only as jointly supported review context, not as a replacement for site records or a universal conformance limit."
+    source_ids:
+      - eu-jrc-fdm-bref-2019
+      - evans-malting-efficiency-2024
+  - rule_id: validate_kilning_context
+    applies_to: "ordinary_kilned_malt"
+    rule: "Require the actual staged drying profile. Use 50-85 °C as jointly supported context for pale ordinary malt; higher-temperature styles require their declared product-specific profile."
+    source_ids:
+      - eu-jrc-fdm-bref-2019
+      - evans-malting-efficiency-2024
+  - rule_id: validate_roasting_context
+    applies_to: "roasted_or_crystal_malt"
+    rule: "Require input state, saccharification stand when applicable, and complete time-temperature-moisture profile. Use 130-230 °C only as jointly supported context for roasted-malt production; product release follows the declared specification."
+    source_ids:
+      - eu-jrc-fdm-bref-2019
+      - prado-specialty-malts-2021
+  - rule_id: validate_atomic_inventory
+    applies_to: "process_inventory"
+    rule: "Fail any combined energy-carrier, multi-fuel, multi-refrigerant, multi-chemical, packaging-collection, waste-collection, or emission-collection row."
+    source_ids:
+      - eu-jrc-fdm-bref-2019
+  - rule_id: validate_mass_balance
+    applies_to: "foreground_inventory"
+    rule: "Require an explained wet- and dry-matter balance linking cereal inputs to saleable malt, rootlets, screenings, dust, wastewater, and other losses."
+    source_ids:
+      - mass-balance-identity
+      - evans-malting-efficiency-2024
+  - rule_id: validate_range_evidence
+    applies_to: "quantitative_ranges"
+    rule: "Reject an empirical inventory range supported by only one paper, plant, batch, or point; require at least two independent boundary-compatible full-text sources or an explicit authoritative conformance interval."
+    source_ids:
+      - eu-pef-method-2021
+published_dataset_profile:
+  dataset_role: "Factory-gate foreground dataset for 1,000 kg net dry cereal malt, ordinary or roasted as declared"
+  downstream_use: "secondary_dataset; background_dataset; input to brewing, distilling, malt-food, and other life-cycle models matching the declared malt identity"
+  allowed_use: "Product- and route-matched studies with compatible cereal species, malt style, geography, technology, period, moisture, colour, and packaging form"
+  excluded_use: "Substitution for unmalted roasted grain, malt extract/syrup/flour, beer, spirits, generic food, or an undisclosed average of materially different ordinary and roasted routes"
+  required_metadata: "PCR id; cereal and crop identity; malt style; process route and condition profiles; reference moisture/colour/specification; geography; technology; period; bulk/packaging form; allocation; upstream links; co-product/waste destinations"
+  required_quality_disclosure: "Data coverage and representativeness; metering; laboratory methods; mass-balance closure; route weighting; unresolved UUIDs and ranges; allocation sensitivity; wastewater and air-emission methods"
+  update_trigger: "Change in cereal mix, malt style, kiln/roaster, fuel or refrigeration system, energy source, water reuse, sanitation chemistry, packaging, allocation, emission control, product specification, geography, or representative period"
+data_sources:
+  - id: "unsd-cpc-v3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division. Central Product Classification Version 3.0, structure and explanatory notes. https://unstats.un.org/unsd/classifications/econ"
+    used_for: "Product-category scope and exclusions"
+  - id: "eu-jrc-fdm-bref-2019"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre. Best Available Techniques Reference Document for the Food, Drink and Milk Industries, Chapter 16.9 Malting, 2019. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2020-01/JRC118627_FDM_Bref_2019_published.pdf"
+    used_for: "Full process decomposition, ordinary and roasted routes, energy, water, residues, wastewater, and separate air emissions"
+  - id: "ebc-analytica-malt"
+    type: "standard"
+    reference: "European Brewery Convention. Analytica EBC methods for malt, including 4.2 moisture, 4.5.1 extract, 4.7.1 colour, 4.12 diastatic power, 4.14 modification and 4.15 friability. https://dev.brewup.brewersofeurope.eu/ebc-analytica/category/chemical-physical/malt"
+    used_for: "Malt quality measurement and release-method disclosure"
+  - id: "fao-who-cxc-1-1969"
+    type: "standard"
+    reference: "FAO/WHO. General Principles of Food Hygiene, CXC 1-1969, 2022 revision/2023 edition. https://www.fao.org/fao-who-codexalimentarius/publications/en/"
+    used_for: "GHP, HACCP, water, cleaning, disinfection, storage and verification rules"
+  - id: "evans-malting-efficiency-2024"
+    type: "literature"
+    reference: "Evans, D.E., Shen, W. and Brookes, P.A. Malting - 'the middle parts of fortune' - a history of innovation and the enduring quest for efficiency. Journal of the Institute of Brewing 130 (2024) 126-181. https://doi.org/10.58430/jib.v130i3.58"
+    used_for: "Full malting route, independently compatible steeping/kilning context, energy, water, losses, rootlets and storage"
+  - id: "prado-specialty-malts-2021"
+    type: "literature"
+    reference: "Prado, R. et al. Aroma and color development during the production of specialty malts: A review. Comprehensive Reviews in Food Science and Food Safety (2021). https://doi.org/10.1111/1541-4337.12806"
+    used_for: "Roasted and crystal-malt route, independently compatible roasting context and product-defining conditions"
+  - id: "bauer-malting-parameters-2022"
+    type: "literature"
+    reference: "Bauer, A. et al. The malting parameters: steeping, germination, withering, and kilning temperature and aeration rate as possibilities for styrene mitigation in wheat beer. European Food Research and Technology 248 (2022). https://doi.org/10.1007/s00217-021-03852-5"
+    used_for: "Barley and wheat malting identity, route-condition recording and deculming"
+  - id: "habschied-malting-byproducts-2020"
+    type: "literature"
+    reference: "Habschied, K. et al. By-Products in the Malting and Brewing Industries-Re-Usage Possibilities. Fermentation 6 (2020) 82. https://doi.org/10.3390/fermentation6030082"
+    used_for: "Rootlet identity, removal and beneficial-use decision"
+  - id: "eu-pef-method-2021"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the use of Environmental Footprint methods, Annex I. https://eur-lex.europa.eu/eli/reco/2021/2279/oj"
+    used_for: "Boundary disclosure, allocation hierarchy, data quality and range-evidence discipline"
+  - id: "mass-balance-identity"
+    type: "method_factor"
+    reference: "Conservation-of-mass identity applied to measured foreground records."
+    used_for: "Normalisation, dry matter, stock reconciliation and balance validation"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:757229add29ce343d4ba68d59de6ae7b510e445f7c1992f2af24f5e3ef691326"
+  generated_content_sha256: "sha256:185b613fb3c8868dd8a891e74a6ece47fea497f092e3c49ec0bc5b283a83c34e"

@@ -68,8 +68,8 @@ Partial or divergent targets fail closed. The mode must not overwrite an accepte
 Mappings under `classifications/mappings/` are the maintained edge input from external codes to canonical PCR ids.
 Repository current mappings use `schema_version: 2` and `status: current`; they contain accepted positive edges only.
 Every edge points to a material PCR and carries `acceptance.status: accepted`, `decided_by`, a strict UTC
-`decided_at_utc`, and a durable `decision_ref`. CPC 3.0 contains exactly three accepted edges (`01111`, `04412`, and
-`04911`); CPC 2.1 is empty v2. Adding another classification system always adds source and coverage inputs; add
+`decided_at_utc`, and a durable `decision_ref`. CPC 3.0 contains 400 accepted edges; the canonical mapping and its
+durable decision references define that set. CPC 2.1 is empty v2. Adding another classification system always adds source and coverage inputs; add
 mapping edges only for reviewed semantic matches, never by copying a PCR tree or manufacturing one edge per leaf.
 
 External classification codes must not become PCR directory names. If two classification leaves resolve to the same semantic PCR, map both leaves to that PCR id. If two different PCRs would otherwise share the same semantic slug, disambiguate with a short stable hash or a clearer semantic qualifier, not with the classification code.
@@ -92,7 +92,7 @@ Only `mapped` selects a canonical PCR, and it requires a schema-valid accepted v
 lifecycle pair. The coverage entry projects the acceptance decision, and runtime resolution compares that evidence
 with the canonical mapping before selection. Candidate suggestions and manual-review targets are evidence, not
 accepted identity edges, and must never be selected automatically. CPC 3.0 coverage remains complete at 2,877
-leaves: 3 mapped, 2,874 unmapped, and 0 unknown.
+leaves: 400 mapped, 2,477 unmapped, and 0 unknown.
 
 Use the public CLI to inspect coverage without loading the methodology catalog:
 
@@ -109,7 +109,7 @@ successful result with `mapping: null` and `pcr: null`; an unknown coordinate or
 ## Retired PCR Identity Aliases
 
 `classifications/aliases/pcr-id-aliases.yaml` is a deterministic generated registry, not a mapping file and not a PCR
-catalog. Its current 2,874 aliases preserve old CPC leaf-derived ids as terminal `classification_coverage` locators.
+catalog. Its current 2,477 aliases preserve old CPC leaf-derived ids as terminal `classification_coverage` locators.
 Every source id and historical source path is unique; aliases may not collide with material ids, chain, cycle, or
 point at an unknown coverage leaf. Rebuild with `npm run aliases:build` and verify with `npm run aliases:check`; do not
 hand-edit the registry. `library/catalog.yaml` pins its canonical path, exact-byte SHA-256, and entry count; runtime
@@ -130,6 +130,7 @@ redirect locator; guidance and validation reject it.
 
 Phase 2 is complete: ordinary CPC imports create zero PCR records, current mapping v2 retains accepted material edges
 only, and the alias-first redirect contract preserves retired ids. The first Phase 3 pilot removes only CPC `99000`:
-that code is known-unmapped and the old PCR id redirects. The repository now contains 2,876 PCR directories—3
-material and 2,873 surviving legacy scaffolds—while the alias count remains 2,874. CPC `98000` and bulk physical
+that code is known-unmapped and the old PCR id redirects. After the in-place CPC `21111` and `02211` material
+promotions and the recovered reviewed batches, the repository contains 2,878 PCR directories—402 material and 2,476
+surviving legacy scaffolds—while the alias count is 2,483. CPC `98000` and bulk physical
 migration are still pending; do not describe the pilot as completion of physical migration.

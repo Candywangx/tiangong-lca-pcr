@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Wheat `12da5e7d-9b93-4404-8c7d-08f98bec6238` |
+| 参考产品流 | 小麦 `12da5e7d-9b93-4404-8c7d-08f98bec6238` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -112,7 +112,7 @@ sync_with: pcr.en-US.md
 
 繁殖用来源种批作为输入产品流记录。数量规则：site-specific measured mass；归一化基准：per 1,000 kg harvested seed crop。
 
-- 选定流：Wheat `12da5e7d-9b93-4404-8c7d-08f98bec6238`
+- 选定流：小麦 `12da5e7d-9b93-4404-8c7d-08f98bec6238`
 - 流属性/单位：Mass / kg
 - 数量规则：site-specific measured mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -135,7 +135,7 @@ sync_with: pcr.en-US.md
 
 肥料投入作为输入产品流记录。数量规则：measured product mass and kg N；归一化基准：per 1,000 kg harvested seed crop。
 
-- 选定流：Urea `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
+- 选定流：尿素 `3f8850c0-f718-4c4b-8fcb-8fd42e03aa8e`
 - 流属性/单位：Mass / kg
 - 数量规则：measured product mass and kg N
 - 数值来源模式：前景记录（`foreground_record`）
@@ -158,7 +158,7 @@ sync_with: pcr.en-US.md
 
 肥料投入作为输入产品流记录。数量规则：measured product mass；归一化基准：per 1,000 kg harvested seed crop。
 
-- 选定流：Phosphate fertilizer `9c196b01-6aad-4252-a6e8-f853853a830c`
+- 选定流：磷肥 `9c196b01-6aad-4252-a6e8-f853853a830c`
 - 流属性/单位：Mass / kg
 - 数量规则：measured product mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -180,7 +180,7 @@ sync_with: pcr.en-US.md
 
 肥料投入作为输入产品流记录。数量规则：measured product mass；归一化基准：per 1,000 kg harvested seed crop。
 
-- 选定流：Potassium fertilizer `dd008d87-16e4-4e85-a048-b9949f6fbca6`
+- 选定流：钾肥 `dd008d87-16e4-4e85-a048-b9949f6fbca6`
 - 流属性/单位：Mass / kg
 - 数量规则：measured product mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -202,7 +202,7 @@ sync_with: pcr.en-US.md
 
 灌溉水作为输入产品流记录。数量规则：measured irrigation water mass；归一化基准：per 1,000 kg harvested seed crop。
 
-- 选定流：Irrigation water `4ad684b1-8e85-4dee-8d9c-55d1fa2d4432`
+- 选定流：灌溉用水 `4ad684b1-8e85-4dee-8d9c-55d1fa2d4432`
 - 流属性/单位：Mass / kg
 - 数量规则：measured irrigation water mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -224,7 +224,7 @@ sync_with: pcr.en-US.md
 
 田间机械燃料作为输入产品流记录。数量规则：measured field fuel use；归一化基准：per 1,000 kg harvested seed crop。
 
-- 选定流：Diesel, burned in agricultural machinery `57e0b1a3-2d05-46b2-b61b-cf7b5b167c6f`
+- 选定流：柴油, 农业机械燃烧 `57e0b1a3-2d05-46b2-b61b-cf7b5b167c6f`
 - 流属性/单位：Mass / kg
 - 数量规则：measured field fuel use
 - 数值来源模式：前景记录（`foreground_record`）
@@ -246,7 +246,7 @@ sync_with: pcr.en-US.md
 
 植保产品作为输入产品流记录。数量规则：measured active ingredient or formulated product mass；归一化基准：per active ingredient or formulated product。
 
-- 选定流：Herbicide `c1370404-9e2b-4ed6-ba96-c094f74e0f2d`
+- 选定流：除草剂 `c1370404-9e2b-4ed6-ba96-c094f74e0f2d`
 - 流属性/单位：Mass / kg
 - 数量规则：measured active ingredient or formulated product mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -268,7 +268,7 @@ sync_with: pcr.en-US.md
 
 植保产品作为输入产品流记录。数量规则：measured active ingredient or formulated product mass；归一化基准：per active ingredient or formulated product。
 
-- 选定流：Azoxystrobin `8a1f4968-6428-413f-a50b-b413bf9190cf`
+- 选定流：氟环唑 `8a1f4968-6428-413f-a50b-b413bf9190cf`
 - 流属性/单位：Mass / kg
 - 数量规则：measured active ingredient or formulated product mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -290,7 +290,7 @@ sync_with: pcr.en-US.md
 
 植保产品作为输入产品流记录。数量规则：measured active ingredient or formulated product mass；归一化基准：per active ingredient or formulated product。
 
-- 选定流：Insecticide `ba2ec0c8-d5da-4ca8-bf9f-317478a1ce1b`
+- 选定流：杀虫剂 `ba2ec0c8-d5da-4ca8-bf9f-317478a1ce1b`
 - 流属性/单位：Mass / kg
 - 数量规则：measured active ingredient or formulated product mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -332,7 +332,7 @@ sync_with: pcr.en-US.md
 
 灌溉水作为输入基本流记录。数量规则：calculated from irrigation water record；归一化基准：per 1,000 kg harvested seed crop。
 
-- 选定流：water `419682fe-60fb-4b43-be89-bf2824b51104`
+- 选定流：水 `419682fe-60fb-4b43-be89-bf2824b51104`
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from irrigation water record
 - 数值来源模式：计算值（`calculated_value`）
@@ -358,7 +358,7 @@ sync_with: pcr.en-US.md
 
 收获小麦种子作物作为输出产品流记录。数量规则：measured harvested mass；归一化基准：field subprocess quantitative reference。
 
-- 选定流：Wheat `12da5e7d-9b93-4404-8c7d-08f98bec6238`
+- 选定流：小麦 `12da5e7d-9b93-4404-8c7d-08f98bec6238`
 - 流属性/单位：Mass / kg
 - 数量规则：measured harvested mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -381,7 +381,7 @@ sync_with: pcr.en-US.md
 
 秸秆或田间残余作为输出产品流记录。数量规则：measured residue mass when it crosses the boundary；归一化基准：per 1,000 kg harvested seed crop。
 
-- 选定流：Wheat straw `bcaf0254-cdd3-43d1-823a-2f69df3801d8`
+- 选定流：小麦秸秆 `bcaf0254-cdd3-43d1-823a-2f69df3801d8`
 - 流属性/单位：Mass / kg
 - 数量规则：measured residue mass when it crosses the boundary
 - 数值来源模式：前景记录（`foreground_record`）
@@ -409,7 +409,7 @@ sync_with: pcr.en-US.md
 
 Direct soil N2O emission to air作为输出基本流记录。数量规则：calculate from N inputs; IPCC EF1 default is 1 percent of applied N as N2O-N；归一化基准：per N input。
 
-- 选定流：nitrous oxide, emissions to air unspecified `08a91e70-3ddc-11dd-94c3-0050c2490048`
+- 选定流：一氧化二氮 `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：calculate from N inputs; IPCC EF1 default is 1 percent of applied N as N2O-N
 - 数值来源模式：计算值（`calculated_value`）
@@ -431,7 +431,7 @@ Direct soil N2O emission to air作为输出基本流记录。数量规则：calc
 
 Ammonia volatilization to air作为输出基本流记录。数量规则：site-specific or regional emission method；归一化基准：per N input。
 
-- 选定流：ammonia, emissions to air unspecified `08a91e70-3ddc-11dd-a2a9-0050c2490048`
+- 选定流：氨 `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：site-specific or regional emission method
 - 数值来源模式：前景记录（`foreground_record`）
@@ -453,7 +453,7 @@ Ammonia volatilization to air作为输出基本流记录。数量规则：site-s
 
 Nitrate leaching to water作为输出基本流记录。数量规则：site-specific or regional emission method；归一化基准：per N input。
 
-- 选定流：nitrate, emissions to fresh water `4d9a8790-3ddd-11dd-8d68-0050c2490048`
+- 选定流：硝酸根 `4d9a8790-3ddd-11dd-8d68-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：site-specific or regional emission method
 - 数值来源模式：前景记录（`foreground_record`）
@@ -475,7 +475,7 @@ Nitrate leaching to water作为输出基本流记录。数量规则：site-speci
 
 田间机械燃料作为输出基本流记录。数量规则：calculated from field fuel records and emission factor；归一化基准：per fuel inventory。
 
-- 选定流：carbon dioxide (fossil), emissions to air unspecified `08a91e70-3ddc-11dd-923d-0050c2490048`
+- 选定流：二氧化碳（化石源） `08a91e70-3ddc-11dd-923d-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from field fuel records and emission factor
 - 数值来源模式：计算值（`calculated_value`）
@@ -503,7 +503,7 @@ Nitrate leaching to water作为输出基本流记录。数量规则：site-speci
 
 Harvested seed crop input作为输入产品流记录。数量规则：1,000-1,250 kg；归一化基准：per 1,000 kg cleaned seed output。
 
-- 选定流：Wheat `12da5e7d-9b93-4404-8c7d-08f98bec6238`
+- 选定流：小麦 `12da5e7d-9b93-4404-8c7d-08f98bec6238`
 - 流属性/单位：Mass / kg
 - 数量规则：1,000-1,250 kg
 - 数值来源模式：模型估计（`modelled_estimate`）
@@ -526,7 +526,7 @@ Harvested seed crop input作为输入产品流记录。数量规则：1,000-1,25
 
 加工能源作为输入产品流记录。数量规则：measured electricity use；归一化基准：per 1,000 kg cleaned seed output。
 
-- 选定流：alternating current `4d0361a3-56cc-45f9-aa42-bb9103285bf9`
+- 选定流：交流电 `4d0361a3-56cc-45f9-aa42-bb9103285bf9`
 - 流属性/单位：Net calorific value / MJ or kWh
 - 数量规则：measured electricity use
 - 数值来源模式：前景记录（`foreground_record`）
@@ -549,7 +549,7 @@ Harvested seed crop input作为输入产品流记录。数量规则：1,000-1,25
 
 种子处理药剂作为输入产品流记录。数量规则：measured active ingredient or formulated product mass；归一化基准：per kg treated seed。
 
-- 选定流：Azoxystrobin `8a1f4968-6428-413f-a50b-b413bf9190cf`
+- 选定流：氟环唑 `8a1f4968-6428-413f-a50b-b413bf9190cf`
 - 流属性/单位：Mass / kg
 - 数量规则：measured active ingredient or formulated product mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -571,7 +571,7 @@ Harvested seed crop input作为输入产品流记录。数量规则：1,000-1,25
 
 种子处理药剂作为输入产品流记录。数量规则：measured active ingredient or formulated product mass；归一化基准：per kg treated seed。
 
-- 选定流：Insecticide `ba2ec0c8-d5da-4ca8-bf9f-317478a1ce1b`
+- 选定流：杀虫剂 `ba2ec0c8-d5da-4ca8-bf9f-317478a1ce1b`
 - 流属性/单位：Mass / kg
 - 数量规则：measured active ingredient or formulated product mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -593,7 +593,7 @@ Harvested seed crop input作为输入产品流记录。数量规则：1,000-1,25
 
 包装单元作为输入产品流记录。数量规则：measured bag count and capacity；归一化基准：per 1,000 kg packaged seed。
 
-- 选定流：Woven polypropylene bag `9bfaad07-355e-467a-9bab-f95094e7c869`
+- 选定流：聚丙烯编织袋 `9bfaad07-355e-467a-9bab-f95094e7c869`
 - 流属性/单位：Number of items / item
 - 数量规则：measured bag count and capacity
 - 数值来源模式：前景记录（`foreground_record`）
@@ -627,7 +627,7 @@ Harvested seed crop input作为输入产品流记录。数量规则：1,000-1,25
 
 清选后小麦播种种子作为输出产品流记录。数量规则：measured cleaned seed mass；归一化基准：PCR reference output。
 
-- 选定流：Wheat `12da5e7d-9b93-4404-8c7d-08f98bec6238`
+- 选定流：小麦 `12da5e7d-9b93-4404-8c7d-08f98bec6238`
 - 流属性/单位：Mass / kg
 - 数量规则：measured cleaned seed mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -650,7 +650,7 @@ Harvested seed crop input作为输入产品流记录。数量规则：1,000-1,25
 
 Marketable straw or residue owned by seed plant作为输出产品流记录。数量规则：optional；归一化基准：only if included in seed plant boundary。
 
-- 选定流：Wheat straw `bcaf0254-cdd3-43d1-823a-2f69df3801d8`
+- 选定流：小麦秸秆 `bcaf0254-cdd3-43d1-823a-2f69df3801d8`
 - 流属性/单位：Mass / kg
 - 数量规则：optional
 - 数值来源模式：不适用（`not_applicable`）
@@ -665,7 +665,7 @@ Marketable straw or residue owned by seed plant作为输出产品流记录。数
 
 筛下物、不合格种子、粉尘和等外物作为输出废物流记录。数量规则：measured reject mass；归一化基准：per 1,000 kg cleaned seed output。
 
-- 选定流：Rejects `e6d6aa78-105e-4acc-a84b-46f68765a1cc`
+- 选定流：废弃物 `e6d6aa78-105e-4acc-a84b-46f68765a1cc`
 - 流属性/单位：Mass / kg
 - 数量规则：measured reject mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -735,7 +735,7 @@ Marketable straw or residue owned by seed plant作为输出产品流记录。数
 
 加工能源作为输出基本流记录。数量规则：calculated from conditioning energy records and emission factor；归一化基准：per process inventory。
 
-- 选定流：carbon dioxide (fossil), emissions to air unspecified `08a91e70-3ddc-11dd-923d-0050c2490048`
+- 选定流：二氧化碳（化石源） `08a91e70-3ddc-11dd-923d-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from conditioning energy records and emission factor
 - 数值来源模式：计算值（`calculated_value`）
@@ -763,7 +763,7 @@ Marketable straw or residue owned by seed plant作为输出产品流记录。数
 
 储存用电作为输入产品流记录。数量规则：measured storage electricity use；归一化基准：per storage duration。
 
-- 选定流：alternating current `4d0361a3-56cc-45f9-aa42-bb9103285bf9`
+- 选定流：交流电 `4d0361a3-56cc-45f9-aa42-bb9103285bf9`
 - 流属性/单位：Net calorific value / MJ or kWh
 - 数量规则：measured storage electricity use
 - 数值来源模式：前景记录（`foreground_record`）
@@ -785,7 +785,7 @@ Marketable straw or residue owned by seed plant作为输出产品流记录。数
 
 交付运输燃料作为输入产品流记录。数量规则：measured delivery fuel or route fuel estimate；归一化基准：per tonne-km。
 
-- 选定流：Diesel oil `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性/单位：Mass / kg
 - 数量规则：measured delivery fuel or route fuel estimate
 - 数值来源模式：模型估计（`modelled_estimate`）
@@ -819,7 +819,7 @@ Marketable straw or residue owned by seed plant作为输出产品流记录。数
 
 已声明交付边界产品作为输出产品流记录。数量规则：measured delivered seed mass；归一化基准：if reference flow is delivered seed。
 
-- 选定流：Wheat `12da5e7d-9b93-4404-8c7d-08f98bec6238`
+- 选定流：小麦 `12da5e7d-9b93-4404-8c7d-08f98bec6238`
 - 流属性/单位：Mass / kg
 - 数量规则：measured delivered seed mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -835,7 +835,7 @@ Marketable straw or residue owned by seed plant作为输出产品流记录。数
 
 储存损耗或受损种子作为输出废物流记录。数量规则：measured storage loss or damaged seed mass；归一化基准：per 1,000 kg stored seed。
 
-- 选定流：Rejects `e6d6aa78-105e-4acc-a84b-46f68765a1cc`
+- 选定流：废弃物 `e6d6aa78-105e-4acc-a84b-46f68765a1cc`
 - 流属性/单位：Mass / kg
 - 数量规则：measured storage loss or damaged seed mass
 - 数值来源模式：前景记录（`foreground_record`）
@@ -859,7 +859,7 @@ Marketable straw or residue owned by seed plant作为输出产品流记录。数
 
 交付运输燃料作为输出基本流记录。数量规则：calculated from storage energy and delivery transport records；归一化基准：per process inventory。
 
-- 选定流：carbon dioxide (fossil), emissions to air unspecified `08a91e70-3ddc-11dd-923d-0050c2490048`
+- 选定流：二氧化碳（化石源） `08a91e70-3ddc-11dd-923d-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from storage energy and delivery transport records
 - 数值来源模式：计算值（`calculated_value`）

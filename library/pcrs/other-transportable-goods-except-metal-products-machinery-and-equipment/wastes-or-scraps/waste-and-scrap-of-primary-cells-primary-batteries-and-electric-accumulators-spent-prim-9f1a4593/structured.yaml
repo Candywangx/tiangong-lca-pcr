@@ -1,10 +1,960 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "39380"
-  title: "Waste and scrap of primary cells, primary batteries and electric accumulators; spent primary cells, primary batteries and electric accumulators"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.wastes-or-scraps.waste-and-scrap-of-primary-cells-primary-batteries-and-electric-accumulators-spent-prim-9f1a4593"
+  classification_refs: "CPC 3.0: 39380, exact classification context"
+  covered_products: "Waste and scrap of primary cells, primary batteries, and electric accumulators; spent cells, batteries, modules, and packs; waste battery manufacturing scrap; separately identified battery-derived fractions with traceable origin"
+  excluded_products: "New batteries and accumulators; battery manufacturing as a product system; batteries still in normal use; generic WEEE, vehicles, or mixed municipal waste before battery identification; unrelated electronic scrap; secondary materials whose battery origin and processing state are not traceable"
+  representative_product: "A separately collected, as-received waste-battery lot with declared chemistry mix, configuration, waste status, state of charge, safety condition, gross and net mass basis, and preparation state"
+  production_route: "Collection and receipt; identification and safe handling; preparation for recycling; conditional mechanical preprocessing; conditional pyrometallurgical, hydrometallurgical, direct-recycling, or other declared material-recovery route"
+  market_state: "Waste held for controlled management at the reference gate; not a new battery and not a secondary raw material unless a separate output has documented product or end-of-waste status"
+functional_unit:
+  what: "Controlled management and declared transformation of an as-received waste-battery lot"
+  how_much: "1 kg of waste batteries at the declared reference gate"
+  how_well: "The lot is characterized by chemistry, configuration, waste status, charge and safety condition, preparation state, included mass components, collection origin, and destination route; all outgoing fractions retain a documented fate and status"
+  how_long_or_cycle: "From the declared first controlled collection or receiving gate through the last foreground operation claimed by the data package"
+  reference_flow_link: "The quantitative reference is the as-received waste-battery mass; stage-specific outputs are reported separately and must not replace it without redefining the data package"
+system_boundary:
+  rules:
+    - rule_id: boundary_waste_identity
+      applies_to: "Incoming battery lots"
+      rule: "Begin with a lot whose waste or spent status, holder, collection origin, and applicable legal or contractual basis are declared; a Tiangong Product-flow type must not be interpreted as proof that the lot has ceased to be waste."
+      source_ids:
+        - unsd-cpc-3-2025
+        - eu-batteries-reg-2023-1542
+    - rule_id: boundary_controlled_collection
+      applies_to: "Collection and transport"
+      rule: "Include collection, consolidation, route transport, and associated packaging when controlled by the reporting organization; otherwise link the delivered lot to a separate upstream collection dataset and declare the receiving gate."
+      source_ids:
+        - eu-batteries-reg-2023-1542
+        - us-epa-used-lib-safety
+    - rule_id: boundary_safe_receipt
+      applies_to: "Receipt and storage"
+      rule: "Include identification, weighing, inspection, chemistry segregation, state-of-charge or safe-state assessment, terminal protection, damaged-battery isolation, spill or leakage handling, and controlled storage that occur within the foreground."
+      source_ids:
+        - us-epa-used-lib-safety
+    - rule_id: boundary_preparation
+      applies_to: "Preparation for recycling"
+      rule: "Keep sorting, storage, handling, pack dismantling, removal of non-battery fractions, and other preparation activities distinct from the subsequent recycling process."
+      source_ids:
+        - eu-batteries-reg-2023-1542
+        - eu-waste-battery-recycling-2025-606
+    - rule_id: boundary_route_specific_recycling
+      applies_to: "Recycling operations"
+      rule: "Include only the declared mechanical, thermal, hydrometallurgical, pyrometallurgical, direct-recycling, purification, or refining steps actually controlled by the foreground site; route-specific processes must not be generalized across chemistries."
+      source_ids:
+        - us-epa-lib-recycling
+        - eu-waste-battery-recycling-2025-606
+    - rule_id: boundary_output_gate
+      applies_to: "Outgoing fractions"
+      rule: "End each foreground branch at a measured outgoing fraction. Distinguish intermediate fractions sent for further treatment from final output fractions, and preserve waste, product, or end-of-waste status at that gate."
+      source_ids:
+        - eu-waste-battery-recycling-2025-606
+        - us-epa-lib-recycling
+    - rule_id: boundary_exclusions
+      applies_to: "Default category boundary"
+      rule: "Exclude new battery production, use-phase electricity or service, generic WEEE or vehicle treatment before battery identification, unrelated electronic scrap, downstream manufacture of new cathodes or batteries, and avoided-primary-material credits unless the study explicitly expands the boundary and documents the method."
+      source_ids:
+        - unsd-cpc-3-2025
+        - iso-14044-2006
+boundary_abstraction:
+  declared_starting_condition: "A separately identified waste-battery lot handed over at the first controlled collection or receiving gate, with as-received mass and safety condition recorded"
+  starting_condition_role: "Waste input requiring controlled management; the reference flow is not a new-battery product and not an automatically qualified secondary raw material"
+  product_classification_scope: "CPC 3.0 39380; chemistry, configuration, preparation state, and output status are mandatory subcategory qualifiers"
+  recursive_input_rule: "When a waste-battery flow in this same category enters a later foreground step, record it once as a visible input with its upstream dataset reference and preparation state; do not recursively reattach the full category chain inside that step"
+  upstream_dataset_requirement: "Purchased or transferred battery fractions must link to a dataset that declares origin, chemistry, included mass, preparation operations, waste or product status, geography, period, and allocation method"
+  disclosure: "Declare every foreground gate, controlled collection segment, chemistry split, preparation step, recovery route, off-site transfer, cut-off, storage change, and final or intermediate output status"
+reference_flow_definition:
+  reference_amount: "1 kg as received at the declared gate"
+  product_flow_ref:
+    name: "Battery"
+    uuid: "921de03b-28b1-4c75-8642-204afbc79d2d"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "waste-status basis and applicable jurisdiction"
+    - "battery family and chemistry or measured chemistry mix"
+    - "primary or rechargeable status"
+    - cell
+    - module
+    - pack
+    - "or scrap configuration"
+    - "embedded-battery removal status"
+    - "state of charge or verified safe state"
+    - damaged
+    - defective
+    - recalled
+    - critical
+    - "or normal end-of-life condition"
+    - "gross mass and net battery mass basis"
+    - "included casing"
+    - electrolyte
+    - fluids
+    - "and non-battery attachments"
+    - "collection source"
+    - geography
+    - "and period"
+    - "preparation state"
+    - "intended recycling or transfer route"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference waste-battery lot"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure the as-received gross mass at the declared gate and identify whether outer pack casing, electrolyte, free liquid, transport packaging, and non-battery attachments are included."
+  - id: net_battery_mass
+    applies_to: "Battery-only material balance"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Derive net battery mass only from measured gross mass and separately measured excluded components; retain both values and the calculation."
+  - id: dry_mass_basis
+    applies_to: "Recycling-efficiency or material-recovery claims"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg dry matter"
+    rule: "If a dry-mass calculation is used, record the wet mass, sampling and moisture method, separated impurities, outer-casing treatment, and every conversion factor; do not silently substitute dry mass for the reference amount."
+  - id: chemistry_partition
+    applies_to: "Mixed battery lots"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg and mass fraction"
+    rule: "Determine chemistry shares by continuous sorting records or a documented representative sampling plan and preserve an unclassified remainder rather than reallocating it to known chemistries."
+  - id: state_and_safety_record
+    applies_to: "Each received lot or separately managed sub-lot"
+    required_property_ref:
+      name: "Descriptive record"
+      uuid: ""
+    required_unit: "not applicable"
+    rule: "Record state of charge or safe-state evidence, damage and leakage condition, thermal-event status, terminal protection, isolation or packaging, and the decision that routes the lot to storage, discharge, dismantling, transport, or emergency handling."
+  - id: output_status_record
+    applies_to: "Black mass, crushed powder, metals, salts, plastics, residues, and other outgoing fractions"
+    required_property_ref:
+      name: "Mass plus descriptive record"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Measure each output at the declared gate and record whether it remains waste, is an intermediate fraction requiring further treatment, or is a product or secondary material with documented acceptance status."
+process_map:
+  - id: collection_and_transport
+    name: "Controlled collection, consolidation, and transport"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the reporting organization controls a collection route before receipt"
+    role: "Move an identified waste-battery lot without mixing it with municipal recycling or generic WEEE"
+    quantitative_reference: "Per kg delivered waste batteries and measured tonne-kilometre"
+  - id: receipt_characterization
+    name: "Receipt, identification, safety assessment, sorting, and storage"
+    inclusion: "required"
+    inclusion_condition: "Always required at the declared receiving gate"
+    role: "Establish mass, chemistry, configuration, waste identity, charge and safety state, and accepted or rejected fractions"
+    quantitative_reference: "Per kg as-received reference flow"
+  - id: preparation_for_recycling
+    name: "Discharge or safe-state conditioning, dismantling, and removal of non-battery fractions"
+    inclusion: "conditional"
+    inclusion_condition: "Include each operation performed before the first recycling transformation"
+    role: "Produce traceable prepared battery or battery fractions and separately measured removals"
+    quantitative_reference: "Per kg accepted waste batteries"
+  - id: mechanical_preprocessing
+    name: "Size reduction and physical fraction separation"
+    inclusion: "conditional"
+    inclusion_condition: "Include when crushing, shredding, sieving, magnetic, density, or related separation occurs"
+    role: "Produce black mass or other intermediate fractions and recovered casing fractions"
+    quantitative_reference: "Per kg prepared battery input"
+  - id: material_recovery
+    name: "Thermal, hydrometallurgical, pyrometallurgical, direct, or other material recovery"
+    inclusion: "conditional"
+    inclusion_condition: "Include only the chemistry- and technology-specific route controlled by the foreground site"
+    role: "Convert battery-derived fractions into measured intermediate or final outputs and residues"
+    quantitative_reference: "Per kg battery-derived fraction entering the route"
+process_inventory:
+  - id: collection_and_transport
+    label: "Controlled collection, consolidation, and transport"
+    inputs:
+      product:
+        - row_id: collected_waste_batteries
+          role: "Collected waste batteries"
+          name: "Battery"
+          flow_type: "product"
+          flow_ref:
+            uuid: "921de03b-28b1-4c75-8642-204afbc79d2d"
+          property_unit: "Mass / kg"
+          description: "The separately identified lot enters the controlled collection route with waste identity, chemistry information, safety condition, and gross mass recorded."
+          amount:
+            expression: "measured mass loaded into the controlled route"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg waste batteries delivered to the receiving gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_collection_route
+              source_ids: []
+            ranges: []
+        - row_id: collection_transport_service
+          role: "Collection transport service"
+          name: "Transport service, candidate to be selected for the declared mode and geography"
+          flow_type: "product"
+          property_unit: "Transport service / tkm"
+          description: "Record each materially different vehicle or mode leg from measured lot mass and route distance; do not substitute a generic route when actual route records exist."
+          amount:
+            expression: "delivered battery mass in tonnes multiplied by measured route distance in kilometres for each leg"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg waste batteries delivered to the receiving gate"
+              kind: "transport_service"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_collection_route
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: delivered_waste_batteries
+          role: "Delivered waste-battery lot"
+          name: "Battery"
+          flow_type: "product"
+          flow_ref:
+            uuid: "921de03b-28b1-4c75-8642-204afbc79d2d"
+          property_unit: "Mass / kg"
+          description: "The delivered lot remains a waste-battery flow at receipt; delivery does not establish secondary-material status."
+          amount:
+            expression: "measured mass unloaded at the receiving gate"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg waste batteries delivered to the receiving gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_collection_route
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: receipt_characterization
+    label: "Receipt, identification, safety assessment, sorting, and storage"
+    inputs:
+      product:
+        - row_id: received_waste_batteries
+          role: "As-received waste-battery lot"
+          name: "Battery"
+          flow_type: "product"
+          flow_ref:
+            uuid: "921de03b-28b1-4c75-8642-204afbc79d2d"
+          property_unit: "Mass / kg"
+          description: "The quantitative reference enters with all required qualifiers and a traceable weighing record."
+          amount:
+            expression: "measured gross mass at receipt"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1 kg as-received reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_batch
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_battery_sublots
+          role: "Accepted and segregated waste-battery sub-lots"
+          name: "Battery"
+          flow_type: "product"
+          flow_ref:
+            uuid: "921de03b-28b1-4c75-8642-204afbc79d2d"
+          property_unit: "Mass / kg"
+          description: "Record separate output masses for each chemistry, configuration, preparation state, and safety route. Use the generic flow UUID only with these qualifiers; a matching chemistry-specific Tiangong flow may replace it for a genuinely homogeneous lot."
+          amount:
+            expression: "measured accepted mass by segregated sub-lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg as-received reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_batch
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: receipt_rejects
+          role: "Rejected non-battery material and unaccepted lots"
+          name: "Reject or waste flow selected by measured material identity; no generic UUID prescribed"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record packaging, attached equipment, contamination, and lots refused or diverted for safety reasons separately, with their destination and waste status."
+          amount:
+            expression: "measured rejected mass by material and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg as-received reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_batch
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: preparation_for_recycling
+    label: "Discharge or safe-state conditioning, dismantling, and removal of non-battery fractions"
+    inputs:
+      product:
+        - row_id: batteries_for_preparation
+          role: "Accepted waste batteries for preparation"
+          name: "Battery"
+          flow_type: "product"
+          flow_ref:
+            uuid: "921de03b-28b1-4c75-8642-204afbc79d2d"
+          property_unit: "Mass / kg"
+          description: "The input is the measured chemistry- and safety-segregated sub-lot entering the declared preparation sequence."
+          amount:
+            expression: "measured mass entering preparation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted waste batteries entering preparation"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_batch
+              source_ids: []
+            ranges: []
+        - row_id: preparation_energy
+          role: "Preparation electricity and fuels"
+          name: "Energy carriers selected for the foreground site; no universal UUID prescribed"
+          flow_type: "product"
+          property_unit: "Energy or mass / metered unit"
+          description: "Record metered electricity and fuels used for safe-state conditioning, ventilation, dismantling, and material handling; select geography- and technology-matched flows during dataset construction."
+          amount:
+            expression: "metered use allocated to the prepared batch after subdivision where feasible"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared battery output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_batch
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_battery_fraction
+          role: "Prepared waste batteries or battery fractions"
+          name: "Battery when the output remains within CPC 39380; otherwise select a state-matched candidate after review"
+          flow_type: "product"
+          flow_ref:
+            uuid: "921de03b-28b1-4c75-8642-204afbc79d2d"
+          property_unit: "Mass / kg"
+          description: "Record intact cells, modules, or battery fractions after the declared preparation step, retaining chemistry, state, and waste status."
+          amount:
+            expression: "measured prepared output mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg waste batteries entering preparation"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_batch
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: preparation_removals
+          role: "Removed casings, packaging, fluids, and non-battery parts"
+          name: "Material-specific waste flow; no generic UUID prescribed"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure each removal separately and preserve its composition, hazard classification, destination, and waste or product status."
+          amount:
+            expression: "measured mass by separated fraction and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg waste batteries entering preparation"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_batch
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: mechanical_preprocessing
+    label: "Size reduction and physical fraction separation"
+    inputs:
+      product:
+        - row_id: prepared_feed_to_mechanical
+          role: "Prepared battery feed"
+          name: "Battery only when the prepared feed retains that identity; otherwise use a reviewed state-matched flow"
+          flow_type: "product"
+          flow_ref:
+            uuid: "921de03b-28b1-4c75-8642-204afbc79d2d"
+          property_unit: "Mass / kg"
+          description: "Record the exact chemistry, configuration, charge or safe state, and preparation history of the battery-derived feed entering size reduction."
+          amount:
+            expression: "measured feed mass"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg prepared battery feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical_balance
+              source_ids: []
+            ranges: []
+        - row_id: mechanical_energy_auxiliaries
+          role: "Mechanical-processing energy and auxiliaries"
+          name: "Site- and technology-matched inputs selected during dataset construction"
+          flow_type: "product"
+          property_unit: "Energy, mass, or volume / metered unit"
+          description: "Record electricity, inert gas, cooling, dust-control media, and other auxiliaries actually consumed by the declared equipment."
+          amount:
+            expression: "metered or purchased quantity allocated to the processed batch after subdivision where feasible"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg prepared battery feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical_balance
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: tradable_battery_intermediate
+          role: "Qualified tradable black mass or battery-derived intermediate"
+          name: "Reviewed chemistry- and state-matched product flow; no default UUID prescribed"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use this product output only when composition, moisture, battery origin, acceptance specification, and non-waste or tradable-secondary-material status are documented. Black mass has no universal composition or default UUID."
+          amount:
+            expression: "measured output mass by lot, with moisture and composition results linked"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared battery feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical_balance
+              source_ids: []
+            ranges: []
+        - row_id: qualified_separated_products
+          role: "Recovered casing metals and other qualified products"
+          name: "Material-specific product flow selected after composition and status review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record steel, copper, aluminium, plastics, or other fractions as products only when their specification, destination, and status at the gate are documented."
+          amount:
+            expression: "measured output mass by material and lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared battery feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical_balance
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: waste_battery_intermediate
+          role: "Black mass or crushed fraction remaining waste"
+          name: "Chemistry- and state-matched waste flow when available; no default UUID prescribed"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Use this waste output when the fraction requires further treatment or lacks documented product or end-of-waste status; record receiving facility and next operation."
+          amount:
+            expression: "measured outgoing waste-intermediate mass by lot and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared battery feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical_balance
+              source_ids: []
+            ranges: []
+        - row_id: mechanical_residues
+          role: "Mechanical residues and pollution-control wastes"
+          name: "Residue-specific waste flow selected during dataset construction"
+          flow_type: "waste"
+          property_unit: "Mass or volume / measured unit"
+          description: "Record dust, filter media, fines, contaminated liquids, and other residues separately by hazard and destination."
+          amount:
+            expression: "measured mass or volume by residue and destination"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg prepared battery feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mechanical_balance
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: mechanical_direct_releases
+          role: "Direct particulate and volatile releases"
+          name: "Elementary flow matched to the monitored substance and compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record only releases that cross the environmental boundary after control; captured material remains a waste or product output."
+          amount:
+            expression: "monitored release or calculation from measured concentration and exhaust volume"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg prepared battery feed"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_mechanical_emissions
+              source_ids: []
+            ranges: []
+  - id: material_recovery
+    label: "Thermal, hydrometallurgical, pyrometallurgical, direct, or other material recovery"
+    inputs:
+      product:
+        - row_id: battery_recovery_feed
+          role: "Battery-derived recovery feed"
+          name: "Chemistry- and state-matched feed flow selected after review; no generic UUID prescribed"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record black mass, electrode material, cells, alloy, slag, solution, or other battery-derived feed with chemistry, moisture, status, and upstream preparation history."
+          amount:
+            expression: "measured feed mass on both the as-received and declared dry basis when relevant"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg battery-derived recovery feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_recovery_balance
+              source_ids: []
+            ranges: []
+        - row_id: recovery_operating_inputs
+          role: "Recovery reagents, energy, and water"
+          name: "Site-, geography-, and technology-matched input flows selected during dataset construction"
+          flow_type: "product"
+          property_unit: "Mass, energy, or volume / measured unit"
+          description: "Record actual electricity, fuels, water, acids, bases, reductants, extractants, precipitants, and other route-specific inputs; do not transfer an inventory across chemistries without evidence."
+          amount:
+            expression: "metered, weighed, or purchased amount attributed to the processed batch after subdivision where feasible"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg battery-derived recovery feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_recovery_balance
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: qualified_recovered_products
+          role: "Qualified recovered metals, compounds, or active materials"
+          name: "Product-specific flow selected only after composition and specification review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each metal, salt, alloy, precursor, active material, or other final output separately with composition, purity or specification, mass, destination, and documented status."
+          amount:
+            expression: "measured saleable or accepted output mass by product lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg battery-derived recovery feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_recovery_balance
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: recovery_residues
+          role: "Recovery residues and wastewater"
+          name: "Residue-specific waste flow selected during dataset construction"
+          flow_type: "waste"
+          property_unit: "Mass or volume / measured unit"
+          description: "Record slags, leach residues, neutralization solids, spent solutions, wastewater, and pollution-control wastes separately with composition, hazard status, and destination."
+          amount:
+            expression: "measured outgoing mass or volume by residue and destination"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg battery-derived recovery feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_recovery_balance
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: recovery_direct_releases
+          role: "Direct recovery-process releases"
+          name: "Elementary flow matched to the monitored substance and compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record monitored air, water, and soil releases after control by substance and compartment; captured material is not an elementary flow."
+          amount:
+            expression: "monitored release or calculation from measured concentration and carrier-flow volume"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg battery-derived recovery feed"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_recovery_emissions
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide_chemistry_route
+    applies_to: "Mixed chemistries, routes, and operating lines"
+    rule: "First subdivide records by chemistry, configuration, safety route, preparation state, and recovery technology whenever metering or batch records permit."
+    source_ids:
+      - iso-14044-2006
+      - eu-waste-battery-recycling-2025-606
+  - rule_id: allocation_preserve_direct_measurement
+    applies_to: "Separately measured inputs and outputs"
+    rule: "Assign directly measured batch inputs, outputs, emissions, residues, and storage changes to that batch before allocating shared burdens."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_shared_operations
+    applies_to: "Shared collection, storage, utilities, and pollution control"
+    rule: "When subdivision is not feasible, use a documented physical relationship that reflects causality; mass may be used only when it is a reasonable proxy, and the chosen basis and sensitivity must be disclosed."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_output_status
+    applies_to: "Black mass, metals, salts, plastics, and residues"
+    rule: "Do not treat an intermediate fraction as a final co-product merely because it has market value. Apply product or co-product treatment only after its gate, specification, destination, and waste or end-of-waste status are documented."
+    source_ids:
+      - eu-batteries-reg-2023-1542
+      - eu-waste-battery-recycling-2025-606
+  - rule_id: allocation_no_automatic_credit
+    applies_to: "Recycling benefits and recovered-material substitution"
+    rule: "Do not embed avoided virgin-material production, recycled-content credit, or downstream battery-manufacturing credit in the foreground inventory by default. Any substitution, system expansion, or circular-footprint method belongs to the declared downstream study and must avoid double counting."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_negative_value_waste
+    applies_to: "Fees, negative-value wastes, and paid treatment"
+    rule: "Price sign does not determine physical flow type or burden allocation. Record waste-management service, material flow, and any recovered outputs separately, then disclose the study-specific allocation convention."
+    source_ids:
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_collection_route
+      process_id: "collection_and_transport"
+      flow_role: "collected and delivered battery mass; route service"
+      record_type: "weighbridge or calibrated scale records; route logs; load manifests"
+      raw_fields: "load_id; origin; destination; battery chemistry; safety status; loaded_mass_kg; delivered_mass_kg; vehicle_or_mode; distance_km; packaging; incident_or_loss"
+      collection_method: "Link each load manifest to weighing and route evidence; calculate each leg separately"
+      unit: "kg; km; tkm"
+      frequency: "every load and route leg"
+      temporal_coverage: "entire declared collection period"
+      site_scope: "all controlled collection points and vehicles"
+      aggregation_rule: "Sum mass by lot and tkm by mode; report losses and rejected loads separately"
+      quality_evidence: "scale calibration; route record; chain-of-custody manifest; incident log"
+    - protocol_id: cp_receipt_batch
+      process_id: "receipt_characterization"
+      flow_role: "received, accepted, segregated, and rejected fractions"
+      record_type: "receipt log; scale record; inspection and sorting record"
+      raw_fields: "lot_id; receipt_time; supplier; origin; gross_mass_kg; net_battery_mass_kg; chemistry; configuration; state_of_charge_or_safe_state; damage; leakage; temperature_event; accepted_mass_kg; reject_mass_kg; destination"
+      collection_method: "Weigh at receipt, inspect before mixing, and retain chemistry and safety routing decisions by sub-lot"
+      unit: "kg; mass fraction; descriptive state"
+      frequency: "every received lot"
+      temporal_coverage: "entire declared reporting period"
+      site_scope: "every receiving and storage area in scope"
+      aggregation_rule: "Reconcile received mass to accepted sub-lots, rejects, and measured storage change"
+      quality_evidence: "calibration certificate; photographs or inspection record; chemistry evidence; waste manifest; storage ledger"
+    - protocol_id: cp_preparation_batch
+      process_id: "preparation_for_recycling"
+      flow_role: "prepared battery fraction; removals; preparation energy"
+      record_type: "batch traveler; scale records; meter and purchase records; safety log"
+      raw_fields: "batch_id; input_mass_kg; chemistry; initial_safe_state; discharge_or_conditioning_method; dismantling_steps; output_mass_kg; removal_type; removal_mass_kg; electricity; fuel; incident; storage_change"
+      collection_method: "Record every preparation operation and weigh the input, prepared output, and separated removals"
+      unit: "kg; kWh; fuel unit; descriptive state"
+      frequency: "every batch, with meters read at batch or justified campaign level"
+      temporal_coverage: "entire declared preparation campaign"
+      site_scope: "all preparation equipment and controlled storage in scope"
+      aggregation_rule: "Allocate campaign utilities after subdivision using the disclosed physical driver; preserve direct batch measurements"
+      quality_evidence: "scale and meter calibration; batch traveler; safety authorization; removal destination record"
+    - protocol_id: cp_mechanical_balance
+      process_id: "mechanical_preprocessing"
+      flow_role: "mechanical feed, operating inputs, product fractions, and waste fractions"
+      record_type: "batch production record; scales; meters; laboratory analysis; dispatch record"
+      raw_fields: "batch_id; chemistry; feed_mass_kg; feed_moisture; safe_state; electricity; auxiliary_input; output_fraction_id; output_mass_kg; moisture; composition; status; destination; storage_change"
+      collection_method: "Weigh all feeds and outputs and link representative composition and moisture samples to the same batch"
+      unit: "kg; kWh; auxiliary unit; mass fraction"
+      frequency: "every batch; continuous meter totals reconciled at least per campaign"
+      temporal_coverage: "entire declared mechanical-processing campaign"
+      site_scope: "all shredding, crushing, separation, dust-control, and storage units in scope"
+      aggregation_rule: "Report each output fraction separately; reconcile input, additions, outputs, captured residues, direct releases, and storage change"
+      quality_evidence: "scale and meter calibration; sampling plan; laboratory QA; dispatch or acceptance document"
+    - protocol_id: cp_mechanical_emissions
+      process_id: "mechanical_preprocessing"
+      flow_role: "direct particulate and volatile releases"
+      record_type: "stack or workplace exhaust monitoring; flow-meter records; analytical reports"
+      raw_fields: "source_id; substance; compartment; concentration; carrier_flow; duration; control_device; captured_mass; detection_limit"
+      collection_method: "Calculate emitted mass from paired concentration and carrier-flow records or use direct validated mass monitoring"
+      unit: "kg substance; concentration; volume"
+      frequency: "each compliance test and continuous period where available"
+      temporal_coverage: "representative of the declared campaign and operating state"
+      site_scope: "every direct environmental release point in scope"
+      aggregation_rule: "Integrate by operating time; report non-detect treatment and captured mass separately"
+      quality_evidence: "accredited analysis; instrument calibration; sampling conditions; control-device log"
+    - protocol_id: cp_recovery_balance
+      process_id: "material_recovery"
+      flow_role: "recovery feed, reagents, energy, recovered products, residues, and storage"
+      record_type: "batch records; scales; tank measurements; meters; purchase and dispatch records; laboratory analysis"
+      raw_fields: "batch_id; route; chemistry; feed_mass_wet; feed_mass_dry; moisture; reagent; reagent_amount; energy; water; output_id; output_mass; composition; purity; waste_or_product_status; destination; storage_change"
+      collection_method: "Link all input and output records to the declared recovery batch and preserve elemental or compound analyses used in recovery calculations"
+      unit: "kg; kg dry matter; kWh; m3; mass fraction"
+      frequency: "every batch; continuous meters reconciled at least per campaign"
+      temporal_coverage: "entire declared recovery campaign"
+      site_scope: "all controlled recovery, purification, refining, and storage units in scope"
+      aggregation_rule: "Reconcile wet and dry bases separately; do not count added reagents as battery-derived recovered material"
+      quality_evidence: "calibration; laboratory QA; material acceptance; dispatch record; inventory reconciliation"
+    - protocol_id: cp_recovery_emissions
+      process_id: "material_recovery"
+      flow_role: "direct air, water, and soil releases"
+      record_type: "stack, effluent, and other environmental monitoring records"
+      raw_fields: "source_id; substance; compartment; concentration; carrier_flow; duration; control_device; captured_mass; detection_limit"
+      collection_method: "Calculate released mass from validated concentration and carrier-flow records or direct mass monitoring"
+      unit: "kg substance; concentration; volume"
+      frequency: "each compliance test and continuous period where available"
+      temporal_coverage: "representative of the declared route and operating state"
+      site_scope: "every direct environmental release point in scope"
+      aggregation_rule: "Integrate by operating time and separate captured material from environmental releases"
+      quality_evidence: "accredited analysis; instrument calibration; sampling conditions; treatment-system log"
+  calculation_rules:
+    - id: calc_collection_tkm
+      applies_to: "Each collection route leg"
+      rule: "tonne-kilometre = delivered battery mass in tonnes multiplied by measured one-way distance in kilometres; empty return travel is a separate declared assumption or record"
+      inputs:
+        - delivered_mass_kg
+        - distance_km
+        - "route leg"
+        - "vehicle or mode"
+      output: "tkm by route leg and mode"
+      source_ids: []
+    - id: calc_net_battery_mass
+      applies_to: "Receipt and preparation"
+      rule: "net battery mass = measured gross lot mass minus separately measured transport packaging, unrelated equipment, and other declared non-battery attachments; do not remove battery casing or electrolyte unless the chosen basis explicitly requires it"
+      inputs:
+        - gross_mass_kg
+        - "excluded_component_mass_kg by component"
+      output: "net_battery_mass_kg with inclusion list"
+      source_ids:
+        - eu-waste-battery-recycling-2025-606
+    - id: calc_chemistry_share
+      applies_to: "Mixed received lot"
+      rule: "chemistry mass fraction = measured or sampled mass assigned to a chemistry divided by total classified battery mass; retain unclassified mass as its own share"
+      inputs:
+        - chemistry_mass_kg
+        - classified_battery_mass_kg
+        - unclassified_mass_kg
+      output: "chemistry shares and unclassified share"
+      source_ids:
+        - eu-waste-battery-recycling-2025-606
+    - id: calc_process_mass_balance
+      applies_to: "Each foreground process and campaign"
+      rule: "reconcile measured inputs plus opening inventory with measured outputs plus closing inventory and recorded direct releases; report the signed unresolved difference without forcing it to zero"
+      inputs:
+        - "input masses"
+        - "output masses"
+        - "captured wastes"
+        - "direct releases"
+        - "opening and closing inventory"
+      output: "mass-balance statement and unresolved difference"
+      source_ids:
+        - eu-waste-battery-recycling-2025-606
+    - id: calc_battery_derived_output
+      applies_to: "Recovery claims"
+      rule: "quantify only the element or compound mass demonstrably derived from battery input; added reagents, atmospheric oxygen, water, and non-battery impurities remain separately identified according to the applicable method"
+      inputs:
+        - "dry input composition"
+        - "output mass and composition"
+        - "reagent additions"
+        - "impurity and moisture records"
+      output: "battery-derived recovered mass by element or compound"
+      source_ids:
+        - eu-waste-battery-recycling-2025-606
+    - id: calc_route_intensity
+      applies_to: "Process energy, water, reagent, emission, and residue rows"
+      rule: "normalized amount = measured or calculated campaign amount divided by the mass basis declared for that process; preserve the original measurement and basis conversion"
+      inputs:
+        - "campaign amount"
+        - "process input or output mass"
+        - "time and storage reconciliation"
+      output: "amount per declared process basis"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Every reference lot and sub-lot"
+      requirement: "Preserve supplier or holder, collection origin, waste-status basis, chemistry evidence, configuration, preparation state, and unique lot linkage."
+      evidence: "Waste manifest, chain-of-custody record, inspection record, label or analytical evidence"
+    - id: dq_safety_state
+      applies_to: "Batteries before transport, storage, dismantling, or shredding"
+      requirement: "Document state of charge or verified safe state, damage and leakage condition, terminal protection, isolation, thermal-event history, and routing decision; do not infer safety from chemistry name alone."
+      evidence: "Safety inspection, voltage or state-of-charge measurement, incident record, packaging record"
+    - id: dq_mass_traceability
+      applies_to: "All foreground processes"
+      requirement: "Retain calibrated mass records for inputs, outputs, rejects, residues, transfers, and inventory changes; disclose every unresolved mass-balance difference rather than reallocating it."
+      evidence: "Calibration certificates, batch balances, storage ledger, dispatch records"
+    - id: dq_chemistry_representativeness
+      applies_to: "Mixed lots and sampled composition"
+      requirement: "State sorting coverage, sampling design, laboratory method, detection limits, sample dates, and unclassified share; do not use a chemistry-specific inventory as a generic category average."
+      evidence: "Sorting log, sampling plan, laboratory QA report, representativeness assessment"
+    - id: dq_output_status
+      applies_to: "Black mass and all recovered or residual fractions"
+      requirement: "Retain composition, moisture, specification, destination, acceptance documentation, and waste, intermediate, product, or end-of-waste status at the declared gate."
+      evidence: "Laboratory certificate, sales or acceptance specification, waste transfer note, regulatory determination where applicable"
+    - id: dq_temporal_technology_scope
+      applies_to: "Site and route dataset"
+      requirement: "Report actual operating period, throughput, technology configuration, control equipment, downtime, abnormal events, and whether records are batch, campaign, or annual; no minimum coverage is assumed silently."
+      evidence: "Operating log, production report, maintenance and incident records"
+    - id: dq_source_and_method_currency
+      applies_to: "Legal, safety, recycling-efficiency, and recovery claims"
+      requirement: "Identify the jurisdiction, method edition, applicability date, and calculation scope used; a PCR source supports modelling structure but does not by itself prove regulatory compliance."
+      evidence: "Applicable legal text or method, dated compliance assessment, calculation workbook"
+validation_rules:
+  - rule_id: validation_reference_identity
+    applies_to: "Reference flow"
+    rule: "Fail conformance if waste status, chemistry or mix, configuration, charge or safe state, condition, included mass components, collection origin, preparation state, or intended route is missing."
+    source_ids:
+      - unsd-cpc-3-2025
+      - us-epa-used-lib-safety
+  - rule_id: validation_flow_type_status
+    applies_to: "Incoming and outgoing technosphere flows"
+    rule: "Verify Tiangong flow type and UUID independently from waste, product, intermediate, or end-of-waste status; require documentary status evidence for every outgoing secondary material."
+    source_ids:
+      - eu-batteries-reg-2023-1542
+      - eu-waste-battery-recycling-2025-606
+  - rule_id: validation_chemistry_route
+    applies_to: "Process inventory"
+    rule: "Reject undisclosed averaging across materially different chemistries, configurations, charge states, or recovery routes; retain an unclassified share when evidence is incomplete."
+    source_ids:
+      - eu-waste-battery-recycling-2025-606
+  - rule_id: validation_collection_safety
+    applies_to: "Collection, transport, receipt, and storage"
+    rule: "Require lot-level safety assessment and documented protection or isolation before handling; lithium-ion batteries must not be modelled as ordinary municipal recycling."
+    source_ids:
+      - us-epa-used-lib-safety
+  - rule_id: validation_preparation_recycling_split
+    applies_to: "Process boundary"
+    rule: "Verify that collection, sorting, storage, handling, dismantling, and other preparation steps are not silently merged with recycling when the applicable calculation method distinguishes them."
+    source_ids:
+      - eu-batteries-reg-2023-1542
+      - eu-waste-battery-recycling-2025-606
+  - rule_id: validation_mass_balance
+    applies_to: "Each foreground process"
+    rule: "Require measured input, output, inventory-change, residue, and direct-release records and report the unresolved mass-balance difference; do not force closure by assigning the difference to a saleable product."
+    source_ids:
+      - eu-waste-battery-recycling-2025-606
+  - rule_id: validation_black_mass_status
+    applies_to: "Black mass and crushed battery powder"
+    rule: "Reject a default product classification or default UUID when chemistry, moisture, composition, preparation state, destination, and waste or secondary-material status are not documented."
+    source_ids:
+      - us-epa-lib-recycling
+      - eu-waste-battery-recycling-2025-606
+  - rule_id: validation_battery_derived_recovery
+    applies_to: "Recovered-material claim"
+    rule: "Exclude added reagents, water, atmospheric inputs, non-battery impurities, and energy recovery from battery-derived material recovery unless the applicable official method explicitly provides otherwise and the calculation shows it."
+    source_ids:
+      - eu-waste-battery-recycling-2025-606
+  - rule_id: validation_allocation
+    applies_to: "Shared burdens and recycling benefits"
+    rule: "Require subdivision decision, allocation basis, sensitivity where material, and a check that recycling or substitution benefits are not double counted."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validation_excluded_systems
+    applies_to: "Scope claim"
+    rule: "Fail a generic CPC 39380 claim if the default boundary includes new battery manufacture, battery use, generic WEEE or vehicle treatment before battery identification, or downstream manufacture of new batteries without explicit system expansion."
+    source_ids:
+      - unsd-cpc-3-2025
+published_dataset_profile:
+  dataset_role: "Foreground data package for one declared waste-battery collection, receipt, preparation, preprocessing, or recovery route; combined routes must preserve stage- and chemistry-resolved records"
+  downstream_use: "secondary_dataset and background_dataset for LCA process or lifecyclemodel construction when reference-flow qualifiers and gate coverage match the study"
+  allowed_use: "Stage-specific waste-battery management and recycling inventories; chemistry-specific comparisons with matched boundaries; measured mass-flow and recovery calculations under the declared method"
+  excluded_use: "New-battery manufacturing inventory; generic electronic-waste treatment; substitution across unmatched chemistries or routes; claims that black mass is automatically a product; regulatory compliance, recycling-efficiency, or recovery-target claims without the applicable official calculation and verification method"
+  required_metadata: "PCR id; lot and site identifiers; geography and period; waste-status basis; battery family, chemistry, configuration, charge or safe state, and condition; gross and net mass basis; collection and preparation state; technology route and gates; flow UUID decisions; output composition, moisture, status, and destination; allocation method"
+  required_quality_disclosure: "Data coverage and sampling; scale, meter, and laboratory QA; mass-balance difference; unclassified chemistry share; storage change; abnormal events; missing UUIDs; secondary-data substitutions; legal and method editions; limitations on representativeness"
+  update_trigger: "Change in chemistry mix, battery configuration, collection system, safety-conditioning practice, preparation or recovery technology, output specification or status, allocation method, applicable legal method, site controls, or evidence that materially changes mass, energy, emission, residue, or recovery results"
+data_sources:
+  - id: "unsd-cpc-3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Explanatory Notes, updated 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf, retrieved 2026-08-07"
+    used_for: "Official CPC 39380 identity and separation of waste-battery goods from new batteries and unrelated products"
+  - id: "eu-batteries-reg-2023-1542"
+    type: "standard"
+    reference: "Regulation (EU) 2023/1542 concerning batteries and waste batteries, consolidated text 31 July 2025, https://eur-lex.europa.eu/eli/reg/2023/1542/2025-07-31/eng, retrieved 2026-08-07"
+    used_for: "Waste-battery definitions; collection, treatment, preparation for recycling, reuse and repurposing distinctions; output-status boundary"
+  - id: "eu-waste-battery-recycling-2025-606"
+    type: "standard"
+    reference: "Commission Delegated Regulation (EU) 2025/606 establishing the methodology for calculation and verification of recycling efficiency and material recovery from waste batteries, https://eur-lex.europa.eu/eli/reg_del/2025/606/oj/eng, retrieved 2026-08-07"
+    used_for: "Input and output fraction accounting; chemistry separation; dry-mass, process-step, mass-balance, and battery-derived recovery records"
+  - id: "us-epa-lib-recycling"
+    type: "official_guidance"
+    reference: "United States Environmental Protection Agency, Lithium-Ion Battery Recycling, https://www.epa.gov/hw/lithium-ion-battery-recycling, retrieved 2026-08-07"
+    used_for: "Collection-to-shredding process decomposition; black-mass variability; separation of foils, plastics, steel, electrolyte, and recovery routes"
+  - id: "us-epa-used-lib-safety"
+    type: "official_guidance"
+    reference: "United States Environmental Protection Agency, Used Lithium-Ion Batteries, https://www.epa.gov/recycle/used-lithium-ion-batteries, retrieved 2026-08-07"
+    used_for: "Separate collection, terminal protection, damage handling, residual-charge, and fire-risk controls for lithium-ion batteries"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines, https://www.iso.org/standard/38498.html, confirmed standard; retrieved 2026-08-07"
+    used_for: "LCA inventory boundary, allocation, reporting, interpretation, and review framework"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:bc2b9adca6923c910415c042ef1fc9f059c4acaf6125fe4fe966a9c4beed0ebe"
+  generated_content_sha256: "sha256:3b161df669072312ec64a8104e29e82dc1ecd1f6671659a70a1ef49500b72793"

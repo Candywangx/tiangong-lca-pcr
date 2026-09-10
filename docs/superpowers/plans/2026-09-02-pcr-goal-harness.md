@@ -63,3 +63,4 @@ Builder commands remain the source of truth for projections and generated shared
 - Dispatch one visible author, confirm task visibility/recovery, validate only-four-file output and machine report, then
   integrate and land it safely.
 - Only after the one-slot path passes, resume with six rolling visible authors and serial six-result snapshots.
+

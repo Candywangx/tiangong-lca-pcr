@@ -95,28 +95,125 @@ sync_with: pcr.en-US.md
 
 ##### 产品流
 
-###### 乳和允许使用的乳源材料（`received_milk_materials`）
+###### 接收的生乳（`raw_milk_received`）
 
-记录交付工厂并验收合格的乳、乳粉、奶油或奶油粉、乳脂制品，以及任何允许的蛋白质调整材料的质量。实施时将每种实质不同的投入作为单独流行；本候选 PCR 不为非参考库存流指定 UUID。
+将工厂接收的合格生乳作为单独产品投入记录，不得与另一种乳源物料合并。
 
-- 选定流：各实际乳或乳源投入的 Tiangong 产品流未解决
+- 选定流：生乳
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- 数量规则：秤量或经校准流量计的验收数量，扣除拒收交付后归一化到合格参考产品
+- 数量规则：生乳的合格衡器或校准仪表数量，扣除拒收交付量
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 合格淡炼乳净产品
+- 归一化基准：每 1 kg 合格净淡炼乳
 - 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_material_receipts`
 - 来源：`codex-cxs-281-1971`
-- 数量范围：暂定原料质量平衡 QA 校验范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：1.0
-  - 上限：5.0
-  - 单位：kg/kg 参考产品
-  - 基准：每 1 kg 淡炼乳对应的合格乳和乳源投入的宽泛首轮质量
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+
+###### 接收的乳粉（`milk_powder_received`）
+
+将工厂接收的合格乳粉作为单独产品投入记录，不得与另一种乳源物料合并。
+
+- 选定流：乳粉
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：乳粉的合格衡器或校准仪表数量，扣除拒收交付量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_material_receipts`
+- 来源：`codex-cxs-281-1971`
+
+###### 接收的稀奶油（`cream_received`）
+
+将工厂接收的合格稀奶油作为单独产品投入记录，不得与另一种乳源物料合并。
+
+- 选定流：稀奶油
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：稀奶油的合格衡器或校准仪表数量，扣除拒收交付量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_material_receipts`
+- 来源：`codex-cxs-281-1971`
+
+###### 接收的稀奶油粉（`cream_powder_received`）
+
+将工厂接收的合格稀奶油粉作为单独产品投入记录，不得与另一种乳源物料合并。
+
+- 选定流：稀奶油粉
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：稀奶油粉的合格衡器或校准仪表数量，扣除拒收交付量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_material_receipts`
+- 来源：`codex-cxs-281-1971`
+
+###### 接收的无水乳脂（`anhydrous_milk_fat_received`）
+
+将工厂接收的合格无水乳脂作为单独产品投入记录，不得与另一种乳源物料合并。
+
+- 选定流：无水乳脂
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：无水乳脂的合格衡器或校准仪表数量，扣除拒收交付量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_material_receipts`
+- 来源：`codex-cxs-281-1971`
+
+###### 接收的乳截留物（`milk_retentate_received`）
+
+将工厂接收的合格乳截留物作为单独产品投入记录，不得与另一种乳源物料合并。
+
+- 选定流：乳截留物
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：乳截留物的合格衡器或校准仪表数量，扣除拒收交付量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_material_receipts`
+- 来源：`codex-cxs-281-1971`
+
+###### 接收的乳渗透物（`milk_permeate_received`）
+
+将工厂接收的合格乳渗透物作为单独产品投入记录，不得与另一种乳源物料合并。
+
+- 选定流：乳渗透物
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：乳渗透物的合格衡器或校准仪表数量，扣除拒收交付量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_material_receipts`
+- 来源：`codex-cxs-281-1971`
+
+###### 接收的乳糖（`lactose_received`）
+
+将工厂接收的合格乳糖作为单独产品投入记录，不得与另一种乳源物料合并。
+
+- 选定流：乳糖
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：乳糖的合格衡器或校准仪表数量，扣除拒收交付量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_material_receipts`
+- 来源：`codex-cxs-281-1971`
 
 ##### 废物流
 
@@ -126,52 +223,36 @@ sync_with: pcr.en-US.md
 
 ##### 产品流
 
-###### 放行至制备的合格乳（`accepted_milk_to_preparation`）
+###### 放行至制备的合格生乳（`accepted_raw_milk_to_preparation`）
 
-根据接收记录和储罐存量变化计算转出的合格物料，排除拒收交付和有记录的接收损失。
+依据接收和储存记录计算转入制备的合格生乳，扣除拒收交付量和有记录的储存损失。
 
-- 选定流：未解决的中间产品流
+- 选定流：生乳
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- 数量规则：合格接收量加期初库存，减期末库存、拒收量和有记录的接收损失
+- 数量规则：合格生乳接收量加期初库存，减期末库存、拒收交付量和有记录的储存损失
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 合格淡炼乳净产品
+- 归一化基准：每 1 kg 合格净淡炼乳
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：由采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_material_receipts`
-- 数量范围：暂定转移质量 QA 校验范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：1.0
-  - 上限：5.0
-  - 单位：kg/kg 参考产品
-  - 基准：转移至制备过程的合格物料的宽泛首轮质量
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
 
 ##### 废物流
 
-###### 拒收乳和接收损失（`receiving_losses`）
+###### 接收和储存期间损失的生乳（`raw_milk_receiving_waste`）
 
-按实际去向记录拒收物料、溢洒、未回收的储罐或管线残留物以及取样损失。
+记录生乳验收后发生的溢洒、取样、管线滞留或其他损失，并保留实际去向。
 
-- 选定流：按实际物料和去向确定的 Tiangong 废物流未解决
+- 选定流：废生乳
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- 数量规则：实测或根据质量平衡计算的接收损失
+- 数量规则：计量或质量平衡推导的声明工厂门内生乳损失
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 合格淡炼乳净产品
+- 归一化基准：每 1 kg 合格净淡炼乳
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：由采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_waste_and_effluent`
 - 来源：`eu-fdm-bat-2019-2031`
-- 数量范围：暂定接收损失 QA 校验范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：0.20
-  - 单位：kg/kg 参考产品
-  - 基准：每 1 kg 淡炼乳的宽泛首轮接收损失
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
 
 ##### 基本流
 
@@ -181,28 +262,155 @@ sync_with: pcr.en-US.md
 
 ##### 产品流
 
-###### 合格乳和组成调整投入（`standardization_inputs`）
+###### 进入制备的合格生乳（`accepted_raw_milk_input`）
 
-记录实际使用的合格乳，以及奶油、脱脂乳、乳固形物、截留液、透过液、乳糖、饮用水、盐和具有技术必要性的添加剂。所声明产品标准要求时，应保持乳清蛋白与酪蛋白的比例关系。
+仅在产品配方实际使用生乳时，记录该物料发往声明批次的数量。
 
-- 选定流：各实际投入的 Tiangong 产品流未解决
+- 选定流：生乳
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- 数量规则：计量、称量或与批记录核对的批配方数量
+- 数量规则：称量或计量的批次配方数量，并与领用和退料记录核对
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：产品特定（`product_specific`）
-- 归一化基准：每 1 kg 合格淡炼乳净产品
+- 归一化基准：每 1 kg 合格净淡炼乳
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_material_receipts`
 - 来源：`codex-cxs-281-1971`
-- 数量范围：暂定调整投入 QA 校验范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：2.0
-  - 单位：kg/kg 参考产品
-  - 基准：除转入乳以外组成调整投入质量的宽泛首轮估计
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+
+###### 用于组成调整的乳粉（`milk_powder_adjustment`）
+
+仅在产品配方实际使用乳粉时，记录该物料发往声明批次的数量。
+
+- 选定流：乳粉
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：称量或计量的批次配方数量，并与领用和退料记录核对
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_material_receipts`
+- 来源：`codex-cxs-281-1971`
+
+###### 用于组成调整的稀奶油（`cream_adjustment`）
+
+仅在产品配方实际使用稀奶油时，记录该物料发往声明批次的数量。
+
+- 选定流：稀奶油
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：称量或计量的批次配方数量，并与领用和退料记录核对
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_material_receipts`
+- 来源：`codex-cxs-281-1971`
+
+###### 用于组成调整的稀奶油粉（`cream_powder_adjustment`）
+
+仅在产品配方实际使用稀奶油粉时，记录该物料发往声明批次的数量。
+
+- 选定流：稀奶油粉
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：称量或计量的批次配方数量，并与领用和退料记录核对
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_material_receipts`
+- 来源：`codex-cxs-281-1971`
+
+###### 用于组成调整的无水乳脂（`anhydrous_milk_fat_adjustment`）
+
+仅在产品配方实际使用无水乳脂时，记录该物料发往声明批次的数量。
+
+- 选定流：无水乳脂
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：称量或计量的批次配方数量，并与领用和退料记录核对
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_material_receipts`
+- 来源：`codex-cxs-281-1971`
+
+###### 用于蛋白质调整的乳截留物（`milk_retentate_adjustment`）
+
+仅在产品配方实际使用乳截留物时，记录该物料发往声明批次的数量。
+
+- 选定流：乳截留物
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：称量或计量的批次配方数量，并与领用和退料记录核对
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_material_receipts`
+- 来源：`codex-cxs-281-1971`
+
+###### 用于组成调整的乳渗透物（`milk_permeate_adjustment`）
+
+仅在产品配方实际使用乳渗透物时，记录该物料发往声明批次的数量。
+
+- 选定流：乳渗透物
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：称量或计量的批次配方数量，并与领用和退料记录核对
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_material_receipts`
+- 来源：`codex-cxs-281-1971`
+
+###### 用于蛋白质调整的乳糖（`lactose_adjustment`）
+
+仅在产品配方实际使用乳糖时，记录该物料发往声明批次的数量。
+
+- 选定流：乳糖
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：称量或计量的批次配方数量，并与领用和退料记录核对
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_material_receipts`
+- 来源：`codex-cxs-281-1971`
+
+###### 用于复原的饮用水（`potable_water_adjustment`）
+
+仅在产品配方实际使用饮用水时，记录该物料发往声明批次的数量。
+
+- 选定流：饮用水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：称量或计量的批次配方数量，并与领用和退料记录核对
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_material_receipts`
+- 来源：`codex-cxs-281-1971`
+
+###### 加入产品的氯化钠（`sodium_chloride_adjustment`）
+
+仅在产品配方实际使用氯化钠时，记录该物料发往声明批次的数量。
+
+- 选定流：氯化钠
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：称量或计量的批次配方数量，并与领用和退料记录核对
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_material_receipts`
+- 来源：`codex-cxs-281-1971`
 
 ##### 废物流
 
@@ -212,53 +420,52 @@ sync_with: pcr.en-US.md
 
 ##### 产品流
 
-###### 标准化热处理乳（`standardized_heat_treated_milk`）
+###### 转入浓缩的标准化热处理乳（`standardized_heat_treated_milk`）
 
-根据实测批投入、取样、分离器输出、管线滞留和损失计算转入浓缩的标准化乳；保留组成以及时间—温度控制记录。
+根据实测批次投入、组成结果、取样、滞留和损失，计算转入浓缩的一股标准化乳流。
 
-- 选定流：未解决的中间产品流
+- 选定流：标准化热处理乳
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- 数量规则：经核对后转入浓缩步骤的质量
+- 数量规则：转入浓缩的标准化热处理乳核对质量
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：产品特定（`product_specific`）
-- 归一化基准：每 1 kg 合格淡炼乳净产品
+- 归一化基准：每 1 kg 合格净淡炼乳
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：由采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_composition_and_yield`
-- 来源：`codex-cxs-281-1971`, `eu-fdm-bat-2019-2031`
-- 数量范围：暂定标准化乳 QA 校验范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：1.0
-  - 上限：5.0
-  - 单位：kg/kg 参考产品
-  - 基准：转入浓缩的标准化乳的宽泛首轮质量
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+- 来源：`codex-cxs-281-1971`、`eu-fdm-bat-2019-2031`
 
 ##### 废物流
 
-###### 分离沉渣和制备损失（`preparation_residues`）
+###### 乳净化产生的分离沉渣（`separator_sediment`）
 
-按实际处理路线记录分离器沉渣、过滤残渣、不合格制备物料和未回收管线残留物。
+在采用净乳或分离操作时，记录去除的沉渣质量并保留其处理去向。
 
-- 选定流：按实际残余物确定的 Tiangong 废物流未解决
+- 选定流：乳分离沉渣
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- 数量规则：实测残余物或制备步骤质量平衡差额
+- 数量规则：计量废物质量或由质量平衡计算的数量，并记录实际处理或回收去向
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 合格淡炼乳净产品
+- 归一化基准：每 1 kg 合格净淡炼乳
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：由采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_waste_and_effluent`
 - 来源：`eu-fdm-bat-2019-2031`
-- 数量范围：暂定制备残余物 QA 校验范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：0.20
-  - 单位：kg/kg 参考产品
-  - 基准：每 1 kg 淡炼乳的宽泛首轮制备残余物
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+
+###### 制备产生的不合格乳（`offspec_preparation_milk`）
+
+将不合格标准化乳、制备取样和未回收乳滞留记录为一项废乳交换，不包括分离沉渣。
+
+- 选定流：废乳
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：计量废物质量或由质量平衡计算的数量，并记录实际处理或回收去向
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_waste_and_effluent`
+- 来源：`eu-fdm-bat-2019-2031`
 
 ##### 基本流
 
@@ -272,69 +479,120 @@ sync_with: pcr.en-US.md
 
 记录进入蒸发器或其他声明浓缩系统的标准化热处理乳质量。
 
-- 选定流：未解决的中间产品流
+- 选定流：标准化热处理乳
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- 数量规则：进入浓缩的转移流量计或经核对批次数量
+- 数量规则：进入浓缩的转移仪表数量或经核对批次数量
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 合格淡炼乳净产品
+- 归一化基准：每 1 kg 合格净淡炼乳
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_composition_and_yield`
-- 数量范围：暂定浓缩进料 QA 校验范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：1.0
-  - 上限：5.0
-  - 单位：kg/kg 参考产品
-  - 基准：每 1 kg 淡炼乳的宽泛首轮浓缩进料
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 浓缩用热能或燃料（`concentration_thermal_energy`）
+###### 浓缩用工业蒸汽（`concentration_steam`）
 
-记录可归属于加热和浓缩的蒸汽、热水或燃料。区分外购热能与场内燃料燃烧，并保留分配和热值基准。
+将归属于本过程的工业蒸汽作为单独能源载体投入记录；仅在实际使用该供应时适用本卡。
 
-- 选定流：实际供应的能源载体或燃料流未解决
-- 流属性/单位：Energy / MJ，或采用原始计量单位并记录换算
-- 数量规则：计量用量或依据锅炉和蒸汽记录的工程分配量
+- 选定流：工业蒸汽
+- 流属性/单位：Energy / MJ
+- 数量规则：计量用量，或依据公用工程和运行记录作出的工程分配量
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：技术特定（`technology_specific`）
-- 归一化基准：每 1 kg 合格淡炼乳净产品
+- 归一化基准：每 1 kg 合格净淡炼乳
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：由采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_energy_and_utilities`
 - 来源：`eu-fdm-bat-2019-2031`
-- 数量范围：暂定热能 QA 校验范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0.1
-  - 上限：30
-  - 单位：MJ/kg 参考产品
-  - 基准：可归属于浓缩的刻意宽泛首轮热能
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+
+###### 浓缩用购入工业热（`concentration_purchased_heat`）
+
+将归属于本过程的购入工业热作为单独能源载体投入记录；仅在实际使用该供应时适用本卡。
+
+- 选定流：购入工业热
+- 流属性/单位：Energy / MJ
+- 数量规则：计量用量，或依据公用工程和运行记录作出的工程分配量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_and_utilities`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 场内浓缩供热用天然气（`concentration_natural_gas`）
+
+将归属于本过程的天然气作为单独能源载体投入记录；仅在实际使用该供应时适用本卡。
+
+- 选定流：天然气
+- 流属性/单位：Energy / MJ
+- 数量规则：计量用量，或依据公用工程和运行记录作出的工程分配量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_and_utilities`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 场内浓缩供热用柴油（`concentration_diesel`）
+
+将归属于本过程的柴油作为单独能源载体投入记录；仅在实际使用该供应时适用本卡。
+
+- 选定流：柴油
+- 流属性/单位：Energy / MJ
+- 数量规则：计量用量，或依据公用工程和运行记录作出的工程分配量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_and_utilities`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 场内浓缩供热用轻质燃料油（`concentration_light_fuel_oil`）
+
+将归属于本过程的轻质燃料油作为单独能源载体投入记录；仅在实际使用该供应时适用本卡。
+
+- 选定流：轻质燃料油
+- 流属性/单位：Energy / MJ
+- 数量规则：计量用量，或依据公用工程和运行记录作出的工程分配量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_and_utilities`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 场内浓缩供热用液化石油气（`concentration_lpg`）
+
+将归属于本过程的液化石油气作为单独能源载体投入记录；仅在实际使用该供应时适用本卡。
+
+- 选定流：液化石油气
+- 流属性/单位：Energy / MJ
+- 数量规则：计量用量，或依据公用工程和运行记录作出的工程分配量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_and_utilities`
+- 来源：`eu-fdm-bat-2019-2031`
 
 ###### 浓缩和均质用电（`concentration_electricity`）
 
-记录可归属于本过程的泵、真空系统、蒸发、均质、制冷和控制系统的计量或分配电力。
+将归属于本过程的中压电力作为单独能源载体投入记录；仅在实际使用该供应时适用本卡。
 
-- 选定流：所声明电网或供应的电力产品流未解决
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
-- 数量规则：分项计量电量或有记录的工程分配量
+- 数量规则：计量用量，或依据公用工程和运行记录作出的工程分配量
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：技术特定（`technology_specific`）
-- 归一化基准：每 1 kg 合格淡炼乳净产品
+- 归一化基准：每 1 kg 合格净淡炼乳
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：由采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_energy_and_utilities`
 - 来源：`eu-fdm-bat-2019-2031`
-- 数量范围：暂定电力 QA 校验范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0.01
-  - 上限：5.0
-  - 单位：kWh/kg 参考产品
-  - 基准：可归属于浓缩和均质的刻意宽泛首轮过程电力
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
 
 ##### 废物流
 
@@ -346,87 +604,123 @@ sync_with: pcr.en-US.md
 
 ###### 转入灌装的浓缩乳（`concentrated_milk_to_filling`）
 
-根据实测转移质量和固形物数据计算浓缩乳输出，并核算取样、滞留物、内部返工和损失。
+根据实测转移质量和固形物数据计算浓缩乳产出，并计入取样、滞留、内部返工和废乳。
 
-- 选定流：未解决的中间产品流
+- 选定流：浓缩乳
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- 数量规则：与固形物和水量平衡核对后的实测转移质量
+- 数量规则：与质量和固形物平衡核对的浓缩乳转移质量
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：产品特定（`product_specific`）
-- 归一化基准：每 1 kg 合格淡炼乳净产品
+- 归一化基准：每 1 kg 合格净淡炼乳
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：由采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_composition_and_yield`
 - 来源：`codex-cxs-281-1971`
-- 数量范围：暂定浓缩物产率 QA 校验范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0.8
-  - 上限：1.5
-  - 单位：kg/kg 参考产品
-  - 基准：转入最终灌装的宽泛首轮浓缩乳质量
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 回收的蒸发冷凝水（`recovered_condensate`）
+###### 回收再用的蒸发器冷凝水（`recovered_evaporator_condensate`）
 
-将回收并用于允许用途的冷凝水作为单独内部或外输产品流记录，并标明接收用途；同一数量不得再计入废水和基本流排放行。
+记录用于声明内部或外部用途的回收冷凝水，并从废水和基本流排放卡中排除同一数量。
 
-- 选定流：实际回收冷凝水的水产品流未解决
+- 选定流：蒸发器冷凝水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- 数量规则：冷凝水流量计读数或水量平衡
+- 数量规则：冷凝水仪表读数或水量平衡中回收的部分
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 合格淡炼乳净产品
+- 归一化基准：每 1 kg 合格净淡炼乳
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：由采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_water_and_cleaning`
 - 来源：`eu-fdm-bat-2019-2031`
-- 数量范围：暂定回收冷凝水 QA 校验范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：4.0
-  - 单位：kg/kg 参考产品
-  - 基准：浓缩过程回收冷凝水的宽泛首轮数量
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
 
 ##### 废物流
 
-###### 送往废水处理的冷凝水（`condensate_to_wastewater`）
+###### 送往废水处理的蒸发器冷凝水（`condensate_wastewater`）
 
-仅记录实际送往废水处理或下水道、扣除回收冷凝水后的冷凝水。
+仅记录送往废水处理或下水道的蒸发器冷凝水，并扣除已回收的冷凝水。
 
-- 选定流：对应冷凝水去向的废水流未解决
+- 选定流：乳品加工废水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- 数量规则：按去向的流量计读数或水量平衡余量
+- 数量规则：计量冷凝水排放量或按去向划分的水量平衡余量
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 合格淡炼乳净产品
+- 归一化基准：每 1 kg 合格净淡炼乳
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：由采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_water_and_cleaning`
 - 来源：`eu-fdm-bat-2019-2031`
-- 数量范围：暂定送废水处理冷凝水 QA 校验范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：4.0
-  - 单位：kg/kg 参考产品
-  - 基准：送往废水处理的宽泛首轮冷凝水数量
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
 
 ##### 基本流
 
-###### 场内能源生产的直接排放（`onsite_energy_emissions`）
+###### 场内燃料燃烧产生的化石二氧化碳（`combustion_fossil_carbon_dioxide_air`）
 
-场内燃烧燃料时，应采用经验证的 Tiangong 流身份和实测或经评审的燃料特定排放因子，为各污染物分别实施基本流行。实际燃料和控制技术尚未解决，因此此处不指定汇总排放 UUID 或数值范围。
+记录上述燃料在场内燃烧产生的化石二氧化碳；购入蒸汽或购入热不得使用本卡。
 
-- 选定流：各污染物的基本流未解决
-- 流属性/单位：各污染物采用 Mass / kg
-- 数量规则：实测排放量，或燃料数量乘以有记录且经评审的排放因子
+- 选定流：化石二氧化碳排放至空气
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：实测排放量，或相关活动量乘以经审查的技术特定因子
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：技术特定（`technology_specific`）
-- 归一化基准：每 1 kg 合格淡炼乳净产品
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：燃料清单（`fuel_inventory`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_and_utilities`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 场内燃料燃烧产生的一氧化碳（`combustion_carbon_monoxide_air`）
+
+在有实测数据或经审查的燃料及技术特定因子时，记录场内燃烧产生的一氧化碳。
+
+- 选定流：一氧化碳排放至空气
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：实测排放量，或相关活动量乘以经审查的技术特定因子
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：燃料清单（`fuel_inventory`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_and_utilities`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 场内燃料燃烧产生的氮氧化物（`combustion_nitrogen_oxides_air`）
+
+在有实测数据或经审查的燃料及技术特定因子时，记录场内燃烧产生的氮氧化物。
+
+- 选定流：氮氧化物排放至空气
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：实测排放量，或相关活动量乘以经审查的技术特定因子
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：燃料清单（`fuel_inventory`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_and_utilities`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 场内燃料燃烧产生的硫氧化物（`combustion_sulfur_oxides_air`）
+
+在有实测数据或经审查的燃料及技术特定因子时，记录场内燃烧产生的硫氧化物。
+
+- 选定流：硫氧化物排放至空气
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：实测排放量，或相关活动量乘以经审查的技术特定因子
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：燃料清单（`fuel_inventory`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_and_utilities`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 场内燃料燃烧产生的颗粒物（`combustion_particulate_matter_air`）
+
+在有实测数据或经审查的燃料及技术特定因子时，记录场内燃烧产生的颗粒物。
+
+- 选定流：颗粒物排放至空气
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：实测排放量，或相关活动量乘以经审查的技术特定因子
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
 - 基准类型：燃料清单（`fuel_inventory`）
 - 证据类型：由采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_energy_and_utilities`
@@ -438,73 +732,259 @@ sync_with: pcr.en-US.md
 
 ##### 产品流
 
-###### 灌装用浓缩乳（`concentrated_milk_input`）
+###### 进入灌装的浓缩乳（`concentrated_milk_input`）
 
-记录进入所声明灌装和热稳定路线的浓缩乳。
+记录进入声明灌装和商业热稳定路线的浓缩乳。
 
-- 选定流：未解决的中间产品流
+- 选定流：浓缩乳
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- 数量规则：进入生产线的经校准转移流量计或灌装机质量
+- 数量规则：进入生产线的校准转移仪表质量或灌装机质量
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：产品特定（`product_specific`）
-- 归一化基准：每 1 kg 合格淡炼乳净产品
+- 归一化基准：每 1 kg 合格净淡炼乳
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_output_and_packaging`
-- 数量范围：暂定灌装投入 QA 校验范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：1.0
-  - 上限：1.5
-  - 单位：kg/kg 参考产品
-  - 基准：进入灌装的宽泛首轮浓缩乳质量
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 初级和次级包装（`packaging_materials`）
+###### 马口铁罐罐身（`tinplate_can_body`）
 
-按实际质量记录各包装材料，包括罐、封口、标签、纸箱、无菌包装或其他声明形式；包装质量不得计入参考产品质量。
+记录分配给合格包装产品的马口铁钢罐质量；仅适用于使用该组件的包装路线。
 
-- 选定流：各包装材料的 Tiangong 产品流未解决
+- 选定流：马口铁钢罐罐身
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- 数量规则：采购或领用记录与包装产品单位和包装废料核对
+- 数量规则：组件领用质量减去退回可用库存，并与包装件数和组件废料核对
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：产品特定（`product_specific`）
-- 归一化基准：每 1 kg 合格淡炼乳净产品
+- 归一化基准：每 1 kg 合格净淡炼乳
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：由采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_output_and_packaging`
 - 来源：`eu-fdm-bat-2019-2031`
-- 数量范围：暂定包装质量 QA 校验范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0.001
-  - 上限：0.50
-  - 单位：kg/kg 参考产品
-  - 基准：总包装质量的刻意宽泛首轮估计
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 灌装、稳定处理和冷却用能（`final_process_energy`）
+###### 马口铁罐端盖（`tinplate_can_end`）
 
-将可归属于灌装、商业热稳定和冷却的电力、蒸汽、热水、冷量或燃料，按实际能源载体分别实施流行。
+记录分配给合格包装产品的马口铁钢制封盖质量；仅适用于使用该组件的包装路线。
 
-- 选定流：各实际供应的能源载体或电力流未解决
-- 流属性/单位：适用时采用 Energy / kWh 或 MJ
-- 数量规则：分项计量用量或有记录的工程分配量
+- 选定流：马口铁钢罐端盖
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：组件领用质量减去退回可用库存，并与包装件数和组件废料核对
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_output_and_packaging`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 纸标签（`paper_label`）
+
+记录分配给合格包装产品的纸标签质量；仅适用于使用该组件的包装路线。
+
+- 选定流：纸标签
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：组件领用质量减去退回可用库存，并与包装件数和组件废料核对
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_output_and_packaging`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 瓦楞运输箱（`corrugated_case`）
+
+记录分配给合格包装产品的瓦楞纸箱质量；仅适用于使用该组件的包装路线。
+
+- 选定流：瓦楞纸箱
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：组件领用质量减去退回可用库存，并与包装件数和组件废料核对
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_output_and_packaging`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 无菌复合纸盒（`aseptic_carton`）
+
+记录分配给合格包装产品的无菌复合纸盒质量；仅适用于使用该组件的包装路线。
+
+- 选定流：无菌复合纸盒
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：组件领用质量减去退回可用库存，并与包装件数和组件废料核对
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_output_and_packaging`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 塑料封盖（`plastic_closure`）
+
+记录分配给合格包装产品的聚乙烯封盖质量；仅适用于使用该组件的包装路线。
+
+- 选定流：聚乙烯封盖
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：组件领用质量减去退回可用库存，并与包装件数和组件废料核对
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_output_and_packaging`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 灌装、热稳定和冷却用电（`final_process_electricity`）
+
+将归属于本过程的中压电力作为单独能源载体投入记录；仅在实际使用该供应时适用本卡。
+
+- 选定流：中压电力
+- 流属性/单位：Energy / kWh
+- 数量规则：计量用量，或依据公用工程和运行记录作出的工程分配量
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：技术特定（`technology_specific`）
-- 归一化基准：每 1 kg 合格淡炼乳净产品
+- 归一化基准：每 1 kg 合格净淡炼乳
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：由采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_energy_and_utilities`
 - 来源：`eu-fdm-bat-2019-2031`
-- 数量范围：暂定最终过程用能 QA 校验范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0.01
-  - 上限：20
-  - 单位：MJ-equivalent/kg 参考产品
-  - 基准：经记录换算后，灌装、热稳定和冷却的刻意宽泛首轮用能
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+
+###### 最终热稳定用工业蒸汽（`final_process_steam`）
+
+将归属于本过程的工业蒸汽作为单独能源载体投入记录；仅在实际使用该供应时适用本卡。
+
+- 选定流：工业蒸汽
+- 流属性/单位：Energy / MJ
+- 数量规则：计量用量，或依据公用工程和运行记录作出的工程分配量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_and_utilities`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 最终热稳定用购入工业热（`final_process_purchased_heat`）
+
+将归属于本过程的购入工业热作为单独能源载体投入记录；仅在实际使用该供应时适用本卡。
+
+- 选定流：购入工业热
+- 流属性/单位：Energy / MJ
+- 数量规则：计量用量，或依据公用工程和运行记录作出的工程分配量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_and_utilities`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 最终过程直接供热用天然气（`final_process_natural_gas`）
+
+将归属于本过程的天然气作为单独燃料投入记录；仅在灌装、热稳定或冷却直接燃烧该燃料时适用本卡。
+
+- 选定流：天然气
+- 流属性/单位：Energy / MJ
+- 数量规则：计量用量，或依据公用工程和运行记录作出的工程分配量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_and_utilities`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 最终过程直接供热用柴油（`final_process_diesel`）
+
+将归属于本过程的柴油作为单独燃料投入记录；仅在灌装、热稳定或冷却直接燃烧该燃料时适用本卡。
+
+- 选定流：柴油
+- 流属性/单位：Energy / MJ
+- 数量规则：计量用量，或依据公用工程和运行记录作出的工程分配量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_and_utilities`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 最终过程直接供热用轻质燃料油（`final_process_light_fuel_oil`）
+
+将归属于本过程的轻质燃料油作为单独燃料投入记录；仅在灌装、热稳定或冷却直接燃烧该燃料时适用本卡。
+
+- 选定流：轻质燃料油
+- 流属性/单位：Energy / MJ
+- 数量规则：计量用量，或依据公用工程和运行记录作出的工程分配量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_and_utilities`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 最终过程直接供热用液化石油气（`final_process_lpg`）
+
+将归属于本过程的液化石油气作为单独燃料投入记录；仅在灌装、热稳定或冷却直接燃烧该燃料时适用本卡。
+
+- 选定流：液化石油气
+- 流属性/单位：Energy / MJ
+- 数量规则：计量用量，或依据公用工程和运行记录作出的工程分配量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_and_utilities`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 氨制冷剂补充量（`ammonia_refrigerant_input`）
+
+记录归属冷却系统的氨充注或补充量；仅在声明制冷剂为氨时适用。
+
+- 选定流：制冷剂级氨
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：分配至声明生产期的实测采购、充注或补充质量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_energy_and_utilities`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 二氧化碳制冷剂补充量（`carbon_dioxide_refrigerant_input`）
+
+记录归属冷却系统的二氧化碳充注或补充量；仅在声明制冷剂为二氧化碳时适用。
+
+- 选定流：制冷剂级二氧化碳
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：分配至声明生产期的实测采购、充注或补充质量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_energy_and_utilities`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 水制冷剂补充量（`water_refrigerant_input`）
+
+记录归属冷却系统的水充注或补充量；仅在声明制冷剂为水时适用。
+
+- 选定流：制冷用水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：分配至声明生产期的实测采购、充注或补充质量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_energy_and_utilities`
+- 来源：`eu-fdm-bat-2019-2031`
 
 ##### 废物流
 
@@ -516,76 +996,240 @@ sync_with: pcr.en-US.md
 
 ###### 合格淡炼乳（`evaporated_milk_reference_product`）
 
-该输出为定量参考。确定合格产品净质量时，应排除不合格品、样品、管线滞留产品和包装质量。
+本卡是定量参考输出。合格净产品质量应扣除拒收品、取样、管线滞留产品和包装质量。
 
-- 选定流：Evaporated milk / 淡奶 `e59aaeef-61a7-45af-b252-d70036a584d3`
+- 选定流：淡奶 `e59aaeef-61a7-45af-b252-d70036a584d3`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- 数量规则：由合格产品净质量归一化后恰好为 1 kg
+- 数量规则：依据合格净产品质量归一化后恰为 1 kg
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：产品特定（`product_specific`）
-- 归一化基准：每 1 kg 合格淡炼乳净产品
+- 归一化基准：每 1 kg 合格净淡炼乳
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：由采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_output_and_packaging`
 - 来源：`codex-cxs-281-1971`
-- 数量范围：参考输出归一化检查
+- 数量范围：参考输出归一化恒等式
   - 范围角色：允许范围（`allowed_range`）
   - 下限：1.0
   - 上限：1.0
   - 单位：kg/kg 参考产品
-  - 基准：归一化后的合格参考输出
+  - 基准：精确归一化的合格参考输出，不是经验观测值
   - 基准类型：参考流（`reference_flow`）
   - 证据类型：由采集数据计算（`calculated_from_collection`）
 
 ##### 废物流
 
-###### 不合格产品和灌装损失（`final_product_losses`）
+###### 不合格淡炼乳和灌装损失（`offspec_evaporated_milk`）
 
-按回收、返工、处理或处置路线记录开机、停机、换产、过量灌装、取样、泄漏和不合格成品。
+将开机、停机、过量灌装、取样、泄漏和拒收成品乳记录为一项废乳交换，并保留实际去向。
 
-- 选定流：按实际物料和去向确定的 Tiangong 废物流未解决
+- 选定流：废淡炼乳
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- 数量规则：灌装和不合格品记录与产品质量平衡核对
+- 数量规则：计量废物质量或由质量平衡计算的数量，并记录实际处理或回收去向
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 合格淡炼乳净产品
+- 归一化基准：每 1 kg 合格净淡炼乳
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：由采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_waste_and_effluent`
 - 来源：`eu-fdm-bat-2019-2031`
-- 数量范围：暂定最终产品损失 QA 校验范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：0.30
-  - 单位：kg/kg 参考产品
-  - 基准：宽泛首轮灌装和成品损失
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 包装废料（`packaging_scrap`）
+###### 马口铁包装废料（`waste_tinplate_packaging`）
 
-按材料及实际回收或处置路线记录破损、裁切、不合格或未使用的包装。
+记录拒收或损坏的马口铁罐身和端盖质量及实际回收或处置路线。
 
-- 选定流：各包装材料的 Tiangong 废物流未解决
+- 选定流：废马口铁钢
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- 数量规则：包装领用量减包装产品所用包装和退回的可用库存
+- 数量规则：计量废物质量或由质量平衡计算的数量，并记录实际处理或回收去向
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 合格淡炼乳净产品
+- 归一化基准：每 1 kg 合格净淡炼乳
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：由采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_output_and_packaging`
 - 来源：`eu-fdm-bat-2019-2031`
-- 数量范围：暂定包装废料 QA 校验范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：0.10
-  - 单位：kg/kg 参考产品
-  - 基准：宽泛首轮包装废料
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+
+###### 废纸标签（`waste_paper_labels`）
+
+记录拒收、裁切或未使用的纸标签质量及实际回收或处置路线。
+
+- 选定流：废纸标签
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：计量废物质量或由质量平衡计算的数量，并记录实际处理或回收去向
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_output_and_packaging`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 废瓦楞运输箱（`waste_corrugated_cases`）
+
+记录损坏或未使用的瓦楞运输箱质量及实际回收或处置路线。
+
+- 选定流：废瓦楞纸板
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：计量废物质量或由质量平衡计算的数量，并记录实际处理或回收去向
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_output_and_packaging`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 废塑料封盖（`waste_plastic_closures`）
+
+记录拒收或未使用的聚乙烯封盖质量及实际回收或处置路线。
+
+- 选定流：废聚乙烯
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：计量废物质量或由质量平衡计算的数量，并记录实际处理或回收去向
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_output_and_packaging`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 废无菌复合纸盒（`waste_aseptic_cartons`）
+
+记录拒收、裁切或未使用的无菌复合纸盒质量及实际回收或处置路线。
+
+- 选定流：废无菌复合纸盒
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：计量废物质量或由质量平衡计算的数量，并记录实际处理或回收去向
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_output_and_packaging`
+- 来源：`eu-fdm-bat-2019-2031`
 
 ##### 基本流
+
+###### 排放至空气的氨制冷剂（`ammonia_refrigerant_air`）
+
+依据充注、回收、补充和库存记录计算排放至空气的氨泄漏量；仅适用于氨制冷路线。
+
+- 选定流：氨排放至空气
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：实测释放量或归属冷却系统的制冷剂质量平衡
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_and_utilities`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 排放至空气的二氧化碳制冷剂（`carbon_dioxide_refrigerant_air`）
+
+依据充注、回收、补充和库存记录计算排放至空气的二氧化碳制冷剂泄漏量；仅适用于二氧化碳制冷路线。
+
+- 选定流：二氧化碳排放至空气
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：实测释放量或归属冷却系统的制冷剂质量平衡
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_and_utilities`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 排放至空气的水制冷剂（`water_refrigerant_air`）
+
+依据充注、回收、补充和库存记录计算排放至空气的水制冷剂损失；仅适用于水制冷路线。
+
+- 选定流：水蒸气排放至空气
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：实测释放量或归属冷却系统的制冷剂质量平衡
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_and_utilities`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 最终过程直接燃料燃烧产生的化石二氧化碳（`final_combustion_fossil_carbon_dioxide_air`）
+
+记录最终过程燃料直接燃烧产生的化石二氧化碳；电力、购入蒸汽或购入热不得使用本卡。
+
+- 选定流：化石二氧化碳排放至空气
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：实测排放量，或相关燃料数量乘以有记录且经审查的技术特定因子
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：燃料清单（`fuel_inventory`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_and_utilities`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 最终过程直接燃料燃烧产生的一氧化碳（`final_combustion_carbon_monoxide_air`）
+
+在有实测数据或经审查的燃料及技术特定因子时，记录最终过程燃料直接燃烧产生的一氧化碳。
+
+- 选定流：一氧化碳排放至空气
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：实测排放量，或相关燃料数量乘以有记录且经审查的技术特定因子
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：燃料清单（`fuel_inventory`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_and_utilities`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 最终过程直接燃料燃烧产生的氮氧化物（`final_combustion_nitrogen_oxides_air`）
+
+在有实测数据或经审查的燃料及技术特定因子时，记录最终过程燃料直接燃烧产生的氮氧化物。
+
+- 选定流：氮氧化物排放至空气
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：实测排放量，或相关燃料数量乘以有记录且经审查的技术特定因子
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：燃料清单（`fuel_inventory`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_and_utilities`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 最终过程直接燃料燃烧产生的硫氧化物（`final_combustion_sulfur_oxides_air`）
+
+在有实测数据或经审查的燃料及技术特定因子时，记录最终过程燃料直接燃烧产生的硫氧化物。
+
+- 选定流：硫氧化物排放至空气
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：实测排放量，或相关燃料数量乘以有记录且经审查的技术特定因子
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：燃料清单（`fuel_inventory`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_and_utilities`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 最终过程直接燃料燃烧产生的颗粒物（`final_combustion_particulate_matter_air`）
+
+在有实测数据或经审查的燃料及技术特定因子时，记录最终过程燃料直接燃烧产生的颗粒物。
+
+- 选定流：颗粒物排放至空气
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：实测排放量，或相关燃料数量乘以有记录且经审查的技术特定因子
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：燃料清单（`fuel_inventory`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_energy_and_utilities`
+- 来源：`eu-fdm-bat-2019-2031`
 
 ### 过程：清洗和废水管理（`cleaning_and_wastewater_management`）
 
@@ -593,51 +1237,80 @@ sync_with: pcr.en-US.md
 
 ##### 产品流
 
-###### 清洗和过程用水（`cleaning_water`）
+###### 饮用级过程和清洗用水（`potable_process_water`）
 
-记录用于就地清洗、设备和区域清洗、冷却补水及其他应归属用途的饮用水或处理水。回收蒸发冷凝水应单独记录，并仅按其实际再利用量抵扣。
+记录清洁原位系统、设备及区域清洗和归属过程服务所用的新鲜饮用水；不包括单独计量的回收冷凝水。
 
-- 选定流：实际供水的 Tiangong 水产品流未解决
+- 选定流：饮用水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- 数量规则：分项计量水量加有记录的分配量，扣除单独计量的回用水量
+- 数量规则：分表计量用水加有记录的分配量，扣除单独记录的回收水用量
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 合格淡炼乳净产品
+- 归一化基准：每 1 kg 合格净淡炼乳
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：由采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_water_and_cleaning`
 - 来源：`eu-fdm-bat-2019-2031`
-- 数量范围：暂定清洗用水 QA 校验范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0.1
-  - 上限：30
-  - 单位：kg/kg 参考产品
-  - 基准：应归属过程和清洗用水的刻意宽泛首轮数量
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 清洗剂和消毒剂（`cleaning_chemicals`）
+###### 氢氧化钠清洗剂（`sodium_hydroxide_cleaner`）
 
-按供应产品质量或体积记录各种清洁剂、酸、碱、杀菌剂和消毒剂，并保留浓度和密度换算。
+使用氢氧化钠时，记录归属清洗循环的供应量，并保留供应浓度和密度。
 
-- 选定流：各实际化学品的 Tiangong 产品流未解决
-- 流属性/单位：Mass / kg 供应产品
-- 数量规则：领用记录或加药系统总量分配到淡炼乳生产
+- 选定流：氢氧化钠
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：计量加药系统或领用记录中的氢氧化钠溶液供应质量，并保留浓度和密度
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 合格淡炼乳净产品
+- 归一化基准：每 1 kg 合格净淡炼乳
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：由采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_water_and_cleaning`
 - 来源：`eu-fdm-bat-2019-2031`
-- 数量范围：暂定清洗化学品 QA 校验范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：0.20
-  - 单位：kg 供应产品/kg 参考产品
-  - 基准：应归属清洗剂质量的刻意宽泛首轮估计
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
+
+###### 硝酸清洗剂（`nitric_acid_cleaner`）
+
+使用硝酸时，记录归属清洗循环的供应量，并保留供应浓度和密度。
+
+- 选定流：硝酸
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：计量加药系统或领用记录中的硝酸溶液供应质量，并保留浓度和密度
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_water_and_cleaning`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 过氧乙酸消毒剂（`peracetic_acid_disinfectant`）
+
+使用过氧乙酸时，记录归属消毒循环的供应量，并保留供应浓度和密度。
+
+- 选定流：过氧乙酸
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：计量加药系统或领用记录中的过氧乙酸溶液供应质量，并保留浓度和密度
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_water_and_cleaning`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 次氯酸钠消毒剂（`sodium_hypochlorite_disinfectant`）
+
+使用次氯酸钠时，记录归属消毒循环的供应量，并保留供应浓度和密度。
+
+- 选定流：次氯酸钠
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：计量加药系统或领用记录中的次氯酸钠溶液供应质量，并保留浓度和密度
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_water_and_cleaning`
+- 来源：`eu-fdm-bat-2019-2031`
 
 ##### 废物流
 
@@ -649,69 +1322,112 @@ sync_with: pcr.en-US.md
 
 ##### 废物流
 
-###### 送处理的过程和清洗废水（`process_wastewater`）
+###### 送往处理的乳品加工废水（`dairy_process_wastewater`）
 
-按去向记录送往场内处理、外部处理系统或下水道的废水。包括清洗水、含产品冲洗水和送往废水系统的冷凝水，并避免与单独回收的冷凝水重复。
+将送往场内处理、下水道或外部处理的废水作为一项带去向标签的废物流记录；包括含产品冲洗水并避免与回收冷凝水重叠。
 
-- 选定流：对应实际去向的 Tiangong 废水流未解决
+- 选定流：乳品加工废水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- 数量规则：废水流量计或水量平衡，区分去向并披露其中的产品损失含量
+- 数量规则：按处理去向拆分的出水仪表数量或水量平衡结果
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 合格淡炼乳净产品
+- 归一化基准：每 1 kg 合格净淡炼乳
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：由采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_waste_and_effluent`
 - 来源：`eu-fdm-bat-2019-2031`
-- 数量范围：暂定废水 QA 校验范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：30
-  - 单位：kg/kg 参考产品
-  - 基准：送处理或下水道废水的刻意宽泛首轮数量
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
 
-###### 废水处理污泥（`wastewater_sludge`）
+###### 生物法废水处理污泥（`biological_wastewater_sludge`）
 
-场址运行废水处理时，按实测质量、干物质含量和实际回收或处置去向记录脱水污泥或其他残余物。
+运行场内生物处理时，记录外运脱水污泥，并保留湿质量、干物质含量及实际回收或处置去向。
 
-- 选定流：对应实际污泥的 Tiangong 废物流未解决
-- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg，并声明湿基和干物质基准
-- 数量规则：实测外运质量，并在可获得时换算干物质
+- 选定流：生物法废水处理污泥
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：实测外运污泥质量，并保留干物质换算
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 合格淡炼乳净产品
+- 归一化基准：每 1 kg 合格净淡炼乳
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_waste_and_effluent`
 - 来源：`eu-fdm-bat-2019-2031`
-- 数量范围：暂定处理污泥 QA 校验范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：0.20
-  - 单位：kg 湿污泥/kg 参考产品
-  - 基准：宽泛首轮场内处理残余物
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：推理估算（`reasoned_estimate`）
 
 ##### 基本流
 
-###### 排入环境的处理后出水（`treated_effluent_release`）
+###### 排入淡水的处理后出水（`treated_effluent_water_freshwater`）
 
-报告场址直接排放处理后出水时，应采用经验证的 Tiangong 身份以及实测浓度和排水量记录，分别实施水和污染物基本流行。废水送往外部处理时，应保留为废物流，不得同时报告为直接基本流排放。
+记录场内处理后直接排入淡水的水质量；不得将同一水量同时报告为送外部处理的废水。
 
-- 选定流：水和各污染物基本流未解决
-- 流属性/单位：水及各污染物采用 Mass / kg
-- 数量规则：实测排水体积乘以实测污染物浓度，并记录单位和密度换算
+- 选定流：水排放至淡水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：实测排放体积经有记录的密度换算为质量
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 合格淡炼乳净产品
+- 归一化基准：每 1 kg 合格净淡炼乳
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：由采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_waste_and_effluent`
 - 来源：`eu-fdm-bat-2019-2031`
 
+###### 排入淡水的化学需氧量（`chemical_oxygen_demand_freshwater`）
+
+依据相匹配的排放体积和代表性浓度，记录直接排放处理后出水中的化学需氧量负荷。
+
+- 选定流：化学需氧量排放至淡水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：相匹配的排放体积乘以实测化学需氧量浓度并完成单位换算
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_waste_and_effluent`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 排入淡水的硝酸盐（`nitrate_freshwater`）
+
+监测硝酸盐时，依据相匹配的排放体积和代表性硝酸盐浓度记录处理后出水中的硝酸盐。
+
+- 选定流：硝酸盐排放至淡水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：相匹配的排放体积乘以实测硝酸盐浓度并完成单位换算
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_waste_and_effluent`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 排入淡水的磷酸盐（`phosphate_freshwater`）
+
+监测磷酸盐时，依据相匹配的排放体积和代表性磷酸盐浓度记录处理后出水中的磷酸盐。
+
+- 选定流：磷酸盐排放至淡水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：相匹配的排放体积乘以实测磷酸盐浓度并完成单位换算
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_waste_and_effluent`
+- 来源：`eu-fdm-bat-2019-2031`
+
+###### 排入淡水的氯化物（`chloride_freshwater`）
+
+监测氯化物时，依据相匹配的排放体积和代表性氯化物浓度记录处理后出水中的氯化物。
+
+- 选定流：氯化物排放至淡水
+- 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- 数量规则：相匹配的排放体积乘以实测氯化物浓度并完成单位换算
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 合格净淡炼乳
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 采集协议：`cp_waste_and_effluent`
+- 来源：`eu-fdm-bat-2019-2031`
 ## 7. 分配与共产品处理
 
 | rule_id | 适用对象 | 规则 | source_ids |
@@ -754,7 +1470,7 @@ sync_with: pcr.en-US.md
 | `dq_temporal` | 所有前景数据 | 采用对产品和技术具有代表性的声明期间，覆盖每个合格批次或生产活动及所有实质性运行模式；识别维护、停机、开机和异常事件并说明排除理由。 | 生产日历；仪表序列；事件日志；排除记录；与 `eu-pef-2021-2279` 一致的技术、地域、时间和精度评审 |
 | `dq_completeness` | 物料和公用工程平衡 | 纳入所有实质性实测前景投入、输出、废物和直接排放；明确列出并说明每个遗漏流，不得通过通用截断遗漏危险或依法受控排放。 | 完整性计算；遗漏流登记；评审签字；`eu-pef-2021-2279` 数据质量评审 |
 | `dq_mass_balance` | 从接收到放行产品 | 校验前应定义场址和批次特定的调查阈值；凡未解释的总质量或乳固形物差额超过该阈值，均应调查并保留纠正措施决定。本 PCR 不规定统一百分比。 | 签字的质量和固形物平衡；有记录的场址阈值；纠正措施记录 |
-| `dq_source_replacement` | 所有暂定范围 | 所有 `reasoned_estimate` 范围均为非约束候选 QA 筛选值；在用于发布关键用途前，应以实证前景分布或经评审的产品特定证据替换。 | 范围评审日志；前景分布；批准的来源记录 |
+| `dq_range_evidence` | 重要清单流 | 不得根据单篇出版物、单个工厂、单批次、单一情景或单点数值编写经验范围。必须有至少两份独立原始来源且前景边界、单位和归一化基准兼容，或有经评审的前景分布；否则范围证据缺口保持未解决。精确参考流归一化恒等式不是经验范围。 | 原始来源全文；边界和单位兼容性评审；前景分布；未解决范围登记表 |
 
 ## 9. 校验规则
 
@@ -765,7 +1481,7 @@ sync_with: pcr.en-US.md
 | `validate_process_coverage` | 前景过程图 | 如接收、标准化/热处理、浓缩、最终灌装/热稳定/冷却或应归属清洗被遗漏且无有记录的路线特定解释，则失败。 | `eu-fdm-bat-2019-2031` |
 | `validate_mass_and_solids_balance` | 物料平衡 | 总质量或乳固形物不平衡超过声明的场址和批次特定调查阈值时标记；差额未解释、内部返工重复计算或除水去向重叠时失败。 | `codex-cxs-281-1971`, `eu-fdm-bat-2019-2031` |
 | `validate_wastewater_route` | 废物流和基本流 | 同一废水或冷凝水同时报告为送处理废物流和直接基本流排放，或含产品损失与清洗化学品没有去向时失败。 | `eu-fdm-bat-2019-2031` |
-| `validate_provisional_ranges` | 清单数量和 QA | 前景结果超出暂定 QA 校验范围时标记调查，但不得替换前景值，也不得将 `reasoned_estimate` 视为允许范围；发布关键约束仍为暂定且缺少接受证据时，发布评审失败。 |  |
+| `validate_range_evidence` | 清单数量范围 | 若经验范围复制单个案例或单点数值、缺少至少两份边界/单位/基准兼容的独立原始来源，或未说明推断方法与适用性，则校验失败。仅对已声明的物理、规范或归一化恒等式允许上下限相等。 |  |
 | `validate_allocation` | 共享操作和共产品 | 共享操作分配、外输共产品、内部返工或回收抵扣具有实质性，但未披露并核对方法、驱动因素、份额、数量和敏感性时失败。 | `eu-pef-2021-2279` |
 
 ## 10. 发布数据集画像
@@ -777,7 +1493,7 @@ sync_with: pcr.en-US.md
 | allowed_use | 将本工厂门数据集与有代表性的上游乳、物料、能源、包装、运输和下游情景组合，并保留声明产品限定信息的产品碳足迹或 LCA 研究 |
 | excluded_use | 独立的从摇篮到坟墓声明；作为加糖炼乳、浓缩奶油、乳粉、乳类似物或调味产品的代理；在组成、边界、分配、地域、技术和数据期间不等同的情况下作比较声明 |
 | required_metadata | 规范 PCR id；参考 UUID；产品子类和组成；乳畜种类和物料路线；复原状态；工厂地域；技术和热稳定路线；包装；生产期间；边界；分配；上游数据集；数据所有者；评审状态 |
-| required_quality_disclosure | 一手数据占比；仪表和实验室覆盖；时间和场址覆盖；质量和固形物平衡闭合；水和能源分配；废物和废水去向；未解决 UUID；暂定范围；排除项；不确定性和评审决定 |
+| required_quality_disclosure | 一手数据占比；仪表和实验室覆盖；时间和场址覆盖；质量和固形物平衡闭合；水和能源分配；废物和废水去向；未解决 UUID 和范围证据缺口；排除项；不确定性和评审决定 |
 | update_trigger | 配方、乳来源、组成类别、浓缩或灭菌技术、包装、工厂能源或水系统、分配、废物路线、产品流身份、适用标准发生实质变化，或变化超过数据所有者的重要性阈值 |
 
 ## 11. 数据源

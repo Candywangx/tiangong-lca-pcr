@@ -1,10 +1,1077 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "34232"
-  title: "Phosphoric acid"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.other-transportable-goods-except-metal-products-machinery-and-equipment.basic-chemicals.phosphoric-acid"
+  classification_refs: "CPC 3.0:34232 Phosphoric acid (exact classification context)"
+  covered_products: "Orthophosphoric acid solutions or acid product represented on contained-H3PO4 basis; wet-process, furnace/thermal-process, and explicitly declared purification or concentration variants"
+  excluded_products: "Phosphoric esters; phosphate salts and fertilisers; polyphosphoric or superphosphoric acid not converted to orthophosphoric-acid basis; wet-process weak acid with gypsum slurry when sold only as an intermediate; downstream formulations and uses"
+  representative_product: "Finished phosphoric acid at producer gate, with delivered H3PO4 mass fraction, grade, route, physical state, and location declared"
+  production_route: "Route-specific foreground modelling: wet-process acidulation, separation and concentration; or thermal oxidation and hydration; plus purification/finishing when applicable"
+  market_state: "Bulk liquid or other declared physical state at producer gate before distribution; concentration and grade are mandatory qualifiers"
+functional_unit:
+  what: "Contained orthophosphoric acid (H3PO4) in the qualified phosphoric-acid product at producer gate"
+  how_much: "1 kg contained H3PO4"
+  how_well: "Delivered H3PO4 mass fraction, grade/specification, production route, impurity or purity basis, physical state, and geography declared"
+  how_long_or_cycle: "One reporting period representative of the declared production campaign or annual production mix"
+  reference_flow_link: "Mass of delivered product = 1 kg H3PO4 / measured H3PO4 mass fraction; all foreground inventory is normalized to this contained-H3PO4 basis"
+system_boundary:
+  rules:
+    - rule_id: boundary_route_gate
+      applies_to: "Foreground production chain"
+      rule: "Include all operated unit processes from received route feedstocks through reaction, separation, concentration or hydration, route-specific purification, emission control, residue handling, storage, and loading to the declared producer-gate product."
+      source_ids:
+        - us-epa-phosphoric-acid-supply-chain-2023
+        - us-epa-ap42-phosphoric-acid
+        - eu-jrc-lvic-aaf-bref-2007
+    - rule_id: boundary_wet_process
+      applies_to: "Wet-process route"
+      rule: "Include phosphate-rock preparation when on site, sulfuric-acid attack, digestion/crystallisation, filtration or solid-liquid separation, weak-acid handling, concentration, gas scrubbing, phosphogypsum handling, process-water recycle, and wastewater treatment when operated."
+      source_ids:
+        - us-epa-ap42-phosphoric-acid
+        - eu-jrc-lvic-aaf-bref-2007
+    - rule_id: boundary_thermal_process
+      applies_to: "Thermal/furnace route"
+      rule: "Include elemental-phosphorus handling, oxidation/combustion, hydration or absorption, cooling, off-gas control, and concentration or purification needed for the declared product. Upstream elemental-phosphorus production remains linked as an upstream dataset unless performed at the reporting site."
+      source_ids:
+        - us-epa-phosphoric-acid-supply-chain-2023
+        - us-epa-ap42-phosphoric-acid
+    - rule_id: boundary_no_silent_exclusion
+      applies_to: "All routes"
+      rule: "Justify and disclose every excluded material or emission stream; do not omit fluoride-bearing gas, particulate, process wastewater, phosphogypsum, spent treatment material, or off-spec acid merely because it is recycled, sold, or treated."
+      source_ids:
+        - eu-jrc-lvic-aaf-bref-2007
+        - eu-environmental-footprint-recommendation-2021
+boundary_abstraction:
+  declared_starting_condition: "Purchased phosphate rock and sulfuric acid for wet process, or purchased elemental phosphorus and oxidant/water for thermal process, plus purchased utilities and treatment materials, received at the producer site"
+  starting_condition_role: "Foreground plant-gate starting condition; extraction and production of purchased inputs are upstream datasets"
+  product_classification_scope: "Orthophosphoric acid product within CPC 3.0:34232; route-specific intermediate acids remain inputs or internal outputs and do not silently redefine the canonical product"
+  recursive_input_rule: "Purchased phosphoric acid entering concentration, purification, blending, or recycle is recorded as a technosphere input with supplier dataset and H3PO4 concentration; do not recursively claim its production inside the current foreground boundary"
+  upstream_dataset_requirement: "Link each purchased material, energy carrier, electricity, water supply, transport service, and waste-treatment input to a geographically and technologically representative upstream dataset"
+  disclosure: "Declare route, product grade, delivered H3PO4 mass fraction, included purification/concentration steps, treatment and destination of phosphogypsum or other residues, allocation method, geography, and reporting period"
+reference_flow_definition:
+  reference_amount: "1 kg contained H3PO4 in delivered phosphoric acid"
+  product_flow_ref:
+    name: "Phosphoric acid"
+    uuid: "9396269a-cf0d-4b38-ae6d-ab6b91e1dc87"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "delivered H3PO4 mass fraction"
+    - "concentration test basis"
+    - "product grade/specification"
+    - wet
+    - "thermal/furnace"
+    - "or other declared route"
+    - "purification steps"
+    - "physical state"
+    - "producer-gate condition"
+    - geography
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_h3po4_mass
+    applies_to: "Reference product and all normalized inventory"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine delivered product mass by a calibrated mass record and determine H3PO4 mass fraction by the declared product test method; normalize as delivered mass multiplied by H3PO4 mass fraction. Do not treat P2O5 percentage as H3PO4 percentage without a documented conversion."
+  - id: solution_water_consistency
+    applies_to: "Product water and concentration balance"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report product concentration on one declared wet or dry analytical basis and preserve the measured solution-water balance; water evaporated during concentration is not product H3PO4."
+  - id: route_separation
+    applies_to: "Route-specific inventory"
+    required_property_ref:
+      name: "Mass and energy properties used by each record"
+      uuid: ""
+    required_unit: "kg; kWh; MJ"
+    rule: "Keep wet-process and thermal/furnace-process production in separate foreground process chains or separately weighted production-mix components; disclose weights before aggregation."
+process_map:
+  - id: wet_acidulation_separation
+    name: "Wet-process acidulation and separation"
+    inclusion: "conditional"
+    inclusion_condition: "Required when phosphate rock is attacked with sulfuric acid to produce wet-process acid"
+    role: "Foreground reaction, crystallisation, filtration, gas control, and phosphogypsum separation"
+    quantitative_reference: "1 kg contained H3PO4 in weak acid leaving separation"
+  - id: wet_concentration
+    name: "Wet-process concentration and finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Required when wet-process weak acid is concentrated or finished at the reporting site"
+    role: "Foreground evaporation, concentration, cooling, scrubbing, and product finishing"
+    quantitative_reference: "1 kg contained H3PO4 in finished wet-process acid"
+  - id: thermal_oxidation_hydration
+    name: "Thermal oxidation and hydration"
+    inclusion: "conditional"
+    inclusion_condition: "Required when elemental phosphorus is oxidised and hydrated to phosphoric acid"
+    role: "Foreground furnace/combustion, hydration/absorption, cooling, gas control, and finishing"
+    quantitative_reference: "1 kg contained H3PO4 in finished thermal-process acid"
+  - id: purification
+    name: "Product purification"
+    inclusion: "conditional"
+    inclusion_condition: "Required when extraction, adsorption, precipitation, ion exchange, or another purification step is used to meet the declared grade"
+    role: "Foreground purification and associated residue/wastewater handling"
+    quantitative_reference: "1 kg contained H3PO4 in purified acid"
+  - id: storage_loading
+    name: "Qualified product storage and loading"
+    inclusion: "required"
+    inclusion_condition: "Always required for producer-gate delivery"
+    role: "Final quality release, storage losses, transfer, and loading"
+    quantitative_reference: "1 kg contained H3PO4 in released product"
+process_inventory:
+  - id: wet_acidulation_separation
+    label: "Wet-process acidulation and separation"
+    inputs:
+      product:
+        - row_id: phosphate_rock_input
+          role: "Prepared phosphate rock"
+          name: "Phosphate rock, declared grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record dry and as-received phosphate rock, P2O5 assay, moisture, carbonate and fluoride-relevant composition, and supplier origin."
+          amount:
+            expression: "measured dry and as-received mass charged to acidulation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg contained H3PO4 in weak acid output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_materials
+              source_ids:
+                - us-epa-ap42-phosphoric-acid
+                - eu-jrc-lvic-aaf-bref-2007
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "10"
+                unit: "kg"
+                basis: "per 1 kg contained H3PO4 in weak acid output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: sulfuric_acid_input
+          role: "Sulfuric acid"
+          name: "Sulfuric acid, declared concentration"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record delivered acid mass, assay, recycled-acid contribution, and supplier dataset separately."
+          amount:
+            expression: "measured as-delivered mass and acid assay charged"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg contained H3PO4 in weak acid output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_materials
+              source_ids:
+                - us-epa-phosphoric-acid-supply-chain-2023
+                - us-epa-ap42-phosphoric-acid
+            ranges:
+              - role: qa_guardrail
+                lower: "0.5"
+                upper: "5"
+                unit: "kg"
+                basis: "per 1 kg contained H3PO4 in weak acid output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: wet_process_water
+          role: "Process and wash water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record fresh, recycled, and discharged water separately to preserve the plant water balance."
+          amount:
+            expression: "metered fresh water plus measured internal recycle by source"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg contained H3PO4 in weak acid output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_energy
+              source_ids:
+                - eu-jrc-lvic-aaf-bref-2007
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg"
+                basis: "fresh water per 1 kg contained H3PO4 in weak acid output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: wet_energy_input
+          role: "Electricity and fuels"
+          name: "Electricity, steam, and fuels by carrier"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record metered electricity and each fuel or steam carrier separately; do not combine energy carriers before linking upstream datasets."
+          amount:
+            expression: "metered consumption assigned to wet acidulation and separation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg contained H3PO4 in weak acid output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_energy
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kWh-equivalent"
+                basis: "per 1 kg contained H3PO4 in weak acid output; carrier conversion disclosed"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: weak_acid_output
+          role: "Weak phosphoric acid"
+          name: "Wet-process weak phosphoric acid, route-specific intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record weak-acid mass and measured H3PO4 or P2O5 assay before concentration; preserve the analytical conversion used."
+          amount:
+            expression: "measured weak-acid mass and assay, normalized to contained H3PO4"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg contained H3PO4 in weak acid output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_quality
+              source_ids:
+                - us-epa-ap42-phosphoric-acid
+            ranges:
+              - role: typical_range
+                lower: "26"
+                upper: "30"
+                unit: "mass % P2O5"
+                basis: "weak acid leaving wet-process production before concentration"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - us-epa-ap42-phosphoric-acid
+      waste:
+        - row_id: phosphogypsum_output
+          role: "Phosphogypsum"
+          name: "Phosphogypsum, declared disposition"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record separated gypsum mass, moisture, composition, storage or sale status, transport, and final destination; classification as co-product or waste follows the actual disposition."
+          amount:
+            expression: "measured wet and dry mass leaving filtration and any later handling"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg contained H3PO4 in weak acid output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues_emissions
+              source_ids:
+                - eu-jrc-lvic-aaf-bref-2007
+            ranges:
+              - role: typical_range
+                lower: "4"
+                upper: "5"
+                unit: "kg phosphogypsum/kg P2O5 manufactured"
+                basis: "wet-process production on P2O5 output basis"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - eu-jrc-lvic-aaf-bref-2007
+        - row_id: wet_wastewater_output
+          role: "Wet-process wastewater"
+          name: "Wastewater, phosphoric-acid production"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record discharged water volume or mass and analysed fluoride, phosphate, suspended solids, acidity, and treatment route after internal recycle."
+          amount:
+            expression: "measured net discharge after recycled process and scrubber water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg contained H3PO4 in weak acid output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues_emissions
+              source_ids:
+                - eu-jrc-lvic-aaf-bref-2007
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg"
+                basis: "per 1 kg contained H3PO4 in weak acid output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: wet_fluoride_air
+          role: "Fluoride emissions to air"
+          name: "Fluoride compounds to air, species declared"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured HF, SiF4, or total fluoride at each controlled and uncontrolled emission point using the reported species basis."
+          amount:
+            expression: "stack concentration multiplied by dry standardized gas volume and operating time"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg contained H3PO4 in weak acid output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residues_emissions
+              source_ids:
+                - us-epa-ap42-phosphoric-acid
+                - eu-jrc-lvic-aaf-bref-2007
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "5"
+                unit: "mg/Nm3 as HF"
+                basis: "controlled wet-process exhaust concentration; not a product-normalized emission factor"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - eu-jrc-lvic-aaf-bref-2007
+  - id: wet_concentration
+    label: "Wet-process concentration and finishing"
+    inputs:
+      product:
+        - row_id: weak_acid_input
+          role: "Weak phosphoric acid feed"
+          name: "Wet-process weak phosphoric acid, route-specific intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record transferred weak acid by measured mass and assay; internal transfer must reconcile with weak_acid_output."
+          amount:
+            expression: "measured transfer mass multiplied by measured H3PO4 mass fraction"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg contained H3PO4 in finished wet-process acid"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_quality
+              source_ids: []
+            ranges: []
+        - row_id: concentration_energy_water
+          role: "Concentration utilities"
+          name: "Steam, electricity, fuel, and cooling water by carrier"
+          flow_type: "product"
+          property_unit: "Energy or mass / kWh, MJ, or kg"
+          description: "Record steam, electricity, cooling water, and fuel separately for evaporators and finishing equipment."
+          amount:
+            expression: "metered utility use assigned to concentration and finishing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg contained H3PO4 in finished wet-process acid"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_energy
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "30"
+                unit: "kWh-equivalent"
+                basis: "per 1 kg contained H3PO4 in finished wet-process acid; carrier conversion disclosed"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: wet_finished_acid
+          role: "Finished wet-process phosphoric acid"
+          name: "Phosphoric acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9396269a-cf0d-4b38-ae6d-ab6b91e1dc87"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record product mass, delivered H3PO4 mass fraction, P2O5 result when used, grade, and release specification."
+          amount:
+            expression: "delivered product mass = 1 kg H3PO4 divided by measured H3PO4 mass fraction"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg contained H3PO4 in finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_quality
+              source_ids:
+                - us-epa-ap42-phosphoric-acid
+                - us-epa-phosphoric-acid-supply-chain-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "100"
+                unit: "kg product"
+                basis: "per 1 kg contained H3PO4; replace with the exact inverse of measured H3PO4 mass fraction"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: concentration_wastewater
+          role: "Concentration condensate and wastewater"
+          name: "Concentration condensate or wastewater, disposition declared"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record condensate reuse and net discharge, including measured phosphate, fluoride, acidity, and treatment destination."
+          amount:
+            expression: "measured net condensate or wastewater leaving foreground reuse loops"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg contained H3PO4 in finished wet-process acid"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues_emissions
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg"
+                basis: "per 1 kg contained H3PO4 in finished wet-process acid"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: thermal_oxidation_hydration
+    label: "Thermal oxidation and hydration"
+    inputs:
+      product:
+        - row_id: elemental_phosphorus_input
+          role: "Elemental phosphorus"
+          name: "Elemental phosphorus, declared grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record phosphorus mass, purity, supplier, and upstream production dataset; do not merge upstream furnace production into this plant step unless it occurs within the reporting boundary."
+          amount:
+            expression: "measured phosphorus charged"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg contained H3PO4 in finished thermal-process acid"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_thermal_materials
+              source_ids:
+                - us-epa-phosphoric-acid-supply-chain-2023
+                - us-epa-ap42-phosphoric-acid
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "1"
+                unit: "kg"
+                basis: "per 1 kg contained H3PO4 in finished thermal-process acid"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: thermal_air_water
+          role: "Oxidant and hydration water"
+          name: "Air or oxygen; process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record dry air or oxygen supply and net fresh hydration/cooling water separately from recycled acid and water."
+          amount:
+            expression: "measured or calculated oxidant from monitored flow and measured net water input"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg contained H3PO4 in finished thermal-process acid"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_thermal_materials
+              source_ids:
+                - us-epa-ap42-phosphoric-acid
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg water"
+                basis: "per 1 kg contained H3PO4 in finished thermal-process acid"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: thermal_energy_input
+          role: "Thermal-route utilities"
+          name: "Electricity, steam, and fuels by carrier"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record electricity, steam, cooling, and auxiliary fuel by carrier."
+          amount:
+            expression: "metered consumption assigned to oxidation, hydration, cooling, and finishing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg contained H3PO4 in finished thermal-process acid"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_energy
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "30"
+                unit: "kWh-equivalent"
+                basis: "per 1 kg contained H3PO4 in finished thermal-process acid; carrier conversion disclosed"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: thermal_finished_acid
+          role: "Finished thermal-process phosphoric acid"
+          name: "Phosphoric acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9396269a-cf0d-4b38-ae6d-ab6b91e1dc87"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record product mass, measured H3PO4 mass fraction, grade, impurity basis, and release specification."
+          amount:
+            expression: "delivered product mass = 1 kg H3PO4 divided by measured H3PO4 mass fraction"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg contained H3PO4 in finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_quality
+              source_ids:
+                - us-epa-phosphoric-acid-supply-chain-2023
+                - us-epa-ap42-phosphoric-acid
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "100"
+                unit: "kg product"
+                basis: "per 1 kg contained H3PO4; replace with the exact inverse of measured H3PO4 mass fraction"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: thermal_waste_output
+          role: "Thermal-route wastewater and residues"
+          name: "Thermal-route wastewater and residues by type"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record net wastewater, off-spec acid, filter solids, and spent control material by treatment destination."
+          amount:
+            expression: "measured mass leaving recycle loops"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg contained H3PO4 in finished thermal-process acid"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues_emissions
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg"
+                basis: "per 1 kg contained H3PO4 in finished thermal-process acid"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: thermal_air_emissions
+          role: "Thermal-process particulate and phosphorus-bearing emissions"
+          name: "Particulate and phosphorus-bearing emissions to air, species declared"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured particulate and phosphorus-bearing species by emission point after controls."
+          amount:
+            expression: "measured concentration multiplied by standardized gas volume and operating time"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg contained H3PO4 in finished thermal-process acid"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residues_emissions
+              source_ids:
+                - us-epa-ap42-phosphoric-acid
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.1"
+                unit: "kg"
+                basis: "per 1 kg contained H3PO4 in finished thermal-process acid"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: purification
+    label: "Product purification"
+    inputs:
+      product:
+        - row_id: purification_inputs
+          role: "Crude acid and purification materials"
+          name: "Crude phosphoric acid and purification materials by type"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record crude-acid mass and assay plus each extraction solvent, adsorbent, precipitant, ion-exchange material, and utility used to meet the declared grade."
+          amount:
+            expression: "measured mass charged and inventory change over the reporting period"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg contained H3PO4 in purified product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_purification
+              source_ids:
+                - us-epa-phosphoric-acid-supply-chain-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg"
+                basis: "combined purification materials per 1 kg contained H3PO4 in purified product; individual materials still reported separately"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: purified_acid_output
+          role: "Purified phosphoric acid"
+          name: "Phosphoric acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9396269a-cf0d-4b38-ae6d-ab6b91e1dc87"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record measured product mass, H3PO4 mass fraction, grade and impurity specification, and recovery from crude acid."
+          amount:
+            expression: "delivered product mass = 1 kg H3PO4 divided by measured H3PO4 mass fraction"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg contained H3PO4 in purified product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_quality
+              source_ids:
+                - us-epa-phosphoric-acid-supply-chain-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "100"
+                unit: "kg product"
+                basis: "per 1 kg contained H3PO4; replace with the exact inverse of measured H3PO4 mass fraction"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: purification_waste
+          role: "Purification residues and wastewater"
+          name: "Purification waste by type and destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent solvent, adsorbent, sludge, filter cake, regenerant, and wastewater separately with treatment destination."
+          amount:
+            expression: "measured waste mass and net wastewater leaving recovery loops"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg contained H3PO4 in purified product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_purification
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg"
+                basis: "combined residues and wastewater per 1 kg contained H3PO4 in purified product; individual streams still reported separately"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: storage_loading
+    label: "Qualified product storage and loading"
+    inputs:
+      product:
+        - row_id: released_acid_input
+          role: "Released phosphoric acid to storage"
+          name: "Phosphoric acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9396269a-cf0d-4b38-ae6d-ab6b91e1dc87"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the route-specific finished or purified acid entering qualified storage by mass and H3PO4 assay."
+          amount:
+            expression: "measured transfer mass and assay reconciled with production output"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg contained H3PO4 loaded at producer gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_quality
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Producer-gate phosphoric acid"
+          name: "Phosphoric acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9396269a-cf0d-4b38-ae6d-ab6b91e1dc87"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the reference product after quality release and loading. Record actual loaded mass, H3PO4 assay, route, grade, physical state, batch or production-mix identity, and container or bulk-transfer condition."
+          amount:
+            expression: "loaded product mass = 1 kg H3PO4 divided by measured delivered H3PO4 mass fraction"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg contained H3PO4 in producer-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_quality
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "100"
+                unit: "kg product"
+                basis: "per 1 kg contained H3PO4; replace with the exact inverse of measured H3PO4 mass fraction"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: storage_loading_losses
+          role: "Storage and loading losses"
+          name: "Storage and loading waste by type"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spills, off-spec returns, tank bottoms, washings, vent-scrubber liquid, and packaging residues by destination."
+          amount:
+            expression: "measured loss and waste mass from storage and loading reconciliation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg contained H3PO4 loaded at producer gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues_emissions
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.1"
+                unit: "kg"
+                basis: "per 1 kg contained H3PO4 loaded at producer gate"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "All multifunctional plant operations"
+    rule: "Avoid allocation first by metering and subdividing reaction, separation, concentration, purification, utilities, emission control, and residue handling that are directly attributable to phosphoric acid or another output."
+    source_ids:
+      - eu-environmental-footprint-recommendation-2021
+  - rule_id: allocation_phosphogypsum_status
+    applies_to: "Phosphogypsum and recovered fluosilicic acid"
+    rule: "Treat a stream as a co-product only when it leaves the site as a quality-controlled product with an evidenced market or beneficial use; otherwise model it as waste with the actual treatment, storage, or disposal burden. Disclose moisture and avoided-burden assumptions."
+    source_ids:
+      - eu-jrc-lvic-aaf-bref-2007
+  - rule_id: allocation_physical_then_other
+    applies_to: "Inseparable co-products"
+    rule: "If subdivision or system expansion is not practicable, use a documented, quantifiable physical relationship relevant to the functions. If no defensible physical relationship exists, use another relationship such as site- and period-specific relative economic value and justify why the preceding hierarchy was rejected."
+    source_ids:
+      - eu-environmental-footprint-recommendation-2021
+  - rule_id: allocation_recycle_no_double_count
+    applies_to: "Internal recycled acid, scrubber liquid, water, and recovered materials"
+    rule: "Treat internal recycle as an internal transfer; count only net purchased inputs and net outputs crossing the foreground boundary, while retaining gross recycle measurements for mass-balance QA. Do not award a co-product credit and avoid a treatment burden for the same quantity."
+    source_ids:
+      - eu-jrc-lvic-aaf-bref-2007
+      - eu-environmental-footprint-recommendation-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_wet_materials
+      process_id: "wet_acidulation_separation"
+      flow_role: "phosphate rock, sulfuric acid, recycled acid"
+      record_type: "weighbridge, batch record, assay, inventory"
+      raw_fields: "material_id; supplier; wet_mass; dry_mass; moisture; P2O5_assay; acid_assay; recycle_mass; timestamp"
+      collection_method: "calibrated scales and laboratory certificates linked to batches"
+      unit: "kg; mass %"
+      frequency: "each receipt and batch; monthly reconciliation"
+      temporal_coverage: "full declared reporting period"
+      site_scope: "all wet-process lines in declared site scope"
+      aggregation_rule: "sum net purchased and internal transfers separately; normalize to measured contained H3PO4 output"
+      quality_evidence: "calibration, laboratory QA/QC, supplier certificate, stock reconciliation"
+    - protocol_id: cp_thermal_materials
+      process_id: "thermal_oxidation_hydration"
+      flow_role: "elemental phosphorus, oxidant, hydration water"
+      record_type: "batch meter, mass-flow meter, tank inventory, assay"
+      raw_fields: "phosphorus_mass; phosphorus_purity; air_or_oxygen_flow; water_mass; recycle_mass; timestamp"
+      collection_method: "calibrated tank/flow metering and laboratory assay"
+      unit: "kg; Nm3"
+      frequency: "continuous or batch; monthly reconciliation"
+      temporal_coverage: "full declared reporting period"
+      site_scope: "all thermal-process lines in declared site scope"
+      aggregation_rule: "sum by carrier and convert only with documented density or composition"
+      quality_evidence: "calibration, assay QA/QC, stock and gas-flow reconciliation"
+    - protocol_id: cp_water_energy
+      process_id: "all_applicable_processes"
+      flow_role: "fresh/recycled water and each energy carrier"
+      record_type: "utility meter, invoice, steam/fuel balance"
+      raw_fields: "meter_id; opening; closing; carrier; energy_content; allocation_key; recycle_water; period"
+      collection_method: "calibrated submeters preferred; invoices reconciled to plant total"
+      unit: "kg; m3; kWh; MJ"
+      frequency: "continuous/monthly"
+      temporal_coverage: "full declared reporting period"
+      site_scope: "each process line and shared utility system"
+      aggregation_rule: "direct submeter first; documented allocation only for inseparable shared utilities"
+      quality_evidence: "calibration, invoice, meter coverage and reconciliation"
+    - protocol_id: cp_product_quality
+      process_id: "all_product_output_processes"
+      flow_role: "acid mass, H3PO4/P2O5 assay, grade and batch"
+      record_type: "tank scale/flow meter, laboratory certificate, release record"
+      raw_fields: "batch_id; product_mass; sample_id; H3PO4_fraction; P2O5_fraction; conversion_method; grade; route; impurity_results; release_time"
+      collection_method: "calibrated mass measurement and validated product assay"
+      unit: "kg; mass %"
+      frequency: "each batch or tank; production-period weighted average"
+      temporal_coverage: "full declared reporting period"
+      site_scope: "all released product in declared dataset"
+      aggregation_rule: "calculate contained H3PO4 by batch and sum; weight route or grade mixes by contained H3PO4"
+      quality_evidence: "calibration, certified method, blanks/duplicates, release approval, mass balance"
+    - protocol_id: cp_residues_emissions
+      process_id: "all_applicable_processes"
+      flow_role: "phosphogypsum, wastewater, air emissions, spills and residues"
+      record_type: "scale, flow meter, stack/water monitoring, waste manifest"
+      raw_fields: "stream_id; mass_or_flow; moisture; concentration; species; gas_volume; operating_time; destination; manifest_id"
+      collection_method: "direct measurement and regulatory or equivalent monitoring"
+      unit: "kg; m3; mg/Nm3; mg/L"
+      frequency: "continuous/periodic as required; at least reporting-period reconciliation"
+      temporal_coverage: "full declared reporting period"
+      site_scope: "every discharge and residue destination in site scope"
+      aggregation_rule: "concentration times measured carrier flow; sum by species and destination; report below-detection handling"
+      quality_evidence: "calibration, laboratory QA/QC, detection limits, permits and manifests"
+    - protocol_id: cp_purification
+      process_id: "purification"
+      flow_role: "purification materials, recovery, residues"
+      record_type: "batch sheets, inventory, assay, waste manifest"
+      raw_fields: "crude_acid_mass; crude_assay; material_mass; recovered_mass; product_assay; residue_mass; destination"
+      collection_method: "batch reconciliation with laboratory assays"
+      unit: "kg; mass %"
+      frequency: "each batch; monthly reconciliation"
+      temporal_coverage: "full declared reporting period"
+      site_scope: "each purification train included"
+      aggregation_rule: "contained-H3PO4 balance and net material consumption over inventory period"
+      quality_evidence: "assay QA/QC, stock reconciliation, waste manifests"
+  calculation_rules:
+    - id: calc_contained_h3po4
+      applies_to: "Every acid input and output"
+      rule: "contained H3PO4 mass = measured as-delivered acid mass × measured H3PO4 mass fraction"
+      inputs:
+        - product_mass
+        - H3PO4_fraction
+      output: "kg contained H3PO4"
+      source_ids: []
+    - id: calc_p2o5_conversion
+      applies_to: "Records reported as P2O5"
+      rule: "Convert P2O5 assay to H3PO4 only with a documented stoichiometric factor and preserve both reported and converted values; prohibit treating the percentages as interchangeable"
+      inputs:
+        - P2O5_fraction
+        - conversion_method
+      output: "H3PO4_fraction with audit field"
+      source_ids:
+        - us-epa-ap42-phosphoric-acid
+    - id: calc_reference_normalization
+      applies_to: "All foreground rows"
+      rule: "normalized amount = reporting-period net amount / reporting-period contained H3PO4 in qualified producer-gate output"
+      inputs:
+        - net_flow_amount
+        - qualified_product_mass
+        - H3PO4_fraction
+      output: "amount per 1 kg contained H3PO4"
+      source_ids: []
+    - id: calc_route_mix
+      applies_to: "Production-mix datasets"
+      rule: "aggregate route inventories only after each route is normalized; route weight = route contained-H3PO4 output / total contained-H3PO4 output"
+      inputs:
+        - "route outputs and normalized inventories"
+      output: "disclosed contained-H3PO4-weighted production mix"
+      source_ids:
+        - eu-environmental-footprint-recommendation-2021
+    - id: calc_emission_mass
+      applies_to: "Stack and wastewater species"
+      rule: "emitted mass = measured concentration × measured carrier-gas or water volume, with temperature, pressure, moisture, unit conversion, non-detect treatment, and operating time documented"
+      inputs:
+        - concentration
+        - carrier_flow
+        - conditions
+        - operating_time
+      output: "kg species per reporting period"
+      source_ids:
+        - us-epa-ap42-phosphoric-acid
+        - eu-jrc-lvic-aaf-bref-2007
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Reference product"
+      requirement: "Product flow identity, CPC context, route, grade, physical state, H3PO4 assay basis, geography, and producer-gate condition must be complete and mutually consistent."
+      evidence: "Tiangong UUID confirmation, product specification, batch release record"
+    - id: dq_mass_balance
+      applies_to: "Each route and reporting period"
+      requirement: "Reconcile phosphorus-bearing inputs, contained-H3PO4 product and intermediates, recycle, phosphogypsum/residues, wastewater, emissions, inventory change, and documented loss; explain residuals."
+      evidence: "signed material balance and assay records"
+    - id: dq_temporal
+      applies_to: "Foreground records"
+      requirement: "Use one representative continuous 12-month period where available, or disclose shorter campaign coverage, shutdowns, start-ups, abnormal operation, and averaging method."
+      evidence: "meter coverage, production calendar, batch list"
+    - id: dq_representativeness
+      applies_to: "Foreground and upstream datasets"
+      requirement: "Assess technological, geographical, time representativeness, and precision; higher-quality site-specific data are required for major material, energy, product, residue, and direct-emission rows."
+      evidence: "data-quality assessment and source metadata; eu-environmental-footprint-recommendation-2021"
+    - id: dq_completeness
+      applies_to: "All routes"
+      requirement: "Cover all operated process-map stages and every material discharge, including recycled, marketed, stored, or treated streams; quantify data coverage and justify exclusions."
+      evidence: "process map, meter register, permits, waste manifests, exclusion log"
+    - id: dq_uncertainty
+      applies_to: "Reasoned estimates and non-detects"
+      requirement: "Flag every reasoned_estimate as provisional and replace it with foreground or reviewed external evidence before publication-critical use; state detection limits and non-detect substitution."
+      evidence: "uncertainty register and review record"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "Fail if the product flow UUID, Mass property UUID, Units of mass UUID, CPC 34232 context, or reference unit kg is missing or inconsistent."
+    source_ids: []
+  - rule_id: validate_required_qualifiers
+    applies_to: "Dataset metadata"
+    rule: "Fail if delivered H3PO4 mass fraction, analytical basis, product grade, route, purification status, physical state, producer-gate condition, geography, or reporting period is missing."
+    source_ids:
+      - us-epa-phosphoric-acid-supply-chain-2023
+  - rule_id: validate_route_structure
+    applies_to: "Process map and inventory"
+    rule: "Require either the complete applicable wet-process chain or thermal-process chain, plus applicable purification and required storage/loading; fail a production mix that does not disclose route weights."
+    source_ids:
+      - us-epa-ap42-phosphoric-acid
+      - eu-jrc-lvic-aaf-bref-2007
+  - rule_id: validate_h3po4_balance
+    applies_to: "Product normalization"
+    rule: "Recalculate contained H3PO4 from product mass and assay and require agreement with the 1 kg reference basis within the declared measurement uncertainty; fail an undocumented P2O5-to-H3PO4 conversion."
+    source_ids: []
+  - rule_id: validate_wet_streams
+    applies_to: "Wet process"
+    rule: "Require phosphate rock, sulfuric acid, process water, weak acid, phosphogypsum disposition, fluoride-bearing air emissions, wastewater, energy, and concentration utilities when applicable; any omission requires a documented zero or exclusion rationale."
+    source_ids:
+      - us-epa-ap42-phosphoric-acid
+      - eu-jrc-lvic-aaf-bref-2007
+  - rule_id: validate_thermal_streams
+    applies_to: "Thermal process"
+    rule: "Require elemental phosphorus, oxidant, hydration water, utilities, product assay, particulate/phosphorus-bearing air emissions, and net wastewater/residues; any omission requires a documented zero or exclusion rationale."
+    source_ids:
+      - us-epa-ap42-phosphoric-acid
+      - us-epa-phosphoric-acid-supply-chain-2023
+  - rule_id: validate_allocation
+    applies_to: "Co-products and wastes"
+    rule: "Fail if phosphogypsum, recovered fluosilicic acid, or another output is credited as a co-product without market/use evidence and a disclosed allocation hierarchy, or if internal recycle is double counted."
+    source_ids:
+      - eu-jrc-lvic-aaf-bref-2007
+      - eu-environmental-footprint-recommendation-2021
+  - rule_id: validate_source_and_estimate_status
+    applies_to: "Ranges and rules"
+    rule: "Require source ids for external ranges and method rules; require provisional labelling and an unresolved evidence note for every reasoned_estimate."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground phosphoric-acid production dataset normalized to 1 kg contained H3PO4 at producer gate"
+  downstream_use: "secondary_dataset; background_dataset after review of route, concentration, geography, allocation, and data quality"
+  allowed_use: "Route- and grade-matched LCA models, chemical and fertiliser supply chains, and disclosed production mixes whose required qualifiers match the dataset"
+  excluded_use: "Silent substitution across wet and thermal routes, concentrations, grades, geographies, or purification states; weak-acid or slurry intermediates treated as finished acid; downstream use or distribution claims outside the boundary"
+  required_metadata: "canonical PCR id; product flow UUID; CPC context; producer; geography; reporting period; route and route weights; delivered H3PO4 and P2O5 assay with conversion method; grade/specification; physical state; included purification; technology; allocation; residue destinations; upstream dataset identities"
+  required_quality_disclosure: "meter and laboratory coverage; mass-balance residual; technological/geographical/temporal representativeness and precision; exclusions; non-detect handling; source versions; provisional reasoned_estimate rows; uncertainty and review status"
+  update_trigger: "Change in route, concentration or grade, purification train, major supplier or energy mix, emission control, phosphogypsum disposition, allocation method, geography, reference-flow identity, or evidence that materially changes an important range or rule"
+data_sources:
+  - id: "us-epa-ap42-phosphoric-acid"
+    type: "official_guidance"
+    reference: "U.S. EPA, AP-42 Chapter 8.9, Phosphoric Acid. https://www.epa.gov/sites/default/files/2020-09/documents/8.9_phosphoric_acid.pdf (retrieved 2026-08-09)"
+    used_for: "Wet and thermal process decomposition; weak-acid concentration context; fluoride and particulate emission points; control and measurement rules"
+  - id: "us-epa-phosphoric-acid-supply-chain-2023"
+    type: "official_guidance"
+    reference: "U.S. EPA, Phosphoric Acid Supply Chain Profile, 2023. https://www.epa.gov/system/files/documents/2023-03/Phosphoric%20Acid%20Supply%20Chain%20Profile.pdf (retrieved 2026-08-09)"
+    used_for: "Wet versus thermal routes; industrial versus purified/high-purity product distinction; sulfuric-acid dependence and purification boundary"
+  - id: "eu-jrc-lvic-aaf-bref-2007"
+    type: "official_guidance"
+    reference: "European Commission JRC, Reference Document on Best Available Techniques for the Manufacture of Large Volume Inorganic Chemicals – Ammonia, Acids and Fertilisers, August 2007. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2022-03/LVIC-AAF.pdf (retrieved 2026-08-09)"
+    used_for: "Wet-process boundary; P2O5 efficiency; fluoride control; process-water recycle; wastewater treatment; phosphogypsum and fluosilicic-acid disposition; source-backed QA ranges"
+  - id: "eu-environmental-footprint-recommendation-2021"
+    type: "standard"
+    reference: "European Commission Recommendation (EU) 2021/2279 on Environmental Footprint methods. https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32021H2279R(01) (retrieved 2026-08-09)"
+    used_for: "Functional-unit and intermediate-product framing; multifunctionality hierarchy; subdivision, physical and economic allocation; data quality and representativeness"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:49889ed7a3632599709bc9b82e9b8d93c07f98fa93ce4fd4b814fd24242c47a5"
+  generated_content_sha256: "sha256:033de56c0404bef1088126448eabac09dcbb54c45d0706907934e73ef8b2e501"

@@ -1,10 +1,1410 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "28190"
-  title: "Other knitted or crocheted fabrics"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.knitted-or-crocheted-fabrics-wearing-apparel.other-knitted-or-crocheted-fabrics"
+  classification_refs: "CPC 3.0: 28190 Other knitted or crocheted fabrics"
+  covered_products: "Knitted or crocheted fabric other than pile or terry fabric, including warp-knit and weft-knit fabric and fabric containing elastomeric yarn or rubber thread, in the declared greige or finished market state"
+  excluded_products: "CPC 28110 pile and terry knitted or crocheted fabrics; yarn; woven and nonwoven fabrics; garments; made-up textile articles; cutting and sewing operations"
+  representative_product: "Knitted or crocheted fabric, other than pile or terry fabric, supplied as a declared production lot"
+  production_route: "Yarn preparation at the knitting line; knitting or crocheting; route-specific pretreatment, coloration, printing or finishing; inspection and release; on-site wastewater treatment when operated"
+  market_state: "Factory-gate fabric roll or piece, with greige, bleached, dyed, printed, coated, laminated, heat-set, or other finish state explicitly declared"
+functional_unit:
+  what: "Provide a declared knitted or crocheted fabric lot, excluding pile and terry fabric, with the specified construction and finish state"
+  how_much: "1 kg net dry mass of saleable fabric at the factory gate"
+  how_well: "Meets the declared fibre composition, construction, width, areal density, coloration and finish specifications, with rejected material excluded from the reference amount"
+  how_long_or_cycle: "One production lot through release at the factory gate; no use-life function is assigned to this intermediate product"
+  reference_flow_link: "The mass of saleable fabric needed to provide the declared unit; all inventory exchanges are normalized to reference_product"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary begins with yarn and other declared materials received at the fabric-production site and ends with net dry saleable fabric released at the factory gate. Include the actual formation and route-specific wet or dry processing performed by the producer. Upstream production of purchased yarn, water, electricity, steam, fuels, chemicals, and packaging is represented by linked upstream datasets and is not recreated inside the foreground inventory."
+      source_ids: []
+    - rule_id: boundary_route_disclosure
+      applies_to: "all foreground datasets"
+      rule: "Include only operations actually performed for the declared fabric lot and disclose every excluded or outsourced route step; do not model greige-only production as finished fabric production."
+      source_ids:
+        - un-cpc-v3-28190
+        - eu-pef-method-2021
+        - eu-textiles-bat-2022-2508
+    - rule_id: boundary_atomic_recipes
+      applies_to: "wet processing and finishing"
+      rule: "Record every recipe chemical, dyestuff, pigment, binder, coating, auxiliary, fuel, refrigerant, waste stream, and elementary emission as its own exchange; the example cards below are a minimum process map, not a selector or aggregated carrier."
+      source_ids:
+        - eu-textiles-bat-2022-2508
+    - rule_id: boundary_wastewater_treatment
+      applies_to: "wastewater"
+      rule: "Include on-site wastewater treatment when operated; otherwise record one wastewater waste flow to the identified off-site treatment dataset and avoid double counting treatment."
+      source_ids:
+        - eu-textiles-bat-2022-2508
+boundary_abstraction:
+  declared_starting_condition: "Yarn and separately purchased process materials received at the reporting site, with supplier identity, fibre composition, yarn form, quantity, moisture basis, and upstream dataset references declared"
+  starting_condition_role: "Foreground gate for fabric formation; purchased same-category fabric is permitted only for a finishing-only route and must be disclosed as an intermediate product input"
+  product_classification_scope: "CPC 3.0 28190 only; pile and terry knitted or crocheted fabric in CPC 28110 is outside scope"
+  recursive_input_rule: "If greige or partly processed CPC 28190 fabric is purchased for further treatment, record it once as an atomic product input with an upstream dataset and do not recursively reproduce its earlier knitting inventory"
+  upstream_dataset_requirement: "Use composition-, technology-, geography-, and period-representative datasets for every purchased yarn, material, utility, fuel, treatment service, and same-category fabric input"
+  disclosure: "Declare which of knitting or crocheting, pretreatment, dyeing, printing, coating, lamination, thermal or mechanical finishing, inspection, and wastewater treatment are on-site, outsourced, absent, or already represented upstream"
+reference_flow_definition:
+  reference_amount: "1 kg net dry saleable fabric"
+  product_flow_ref:
+    name: "Other knitted or crocheted fabric, excluding pile and terry fabric"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "fibre composition by dry mass"
+    - "yarn form and linear-density specification"
+    - "knitting or crochet technology"
+    - "warp-knit or weft-knit construction"
+    - "fabric width"
+    - "areal density"
+    - "greige or finished state"
+    - "pretreatment route"
+    - "coloration or printing route"
+    - "finishing or coating route"
+    - "geographic and temporal scope"
+    - "net dry mass and moisture-correction method"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_dry_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net saleable fabric mass on a dry-mass basis. Record measured as-received mass, moisture content or correction factor, excluded packaging, and rejected fabric; do not mix wet mass and dry mass without an explicit conversion."
+  - id: areal_density_disclosure
+    applies_to: "product identity"
+    required_property_ref:
+      name: "Mass per area"
+      uuid: ""
+    required_unit: "g/m2"
+    rule: "Record the declared and measured areal density and the test or production-control method used; areal density is a qualifier and shall not replace the mass reference amount."
+  - id: energy_carrier_separation
+    applies_to: "electricity, steam and fuels"
+    required_property_ref:
+      name: "Energy or carrier-specific property"
+      uuid: ""
+    required_unit: "kWh, MJ or kg"
+    rule: "Preserve each purchased or produced energy carrier as a separate exchange. Record electricity in kWh, gaseous or liquid fuel on a declared net-calorific-value basis, and steam by mass with pressure and temperature or by measured delivered energy."
+  - id: water_mass_conversion
+    applies_to: "process water and wastewater"
+    required_property_ref:
+      name: "Mass or volume"
+      uuid: ""
+    required_unit: "kg or m3"
+    rule: "Use measured mass directly or convert measured volume using documented density and temperature. Keep incoming process water and outgoing wastewater as separate exchanges."
+process_map:
+  - id: fabric_formation
+    name: "Knitting or crocheting"
+    inclusion: "required"
+    inclusion_condition: "Always included unless a finishing-only dataset begins with purchased same-category fabric"
+    role: "Foreground fabric formation"
+    quantitative_reference: "kg formed fabric leaving the knitting or crochet line"
+  - id: pretreatment
+    name: "Fabric pretreatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when washing, scouring, bleaching, mercerising, heat preparation, or another pretreatment is performed"
+    role: "Foreground wet processing"
+    quantitative_reference: "kg dry textile treated"
+  - id: coloration
+    name: "Dyeing or printing"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared fabric is dyed or printed at the reporting site"
+    role: "Foreground wet or printing process"
+    quantitative_reference: "kg dry textile coloured or printed"
+  - id: finishing
+    name: "Physical or chemical finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Include when coating, lamination, heat-setting, drying, curing, softening, calendaring, sanforising, or another finish is applied"
+    role: "Foreground finishing"
+    quantitative_reference: "kg dry textile finished"
+  - id: wastewater_treatment
+    name: "On-site wastewater treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when wastewater treatment is operated inside the reporting site boundary"
+    role: "Foreground treatment"
+    quantitative_reference: "kg wastewater treated"
+  - id: quality_release
+    name: "Inspection and product release"
+    inclusion: "required"
+    inclusion_condition: "Always included for the declared factory-gate product"
+    role: "Foreground quality and mass reconciliation"
+    quantitative_reference: "kg net dry saleable fabric released"
+process_inventory:
+  - id: fabric_formation
+    label: "Knitting or crocheting"
+    inputs:
+      product:
+        - row_id: cotton_yarn
+          role: "Cotton yarn input"
+          name: "Cotton yarn"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record cotton yarn only when it is physically consumed in the declared fabric composition."
+          amount:
+            expression: "measured dry-mass-equivalent cotton yarn issued to the lot minus documented returns"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net dry saleable fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabric_formation_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: polyester_filament_yarn
+          role: "Polyester filament yarn input"
+          name: "Polyester filament yarn"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record polyester filament yarn only when it is consumed in the declared fabric composition."
+          amount:
+            expression: "measured dry-mass-equivalent polyester filament yarn issued to the lot minus documented returns"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net dry saleable fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabric_formation_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: polyamide_filament_yarn
+          role: "Polyamide filament yarn input"
+          name: "Polyamide filament yarn"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record polyamide filament yarn only when it is consumed in the declared fabric composition."
+          amount:
+            expression: "measured dry-mass-equivalent polyamide filament yarn issued to the lot minus documented returns"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net dry saleable fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabric_formation_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: viscose_yarn
+          role: "Viscose staple-fibre yarn input"
+          name: "Viscose staple-fibre yarn"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record viscose staple-fibre yarn only when it is consumed in the declared fabric composition."
+          amount:
+            expression: "measured dry-mass-equivalent viscose yarn issued to the lot minus documented returns"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net dry saleable fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabric_formation_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: elastane_yarn
+          role: "Elastane yarn input"
+          name: "Elastane yarn"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record elastane yarn separately when it is consumed; do not combine it with the principal yarn."
+          amount:
+            expression: "measured dry-mass-equivalent elastane yarn issued to the lot minus documented returns"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net dry saleable fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabric_formation_records
+              source_ids:
+                - un-cpc-v3-28190
+            ranges: []
+        - row_id: formation_electricity
+          role: "Electricity for fabric formation"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity used by knitting or crochet machines and directly associated preparation and extraction equipment."
+          amount:
+            expression: "submetered electricity or allocated meter reading for fabric formation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg formed fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabric_formation_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+        - row_id: knitting_machine_oil
+          role: "Knitting machine oil input"
+          name: "Knitting machine lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the lubricating oil added to knitting or crochet equipment as a separate material input."
+          amount:
+            expression: "opening stock plus purchases minus closing stock and documented recovery for the reporting period"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg formed fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fabric_formation_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: formed_fabric
+          role: "Formed fabric intermediate"
+          name: "Greige knitted or crocheted fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the dry-mass-equivalent fabric leaving the knitting or crochet line before any route-specific wet or finishing process."
+          amount:
+            expression: "measured dry-mass-equivalent formed fabric transferred to the next step or release inspection"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per fabric-formation batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabric_formation_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+                - khan-islam-2015
+            ranges: []
+      waste:
+        - row_id: formation_textile_waste
+          role: "Yarn and fabric formation waste"
+          name: "Mixed cotton and synthetic textile waste from fabric formation"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record offcuts, start-up yarn, broken yarn, selvage, and rejected formed fabric as one physically mixed solid textile waste stream only when collected together."
+          amount:
+            expression: "measured mass sent to reuse, recycling, treatment, or disposal"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg formed fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabric_formation_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+        - row_id: used_knitting_oil
+          role: "Used knitting machine oil"
+          name: "Waste lubricating oil from knitting machines"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record used lubricating oil removed from equipment and transferred for recovery or treatment."
+          amount:
+            expression: "measured mass removed from equipment and shipped off-site"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg formed fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabric_formation_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+      elementary:
+        - row_id: formation_particulate_air
+          role: "Textile particulate matter to air"
+          name: "Particulate matter, unspecified, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured particulate matter emitted to air after any on-site abatement from yarn and fabric handling."
+          amount:
+            expression: "measured concentration multiplied by measured exhaust volume, or a documented site emission calculation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg formed fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fabric_formation_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+  - id: pretreatment
+    label: "Fabric pretreatment"
+    inputs:
+      product:
+        - row_id: pretreatment_fabric_input
+          role: "Greige fabric input to pretreatment"
+          name: "Greige knitted or crocheted fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the greige knitted or crocheted fabric transferred into pretreatment."
+          amount:
+            expression: "measured dry-mass-equivalent greige fabric charged to pretreatment"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per pretreatment batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pretreatment_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+        - row_id: pretreatment_water
+          role: "Process water for pretreatment"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record incoming water used for washing, scouring, bleaching, rinsing, and equipment cleaning."
+          amount:
+            expression: "metered incoming water minus separately metered water returned directly without contact"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dry textile pretreated"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pretreatment_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+        - row_id: pretreatment_sodium_hydroxide
+          role: "Sodium hydroxide for pretreatment"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide only when present in the site recipe."
+          amount:
+            expression: "active sodium hydroxide mass charged from recipe and batch records"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dry textile pretreated"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pretreatment_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+        - row_id: pretreatment_hydrogen_peroxide
+          role: "Hydrogen peroxide for bleaching"
+          name: "Hydrogen peroxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record hydrogen peroxide only when peroxide bleaching is performed."
+          amount:
+            expression: "active hydrogen peroxide mass charged from concentration and batch records"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dry textile pretreated"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pretreatment_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+        - row_id: pretreatment_electricity
+          role: "Electricity for pretreatment"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by pretreatment machinery and pumps separately from steam."
+          amount:
+            expression: "submetered electricity or documented allocation of the pretreatment meter"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg dry textile pretreated"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pretreatment_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+        - row_id: pretreatment_steam
+          role: "Steam for pretreatment"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record delivered steam separately and declare pressure, temperature, and condensate return."
+          amount:
+            expression: "metered steam delivered to pretreatment minus separately measured returned condensate only when the steam dataset uses net delivery"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg dry textile pretreated"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pretreatment_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: pretreated_fabric
+          role: "Pretreated fabric output"
+          name: "Pretreated knitted or crocheted fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record fabric leaving the declared pretreatment sequence on a dry-mass-equivalent basis."
+          amount:
+            expression: "measured dry-mass-equivalent fabric transferred to coloration, finishing, or release"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per pretreatment batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pretreatment_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+      waste:
+        - row_id: pretreatment_wastewater
+          role: "Pretreatment wastewater"
+          name: "Textile pretreatment wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater leaving pretreatment to on-site or off-site treatment without combining it with solid residue."
+          amount:
+            expression: "metered wastewater discharge from pretreatment, reconciled with water input and retained moisture"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dry textile pretreated"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pretreatment_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+      elementary:
+        []
+  - id: coloration
+    label: "Dyeing or printing"
+    inputs:
+      product:
+        - row_id: coloration_fabric_input
+          role: "Fabric input to coloration"
+          name: "Pretreated knitted or crocheted fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the fabric charged to the dyeing or printing process in its actual pre-colour state."
+          amount:
+            expression: "measured dry-mass-equivalent fabric charged to coloration"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per coloration batch or print run"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coloration_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+        - row_id: coloration_water
+          role: "Process water for coloration"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water used in dyeing or printing preparation, washing, rinsing, and equipment cleaning."
+          amount:
+            expression: "metered incoming water assigned to the coloration process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dry textile coloured or printed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coloration_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+        - row_id: coloration_sodium_chloride
+          role: "Sodium chloride for coloration"
+          name: "Sodium chloride"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record sodium chloride only when charged as a recipe chemical."
+          amount:
+            expression: "measured sodium chloride charged from batch and recipe records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dry textile coloured or printed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coloration_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+        - row_id: coloration_sodium_carbonate
+          role: "Sodium carbonate for coloration"
+          name: "Sodium carbonate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record sodium carbonate only when charged as a recipe chemical."
+          amount:
+            expression: "measured sodium carbonate charged from batch and recipe records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dry textile coloured or printed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coloration_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+        - row_id: coloration_acetic_acid
+          role: "Acetic acid for coloration"
+          name: "Acetic acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record acetic acid only when charged to the declared coloration recipe."
+          amount:
+            expression: "active acetic acid mass calculated from delivered concentration and batch charge"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dry textile coloured or printed"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_coloration_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+        - row_id: coloration_reactive_blue_19
+          role: "C.I. Reactive Blue 19 dyestuff"
+          name: "C.I. Reactive Blue 19"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this dyestuff only when C.I. Reactive Blue 19 is present; every different dyestuff, pigment, binder, and auxiliary requires its own additional atomic exchange."
+          amount:
+            expression: "active dyestuff mass calculated from product concentration and recipe charge"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dry textile coloured or printed"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_coloration_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+        - row_id: coloration_electricity
+          role: "Electricity for coloration"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by dyeing or printing equipment, pumps, dosing, and directly associated controls."
+          amount:
+            expression: "submetered electricity or documented allocation of the coloration meter"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg dry textile coloured or printed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coloration_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+        - row_id: coloration_steam
+          role: "Steam for coloration"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record steam separately from electricity and fuel."
+          amount:
+            expression: "metered steam delivered to coloration with pressure, temperature, and condensate return recorded"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg dry textile coloured or printed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coloration_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: colored_fabric
+          role: "Coloured or printed fabric output"
+          name: "Dyed knitted or crocheted fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record fabric leaving dyeing or printing on a dry-mass-equivalent basis."
+          amount:
+            expression: "measured dry-mass-equivalent fabric transferred to finishing or release"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per coloration batch or print run"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coloration_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+                - khan-islam-2015
+            ranges: []
+      waste:
+        - row_id: coloration_wastewater
+          role: "Coloration wastewater"
+          name: "Textile coloration wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record liquid effluent from dyeing or printing washing and cleaning as a distinct waste stream."
+          amount:
+            expression: "metered wastewater discharge from coloration, reconciled with water input and retained moisture"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dry textile coloured or printed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coloration_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+      elementary:
+        []
+  - id: finishing
+    label: "Physical or chemical finishing"
+    inputs:
+      product:
+        - row_id: finishing_fabric_input
+          role: "Fabric input to finishing"
+          name: "Knitted or crocheted fabric before finishing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the knitted or crocheted fabric entering the declared finishing sequence."
+          amount:
+            expression: "measured dry-mass-equivalent fabric charged to finishing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per finishing lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+        - row_id: finishing_water
+          role: "Process water for finishing"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water used to apply or wash out a finish and to clean finishing equipment."
+          amount:
+            expression: "metered incoming water assigned to finishing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dry textile finished"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+        - row_id: finishing_dmdheu
+          role: "DMDHEU finishing agent"
+          name: "Dimethylol dihydroxyethylene urea"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record dimethylol dihydroxyethylene urea only when it is present in an easy-care finish; every other finish chemical requires its own atomic exchange."
+          amount:
+            expression: "active finishing-agent mass calculated from product concentration and recipe charge"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dry textile finished"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+        - row_id: finishing_electricity
+          role: "Electricity for finishing"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by finishing, drying, extraction, coating, or mechanical finishing equipment."
+          amount:
+            expression: "submetered electricity or documented allocation of the finishing meter"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg dry textile finished"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+        - row_id: finishing_steam
+          role: "Steam for finishing"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record steam used for drying, heating, curing, or other finishing duty separately from fuel."
+          amount:
+            expression: "metered steam delivered to finishing with pressure, temperature, and condensate return recorded"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg dry textile finished"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+        - row_id: finishing_purchased_heat
+          role: "Purchased heat for finishing"
+          name: "Industrial heat, delivered"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record metered heat supplied by an external or central-site heat network only when it is not already represented by the steam or fuel exchanges."
+          amount:
+            expression: "metered delivered heat assigned to finishing, net of documented return heat"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg dry textile finished"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+        - row_id: finishing_natural_gas
+          role: "Natural gas for direct heating"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ, net calorific value"
+          description: "Record natural gas only when directly combusted for a finishing or thermal-treatment duty inside this process boundary."
+          amount:
+            expression: "metered gas volume converted with the site-specific net calorific value"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg dry textile finished"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+        - row_id: finishing_refrigerant_r134a
+          role: "R-134a refrigerant replenishment"
+          name: "1,1,1,2-Tetrafluoroethane"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record R-134a added to finishing-related cooling or air-conditioning equipment as its own exchange; every other refrigerant requires a separate species-specific card."
+          amount:
+            expression: "measured refrigerant added during the reporting period and attributable to finishing equipment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dry textile finished"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_fabric
+          role: "Finished fabric output"
+          name: "Finished knitted or crocheted fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the fabric leaving the declared finishing sequence on a dry-mass-equivalent basis."
+          amount:
+            expression: "measured dry-mass-equivalent fabric transferred to release inspection"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per finishing lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+                - khan-islam-2015
+            ranges: []
+      waste:
+        - row_id: finishing_wastewater
+          role: "Finishing wastewater"
+          name: "Textile finishing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater leaving finishing without combining it with solid finishing residue."
+          amount:
+            expression: "metered wastewater discharge from finishing, reconciled with water input and retained moisture"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dry textile finished"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+      elementary:
+        - row_id: finishing_fossil_co2
+          role: "Fossil carbon dioxide from direct heating"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record fossil carbon dioxide emitted from natural-gas combustion used directly in finishing."
+          amount:
+            expression: "calculated from measured natural gas consumption and a documented carbon-content or emission factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dry textile finished"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+        - row_id: finishing_r134a_air
+          role: "R-134a refrigerant to air"
+          name: "1,1,1,2-Tetrafluoroethane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record R-134a leaked from finishing-related cooling or air-conditioning equipment separately from refrigerant replenishment and from every other refrigerant species."
+          amount:
+            expression: "measured leakage or documented equipment mass balance for R-134a"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dry textile finished"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+  - id: wastewater_treatment
+    label: "On-site wastewater treatment"
+    inputs:
+      product:
+        - row_id: wwt_electricity
+          role: "Electricity for wastewater treatment"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by pumps, aeration, mixing, separation, and sludge handling."
+          amount:
+            expression: "submetered wastewater-treatment electricity"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_treatment_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+        - row_id: wwt_ferric_chloride
+          role: "Ferric chloride for wastewater treatment"
+          name: "Ferric chloride"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record ferric chloride only when dosed as the declared coagulant."
+          amount:
+            expression: "active ferric chloride mass calculated from product concentration and dosing records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_treatment_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+      waste:
+        - row_id: wwt_influent
+          role: "Textile wastewater to on-site treatment"
+          name: "Combined textile process wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the combined textile wastewater entering the on-site treatment plant as one measured influent stream."
+          amount:
+            expression: "metered influent to on-site wastewater treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_treatment_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: wwt_sludge
+          role: "Wastewater treatment sludge"
+          name: "Textile wastewater treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record dewatered sludge transferred for treatment, recovery, or disposal."
+          amount:
+            expression: "measured wet mass with dry-solids content and destination recorded"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_treatment_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+      elementary:
+        - row_id: wwt_treated_water
+          role: "Treated water discharge"
+          name: "Water, to fresh water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record treated wastewater discharged to the declared receiving-water compartment after on-site treatment."
+          amount:
+            expression: "metered treated effluent discharged to fresh water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_treatment_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+  - id: quality_release
+    label: "Inspection and product release"
+    inputs:
+      product:
+        - row_id: release_fabric_input
+          role: "Fabric lot ready for release"
+          name: "Knitted or crocheted fabric lot ready for release"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual greige or finished fabric lot entering final inspection."
+          amount:
+            expression: "measured dry-mass-equivalent fabric entering final inspection"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per release lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_quality_release_records
+              source_ids:
+                - un-cpc-v3-28190
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: release_electricity
+          role: "Electricity for inspection and rolling"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used for inspection, measuring, rolling or folding, and directly associated controls."
+          amount:
+            expression: "submetered electricity or documented allocation to inspected release lots"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net dry saleable fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_quality_release_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Reference product"
+          name: "Other knitted or crocheted fabric, excluding pile and terry fabric"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only saleable fabric conforming to the declared composition, construction, dimensions, areal density, coloration, finish state, and dry-mass basis."
+          amount:
+            expression: "1 kg net dry saleable fabric after inspection and exclusion of packaging and rejected material"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - un-cpc-v3-28190
+                - eu-pef-method-2021
+            ranges: []
+      waste:
+        - row_id: release_rejected_fabric
+          role: "Rejected fabric from inspection"
+          name: "Rejected knitted or crocheted fabric"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record fabric rejected at final inspection as a separate waste stream from saleable product."
+          amount:
+            expression: "measured dry-mass-equivalent rejected fabric sent to rework, recycling, treatment, or disposal"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net dry saleable fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_quality_release_records
+              source_ids:
+                - eu-textiles-bat-2022-2508
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "shared lines and utilities"
+    rule: "Avoid allocation by separately metering or otherwise subdividing fabric formation, wet processing, finishing, and treatment records by process and product lot wherever technically feasible."
+    source_ids:
+      - eu-pef-method-2021
+      - eu-textiles-bat-2022-2508
+  - rule_id: allocation_mass_when_unavoidable
+    applies_to: "jointly produced saleable fabric grades"
+    rule: "When physical subdivision is not feasible and multiple saleable fabric grades share one process, allocate the remaining shared burden by net dry mass unless a documented causal physical relationship better represents the driver. Report the method and quantities."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_waste_and_recovery
+    applies_to: "rejects, recovered material and exported energy"
+    rule: "Do not credit a reject or recovered material as a co-product without a documented destination and applicable system model. Keep treatment burdens and any substitution or recycling assumption explicit."
+    source_ids:
+      - eu-pef-method-2021
+      - eu-textiles-bat-2022-2508
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_fabric_formation_records
+      process_id: "fabric_formation"
+      flow_role: "each atomic yarn, electricity, oil, formed fabric, waste-oil, solid-waste and dust row"
+      record_type: "batch issue/return records, meters, stock records, scales, emission measurements"
+      raw_fields: "lot_id; yarn_id; fibre_composition; yarn_mass; returns; formed_fabric_mass; electricity_kwh; oil_stock_and_purchase; waste_mass; dust_concentration; exhaust_volume; moisture_basis"
+      collection_method: "reconcile material issues and returns with batch output; read dedicated meters and calibrated scales; calculate dust mass only from measured concentration and volume"
+      unit: "kg; kWh; mg/Nm3; Nm3"
+      frequency: "each lot, with utility and stock reconciliation at least monthly"
+      temporal_coverage: "representative 12-month period or all shorter campaign records"
+      site_scope: "all knitting or crochet lines producing the declared product"
+      aggregation_rule: "sum atomic exchanges by lot and divide by dry formed-fabric output; keep each yarn identity separate"
+      quality_evidence: "purchase and return records; calibration certificates; meter logs; lot traveller; waste transfer note; emission test report"
+    - protocol_id: cp_pretreatment_records
+      process_id: "pretreatment"
+      flow_role: "each atomic fabric, water, chemical, electricity, steam, output and wastewater row"
+      record_type: "batch recipe, dosing, meters and scales"
+      raw_fields: "lot_id; dry_fabric_in; water_in; chemical_product; concentration; charge_mass; electricity_kwh; steam_mass; condensate_return; dry_fabric_out; wastewater_mass"
+      collection_method: "collect every batch recipe and direct meter reading; convert product charge to active chemical mass without merging chemicals"
+      unit: "kg; kWh"
+      frequency: "each batch, reconciled monthly"
+      temporal_coverage: "representative 12-month period or all shorter campaign records"
+      site_scope: "all on-site pretreatment equipment used for the declared product"
+      aggregation_rule: "aggregate only identical atomic flows after batch normalization to dry textile output"
+      quality_evidence: "signed recipe; dosing log; meter calibration; scale record; mass-balance review"
+    - protocol_id: cp_coloration_records
+      process_id: "coloration"
+      flow_role: "each atomic fabric, water, dyestuff, pigment, binder, auxiliary, electricity, steam, output and wastewater row"
+      record_type: "recipe, print-paste record, dosing, meters and scales"
+      raw_fields: "lot_id; route; fabric_in; chemical_identity; concentration; charge_mass; water_in; electricity_kwh; steam_mass; fabric_out; wastewater_mass"
+      collection_method: "record each formulation ingredient separately by chemical or commercial-product identity and preserve route and batch traceability"
+      unit: "kg; kWh"
+      frequency: "each batch or print run, reconciled monthly"
+      temporal_coverage: "representative 12-month period or all shorter campaign records"
+      site_scope: "all on-site dyeing and printing lines used for the declared product"
+      aggregation_rule: "aggregate only identical atomic flows and the same route after normalization to dry textile output"
+      quality_evidence: "approved recipe; chemical SDS; dosing record; meter calibration; lot traveller; wastewater meter"
+    - protocol_id: cp_finishing_records
+      process_id: "finishing"
+      flow_role: "each atomic fabric, water, finishing chemical, electricity, steam, natural gas, output, wastewater and direct-emission row"
+      record_type: "recipe, dosing, meters, fuel records and stack calculations"
+      raw_fields: "lot_id; finish_route; fabric_in; chemical_identity; concentration; charge_mass; water_in; electricity_kwh; steam_mass; gas_volume; net_calorific_value; fabric_out; wastewater_mass; emission_factor"
+      collection_method: "collect direct records for each finishing step and each carrier; calculate active chemicals, fuel energy and combustion emissions using documented factors"
+      unit: "kg; kWh; MJ"
+      frequency: "each lot, with meters reconciled monthly"
+      temporal_coverage: "representative 12-month period or all shorter campaign records"
+      site_scope: "all on-site finishing and thermal-treatment equipment used for the declared product"
+      aggregation_rule: "normalize each atomic exchange to dry finished-fabric output before route aggregation"
+      quality_evidence: "approved recipe; SDS; meter and fuel invoices; calibration records; emission-factor reference; lot traveller"
+    - protocol_id: cp_wastewater_treatment_records
+      process_id: "wastewater_treatment"
+      flow_role: "each atomic influent, treatment chemical, electricity, sludge and water-emission row"
+      record_type: "flow meters, dosing, laboratory results, scales and disposal records"
+      raw_fields: "influent_mass; effluent_mass; electricity_kwh; chemical_identity; concentration; dose; sludge_wet_mass; sludge_dry_solids; discharge_compartment; monitored_parameter; concentration"
+      collection_method: "use direct flow-proportional monitoring where available; preserve each chemical and emitted substance separately"
+      unit: "kg; kWh; mg/L"
+      frequency: "continuous or per batch flow; parameter frequency per permit and process change"
+      temporal_coverage: "same period as foreground production"
+      site_scope: "on-site treatment receiving wastewater from included processes"
+      aggregation_rule: "reconcile influent, effluent, sludge and retained water; report pollutants as separate elementary flows when measured"
+      quality_evidence: "meter logs; laboratory accreditation; sampling plan; calibration; sludge transfer note; permit report"
+    - protocol_id: cp_quality_release_records
+      process_id: "quality_release"
+      flow_role: "release input, inspection electricity, reference product and rejected fabric"
+      record_type: "roll or piece scale, inspection and specification records"
+      raw_fields: "lot_id; product_code; fibre_composition; construction; width; areal_density; finish_state; wet_mass; moisture_content; dry_mass; rejected_mass; electricity_kwh"
+      collection_method: "weigh each released lot, document moisture correction, reconcile accepted and rejected fabric, and verify all required qualifiers"
+      unit: "kg; g/m2; m; kWh"
+      frequency: "each release lot"
+      temporal_coverage: "same period as foreground production"
+      site_scope: "every release and inspection line for the declared product"
+      aggregation_rule: "sum accepted dry mass only; normalize all included foreground exchanges to 1 kg accepted dry mass"
+      quality_evidence: "calibrated scale; moisture test; inspection report; product specification; rejection record"
+  calculation_rules:
+    - id: calc_dry_reference_mass
+      applies_to: "reference product"
+      rule: "dry_mass = measured_wet_mass × (1 − measured_moisture_fraction); packaging and rejected fabric are excluded"
+      inputs:
+        - measured_wet_mass
+        - measured_moisture_fraction
+        - packaging_mass
+        - rejected_mass
+      output: "kg net dry saleable fabric"
+      source_ids:
+        - eu-pef-method-2021
+    - id: calc_exchange_normalization
+      applies_to: "every foreground exchange"
+      rule: "normalized_exchange = exchange_quantity attributable to the declared product ÷ net dry saleable fabric mass"
+      inputs:
+        - "atomic exchange quantity"
+        - "attributable share after subdivision"
+        - "net dry saleable fabric mass"
+      output: "exchange per 1 kg reference product"
+      source_ids:
+        - eu-pef-method-2021
+    - id: calc_active_chemical
+      applies_to: "formulated chemicals"
+      rule: "active_chemical_mass = delivered product mass × declared active concentration; keep the delivered product identity and concentration in supporting records"
+      inputs:
+        - product_mass
+        - active_concentration
+      output: "kg active chemical and kg delivered product, without merging different chemicals"
+      source_ids:
+        - eu-textiles-bat-2022-2508
+    - id: calc_fuel_energy
+      applies_to: "natural gas and other fuels added as separate rows"
+      rule: "fuel_energy = metered fuel quantity × documented net calorific value"
+      inputs:
+        - fuel_quantity
+        - "density when required"
+        - net_calorific_value
+      output: "MJ net energy for the individual fuel"
+      source_ids:
+        - eu-textiles-bat-2022-2508
+    - id: calc_process_mass_balance
+      applies_to: "each included process"
+      rule: "reconcile dry material inputs with dry product output, separately measured waste, retained material and documented emissions; investigate unexplained imbalance rather than assigning it to product"
+      inputs:
+        - "atomic material inputs"
+        - "dry outputs"
+        - wastes
+        - emissions
+        - "stock change"
+      output: "process-level mass-balance check"
+      source_ids:
+        - eu-textiles-bat-2022-2508
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Preserve lot-level fibre composition, yarn form, construction, width, areal density, finish state, coloration route, finishing route, and moisture basis."
+      evidence: "product specification, bill of materials, lot traveller, test and inspection records"
+    - id: dq_primary_activity
+      applies_to: "all producer-operated processes"
+      requirement: "Use process- or plant-level consumption, stock, meter, recipe, emission, waste and sales records for the same reporting period; disclose estimation and allocation."
+      evidence: "meters, invoices, inventory changes, recipes, laboratory reports, waste notes, production records"
+    - id: dq_temporal_coverage
+      applies_to: "foreground dataset"
+      requirement: "Use a representative continuous 12-month period where production is regular; for a shorter campaign, include every campaign record and disclose seasonality and shutdowns."
+      evidence: "dated source register and completeness reconciliation"
+    - id: dq_recipe_completeness
+      applies_to: "wet processing and finishing"
+      requirement: "Account for every formulation ingredient as its own exchange and reconcile recipe totals to dosing or stock records; do not replace chemicals with an aggregated recipe row."
+      evidence: "approved recipe, SDS, dosing logs, stock reconciliation"
+    - id: dq_route_consistency
+      applies_to: "process map"
+      requirement: "The declared market state and on-site route shall agree with included processes. Greige-only output shall not include unperformed coloration or finishing, and finished output shall not omit producer-operated treatment."
+      evidence: "process flow sheet, lot route, outsourcing records, product declaration"
+    - id: dq_source_traceability
+      applies_to: "all calculated values"
+      requirement: "Retain raw fields, units, conversions, factors, source ids, responsible person, and calculation version sufficient to reproduce every normalized exchange."
+      evidence: "calculation workbook or machine-readable provenance record"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "Confirm CPC 28190 scope, exclude pile and terry fabric, require all reference qualifiers, and fail UUID validation if the rejected greige-only UUID is used as the category-wide reference product."
+    source_ids:
+      - un-cpc-v3-28190
+  - rule_id: validate_reference_mass
+    applies_to: "reference amount"
+    rule: "Confirm exactly 1 kg net dry saleable fabric, with moisture correction, packaging exclusion, and rejected-fabric exclusion documented."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: validate_process_route
+    applies_to: "process inventory"
+    rule: "Every process marked conditional shall match the declared lot route; every producer-operated pretreatment, coloration, finishing, and on-site treatment step shall be present exactly once."
+    source_ids:
+      - eu-textiles-bat-2022-2508
+      - khan-islam-2015
+  - rule_id: validate_atomic_exchanges
+    applies_to: "process inventory"
+    rule: "Reject any exchange that combines multiple yarns, chemicals, energy carriers, fuels, refrigerants, wastes, destinations, or emissions; each selected flow shall represent one physical or chemical exchange."
+    source_ids:
+      - eu-textiles-bat-2022-2508
+  - rule_id: validate_collection_links
+    applies_to: "foreground amounts"
+    rule: "Every foreground_record or calculated_value row shall link to a declared collection protocol and retain the raw record used to produce the normalized amount."
+    source_ids:
+      - eu-pef-method-2021
+      - eu-textiles-bat-2022-2508
+  - rule_id: validate_mass_balance
+    applies_to: "fabric formation and wet processing"
+    rule: "Check process-level mass balances and investigate unexplained differences; do not silently force the balance by changing the reference product amount."
+    source_ids:
+      - eu-textiles-bat-2022-2508
+  - rule_id: validate_no_unsupported_ranges
+    applies_to: "all inventory amounts"
+    rule: "No quantitative range may be introduced from a single case, a repeated point value, or an abstract. A source-backed empirical range requires at least two independent, boundary-compatible original sources."
+    source_ids:
+      - eu-pef-method-2021
+published_dataset_profile:
+  dataset_role: "secondary_dataset or background_dataset representing factory-gate production of the declared knitted or crocheted fabric lot"
+  downstream_use: "LCA process and lifecycle-model construction for products consuming CPC 28190 fabric, subject to matching composition, construction, finish state, technology, geography, period, and wastewater route"
+  allowed_use: "Use as an intermediate fabric dataset when all required qualifiers and included routes match the downstream study"
+  excluded_use: "Do not use for CPC 28110 pile or terry fabric, yarn, woven or nonwoven fabric, garments, cutting and sewing, or a finish state and fibre composition not represented by the dataset"
+  required_metadata: "PCR id and version; product-flow identity status; CPC code; fibre composition; yarn and construction specification; width; areal density; finish state; process route; geography; reference year; technology; allocation; moisture basis; upstream datasets; wastewater destination"
+  required_quality_disclosure: "Primary-data share; temporal, geographical and technological representativeness; meter and scale coverage; recipe completeness; mass-balance results; allocations; missing UUIDs; exclusions; outsourced steps; data gaps and uncertainty"
+  update_trigger: "Change in fibre composition, construction, finish recipe, process technology, energy or water supply, wastewater route, allocation method, site configuration, reference year, or resolution of the exact Tiangong reference-product UUID"
+data_sources:
+  - id: "un-cpc-v3-28190"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, class 28190 Other knitted or crocheted fabrics, https://unstats.un.org/unsd/classifications/Meetings/UNCEISC2023/8-3_Background3_CPC3_Structure.pdf (retrieved 2026-08-23)"
+    used_for: "Product-category boundary and exclusion of separately classified CPC 28110 pile and terry fabrics"
+  - id: "eu-pef-method-2021"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279, Annexes I and II, Product Environmental Footprint Method, https://environment.ec.europa.eu/system/files/2021-12/Annexes%201%20to%202.pdf (retrieved 2026-08-23)"
+    used_for: "Declared unit for intermediate products, reference-flow normalization, system boundary, company-specific data, allocation, data quality and verification"
+  - id: "eu-textiles-bat-2022-2508"
+    type: "official_guidance"
+    reference: "Commission Implementing Decision (EU) 2022/2508 establishing BAT conclusions for the textiles industry, ELI: http://data.europa.eu/eli/dec_impl/2022/2508/oj (retrieved 2026-08-23)"
+    used_for: "Fabric production and finishing definitions, process map, input-output inventory, water, energy, chemical, wastewater, waste, emissions and monitoring rules"
+  - id: "khan-islam-2015"
+    type: "literature"
+    reference: "Khan, M. M. R. and Islam, M. M. (2015), Materials and manufacturing environmental sustainability evaluation of apparel product: knitted T-shirt case study, Textiles and Clothing Sustainability 1:8, https://doi.org/10.1186/s40689-015-0008-8"
+    used_for: "Full-text cross-check of the knitting, pretreatment, dyeing or printing, finishing sequence and manufacturer record needs; not used for quantitative ranges"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:a04c19dc67978736acf0f9ac96fd1a55116dd3fd41c8703353b829906281296e"
+  generated_content_sha256: "sha256:5882d1e794af0576781939cd760dcbb38ca83bc54dcd0bea4e676873015c8fb0"

@@ -1,10 +1,839 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "46214"
-  title: "Boards, consoles, cabinets and other bases, equipped with electrical switching etc. apparatus, for electric control or the distribution of electricity, for a voltage exceeding 1000 V"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.electrical-machinery-and-apparatus.boards-consoles-cabinets-and-other-bases-equipped-with-electrical-switching-etc-apparat-fffa1be2"
+  classification_refs: "CPC 3.0 46214, exact"
+  covered_products: "Equipped boards, consoles, cabinets and other bases for control or distribution at rated voltage exceeding 1,000 V, including AIS, GIS and hybrid assemblies"
+  excluded_products: "Assemblies at or below 1,000 V; empty enclosures; individual switching, protection or connection apparatus; loose parts; cables; complete prefabricated substations"
+  representative_product: "A finished, factory-tested medium- or high-voltage switchgear or controlgear assembly with declared switching, protection, control and distribution configuration"
+  production_route: "Purchased material and apparatus supply; enclosure and busbar fabrication where applicable; mechanical and electrical integration; medium filling or sealed-boundary verification where applicable; factory testing; packaging"
+  market_state: "Finished product, manufactured, at plant gate"
+functional_unit:
+  what: "Provision of a finished, factory-tested equipped switchgear or controlgear assembly for the declared electric control, switching, protection and distribution functions"
+  how_much: "1 kg of net finished assembly mass at the plant gate"
+  how_well: "The declared rated voltage is greater than 1,000 V, and rated current, current type and frequency, insulation level and medium, short-circuit withstand, switching or breaking capability, protection configuration and assembly type are specified"
+  how_long_or_cycle: "Factory-gate results have no time scaling; lifecycle results shall state the manufacturer-declared reference service life and the maintenance and replacement scenario"
+  reference_flow_link: "The mass reference flow represents the configured finished assembly, not an empty cabinet or an individual apparatus"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "factory-gate core"
+      rule: "Include purchased materials and apparatus, inbound transport when included in the declared study, on-site fabrication, assembly, medium handling, factory testing, inspection, production waste treatment and primary packaging through finished product at plant gate."
+      source_ids:
+        - pep-psr-0005-2023
+    - rule_id: boundary_equipped_assembly
+      applies_to: "product identity"
+      rule: "Model the delivered equipped assembly and its installed switching, protection, control, measurement and auxiliary apparatus; an empty cabinet or one individual apparatus is outside this PCR."
+      source_ids:
+        - unsd-cpc-3-2025
+        - iec-62271-1-2021
+        - iec-62271-200-2021
+    - rule_id: boundary_conditional_lifecycle
+      applies_to: "lifecycle extensions"
+      rule: "Include installation, use, maintenance, replacement and end of life only as separately identified modules with declared geography, electricity, loading, operating hours, service life, recovery and treatment scenarios."
+      source_ids:
+        - pep-psr-0005-2023
+        - epd-cpcr-switchgear-2024
+    - rule_id: boundary_medium_integrity
+      applies_to: "gas-, fluid- or vacuum-dependent equipment"
+      rule: "Include filling, recovery, factory losses and integrity tests for gas or fluid systems; for vacuum interrupters include the installed component and boundary verification, while use-phase leakage or failure is scenario-dependent."
+      source_ids:
+        - iec-62271-1-2021
+        - iec-62271-200-2021
+    - rule_id: boundary_same_category
+      applies_to: "recursive CPC 46214 input"
+      rule: "Record a purchased equipped assembly of the same category as one upstream product input and do not unfold it inside the same foreground system unless the internal manufacture is measured and counted exactly once."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased materials, components, subassemblies, energy carriers and packaging at the manufacturing-site gate, with supplier, geography and transport treatment declared"
+  starting_condition_role: "Separates supplier or background production from site-specific enclosure fabrication, busbar fabrication, integration, medium management, testing and packaging"
+  product_classification_scope: "Finished equipped control or distribution assemblies at rated voltage exceeding 1,000 V under CPC 3.0 46214"
+  recursive_input_rule: "A purchased product that itself meets CPC 46214 is represented by one upstream dataset; its internal stages shall not be duplicated in the receiving assembly process"
+  upstream_dataset_requirement: "Prefer supplier-specific datasets matching material grade, apparatus type, insulation medium, geography and reference year; otherwise use a disclosed representative dataset and document the mismatch"
+  disclosure: "State all exclusions, cut-offs, capital-goods treatment, transport assumptions, supplier-data substitutions, lifecycle modules and scenario boundaries"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Boards, consoles, cabinets and other bases, equipped with electrical switching etc. apparatus, for electric control or the distribution of electricity, for a voltage exceeding 1000 V"
+    uuid: "84db785c-a90a-48df-a23e-ebcbca35cc4c"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200b9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "rated voltage"
+    - "rated current"
+    - "AC or DC and rated frequency where applicable"
+    - "rated insulation level"
+    - "short-time withstand current and duration"
+    - "peak withstand or making capacity where applicable"
+    - "breaking capacity and protection configuration"
+    - "assembly type as AIS"
+    - "GIS or hybrid"
+    - "insulation and interruption medium identity and installed charge"
+    - "gas-tight or vacuum boundary and monitoring or test method"
+    - "busbar material"
+    - "enclosure material and coating"
+    - "installed switching"
+    - protection
+    - control
+    - "measurement and auxiliary apparatus"
+    - "net product mass"
+    - "primary packaging and installation-accessory masses"
+    - "indoor or outdoor service"
+    - "applicable standard and factory-test status"
+    - "production site"
+    - "geography and reference year"
+    - "manufacturer-declared service life"
+    - "maintenance and replacement scenario"
+    - "operational loss and auxiliary-power scenario when lifecycle modules are reported"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "finished reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use the net mass of the fully equipped, factory-tested assembly; exclude primary packaging and separately delivered installation accessories from the reference amount and report them separately."
+  - id: assembly_scaling
+    applies_to: "all factory-gate inventory"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg per kg reference product"
+    rule: "Divide the production-period inventory attributable to the declared configuration by its net finished mass; retain the unscaled batch totals for audit."
+  - id: material_mass_balance
+    applies_to: "metals, polymers, ceramics, fluids and electronic assemblies"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile purchased input, product content, recovered return, scrap, waste and stock change by material family without assuming unmeasured scrap rates."
+  - id: medium_mass_balance
+    applies_to: "insulating or interruption gas and fluid"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record initial charge, recovered amount, returned amount, measured or calculated release and closing stock for the declared production period; a vacuum route records no gas charge but retains vacuum-boundary test evidence."
+  - id: electricity_conversion
+    applies_to: "electricity records"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh and MJ"
+    rule: "Preserve metered kWh and use 1 kWh = 3.6 MJ when an energy conversion is required."
+  - id: use_energy
+    applies_to: "operational losses and auxiliaries in lifecycle studies"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh per declared service life"
+    rule: "Calculate each operating mode from measured or declared power multiplied by annual hours and service years, including load-dependent losses and standby or control power separately."
+  - id: service_life_scaling
+    applies_to: "maintenance, replacement and end-of-life modules"
+    required_property_ref:
+      name: "Time"
+      uuid: ""
+    required_unit: "year"
+    rule: "Use the manufacturer-declared reference service life and disclose every replacement count and timing; do not apply an undisclosed category-default lifetime."
+process_map:
+  - id: enclosure_busbar_fabrication
+    name: "Enclosure and busbar fabrication"
+    inclusion: "conditional"
+    inclusion_condition: "Include when metal forming, machining, joining, plating, painting or busbar preparation occurs within the reporting organization"
+    role: "Converts raw or semi-finished material to assembly-ready structures and records scrap and surface-treatment burdens"
+    quantitative_reference: "measured finished parts and fabrication records per kg reference product"
+  - id: final_assembly_testing_packaging
+    name: "Final assembly, medium management, factory testing and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always include for the finished equipped assembly; medium filling or vacuum-boundary checks apply to the installed technology"
+    role: "Integrates all apparatus and delivers the tested, packed reference product"
+    quantitative_reference: "HV board/cabinet final assembly and factory testing f2685e52-4286-4243-8b9c-a5d649d833aa, normalized to 1 kg output"
+  - id: use_maintenance
+    name: "Use and maintenance"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when reporting lifecycle modules"
+    role: "Records electrical losses, auxiliary energy, leakage, service materials and replacements over the declared service life"
+    quantitative_reference: "declared operating, maintenance and replacement scenario"
+  - id: end_of_life
+    name: "Decommissioning and end of life"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when reporting lifecycle modules"
+    role: "Records de-energization, medium recovery, dismantling, recycling and residual treatment"
+    quantitative_reference: "declared geography-specific end-of-life scenario"
+process_inventory:
+  - id: enclosure_busbar_fabrication
+    label: "Enclosure and busbar fabrication"
+    inputs:
+      product:
+        - row_id: fabrication_materials
+          role: "Enclosure, busbar and support materials"
+          name: "No default selected; choose supplier or market flows matching each material family, grade, recycled-content claim and geography"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each material family and grade entering on-site fabrication, including steel or aluminium enclosure material, copper or aluminium busbar material, coatings, fasteners and insulating supports."
+          amount:
+            expression: "measured issue to production plus verified stock change, disaggregated by material family"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_records
+              source_ids:
+                - pep-psr-0005-2023
+            ranges: []
+        - row_id: fabrication_energy
+          role: "Fabrication electricity and fuels"
+          name: "No default selected; choose site energy flows matching carrier, voltage level and geography"
+          flow_type: "product"
+          property_unit: "Energy / kWh for electricity and MJ or carrier mass for fuels"
+          description: "Record metered electricity and fuels used for cutting, forming, machining, joining, surface treatment and ventilation attributable to the declared products."
+          amount:
+            expression: "direct submetering, or documented equipment-time allocation when submetering is unavailable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_records
+              source_ids:
+                - pep-psr-0005-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: fabricated_structures
+          role: "Fabricated enclosure and busbars"
+          name: "No default selected; use internal intermediate flows with documented material composition"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass transferred to final assembly, disaggregated into enclosure, busbars and supports."
+          amount:
+            expression: "measured accepted transfer mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: fabrication_waste
+          role: "Fabrication scrap and treatment residues"
+          name: "No default selected; choose waste flows matching material and treatment route"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record metal scrap, coating residues, spent baths, abrasives and rejected parts by treatment route, distinguishing internally returned material from waste leaving the site."
+          amount:
+            expression: "measured dispatch or internal-return records reconciled to the material balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_records
+              source_ids:
+                - pep-psr-0005-2023
+            ranges: []
+      elementary:
+        []
+  - id: final_assembly_testing_packaging
+    label: "Final assembly, medium management, factory testing and packaging"
+    inputs:
+      product:
+        - row_id: assembly_components
+          role: "Assembly materials and installed apparatus"
+          name: "No default selected; use supplier-specific or representative product flows matching component function, ratings, medium and geography"
+          flow_type: "product"
+          property_unit: "Mass / kg and item counts retained as supporting attributes"
+          description: "Record the accepted enclosure and busbars plus every installed switching, protection, control, measurement and auxiliary apparatus family. Separately identify conductors, insulators, electronics, batteries where present, fasteners and other significant material families."
+          amount:
+            expression: "configuration-specific bill-of-material quantity reconciled to goods issue and net product mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_bom
+              source_ids:
+                - pep-psr-0005-2023
+                - iec-62271-200-2021
+            ranges: []
+        - row_id: insulation_medium
+          role: "Insulation or interruption medium"
+          name: "No default selected; choose an exact substance or product flow matching the declared medium and supply state"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "For gas- or fluid-filled equipment, record medium identity, composition, virgin or reclaimed status and measured installed charge. For vacuum interrupters, record no gas input here and retain the purchased interrupter and vacuum-boundary evidence with the assembly records."
+          amount:
+            expression: "measured filling minus recovered return, reconciled to installed charge, releases and stock change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_medium_integrity
+              source_ids:
+                - iec-62271-1-2021
+                - iec-62271-200-2021
+            ranges: []
+        - row_id: assembly_testing_packaging_inputs
+          role: "Assembly, testing and packaging energy and materials"
+          name: "No default selected; choose exact site energy and packaging-material flows"
+          flow_type: "product"
+          property_unit: "Energy / kWh and Mass / kg"
+          description: "Record electricity and other energy for integration, gas handling, vacuum or pressure tests, dielectric and functional tests, plus primary packaging by material."
+          amount:
+            expression: "metered or documented equipment-time energy and measured configuration-specific packaging issue"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_testing_packaging
+              source_ids:
+                - pep-psr-0005-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Finished equipped switchgear or controlgear assembly"
+          name: "Boards, consoles, cabinets and other bases, equipped with electrical switching etc. apparatus, for electric control or the distribution of electricity, for a voltage exceeding 1000 V"
+          flow_type: "product"
+          flow_ref:
+            uuid: "84db785c-a90a-48df-a23e-ebcbca35cc4c"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the net mass of the configured, accepted and factory-tested assembly at the plant gate. The output shall match CPC 46214 and all required qualifiers."
+          amount:
+            expression: "1 kg net finished product after factory acceptance"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_testing_packaging
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: assembly_waste
+          role: "Assembly rejects, offcuts and packaging waste"
+          name: "No default selected; choose waste flows matching material and documented treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected components, conductor offcuts, wiring waste, test failures, packaging offcuts and other wastes by material and destination."
+          amount:
+            expression: "measured waste dispatch and return records allocated to the declared configuration"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_testing_packaging
+              source_ids:
+                - pep-psr-0005-2023
+            ranges: []
+      elementary:
+        - row_id: factory_medium_release
+          role: "Factory release of insulating or interruption medium"
+          name: "No default selected; choose the exact elementary flow for the declared released substance"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or mass-balance-derived releases by exact substance. Do not represent vacuum loss as a material emission."
+          amount:
+            expression: "measured recovery-system loss or documented charge-recovery-stock mass balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished reference product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_medium_integrity
+              source_ids:
+                - iec-62271-1-2021
+            ranges: []
+  - id: use_maintenance
+    label: "Use and maintenance"
+    inputs:
+      product:
+        - row_id: use_electricity
+          role: "Operational electricity"
+          name: "No default selected; choose an electricity supply flow matching the use geography and voltage level"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "When lifecycle modules are included, record electrical losses and auxiliary consumption for each operating mode using the declared loading and annual hours."
+          amount:
+            expression: "sum of measured or declared mode power multiplied by mode hours and service years"
+            value_mode: "calculated_value"
+            specificity: "scenario_specific"
+            basis:
+              text: "per 1 kg reference product over the declared service life"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_use_maintenance
+              source_ids:
+                - pep-psr-0005-2023
+            ranges: []
+        - row_id: maintenance_replacements
+          role: "Maintenance materials and replacement apparatus"
+          name: "No default selected; choose exact material and apparatus flows matching the maintenance event"
+          flow_type: "product"
+          property_unit: "Mass / kg and item count as a supporting attribute"
+          description: "Record scheduled and corrective service materials, replacement apparatus, replenished medium and their transport under the declared maintenance plan."
+          amount:
+            expression: "event quantity multiplied by the declared number of events or replacements"
+            value_mode: "calculated_value"
+            specificity: "scenario_specific"
+            basis:
+              text: "per 1 kg reference product over the declared service life"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_use_maintenance
+              source_ids:
+                - pep-psr-0005-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: maintenance_waste
+          role: "Replaced apparatus and service waste"
+          name: "No default selected; choose waste flows matching material and treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record removed apparatus, spent service materials and recovered medium by actual or scenario treatment route."
+          amount:
+            expression: "event-specific removed quantity multiplied by the declared number of events"
+            value_mode: "calculated_value"
+            specificity: "scenario_specific"
+            basis:
+              text: "per 1 kg reference product over the declared service life"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_use_maintenance
+              source_ids:
+                - pep-psr-0005-2023
+            ranges: []
+      elementary:
+        - row_id: use_medium_release
+          role: "Use-phase medium release"
+          name: "No default selected; choose the exact elementary flow for the declared released substance"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "For gas- or fluid-containing equipment, record release by exact substance from measured service records or an explicitly documented scenario. EU studies shall separately demonstrate applicable fluorinated-gas compliance."
+          amount:
+            expression: "measured service loss or declared charge multiplied by documented event-specific loss, summed over service life"
+            value_mode: "calculated_value"
+            specificity: "scenario_specific"
+            basis:
+              text: "per 1 kg reference product over the declared service life"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_use_maintenance
+              source_ids:
+                - eu-2024-573-fgas
+            ranges: []
+  - id: end_of_life
+    label: "Decommissioning and end of life"
+    inputs:
+      product:
+        []
+      waste:
+        - row_id: retired_assembly
+          role: "Retired equipped assembly"
+          name: "No default selected; choose a waste flow explicitly representing the retired equipped assembly"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the retired product mass entering de-energization, medium recovery and dismantling under the declared scenario."
+          amount:
+            expression: "reference product mass plus declared replacement remnants entering end-of-life treatment"
+            value_mode: "calculated_value"
+            specificity: "scenario_specific"
+            basis:
+              text: "per 1 kg reference product over the declared service life"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_end_of_life
+              source_ids:
+                - pep-psr-0005-2023
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: recovered_products
+          role: "Recovered metals, components and medium"
+          name: "No default selected; choose recovered-product flows matching material quality and destination"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only outputs that meet the declared system-boundary and quality criteria for recovery as products; keep burdens and credits consistent with the allocation rule."
+          amount:
+            expression: "scenario or facility record for recovered output mass"
+            value_mode: "calculated_value"
+            specificity: "scenario_specific"
+            basis:
+              text: "per 1 kg reference product over the declared service life"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_end_of_life
+              source_ids:
+                - pep-psr-0005-2023
+            ranges: []
+      waste:
+        - row_id: end_of_life_residuals
+          role: "Residual treatment fractions"
+          name: "No default selected; choose waste flows matching material and treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record non-recovered metal, polymers, ceramics, electronics, fluids and other residuals by treatment route."
+          amount:
+            expression: "scenario or facility record reconciled to retired input, recovered products and releases"
+            value_mode: "calculated_value"
+            specificity: "scenario_specific"
+            basis:
+              text: "per 1 kg reference product over the declared service life"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_end_of_life
+              source_ids:
+                - pep-psr-0005-2023
+            ranges: []
+      elementary:
+        - row_id: end_of_life_medium_release
+          role: "End-of-life medium release"
+          name: "No default selected; choose the exact elementary flow for the declared released substance"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record the exact unrecovered substance released during decommissioning or treatment; do not infer an emission when verified full recovery is documented."
+          amount:
+            expression: "initial residual charge minus recovered and transferred amount, reconciled with measured release and closing stock"
+            value_mode: "calculated_value"
+            specificity: "scenario_specific"
+            basis:
+              text: "per 1 kg reference product over the declared service life"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_end_of_life
+              source_ids:
+                - eu-2024-573-fgas
+            ranges: []
+allocation_rules:
+  - rule_id: avoid_allocation
+    applies_to: "all foreground processes"
+    rule: "Prefer direct measurement, physical segregation and configuration-specific bills of material so that inputs, energy, waste and releases are assigned without allocation."
+    source_ids:
+      - pep-psr-0005-2023
+  - rule_id: causal_allocation
+    applies_to: "shared equipment or batch operations"
+    rule: "When direct separation is unavailable, use a documented causal driver such as machine time, test time, treatment area or metered energy that reflects resource use."
+    source_ids:
+      - pep-psr-0005-2023
+  - rule_id: mass_allocation_fallback
+    applies_to: "shared production with no defensible causal driver"
+    rule: "Allocate by net output mass only as a fallback, identify the affected flows and products, disclose the allocation share and test sensitivity when it may affect conclusions."
+    source_ids:
+      - pep-psr-0005-2023
+  - rule_id: recycling_separation
+    applies_to: "scrap and end-of-life recovery"
+    rule: "State the chosen recycling system boundary and allocation method; do not combine recycled-content benefits, scrap credits and end-of-life credits in a way that double counts the same recovery."
+    source_ids:
+      - pep-psr-0005-2023
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_fabrication_records
+      process_id: "enclosure_busbar_fabrication"
+      flow_role: "material, energy, accepted part and waste records"
+      record_type: "ERP issue, scale ticket, meter, stock and waste-transfer record"
+      raw_fields: "material id and grade; quantity; unit; batch; product configuration; meter reading; scrap destination; opening and closing stock"
+      collection_method: "reconcile production orders, meters, scale records and waste dispatches"
+      unit: "kg, kWh, MJ"
+      frequency: "each batch or monthly meter period"
+      temporal_coverage: "representative continuous 12-month period or complete production campaign"
+      site_scope: "each fabrication site"
+      aggregation_rule: "configuration-specific direct records first; otherwise documented causal allocation"
+      quality_evidence: "calibrated-meter evidence, production order, stock reconciliation and waste receipt"
+    - protocol_id: cp_assembly_bom
+      process_id: "final_assembly_testing_packaging"
+      flow_role: "installed components and net product composition"
+      record_type: "approved bill of materials, goods issue and as-built configuration"
+      raw_fields: "component id; supplier; quantity; mass; material; rating; medium; serial or batch; accepted substitution"
+      collection_method: "reconcile approved BOM, as-built record, purchase receipt and net weighing"
+      unit: "kg and item"
+      frequency: "each product configuration"
+      temporal_coverage: "reference-year production"
+      site_scope: "each assembly site"
+      aggregation_rule: "retain each material and apparatus family before normalization"
+      quality_evidence: "controlled BOM revision, supplier declaration and as-built sign-off"
+    - protocol_id: cp_medium_integrity
+      process_id: "final_assembly_testing_packaging"
+      flow_role: "medium charge, recovery, release and sealed-boundary verification"
+      record_type: "cylinder or vessel weighing, recovery log, leak test, pressure or density record, vacuum test"
+      raw_fields: "substance; composition; supplied; charged; recovered; returned; stock change; measured release; test method; result; instrument id"
+      collection_method: "close a substance mass balance for each batch and link integrity evidence to serial or configuration"
+      unit: "kg and test result"
+      frequency: "each filling or integrity-test event"
+      temporal_coverage: "reference-year production"
+      site_scope: "each handling and test location"
+      aggregation_rule: "sum measured events by exact substance and configuration"
+      quality_evidence: "calibrated scale, recovery log, leak or vacuum test report and operator sign-off"
+    - protocol_id: cp_testing_packaging
+      process_id: "final_assembly_testing_packaging"
+      flow_role: "test energy, packaging, rejects and accepted reference product"
+      record_type: "test report, meter, packaging issue, scale and reject record"
+      raw_fields: "rating; test standard; result; energy; packaging material; packaging mass; net product mass; reject disposition"
+      collection_method: "link factory acceptance, net weighing, energy and packaging records to configuration"
+      unit: "kg and kWh"
+      frequency: "each assembly or production batch"
+      temporal_coverage: "reference-year production"
+      site_scope: "each assembly and test site"
+      aggregation_rule: "accepted output and attributable records divided by accepted net mass"
+      quality_evidence: "factory-test report, calibrated scale, meter and packaging issue record"
+    - protocol_id: cp_use_maintenance
+      process_id: "use_maintenance"
+      flow_role: "losses, auxiliary electricity, maintenance, replacements and medium events"
+      record_type: "type-test or measurement report, loading profile, maintenance plan and service log"
+      raw_fields: "operating mode; power; loading; hours; years; event; material; replacement; charge; recovered; released"
+      collection_method: "combine measured or declared performance with the explicit use and service scenario"
+      unit: "kWh, kg, item and year"
+      frequency: "each operating mode and service event"
+      temporal_coverage: "declared reference service life"
+      site_scope: "declared use geography and installed population"
+      aggregation_rule: "calculate each mode and event separately, then sum over life"
+      quality_evidence: "applicable test report, manufacturer data, maintenance plan and service evidence"
+    - protocol_id: cp_end_of_life
+      process_id: "end_of_life"
+      flow_role: "retired input, recovered outputs, residuals and releases"
+      record_type: "dismantling study, facility record, recovery log and scenario source"
+      raw_fields: "input mass; material fraction; recovered product; treatment route; medium recovered; medium released; geography"
+      collection_method: "reconcile scenario or facility mass flows by material and exact substance"
+      unit: "kg"
+      frequency: "each scenario or facility campaign"
+      temporal_coverage: "scenario reference year"
+      site_scope: "declared treatment geography"
+      aggregation_rule: "conserve mass by material family and disclose unclassified remainder"
+      quality_evidence: "facility record, licensed-handler evidence, recovery certificate or documented scenario source"
+  calculation_rules:
+    - id: normalize_to_reference_mass
+      applies_to: "factory-gate flows"
+      rule: "normalized amount = attributable production-period amount divided by accepted net reference-product mass"
+      inputs:
+        - "attributable amount"
+        - "accepted net mass"
+      output: "amount per 1 kg reference product"
+      source_ids: []
+    - id: reconcile_material_balance
+      applies_to: "each material family"
+      rule: "input + opening stock = product content + internally returned material + waste + closing stock; report unresolved imbalance and investigate rather than force closure"
+      inputs:
+        - "material issue"
+        - "product content"
+        - return
+        - waste
+        - stock
+      output: "material-family balance and unresolved difference"
+      source_ids:
+        - pep-psr-0005-2023
+    - id: calculate_medium_release
+      applies_to: "gas or fluid handling"
+      rule: "release = supplied + opening stock - installed charge - recovered return - transferred amount - closing stock, unless direct calibrated release measurement is more reliable"
+      inputs:
+        - "exact-substance mass records"
+      output: "release by substance"
+      source_ids:
+        - iec-62271-1-2021
+    - id: calculate_use_energy
+      applies_to: "each use mode"
+      rule: "lifetime energy = power in kW multiplied by annual operating hours multiplied by service years; sum modes and state load assumptions"
+      inputs:
+        - "measured or declared power"
+        - "annual hours"
+        - years
+      output: "kWh per declared service life"
+      source_ids:
+        - pep-psr-0005-2023
+    - id: calculate_replacements
+      applies_to: "replacement apparatus and service materials"
+      rule: "lifetime quantity = event quantity multiplied by declared event count; include replaced item treatment separately"
+      inputs:
+        - "event quantity"
+        - count
+        - treatment
+      output: "lifetime input and waste quantities"
+      source_ids:
+        - pep-psr-0005-2023
+    - id: reconcile_end_of_life
+      applies_to: "end-of-life scenario"
+      rule: "retired input mass = recovered product + residual treatment + exact-substance release + disclosed stock or unclassified remainder"
+      inputs:
+        - "dismantling and recovery records"
+      output: "scenario mass balance"
+      source_ids:
+        - pep-psr-0005-2023
+  data_quality_requirements:
+    - id: dq_identity_ratings
+      applies_to: "reference product"
+      requirement: "Configuration and ratings shall demonstrate an equipped control or distribution assembly above 1,000 V and distinguish it from an empty enclosure or individual apparatus."
+      evidence: "nameplate, approved drawing, single-line diagram, BOM and factory-test report"
+    - id: dq_bom_completeness
+      applies_to: "product composition"
+      requirement: "Report busbar and enclosure materials plus installed apparatus, electronics, insulators, medium, batteries where present and primary packaging; explain omitted material families."
+      evidence: "controlled as-built BOM, supplier declarations and net mass reconciliation"
+    - id: dq_traceability
+      applies_to: "primary data"
+      requirement: "Every site-specific value shall link to a dated record, site, product configuration, unit, aggregation method and responsible data owner."
+      evidence: "record index and audit trail"
+    - id: dq_medium_boundary
+      applies_to: "gas, fluid and vacuum technologies"
+      requirement: "Gas or fluid records shall close the exact-substance balance and link leakage tests; vacuum equipment shall link purchased interrupter identity and vacuum-boundary verification."
+      evidence: "charge and recovery logs, calibrated weighing, leak or vacuum test report"
+    - id: dq_temporal_geographic
+      applies_to: "all datasets"
+      requirement: "State data period, production site, supplier geography, use geography and treatment geography and document proxy mismatches."
+      evidence: "dataset metadata and source register"
+    - id: dq_scenario_transparency
+      applies_to: "lifecycle modules"
+      requirement: "Disclose service life, loading, hours, grid, losses, auxiliary consumption, maintenance, replacements, medium loss, recovery and end-of-life assumptions."
+      evidence: "scenario sheet, calculation workbook and supporting tests or service plan"
+validation_rules:
+  - rule_id: validate_scope
+    applies_to: "product identity"
+    rule: "Confirm the product is an equipped electric-control or distribution assembly with rated voltage exceeding 1,000 V; reject low-voltage assemblies, empty cabinets, single apparatus and parts."
+    source_ids:
+      - unsd-cpc-3-2025
+  - rule_id: validate_reference
+    applies_to: "reference flow"
+    rule: "Confirm the selected product flow UUID, Mass property UUID, Units of mass UUID, 1 kg reference amount and net finished mass basis."
+    source_ids: []
+  - rule_id: validate_ratings
+    applies_to: "required qualifiers"
+    rule: "Require rated voltage, rated current, current type and frequency, insulation level, short-circuit withstand and duration, making or breaking capability where applicable, protection configuration and factory-test status."
+    source_ids:
+      - iec-62271-1-2021
+      - iec-62271-200-2021
+  - rule_id: validate_materials
+    applies_to: "composition"
+    rule: "Require busbar and enclosure material and coating, installed medium and charge, installed apparatus families, net mass and separately reported packaging and installation accessories."
+    source_ids:
+      - pep-psr-0005-2023
+  - rule_id: validate_medium
+    applies_to: "gas, fluid or vacuum boundary"
+    rule: "Require exact medium identity and charge plus charge-recovery-release balance and integrity-test method for gas or fluid equipment; require purchased-interrupter identity and vacuum-boundary test evidence for vacuum equipment."
+    source_ids:
+      - iec-62271-1-2021
+      - iec-62271-200-2021
+  - rule_id: validate_mass_balance
+    applies_to: "foreground and end-of-life inventories"
+    rule: "Reconcile material and exact-substance inputs, product, return, stock, waste, recovery and release; report every unresolved difference without inserting an assumed balancing flow."
+    source_ids:
+      - pep-psr-0005-2023
+  - rule_id: validate_processes
+    applies_to: "process completeness"
+    rule: "Include final assembly, applicable medium management, factory testing and packaging; include on-site fabrication and each lifecycle process when its inclusion condition is met."
+    source_ids:
+      - pep-psr-0005-2023
+  - rule_id: validate_use
+    applies_to: "lifecycle modules"
+    rule: "When use or maintenance is reported, require declared service life, operating modes, loading, hours, losses, auxiliary power, replacements, maintenance and medium-loss scenario; otherwise mark those modules excluded."
+    source_ids:
+      - pep-psr-0005-2023
+  - rule_id: validate_eu_fgas
+    applies_to: "EU fluorinated-gas equipment"
+    rule: "For an EU scenario containing regulated fluorinated gas, record the applicable containment, leak-check or monitoring basis, recovery and service restrictions, and commissioning prohibition or derogation status without treating the regulation as a universal product-performance threshold."
+    source_ids:
+      - eu-2024-573-fgas
+  - rule_id: validate_allocation
+    applies_to: "shared operations and recycling"
+    rule: "Confirm allocation was avoided where possible, any causal driver or mass fallback is documented, and recycling benefits are not double counted."
+    source_ids:
+      - pep-psr-0005-2023
+  - rule_id: validate_quality
+    applies_to: "dataset release"
+    rule: "Confirm source traceability, temporal and geographic representativeness, configuration-specific completeness and disclosure of every proxy, exclusion and scenario assumption."
+    source_ids:
+      - pep-psr-0005-2023
+published_dataset_profile:
+  dataset_role: "Configuration-specific foreground unit process for a finished equipped medium- or high-voltage switchgear or controlgear assembly"
+  downstream_use: "Product carbon footprint, EPD, product comparison under equivalent technical function and scenario, process dataset, or lifecycle model"
+  allowed_use: "Factory-gate or explicitly modular lifecycle studies whose product ratings, assembly technology, material composition, production geography, reference year and scenario match the declared dataset"
+  excluded_use: "Low-voltage assemblies; empty enclosures; individual circuit-breakers or other single apparatus; unmatched voltage or insulation technology; undisclosed generic substitution; legal compliance claims based only on LCA results"
+  required_metadata: "PCR id; CPC 3.0 code; reference flow UUID; all required qualifiers; process inclusions; site and year; data sources; allocation; exclusions; lifecycle scenario modules"
+  required_quality_disclosure: "Primary-data coverage; BOM and mass-balance completeness; supplier and background proxies; energy measurement method; medium or vacuum-boundary evidence; uncertainty and scenario sensitivity"
+  update_trigger: "Change in rated configuration, busbar or enclosure material, installed apparatus, insulation or interruption medium, manufacturing site or route, service-life or use scenario, regulation affecting the declared scenario, or material background-data revision"
+data_sources:
+  - id: "unsd-cpc-3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0 explanatory notes, class 462 and subclass 46214, 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-08)"
+    used_for: "Exact category identity and separation from high-voltage single apparatus, low-voltage equipped assemblies and parts"
+  - id: "iec-62271-1-2021"
+    type: "standard"
+    reference: "IEC 62271-1:2017+A1:2021, High-voltage switchgear and controlgear - Part 1: Common specifications for alternating current switchgear and controlgear. https://webstore.iec.ch/en/publication/71439 (retrieved 2026-08-08)"
+    used_for: "Voltage scope, common ratings, service conditions, gas and vacuum technology declarations and integrity evidence"
+  - id: "iec-62271-200-2021"
+    type: "standard"
+    reference: "IEC 62271-200:2021, High-voltage switchgear and controlgear - Part 200: AC metal-enclosed switchgear and controlgear for rated voltages above 1 kV and up to and including 52 kV. https://webstore.iec.ch/en/publication/63466 (retrieved 2026-08-08)"
+    used_for: "Metal-enclosed assembly scope, compartments, interlocks, resistance, short-circuit and internal-arc testing context"
+  - id: "pep-psr-0005-2023"
+    type: "official_guidance"
+    reference: "PEP ecopassport, PSR-0005-ed3.1-EN-2023 08 12, Product Specific Rules for Electrical Switchgear and Controlgear Solutions. https://register.pep-ecopassport.org/documents/public/PSR-0005-EN (retrieved 2026-08-08)"
+    used_for: "Product composition, reference product, boundary, primary-data traceability, allocation, operational energy, maintenance, replacement and end-of-life modelling"
+  - id: "epd-cpcr-switchgear-2024"
+    type: "official_guidance"
+    reference: "International EPD System, 2024:06-c-PCR-001 Electrical switchgear and controlgear solutions, adoption of PSR-0005, valid through 2028-06-06. https://www.environdec.com/pcr-library/pcr_029113de-2d79-4a79-9ba1-08dd782e0347 (retrieved 2026-08-08)"
+    used_for: "Independent PCR-library status and applicability of the switchgear product-specific rules"
+  - id: "eu-2024-573-fgas"
+    type: "standard"
+    reference: "Regulation (EU) 2024/573 of the European Parliament and of the Council of 7 February 2024 on fluorinated greenhouse gases. https://eur-lex.europa.eu/eli/reg/2024/573/2024-02-20/eng (retrieved 2026-08-08)"
+    used_for: "EU-specific containment, leak-check, monitoring, recovery, service and commissioning disclosures for fluorinated-gas switchgear"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f2a9d86a6acc8acc2053efb311f1fb273ac4f2814b3b24a029baf692ba17916c"
+  generated_content_sha256: "sha256:98cba29c817aaccb22653fc7b24b099c4ecfe262f3ae4d9ff0f64d6bf73b54bf"

@@ -240,8 +240,19 @@ export function auditHybridSearchReceipts({ report, stateDir, task, verifiedUuid
     for (const receiptId of receiptIds) referenced.add(receiptId);
   }
   if (referenced.size > 0 && ids.length === 0) throw receiptMissing("Author report does not list its hybrid-search receipt ids.");
-  for (const id of referenced) {
-    if (!ids.includes(id)) throw receiptMissing(`Referenced receipt ${id} is absent from hybrid_search_receipt_ids.`);
+  const missingMemberships = [...referenced].filter((id) => !ids.includes(id));
+  if (missingMemberships.length > 0) {
+    const findings = missingMemberships.map((receiptId) => ({
+      code: "GOAL_HYBRID_SEARCH_RECEIPT_MISSING",
+      message: `Referenced receipt ${receiptId} is absent from hybrid_search_receipt_ids.`,
+      receipt_id: receiptId,
+      remediation: `Add ${receiptId} to hybrid_search_receipt_ids without altering the immutable receipt.`,
+    }));
+    throw new GoalHarnessError(
+      "GOAL_HYBRID_SEARCH_RECEIPT_MISSING",
+      `${missingMemberships.length} referenced receipt id(s) are absent from hybrid_search_receipt_ids: ${missingMemberships.join(", ")}.`,
+      { findings },
+    );
   }
   const taskBoundReceiptIds = new Set([
     ...(report.inventory?.unresolved ?? []).flatMap((entry) => entry.hybrid_search_receipt_ids ?? []),
@@ -257,13 +268,20 @@ export function auditHybridSearchReceipts({ report, stateDir, task, verifiedUuid
       return auditOneReceipt({ stateDir, task, receiptId });
     } catch (error) {
       const adopted = adoptedByReceipt.get(receiptId) ?? [];
-      if (error.code !== "GOAL_HYBRID_SEARCH_RECEIPT_MISSING" || taskBoundReceiptIds.has(receiptId) || adopted.length === 0) throw error;
+      if (error.code !== "GOAL_HYBRID_SEARCH_RECEIPT_MISSING") throw error;
+      const paths = findCompleteReceiptPaths({ stateDir, receiptId });
+      try {
+        const audited = auditOneReceipt({ stateDir, task, receiptId, paths });
+        return { ...audited, scope: "task_retry_reuse", source_task_id: audited.task_id };
+      } catch (retryError) {
+        if (retryError.code !== "GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH") throw retryError;
+        if (taskBoundReceiptIds.has(receiptId) || adopted.length === 0) throw error;
+      }
       const reusable = adopted.every((entry) => isReusableCommonUuidAudit({
         stateDir,
         entry: { uuid: entry.uuid, hybrid_search_receipt_id: receiptId },
       }));
       if (!reusable) throw error;
-      const paths = findCompleteReceiptPaths({ stateDir, receiptId });
       const audited = auditOneReceipt({ stateDir, task, receiptId, paths, allowGoalCacheReuse: true });
       return { ...audited, scope: "goal_cache_reuse", source_task_id: audited.task_id };
     }
@@ -278,12 +296,31 @@ export function auditHybridSearchReceipts({ report, stateDir, task, verifiedUuid
       throw new GoalHarnessError("GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH", `Receipt direct read for ${claimed.uuid} disagrees with the Harness public read.`);
     }
   }
+  const rejectionFindings = [];
   for (const claimed of report.rejected_uuid_candidates ?? []) {
     const receipt = byId.get(claimed.receipt_id);
     const decision = receipt?.candidate_decisions.find((entry) => entry.uuid === claimed.uuid.toLowerCase());
     if (decision?.decision !== "rejected" || decision.reason_code !== claimed.reason_code || decision.reason !== claimed.reason) {
-      throw new GoalHarnessError("GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH", `Rejected candidate ${claimed.uuid} disagrees with receipt ${claimed.receipt_id}.`);
+      const message = `Rejected candidate ${claimed.uuid} disagrees with receipt ${claimed.receipt_id}.`;
+      rejectionFindings.push({
+        code: "GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH",
+        message,
+        receipt_id: claimed.receipt_id,
+        uuid: claimed.uuid,
+        expected: decision
+          ? { decision: decision.decision, reason_code: decision.reason_code, reason: decision.reason }
+          : null,
+        claimed: { decision: "rejected", reason_code: claimed.reason_code, reason: claimed.reason },
+        remediation: "Copy the finalized receipt reason_code and reason verbatim into rejected_uuid_candidates.",
+      });
     }
+  }
+  if (rejectionFindings.length > 0) {
+    throw new GoalHarnessError(
+      "GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH",
+      `${rejectionFindings.length} rejected candidate report entr${rejectionFindings.length === 1 ? "y" : "ies"} disagree with finalized receipts.`,
+      { findings: rejectionFindings },
+    );
   }
   return audits;
 }

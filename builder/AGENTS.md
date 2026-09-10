@@ -45,6 +45,11 @@ For create PCR work:
 - read `builder/docs/tools/data-sources-and-tools.md` when choosing source evidence
 - read `builder/docs/contracts/pcr-markdown-contract.md` and `builder/docs/contracts/evidence-and-source-contract.md`
 - read specific `builder/docs/methods/**` files only when the workflow references that method topic
+- read `builder/templates/pcr.en-US.md.hbs` immediately before English authoring
+- read `builder/docs/workflows/translate-pcr.md` and `builder/templates/pcr.zh-CN.md.hbs` immediately before writing
+  the aligned Chinese rendering
+- read `builder/templates/classification-mapping.yaml.hbs` immediately before adding or accepting a classification
+  mapping edge
 
 For update PCR work:
 
@@ -144,6 +149,18 @@ An authored PCR is not acceptable unless:
 - reference flow is represented as one `Field | Value` table with required qualifiers
 - measurement and unit rules constrain only modelling consistency, conversion, or validation behavior
 - process inventory is organized by process, direction, flow type, and individual flow row
+- every inventory flow card represents exactly one atomic exchange that can resolve to one Tiangong flow: write
+  electricity, steam or purchased heat, each fuel, each refrigerant, water, every chemical or ingredient, every
+  packaging material, each waste stream, and each elementary emission as separate rows. A plural collection,
+  selector instruction, or combined label such as `energy carriers`, `electricity, steam, or fuel`, `packaging
+  materials`, or `wastewater and residues` is not a flow and is not acceptable as `Selected flow`.
+- an unresolved inventory UUID does not permit a collection row. Keep the selected flow chemically or physically
+  specific, leave the UUID absent, and track the unresolved identity in manifest review metadata until Tiangong
+  lookup confirms one real flow UUID.
+- `pcr.zh-CN.md` uses the exact official Tiangong Chinese `baseName` for UUID-bearing reference-product and selected
+  flow displays whenever the direct-read record provides one. Concrete non-UUID flow names are translated for Chinese
+  readers; UUIDs, row ids, and controlled values remain unchanged. New or remediated PCRs declare
+  `review_metadata.inventory_contract.localized_flow_names: tiangong_zh_v1` only after this audit passes.
 - range, basis, evidence, and source references follow the controlled vocabularies
 - quantitative ranges, factors, boundary rules, and allocation rules cite non-default evidence when they constrain modelling choices
 - bilingual Markdown files describe the same rule

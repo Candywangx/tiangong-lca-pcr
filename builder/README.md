@@ -40,6 +40,11 @@ builder/docs/
 
 ## Builder CLI
 
+PCR generation shares literature through `npm run pcr:materials -- query|read|register`.
+See [Shared materials](docs/tools/shared-materials.md) for commands, registration fields, quality constraints and
+shared-directory configuration. Goal Harness performs the initial bounded query before dispatch and passes the
+resolved directory to each author task; this is source preparation, not a new review or release gate.
+
 ```bash
 npm run init
 npm run lint
@@ -49,6 +54,8 @@ npm run aliases:check
 npm run catalog:build
 npm run catalog:check
 npm run catalog:recover [-- --force-stale-lock]
+npm run cpc-chains:build
+npm run cpc-chains:check
 npm run goal:doctor -- --config <goal.yaml>
 npm run goal:plan -- --config <goal.yaml> --dry-run
 npm run goal:start -- --config <goal.yaml> --slots 1
@@ -82,7 +89,7 @@ npm run validate
   byte-for-byte in classification-only mode. Register a coverage descriptor before importing a non-3.0 version.
 - Current classification mapping v2 files contain accepted positive edges only. Every edge targets a material PCR,
   excludes `manual_review`, and carries acceptance status, decision-maker, UTC decision time, and durable decision
-  reference. CPC 3.0 currently has exactly three accepted edges; CPC 2.1 is empty v2.
+  reference. CPC 3.0 currently has 400 accepted edges; CPC 2.1 is empty v2.
 - `--legacy-scaffolds` is migration/test-only and may operate only on retained v1/scaffold mapping fixtures. A current
   v2 mapping causes it to fail before mutation, preventing unaccepted-edge injection and retired-directory
   rehydration. For a v1 fixture it may create one complete four-file target when absent; an existing target must be
@@ -110,7 +117,7 @@ npm run validate
 - `vocab:generate` validates every vocabulary source and deterministically regenerates the checked-in runtime constants and shared JSON Schema.
 - `aliases:build` deterministically derives `classifications/aliases/pcr-id-aliases.yaml` from the retained CPC leaf
   identity inventory and current accepted mapping. `aliases:check` rejects stale output, duplicate sources,
-  material-id collisions, alias chains/cycles, and invalid terminal targets. Current output has 2,874 terminal
+  material-id collisions, alias chains/cycles, and invalid terminal targets. Current output has 2,543 terminal
   classification-coverage locators and is checked before catalog lookup.
 - `catalog:build` validates sources and publishes `library/catalog.yaml`, the material index, and registered coverage
   indexes as one journaled recoverable artifact set. The catalog pins the alias registry's canonical path,
@@ -128,6 +135,22 @@ npm run validate
 
 For the full workspace, release, transaction, and recovery invariants, use
 `builder/docs/contracts/published-revision-contract.md`.
+
+## CPC Product-Chain Planning Artifacts
+
+`npm run cpc-chains:build` validates the reviewed source at
+`builder/planning/cpc-product-chain-pilot.yaml`, derives repository-backed mapping, PCR-readiness, evidence, blocker,
+and executable-wave state, and atomically regenerates `builder/planning/cpc-product-chain-pilot.md`. The generated
+report contains the ready/blocked summary, chain diagrams, edge decisions, executable waves, review queue, and source
+list; the command reports the rebuilt Markdown path.
+
+`npm run cpc-chains:check` performs the same validation and derivation without writing, then fails if the generated
+Markdown report is missing or stale. A successful check reports that `builder/planning/cpc-product-chain-pilot.md` is
+current. Repository lint runs this check before the builder CLI lint.
+
+These files are planning artifacts, not classification mappings or canonical PCR truth. A
+`semantic_candidate` or official-source-only (`supported_by_official_source`) edge does not change an accepted mapping
+and does not trigger PCR generation.
 
 ## Executable Contract Boundary
 

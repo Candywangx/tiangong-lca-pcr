@@ -9,9 +9,9 @@ sync_with: pcr.zh-CN.md
 
 ## 1. Scope and Applicability
 
-This PCR covers saleable octopus preserved by exactly one declared primary route: frozen, smoked, dried, salted, or packed in brine. Combined operations that are inherent to one declared route, such as salting before smoking or drying during smoke-drying, remain part of that route and do not make every route applicable. The foreground package shall identify species or commercial designation, raw material state, product form, preservation route, packaging format, and storage condition.
+This PCR covers saleable octopus preserved by one declared primary route: frozen, smoked, dried, salted, or in brine. Integral substeps such as salting before smoking do not make the other primary routes applicable. The foreground package shall identify species or commercial designation, incoming state, product form, route, recipe, packaging, storage condition, and represented shelf life.
 
-The PCR excludes live, fresh or merely chilled octopus; canned or otherwise sterilized shelf-stable products; prepared meals; mixed seafood products where octopus is not the reference product; and capture, aquaculture, distribution, retail, use, and end-of-life processes from the foreground boundary. Upstream datasets for received octopus, energy, water, salt, process aids, and packaging remain required when a lifecycle model is produced.
+Live, fresh or merely chilled octopus, canned or sterilized products, prepared meals, mixed seafood products, capture or aquaculture, distribution, retail, use, and end of life are excluded from the foreground boundary. Upstream datasets remain required for every purchased octopus, material, energy carrier, water, chemical, refrigerant, smoke material, and packaging component.
 
 ## 2. Product Category Identity
 
@@ -19,21 +19,21 @@ The PCR excludes live, fresh or merely chilled octopus; canned or otherwise ster
 | --- | --- |
 | canonical_pcr_id | pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.octopus-frozen-smoked-dried-salted-or-in-brine |
 | classification_refs | CPC 3.0: 21267 |
-| covered_products | Octopus sold frozen, smoked, dried, salted, or in brine, including whole, cleaned, cut, or otherwise marketable forms whose principal product is octopus. |
+| covered_products | Octopus sold frozen, smoked, dried, salted, or in brine, in whole, cleaned, cut, cooked, or raw marketable forms. |
 | excluded_products | Live, fresh or chilled octopus; canned or sterilized octopus; prepared meals; mixed seafood products; non-octopus cephalopods. |
-| representative_product | A packaged, qualified, saleable octopus product at the processing-facility gate. |
-| production_route | One mutually exclusive declared route: `frozen`, `smoked`, `dried`, `salted`, or `in_brine`; record any integral substeps within that route. |
-| market_state | Route-specific saleable state at the processing-facility gate, with required storage condition and shelf-life declaration. |
+| representative_product | Packaged, qualified saleable octopus at the processing-facility gate. |
+| production_route | Exactly one of `frozen`, `smoked`, `dried`, `salted`, or `in_brine`; declare all integral substeps. |
+| market_state | Route-specific saleable state at the facility gate, with storage condition and shelf life declared. |
 
 ## 3. Reference Flow
 
 | Field | Value |
 | --- | --- |
-| What | Supply of qualified, saleable preserved octopus in the declared product form and preservation route. |
-| How much | 1 kg of net octopus product, excluding packaging and, where applicable, excluding protective ice glaze or free brine. |
-| How well | Meets the declared commercial specification and applicable food-safety controls, with product form, route, moisture or salt condition, and storage condition disclosed. |
-| How long or cycle | One supply at the processing-facility gate; declare the labelled shelf life and the storage duration and temperature represented by the dataset. |
-| reference_flow_link | The functional unit is realized by exactly 1 kg of the reference product flow under the route-specific measurement rules below. |
+| What | Supply of qualified saleable octopus in the declared product form and preservation route. |
+| How much | 1 kg net octopus product, excluding packaging and, where applicable, protective ice glaze or free packing brine. |
+| How well | Meets the declared commercial and food-safety specification, with product form, cooked/raw state, moisture or salt condition, and storage condition disclosed. |
+| How long or cycle | One supply at the processing-facility gate; declare represented storage duration, temperature, and labelled shelf life. |
+| reference_flow_link | Exactly 1 kg of the reference product flow under the applicable route-specific measurement rule. |
 
 | Field | Value |
 | --- | --- |
@@ -42,19 +42,19 @@ The PCR excludes live, fresh or merely chilled octopus; canned or otherwise ster
 | Reference flow property | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | Reference unit group | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | Reference unit | kg |
-| Required qualifiers | preservation route; species or commercial designation; product form and edible/saleable portion definition; cooked or raw state; moisture content for dried or smoke-dried product; salt content or brine concentration for salted or brined product; glaze fraction for glazed frozen product; drained-mass basis for product in brine; packaging format; storage temperature; represented storage duration; shelf life |
+| Required qualifiers | preservation route; species or commercial designation; product form and saleable portion; cooked/raw state; moisture for dried or smoke-dried product; salt content or brine concentration for salt-dependent routes; glaze fraction for glazed frozen product; drainage procedure for product in brine; packaging format; storage temperature and duration; shelf life |
 
-When constructing a foreground data package, every required qualifier shall be declared in dataset metadata, process notes, the reference-flow comment, the product description, or an equivalent field. The Tiangong flow is the exact generic CPC 21267 product flow; route and product-form differences are qualifiers, not alternative canonical product-flow identities.
+Every required qualifier shall be declared in dataset metadata or an equivalent foreground-package field. The Tiangong reference-product flow was directly verified at `state_code=100`; route differences remain qualifiers rather than approximate alternative flow identities.
 
 ## 4. Measurement and Unit Rules
 
 | rule_id | Applies to | Required property | Required unit | Rule |
 | --- | --- | --- | --- | --- |
-| `reference_mass` | reference product | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Report 1 kg net qualified saleable octopus product; exclude primary, secondary, and transport packaging from product mass. |
-| `frozen_deglazed_mass` | glazed frozen route | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Use deglazed product mass for the reference flow and separately record glaze water applied and removed; disclose the deglazing method and measured glaze fraction. |
-| `brined_drained_mass` | in-brine route | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Use drained octopus mass for the reference flow; record packing brine separately and disclose drainage procedure, time, temperature, and brine concentration. |
-| `preservation_condition` | smoked, dried, salted, or in-brine routes | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Measure product as sold and disclose moisture content for dried or smoke-dried product and salt content or brine concentration for salt-dependent routes; do not compare route results without harmonizing these conditions. |
-| `saleable_portion` | all routes | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Declare whether the marketable product is whole, cleaned, cut, cooked, or raw and which parts are included; normalize only the qualified saleable octopus portion to 1 kg. |
+| `reference_mass` | reference product | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Normalize to 1 kg net qualified saleable octopus and exclude all packaging. |
+| `frozen_deglazed_mass` | glazed frozen product | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Use deglazed product mass; separately record glaze water and measured glaze loss. |
+| `brined_drained_mass` | product sold in brine | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Use drained octopus mass; separately record packing brine and drainage procedure. |
+| `preservation_condition` | smoked, dried, salted, and in-brine products | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Measure product as sold and disclose moisture and salt or brine condition as applicable. |
+| `saleable_portion` | all routes | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` | kg | Declare included edible/saleable parts and normalize only the qualified saleable portion. |
 
 ## 5. System Boundary
 
@@ -62,18 +62,19 @@ When constructing a foreground data package, every required qualifier shall be d
 
 | Field | Value |
 | --- | --- |
-| declared_starting_condition | Octopus received at the processing facility, with supplier, species or commercial designation, origin, fresh/chilled/frozen state, temperature, product form, and accepted mass recorded. |
-| starting_condition_role | Purchased octopus input to gate-to-gate foreground preservation and packaging. |
-| product_classification_scope | The finished reference flow is CPC 3.0 21267; incoming live, fresh, or chilled octopus is an upstream input and not the finished category. |
-| recursive_input_rule | If a CPC 21267 preserved octopus product is reprocessed, record it as a purchased intermediate with its own upstream dataset and do not recursively reconstruct its preservation burdens inside this foreground package. |
-| upstream_dataset_requirement | Require upstream datasets for received octopus, purchased preserved octopus intermediates, energy carriers, water, food-grade salt and process aids, smoke-generating material where used, and packaging materials. |
-| disclosure | Disclose facility geography, reporting period, route, species or commercial designation, incoming state, product form, yield, storage conditions, packaging, excluded processes, and any reused preserved intermediate. |
+| declared_starting_condition | Octopus received at the processing facility, with supplier, origin, species or commercial designation, fresh/chilled/frozen state, temperature, form, and accepted mass recorded. |
+| starting_condition_role | Purchased octopus input to gate-to-gate preparation, preservation, packaging, storage, sanitation, and on-site wastewater treatment. |
+| product_classification_scope | Finished reference product is CPC 3.0 21267; incoming fresh/chilled octopus is an upstream input. |
+| recursive_input_rule | Record a purchased CPC 21267 intermediate with its own upstream dataset and do not reconstruct its earlier preservation burdens inside this foreground package. |
+| upstream_dataset_requirement | Require upstream datasets for every purchased product input, utility, fuel, chemical, refrigerant, smoke material, and packaging component. |
+| disclosure | Disclose facility, period, route, species, incoming state, product form, yield, route equipment, actual fuels and refrigerants, packaging, storage, wastewater destination, and exclusions. |
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `sb_foreground_gate` | foreground processing | Include receiving and preparation, exactly one declared preservation route, packaging, and route-required storage through the processing-facility gate. | `codex-cxc-52-2003`; `eu-pef-2021-2279` |
-| `sb_route_exclusivity` | preservation route | Model `frozen`, `smoked`, `dried`, `salted`, or `in_brine` as mutually exclusive primary routes; include only integral substeps actually used by the declared route. | `codex-cxc-52-2003` |
-| `sb_upstream_and_packaging` | purchased inputs | Keep capture or aquaculture outside the foreground process but link upstream datasets for all purchased inputs; include packaging production in the lifecycle model and record packaging by material. | `eu-pef-2021-2279` |
+| `sb_foreground_gate` | foreground production | Include common preparation, exactly one primary preservation route, packaging, gate storage, sanitation, and on-site wastewater treatment actually performed. | `codex-cxc-52-2003`; `eu-pef-2021-2279` |
+| `sb_route_exclusivity` | preservation | Include only the declared route and its actual integral substeps, fuels, refrigerants, materials, wastes, and direct emissions. | `codex-cxc-52-2003`; `codex-cxc-68-2009` |
+| `sb_complete_inventory` | all included processes | Keep every material, energy carrier, packaging component, waste, wastewater stream, and elementary emission as a separate exchange. | `eu-fdm-bat-2019-2031`; `eu-pef-2021-2279` |
+| `sb_upstream_inputs` | purchased inputs | Keep capture/aquaculture outside the foreground boundary but link an upstream dataset for each purchased input. | `eu-pef-2021-2279` |
 
 ## 6. Process Inventory Structure
 
@@ -81,11 +82,15 @@ When constructing a foreground data package, every required qualifier shall be d
 
 | process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
 | --- | --- | --- | --- | --- | --- |
-| `octopus_receiving_preparation` | Octopus receiving and preparation | `required` | Always; record only operations actually performed, such as thawing, washing, cleaning, cutting, or cooking. | Establish accepted raw mass and prepared intermediate. | kg prepared octopus output |
-| `route_preservation` | Route-specific preservation | `required` | Select exactly one primary route: frozen, smoked, dried, salted, or in brine. | Convert prepared octopus into the declared preserved state. | kg preserved octopus output |
-| `packaging_storage` | Packaging and route-required storage | `required` | Always; storage technology and duration follow the declared route and sale condition. | Produce qualified saleable product at facility gate. | 1 kg reference product |
+| `common_preparation` | Receiving, thawing, washing, cleaning and grading | `required` | Always; record only operations actually performed. | Produce prepared octopus and establish accepted mass. | kg prepared octopus |
+| `frozen_route` | Freezing and frozen holding | `conditional` | Only for primary route `frozen`. | Produce frozen octopus. | kg frozen octopus |
+| `smoked_route` | Salting, smoking and route cooling | `conditional` | Only for primary route `smoked`. | Produce smoked octopus. | kg smoked octopus |
+| `dried_route` | Drying | `conditional` | Only for primary route `dried`. | Produce dried octopus. | kg dried octopus |
+| `salted_brined_route` | Salting or brine packing | `conditional` | Only for primary route `salted` or `in_brine`; distinguish the two outputs. | Produce salted or brined octopus. | kg route output |
+| `packaging_storage` | Packaging and route-required storage | `required` | Always; include only actual components and storage equipment. | Produce saleable product at the facility gate. | 1 kg reference product |
+| `sanitation_wastewater` | Sanitation and on-site wastewater treatment | `required` | Sanitation always; treatment rows apply only when performed on site. | Record hygiene inputs and wastewater fate. | 1 kg reference product |
 
-### Process: Octopus receiving and preparation (`octopus_receiving_preparation`)
+### Process: Receiving, thawing, washing, cleaning and grading (`common_preparation`)
 
 #### Inputs
 
@@ -93,444 +98,718 @@ When constructing a foreground data package, every required qualifier shall be d
 
 ###### Received octopus (`received_octopus`)
 
-Record the accepted as-received octopus mass crossing the facility gate and its incoming state.
+Received octopus is recorded as one separate product flow entering Receiving, thawing, washing, cleaning and grading. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
 - Selected flow: Received octopus
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: measured accepted mass by production lot
+- Flow property / unit: Mass / kg
+- Amount rule: measured accepted mass by lot; record supplier, species, state, temperature, and form
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: per kg prepared octopus output
+- Normalization basis: per kg prepared octopus
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_mass_balance`
 - Sources: `codex-cxc-52-2003`
-- Range: Provisional route-spanning raw-input screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 1
-  - Upper: 8
-  - Unit: kg/kg qualified saleable product
-  - Basis: broad temporary estimate spanning cleaned through strongly dried product; apply only until route-specific annual mass-balance evidence is available and replace when reviewed batch yield data exist
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Preparation water (`preparation_water`)
+###### Ice used in receiving or thawing (`receiving_ice`)
 
-Record metered or reconciled water used for thawing, washing, cleaning, or de-salting only when that operation occurs.
+Food-grade water ice is recorded as one separate product flow entering Receiving, thawing, washing, cleaning and grading. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
-- Selected flow: Process water
+- Selected flow: Food-grade water ice
 - Flow property / unit: Mass / kg
-- Amount rule: measured water supplied minus separately measured recirculated water
+- Amount rule: measured purchased or produced ice entering the foreground process; do not combine with liquid water
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
-- Normalization basis: per kg prepared octopus output
+- Normalization basis: per kg prepared octopus
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_route_inputs`
+- Collection protocol: `cp_common_inputs`
 - Sources: `codex-cxc-52-2003`
-- Range: Provisional preparation-water screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 20
-  - Unit: kg/kg prepared octopus output
-  - Basis: temporary broad estimate applicable only to the actual washing, thawing, or cleaning configuration; replace when route- and facility-specific metered records cover the reporting period
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
+
+###### Process water for thawing and washing (`preparation_water`)
+
+Process Water is recorded as one separate product flow entering Receiving, thawing, washing, cleaning and grading. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: metered new liquid water for actual thawing, washing and preparation operations
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per kg prepared octopus
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_common_inputs`
+- Sources: `codex-cxc-52-2003`
+
+###### Preparation electricity (`preparation_electricity`)
+
+Alternating current is recorded as one separate product flow entering Receiving, thawing, washing, cleaning and grading. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Alternating current `50657322-939c-4829-a87b-47c093bfa6a7`
+- Flow property / unit: Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
+- Amount rule: submetered electricity for thawing, washing, grading and preparation equipment
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per kg prepared octopus
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_common_inputs`
+
+###### Sodium hydroxide used in common preparation cleaning (`preparation_sodium_hydroxide`)
+
+Sodium hydroxide is recorded as one separate product flow entering Receiving, thawing, washing, cleaning and grading. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Sodium hydroxide
+- Flow property / unit: Mass / kg
+- Amount rule: active sodium hydroxide mass actually assigned to preparation-line cleaning; applicable only when used and excluded from the facility-wide sanitation row
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per kg prepared octopus
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_common_inputs`
+- Sources: `codex-cxc-52-2003`
+
+###### Sodium hypochlorite used in common preparation disinfection (`preparation_sodium_hypochlorite`)
+
+Sodium hypochlorite is recorded as one separate product flow entering Receiving, thawing, washing, cleaning and grading. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Sodium hypochlorite
+- Flow property / unit: Mass / kg
+- Amount rule: active sodium hypochlorite mass actually assigned to preparation-line disinfection; applicable only when used and excluded from the facility-wide sanitation row
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per kg prepared octopus
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_common_inputs`
+- Sources: `codex-cxc-52-2003`
 
 #### Outputs
 
+##### Product flows
+
+###### Prepared octopus intermediate (`prepared_octopus`)
+
+Prepared octopus intermediate is recorded as one separate product flow leaving Receiving, thawing, washing, cleaning and grading. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Prepared octopus intermediate
+- Flow property / unit: Mass / kg
+- Amount rule: measured prepared output mass by lot
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per production lot
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_mass_balance`
+
 ##### Waste flows
 
-###### Removed material and rejects (`preparation_rejects`)
+###### Preparation rejects (`preparation_rejects`)
 
-Record viscera, skin, damaged material, and other removed octopus fractions leaving the process; internal rework is tracked separately and is not waste.
+Octopus preparation residues is recorded as one separate waste flow leaving Receiving, thawing, washing, cleaning and grading. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
 - Selected flow: Octopus preparation residues
 - Flow property / unit: Mass / kg
-- Amount rule: measured mass leaving the process as waste or by-product
+- Amount rule: measured viscera, skin, damaged material and grading rejects leaving the process
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Product-specific (`product_specific`)
 - Normalization basis: per kg received octopus
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_mass_balance`
-- Range: Provisional removed-material screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0
-  - Upper: 0.9
-  - Unit: kg/kg received octopus
-  - Basis: temporary physical screening interval for the declared product form; replace when reviewed lot-level disposition records are available
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-##### Elementary flows
+###### Preparation wastewater (`preparation_wastewater`)
 
-##### Product flows
+Untreated seafood-processing wastewater is recorded as one separate waste flow leaving Receiving, thawing, washing, cleaning and grading. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
-###### Prepared octopus intermediate (`prepared_octopus`)
-
-Calculate prepared intermediate mass from measured output or a closed lot mass balance.
-
-- Selected flow: Prepared octopus intermediate
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: measured prepared output mass
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Product-specific (`product_specific`)
-- Normalization basis: per production lot
+- Selected flow: Untreated seafood-processing wastewater
+- Flow property / unit: Volume / m3
+- Amount rule: measured wastewater from thawing, washing and preparation sent to the declared treatment destination
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per kg prepared octopus
 - Basis kind: Process output (`process_output`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_mass_balance`
-
-##### Waste flows
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_wastewater`
 
 ##### Elementary flows
 
-### Process: Route-specific preservation (`route_preservation`)
+### Process: Freezing and frozen holding (`frozen_route`)
 
 #### Inputs
 
 ##### Product flows
 
-###### Prepared octopus input (`prepared_octopus_input`)
+###### Prepared octopus for freezing (`frozen_prepared_input`)
 
-Record the prepared octopus entering the selected preservation route.
+Prepared octopus intermediate is recorded as one separate product flow entering Freezing and frozen holding. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
 - Selected flow: Prepared octopus intermediate
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: measured mass entering the declared route
+- Flow property / unit: Mass / kg
+- Amount rule: measured mass entering the frozen route
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
-- Normalization basis: per kg preserved octopus output
+- Normalization basis: per kg frozen octopus output
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_mass_balance`
-- Range: Provisional route-spanning prepared-input screening estimate
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 1
-  - Upper: 6
-  - Unit: kg/kg preserved octopus output
-  - Basis: broad temporary interval reflecting route-dependent moisture and handling loss; replace after reviewed route-specific production yields are available
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: Reasoned estimate (`reasoned_estimate`)
 
-###### Food-grade salt (`food_grade_salt`)
+###### Glaze water (`freezing_glaze_water`)
 
-Record sodium chloride issued to salting, brining, or a salt-containing smoking or drying recipe. This row is not applicable to a route whose reviewed recipe contains no added salt.
-
-- Selected flow: Salt, food-grade, for brine preparation `3a5fa711-4648-4d58-b94d-67b79e7476c7`
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: measured salt issue minus measured recoverable unopened return; do not net salt discharged in brine
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Route-specific (`route_specific`)
-- Normalization basis: per kg preserved octopus output
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_route_inputs`
-- Sources: `codex-cxc-52-2003`
-
-###### Brine make-up water (`brine_makeup_water`)
-
-Record water newly supplied to prepare packing or process brine. This row applies only when the declared route uses brine; reused brine remains visible in the brine balance and is not counted as new water.
+Process Water is recorded as one separate product flow entering Freezing and frozen holding. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
 - Selected flow: Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: metered new water entering brine preparation
+- Amount rule: measured water applied as protective glaze; apply only when glazing is performed
 - Value mode: Foreground record (`foreground_record`)
-- Specificity: Route-specific (`route_specific`)
-- Normalization basis: per kg preserved octopus output
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per kg frozen octopus output
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_route_inputs`
+- Collection protocol: `cp_frozen_route`
+- Sources: `codex-cxc-52-2003`
+
+###### Freezing electricity (`freezing_electricity`)
+
+Alternating current is recorded as one separate product flow entering Freezing and frozen holding. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Alternating current `50657322-939c-4829-a87b-47c093bfa6a7`
+- Flow property / unit: Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
+- Amount rule: submetered electricity for freezers, pumps, fans and controls
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per kg frozen octopus output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_frozen_route`
+
+###### Frozen-holding electricity (`frozen_holding_electricity`)
+
+Alternating current is recorded as one separate product flow entering Freezing and frozen holding. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Alternating current `50657322-939c-4829-a87b-47c093bfa6a7`
+- Flow property / unit: Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
+- Amount rule: metered cold-room electricity allocated by temperature-zone mass-time before packaging transfer
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Scenario-specific (`scenario_specific`)
+- Normalization basis: per kg frozen octopus for represented holding duration
+- Basis kind: Storage duration (`storage_duration`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_frozen_route`
+
+###### Freezing R717 make-up (`freezing_r717_makeup`)
+
+Ammonia, anhydrous, liquid is recorded as one separate product flow entering Freezing and frozen holding. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Ammonia, anhydrous, liquid `6928be4f-282b-4448-8f2a-f8c746621303`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: ledgered make-up assigned to freezing equipment; apply only to verified R717 systems
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per kg frozen octopus output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_refrigerant_balance`
+
+###### Freezing R404A make-up (`freezing_r404a_makeup`)
+
+Refrigerant R404A is recorded as one separate product flow entering Freezing and frozen holding. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Refrigerant R404A `76513c71-a148-484e-865f-2ab54afb4331`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: ledgered make-up assigned to freezing equipment; apply only to verified R404A systems
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per kg frozen octopus output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_refrigerant_balance`
+
+#### Outputs
+
+##### Product flows
+
+###### Frozen octopus intermediate (`frozen_octopus`)
+
+Frozen octopus intermediate is recorded as one separate product flow leaving Freezing and frozen holding. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Frozen octopus intermediate
+- Flow property / unit: Mass / kg
+- Amount rule: measured frozen output before final packaging, excluding protective glaze for yield normalization
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Route-specific (`route_specific`)
+- Normalization basis: per production lot
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_mass_balance`
+
+##### Waste flows
+
+###### Freezing product loss (`freezing_loss`)
+
+Octopus freezing loss is recorded as one separate waste flow leaving Freezing and frozen holding. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Octopus freezing loss
+- Flow property / unit: Mass / kg
+- Amount rule: measured product drip, dehydration loss and off-specification frozen octopus leaving the route
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per kg prepared octopus entering freezing
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_mass_balance`
+
+##### Elementary flows
+
+###### R717 released from freezing (`freezing_r717_emission`)
+
+Ammonia (R717), to air, declared compartment is recorded as one separate elementary flow leaving Freezing and frozen holding. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Ammonia (R717), to air, declared compartment
+- Flow property / unit: Mass / kg
+- Amount rule: refrigerant mass balance or measured release; apply only to R717 equipment
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per kg frozen octopus output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_refrigerant_balance`
+
+###### R404A released from freezing (`freezing_r404a_emission`)
+
+Refrigerant R404A, to air, declared compartment is recorded as one separate elementary flow leaving Freezing and frozen holding. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Refrigerant R404A, to air, declared compartment
+- Flow property / unit: Mass / kg
+- Amount rule: refrigerant mass balance or measured release; apply only to R404A equipment
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per kg frozen octopus output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_refrigerant_balance`
+
+### Process: Salting, smoking and route cooling (`smoked_route`)
+
+#### Inputs
+
+##### Product flows
+
+###### Prepared octopus for smoking (`smoked_prepared_input`)
+
+Prepared octopus intermediate is recorded as one separate product flow entering Salting, smoking and route cooling. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Prepared octopus intermediate
+- Flow property / unit: Mass / kg
+- Amount rule: measured mass entering the smoked route
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Route-specific (`route_specific`)
+- Normalization basis: per kg smoked octopus output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_mass_balance`
+
+###### Salt used before smoking (`smoking_salt`)
+
+Salt is recorded as one separate product flow entering Salting, smoking and route cooling. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Salt `3a5fa711-4648-4d58-b94d-67b79e7476c7`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured food-grade salt issued; apply only when dry salting is performed
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per kg smoked octopus output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_smoked_route`
+- Sources: `codex-cxc-52-2003`
+
+###### Food-grade brine used before smoking (`smoking_brine`)
+
+Food-grade sodium chloride brine is recorded as one separate product flow entering Salting, smoking and route cooling. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Food-grade sodium chloride brine
+- Flow property / unit: Mass / kg
+- Amount rule: measured prepared brine entering the fish-contact system; apply only when brining is performed
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per kg smoked octopus output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_smoked_route`
+- Sources: `codex-cxc-52-2003`
+
+###### Water for smoking brine (`smoking_water`)
+
+Process Water is recorded as one separate product flow entering Salting, smoking and route cooling. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: metered new water used to make smoking brine; do not double count purchased brine
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per kg smoked octopus output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_smoked_route`
 - Sources: `codex-cxc-52-2003`
 
 ###### Wood chips for smoke generation (`smoking_wood_chips`)
 
-Record the mass of wood chips entering an on-site smoke generator. Apply only to smoked or smoke-dried routes; disclose species and any prohibited treatment or contamination controls.
+Untreated food-smoking wood chips is recorded as one separate product flow entering Salting, smoking and route cooling. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
-- Selected flow: Untreated food-smoking wood chips, declared species and moisture
+- Selected flow: Untreated food-smoking wood chips
 - Flow property / unit: Mass / kg
-- Amount rule: measured dry or as-received chip issue, with moisture basis declared
+- Amount rule: measured wood-chip issue with species and moisture basis declared; apply only to wood-chip smoke generation
 - Value mode: Foreground record (`foreground_record`)
-- Specificity: Route-specific (`route_specific`)
-- Normalization basis: per kg preserved octopus output
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per kg smoked octopus output
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_route_inputs`
-- Sources: `codex-cxc-52-2003`
+- Collection protocol: `cp_smoked_route`
+- Sources: `codex-cxc-52-2003`; `codex-cxc-68-2009`
 
-###### Preservation electricity (`preservation_electricity`)
+###### Smoking electricity (`smoking_electricity`)
 
-Record alternating-current electricity used by freezers, fans, pumps, controls, dryers, smoke generators, and other preservation equipment. Use the voltage- and geography-matched supply flow; the UUID below is the verified low-voltage consumption-mix identity.
+Alternating current is recorded as one separate product flow entering Salting, smoking and route cooling. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
-- Selected flow: Alternating current, electricity mix, consumption mix, less than 1 kV `50657322-939c-4829-a87b-47c093bfa6a7`
+- Selected flow: Alternating current `50657322-939c-4829-a87b-47c093bfa6a7`
 - Flow property / unit: Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
-- Amount rule: submetered electricity or engineering allocation from equipment power and operating time
+- Amount rule: submetered electricity for smoke generator, chamber, fans, pumps, cooling and controls
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Technology-specific (`technology_specific`)
-- Normalization basis: per kg preserved octopus output
+- Normalization basis: per kg smoked octopus output
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_route_inputs`
-- Sources: `codex-cxc-52-2003`
+- Collection protocol: `cp_smoked_route`
 
-###### Purchased process steam (`preservation_steam`)
+###### Smoking steam (`smoking_steam`)
 
-Record purchased or separately generated steam only when steam crosses this process boundary. Resolve pressure and temperature to the actual supply; the verified UUID below is usable only for 11.0 MPaG steam and must not be silently reused for another grade.
+Steam is recorded as one separate product flow entering Salting, smoking and route cooling. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
-- Selected flow: Steam, 11.0 MPaG `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
+- Selected flow: Steam `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: steam meter reading or condensate-corrected engineering balance
+- Amount rule: metered 11.0 MPaG steam crossing the route boundary; apply only when this verified grade is actually supplied
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Technology-specific (`technology_specific`)
-- Normalization basis: per kg preserved octopus output
+- Normalization basis: per kg smoked octopus output
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_route_inputs`
-- Sources: `codex-cxc-52-2003`
+- Collection protocol: `cp_smoked_route`
 
-###### Purchased hot water (`preservation_hot_water`)
+###### Natural gas used for smoking heat (`smoking_natural_gas`)
 
-Record hot water crossing the preservation boundary as a supplied thermal product. Apply only when heat is purchased or transferred as hot water; declare inlet and return temperatures and resolve a temperature-matched Tiangong UUID before publication.
+natural gas in the gaseous state is recorded as one separate product flow entering Salting, smoking and route cooling. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
-- Selected flow: Hot water, supplied at declared inlet and return temperatures
-- Flow property / unit: Mass / kg
-- Amount rule: metered supply mass, without double-counting returned closed-loop water
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Technology-specific (`technology_specific`)
-- Normalization basis: per kg preserved octopus output
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_route_inputs`
-- Sources: `codex-cxc-52-2003`
-
-###### Natural gas for on-site heat (`preservation_natural_gas`)
-
-Record pipeline natural gas combusted on site for smoking, drying, brine heating, or other preservation heat. This row is not used when heat is received entirely as steam or hot water.
-
-- Selected flow: Natural gas in the gaseous state `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- Selected flow: natural gas in the gaseous state `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: fuel-meter mass or volume converted with measured density and declared net calorific value
+- Amount rule: measured natural gas combusted for the smoked route; apply only when this fuel is used
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Technology-specific (`technology_specific`)
-- Normalization basis: per kg preserved octopus output
+- Normalization basis: per kg smoked octopus output
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_route_inputs`
-- Sources: `codex-cxc-52-2003`
+- Collection protocol: `cp_combustion_fuels`
 
-###### Diesel oil for on-site heat (`preservation_diesel`)
+###### Diesel fuel used for smoking heat (`smoking_diesel`)
 
-Record diesel oil combusted on site only where it is the actual dryer, boiler, smoke-generator, or backup fuel.
+Diesel fuel is recorded as one separate product flow entering Salting, smoking and route cooling. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
-- Selected flow: Diesel oil `9d258d75-6792-4f1c-9856-81602ed8f816`
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: measured tank issue reconciled to stock change for the applicable equipment
+- Amount rule: measured diesel combusted for the smoked route; apply only when this fuel is used
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Technology-specific (`technology_specific`)
-- Normalization basis: per kg preserved octopus output
+- Normalization basis: per kg smoked octopus output
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_route_inputs`
-- Sources: `codex-cxc-52-2003`
+- Collection protocol: `cp_combustion_fuels`
 
-###### Liquefied petroleum gas for on-site heat (`preservation_lpg`)
+###### LPG used for smoking heat (`smoking_lpg`)
 
-Record LPG combusted on site only where it is the actual thermal fuel.
+Liquefied petroleum gas is recorded as one separate product flow entering Salting, smoking and route cooling. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
 - Selected flow: Liquefied petroleum gas `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: measured cylinder or bulk-tank issue reconciled to stock change
+- Amount rule: measured LPG combusted for the smoked route; apply only when this fuel is used
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Technology-specific (`technology_specific`)
-- Normalization basis: per kg preserved octopus output
+- Normalization basis: per kg smoked octopus output
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_route_inputs`
-- Sources: `codex-cxc-52-2003`
-
-###### R717 refrigerant make-up (`preservation_r717_makeup`)
-
-Record anhydrous ammonia added to preservation refrigeration equipment after charging or leakage. Apply only to equipment whose verified refrigerant is R717.
-
-- Selected flow: Ammonia, anhydrous, liquid (R717) `6928be4f-282b-4448-8f2a-f8c746621303`
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: purchased or issued make-up mass assigned from the equipment refrigerant ledger
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Technology-specific (`technology_specific`)
-- Normalization basis: per kg preserved octopus output
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_route_inputs`
-
-###### R404A refrigerant make-up (`preservation_r404a_makeup`)
-
-Record R404A added to preservation refrigeration equipment after charging or leakage. Apply only to equipment whose verified refrigerant is R404A; other refrigerants require their own atomic cards.
-
-- Selected flow: Refrigerant R404A `76513c71-a148-484e-865f-2ab54afb4331`
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: purchased or issued make-up mass assigned from the equipment refrigerant ledger
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Technology-specific (`technology_specific`)
-- Normalization basis: per kg preserved octopus output
-- Basis kind: Process output (`process_output`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_route_inputs`
+- Collection protocol: `cp_combustion_fuels`
 
 #### Outputs
 
-##### Waste flows
+##### Product flows
 
-###### Non-saline process wastewater (`preservation_wastewater`)
+###### Smoked octopus intermediate (`smoked_octopus`)
 
-Record thawing, washing, condensate, or other non-saline preservation wastewater sent to treatment; keep high-salinity brine discharge in the next row.
+Smoked octopus intermediate is recorded as one separate product flow leaving Salting, smoking and route cooling. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
-- Selected flow: Untreated municipal wastewater influent `41eb8873-6852-40fe-8b5d-b792fe4d4754`
-- Flow property / unit: Volume `93a60a56-a3c8-22da-a746-0800200c9a66` / m3
-- Amount rule: metered or mass-balance discharge volume at the treatment inlet
+- Selected flow: Smoked octopus intermediate
+- Flow property / unit: Mass / kg
+- Amount rule: measured smoked output before final packaging
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
-- Normalization basis: per kg preserved octopus output
+- Normalization basis: per production lot
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_route_inputs`
+- Collection protocol: `cp_mass_balance`
 
-###### Spent high-salinity brine (`spent_brine`)
+##### Waste flows
 
-Record spent process or packing brine that leaves for wastewater treatment or disposal. Apply only to salted or in-brine routes and do not combine it with ordinary wastewater.
+###### Spent smoking brine (`smoking_spent_brine`)
+
+High-concentration saline wastewater is recorded as one separate waste flow leaving Salting, smoking and route cooling. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
 - Selected flow: High-concentration saline wastewater `76ab69b6-6fa7-461c-be07-bc54e581a699`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: measured spent-brine mass leaving the closed reuse loop
+- Amount rule: measured brine leaving the reuse loop; apply only when brining is performed
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
-- Normalization basis: per kg preserved octopus output
+- Normalization basis: per kg smoked octopus output
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_route_inputs`
+- Collection protocol: `cp_wastewater`
 
-###### Rejected preserved octopus (`preservation_rejects`)
+###### Smoking product rejects (`smoking_rejects`)
 
-Record off-specification octopus removed during preservation and sent to the declared waste destination; recovered saleable co-product or rework remains a product flow instead.
+Rejected smoked octopus is recorded as one separate waste flow leaving Salting, smoking and route cooling. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
-- Selected flow: Rejected preserved octopus
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: measured rejected product mass by lot and disposition
+- Selected flow: Rejected smoked octopus
+- Flow property / unit: Mass / kg
+- Amount rule: measured off-specification smoked product leaving the route
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Product-specific (`product_specific`)
-- Normalization basis: per kg preserved octopus output
+- Normalization basis: per kg prepared octopus entering smoking
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_mass_balance`
 
 ###### Wood ash from smoke generation (`smoking_wood_ash`)
 
-Record ash removed from an on-site wood-chip smoke generator. Apply only when such a generator is used and keep captured soot in a separate row if measured.
+Wood ash from food-smoking smoke generation is recorded as one separate waste flow leaving Salting, smoking and route cooling. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
 - Selected flow: Wood ash from food-smoking smoke generation
 - Flow property / unit: Mass / kg
-- Amount rule: measured ash mass removed from the smoke generator
+- Amount rule: measured ash removed; apply only to an on-site solid smoke fuel
 - Value mode: Foreground record (`foreground_record`)
-- Specificity: Route-specific (`route_specific`)
-- Normalization basis: per kg preserved octopus output
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per kg smoked octopus output
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_route_inputs`
+- Collection protocol: `cp_smoked_route`
 
 ##### Elementary flows
 
-###### Fossil carbon dioxide to air (`onsite_fossil_co2`)
+###### Fossil carbon dioxide from smoking (`smoking_co2`)
 
-Calculate direct fossil carbon dioxide from each on-site fossil fuel separately; do not include upstream fuel-production emissions here.
+carbon dioxide (fossil), to air, declared compartment is recorded as one separate elementary flow leaving Salting, smoking and route cooling. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
-- Selected flow: Carbon dioxide (fossil), to air, unspecified
+- Selected flow: carbon dioxide (fossil), to air, declared compartment
 - Flow property / unit: Mass / kg
-- Amount rule: fuel-specific consumed mass multiplied by a documented carbon-content and oxidation factor
+- Amount rule: fuel-specific calculation from each consumed fossil fuel; exclude biogenic carbon
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Technology-specific (`technology_specific`)
-- Normalization basis: per kg preserved octopus output
+- Normalization basis: per kg smoked octopus output
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_route_inputs`
+- Collection protocol: `cp_combustion_emissions`
+- Sources: `ipcc-2006-stationary-combustion`
 
-###### Nitrogen oxides to air (`onsite_nox`)
+###### Methane from smoking combustion (`smoking_ch4`)
 
-Record or calculate nitrogen oxides from on-site combustion using equipment- and fuel-specific monitoring or factors.
+methane, to air, declared compartment is recorded as one separate elementary flow leaving Salting, smoking and route cooling. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
-- Selected flow: Nitrogen oxides, to air, unspecified
+- Selected flow: methane, to air, declared compartment
 - Flow property / unit: Mass / kg
-- Amount rule: measured stack release or fuel-specific emission-factor calculation
+- Amount rule: measured release or fuel- and equipment-specific calculation
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Technology-specific (`technology_specific`)
-- Normalization basis: per kg preserved octopus output
+- Normalization basis: per kg smoked octopus output
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_route_inputs`
+- Collection protocol: `cp_combustion_emissions`
+- Sources: `ipcc-2006-stationary-combustion`
 
-###### Sulfur dioxide to air (`onsite_so2`)
+###### Nitrous oxide from smoking combustion (`smoking_n2o`)
 
-Record or calculate sulfur dioxide from sulfur-bearing on-site fuel; zero is allowed only with fuel specification or monitoring evidence.
+nitrous oxide, to air, declared compartment is recorded as one separate elementary flow leaving Salting, smoking and route cooling. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
-- Selected flow: Sulfur dioxide, to air, unspecified
+- Selected flow: nitrous oxide, to air, declared compartment
 - Flow property / unit: Mass / kg
-- Amount rule: measured stack release or fuel sulfur balance with documented retention
+- Amount rule: measured release or fuel- and equipment-specific calculation
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Technology-specific (`technology_specific`)
-- Normalization basis: per kg preserved octopus output
+- Normalization basis: per kg smoked octopus output
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_route_inputs`
+- Collection protocol: `cp_combustion_emissions`
+- Sources: `ipcc-2006-stationary-combustion`
 
-###### Fine particulate matter to air (`onsite_pm25`)
+###### Nitrogen oxides from smoking (`smoking_nox`)
 
-Record or calculate primary particulate matter no larger than 2.5 micrometres from on-site combustion or smoke generation.
+nitrogen oxides, to air, declared compartment is recorded as one separate elementary flow leaving Salting, smoking and route cooling. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
-- Selected flow: Particles (PM0.2 - PM2.5), to air, unspecified
+- Selected flow: nitrogen oxides, to air, declared compartment
 - Flow property / unit: Mass / kg
-- Amount rule: measured stack release or equipment-specific emission-factor calculation after controls
+- Amount rule: measured stack release or fuel- and equipment-specific calculation after controls
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Technology-specific (`technology_specific`)
-- Normalization basis: per kg preserved octopus output
+- Normalization basis: per kg smoked octopus output
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_route_inputs`
+- Collection protocol: `cp_combustion_emissions`
+- Sources: `codex-cxc-68-2009`; `eu-fdm-bat-2019-2031`
 
-###### R717 refrigerant to air (`preservation_r717_emission`)
+###### Sulfur dioxide from smoking (`smoking_so2`)
 
-Record ammonia released from R717 preservation refrigeration equipment; apply only to R717 systems.
+sulfur dioxide, to air, declared compartment is recorded as one separate elementary flow leaving Salting, smoking and route cooling. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
-- Selected flow: Ammonia (R717), to air, unspecified
+- Selected flow: sulfur dioxide, to air, declared compartment
 - Flow property / unit: Mass / kg
-- Amount rule: equipment refrigerant balance or measured leakage assigned to preservation operation
+- Amount rule: measured stack release or fuel sulfur balance after controls
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Technology-specific (`technology_specific`)
-- Normalization basis: per kg preserved octopus output
+- Normalization basis: per kg smoked octopus output
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_route_inputs`
+- Collection protocol: `cp_combustion_emissions`
+- Sources: `codex-cxc-68-2009`; `eu-fdm-bat-2019-2031`
 
-###### R404A refrigerant to air (`preservation_r404a_emission`)
+###### Carbon monoxide from smoking (`smoking_co`)
 
-Record R404A released from preservation refrigeration equipment; apply only to R404A systems.
+carbon monoxide, to air, declared compartment is recorded as one separate elementary flow leaving Salting, smoking and route cooling. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
-- Selected flow: Refrigerant R404A, to air, unspecified
+- Selected flow: carbon monoxide, to air, declared compartment
 - Flow property / unit: Mass / kg
-- Amount rule: equipment refrigerant balance or measured leakage assigned to preservation operation
+- Amount rule: measured stack release or fuel- and equipment-specific calculation
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Technology-specific (`technology_specific`)
-- Normalization basis: per kg preserved octopus output
+- Normalization basis: per kg smoked octopus output
 - Basis kind: Process output (`process_output`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_route_inputs`
+- Collection protocol: `cp_combustion_emissions`
+- Sources: `codex-cxc-68-2009`; `eu-fdm-bat-2019-2031`
+
+###### Fine particulate matter from smoking (`smoking_pm25`)
+
+particles, PM2.5, to air, declared compartment is recorded as one separate elementary flow leaving Salting, smoking and route cooling. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: particles, PM2.5, to air, declared compartment
+- Flow property / unit: Mass / kg
+- Amount rule: measured stack release or equipment-specific calculation after controls
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per kg smoked octopus output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_combustion_emissions`
+- Sources: `codex-cxc-68-2009`; `eu-fdm-bat-2019-2031`
+
+### Process: Drying (`dried_route`)
+
+#### Inputs
 
 ##### Product flows
 
-###### Preserved octopus intermediate (`preserved_octopus`)
+###### Prepared octopus for drying (`dried_prepared_input`)
 
-Record the measured preserved output before final packaging and storage.
+Prepared octopus intermediate is recorded as one separate product flow entering Drying. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
-- Selected flow: Preserved octopus intermediate
+- Selected flow: Prepared octopus intermediate
+- Flow property / unit: Mass / kg
+- Amount rule: measured mass entering the dried route
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Route-specific (`route_specific`)
+- Normalization basis: per kg dried octopus output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_mass_balance`
+
+###### Drying electricity (`drying_electricity`)
+
+Alternating current is recorded as one separate product flow entering Drying. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Alternating current `50657322-939c-4829-a87b-47c093bfa6a7`
+- Flow property / unit: Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
+- Amount rule: submetered electricity for dryer, fans, pumps, conveyors and controls
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per kg dried octopus output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_dried_route`
+
+###### Drying steam (`drying_steam`)
+
+Steam is recorded as one separate product flow entering Drying. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Steam `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: measured preserved output mass by lot
+- Amount rule: metered 11.0 MPaG steam crossing the dryer boundary; apply only when this verified grade is supplied
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per kg dried octopus output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_dried_route`
+
+###### Natural gas used for drying (`drying_natural_gas`)
+
+natural gas in the gaseous state is recorded as one separate product flow entering Drying. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: natural gas in the gaseous state `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured natural gas combusted for drying; apply only when this fuel is used
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per kg dried octopus output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_combustion_fuels`
+
+###### Diesel fuel used for drying (`drying_diesel`)
+
+Diesel fuel is recorded as one separate product flow entering Drying. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Diesel fuel `9d258d75-6792-4f1c-9856-81602ed8f816`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured diesel combusted for drying; apply only when this fuel is used
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per kg dried octopus output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_combustion_fuels`
+
+###### LPG used for drying (`drying_lpg`)
+
+Liquefied petroleum gas is recorded as one separate product flow entering Drying. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Liquefied petroleum gas `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured LPG combusted for drying; apply only when this fuel is used
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per kg dried octopus output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_combustion_fuels`
+
+#### Outputs
+
+##### Product flows
+
+###### Dried octopus intermediate (`dried_octopus`)
+
+Dried octopus intermediate is recorded as one separate product flow leaving Drying. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Dried octopus intermediate
+- Flow property / unit: Mass / kg
+- Amount rule: measured dried output before final packaging
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Route-specific (`route_specific`)
 - Normalization basis: per production lot
@@ -539,6 +818,296 @@ Record the measured preserved output before final packaging and storage.
 - Collection protocol: `cp_mass_balance`
 
 ##### Waste flows
+
+###### Drying trims and rejects (`drying_rejects`)
+
+Rejected dried octopus is recorded as one separate waste flow leaving Drying. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Rejected dried octopus
+- Flow property / unit: Mass / kg
+- Amount rule: measured trims and off-specification product leaving the dried route
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per kg prepared octopus entering drying
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_mass_balance`
+
+##### Elementary flows
+
+###### Water removed during drying (`drying_removed_water`)
+
+water vapour, to air, declared compartment is recorded as one separate elementary flow leaving Drying. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: water vapour, to air, declared compartment
+- Flow property / unit: Mass / kg
+- Amount rule: calculated from inlet and dried-product moisture balance, corrected for liquid losses
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per kg dried octopus output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_mass_balance`
+- Sources: `codex-cxc-52-2003`; `codex-cxc-68-2009`
+
+###### Fossil carbon dioxide from drying (`drying_co2`)
+
+carbon dioxide (fossil), to air, declared compartment is recorded as one separate elementary flow leaving Drying. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: carbon dioxide (fossil), to air, declared compartment
+- Flow property / unit: Mass / kg
+- Amount rule: fuel-specific calculation from each consumed fossil fuel
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per kg dried octopus output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_combustion_emissions`
+- Sources: `ipcc-2006-stationary-combustion`
+
+###### Methane from drying combustion (`drying_ch4`)
+
+methane, to air, declared compartment is recorded as one separate elementary flow leaving Drying. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: methane, to air, declared compartment
+- Flow property / unit: Mass / kg
+- Amount rule: measured release or fuel- and equipment-specific calculation
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per kg dried octopus output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_combustion_emissions`
+- Sources: `ipcc-2006-stationary-combustion`
+
+###### Nitrous oxide from drying combustion (`drying_n2o`)
+
+nitrous oxide, to air, declared compartment is recorded as one separate elementary flow leaving Drying. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: nitrous oxide, to air, declared compartment
+- Flow property / unit: Mass / kg
+- Amount rule: measured release or fuel- and equipment-specific calculation
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per kg dried octopus output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_combustion_emissions`
+- Sources: `ipcc-2006-stationary-combustion`
+
+###### Nitrogen oxides from drying (`drying_nox`)
+
+nitrogen oxides, to air, declared compartment is recorded as one separate elementary flow leaving Drying. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: nitrogen oxides, to air, declared compartment
+- Flow property / unit: Mass / kg
+- Amount rule: measured stack release or fuel- and equipment-specific calculation after controls
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per kg dried octopus output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_combustion_emissions`
+- Sources: `codex-cxc-68-2009`; `eu-fdm-bat-2019-2031`
+
+###### Sulfur dioxide from drying (`drying_so2`)
+
+sulfur dioxide, to air, declared compartment is recorded as one separate elementary flow leaving Drying. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: sulfur dioxide, to air, declared compartment
+- Flow property / unit: Mass / kg
+- Amount rule: measured stack release or fuel sulfur balance after controls
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per kg dried octopus output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_combustion_emissions`
+- Sources: `codex-cxc-68-2009`; `eu-fdm-bat-2019-2031`
+
+###### Carbon monoxide from drying (`drying_co`)
+
+carbon monoxide, to air, declared compartment is recorded as one separate elementary flow leaving Drying. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: carbon monoxide, to air, declared compartment
+- Flow property / unit: Mass / kg
+- Amount rule: measured stack release or fuel- and equipment-specific calculation
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per kg dried octopus output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_combustion_emissions`
+- Sources: `codex-cxc-68-2009`; `eu-fdm-bat-2019-2031`
+
+###### Fine particulate matter from drying (`drying_pm25`)
+
+particles, PM2.5, to air, declared compartment is recorded as one separate elementary flow leaving Drying. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: particles, PM2.5, to air, declared compartment
+- Flow property / unit: Mass / kg
+- Amount rule: measured stack release or equipment-specific calculation after controls
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per kg dried octopus output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_combustion_emissions`
+- Sources: `codex-cxc-68-2009`; `eu-fdm-bat-2019-2031`
+
+### Process: Salting or brine packing (`salted_brined_route`)
+
+#### Inputs
+
+##### Product flows
+
+###### Prepared octopus for salting or brining (`salted_brined_prepared_input`)
+
+Prepared octopus intermediate is recorded as one separate product flow entering Salting or brine packing. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Prepared octopus intermediate
+- Flow property / unit: Mass / kg
+- Amount rule: measured mass entering the salted or in-brine route
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Route-specific (`route_specific`)
+- Normalization basis: per kg route output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_mass_balance`
+
+###### Food-grade salt for salting or brine (`food_grade_salt`)
+
+Salt is recorded as one separate product flow entering Salting or brine packing. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Salt `3a5fa711-4648-4d58-b94d-67b79e7476c7`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured salt issued to the actual dry-salting or brine recipe
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per kg route output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_salted_brined_route`
+- Sources: `codex-cxc-52-2003`
+
+###### Water for salting or brine (`brine_makeup_water`)
+
+Process Water is recorded as one separate product flow entering Salting or brine packing. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: metered new water used in the actual recipe or rinse; do not double count purchased brine
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per kg route output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_salted_brined_route`
+
+###### Prepared packing or process brine (`prepared_brine`)
+
+Food-grade sodium chloride brine is recorded as one separate product flow entering Salting or brine packing. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Food-grade sodium chloride brine
+- Flow property / unit: Mass / kg
+- Amount rule: measured brine contacting product; separately reconcile salt and water used on site
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per kg route output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_salted_brined_route`
+- Sources: `codex-cxc-52-2003`
+
+###### Food-grade acetic acid additive (`brine_acetic_acid`)
+
+Food-grade acetic acid is recorded as one separate product flow entering Salting or brine packing. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Food-grade acetic acid
+- Flow property / unit: Mass / kg
+- Amount rule: measured recipe quantity; apply only when acetic acid is actually used and list every other additive in its own atomic row
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per kg route output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_salted_brined_route`
+
+#### Outputs
+
+##### Product flows
+
+###### Salted octopus intermediate (`salted_octopus`)
+
+Salted octopus intermediate is recorded as one separate product flow leaving Salting or brine packing. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Salted octopus intermediate
+- Flow property / unit: Mass / kg
+- Amount rule: measured output; apply only to primary route `salted`
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Route-specific (`route_specific`)
+- Normalization basis: per production lot
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_mass_balance`
+
+###### Brined octopus intermediate (`brined_octopus`)
+
+Octopus in brine intermediate is recorded as one separate product flow leaving Salting or brine packing. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Octopus in brine intermediate
+- Flow property / unit: Mass / kg
+- Amount rule: measured drained octopus output; apply only to primary route `in_brine`
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Route-specific (`route_specific`)
+- Normalization basis: per production lot
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_mass_balance`
+
+##### Waste flows
+
+###### Spent salting or packing brine (`spent_brine`)
+
+High-concentration saline wastewater is recorded as one separate waste flow leaving Salting or brine packing. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: High-concentration saline wastewater `76ab69b6-6fa7-461c-be07-bc54e581a699`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured brine leaving the reuse loop for treatment or disposal
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Route-specific (`route_specific`)
+- Normalization basis: per kg route output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_wastewater`
+
+###### Salting or brining product loss (`salted_brined_product_loss`)
+
+Rejected salted or brined octopus is recorded as one separate waste flow leaving Salting or brine packing. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Rejected salted or brined octopus
+- Flow property / unit: Mass / kg
+- Amount rule: measured product loss and off-specification octopus by route and disposition
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per kg prepared octopus entering the route
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_mass_balance`
+
+###### Non-saline route wastewater (`salted_brined_wastewater`)
+
+Untreated seafood-processing wastewater is recorded as one separate waste flow leaving Salting or brine packing. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Untreated seafood-processing wastewater
+- Flow property / unit: Volume / m3
+- Amount rule: measured non-brine wash and rinse wastewater sent to the declared treatment destination
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Route-specific (`route_specific`)
+- Normalization basis: per kg route output
+- Basis kind: Process output (`process_output`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_wastewater`
 
 ##### Elementary flows
 
@@ -548,149 +1117,185 @@ Record the measured preserved output before final packaging and storage.
 
 ##### Product flows
 
+###### Frozen octopus entering packaging (`packaging_frozen_input`)
+
+Frozen octopus intermediate is recorded as one separate product flow entering Packaging and route-required storage. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Frozen octopus intermediate
+- Flow property / unit: Mass / kg
+- Amount rule: measured input; apply only to primary route `frozen`
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Route-specific (`route_specific`)
+- Normalization basis: per kg reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_mass_balance`
+
+###### Smoked octopus entering packaging (`packaging_smoked_input`)
+
+Smoked octopus intermediate is recorded as one separate product flow entering Packaging and route-required storage. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Smoked octopus intermediate
+- Flow property / unit: Mass / kg
+- Amount rule: measured input; apply only to primary route `smoked`
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Route-specific (`route_specific`)
+- Normalization basis: per kg reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_mass_balance`
+
+###### Dried octopus entering packaging (`packaging_dried_input`)
+
+Dried octopus intermediate is recorded as one separate product flow entering Packaging and route-required storage. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Dried octopus intermediate
+- Flow property / unit: Mass / kg
+- Amount rule: measured input; apply only to primary route `dried`
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Route-specific (`route_specific`)
+- Normalization basis: per kg reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_mass_balance`
+
+###### Salted octopus entering packaging (`packaging_salted_input`)
+
+Salted octopus intermediate is recorded as one separate product flow entering Packaging and route-required storage. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Salted octopus intermediate
+- Flow property / unit: Mass / kg
+- Amount rule: measured input; apply only to primary route `salted`
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Route-specific (`route_specific`)
+- Normalization basis: per kg reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_mass_balance`
+
+###### Brined octopus entering packaging (`packaging_brined_input`)
+
+Octopus in brine intermediate is recorded as one separate product flow entering Packaging and route-required storage. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Octopus in brine intermediate
+- Flow property / unit: Mass / kg
+- Amount rule: measured drained octopus input; apply only to primary route `in_brine`
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Route-specific (`route_specific`)
+- Normalization basis: per kg reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_mass_balance`
+
 ###### Plastic film packaging (`plastic_film_packaging`)
 
-Record plastic film used as a pouch, liner, wrap, or seal. Declare polymer, recycled content, thickness, and whether the film is primary or secondary packaging; other polymers or rigid packs require their own atomic rows.
+Plastic film is recorded as one separate product flow entering Packaging and route-required storage. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
 - Selected flow: Plastic film `b01e4bd9-5ada-4676-8a90-be5f167c00fc`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: issued film mass reconciled to packed units and stock change
+- Amount rule: issued film reconciled to packed units; declare polymer, thickness, recycled content and packaging level
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Product-specific (`product_specific`)
 - Normalization basis: per kg reference product
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_packaging_storage`
-- Sources: `eu-pef-2021-2279`
 
 ###### Corrugated cardboard packaging (`corrugated_cardboard_packaging`)
 
-Record corrugated boxes, trays, or dividers used for the declared sale unit or transport pack. Apply only when corrugated cardboard is present and declare recycled content and box specification.
+Corrugated cardboard is recorded as one separate product flow entering Packaging and route-required storage. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
 - Selected flow: Corrugated cardboard `8bde297e-98df-463f-bcb4-0db52bf6e0b5`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: issued cardboard mass reconciled to packed units and stock change
+- Amount rule: issued boxes, trays or dividers reconciled to packed units
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Product-specific (`product_specific`)
 - Normalization basis: per kg reference product
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_packaging_storage`
-- Sources: `eu-pef-2021-2279`
 
-###### Storage electricity (`storage_electricity`)
+###### Glass jar packaging (`glass_jar_packaging`)
 
-Record electricity used by the facility storage room or freezer through the declared gate time. Apply the actual voltage and geography; the UUID below is the verified low-voltage consumption mix.
+Food-contact glass jar is recorded as one separate product flow entering Packaging and route-required storage. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
-- Selected flow: Alternating current, electricity mix, consumption mix, less than 1 kV `50657322-939c-4829-a87b-47c093bfa6a7`
+- Selected flow: Food-contact glass jar
+- Flow property / unit: Mass / kg
+- Amount rule: measured jar mass; apply only when glass jars are used
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per kg reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_packaging_storage`
+
+###### Metal closure packaging (`metal_closure_packaging`)
+
+Food-contact steel jar closure is recorded as one separate product flow entering Packaging and route-required storage. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Food-contact steel jar closure
+- Flow property / unit: Mass / kg
+- Amount rule: measured closure mass; apply only when steel closures are used
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per kg reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_packaging_storage`
+
+###### Gate-storage electricity (`storage_electricity`)
+
+Alternating current is recorded as one separate product flow entering Packaging and route-required storage. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Alternating current `50657322-939c-4829-a87b-47c093bfa6a7`
 - Flow property / unit: Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
 - Amount rule: metered storage electricity allocated by temperature-zone occupied mass-time
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Scenario-specific (`scenario_specific`)
-- Normalization basis: per kg reference product for the represented storage duration
+- Normalization basis: per kg reference product for represented storage duration
 - Basis kind: Storage duration (`storage_duration`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_packaging_storage`
 
-###### Storage R717 refrigerant make-up (`storage_r717_makeup`)
+###### Storage R717 make-up (`storage_r717_makeup`)
 
-Record anhydrous ammonia added to the storage refrigeration system. Apply only where the verified refrigerant is R717.
+Ammonia, anhydrous, liquid is recorded as one separate product flow entering Packaging and route-required storage. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
-- Selected flow: Ammonia, anhydrous, liquid (R717) `6928be4f-282b-4448-8f2a-f8c746621303`
+- Selected flow: Ammonia, anhydrous, liquid `6928be4f-282b-4448-8f2a-f8c746621303`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: purchased or issued make-up mass assigned from the equipment refrigerant ledger by operating period
+- Amount rule: ledgered make-up assigned to storage; apply only to verified R717 systems
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Scenario-specific (`scenario_specific`)
-- Normalization basis: per kg reference product for the represented storage duration
+- Normalization basis: per kg reference product for represented storage duration
 - Basis kind: Storage duration (`storage_duration`)
 - Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_packaging_storage`
+- Collection protocol: `cp_refrigerant_balance`
 
-###### Storage R404A refrigerant make-up (`storage_r404a_makeup`)
+###### Storage R404A make-up (`storage_r404a_makeup`)
 
-Record R404A added to the storage refrigeration system. Apply only where the verified refrigerant is R404A; another refrigerant requires its own atomic product row and emission row.
+Refrigerant R404A is recorded as one separate product flow entering Packaging and route-required storage. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
 - Selected flow: Refrigerant R404A `76513c71-a148-484e-865f-2ab54afb4331`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: purchased or issued make-up mass assigned from the equipment refrigerant ledger by operating period
+- Amount rule: ledgered make-up assigned to storage; apply only to verified R404A systems
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Scenario-specific (`scenario_specific`)
-- Normalization basis: per kg reference product for the represented storage duration
+- Normalization basis: per kg reference product for represented storage duration
 - Basis kind: Storage duration (`storage_duration`)
 - Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_packaging_storage`
+- Collection protocol: `cp_refrigerant_balance`
 
 #### Outputs
-
-##### Waste flows
-
-###### Plastic film packaging scrap (`plastic_film_scrap`)
-
-Record clean or contaminated plastic-film offcuts, rejected packs, and damaged film leaving the packaging process; preserve the declared treatment destination.
-
-- Selected flow: Plastic film packaging scrap
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: measured packaging scrap mass by material and destination
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-- Normalization basis: per kg reference product
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_packaging_storage`
-
-###### Corrugated cardboard packaging scrap (`corrugated_cardboard_scrap`)
-
-Record corrugated-cardboard offcuts, rejected boxes, and damaged transport packaging leaving the packaging process.
-
-- Selected flow: Corrugated cardboard packaging scrap
-- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
-- Amount rule: measured packaging scrap mass by material and destination
-- Value mode: Foreground record (`foreground_record`)
-- Specificity: Product-specific (`product_specific`)
-- Normalization basis: per kg reference product
-- Basis kind: Reference flow (`reference_flow`)
-- Evidence kind: Collected record (`collected_record`)
-- Collection protocol: `cp_packaging_storage`
-
-##### Elementary flows
-
-###### Storage R717 refrigerant to air (`storage_r717_emission`)
-
-Record ammonia released from storage refrigeration equipment. Apply only to R717 systems.
-
-- Selected flow: Ammonia (R717), to air, unspecified
-- Flow property / unit: Mass / kg
-- Amount rule: equipment refrigerant balance or measured leakage allocated by storage operating period
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Scenario-specific (`scenario_specific`)
-- Normalization basis: per kg reference product for the represented storage duration
-- Basis kind: Storage duration (`storage_duration`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_packaging_storage`
-
-###### Storage R404A refrigerant to air (`storage_r404a_emission`)
-
-Record R404A released from storage refrigeration equipment. Apply only to R404A systems.
-
-- Selected flow: Refrigerant R404A, to air, unspecified
-- Flow property / unit: Mass / kg
-- Amount rule: equipment refrigerant balance or measured leakage allocated by storage operating period
-- Value mode: Calculated value (`calculated_value`)
-- Specificity: Scenario-specific (`scenario_specific`)
-- Normalization basis: per kg reference product for the represented storage duration
-- Basis kind: Storage duration (`storage_duration`)
-- Evidence kind: Calculated from collection (`calculated_from_collection`)
-- Collection protocol: `cp_packaging_storage`
 
 ##### Product flows
 
 ###### Qualified saleable octopus product (`reference_product`)
 
-Output exactly the route-qualified reference product on the applicable net, deglazed, or drained mass basis.
+Octopus, frozen, smoked, dried, salted or in brine is recorded as one separate product flow leaving Packaging and route-required storage. Its quantity is obtained using the row-specific amount rule and collection protocol below.
 
 - Selected flow: Octopus, frozen, smoked, dried, salted or in brine `5c8cdbc1-2f53-47ac-aa4a-e44125c18761`
 - Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
-- Amount rule: exactly 1 kg reference product after normalization
+- Amount rule: exactly 1 kg after applicable net, deglazed or drained normalization; modelling identity, not an empirical range
 - Value mode: Fixed value (`fixed_value`)
 - Specificity: Product-specific (`product_specific`)
 - Normalization basis: 1 kg reference flow
@@ -700,15 +1305,333 @@ Output exactly the route-qualified reference product on the applicable net, degl
 
 ##### Waste flows
 
+###### Plastic film packaging scrap (`plastic_film_scrap`)
+
+Plastic film packaging scrap is recorded as one separate waste flow leaving Packaging and route-required storage. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Plastic film packaging scrap
+- Flow property / unit: Mass / kg
+- Amount rule: measured offcuts and rejected film by destination
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per kg reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_packaging_storage`
+
+###### Corrugated cardboard scrap (`corrugated_cardboard_scrap`)
+
+Corrugated cardboard packaging scrap is recorded as one separate waste flow leaving Packaging and route-required storage. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Corrugated cardboard packaging scrap
+- Flow property / unit: Mass / kg
+- Amount rule: measured rejected or damaged cardboard by destination
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per kg reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_packaging_storage`
+
+###### Glass packaging scrap (`glass_packaging_scrap`)
+
+Food-contact glass packaging scrap is recorded as one separate waste flow leaving Packaging and route-required storage. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Food-contact glass packaging scrap
+- Flow property / unit: Mass / kg
+- Amount rule: measured broken or rejected glass by destination; apply only when glass is used
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per kg reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_packaging_storage`
+
+###### Steel closure scrap (`steel_closure_scrap`)
+
+Steel packaging closure scrap is recorded as one separate waste flow leaving Packaging and route-required storage. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Steel packaging closure scrap
+- Flow property / unit: Mass / kg
+- Amount rule: measured rejected steel closures by destination; apply only when steel closures are used
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per kg reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_packaging_storage`
+
 ##### Elementary flows
+
+###### Storage R717 release (`storage_r717_emission`)
+
+Ammonia (R717), to air, declared compartment is recorded as one separate elementary flow leaving Packaging and route-required storage. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Ammonia (R717), to air, declared compartment
+- Flow property / unit: Mass / kg
+- Amount rule: refrigerant mass balance or measured release; apply only to R717 storage systems
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Scenario-specific (`scenario_specific`)
+- Normalization basis: per kg reference product for represented storage duration
+- Basis kind: Storage duration (`storage_duration`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_refrigerant_balance`
+
+###### Storage R404A release (`storage_r404a_emission`)
+
+Refrigerant R404A, to air, declared compartment is recorded as one separate elementary flow leaving Packaging and route-required storage. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Refrigerant R404A, to air, declared compartment
+- Flow property / unit: Mass / kg
+- Amount rule: refrigerant mass balance or measured release; apply only to R404A storage systems
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Scenario-specific (`scenario_specific`)
+- Normalization basis: per kg reference product for represented storage duration
+- Basis kind: Storage duration (`storage_duration`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_refrigerant_balance`
+
+### Process: Sanitation and on-site wastewater treatment (`sanitation_wastewater`)
+
+#### Inputs
+
+##### Product flows
+
+###### Sanitation water (`sanitation_water`)
+
+Process Water is recorded as one separate product flow entering Sanitation and on-site wastewater treatment. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: metered new water for equipment and facility sanitation
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per kg reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_sanitation_treatment`
+- Sources: `codex-cxc-52-2003`
+
+###### Sodium hydroxide cleaner (`sanitation_sodium_hydroxide`)
+
+Sodium hydroxide is recorded as one separate product flow entering Sanitation and on-site wastewater treatment. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Sodium hydroxide
+- Flow property / unit: Mass / kg
+- Amount rule: measured chemical issue; apply only when sodium hydroxide is used
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per kg reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_sanitation_treatment`
+
+###### Nitric acid cleaner (`sanitation_nitric_acid`)
+
+Nitric acid is recorded as one separate product flow entering Sanitation and on-site wastewater treatment. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Nitric acid
+- Flow property / unit: Mass / kg
+- Amount rule: measured chemical issue; apply only when nitric acid is used
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per kg reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_sanitation_treatment`
+
+###### Sodium hypochlorite disinfectant (`sanitation_sodium_hypochlorite`)
+
+Sodium hypochlorite is recorded as one separate product flow entering Sanitation and on-site wastewater treatment. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Sodium hypochlorite
+- Flow property / unit: Mass / kg
+- Amount rule: measured active-product issue; apply only when sodium hypochlorite is used
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per kg reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_sanitation_treatment`
+
+###### Sanitation and treatment electricity (`sanitation_electricity`)
+
+Alternating current is recorded as one separate product flow entering Sanitation and on-site wastewater treatment. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Alternating current `50657322-939c-4829-a87b-47c093bfa6a7`
+- Flow property / unit: Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
+- Amount rule: submetered electricity for cleaning systems, pumps, aeration and on-site treatment
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per kg reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_sanitation_treatment`
+- Sources: `eu-fdm-bat-2019-2031`
+
+##### Waste flows
+
+###### Non-saline wastewater influent (`non_saline_wastewater_influent`)
+
+Untreated seafood-processing wastewater is recorded as one separate waste flow entering Sanitation and on-site wastewater treatment. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Untreated seafood-processing wastewater
+- Flow property / unit: Volume / m3
+- Amount rule: measured non-saline process and sanitation wastewater entering on-site treatment
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per kg reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_wastewater`
+
+###### Saline wastewater influent (`saline_wastewater_influent`)
+
+High-concentration saline wastewater is recorded as one separate waste flow entering Sanitation and on-site wastewater treatment. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: High-concentration saline wastewater `76ab69b6-6fa7-461c-be07-bc54e581a699`
+- Flow property / unit: Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
+- Amount rule: measured spent brine entering the declared saline-wastewater treatment or disposal route
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per kg reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_wastewater`
+
+#### Outputs
+
+##### Product flows
+
+##### Waste flows
+
+###### Treated wastewater effluent (`treated_wastewater`)
+
+Treated seafood-processing wastewater effluent is recorded as one separate waste flow leaving Sanitation and on-site wastewater treatment. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Treated seafood-processing wastewater effluent
+- Flow property / unit: Volume / m3
+- Amount rule: measured final effluent volume at the installation boundary; apply only to on-site treatment
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per kg reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_sanitation_treatment`
+
+###### Wastewater-treatment sludge (`wastewater_sludge`)
+
+Seafood-processing wastewater-treatment sludge is recorded as one separate waste flow leaving Sanitation and on-site wastewater treatment. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Seafood-processing wastewater-treatment sludge
+- Flow property / unit: Mass / kg
+- Amount rule: measured wet or dry sludge leaving treatment, with solids basis and destination declared
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per kg reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_sanitation_treatment`
+
+##### Elementary flows
+
+###### Chemical oxygen demand to water (`effluent_cod`)
+
+Chemical oxygen demand, to water, declared compartment is recorded as one separate elementary flow leaving Sanitation and on-site wastewater treatment. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Chemical oxygen demand, to water, declared compartment
+- Flow property / unit: Mass / kg
+- Amount rule: effluent volume multiplied by measured COD concentration for the same period
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per kg reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_effluent_quality`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Biochemical oxygen demand to water (`effluent_bod`)
+
+Biochemical oxygen demand, to water, declared compartment is recorded as one separate elementary flow leaving Sanitation and on-site wastewater treatment. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Biochemical oxygen demand, to water, declared compartment
+- Flow property / unit: Mass / kg
+- Amount rule: effluent volume multiplied by measured BOD concentration for the same period
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per kg reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_effluent_quality`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Total nitrogen to water (`effluent_total_nitrogen`)
+
+Total nitrogen, to water, declared compartment is recorded as one separate elementary flow leaving Sanitation and on-site wastewater treatment. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Total nitrogen, to water, declared compartment
+- Flow property / unit: Mass / kg
+- Amount rule: effluent volume multiplied by measured total-nitrogen concentration
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per kg reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_effluent_quality`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Total phosphorus to water (`effluent_total_phosphorus`)
+
+Total phosphorus, to water, declared compartment is recorded as one separate elementary flow leaving Sanitation and on-site wastewater treatment. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Total phosphorus, to water, declared compartment
+- Flow property / unit: Mass / kg
+- Amount rule: effluent volume multiplied by measured total-phosphorus concentration
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per kg reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_effluent_quality`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Total suspended solids to water (`effluent_tss`)
+
+Total suspended solids, to water, declared compartment is recorded as one separate elementary flow leaving Sanitation and on-site wastewater treatment. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Total suspended solids, to water, declared compartment
+- Flow property / unit: Mass / kg
+- Amount rule: effluent volume multiplied by measured total-suspended-solids concentration
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per kg reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_effluent_quality`
+- Sources: `eu-fdm-bat-2019-2031`
+
+###### Chloride to water (`effluent_chloride`)
+
+Chloride, to water, declared compartment is recorded as one separate elementary flow leaving Sanitation and on-site wastewater treatment. Its quantity is obtained using the row-specific amount rule and collection protocol below.
+
+- Selected flow: Chloride, to water, declared compartment
+- Flow property / unit: Mass / kg
+- Amount rule: effluent volume multiplied by measured chloride concentration; apply where saline streams reach the discharge
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per kg reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_effluent_quality`
+- Sources: `eu-fdm-bat-2019-2031`
 
 ## 7. Allocation and Co-product Handling
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `alloc_avoid` | multi-output foreground processes | First avoid allocation through process subdivision and direct measurement of route-specific inputs, utilities, residues, and products. | `eu-pef-2021-2279` |
-| `alloc_physical` | unavoidable joint operations | If subdivision is not possible, use a documented physical causal relation; mass allocation may be used only when it reasonably represents causality for the joint operation. | `eu-pef-2021-2279` |
-| `alloc_economic_last_resort` | co-products without defensible physical relation | Use economic allocation only as a last resort, state the market, price period, and sensitivity, and keep wastes assigned to the process that generates them. | `eu-pef-2021-2279` |
+| `alloc_avoid` | shared or multi-output processes | First avoid allocation by route subdivision and direct metering of each named input, waste and emission. | `eu-pef-2021-2279` |
+| `alloc_physical` | unavoidable shared operations | Use a documented physical causal relation, such as occupied mass-time for a common temperature zone, when subdivision is impossible. | `eu-pef-2021-2279` |
+| `alloc_economic_last_resort` | co-products without defensible physical relation | Use economic allocation only as a last resort and disclose market, price period and sensitivity. | `eu-pef-2021-2279` |
 
 ## 8. Foreground Data Collection, Calculation, and Quality Rules
 
@@ -716,37 +1639,53 @@ Output exactly the route-qualified reference product on the applicable net, degl
 
 | protocol_id | process_id | flow_role | record_type | raw_fields | collection_method | unit | frequency | temporal_coverage | site_scope | aggregation_rule | quality_evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `cp_mass_balance` | `octopus_receiving_preparation`; `route_preservation`; `packaging_storage` | received, prepared, preserved, saleable, reject, rework, glaze, and drained masses | scales, batch sheets, yield and disposition records | lot_id; species_or_commercial_designation; route; incoming_state; gross_mass; tare_mass; accepted_mass; intermediate_mass; final_net_mass; glaze_mass; drained_mass; reject_mass; rework_mass | Calibrated weighing by lot; preserve gross, tare, deglazed, and drained observations where applicable. | kg | each production lot | At least 12 consecutive representative months or the full seasonal campaign with justification. | All facilities represented by the dataset. | Sum accepted masses and normalize flows to qualified saleable mass; do not net rework across the boundary. | Scale calibration, lot traceability, reconciliation sign-off, and product specification. |
-| `cp_route_inputs` | `octopus_receiving_preparation`; `route_preservation` | each atomic water, salt, wood-chip, electricity, steam, hot-water, natural-gas, diesel, LPG, R717, R404A, wastewater, spent-brine, reject, ash, combustion-emission, and refrigerant-emission row | meters, invoices, issue records, recipes, fuel and refrigerant ledgers, equipment logs, stack records, and discharge records | lot_id; route; atomic_flow_id; flow_uuid; quantity; unit; meter_start; meter_end; stock_start; stock_end; returned_quantity; operating_time; discharge_quantity; destination; emission_factor; factor_source | Direct metering preferred; otherwise reconcile each named material or carrier separately from purchases, stock, recipes, and equipment logs using a documented allocation. | kg; m3; kWh; carrier-specific SI unit | per lot or monthly with traceable lot allocation | Same period as product mass records. | Each included line and shared utility system. | Never aggregate carriers, materials, wastes, or pollutants into one exchange; subtract only measured closed-loop recovery; normalize each atomic row to preserved output. | Meter calibration, invoice or stock reconciliation, recipe approval, refrigerant ledger, flow UUID readback, and allocation rationale. |
-| `cp_packaging_storage` | `packaging_storage` | plastic film, corrugated cardboard, each additional packaging material, storage electricity, each refrigerant make-up, each packaging scrap, and each refrigerant emission | packaging bill of materials, packed-unit counts, warehouse meters, refrigerant ledgers, temperature and inventory logs | packaging_material; flow_uuid; packaging_mass; packed_units; stored_mass; storage_start; storage_end; temperature; electricity; refrigerant_identity; refrigerant_makeup; refrigerant_recovery; refrigerant_release | Reconcile each packaging material to packed units; allocate electricity by documented mass-time; close a separate mass balance for each refrigerant identity. | kg; kWh; degree Celsius; day | each packaging campaign and monthly storage reconciliation | Same period as product mass records. | All packaging lines and storage rooms represented. | Normalize every packaging material separately to product mass, electricity to occupied mass-time, and each refrigerant make-up and release separately; retain route and temperature strata. | BOM revision, stock reconciliation, meter calibration, refrigerant ledger, flow UUID readback, and temperature-log completeness. |
+| `cp_mass_balance` | all production processes | each octopus input, intermediate, saleable output, loss, reject and rework row | scales, batch sheets, moisture and disposition records | lot_id; route; species; incoming_state; gross_mass; tare_mass; intermediate_mass; final_mass; glaze_mass; drained_mass; moisture; reject_mass; rework_mass | Calibrated weighing and route-specific lot reconciliation. | kg; percent | each lot | Full representative period. | Every represented line and site. | Close each route separately and normalize to qualified saleable mass. | Calibration, lot traceability and signed reconciliation. |
+| `cp_common_inputs` | `common_preparation` | ice, liquid water, electricity, each cleaner and each disinfectant | meters, invoices, production and issue logs | lot_id; flow_id; quantity; active_fraction; unit; meter_start; meter_end; stock_start; stock_end; assigned_process | Meter or reconcile each atomic input separately and prevent double counting with facility sanitation. | kg; kWh | per lot or monthly with traceable allocation | Same period as mass balance. | All preparation lines. | Normalize to prepared output without combining ice, water, electricity or chemicals. | Meter calibration, active-fraction record and stock/invoice reconciliation. |
+| `cp_frozen_route` | `frozen_route` | glaze water, freezing electricity, holding electricity and freezing loss | meters, glaze records, freezer and cold-room logs | lot_id; freezer_id; water; electricity; temperature; start_time; end_time; product_mass; loss_mass | Direct meter or engineering allocation by documented equipment time and mass-time. | kg; kWh; degree Celsius; hour | each lot and monthly reconciliation | Same period as mass balance. | All freezers and pre-packaging cold rooms. | Keep freezing and holding electricity separate. | Meter calibration and temperature-log completeness. |
+| `cp_smoked_route` | `smoked_route` | salt, brine, water, wood chips, electricity, steam, ash and smoke-route residues | recipes, meters, issue and stack records | lot_id; salt; brine; water; wood_species; wood_moisture; electricity; steam; ash; process_time; temperature | Reconcile each material and utility separately by lot. | kg; kWh; hour; degree Celsius | each lot | Same period as mass balance. | Every smoking line. | Do not combine smoke material, electricity, steam or fuel. | Approved recipe, meter calibration and material ledger. |
+| `cp_dried_route` | `dried_route` | drying electricity, steam, moisture and rejects | meters, moisture tests, dryer and batch logs | lot_id; inlet_mass; outlet_mass; inlet_moisture; outlet_moisture; electricity; steam; time; temperature; reject_mass | Meter utilities and close a moisture balance by lot. | kg; kWh; percent | each lot | Same period as mass balance. | Every dryer. | Calculate removed water from compatible moisture measurements. | Meter and moisture-method QA. |
+| `cp_salted_brined_route` | `salted_brined_route` | salt, water, brine and each additive | recipes, scales, meters and issue records | lot_id; route; ingredient_id; quantity; concentration; returned_quantity; reused_brine | Reconcile each ingredient and brine loop separately. | kg; percent | each lot | Same period as mass balance. | Every salting/brining line. | Never combine additives or net discharged brine from input. | Recipe approval and scale/meter calibration. |
+| `cp_combustion_fuels` | `smoked_route`; `dried_route` | natural gas, diesel and LPG | fuel meters, invoices, tank and cylinder ledgers | equipment_id; fuel_id; quantity; unit; stock_start; stock_end; net_calorific_value; operating_time | Reconcile each actual fuel separately to equipment and route. | kg; MJ | monthly with lot allocation | Same period as route production. | Every on-site combustion source. | No generic thermal-energy or combined-fuel row. | Meter, invoice and stock reconciliation. |
+| `cp_combustion_emissions` | `smoked_route`; `dried_route` | CO2, CH4, N2O, NOx, SO2, CO and PM2.5 | stack monitoring and fuel-specific calculations | source_id; pollutant; measured_concentration; gas_flow; fuel_quantity; factor; factor_source; control_efficiency | Prefer source-specific monitoring; otherwise use documented fuel- and equipment-specific factors. | kg | monitoring campaign or monthly calculation | Same period as fuel records. | Every stack or direct smoke source. | Calculate each pollutant separately after controls. | Monitoring QA, fuel specification and factor provenance. |
+| `cp_refrigerant_balance` | `frozen_route`; `packaging_storage` | each refrigerant make-up and release | refrigerant ledger and service records | equipment_id; refrigerant_id; charge_start; purchases; additions; recovery; charge_end; measured_release | Close a separate mass balance for each refrigerant identity and equipment group. | kg | each service event and annual closure | Same period as product data. | Every refrigeration system. | Never combine refrigerants or assume R717 and R404A both apply. | Technician records and reconciled ledger. |
+| `cp_packaging_storage` | `packaging_storage` | each packaging component, scrap, storage electricity and storage condition | BOM, issue records, packed counts, warehouse meters and logs | component_id; flow_uuid; mass; units; scrap; destination; stored_mass; temperature; start; end; electricity | Reconcile each component separately and allocate storage electricity by compatible temperature-zone mass-time. | kg; kWh; day | each campaign and monthly | Same period as product data. | All packaging lines and storage rooms. | No combined packaging-material or packaging-waste row. | BOM revision, stock reconciliation and temperature logs. |
+| `cp_wastewater` | all wastewater-generating processes | each non-saline wastewater and spent-brine stream | flow meters, batch and discharge records | source_process; stream_id; volume; mass; salinity; chloride; destination; start; end | Meter each saline and non-saline stream before mixing. | m3; kg | daily or per batch | Same period as production. | Every discharge point. | Keep brine separate from ordinary wastewater. | Meter calibration and destination documentation. |
+| `cp_sanitation_treatment` | `sanitation_wastewater` | sanitation water, each chemical, electricity, effluent and sludge | sanitation logs, chemical ledgers, meters and treatment records | chemical_id; active_fraction; quantity; water; electricity; influent; effluent; sludge; dry_solids; destination | Record each chemical and treatment output separately. | kg; m3; kWh | daily or sanitation event | Same period as production. | Whole represented facility. | Normalize after reconciling stock and wastewater flow. | Approved sanitation schedule, meter and laboratory QA. |
+| `cp_effluent_quality` | `sanitation_wastewater` | COD, BOD, TN, TP, TSS and chloride | accredited sampling and laboratory records | sample_id; point; date; flow; parameter; concentration; method; detection_limit | Pair representative concentration with same-period effluent flow. | mg/L; m3 | permit/BAT-compatible frequency | Same period as effluent flow. | Final discharge and key treatment points. | pollutant load = concentration × compatible effluent volume. | Chain of custody, method, blanks, calibration and accreditation. |
 
 ### Calculation Rules
 
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
-| `calc_reference_normalization` | all inventory rows | normalized amount = period or lot amount / qualified saleable reference mass, then express per 1 kg. | collected flow amount; qualified saleable mass | amount per kg reference product | `eu-pef-2021-2279` |
-| `calc_route_reference_mass` | glazed frozen or in-brine products | frozen reference mass = measured deglazed product mass; in-brine reference mass = measured drained octopus mass; all other routes use net saleable octopus mass excluding packaging. | gross, tare, glaze, deglazed, drained, and net masses | route-consistent reference mass | `codex-cxc-52-2003` |
-| `calc_storage_energy` | shared storage | allocated energy = metered storage energy × represented product mass-time / total occupied mass-time for the same temperature zone and period. | meter energy; product mass; storage duration; total occupied mass-time | kWh per kg reference product for declared duration | `eu-pef-2021-2279` |
+| `calc_reference_normalization` | all rows | normalized amount = lot or period amount / qualified saleable reference mass. | atomic flow amount; applicable net/deglazed/drained mass | amount per kg reference product | `eu-pef-2021-2279` |
+| `calc_route_mass_balance` | each route | received or prepared input = route output + measured product losses + retained/reworked material + measured moisture or brine change, with imbalance disclosed. | mass and moisture records | route yield and unresolved imbalance | `codex-cxc-52-2003` |
+| `calc_combustion_emissions` | each on-site fuel and pollutant | use source monitoring or fuel quantity × documented fuel/equipment factor; calculate every pollutant separately. | fuel records; monitoring or factors | kg pollutant per kg route output | `ipcc-2006-stationary-combustion`; `eu-fdm-bat-2019-2031` |
+| `calc_refrigerant_release` | each refrigeration system | release = opening charge + additions - recovery - closing charge, adjusted only for documented transfers. | refrigerant ledger | kg refrigerant released |  |
+| `calc_effluent_load` | each effluent pollutant | load = compatible effluent volume × measured concentration, with unit conversion and non-detect treatment disclosed. | flow and laboratory result | kg pollutant per kg reference product | `eu-fdm-bat-2019-2031` |
+| `calc_storage_energy` | shared storage | allocated electricity = zone electricity × represented product mass-time / total compatible occupied mass-time. | meter, temperature zone, mass and duration | kWh per kg for declared duration | `eu-pef-2021-2279` |
 
 ### Data Quality Requirements
 
 | requirement_id | Applies to | Requirement | Evidence |
 | --- | --- | --- | --- |
-| `dq_identity_route` | product and route | Preserve lot-level species or commercial designation, incoming state, product form, exactly one primary route, and required route qualifiers. | Product specification, label, batch sheet, and route log. |
-| `dq_measurement` | mass, utilities, and storage | Use calibrated measurements where available, retain raw readings and conversion factors, and reconcile product, waste, rework, water, brine, packaging, and energy records. | Calibration records, meter logs, mass-balance review, and invoice or stock reconciliation. |
-| `dq_representativeness` | reporting period and facilities | Cover all represented facilities and at least 12 representative months or a justified complete seasonal campaign; disclose temporal, technological, and geographical limitations. | Coverage table and data-quality assessment following `eu-pef-2021-2279`. |
-| `dq_reasoned_estimates` | provisional ranges | Do not substitute the `reasoned_estimate` ranges for available foreground records; replace them when reviewed route-specific batch, meter, recipe, packaging, storage, or discharge evidence becomes available. | Review record identifying each replaced or retained provisional range. |
+| `dq_identity_route` | product and process | Preserve lot-level species, incoming state, form, exactly one primary route, and all applicable qualifiers. | Product specification, label and batch route log. |
+| `dq_atomic_inventory` | every exchange | Retain one flow identity, direction, flow type, unit, amount rule and applicability condition per row; do not aggregate carriers, materials, wastes or pollutants. | Atomic-flow reconciliation and Tiangong readback where UUID is present. |
+| `dq_measurement` | meters, scales and laboratory results | Retain raw readings, calibration, conversions, sampling point and method. | Calibration, chain of custody and laboratory QA. |
+| `dq_representativeness` | period and sites | Cover the represented facilities and a justified representative period; disclose temporal, technological and geographical limits. | Coverage table and data-quality assessment. |
+| `dq_unresolved_ranges` | important rows without ranges | Do not invent a range from a single study or single point; retain foreground collection until at least two independent, original, boundary-compatible sources support an inferred range. | Evidence review record linked to manifest unresolved item. |
 
 ## 9. Validation Rules
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `val_reference_identity` | reference flow | Require product flow UUID `5c8cdbc1-2f53-47ac-aa4a-e44125c18761`, Mass UUID `93a60a56-a3c8-11da-a746-0800200b9a66`, Units of mass UUID `93a60a57-a4c8-11da-a746-0800200c9a66`, unit kg, and reference amount 1. | `unstats-cpc-v3-2025` |
-| `val_route_one_of` | product route | Require exactly one of `frozen`, `smoked`, `dried`, `salted`, or `in_brine`; reject a package that applies every route or omits the actual integral substeps. | `codex-cxc-52-2003` |
-| `val_mass_condition` | reference mass | Require packaging exclusion and the applicable net, deglazed, or drained mass basis; require moisture, salt or brine, glaze, edible/saleable portion, storage, and shelf-life qualifiers when applicable. | `codex-cxc-52-2003`; `eu-pef-2021-2279` |
-| `val_process_completeness` | foreground inventory | Require all three processes and one atomic row for every applicable exchange: electricity; steam or hot water; each fuel; each refrigerant make-up and emission; water; salt; smoke material; each waste stream; each pollutant; and each packaging material and scrap. Reject collection labels, combined carrier lists, and selector instructions; zero is accepted only when records demonstrate non-use or non-generation. | `codex-cxc-52-2003`; `eu-pef-2021-2279` |
-| `val_mass_balance` | each production lot or reconciled period | Reconcile received, intermediate, final, waste, rework, glaze, brine, and moisture-related mass changes; disclose unexplained imbalance and do not force water-loss routes to equal wet-product yields. | `codex-cxc-52-2003` |
-| `val_estimate_replacement` | reasoned estimates | Flag every retained provisional range and require replacement when reviewed foreground or source-backed route-specific evidence becomes available; provisional ranges are not publication-critical allowed ranges. |  |
+| `val_reference_identity` | reference flow | Require product UUID `5c8cdbc1-2f53-47ac-aa4a-e44125c18761`, Mass UUID `93a60a56-a3c8-11da-a746-0800200b9a66`, Units of mass UUID `93a60a57-a4c8-11da-a746-0800200c9a66`, kg, and reference amount 1. | `unstats-cpc-v3-2025` |
+| `val_route_one_of` | route | Require exactly one of `frozen`, `smoked`, `dried`, `salted`, or `in_brine`; reject application of all route rows. | `codex-cxc-52-2003` |
+| `val_route_completeness` | applicable route | Require every applicable named material, electricity row, steam row, actual fuel, refrigerant, waste, product loss and direct pollutant; accept non-applicability only with process evidence. | `codex-cxc-52-2003`; `codex-cxc-68-2009`; `eu-pef-2021-2279` |
+| `val_no_collection_flows` | inventory | Reject a selected flow that is a plural collection, carrier list, material list, utility list, input/output placeholder, or selector instruction. | `eu-pef-2021-2279` |
+| `val_refrigerant_pairing` | freezing and storage | For each actual refrigerant require separate make-up and release rows; do not imply R717 and R404A are both used. | `eu-pef-2021-2279` |
+| `val_wastewater_pollutants` | on-site treatment and discharge | Require separate wastewater, brine, sludge, COD, BOD, TN, TP, TSS and applicable chloride records with sampling point and destination. | `eu-fdm-bat-2019-2031` |
+| `val_mass_balance` | each lot or period | Reconcile inputs, route output, loss, reject, moisture, glaze and brine changes and disclose unexplained imbalance. | `codex-cxc-52-2003` |
+| `val_range_evidence` | any authored range | Reject equal lower/upper empirical ranges and any inferred external range lacking at least two independent, original, boundary-compatible sources. |  |
 
 ## 10. Published Dataset Profile
 
@@ -754,16 +1693,19 @@ Output exactly the route-qualified reference product on the applicable net, degl
 | --- | --- |
 | dataset_role | Foreground gate-to-gate preserved-octopus production dataset. |
 | downstream_use | `secondary_dataset`; `background_dataset`; process and lifecyclemodel projections. |
-| allowed_use | Route-matched modelling where product form, net-mass condition, storage, geography, technology, and reporting period are compatible and upstream datasets are linked. |
-| excluded_use | Direct comparison or substitution across preservation routes without harmonized moisture, salt or brine, glaze, drained-mass, edible/saleable portion, packaging, storage, and shelf-life conditions; modelling live/fresh/chilled or canned products. |
-| required_metadata | PCR id and version; product flow UUID; CPC reference; species or commercial designation; product form; cooked/raw state; primary route; integral substeps; net/deglazed/drained mass basis; moisture, salt or brine, and glaze qualifiers; facility geography; technology; reporting period; packaging; storage temperature and duration; shelf life; allocation; upstream dataset references. |
-| required_quality_disclosure | Data coverage, measurement and calibration, mass-balance closure, route separation, allocation, missing data, retained `reasoned_estimate` ranges, source versions, and temporal, technological, and geographical representativeness. |
-| update_trigger | Change in route, species mix, product form, cooking state, preservation technology, recipe or brine, moisture or salt specification, glaze, packaging, storage regime, allocation, facility coverage, reference UUID, applicable official guidance, or replacement evidence that materially changes results. |
+| allowed_use | Route-matched modelling with compatible product form, mass condition, technology, storage, geography and period. |
+| excluded_use | Cross-route comparison without harmonized moisture, salt/brine, glaze, drained-mass, packaging, storage and shelf-life conditions; modelling fresh/chilled or canned products. |
+| required_metadata | PCR id/version; reference UUID; CPC ref; species; product form; cooked/raw state; one primary route; integral substeps; net/deglazed/drained basis; moisture/salt/brine/glaze; facility; technology; actual fuels and refrigerants; period; packaging; storage; allocation; wastewater destination; upstream datasets. |
+| required_quality_disclosure | Coverage, calibration, route mass balance, atomic-flow completeness, allocation, missing data, unresolved UUIDs and ranges, source versions, and representativeness. |
+| update_trigger | Material change in route, species, form, technology, recipe, moisture/salt/glaze, fuel, refrigerant, packaging, storage, wastewater treatment, allocation, coverage, UUID, official guidance, or evidence. |
 
 ## 11. Data Sources
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| `unstats-cpc-v3-2025` | `dataset` | United Nations Statistics Division, Central Product Classification Version 3.0, structure dated 30 June 2025, code 21267, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-08-11). | Exact official category title and product-scope anchor. |
-| `codex-cxc-52-2003` | `official_guidance` | Codex Alimentarius, CXC 52-2003, Code of Practice for Fish and Fishery Products, 2nd edition, FAO, https://www.fao.org/4/i2382e/i2382e.pdf (retrieved 2026-08-11). | Cephalopod handling; fresh/frozen foundation; definitions and process structure for freezing, glazing, salting, brining, smoking, smoke-drying, packaging, storage, hygiene, and lot control. |
-| `eu-pef-2021-2279` | `official_guidance` | European Commission, Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, including Annexes 1 and 2, https://environment.ec.europa.eu/publications/recommendation-use-environmental-footprint-methods_en (retrieved 2026-08-11). | Functional unit and reference flow, system boundary, packaging inclusion, multi-functionality hierarchy, foreground collection, completeness, and data-quality representativeness. |
+| `unstats-cpc-v3-2025` | `dataset` | United Nations Statistics Division, Central Product Classification Version 3.0, structure dated 30 June 2025, code 21267, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-08-24). | Official category identity and scope anchor. |
+| `codex-cxc-52-2003` | `official_guidance` | Codex Alimentarius, CXC 52-2003, Code of Practice for Fish and Fishery Products, official code listing and full text, https://www.fao.org/fao-who-codexalimentarius/codex-texts/codes-of-practice/en/ and https://www.fao.org/4/i2382e/i2382e.pdf (retrieved 2026-08-24). | Cephalopod receiving and thawing; ice, water, hygiene, freezing, glazing, salting, brining, drying, smoking, packaging, storage and lot controls. |
+| `codex-cxc-68-2009` | `official_guidance` | Codex Alimentarius, CXC 68-2009, Code of Practice for the Reduction of Contamination of Food with Polycyclic Aromatic Hydrocarbons (PAH) from Smoking and Direct Drying Processes, official full text, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXC%2B68-2009%252FCXC_068e.pdf (retrieved 2026-08-24). | Smoke material and fuel identity, direct/indirect smoking and drying, combustion contaminants, particles, CO and process-control disclosure. |
+| `eu-fdm-bat-2019-2031` | `official_guidance` | European Commission, Commission Implementing Decision (EU) 2019/2031 establishing BAT conclusions for the food, drink and milk industries, https://eur-lex.europa.eu/eli/dec_impl/2019/2031/oj/eng (retrieved 2026-08-24). | Separate inventories of water, energy, raw materials, wastewater and waste gas; monitoring of COD, BOD, TN, TP, TSS, chloride and relevant air pollutants. |
+| `eu-pef-2021-2279` | `official_guidance` | European Commission, Recommendation (EU) 2021/2279 on Environmental Footprint methods, https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng (retrieved 2026-08-24). | Functional unit, reference flow, complete atomic LCI, packaging, allocation, foreground collection, completeness and data quality. |
+| `ipcc-2006-stationary-combustion` | `method_factor` | IPCC, 2006 Guidelines for National Greenhouse Gas Inventories, Volume 2 Energy, Chapter 2 Stationary Combustion, corrected chapter, https://www.ipcc-nggip.iges.or.jp/public/2006gl/vol2.html (retrieved 2026-08-24). | Fuel-specific CO2, CH4 and N2O calculation method when source measurements are unavailable; no default factor is copied into this PCR. |

@@ -30,6 +30,20 @@ Use these tiers:
 
 `reasoned_estimate` is allowed for AI or author common-sense ranges. Keep these ranges deliberately broad, mark them as provisional, and replace them when source-backed evidence becomes available. Do not use `reasoned_estimate` for publication-critical allowed ranges unless the review record explicitly accepts it.
 
+Do not turn a published case value into a range by repeating the same value as both `lower` and `upper`. A single
+plant, batch, scenario, or literature observation may support process decomposition, a calculation example, or a
+documented evidence need, but it is not an empirical range or QA guardrail by itself. When authors infer an empirical
+range from external evidence, they must verify the original evidence and synthesize at least two independent,
+boundary-compatible sources. Explain the inference and its applicability in the range label or basis; do not simply
+copy reported values or use the minimum and maximum of two cases as the inferred bounds. If the evidence is
+insufficient, omit the source-backed range and retain the foreground collection or calculation requirement, or use a
+deliberately broad, source-free `reasoned_estimate` when a provisional screening range is genuinely useful.
+
+This restriction does not convert exact physical identities, declared reference-flow normalization, or an interval
+explicitly prescribed by an authoritative standard or regulation into empirical estimates. Identify those cases as
+method, identity, specification, or conformance rules with the corresponding evidence kind and basis rather than as
+published-case benchmarks.
+
 Important flows should usually have either a range or a documented unresolved range evidence need. Important flows include reference product yields, major raw material inputs, water, fuel, electricity, major process chemicals, reject or waste fractions, wastewater or brine, direct emissions, and treatment outputs.
 
 ## Lint Policy

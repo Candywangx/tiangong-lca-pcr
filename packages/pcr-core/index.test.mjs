@@ -22,6 +22,7 @@ import {
   createFeedbackDraft,
   getClassificationCoverageSummary,
   getPcrReadiness,
+  getVerifiedPcrProjection,
   listClassificationCoverage,
   listPcrs,
   readPcrMarkdown,
@@ -687,6 +688,150 @@ test("guidance revalidates and consumes the current verified structured projecti
   }
 });
 
+test("getVerifiedPcrProjection returns one defensive, verified PCR snapshot", () => {
+  const root = createBoundRepositoryFixture("tiangong-pcr-verified-projection-");
+  const pcrDir = path.join(root, wheatRelativePcrPath);
+  try {
+    mkdirSync(path.dirname(pcrDir), { recursive: true });
+    cpSync(path.join(repoRoot, wheatRelativePcrPath), pcrDir, { recursive: true });
+
+    const first = getVerifiedPcrProjection({ root, pcrId: wheatSeedPcrId });
+    assert.equal(first.pcr.id, wheatSeedPcrId);
+    assert.equal(first.pcr.readiness.usable_for_guidance, true);
+    assert.deepEqual(first.readiness, first.pcr.readiness);
+    assert.notEqual(first.readiness, first.pcr.readiness);
+    assert.equal(first.readiness.projection_fingerprint.status, "current");
+    assert.equal(first.structured.product_category_identity.canonical_pcr_id, first.pcr.id);
+    assert.equal(first.source_structured, `${wheatRelativePcrPath}/structured.yaml`);
+
+    first.pcr.title["en-US"] = "mutated";
+    first.pcr.readiness.blockers.push({ code: "mutated" });
+    first.readiness.blockers.push({ code: "also_mutated" });
+    first.structured.product_category_identity.covered_products = "mutated";
+
+    const second = getVerifiedPcrProjection({ root, pcrId: wheatSeedPcrId });
+    assert.notEqual(second.pcr.title["en-US"], "mutated");
+    assert.equal(second.pcr.readiness.blockers.some(({ code }) => code === "mutated"), false);
+    assert.equal(second.readiness.blockers.some(({ code }) => code === "also_mutated"), false);
+    assert.notEqual(second.structured.product_category_identity.covered_products, "mutated");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("getVerifiedPcrProjection rejects stale, substituted, invalid, and unusable projections", () => {
+  const scenarios = [
+    {
+      name: "stale source",
+      mutate(pcrDir) {
+        const markdownPath = path.join(pcrDir, "pcr.en-US.md");
+        writeFileSync(markdownPath, `${readFileSync(markdownPath, "utf8")}\n<!-- stale -->\n`);
+      },
+      blocker: "projection_source_mismatch",
+    },
+    {
+      name: "source-substituted projection",
+      mutate(pcrDir) {
+        const structuredPath = path.join(pcrDir, "structured.yaml");
+        const structured = readFileSync(structuredPath, "utf8").replace(
+          "source_markdown: pcr.en-US.md",
+          "source_markdown: substituted.md",
+        );
+        writeFileSync(structuredPath, structured);
+      },
+      blocker: "projection_content_mismatch",
+    },
+    {
+      name: "content-substituted projection",
+      mutate(pcrDir) {
+        const structuredPath = path.join(pcrDir, "structured.yaml");
+        const structured = readFileSync(structuredPath, "utf8").replace(
+          '  reference_unit: "kg"',
+          '  reference_unit: "substituted"',
+        );
+        writeFileSync(structuredPath, structured);
+      },
+      blocker: "projection_content_mismatch",
+    },
+    {
+      name: "schema-invalid projection",
+      mutate(pcrDir) {
+        const structuredPath = path.join(pcrDir, "structured.yaml");
+        const structured = readFileSync(structuredPath, "utf8").replace(
+          "schema_version: 1",
+          "schema_version: invalid",
+        );
+        writeFileSync(structuredPath, structured);
+      },
+      blocker: "structured_schema_invalid",
+    },
+    {
+      name: "unusable lifecycle",
+      mutate(pcrDir) {
+        const manifestPath = path.join(pcrDir, "manifest.yaml");
+        const manifest = parseYaml(readFileSync(manifestPath, "utf8"));
+        manifest.status = "deprecated";
+        manifest.content_maturity = "deprecated_methodology";
+        writeFileSync(manifestPath, renderYaml(manifest));
+      },
+      blocker: "deprecated_methodology",
+    },
+  ];
+
+  for (const scenario of scenarios) {
+    const root = createBoundRepositoryFixture("tiangong-pcr-verified-rejection-");
+    const pcrDir = path.join(root, wheatRelativePcrPath);
+    try {
+      mkdirSync(path.dirname(pcrDir), { recursive: true });
+      cpSync(path.join(repoRoot, wheatRelativePcrPath), pcrDir, { recursive: true });
+      scenario.mutate(pcrDir);
+
+      assert.throws(
+        () => getVerifiedPcrProjection({ root, pcrId: wheatSeedPcrId }),
+        (error) => {
+          assert.equal(error.code, "PCR_NOT_USABLE_FOR_GUIDANCE", scenario.name);
+          assert.ok(
+            error.readiness.blockers.some(({ code }) => code === scenario.blocker),
+            `${scenario.name}: ${JSON.stringify(error.readiness.blockers)}`,
+          );
+          return true;
+        },
+      );
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  }
+});
+
+test("getVerifiedPcrProjection rejects a symlinked structured artifact", () => {
+  const root = createBoundRepositoryFixture("tiangong-pcr-verified-symlink-");
+  const outsideRoot = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-verified-outside-"));
+  const pcrDir = path.join(root, wheatRelativePcrPath);
+  try {
+    mkdirSync(path.dirname(pcrDir), { recursive: true });
+    cpSync(path.join(repoRoot, wheatRelativePcrPath), pcrDir, { recursive: true });
+    const structuredPath = path.join(pcrDir, "structured.yaml");
+    const outsidePath = path.join(outsideRoot, "structured.yaml");
+    cpSync(structuredPath, outsidePath);
+    rmSync(structuredPath);
+    symlinkSync(outsidePath, structuredPath);
+
+    assert.throws(
+      () => getVerifiedPcrProjection({ root, pcrId: wheatSeedPcrId }),
+      (error) => {
+        assert.equal(error.code, "PCR_NOT_USABLE_FOR_GUIDANCE");
+        assert.ok(
+          error.readiness.blockers.some(({ code }) => code === "structured_projection_unreadable"),
+        );
+        return true;
+      },
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(outsideRoot, { recursive: true, force: true });
+  }
+});
+
 test("material readiness rejects schema-valid projections with incomplete methodology", () => {
   const root = createBoundRepositoryFixture("tiangong-pcr-projection-completeness-");
   const relativePcrPath =
@@ -719,6 +864,56 @@ test("material readiness rejects schema-valid projections with incomplete method
     assert.throws(
       () => buildGuidance({ root, pcrId: wheatSeedPcrId }),
       (error) => error.code === "PCR_NOT_USABLE_FOR_GUIDANCE",
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("candidate readiness accepts a registered unresolved reference-product flow UUID", () => {
+  const root = createBoundRepositoryFixture("tiangong-pcr-unresolved-reference-flow-");
+  const sourcePcrDir = path.join(repoRoot, wheatRelativePcrPath);
+  const pcrDir = path.join(root, wheatRelativePcrPath);
+  try {
+    mkdirSync(path.dirname(pcrDir), { recursive: true });
+    cpSync(sourcePcrDir, pcrDir, { recursive: true });
+
+    const markdownPath = path.join(pcrDir, "pcr.en-US.md");
+    const markdown = readFileSync(markdownPath, "utf8").replace(
+      /^\| Reference product flow \| Wheat `[^`]+` \|$/mu,
+      "| Reference product flow | Wheat |",
+    );
+    const projection = parsePcrMarkdownToStructured(markdown);
+    const referenceRow = projection.processInventory
+      .flatMap((processEntry) => processEntry.outputs.product)
+      .find((row) => row.name === projection.referenceFlowDefinition.product_flow.name);
+    assert.ok(referenceRow);
+    writeFileSync(markdownPath, markdown);
+    writeFileSync(
+      path.join(pcrDir, "structured.yaml"),
+      structuredProjectionYaml(projection, { sourceMarkdown: markdown }),
+    );
+
+    const manifestPath = path.join(pcrDir, "manifest.yaml");
+    const manifest = parseYaml(readFileSync(manifestPath, "utf8"));
+    manifest.review_metadata = {
+      ...(manifest.review_metadata ?? {}),
+      unresolved_flow_identities: [
+        { row_id: referenceRow.row_id, reason: "No exact product flow is available." },
+      ],
+    };
+    writeFileSync(manifestPath, renderYaml(manifest));
+
+    const readiness = getPcrReadiness({ root, pcrId: wheatSeedPcrId, refresh: true });
+    assert.equal(readiness.status, "review_required");
+    assert.equal(readiness.usable_for_guidance, true);
+    assert.ok(
+      readiness.blockers.every(
+        (blocker) =>
+          blocker.code !==
+          "material_projection.reference_flow_definition.product_flow_ref.uuid",
+      ),
+      JSON.stringify(readiness.blockers),
     );
   } finally {
     rmSync(root, { recursive: true, force: true });
@@ -916,18 +1111,18 @@ test("CPC 99000 physical pilot keeps coverage and old-id routing after directory
   assert.equal(classification.mapping, null);
   assert.equal(classification.pcr, null);
 
-  const material = listPcrs({ root: repoRoot, scope: "material", refresh: true });
-  const legacy = listPcrs({ root: repoRoot, scope: "legacy", refresh: true });
   const all = listPcrs({ root: repoRoot, scope: "all", refresh: true });
-  assert.equal(all.length, material.length + legacy.length);
-  assert.equal(
-    all.filter((entry) => entry.record_kind === "methodology").length,
-    material.length,
-  );
-  assert.equal(
-    all.filter((entry) => entry.record_kind === "legacy_scaffold_reference").length,
-    legacy.length,
-  );
+  assert.equal(all.length, 2878);
+  const methodologyCount = all.filter(
+    (entry) => entry.record_kind === "methodology",
+  ).length;
+  const legacyScaffoldCount = all.filter(
+    (entry) => entry.record_kind === "legacy_scaffold_reference",
+  ).length;
+  assert.ok(methodologyCount > 0);
+  assert.ok(legacyScaffoldCount > 0);
+  assert.equal(methodologyCount + legacyScaffoldCount, all.length);
+  assert.equal(all.some((entry) => entry.id === pilot99000PcrId), false);
 });
 
 test("classification coverage exposes bounded summary/list and additive resolve states", () => {

@@ -36,7 +36,47 @@ export function auditReportedUuids({ report, tiangongCliRoot, runner = runTiango
     if (!unitGroupClaimMatches(claimed.unit_group, actual)) mismatches.push("unit_group");
     if (!claimed.hybrid_search_receipt_id) mismatches.push("hybrid_search_receipt_id");
     if (mismatches.length > 0) {
-      throw new GoalHarnessError("GOAL_UUID_DIRECT_AUDIT_MISMATCH", `Direct state_code=100 audit disagrees with the author report for ${claimed.uuid}: ${mismatches.join(", ")}`, { uuid: claimed.uuid, mismatches, claimed, actual });
+      const message = `Direct state_code=100 audit disagrees with the author report for ${claimed.uuid}: ${mismatches.join(", ")}`;
+      const expected = {
+        uuid: actual.uuid,
+        state_code: actual.state_code,
+        base_name_en: actual.base_name_en,
+        base_name_zh: actual.base_name_zh,
+        flow_type: actual.flow_type,
+        classification: actual.classifications,
+        property: actual.property,
+        unit_group: {
+          uuid: actual.unit_group_uuid,
+          name_en: actual.unit_group_name_en,
+          name_zh: actual.unit_group_name_zh,
+          reference_unit: actual.reference_unit,
+        },
+      };
+      const claimedIdentity = {
+        uuid: claimed.uuid,
+        state_code: claimed.state_code,
+        base_name_en: claimed.base_name_en,
+        base_name_zh: claimed.base_name_zh,
+        flow_type: claimed.flow_type,
+        classification: claimed.classification,
+        property: claimed.property,
+        unit_group: claimed.unit_group,
+      };
+      throw new GoalHarnessError("GOAL_UUID_DIRECT_AUDIT_MISMATCH", message, {
+        uuid: claimed.uuid,
+        mismatches,
+        claimed,
+        actual,
+        findings: [{
+          code: "GOAL_UUID_DIRECT_AUDIT_MISMATCH",
+          message,
+          uuid: claimed.uuid,
+          mismatches,
+          expected,
+          claimed: claimedIdentity,
+          remediation: "Copy the state_code=100 direct-read identity into uuid_audits exactly; use a listed classification id or label and the verified property/unit-group identity.",
+        }],
+      });
     }
     results.push({
       ...actual,

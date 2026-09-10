@@ -1,10 +1,2156 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21241"
-  title: "Prepared dishes and meals based on fish, molluscs and crustaceans"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.prepared-dishes-and-meals-based-on-fish-molluscs-and-crustaceans"
+  classification_refs: "CPC 3.0: 21241, Prepared dishes and meals based on fish, molluscs and crustaceans (exact)"
+  covered_products: "Factory-produced composite dishes or meals whose characterizing component is fish, molluscs, crustaceans, or a declared combination, supplied chilled, frozen, shelf-stable, ready to eat, or heat and eat"
+  excluded_products: "Single-ingredient preserved seafood; fish meal and animal feed; non-meal soups, sauces, and condiments; non-seafood-characterized meals; catering and restaurant preparation"
+  representative_product: "One saleable packaged prepared seafood meal containing cooked seafood, declared accompaniments or sauce, and its immediate packaging"
+  production_route: "Ingredient receipt and temperature-controlled storage; seafood preparation; recipe formulation; cooking or validated preservation; portioning and packaging; cooling, freezing, or shelf-stabilization; sanitation and waste or wastewater management"
+  market_state: "Packaged chilled, frozen, or shelf-stable finished meal at the manufacturing facility gate"
+functional_unit:
+  what: "Provide a packaged prepared dish or meal whose characterizing component is fish, molluscs, crustaceans, or a declared combination"
+  how_much: "1 kg net saleable meal, excluding primary, secondary, and tertiary packaging"
+  how_well: "Conforming to the declared recipe, seafood species and origin, edible-content specification, preservation route, package integrity, storage state, shelf-life basis, and intended-use instructions"
+  how_long_or_cycle: "One production lot delivered at the factory gate; shelf life is declared as a product qualifier and is not converted into a time-weighted reference amount"
+  reference_flow_link: "prepared_fish_meal"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_gate
+      applies_to: "foreground manufacturing"
+      rule: "Include all on-site activities from receipt of ingredients and packaging through the saleable packaged meal at the factory gate, including cold storage, formulation, thermal treatment, packaging, cooling or freezing, sanitation, waste handling, and on-site wastewater treatment when present."
+      source_ids:
+        - codex-cxc-52-2003
+        - schmidt-rivera-azapagic-2019-ready-meals
+        - us-epa-seafood-effluent-guidelines
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased inputs"
+      rule: "Link upstream datasets for every purchased seafood ingredient, other ingredient, utility, fuel, refrigerant, packaging component, cleaning chemical, and externally treated waste; do not replace these links with generic unrecorded cut-offs."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_direct_emissions
+      applies_to: "on-site emissions"
+      rule: "Record all known direct emissions to air and water as separate elementary exchanges, using measurements or calculations from foreground activity records and documented emission factors."
+      source_ids:
+        - eu-pef-2021-2279
+        - fao-fisheries-technical-paper-355
+    - rule_id: boundary_downstream_modules
+      applies_to: "distribution, retail, use, and end-of-life"
+      rule: "Exclude downstream stages from the core factory-gate dataset; a study that adds them shall report them as separate modules and disclose transport, temperature control, reheating, food loss, and packaging end-of-life scenarios."
+      source_ids:
+        - schmidt-rivera-azapagic-2019-ready-meals
+boundary_abstraction:
+  declared_starting_condition: "Purchased seafood and other ingredients are received at the meal-manufacturing facility in their documented raw, chilled, frozen, cooked, preserved, or otherwise pre-processed state, together with packaging and auxiliary materials."
+  starting_condition_role: "Factory-gate foreground starting point for preparation of a composite seafood dish or meal."
+  product_classification_scope: "Prepared dishes and meals characterized by fish, molluscs, crustaceans, or a declared combination; classification does not substitute for recipe and product-state qualifiers."
+  recursive_input_rule: "If a purchased input is itself a prepared seafood dish or meal in this category, record it once as an atomic purchased product input and link its supplier dataset; do not recursively reproduce its manufacturing inventory inside the receiving process."
+  upstream_dataset_requirement: "Require supplier-specific datasets where available for seafood species and origin, major ingredients, electricity, fuels, refrigerants, packaging components, and external waste treatment; disclose proxies and their geographic, temporal, and technological representativeness."
+  disclosure: "Declare the included facility operations, recipe, process route, storage state, package system, wastewater destination, waste destinations, allocation choices, upstream dataset substitutions, and any downstream modules added by the study."
+reference_flow_definition:
+  reference_amount: "1 kg net saleable prepared seafood meal"
+  product_flow_ref:
+    name: "Prepared dish or meal based on fish, molluscs or crustaceans"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "recipe identifier and version"
+    - "seafood species and capture or aquaculture origin"
+    - "seafood input state"
+    - "seafood mass fraction"
+    - "other ingredient composition"
+    - "ready-to-eat or heat-and-eat status"
+    - "preservation and thermal-treatment route"
+    - chilled
+    - frozen
+    - "or shelf-stable state"
+    - "declared storage temperature"
+    - "shelf-life basis"
+    - "primary package materials and format"
+    - "net mass"
+    - "production geography"
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Normalize all foreground exchanges to 1 kg of saleable meal excluding every packaging component; derive net mass from verified pack fill weights and accepted units, not nominal gross package weight."
+  - id: ingredient_wet_mass
+    applies_to: "seafood and other ingredients"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record each ingredient separately on the as-received wet-mass basis and retain moisture or solids content when it is needed for recipe or yield reconciliation."
+  - id: packaging_component_mass
+    applies_to: "primary, secondary, and tertiary packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record each material component separately and allocate reusable transport packaging by measured uses or documented lifetime."
+  - id: energy_carrier_separation
+    applies_to: "electricity, steam, purchased heat, and fuels"
+    required_property_ref:
+      name: "Energy or fuel mass/volume"
+      uuid: ""
+    required_unit: "kWh, MJ, kg, or m3"
+    rule: "Preserve metered or invoiced carrier units and convert with documented calorific value and density where needed; never combine carriers in one exchange."
+  - id: water_balance
+    applies_to: "ingredient water, process water, sanitation water, wastewater, and treated effluent"
+    required_property_ref:
+      name: "Mass or volume"
+      uuid: ""
+    required_unit: "kg or m3"
+    rule: "Keep water uses and discharges separate by role; if volume is converted to mass, document measured density or the water-density convention."
+  - id: refrigerant_component_mass
+    applies_to: "refrigerant make-up and direct leakage"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record ammonia and each halocarbon component separately; derive leakage from charge, purchases, recovery, and stock change rather than a generic refrigerant percentage."
+  - id: mass_reconciliation
+    applies_to: "each production lot"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile ingredient and processing-water inputs to saleable product, co-products, food losses, seafood residues, packaging scrap, wastewater, sludge, and retained inventory, with all terms normalized to the reference flow."
+process_map:
+  - id: receipt_cold_storage
+    name: "Ingredient receipt and temperature-controlled storage"
+    inclusion: "required"
+    inclusion_condition: "Always; non-refrigerated shelf-stable inputs shall report refrigeration rows as not applicable"
+    role: "foreground receipt and storage"
+    quantitative_reference: "kg accepted seafood ingredients"
+  - id: seafood_preparation_formulation
+    name: "Seafood preparation and recipe formulation"
+    inclusion: "required"
+    inclusion_condition: "Always; individual seafood and recipe-component rows apply only when present in the declared recipe"
+    role: "foreground preparation and mixing"
+    quantitative_reference: "kg formulated uncooked meal mix"
+  - id: cooking_preservation
+    name: "Cooking or validated preservation treatment"
+    inclusion: "required"
+    inclusion_condition: "Always; energy-carrier rows apply only to carriers actually used"
+    role: "foreground transformation"
+    quantitative_reference: "kg cooked or otherwise preserved meal base"
+  - id: packaging_cooling
+    name: "Portioning, packaging, cooling or freezing"
+    inclusion: "required"
+    inclusion_condition: "Always; MAP gases, freezing, and refrigerant-component rows apply only when used"
+    role: "foreground finishing"
+    quantitative_reference: "kg saleable packaged meal"
+  - id: sanitation_wastewater
+    name: "Sanitation and on-site wastewater management"
+    inclusion: "required"
+    inclusion_condition: "Sanitation is always included; on-site treatment outputs apply when the facility operates treatment before discharge"
+    role: "foreground support and treatment"
+    quantitative_reference: "kg saleable packaged meal"
+process_inventory:
+  - id: receipt_cold_storage
+    label: "Ingredient receipt and temperature-controlled storage"
+    inputs:
+      product:
+        - row_id: raw_fish_ingredient
+          role: "Fish flesh ingredient"
+          name: "Edible fish flesh"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "accepted mass of each declared fish species entering the lot; create separate dataset exchanges by species and origin when identities differ"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: raw_mollusc_ingredient
+          role: "Mollusc flesh ingredient"
+          name: "Edible mollusc flesh"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "accepted mass of each declared mollusc species entering the lot, excluding shell unless the whole animal is intentionally processed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: raw_crustacean_ingredient
+          role: "Crustacean flesh ingredient"
+          name: "Edible crustacean flesh"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "accepted mass of each declared crustacean species entering the lot, excluding shell unless the whole animal is intentionally processed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: storage_ice
+          role: "Storage ice"
+          name: "Food-grade ice"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "measured ice supplied for seafood temperature control and not already included in a supplier product mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted seafood ingredient"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_chemicals
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: storage_electricity
+          role: "Storage electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "submetered cold-room and frozen-storage electricity allocated to the production lot using measured occupancy time and stored mass"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted seafood ingredient"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_meter
+              source_ids:
+                - schmidt-rivera-azapagic-2019-ready-meals
+            ranges: []
+        - row_id: storage_ammonia_makeup
+          role: "Ammonia refrigerant make-up"
+          name: "Ammonia"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "ammonia make-up attributable to storage equipment from the annual refrigerant mass balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted seafood ingredient"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges: []
+        - row_id: storage_hfc125_makeup
+          role: "HFC-125 refrigerant make-up"
+          name: "Pentafluoroethane"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "HFC-125 component of refrigerant make-up attributable to storage equipment from charge composition and annual mass balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted seafood ingredient"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges: []
+        - row_id: storage_hfc143a_makeup
+          role: "HFC-143a refrigerant make-up"
+          name: "1,1,1-Trifluoroethane"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "HFC-143a component of refrigerant make-up attributable to storage equipment from charge composition and annual mass balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted seafood ingredient"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges: []
+        - row_id: storage_hfc134a_makeup
+          role: "HFC-134a refrigerant make-up"
+          name: "1,1,1,2-Tetrafluoroethane"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "HFC-134a component of refrigerant make-up attributable to storage equipment from charge composition and annual mass balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted seafood ingredient"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_seafood
+          role: "Accepted temperature-controlled seafood"
+          name: "Accepted edible seafood ingredient"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "weighed seafood released from receipt inspection and storage to preparation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per receipt lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+      waste:
+        - row_id: rejected_seafood
+          role: "Rejected seafood"
+          name: "Rejected edible seafood"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "weighed seafood rejected at receipt or discarded during storage, excluding packaging"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per receipt lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: storage_ammonia_air
+          role: "Ammonia leakage to air"
+          name: "Ammonia, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "ammonia loss calculated from the storage-system refrigerant mass balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted seafood ingredient"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges: []
+        - row_id: storage_hfc125_air
+          role: "HFC-125 leakage to air"
+          name: "Pentafluoroethane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "leaked HFC-125 calculated from refrigerant composition and the storage-system mass balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted seafood ingredient"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges: []
+        - row_id: storage_hfc143a_air
+          role: "HFC-143a leakage to air"
+          name: "1,1,1-Trifluoroethane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "leaked HFC-143a calculated from refrigerant composition and the storage-system mass balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted seafood ingredient"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges: []
+        - row_id: storage_hfc134a_air
+          role: "HFC-134a leakage to air"
+          name: "1,1,1,2-Tetrafluoroethane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "leaked HFC-134a calculated from refrigerant composition and the storage-system mass balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted seafood ingredient"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges: []
+  - id: seafood_preparation_formulation
+    label: "Seafood preparation and recipe formulation"
+    inputs:
+      product:
+        - row_id: prep_accepted_seafood
+          role: "Accepted seafood"
+          name: "Accepted edible seafood ingredient"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "transferred mass from accepted_seafood, separated by fish, mollusc, or crustacean identity in the dataset"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg formulated uncooked meal mix"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: potato_ingredient
+          role: "Potato ingredient"
+          name: "Potato"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "as-received potato mass added to the declared recipe"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg formulated uncooked meal mix"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: rice_ingredient
+          role: "Rice ingredient"
+          name: "Rice"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "as-received rice mass added to the declared recipe"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg formulated uncooked meal mix"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: pasta_ingredient
+          role: "Wheat pasta ingredient"
+          name: "Dried wheat pasta"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "as-received dried pasta mass added to the declared recipe"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg formulated uncooked meal mix"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: onion_ingredient
+          role: "Onion ingredient"
+          name: "Onion"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "as-received onion mass added to the declared recipe"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg formulated uncooked meal mix"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: carrot_ingredient
+          role: "Carrot ingredient"
+          name: "Carrot"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "as-received carrot mass added to the declared recipe"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg formulated uncooked meal mix"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: pea_ingredient
+          role: "Green pea ingredient"
+          name: "Green pea"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "as-received green-pea mass added to the declared recipe"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg formulated uncooked meal mix"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: milk_ingredient
+          role: "Milk ingredient"
+          name: "Cow milk"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "milk mass added to the declared recipe"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg formulated uncooked meal mix"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: cream_ingredient
+          role: "Cream ingredient"
+          name: "Dairy cream"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "cream mass added to the declared recipe"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg formulated uncooked meal mix"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: butter_ingredient
+          role: "Butter ingredient"
+          name: "Butter"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "butter mass added to the declared recipe"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg formulated uncooked meal mix"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: flour_ingredient
+          role: "Wheat flour ingredient"
+          name: "Wheat flour"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "flour mass added to the declared recipe"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg formulated uncooked meal mix"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: vegetable_oil_ingredient
+          role: "Vegetable oil ingredient"
+          name: "Refined rapeseed oil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "rapeseed oil mass added to the declared recipe; another named oil shall be a separate atomic exchange"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg formulated uncooked meal mix"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: salt_ingredient
+          role: "Salt ingredient"
+          name: "Sodium chloride"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "sodium chloride mass added to the declared recipe or brine"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg formulated uncooked meal mix"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: recipe_water
+          role: "Recipe water"
+          name: "Potable water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "metered or batch-weighed water incorporated into the meal"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg formulated uncooked meal mix"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_chemicals
+              source_ids: []
+            ranges: []
+        - row_id: preparation_electricity
+          role: "Preparation electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "submetered electricity for trimming, cutting, washing, mixing, and conveying"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg formulated uncooked meal mix"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_meter
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: formulated_meal_mix
+          role: "Formulated uncooked meal mix"
+          name: "Formulated uncooked seafood meal mix"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "weighed formulated mix transferred to cooking or preservation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per production lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: fish_bones_waste
+          role: "Fish bones"
+          name: "Fish bones"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "weighed fish bones removed during preparation and classified as waste at the facility gate"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg formulated uncooked meal mix"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+        - row_id: fish_skin_waste
+          role: "Fish skin"
+          name: "Fish skin"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "weighed fish skin removed during preparation and classified as waste at the facility gate"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg formulated uncooked meal mix"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+        - row_id: fish_viscera_waste
+          role: "Fish viscera"
+          name: "Fish viscera"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "weighed viscera removed on site and classified as waste at the facility gate"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg formulated uncooked meal mix"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+        - row_id: mollusc_shell_waste
+          role: "Mollusc shells"
+          name: "Mollusc shells"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "weighed shells removed from molluscs on site and classified as waste at the facility gate"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg formulated uncooked meal mix"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+        - row_id: crustacean_shell_waste
+          role: "Crustacean shells"
+          name: "Crustacean shells"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "weighed shells removed from crustaceans on site and classified as waste at the facility gate"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg formulated uncooked meal mix"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+        - row_id: vegetable_trimmings_waste
+          role: "Vegetable trimmings"
+          name: "Vegetable trimmings"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "weighed inedible vegetable peelings and trimmings classified as waste"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg formulated uncooked meal mix"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+        - row_id: preparation_wastewater
+          role: "Preparation wastewater"
+          name: "Seafood preparation wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "metered or balanced wastewater from thawing, washing, trimming, and equipment rinsing before treatment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg formulated uncooked meal mix"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent_monitoring
+              source_ids:
+                - fao-fisheries-technical-paper-355
+                - us-epa-seafood-effluent-guidelines
+            ranges: []
+      elementary:
+        []
+  - id: cooking_preservation
+    label: "Cooking or validated preservation treatment"
+    inputs:
+      product:
+        - row_id: cooking_meal_mix
+          role: "Formulated meal mix"
+          name: "Formulated uncooked seafood meal mix"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "weighed transfer from formulated_meal_mix"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per cooking or preservation batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: cooking_electricity
+          role: "Cooking electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "submetered electricity for ovens, kettles, fryers, retorts, pumps, controls, and ventilation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg cooked or preserved meal base"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_meter
+              source_ids:
+                - schmidt-rivera-azapagic-2019-ready-meals
+            ranges: []
+        - row_id: purchased_steam
+          role: "Purchased steam"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "metered purchased steam supplied to cooking or retort equipment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg cooked or preserved meal base"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_meter
+              source_ids: []
+            ranges: []
+        - row_id: natural_gas_fuel
+          role: "Natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "metered natural gas combusted on site for cooking or steam generation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg cooked or preserved meal base"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_records
+              source_ids: []
+            ranges: []
+        - row_id: fuel_oil
+          role: "Fuel oil"
+          name: "Light fuel oil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "measured fuel oil combusted on site for cooking or steam generation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg cooked or preserved meal base"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_records
+              source_ids:
+                - schmidt-rivera-azapagic-2019-ready-meals
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cooked_meal_base
+          role: "Cooked or preserved meal base"
+          name: "Cooked or preserved seafood meal base"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "weighed acceptable meal base released to portioning after validated treatment and yield reconciliation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per treatment batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+      waste:
+        - row_id: cooking_food_loss
+          role: "Cooking food loss"
+          name: "Out-of-spec cooked seafood meal"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "weighed cooked material rejected after treatment or lost during transfer"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cooked or preserved meal base"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: combustion_co2_air
+          role: "Fossil carbon dioxide to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "calculate from each on-site fuel quantity and documented carbon content or measure directly"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg cooked or preserved meal base"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stack_emissions
+              source_ids: []
+            ranges: []
+        - row_id: combustion_ch4_air
+          role: "Methane to air"
+          name: "Methane, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "measured emission or fuel-specific calculation for on-site combustion"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg cooked or preserved meal base"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stack_emissions
+              source_ids: []
+            ranges: []
+        - row_id: combustion_n2o_air
+          role: "Nitrous oxide to air"
+          name: "Nitrous oxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "measured emission or fuel-specific calculation for on-site combustion"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg cooked or preserved meal base"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stack_emissions
+              source_ids: []
+            ranges: []
+        - row_id: combustion_nox_air
+          role: "Nitrogen oxides to air"
+          name: "Nitrogen oxides, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "measured emission or fuel- and boiler-specific calculation expressed consistently as the selected flow"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg cooked or preserved meal base"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stack_emissions
+              source_ids: []
+            ranges: []
+        - row_id: combustion_so2_air
+          role: "Sulfur dioxide to air"
+          name: "Sulfur dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "measured emission or calculation from fuel sulfur content and control efficiency"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg cooked or preserved meal base"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stack_emissions
+              source_ids: []
+            ranges: []
+        - row_id: combustion_co_air
+          role: "Carbon monoxide to air"
+          name: "Carbon monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "measured emission or fuel- and boiler-specific calculation"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg cooked or preserved meal base"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stack_emissions
+              source_ids: []
+            ranges: []
+        - row_id: combustion_pm25_air
+          role: "Fine particulate matter to air"
+          name: "Particulate matter, less than 2.5 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "measured emission or fuel- and control-specific calculation"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg cooked or preserved meal base"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stack_emissions
+              source_ids: []
+            ranges: []
+  - id: packaging_cooling
+    label: "Portioning, packaging, cooling or freezing"
+    inputs:
+      product:
+        - row_id: packaging_meal_base
+          role: "Cooked meal base"
+          name: "Cooked or preserved seafood meal base"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "weighed transfer from cooked_meal_base"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per packaging lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: pet_tray
+          role: "PET tray"
+          name: "Polyethylene terephthalate tray"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "bill-of-material mass of PET trays consumed, including production scrap"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom
+              source_ids:
+                - schmidt-rivera-azapagic-2019-ready-meals
+                - kontominas-et-al-2021-seafood-packaging
+            ranges: []
+        - row_id: pe_sealing_film
+          role: "Polyethylene sealing film"
+          name: "Polyethylene film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "bill-of-material mass of sealing film consumed, including trim"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom
+              source_ids:
+                - schmidt-rivera-azapagic-2019-ready-meals
+                - kontominas-et-al-2021-seafood-packaging
+            ranges: []
+        - row_id: paperboard_sleeve
+          role: "Paperboard sleeve"
+          name: "Paperboard sleeve"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "bill-of-material mass of paperboard sleeves consumed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_carton
+          role: "Corrugated transport carton"
+          name: "Corrugated fibreboard box"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "mass of transport cartons consumed and allocated across contained saleable meals"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_bom
+              source_ids:
+                - schmidt-rivera-azapagic-2019-ready-meals
+            ranges: []
+        - row_id: paper_label
+          role: "Paper label"
+          name: "Printed paper label"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "bill-of-material mass of labels consumed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom
+              source_ids: []
+            ranges: []
+        - row_id: map_carbon_dioxide
+          role: "Carbon dioxide for modified atmosphere"
+          name: "Carbon dioxide, food grade"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "measured food-grade carbon dioxide supplied to modified-atmosphere packs"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom
+              source_ids:
+                - kontominas-et-al-2021-seafood-packaging
+            ranges: []
+        - row_id: map_nitrogen
+          role: "Nitrogen for modified atmosphere"
+          name: "Nitrogen, gaseous, food grade"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "measured food-grade nitrogen supplied to modified-atmosphere packs"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom
+              source_ids:
+                - kontominas-et-al-2021-seafood-packaging
+            ranges: []
+        - row_id: map_oxygen
+          role: "Oxygen for modified atmosphere"
+          name: "Oxygen, gaseous, food grade"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "measured food-grade oxygen supplied to modified-atmosphere packs when the declared gas recipe uses oxygen"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom
+              source_ids:
+                - kontominas-et-al-2021-seafood-packaging
+            ranges: []
+        - row_id: packaging_electricity
+          role: "Packaging and cooling electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "submetered electricity for filling, sealing, metal detection, cooling, freezing, conveyors, and finished-product cold storage"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_meter
+              source_ids:
+                - schmidt-rivera-azapagic-2019-ready-meals
+            ranges: []
+        - row_id: packaging_ammonia_makeup
+          role: "Finished-product ammonia refrigerant make-up"
+          name: "Ammonia"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "ammonia make-up attributable to cooling, freezing, and finished-product storage from the annual refrigerant mass balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges: []
+        - row_id: packaging_hfc125_makeup
+          role: "Finished-product HFC-125 make-up"
+          name: "Pentafluoroethane"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "HFC-125 component of refrigerant make-up attributable to finished-product refrigeration"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges: []
+        - row_id: packaging_hfc143a_makeup
+          role: "Finished-product HFC-143a make-up"
+          name: "1,1,1-Trifluoroethane"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "HFC-143a component of refrigerant make-up attributable to finished-product refrigeration"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges: []
+        - row_id: packaging_hfc134a_makeup
+          role: "Finished-product HFC-134a make-up"
+          name: "1,1,1,2-Tetrafluoroethane"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "HFC-134a component of refrigerant make-up attributable to finished-product refrigeration"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_fish_meal
+          role: "Saleable packaged prepared seafood meal"
+          name: "Prepared dish or meal based on fish, molluscs or crustaceans"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "1 kg net saleable meal excluding packaging, verified from accepted pack count and net fill mass"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        - row_id: packaging_film_scrap
+          role: "Packaging film scrap"
+          name: "Polyethylene film scrap"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "weighed sealing-film trim and rejected film classified as waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+        - row_id: rejected_packaged_meal
+          role: "Rejected packaging units"
+          name: "Rejected packaged prepared seafood meal"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "net food mass in sealed units rejected during packaging and cooling; record rejected packaging components separately when recovered"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: packaging_ammonia_air
+          role: "Finished-product ammonia leakage to air"
+          name: "Ammonia, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "ammonia loss calculated from cooling, freezing, and finished-product storage refrigerant mass balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges: []
+        - row_id: packaging_hfc125_air
+          role: "Finished-product HFC-125 leakage to air"
+          name: "Pentafluoroethane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "leaked HFC-125 calculated from refrigerant composition and the finished-product refrigeration mass balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges: []
+        - row_id: packaging_hfc143a_air
+          role: "Finished-product HFC-143a leakage to air"
+          name: "1,1,1-Trifluoroethane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "leaked HFC-143a calculated from refrigerant composition and the finished-product refrigeration mass balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges: []
+        - row_id: packaging_hfc134a_air
+          role: "Finished-product HFC-134a leakage to air"
+          name: "1,1,1,2-Tetrafluoroethane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "leaked HFC-134a calculated from refrigerant composition and the finished-product refrigeration mass balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_balance
+              source_ids: []
+            ranges: []
+  - id: sanitation_wastewater
+    label: "Sanitation and on-site wastewater management"
+    inputs:
+      product:
+        - row_id: sanitation_water
+          role: "Sanitation water"
+          name: "Potable water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "metered water used for pre-rinsing, cleaning, disinfection, and final rinsing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_chemicals
+              source_ids:
+                - codex-cxc-52-2003
+                - fao-fisheries-technical-paper-355
+            ranges: []
+        - row_id: sodium_hydroxide_cleaner
+          role: "Alkaline cleaning agent"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "active sodium-hydroxide mass in cleaning solution consumed"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_chemicals
+              source_ids: []
+            ranges: []
+        - row_id: sodium_hypochlorite_disinfectant
+          role: "Chlorine disinfectant"
+          name: "Sodium hypochlorite"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "active sodium-hypochlorite mass in disinfectant consumed"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_chemicals
+              source_ids: []
+            ranges: []
+        - row_id: wastewater_electricity
+          role: "Wastewater-treatment electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "submetered electricity for screening, pumping, flotation, aeration, and sludge handling"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_meter
+              source_ids:
+                - fao-fisheries-technical-paper-355
+            ranges: []
+        - row_id: treatment_preparation_wastewater
+          role: "Preparation wastewater to treatment"
+          name: "Seafood preparation wastewater"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "transferred mass from preparation_wastewater"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent_monitoring
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: combined_process_wastewater
+          role: "Combined process wastewater"
+          name: "Food-processing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "metered wastewater transferred to external treatment when no on-site treatment is operated"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent_monitoring
+              source_ids:
+                - fao-fisheries-technical-paper-355
+                - us-epa-seafood-effluent-guidelines
+            ranges: []
+        - row_id: wastewater_sludge
+          role: "Wastewater-treatment sludge"
+          name: "Biological wastewater-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "weighed wet sludge leaving on-site wastewater treatment, with dry-solids content retained"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent_monitoring
+              source_ids:
+                - fao-fisheries-technical-paper-355
+            ranges: []
+        - row_id: separated_oil_grease
+          role: "Separated oil and grease"
+          name: "Separated food oil and grease"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "weighed oil and grease removed by traps or flotation and sent to treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent_monitoring
+              source_ids:
+                - fao-fisheries-technical-paper-355
+            ranges: []
+      elementary:
+        - row_id: effluent_bod_water
+          role: "Biochemical oxygen demand to water"
+          name: "Biochemical oxygen demand, to water"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "treated-effluent volume multiplied by paired final-effluent BOD concentration for the same reporting period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent_monitoring
+              source_ids:
+                - fao-fisheries-technical-paper-355
+                - us-epa-seafood-effluent-guidelines
+            ranges: []
+        - row_id: effluent_cod_water
+          role: "Chemical oxygen demand to water"
+          name: "Chemical oxygen demand, to water"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "treated-effluent volume multiplied by paired final-effluent COD concentration for the same reporting period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent_monitoring
+              source_ids:
+                - fao-fisheries-technical-paper-355
+            ranges: []
+        - row_id: effluent_nitrogen_water
+          role: "Total nitrogen to water"
+          name: "Nitrogen, total, to water"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "treated-effluent volume multiplied by paired final-effluent total-nitrogen concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent_monitoring
+              source_ids:
+                - fao-fisheries-technical-paper-355
+            ranges: []
+        - row_id: effluent_phosphorus_water
+          role: "Total phosphorus to water"
+          name: "Phosphorus, total, to water"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "treated-effluent volume multiplied by paired final-effluent total-phosphorus concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent_monitoring
+              source_ids:
+                - fao-fisheries-technical-paper-355
+            ranges: []
+        - row_id: effluent_tss_water
+          role: "Suspended solids to water"
+          name: "Suspended solids, to water"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "treated-effluent volume multiplied by paired final-effluent total-suspended-solids concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent_monitoring
+              source_ids:
+                - fao-fisheries-technical-paper-355
+                - us-epa-seafood-effluent-guidelines
+            ranges: []
+        - row_id: effluent_oil_grease_water
+          role: "Oil and grease to water"
+          name: "Oil and grease, to water"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This card records the named atomic exchange when it crosses the declared foreground process boundary; its quantity is obtained by the rule below."
+          amount:
+            expression: "treated-effluent volume multiplied by paired final-effluent oil-and-grease concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent_monitoring
+              source_ids:
+                - fao-fisheries-technical-paper-355
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "shared manufacturing and support processes"
+    rule: "Avoid allocation by submetering or subdividing storage, preparation, cooking, packaging, sanitation, and wastewater operations wherever practicable."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical_driver
+    applies_to: "residual shared utilities"
+    rule: "When subdivision is not practicable, allocate a shared utility by a documented causal physical driver such as metered equipment time and load, occupied storage volume-time, treated wastewater volume and load, or packaging-machine throughput; use mass only when it represents the physical relationship."
+    source_ids:
+      - eu-pef-2021-2279
+      - schmidt-rivera-azapagic-2019-ready-meals
+  - rule_id: allocation_seafood_outputs
+    applies_to: "seafood residues and recovered materials"
+    rule: "Classify each outgoing material as co-product or waste from its actual legal and economic status. For a co-product, prefer subdivision or system expansion, then a documented physical relationship; use economic allocation only when no defensible physical relationship exists. Do not credit a waste destination as avoided production inside the factory-gate result unless an explicit system-expansion scenario is reported separately."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_recipe_batches
+    applies_to: "multi-product batches"
+    rule: "Allocate shared batch inputs to saleable meal variants using measured recipe mass, actual yields, equipment occupancy, and rework transfers; disclose the rule and prohibit allocation to rejected product as if it were saleable output."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass
+      process_id: "receipt_cold_storage_seafood_preparation_formulation_cooking_preservation_packaging_cooling"
+      flow_role: "seafood and recipe material inputs"
+      record_type: "receiving records, batch sheets, scales, recipe system"
+      raw_fields: "material identity; supplier; species; origin; input state; lot; gross mass; tare; accepted mass; recipe issue"
+      collection_method: "calibrated scale and controlled batch record"
+      unit: "kg"
+      frequency: "every receipt and batch"
+      temporal_coverage: "representative continuous 12-month period, or full shorter campaign"
+      site_scope: "all facilities producing the declared product"
+      aggregation_rule: "sum accepted mass by atomic material and lot; normalize to accepted process output and reference flow"
+      quality_evidence: "scale calibration, supplier lot traceability, recipe version, acceptance record"
+    - protocol_id: cp_output_mass
+      process_id: "all_production_processes"
+      flow_role: "intermediate and final product output"
+      record_type: "batch yield and pack records"
+      raw_fields: "batch id; output identity; good mass; rework mass; retained inventory; pack count; net fill"
+      collection_method: "calibrated scale and verified pack-count reconciliation"
+      unit: "kg"
+      frequency: "every batch"
+      temporal_coverage: "same period as input records"
+      site_scope: "all included lines and sites"
+      aggregation_rule: "sum accepted outputs and reconcile transfers between processes"
+      quality_evidence: "scale calibration, release record, mass-balance sign-off"
+    - protocol_id: cp_energy_meter
+      process_id: "all_production_processes"
+      flow_role: "electricity, steam, and purchased heat"
+      record_type: "submeters, utility meters, invoices, equipment logs"
+      raw_fields: "carrier; meter id; opening and closing reading; batch time; load; production mass"
+      collection_method: "prefer direct submetering; otherwise allocate by documented physical driver"
+      unit: "kWh or MJ"
+      frequency: "continuous or each batch; invoice reconciliation monthly"
+      temporal_coverage: "representative continuous 12-month period"
+      site_scope: "every included line and support system"
+      aggregation_rule: "subtract baseline where justified, allocate by causal driver, normalize to process output"
+      quality_evidence: "meter calibration or verification, invoice reconciliation, allocation worksheet"
+    - protocol_id: cp_fuel_records
+      process_id: "cooking_preservation"
+      flow_role: "each on-site fuel"
+      record_type: "fuel meter, tank dip, delivery invoice, boiler log"
+      raw_fields: "fuel identity; quantity; density; lower heating value; sulfur and carbon content; boiler id; operating time"
+      collection_method: "meter or stock balance reconciled to deliveries"
+      unit: "m3 or kg"
+      frequency: "each batch or daily; monthly reconciliation"
+      temporal_coverage: "representative continuous 12-month period"
+      site_scope: "all included boilers and direct-fired equipment"
+      aggregation_rule: "sum each fuel separately and normalize to treated meal output"
+      quality_evidence: "meter check, invoice, stock reconciliation, fuel specification"
+    - protocol_id: cp_water_chemicals
+      process_id: "receipt_cold_storage_seafood_preparation_formulation_sanitation_wastewater"
+      flow_role: "ice, water, cleaner, and disinfectant"
+      record_type: "water meters, batch dosing records, purchase and stock records"
+      raw_fields: "material identity; solution concentration; active content; opening and closing meter or stock; batch id"
+      collection_method: "dedicated meter or mass/stock balance; calculate active chemical from solution mass and assay"
+      unit: "kg or m3"
+      frequency: "each batch or shift; monthly reconciliation"
+      temporal_coverage: "representative continuous 12-month period"
+      site_scope: "all included preparation and sanitation areas"
+      aggregation_rule: "sum by atomic material and role; normalize to process output"
+      quality_evidence: "meter calibration, chemical certificate, dosing-system check, stock reconciliation"
+    - protocol_id: cp_packaging_bom
+      process_id: "packaging_cooling"
+      flow_role: "packaging components and MAP gases"
+      record_type: "approved bill of materials, issue records, scrap records, gas meter"
+      raw_fields: "component material and layer; item mass; units issued; units returned; trim; rejected packs; gas identity and use"
+      collection_method: "component weighing plus inventory issue and return; gas meter or cylinder balance"
+      unit: "kg"
+      frequency: "each packaging lot"
+      temporal_coverage: "representative continuous 12-month period"
+      site_scope: "all included package formats and lines"
+      aggregation_rule: "calculate consumed mass per component, subtract returned stock, include scrap, normalize to net meal mass"
+      quality_evidence: "packaging specification, scale check, stock reconciliation, approved artwork and gas recipe"
+    - protocol_id: cp_refrigerant_balance
+      process_id: "receipt_cold_storage_packaging_cooling"
+      flow_role: "refrigerant make-up and direct emissions"
+      record_type: "equipment register, service log, purchase, recovery, and stock records"
+      raw_fields: "equipment id; refrigerant trade name; component composition; charge; additions; recovery; disposal; opening and closing stock"
+      collection_method: "annual mass balance for each equipment system and each chemical component"
+      unit: "kg"
+      frequency: "every service event with annual reconciliation"
+      temporal_coverage: "representative continuous 12-month period"
+      site_scope: "all included cold stores, chillers, and freezers"
+      aggregation_rule: "loss = opening stock + purchases + additions - recovered - transferred - closing stock; apportion by equipment service and physical storage driver"
+      quality_evidence: "technician record, cylinder weights, refrigerant specification, balance closure"
+    - protocol_id: cp_waste_mass
+      process_id: "all_production_processes"
+      flow_role: "each solid or liquid waste"
+      record_type: "waste scales, bins, transfer notes, destruction and recovery records"
+      raw_fields: "waste identity; process source; legal status; wet mass; dry solids where relevant; destination; date"
+      collection_method: "dedicated weighing or verified container count and average mass"
+      unit: "kg"
+      frequency: "every batch or waste collection"
+      temporal_coverage: "representative continuous 12-month period"
+      site_scope: "all included lines and waste areas"
+      aggregation_rule: "sum separately by atomic waste and destination; normalize to process output"
+      quality_evidence: "scale calibration, transfer note, destination contract, classification record"
+    - protocol_id: cp_effluent_monitoring
+      process_id: "seafood_preparation_formulation_sanitation_wastewater"
+      flow_role: "wastewater, sludge, and direct water emissions"
+      record_type: "flow meter, composite samples, laboratory reports, sludge records"
+      raw_fields: "wastewater source; volume or mass; sampling period; BOD; COD; total nitrogen; total phosphorus; TSS; oil and grease; sludge wet mass and dry solids"
+      collection_method: "flow-proportional composite sampling where practicable and accredited laboratory analysis"
+      unit: "m3, kg, or mg/L"
+      frequency: "continuous flow; pollutant sampling at permit or representative operating frequency"
+      temporal_coverage: "same representative period as production"
+      site_scope: "all included drains and treatment units; separate external-transfer and direct-discharge routes"
+      aggregation_rule: "pair concentration with flow for the same period; calculate pollutant mass; normalize to reference flow"
+      quality_evidence: "meter calibration, chain of custody, laboratory accreditation, sampling plan, permit report"
+    - protocol_id: cp_stack_emissions
+      process_id: "cooking_preservation"
+      flow_role: "direct combustion emissions"
+      record_type: "continuous or periodic stack measurements, fuel records, equipment-specific factors"
+      raw_fields: "pollutant; concentration; exhaust flow; operating time; fuel quantity; factor source; control efficiency"
+      collection_method: "direct measurement preferred; otherwise calculate from atomic fuel records and documented factors"
+      unit: "kg"
+      frequency: "continuous or permit test; calculate for each reporting period"
+      temporal_coverage: "same period as fuel inventory"
+      site_scope: "every included combustion unit"
+      aggregation_rule: "calculate each pollutant separately and normalize to treated meal output"
+      quality_evidence: "calibration and test report or factor reference, fuel specification, calculation sheet"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every foreground exchange"
+      rule: "normalized exchange = reporting-period exchange / reporting-period net saleable meal mass"
+      inputs:
+        - "atomic exchange quantity"
+        - "accepted net meal mass"
+      output: "quantity per 1 kg reference flow"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_recipe_yield
+      applies_to: "preparation, cooking, and packaging"
+      rule: "yield = accepted output mass / total recipe-material input mass; separately report evaporation, residues, wastewater transfers, rework, and unexplained imbalance"
+      inputs:
+        - "atomic ingredient masses"
+        - "accepted outputs"
+        - "waste and wastewater masses"
+        - "inventory change"
+      output: "stage yield and mass-balance closure"
+      source_ids:
+        - codex-cxc-52-2003
+    - id: calc_active_chemical
+      applies_to: "cleaning agents"
+      rule: "active chemical mass = solution mass × supplier-certified active mass fraction"
+      inputs:
+        - "solution mass"
+        - "active fraction"
+      output: "kg sodium hydroxide or sodium hypochlorite"
+      source_ids:
+        - codex-cxc-52-2003
+    - id: calc_refrigerant_components
+      applies_to: "refrigeration"
+      rule: "allocate system loss to each chemical component using the documented refrigerant composition; do not report only the blend trade name"
+      inputs:
+        - "system mass loss"
+        - "component mass fractions"
+        - "equipment service"
+      output: "kg of each refrigerant component emitted"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_effluent_load
+      applies_to: "direct discharge"
+      rule: "pollutant mass = paired treated-effluent volume × pollutant concentration with consistent units"
+      inputs:
+        - "flow and BOD"
+        - COD
+        - "total nitrogen"
+        - "total phosphorus"
+        - TSS
+        - "or oil-and-grease concentration"
+      output: "kg of each pollutant to water"
+      source_ids:
+        - fao-fisheries-technical-paper-355
+        - us-epa-seafood-effluent-guidelines
+    - id: calc_shared_utility
+      applies_to: "shared support systems"
+      rule: "allocated quantity = measured shared quantity × product-specific causal driver / sum of drivers for all products; mass is allowed only when it represents the causal relationship"
+      inputs:
+        - "shared meter"
+        - "equipment time/load"
+        - "storage volume-time"
+        - "wastewater load"
+        - "or throughput"
+      output: "product-attributed utility quantity"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product and ingredients"
+      requirement: "Preserve recipe version, seafood species, origin, input state, supplier lot, preservation route, package format, storage state, intended use, and net mass for every represented product."
+      evidence: "batch record, supplier specification, product specification, approved label"
+    - id: dq_temporal_alignment
+      applies_to: "all foreground records"
+      requirement: "Use one common representative reporting period, normally a continuous 12 months; a shorter campaign shall cover all operating states and disclose seasonality, start-up, shutdown, and abnormal events."
+      evidence: "meter and batch date coverage, production calendar, variance review"
+    - id: dq_mass_balance
+      applies_to: "each process and the whole foreground"
+      requirement: "Reconcile all material inputs, outputs, waste, wastewater, evaporation estimates, rework, and inventory change; investigate and disclose unexplained imbalance."
+      evidence: "signed process and facility mass balance"
+    - id: dq_atomicity
+      applies_to: "inventory"
+      requirement: "Keep each ingredient, packaging component, energy carrier, fuel, refrigerant component, chemical, waste, and direct emission as a separate exchange with its own identity and amount."
+      evidence: "atomic row audit and source-record crosswalk"
+    - id: dq_measurement
+      applies_to: "meters, scales, and analyses"
+      requirement: "Retain calibration or verification status, detection limits, sampling method, laboratory quality evidence, and conversion factors."
+      evidence: "calibration certificates, laboratory reports, sampling and calculation records"
+    - id: dq_representativeness
+      applies_to: "upstream and foreground datasets"
+      requirement: "Assess technological, geographical, and time-related representativeness and precision; disclose every proxy and substitution."
+      evidence: "dataset quality assessment and proxy register"
+    - id: dq_completeness
+      applies_to: "known inputs and outputs"
+      requirement: "Account for all known inputs and outputs, including direct air and water emissions; a justified exclusion shall identify the flow, basis, and expected significance."
+      evidence: "completeness checklist, process walk-through, environmental permit cross-check"
+validation_rules:
+  - rule_id: validate_scope
+    applies_to: "product identity"
+    rule: "Confirm that the product is a composite prepared dish or meal characterized by fish, molluscs, crustaceans, or a declared combination and is not an excluded single seafood product."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validate_reference_mass
+    applies_to: "reference flow"
+    rule: "Confirm that the reference amount is exactly 1 kg net saleable meal excluding packaging and that pack-count and fill-mass records reconcile to it."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_qualifiers
+    applies_to: "reference flow metadata"
+    rule: "Fail completeness if recipe, seafood species and origin, seafood input state, seafood fraction, preservation route, intended use, storage state, package system, net mass, production geography, or reporting period is missing."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validate_process_coverage
+    applies_to: "foreground boundary"
+    rule: "Confirm that every applicable process in the map has records and that omitted or not-applicable steps are justified for the declared route."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validate_atomic_inventory
+    applies_to: "all exchanges"
+    rule: "Reject combined ingredient, utility, packaging, refrigerant, waste, or emission rows; each selected flow shall represent one atomic exchange."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_recipe_and_yield
+    applies_to: "material balance"
+    rule: "Confirm recipe issue, ingredient inputs, intermediate transfers, saleable output, rework, seafood residues, food loss, wastewater, and inventory change reconcile within a site-defined documented tolerance."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validate_refrigerants
+    applies_to: "refrigeration"
+    rule: "Confirm the equipment register covers every included cold store, chiller, and freezer and that make-up and leakage are resolved to individual chemical components."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_emissions
+    applies_to: "direct emissions"
+    rule: "Confirm every known direct air and water emission is measured or calculated separately and that concentration, flow, fuel, and operating-period records are temporally aligned."
+    source_ids:
+      - eu-pef-2021-2279
+      - fao-fisheries-technical-paper-355
+  - rule_id: validate_allocation
+    applies_to: "shared processes and co-products"
+    rule: "Confirm subdivision was attempted first, the chosen allocation driver is causal and documented, seafood outputs are classified as co-product or waste, and sensitivity is disclosed when an economic fallback materially affects results."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_data_quality
+    applies_to: "published foreground dataset"
+    rule: "Confirm temporal, technological, and geographical representativeness, measurement quality, proxy disclosure, and completeness of known inputs and outputs are documented."
+    source_ids:
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Factory-gate foreground production dataset for a declared prepared seafood dish or meal"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product-specific process datasets and lifecycle models when recipe, seafood species and origin, preservation route, storage state, package format, geography, technology, allocation, and reporting period are compatible"
+  excluded_use: "Comparative claims across dissimilar meal functions or serving qualities; substitution for unformulated seafood products; use without linked upstream ingredients and packaging; use as a cradle-to-grave result without explicit downstream modules"
+  required_metadata: "canonical PCR id; recipe id and version; seafood species, origin, and input state; seafood mass fraction; complete ingredient list; process route; preservation and thermal treatment; ready-to-eat or heat-and-eat status; storage state and temperature; shelf-life basis; net mass; package components and MAP gas recipe; facility geography; technology; reporting period; allocation; waste and wastewater destinations"
+  required_quality_disclosure: "collection coverage; calibration and laboratory evidence; material and energy balance; refrigerant balance; direct-emission method; temporal, geographical, and technological representativeness; proxy register; allocation drivers; completeness exclusions; unresolved Tiangong identities and range evidence"
+  update_trigger: "recipe or seafood-species change; supplier-origin change; preservation or cooking technology change; package redesign; refrigerant conversion; energy-system change; wastewater-treatment or discharge change; allocation change; facility or geography change; or foreground data older than the declared representativeness period"
+data_sources:
+  - id: "codex-cxc-52-2003"
+    type: "official_guidance"
+    reference: "FAO and WHO, *Code of Practice for Fish and Fishery Products*, second edition, CXC 52-2003, ISBN 978-92-5-107018-5, https://www.fao.org/4/i2382e/i2382e.pdf"
+    used_for: "Product description, intended use, process-flow documentation, seafood preparation, cooking, packaging, temperature control, sanitation, waste handling, and traceability requirements"
+  - id: "schmidt-rivera-azapagic-2019-ready-meals"
+    type: "literature"
+    reference: "Schmidt Rivera, X. C. and Azapagic, A. (2019), *Life cycle environmental impacts of ready-made meals considering different cuisines and recipes*, Science of the Total Environment 660, 1168-1181, https://doi.org/10.1016/j.scitotenv.2019.01.069"
+    used_for: "Ready-meal functional-unit precedent; recipe-sensitive inventory; manufacturing, packaging, refrigeration, distribution and waste stages; utility collection and shared-energy allocation precedent"
+  - id: "kontominas-et-al-2021-seafood-packaging"
+    type: "literature"
+    reference: "Kontominas, M. G., Badeka, A. V., Kosma, I. S. and Nathanailides, C. I. (2021), *Recent Developments in Seafood Packaging Technologies*, Foods 10(5), 940, https://doi.org/10.3390/foods10050940"
+    used_for: "Seafood perishability, packaging functions and technologies, package-material performance, modified-atmosphere gas identities, and dependence on temperature control"
+  - id: "fao-fisheries-technical-paper-355"
+    type: "official_guidance"
+    reference: "González, J. F. (1996), *Wastewater treatment in the fishery industry*, FAO Fisheries Technical Paper 355, ISBN 92-5-103788-4, https://www.fao.org/4/v9922e/v9922e00.htm"
+    used_for: "Seafood wastewater sources, characterization by solids, BOD, COD, oil and grease, nitrogen and phosphorus, primary and biological treatment, and sludge management"
+  - id: "us-epa-seafood-effluent-guidelines"
+    type: "official_guidance"
+    reference: "United States Environmental Protection Agency, *Seafood Processing Effluent Guidelines*, 40 CFR Part 408, https://www.epa.gov/eg/seafood-processing-effluent-guidelines"
+    used_for: "Official confirmation that seafood receiving, cleaning, butchering, cooking, freezing and packaging generate process wastewater and require pollutant-specific treatment and discharge accounting"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission, Commission Recommendation (EU) 2021/2279 on the use of Environmental Footprint methods, Official Journal L 471, 30 December 2021, ELI http://data.europa.eu/eli/reco/2021/2279/oj"
+    used_for: "Functional-unit and reference-flow structure; system boundary; company-specific input, output, waste and direct-emission data; data quality; proxy disclosure; and multi-functionality hierarchy"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:60d01631c64778e61559dafa94a8c98490e22d2e6ac0853f9d1cf696c0801731"
+  generated_content_sha256: "sha256:4204722dbc74764b1a670e62e8c177288ae6693e4fb660b9ff8f78342d884759"

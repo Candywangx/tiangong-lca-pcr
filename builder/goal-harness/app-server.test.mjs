@@ -96,6 +96,7 @@ test("app-server adapter creates one durable visible thread bound to the author 
     assert.equal(doctor.ok, true);
     const task = await adapter.createAuthorTask({
       worktreePath: "/tmp/visible-author-worktree",
+      additionalWorkspaceRoots: ["/tmp/shared-materials"],
       title: "PCR 41111 · Pig iron",
       prompt: "Author only PCR 41111",
       outputSchema: { type: "object" },
@@ -109,15 +110,16 @@ test("app-server adapter creates one durable visible thread bound to the author 
     const started = mock.requests.find((request) => request.method === "thread/start");
     assert.equal(started.params.cwd, "/tmp/visible-author-worktree");
     assert.equal(started.params.ephemeral, false);
-    assert.deepEqual(started.params.runtimeWorkspaceRoots, ["/tmp/visible-author-worktree"]);
+    assert.deepEqual(started.params.runtimeWorkspaceRoots, ["/tmp/visible-author-worktree", "/tmp/shared-materials"]);
     assert.equal(mock.requests.some((request) => request.method === "thread/name/set"), true);
     const turn = mock.requests.find((request) => request.method === "turn/start");
     assert.equal(turn.params.threadId, "thread-visible-1");
+    assert.deepEqual(turn.params.runtimeWorkspaceRoots, ["/tmp/visible-author-worktree", "/tmp/shared-materials"]);
     assert.equal(turn.params.input[0].type, "text");
     assert.equal(turn.params.outputSchema.type, "object");
     assert.deepEqual(turn.params.sandboxPolicy, {
       type: "workspaceWrite",
-      writableRoots: ["/tmp/visible-author-worktree", "/tmp/goal-state"],
+      writableRoots: ["/tmp/visible-author-worktree", "/tmp/goal-state", "/tmp/shared-materials"],
       networkAccess: true,
     });
   } finally {
@@ -184,29 +186,75 @@ test("app-server failure is a stable fail-closed error with no hidden fallback",
   }
 });
 
-test("repair starts a new turn in the original durable thread and original worktree", async () => {
+test("repair starts a new turn without resuming an interrupted turn in the original durable thread", async () => {
   const mock = mockSpawn();
   const adapter = new CodexAppServerAdapter({ spawnFactory: () => mock.child, requestTimeoutMs: 1000 });
   try {
     const result = await adapter.startRepairTurn({
       threadId: "thread-visible-1",
       worktreePath: "/tmp/visible-author-worktree",
+      additionalWorkspaceRoots: ["/tmp/shared-materials"],
       prompt: "repair structured findings",
       outputSchema: { type: "object" },
       clientUserMessageId: "task-repair-1",
       receiptStateDir: "/tmp/goal-state",
     });
     assert.equal(result.thread_id, "thread-visible-1");
-    assert.equal(mock.requests.some((request) => request.method === "thread/resume" && request.params.threadId === "thread-visible-1"), true);
+    assert.equal(mock.requests.some((request) => request.method === "thread/resume"), false);
     const turn = mock.requests.find((request) => request.method === "turn/start");
     assert.equal(turn.params.threadId, "thread-visible-1");
+    assert.deepEqual(turn.params.runtimeWorkspaceRoots, ["/tmp/visible-author-worktree", "/tmp/shared-materials"]);
+    assert.equal(turn.params.sandboxPolicy.writableRoots.includes("/tmp/shared-materials"), true);
     assert.equal(turn.params.cwd, "/tmp/visible-author-worktree");
     assert.equal(turn.params.clientUserMessageId, "task-repair-1");
     assert.deepEqual(turn.params.sandboxPolicy, {
       type: "workspaceWrite",
-      writableRoots: ["/tmp/visible-author-worktree", "/tmp/goal-state"],
+      writableRoots: ["/tmp/visible-author-worktree", "/tmp/goal-state", "/tmp/shared-materials"],
       networkAccess: true,
     });
+  } finally {
+    await adapter.close();
+  }
+});
+
+test("repair reloads a durable thread once when a restarted daemon reports thread not found", async () => {
+  const mock = mockSpawn();
+  let turnStartCount = 0;
+  const calls = [];
+  const adapter = new CodexAppServerAdapter({
+    spawnFactory: () => mock.child,
+    requestTimeoutMs: 1000,
+  });
+  const originalRequest = adapter.request.bind(adapter);
+  adapter.request = async (method, params) => {
+    calls.push(method);
+    if (method === "turn/start") {
+      turnStartCount += 1;
+      if (turnStartCount === 1) throw new Error(`thread not found: ${params.threadId}`);
+      return { turn: { id: "turn-after-daemon-reload" } };
+    }
+    if (method === "thread/resume") return { thread: { id: params.threadId } };
+    return originalRequest(method, params);
+  };
+  try {
+    const result = await adapter.startRepairTurn({
+      threadId: "thread-visible-1",
+      worktreePath: "/tmp/visible-author-worktree",
+      prompt: "repair after daemon restart",
+      outputSchema: { type: "object" },
+      clientUserMessageId: "task-repair-daemon-reload",
+      receiptStateDir: "/tmp/goal-state",
+    });
+    assert.deepEqual(result, {
+      thread_id: "thread-visible-1",
+      turn_id: "turn-after-daemon-reload",
+    });
+    assert.equal(turnStartCount, 2);
+    assert.deepEqual(calls.filter((method) => ["turn/start", "thread/resume"].includes(method)), [
+      "turn/start",
+      "thread/resume",
+      "turn/start",
+    ]);
   } finally {
     await adapter.close();
   }

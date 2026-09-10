@@ -1,0 +1,362 @@
+schema_version: 1
+artifact_kind: cpc_product_chain_pilot
+status: draft
+classification_system: CPC
+classification_version: "3.0"
+official_sources:
+  - id: unsd-cpc-03112-detail
+    title: "CPC Version 3.0 detail: 03112"
+    publisher: United Nations Statistics Division
+    url: https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/03112
+    locator: "CPC Version 3.0, code 03112, Explanatory note, first include bullet"
+    supports: Coniferous pulpwood is intended for pulp production.
+    accessed_at: "2026-09-02"
+  - id: unsd-cpc-32113-detail
+    title: "CPC Version 3.0 detail: 32113"
+    publisher: United Nations Statistics Division
+    url: https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/32113
+    locator: "CPC Version 3.0, code 32113, Explanatory note, both include bullets"
+    supports: Mechanical and semi-chemical wood pulp can be made from pulpwood, chips, particles or wood residues.
+    accessed_at: "2026-09-02"
+  - id: ec-jrc-pulp-paper-bref-newsprint
+    title: Best Available Techniques Reference Document for the Production of Pulp, Paper and Board
+    publisher: European Commission Joint Research Centre
+    url: https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/PP_revised_BREF_2015.pdf
+    locator: 'Section 1.5, printed page 18, paragraph beginning "For instance, newsprint"'
+    supports: Newsprint can use SGW, PGW, TMP, RMP, CTMP, chemical pulps and/or deinked pulp, so a mechanical-pulp-only route is not universal.
+    accessed_at: "2026-09-02"
+  - id: unsd-cpc-03122-detail
+    title: "CPC Version 3.0 detail: 03122"
+    publisher: United Nations Statistics Division
+    url: https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/03122
+    locator: "CPC Version 3.0, code 03122, Explanatory note, first include bullet"
+    supports: Non-coniferous pulpwood is intended for pulp production.
+    accessed_at: "2026-09-02"
+  - id: ec-jrc-pulp-paper-bref-chemical-pulping
+    title: Best Available Techniques Reference Document for the Production of Pulp, Paper and Board
+    publisher: European Commission Joint Research Centre
+    url: https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/PP_revised_BREF_2015.pdf
+    locator: "Chapter 3 introduction and Sections 3.1.1-3.1.4, printed pages 195-197"
+    supports: Chemical kraft pulping applies to wood species, receives logs or chips, chips wood and chemically liberates fibres.
+    accessed_at: "2026-09-02"
+  - id: ec-jrc-pulp-paper-bref-wood-free-paper
+    title: Best Available Techniques Reference Document for the Production of Pulp, Paper and Board
+    publisher: European Commission Joint Research Centre
+    url: https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/PP_revised_BREF_2015.pdf
+    locator: "Section 7.1.11.1, printed pages 670-671"
+    supports: Uncoated wood-free printing and writing papers consist almost exclusively of bleached hardwood or softwood chemical pulp, with fillers possible.
+    accessed_at: "2026-09-02"
+chains:
+  - id: grain-food
+    title: Grain to flour to bread
+    description: A scoped grain-food route from wheat grain through milling to bread and other bakers' wares.
+    nodes:
+      - id: wheat-grain
+        code: "01112"
+        label: "Wheat, other"
+        stage: wheat grain production
+        role: primary agricultural feedstock
+      - id: wheat-flour
+        code: "23110"
+        label: Wheat and meslin flour
+        stage: grain milling
+        role: intermediate milled ingredient
+      - id: bread-and-bakers-wares
+        code: "23490"
+        label: Bread and other bakers' wares
+        stage: bakery production
+        role: downstream food product
+    edges:
+      - id: wheat-grain-to-wheat-flour
+        from: wheat-grain
+        to: wheat-flour
+        relationship_type: primary_feedstock
+        evidence_status: supported_by_pcr
+        boundary_assessment: aligned
+        interface:
+          upstream_output_condition: Food-grade wheat grain delivered as accepted milling lots.
+          downstream_starting_condition: Milling grain received and cleaned at the flour mill.
+          fit_summary: The flour PCR records received food-grade wheat or meslin milling grain as a product input to grain receiving and cleaning.
+        route_conditions:
+          - Apply only to wheat-bearing flour routes; disclose rye or pre-mixed meslin when present.
+          - Align received mass and moisture treatment between the upstream grain dataset and flour mill inventory.
+        evidence:
+          - kind: pcr_projection
+            pcr_id: pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.wheat-and-meslin-flour
+            supports: The downstream flour PCR explicitly records received food-grade wheat or meslin milling grain.
+            locator:
+              kind: inventory_row
+              process_id: grain_receiving_cleaning
+              direction: inputs
+              flow_type: product
+              row_id: received_milling_grain
+              field: name
+        review_notes:
+          - Confirm the upstream wheat dataset represents food-grade milling grain and the declared wheat or meslin formulation.
+      - id: wheat-flour-to-bread-and-bakers-wares
+        from: wheat-flour
+        to: bread-and-bakers-wares
+        relationship_type: primary_feedstock
+        evidence_status: supported_by_pcr
+        boundary_assessment: aligned
+        interface:
+          upstream_output_condition: Finished wheat or meslin flour at the mill gate.
+          downstream_starting_condition: Flour or meal issued as a declared bakery ingredient.
+          fit_summary: The bakery PCR explicitly includes flour or meal among recipe ingredients crossing the bakery gate.
+        route_conditions:
+          - Apply only where wheat or meslin flour is a primary formulation input for the represented bakery product.
+          - Preserve product-specific recipe, moisture and returned-ingredient accounting at the bakery interface.
+        evidence:
+          - kind: pcr_projection
+            pcr_id: pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.bread-and-other-bakers-wares
+            supports: The downstream bakery PCR explicitly includes flour or meal in the declared ingredient inventory.
+            locator:
+              kind: inventory_row
+              process_id: ingredient_and_dough_preparation
+              direction: inputs
+              flow_type: product
+              row_id: ingredients_input
+              field: description
+        review_notes:
+          - Select the specific flour input used by the represented recipe rather than treating every baker's ware as a wheat-flour route.
+
+  - id: cotton-textile
+    title: Raw cotton to woven cotton fabric
+    description: A scoped textile route from raw cotton through fibre preparation and yarn spinning to heavy woven cotton fabric.
+    nodes:
+      - id: raw-cotton
+        code: "01921"
+        label: Cotton, whether or not ginned
+        stage: cotton cultivation and ginning
+        role: upstream fibre crop product
+      - id: carded-or-combed-cotton
+        code: "26160"
+        label: Cotton, carded or combed
+        stage: fibre preparation
+        role: prepared cotton fibre
+      - id: cotton-yarn
+        code: "26360"
+        label: Cotton yarn (other than sewing thread), containing 85% or more by weight of cotton
+        stage: yarn production
+        role: spun textile intermediate
+      - id: woven-cotton-fabric
+        code: "26620"
+        label: Woven fabrics of cotton, containing 85% or more by weight of cotton, weighing more than 200 g/m2
+        stage: fabric weaving
+        role: downstream woven textile
+    edges:
+      - id: raw-cotton-to-carded-or-combed-cotton
+        from: raw-cotton
+        to: carded-or-combed-cotton
+        relationship_type: primary_feedstock
+        evidence_status: supported_by_pcr
+        boundary_assessment: aligned
+        interface:
+          upstream_output_condition: Virgin Upland cotton delivered after ginning and baling.
+          downstream_starting_condition: Ginned cotton fibre received and conditioned for carding or combing.
+          fit_summary: The prepared-cotton PCR identifies virgin Upland ginned cotton fibre as the incoming product feedstock.
+        route_conditions:
+          - The CPC source category includes cotton whether or not ginned, but this interface requires the ginned-cotton route.
+          - Keep carded and combed output strata separate and align commercial-mass or moisture correction.
+        evidence:
+          - kind: pcr_projection
+            pcr_id: pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.cotton-carded-or-combed
+            supports: The downstream prepared-cotton PCR names virgin Upland ginned cotton fibre as feedstock.
+            locator:
+              kind: inventory_row
+              process_id: receiving_conditioning
+              direction: inputs
+              flow_type: product
+              row_id: virgin_upland_cotton_feedstock
+              field: name
+        review_notes:
+          - CPC 01921 is currently unmapped, so the aligned PCR evidence does not make this edge executable.
+          - Review the cultivation-to-ginning boundary and cotton type before adding any upstream material PCR.
+      - id: carded-or-combed-cotton-to-cotton-yarn
+        from: carded-or-combed-cotton
+        to: cotton-yarn
+        relationship_type: primary_feedstock
+        evidence_status: supported_by_pcr
+        boundary_assessment: overlap
+        interface:
+          upstream_output_condition: Baled carded or combed cotton delivered on the declared moisture basis.
+          downstream_starting_condition: Baled cotton fibre received at the spinning-mill gate before foreground fibre preparation.
+          fit_summary: The current cotton-yarn PCR starts from baled fibre and includes opening, cleaning, carding, drawing and optional combing within its foreground fibre-preparation process, so directly chaining a CPC 26160 prepared-cotton dataset would double-count those operations.
+        route_conditions:
+          - Apply to yarn containing at least 85 percent cotton and disclose recovered or recycled cotton when used.
+          - Keep this edge blocked while the downstream PCR starts before carding and combing; do not preserve an executable wave by mislabelling the boundary as aligned.
+          - A future downstream-PCR revision may support purchased carded or combed cotton only when its starting condition moves after the purchased preparation and its inventory excludes duplicated opening, cleaning, carding, drawing and combing operations.
+        evidence:
+          - kind: pcr_projection
+            pcr_id: pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.cotton-yarn-other-than-sewing-thread-containing-85-or-more-by-weight-of-cotton
+            supports: The downstream yarn PCR records baled cotton fibre entering its foreground fibre-preparation process.
+            locator:
+              kind: inventory_row
+              process_id: fibre_preparation
+              direction: inputs
+              flow_type: product
+              row_id: received_cotton_fibre
+              field: name
+          - kind: pcr_projection
+            pcr_id: pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.cotton-yarn-other-than-sewing-thread-containing-85-or-more-by-weight-of-cotton
+            supports: The downstream yarn PCR includes opening, cleaning, carding, drawing and optional combing electricity in foreground fibre preparation.
+            locator:
+              kind: inventory_row
+              process_id: fibre_preparation
+              direction: inputs
+              flow_type: product
+              row_id: fibre_preparation_electricity
+              field: description
+        review_notes:
+          - Directly chaining CPC 26160 to the current cotton-yarn PCR would repeat fibre-preparation operations already inside the downstream foreground boundary.
+          - Reassess only after a downstream-PCR revision explicitly supports purchased carded or combed cotton and conditionally excludes every duplicated preparation operation.
+      - id: cotton-yarn-to-woven-cotton-fabric
+        from: cotton-yarn
+        to: woven-cotton-fabric
+        relationship_type: primary_feedstock
+        evidence_status: supported_by_pcr
+        boundary_assessment: aligned
+        interface:
+          upstream_output_condition: Conforming cotton yarn containing at least 85 percent cotton.
+          downstream_starting_condition: Cotton-rich warp and weft yarn received for yarn preparation and sizing.
+          fit_summary: The woven-fabric PCR records received cotton-rich yarn as the product input to yarn preparation and sizing.
+        route_conditions:
+          - Apply only where the received warp and weft yarn meets the downstream composition threshold of at least 85 percent cotton.
+          - Align yarn count, mass, moisture state and upstream dataset identity at the weaving interface.
+        evidence:
+          - kind: pcr_projection
+            pcr_id: pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.woven-fabrics-of-cotton-containing-85-or-more-by-weight-of-cotton-weighing-more-than-200-g-m2
+            supports: The downstream woven-fabric PCR records cotton or cotton-rich yarn of at least 85 percent cotton.
+            locator:
+              kind: inventory_row
+              process_id: yarn_preparation_and_sizing
+              direction: inputs
+              flow_type: product
+              row_id: received_cotton_rich_yarn
+              field: name
+        review_notes:
+          - Confirm that the downstream fabric basis exceeds 200 g/m2 and that purchased or internally transferred yarn is represented consistently.
+
+  - id: forestry-pulp-paper
+    title: Forestry to pulp to paper
+    description: Two official-source-supported forestry routes retained for manual review because every endpoint is unmapped and has no material PCR.
+    nodes:
+      - id: coniferous-pulpwood
+        code: "03112"
+        label: Roundwood of coniferous wood, pulpwood and wood for wood-based panels
+        stage: coniferous pulpwood production
+        role: upstream woody feedstock
+      - id: mechanical-pulp
+        code: "32113"
+        label: Mechanical wood pulp; semi-chemical wood pulp
+        stage: mechanical or semi-chemical pulping
+        role: intermediate pulp product
+      - id: newsprint
+        code: "32121"
+        label: Newsprint
+        stage: newsprint production
+        role: downstream paper product
+      - id: nonconiferous-pulpwood
+        code: "03122"
+        label: Roundwood of non-coniferous wood, pulpwood and wood for wood-based panels
+        stage: non-coniferous pulpwood production
+        role: upstream woody feedstock
+      - id: chemical-pulp
+        code: "32112"
+        label: Chemical wood pulp, other than dissolving grades
+        stage: chemical pulping
+        role: intermediate pulp product
+      - id: wood-free-paper
+        code: "32129"
+        label: Other uncoated graphic paper and paperboard, wood free
+        stage: wood-free graphic paper production
+        role: downstream paper product
+    edges:
+      - id: coniferous-pulpwood-to-mechanical-pulp
+        from: coniferous-pulpwood
+        to: mechanical-pulp
+        relationship_type: primary_feedstock
+        evidence_status: supported_by_official_source
+        boundary_assessment: needs_review
+        interface:
+          upstream_output_condition: Coniferous roundwood supplied as pulpwood for pulp production.
+          downstream_starting_condition: Pulpwood, chips, particles or wood residues received for mechanical or semi-chemical pulping.
+          fit_summary: Official CPC notes support a scoped pulpwood-to-pulp relationship but do not establish a universal site-level boundary match.
+        route_conditions:
+          - Restrict the route to coniferous pulpwood actually directed to mechanical or semi-chemical pulp production; CPC 03112 also covers wood for wood-based panels.
+          - Distinguish roundwood, chips, particles and residues and disclose site-specific preparation and transport.
+        evidence:
+          - kind: official_source
+            source_id: unsd-cpc-03112-detail
+            supports: The upstream CPC class includes coniferous pulpwood intended for pulp production.
+          - kind: official_source
+            source_id: unsd-cpc-32113-detail
+            supports: The downstream CPC class includes mechanical or semi-chemical pulp made from pulpwood and other woody feedstocks.
+        review_notes:
+          - Both endpoints are currently unmapped and have no material PCR, so this edge and its nodes remain outside execution waves.
+          - Official-source support is relationship evidence only and is not an accepted CPC-to-PCR mapping.
+      - id: mechanical-pulp-to-newsprint
+        from: mechanical-pulp
+        to: newsprint
+        relationship_type: primary_feedstock
+        evidence_status: supported_by_official_source
+        boundary_assessment: needs_review
+        interface:
+          upstream_output_condition: Mechanical or semi-chemical pulp delivered to a paper mill.
+          downstream_starting_condition: Furnish components received and prepared for newsprint production.
+          fit_summary: The BREF supports mechanical pulp as one possible newsprint furnish, not as a universal sole upstream input.
+        route_conditions:
+          - Newsprint may include recovered or deinked pulp and chemical pulp; do not generalize mechanical pulp as the sole upstream.
+          - Record the actual SGW, PGW, TMP, RMP, CTMP, chemical-pulp and deinked-pulp furnish mix for the represented route and site.
+        evidence:
+          - kind: official_source
+            source_id: ec-jrc-pulp-paper-bref-newsprint
+            supports: The BREF identifies mechanical pulp families among several possible newsprint furnish components.
+        review_notes:
+          - Newsprint may include recovered or deinked pulp and chemical pulp; the mechanical-pulp-only route is not universal.
+          - Both endpoints are currently unmapped and have no material PCR, so this edge and its nodes remain outside execution waves.
+          - Official-source support is relationship evidence only and is not an accepted CPC-to-PCR mapping.
+      - id: nonconiferous-pulpwood-to-chemical-pulp
+        from: nonconiferous-pulpwood
+        to: chemical-pulp
+        relationship_type: primary_feedstock
+        evidence_status: supported_by_official_source
+        boundary_assessment: needs_review
+        interface:
+          upstream_output_condition: Non-coniferous roundwood supplied as pulpwood for pulp production.
+          downstream_starting_condition: Logs or chips received, chipped as needed and chemically pulped to liberate fibres.
+          fit_summary: Official sources support a scoped non-coniferous wood-to-chemical-pulp route while leaving species, mill route and boundary alignment for review.
+        route_conditions:
+          - Restrict the route to non-coniferous pulpwood actually directed to chemical kraft pulp production; CPC 03122 also covers wood for wood-based panels.
+          - Disclose wood species, log or chip form, on-site chipping, pulping chemistry and site-specific boundary.
+        evidence:
+          - kind: official_source
+            source_id: unsd-cpc-03122-detail
+            supports: The upstream CPC class includes non-coniferous pulpwood intended for pulp production.
+          - kind: official_source
+            source_id: ec-jrc-pulp-paper-bref-chemical-pulping
+            supports: The BREF describes chemical kraft pulping of wood received as logs or chips, including chipping and chemical fibre liberation.
+        review_notes:
+          - Both endpoints are currently unmapped and have no material PCR, so this edge and its nodes remain outside execution waves.
+          - Official-source support is relationship evidence only and is not an accepted CPC-to-PCR mapping.
+      - id: chemical-pulp-to-wood-free-paper
+        from: chemical-pulp
+        to: wood-free-paper
+        relationship_type: primary_feedstock
+        evidence_status: supported_by_official_source
+        boundary_assessment: needs_review
+        interface:
+          upstream_output_condition: Bleached hardwood or softwood chemical pulp delivered to a paper mill.
+          downstream_starting_condition: Chemical-pulp furnish received and prepared for uncoated wood-free graphic paper production.
+          fit_summary: The BREF supports chemical pulp as the predominant or nearly exclusive fibre furnish while allowing fillers and route-specific distinctions.
+        route_conditions:
+          - Wood-free paper requires predominantly or almost exclusively chemical pulp but allows fillers and route or site distinctions.
+          - Disclose hardwood and softwood shares, bleaching route, fillers, integrated or market-pulp supply and site-specific furnish preparation.
+        evidence:
+          - kind: official_source
+            source_id: ec-jrc-pulp-paper-bref-wood-free-paper
+            supports: The BREF describes uncoated wood-free papers as almost exclusively bleached hardwood or softwood chemical pulp, with fillers possible.
+        review_notes:
+          - Wood-free paper requires predominantly or almost exclusively chemical pulp but allows fillers and route or site distinctions.
+          - Both endpoints are currently unmapped and have no material PCR, so this edge and its nodes remain outside execution waves.
+          - Official-source support is relationship evidence only and is not an accepted CPC-to-PCR mapping.
