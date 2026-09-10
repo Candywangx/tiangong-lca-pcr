@@ -198,6 +198,8 @@ export async function dispatchGoalAuthors({
           additionalWorkspaceRoots: [materialsRoot],
           prompt,
           outputSchema,
+          model: config.codex?.model ?? null,
+          reasoningEffort: config.codex?.reasoning_effort ?? null,
           clientUserMessageId: repairIdentity,
           receiptStateDir: stateDir,
         });
@@ -207,6 +209,8 @@ export async function dispatchGoalAuthors({
         task = {
           ...task,
           ...visible,
+          author_model: config.codex?.model ?? null,
+          author_reasoning_effort: config.codex?.reasoning_effort ?? null,
           repair_count: resumeInfrastructure ? (task.repair_count ?? 0) : repairNumber,
           repair_resume_count: resumeInfrastructure ? (task.repair_resume_count ?? 0) : repairResumeNumber,
           repair_resume_pending: false,
@@ -290,6 +294,8 @@ export async function dispatchGoalAuthors({
         branch,
         policy_sha256: compiled.policy_sha256,
         allowed_files: compiled.allowed_files,
+        author_model: config.codex?.model ?? null,
+        author_reasoning_effort: config.codex?.reasoning_effort ?? null,
         prepared_at: new Date().toISOString(),
       }, null, 2)}\n`);
 
@@ -300,7 +306,7 @@ export async function dispatchGoalAuthors({
           at: new Date().toISOString(),
         });
       }
-      task = { ...task, attempt, dispatch_cycle: dispatchCycle, author_base_commit: authorBaseCommit, author_content_base_commit: authorContentBaseCommit, worktree_path: worktreePath, author_branch: branch, allowed_files: compiled.allowed_files, policy_sha256: compiled.policy_sha256, uuid_search_contract_version: 1 };
+      task = { ...task, attempt, dispatch_cycle: dispatchCycle, author_base_commit: authorBaseCommit, author_content_base_commit: authorContentBaseCommit, worktree_path: worktreePath, author_branch: branch, allowed_files: compiled.allowed_files, policy_sha256: compiled.policy_sha256, uuid_search_contract_version: 1, author_model: config.codex?.model ?? null, author_reasoning_effort: config.codex?.reasoning_effort ?? null };
       store.append({ event_id: `${transitionIdentity}-prepared`, type: "task_replaced", payload: { task } });
 
       try {
@@ -313,6 +319,7 @@ export async function dispatchGoalAuthors({
           sandbox: config.codex?.sandbox ?? "danger-full-access",
           approvalPolicy: config.codex?.approval_policy ?? "never",
           model: config.codex?.model ?? null,
+          reasoningEffort: config.codex?.reasoning_effort ?? null,
           clientUserMessageId: `${config.goal_id}-${task.cpc_code}-attempt-${attempt}`,
           projectId: config.codex?.project_id ?? null,
           receiptStateDir: stateDir,

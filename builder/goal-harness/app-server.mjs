@@ -53,6 +53,7 @@ export class CodexAppServerAdapter {
     sandbox = "danger-full-access",
     approvalPolicy = "never",
     model = null,
+    reasoningEffort = null,
     clientUserMessageId = null,
     projectId = null,
     receiptStateDir = null,
@@ -79,6 +80,8 @@ export class CodexAppServerAdapter {
         runtimeWorkspaceRoots: [...new Set([worktreePath, ...additionalWorkspaceRoots])],
         input: [{ type: "text", text: prompt }],
         outputSchema,
+        model,
+        effort: reasoningEffort,
         clientUserMessageId,
         sandboxPolicy: authorSandboxPolicy(worktreePath, receiptStateDir, additionalWorkspaceRoots),
       }));
@@ -107,6 +110,8 @@ export class CodexAppServerAdapter {
     additionalWorkspaceRoots = [],
     prompt,
     outputSchema,
+    model = null,
+    reasoningEffort = null,
     clientUserMessageId = null,
     receiptStateDir = null,
   }) {
@@ -118,6 +123,8 @@ export class CodexAppServerAdapter {
         runtimeWorkspaceRoots: [...new Set([worktreePath, ...additionalWorkspaceRoots])],
         input: [{ type: "text", text: prompt }],
         outputSchema,
+        model,
+        effort: reasoningEffort,
         clientUserMessageId,
         sandboxPolicy: authorSandboxPolicy(worktreePath, receiptStateDir, additionalWorkspaceRoots),
       });

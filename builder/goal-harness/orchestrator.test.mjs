@@ -89,16 +89,24 @@ for (const authorState of ["authoring", "authoring_repair"]) for (const status o
 
 for (const infrastructure of [false, true]) test(`compiled continuation permits explicit boundary referral (infrastructure=${infrastructure})`, async (t) => {
   const { root, stateDir, config } = fixture();
+  config.codex.model = "gpt-5.6-terra";
+  config.codex.reasoning_effort = "high";
   t.after(() => rmSync(root, { recursive: true, force: true }));
   const store = new GoalEventStore({ stateDir });
   const task = { ...store.rebuild().tasks[0], state: "repair_requested", thread_id: "same", worktree_path: root, infrastructure_resume_pending: infrastructure };
   store.append({ event_id: "prompt-fixture", type: "task_replaced", payload: { task } });
-  let prompt;
-  await dispatchGoalAuthors({ config, stateDir, slots: 1, adapter: { async startRepairTurn(input) { prompt = input.prompt; return { thread_id: "same", turn_id: "continued" }; } } });
+  let repairInput;
+  await dispatchGoalAuthors({ config, stateDir, slots: 1, adapter: { async startRepairTurn(input) { repairInput = input; return { thread_id: "same", turn_id: "continued" }; } } });
+  const prompt = repairInput.prompt;
+  assert.equal(repairInput.model, "gpt-5.6-terra");
+  assert.equal(repairInput.reasoningEffort, "high");
   assert.match(prompt, /For a completed PCR/u);
   assert.match(prompt, /For an explicit boundary_review referral/u);
   assert.doesNotMatch(prompt, /Fix every structured gate finding below, rerun/u);
   assert.doesNotMatch(prompt, /Resume from the files already present, complete all required checks/u);
+  const continued = new GoalEventStore({ stateDir }).rebuild().tasks[0];
+  assert.equal(continued.author_model, "gpt-5.6-terra");
+  assert.equal(continued.author_reasoning_effort, "high");
 });
 
 for (const heldState of ["queued", "preflight", "repair_requested", "retryable_failure"]) test(`held ${heldState} excluded from dispatch and resume preview`, async (t) => {
@@ -259,6 +267,8 @@ function fixture({ taskCount = 1 } = {}) {
 
 test("dispatch creates one worktree-visible task and repeated resume does not duplicate it", async () => {
   const { root, stateDir, config } = fixture();
+  config.codex.model = "gpt-5.6-terra";
+  config.codex.reasoning_effort = "high";
   const calls = [];
   const adapter = {
     async createAuthorTask(input) { calls.push(input); return { thread_id: "thread-1", turn_id: "turn-1" }; },
@@ -267,12 +277,16 @@ test("dispatch creates one worktree-visible task and repeated resume does not du
     const first = await dispatchGoalAuthors({ config, stateDir, slots: 1, adapter });
     assert.equal(first.dispatched.length, 1);
     assert.equal(calls.length, 1);
+    assert.equal(calls[0].model, "gpt-5.6-terra");
+    assert.equal(calls[0].reasoningEffort, "high");
     assert.equal(git(first.dispatched[0].worktree_path, ["rev-parse", "HEAD"]), git(root, ["rev-parse", "HEAD"]));
     const state = new GoalEventStore({ stateDir }).rebuild();
     assert.equal(state.tasks[0].state, "authoring");
     assert.equal(state.tasks[0].thread_id, "thread-1");
     assert.equal(state.tasks[0].turn_id, "turn-1");
     assert.equal(state.tasks[0].attempt, 1);
+    assert.equal(state.tasks[0].author_model, "gpt-5.6-terra");
+    assert.equal(state.tasks[0].author_reasoning_effort, "high");
 
     const second = await dispatchGoalAuthors({ config, stateDir, slots: 1, adapter });
     assert.equal(second.dispatched.length, 0);
