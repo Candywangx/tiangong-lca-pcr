@@ -766,6 +766,126 @@ test("Codex usage-limit failures are infrastructure retryable without consuming 
   }
 });
 
+test("a transient UUID direct-read failure rechecks the saved report without replacing its thread or worktree", async (t) => {
+  const { root, stateDir, config } = fixture();
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  config.retry_policy = { max_attempts: 6, max_repairs: 2 };
+  const store = new GoalEventStore({ stateDir });
+  const original = store.rebuild().tasks[0];
+  const reportPath = path.join(stateDir, "saved-report.json");
+  const report = { schema_version: 1, commit_sha: git(root, ["rev-parse", "HEAD"]), uuid_audits: [] };
+  writeFileSync(reportPath, `${JSON.stringify(report)}\n`);
+  store.append({
+    event_id: "fixture-uuid-read-retryable",
+    type: "task_replaced",
+    payload: { task: {
+      ...original,
+      state: "retryable_failure",
+      attempt: 1,
+      repair_count: 2,
+      thread_id: "thread-preserved",
+      turn_id: "turn-preserved",
+      worktree_path: root,
+      report_path: reportPath,
+      failure_code: "GOAL_UUID_DIRECT_READ_FAILED",
+      failure_message: "temporary public read failure",
+      transition_ids: ["authoring", "author_review", "uuid-read-failed"],
+    } },
+  });
+  let uuidAudits = 0;
+  const result = await harvestGoalAuthors({
+    config,
+    stateDir,
+    adapter: { async readThread() { assert.fail("saved evidence recheck must not create or read a new author turn"); } },
+    validateReportFn: () => ({ valid: true, errors: [] }),
+    auditUuidsFn: () => { uuidAudits += 1; return []; },
+    auditHybridSearchFn: () => [],
+    verifySourcesFn: async () => [],
+    reviewFn: () => ({ pcr_id: "fixture-pcr", counts: { unresolved: 0 } }),
+  });
+
+  const reviewed = result.state.tasks[0];
+  assert.equal(reviewed.state, "valid_result");
+  assert.equal(reviewed.thread_id, "thread-preserved");
+  assert.equal(reviewed.turn_id, "turn-preserved");
+  assert.equal(reviewed.worktree_path, root);
+  assert.equal(reviewed.repair_count, 2);
+  assert.equal(reviewed.evidence_recheck_count, 1);
+  assert.equal(reviewed.evidence_recheck_pending, false);
+  assert.equal(uuidAudits, 1);
+
+  const sequence = result.state.last_event_sequence;
+  const repeated = await harvestGoalAuthors({ config, stateDir, adapter: {} });
+  assert.equal(repeated.state.last_event_sequence, sequence);
+  assert.equal(uuidAudits, 1);
+});
+
+test("an unsuccessful saved UUID evidence recheck remains retryable without dispatching a replacement author", async (t) => {
+  const { root, stateDir, config } = fixture();
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  config.retry_policy = { max_attempts: 6, max_repairs: 2 };
+  const store = new GoalEventStore({ stateDir });
+  const original = store.rebuild().tasks[0];
+  const reportPath = path.join(stateDir, "saved-report.json");
+  writeFileSync(reportPath, `${JSON.stringify({ schema_version: 1, commit_sha: git(root, ["rev-parse", "HEAD"]), uuid_audits: [] })}\n`);
+  store.append({
+    event_id: "fixture-uuid-read-still-retryable",
+    type: "task_replaced",
+    payload: { task: {
+      ...original,
+      state: "retryable_failure",
+      attempt: 1,
+      repair_count: 2,
+      thread_id: "thread-preserved",
+      turn_id: "turn-preserved",
+      worktree_path: root,
+      report_path: reportPath,
+      failure_code: "GOAL_UUID_DIRECT_READ_FAILED",
+      failure_message: "temporary public read failure",
+      transition_ids: ["authoring", "author_review", "uuid-read-failed"],
+    } },
+  });
+  const retryError = new Error("public direct read is still unavailable");
+  retryError.code = "GOAL_UUID_DIRECT_READ_FAILED";
+  const harvested = await harvestGoalAuthors({
+    config,
+    stateDir,
+    adapter: {},
+    validateReportFn: () => ({ valid: true, errors: [] }),
+    auditUuidsFn: () => { throw retryError; },
+    auditHybridSearchFn: () => [],
+    verifySourcesFn: async () => [],
+    reviewFn: () => ({ pcr_id: "fixture-pcr", counts: { unresolved: 0 } }),
+  });
+  const failed = harvested.state.tasks[0];
+  assert.equal(failed.state, "retryable_failure");
+  assert.equal(failed.failure_code, "GOAL_UUID_DIRECT_READ_FAILED");
+  assert.equal(failed.thread_id, "thread-preserved");
+  assert.equal(failed.worktree_path, root);
+  assert.equal(failed.repair_count, 2);
+  assert.equal(failed.evidence_recheck_count, 1);
+  assert.equal(failed.evidence_recheck_pending, false);
+
+  let replacements = 0;
+  const resumed = await dispatchGoalAuthors({
+    config,
+    stateDir,
+    slots: 1,
+    resumeStopped: true,
+    preDispatchCheck() {},
+    adapter: {
+      async createAuthorTask() {
+        replacements += 1;
+        return { thread_id: "replacement", turn_id: "replacement-turn" };
+      },
+    },
+  });
+  assert.equal(resumed.dispatched.length, 0);
+  assert.equal(replacements, 0);
+  assert.equal(resumed.state.tasks[0].state, "retryable_failure");
+  assert.equal(resumed.state.tasks[0].thread_id, "thread-preserved");
+});
+
 test("resuming an author after a usage limit preserves its content repair budget", async () => {
   const { root, stateDir, config } = fixture();
   config.retry_policy = { max_attempts: 6, max_repairs: 2 };
