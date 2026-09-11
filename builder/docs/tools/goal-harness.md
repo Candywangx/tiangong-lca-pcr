@@ -319,3 +319,39 @@ The viewer derivation may be restored only from a same-input cache whose PCR, ma
 viewer-code, and core-code SHA-256 fingerprint and output-tree hash both match. Corruption rebuilds safely. Full
 `npm run validate` still runs once for every six-result snapshot; its lint phase performs the authoritative
 aliases/catalog checks, so integration does not repeat those identical checks immediately before validate.
+# Bounded matched-model production trial
+
+`node builder/cli/goal-model-trial.mjs register --config <goal.yaml> --plan <trial.json> --dry-run`
+previews six untouched real queued tasks after the authenticated doctor. Remove `--dry-run` to append one atomic
+registration event to the existing Goal. Repeating the identical plan is idempotent. No author is interrupted or
+dispatched by registration. The approved example is `builder/planning/model-trial-metal-20260911.json`.
+
+Use the existing `goal.mjs resume --config <goal.yaml>` entry for natural-slot dispatch. Trial tasks override only
+their actual app-server model/effort parameters; the global default and existing authors remain unchanged.
+Three pairs each contain Terra/high and Sol/high, with the same action and recorded a priori difficulty reasons.
+One original-model content repair is allowed, followed by Sol rescue for Terra within the existing repair budget.
+Infrastructure and interrupted-repair continuations retain the previous model. Trial exhaustion preserves artifacts
+for review rather than recycling the sample as a new author. Suspicious receipt findings hold new Terra dispatch
+pending adjudication, not a claim of confirmed misconduct; active authors and ordinary Sol dispatch are retained.
+
+Assignments and policy/runtime/config fingerprints are immutable. Runtime drift fails before a trial turn starts.
+Both arms use the existing shared-cache rules, with per-turn injected evidence count/fingerprint recorded; warming
+is an explicit confounder. Query-hit counts or query waiting times without reliable observations are unavailable.
+Turn telemetry comes from exact-identity, no-follow, stable session reads. Repeated cumulative snapshots are not
+summed; reset epochs and per-turn identities must be proven. Missing or ambiguous tokens/cost are unavailable, not
+zero. Cached input is a subset of input and must not be added again. Subscription quota is not a token or currency
+measurement. Failed and repair turns remain in the same sample ledger, including Sol rescue.
+
+Automatic success holds a trial task in author_review until the coordinator records `trial_semantic_review` against
+the exact report commit, with `decision: approved`, reviewer, UTC time, a truthful `model_blinded` flag and nonempty
+evidence notes in `source_support`, `uuid_applicability`, `inventory_completeness`, and `chinese_alignment`.
+The coordinator appends this through GoalEventStore under the Goal lock and releases only the corresponding hold;
+resume repeats the ordinary hard gates. A new commit invalidates this extra approval. No trial acceptance bypasses
+the normal earliest-six serial integration, complete validate, pinned Viewer publication or CAS landing.
+
+`node builder/cli/goal-model-trial.mjs report --config <goal.yaml> --trial <id>` emits JSON for individual samples,
+turns, gate findings, measurements and landing status. Separate Terra independent, Sol independent and Terra draft
+plus Sol repair; do not count rescue as independent Terra success. Report the first six before deciding on a second
+explicitly reviewed stage. Automatic extension is disabled; this pilot must not become an unbounded experiment or
+mark the production Goal complete. The supplied allocation contains only promote_legacy and cannot establish
+create_new performance.

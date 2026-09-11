@@ -10,6 +10,30 @@ import { GoalEventStore } from "./event-store.mjs";
 import { activeAuthorCount } from "./scheduler.mjs";
 import { registerMaterial, resolveMaterialsRoot } from "../lib/shared-materials.mjs";
 
+test("trial model is sent to real adapter boundary for initial and same-thread repair without changing default", async (t) => {
+  const { root, stateDir, config } = fixture();
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  config.codex.model = "gpt-5.6-sol"; config.codex.reasoning_effort = "high";
+  const store = new GoalEventStore({ stateDir });
+  let task = { ...store.rebuild().tasks[0], model_trial: { trial_id: "test", model: "gpt-5.6-terra" } };
+  store.append({ event_id: "trial-fixture", type: "task_replaced", payload: { task } });
+  const models = [];
+  const adapter = {
+    async createAuthorTask(input) { models.push([input.model, input.reasoningEffort]); return { thread_id: "same-thread", turn_id: "initial" }; },
+    async startRepairTurn(input) { assert.equal(input.threadId, "same-thread"); models.push([input.model, input.reasoningEffort]); return { thread_id: "same-thread", turn_id: `repair-${models.length}` }; },
+  };
+  task = (await dispatchGoalAuthors({ config, stateDir, slots: 1, adapter })).dispatched[0];
+  const worktree = task.worktree_path;
+  for (const repair_count of [0, 1]) {
+    store.append({ event_id: `review-${repair_count}`, type: "task_replaced", payload: { task: { ...task, state: "repair_requested", repair_count } } });
+    task = (await dispatchGoalAuthors({ config, stateDir, slots: 1, adapter })).dispatched[0];
+    assert.equal(task.worktree_path, worktree);
+  }
+  assert.deepEqual(models, [["gpt-5.6-terra", "high"], ["gpt-5.6-terra", "high"], ["gpt-5.6-sol", "high"]]);
+  assert.equal(task.trial_turns.length, 3);
+  assert.equal(config.codex.model, "gpt-5.6-sol");
+});
+
 function boundaryReport(task, commit) {
   return {
     schema_version: 1, cpc_code: task.cpc_code, product_name_en: "Example", product_name_zh: "示例", pcr_path: task.pcr_path,

@@ -18,6 +18,8 @@ import { selectGoalRuntimeBaseCommit } from "./runtime-baseline.mjs";
 import { resolveAuthorContentBaseCommit } from "./author-baseline.mjs";
 import { auditBoundaryReview } from "./boundary-review.mjs";
 import { ensureMaterialsRoot, queryMaterials, resolveMaterialsRoot } from "../lib/shared-materials.mjs";
+import { trialModel, trialDispatchState, observeTrialTurn, observeTrialReview, trialCacheObservation, assertTrialControls, trialSemanticApproved } from "./model-trial.mjs";
+import { readTrialTurnUsage } from "./trial-usage.mjs";
 
 export async function dispatchGoalAuthors({
   config,
@@ -53,7 +55,7 @@ export async function dispatchGoalAuthors({
       state = store.rebuild();
     }
     if (resumeStopped) {
-      for (const failed of state.tasks.filter((task) => !task.coordinator_hold
+      for (const failed of trialDispatchState(state).tasks.filter((task) => !task.coordinator_hold
         && task.state === "retryable_failure"
         && !isSavedEvidenceRecheckTask(task)
         && (task.attempt ?? 0) < (config.retry_policy?.max_attempts ?? 3))) {
@@ -153,8 +155,13 @@ export async function dispatchGoalAuthors({
       state = store.rebuild();
       let task = state.tasks.find((entry) => entry.id === selectedTask.id);
       if (!task) continue;
+      assertTrialControls(task, config);
+      const authorConfig = trialModel(task, config);
       const materialsRoot = ensureMaterialsRoot(resolveMaterialsRoot({ cwd: config.project_root, root: config.tools?.materials_root }));
       const materialsQuery = queryMaterials({ root: materialsRoot, request: { product: task.product_name_en }, limit: 5 });
+      const selectedUuids = selectRelevantCommonUuids({ stateDir, task });
+      const selectedSources = selectRelevantSourceReceipts({ stateDir, task, state });
+      const cacheObservation = trialCacheObservation({ uuids: selectedUuids, sources: selectedSources, materials: materialsQuery });
       if (task?.state === "repair_requested") {
         const resumeInfrastructure = task.infrastructure_resume_pending === true;
         const resumeExistingRepair = task.repair_resume_pending === true;
@@ -173,8 +180,8 @@ export async function dispatchGoalAuthors({
             official_source_seeds: state.official_source_seeds?.[task.cpc_code] ?? state.default_official_source_seeds ?? [],
           },
           policyPromptPath: config.policy_prompt_path,
-          verifiedCommonUuids: selectRelevantCommonUuids({ stateDir, task }),
-          verifiedSourceReceipts: selectRelevantSourceReceipts({ stateDir, task, state }),
+          verifiedCommonUuids: selectedUuids,
+          verifiedSourceReceipts: selectedSources,
           tools: { ...config.tools, project_root: config.project_root, config_path: path.resolve(state.config_path ?? config.config_path ?? "") },
           materials: materialsQuery,
         });
@@ -198,8 +205,8 @@ export async function dispatchGoalAuthors({
           additionalWorkspaceRoots: [materialsRoot],
           prompt,
           outputSchema,
-          model: config.codex?.model ?? null,
-          reasoningEffort: config.codex?.reasoning_effort ?? null,
+          model: authorConfig.model ?? null,
+          reasoningEffort: authorConfig.reasoning_effort ?? null,
           clientUserMessageId: repairIdentity,
           receiptStateDir: stateDir,
         });
@@ -209,8 +216,8 @@ export async function dispatchGoalAuthors({
         task = {
           ...task,
           ...visible,
-          author_model: config.codex?.model ?? null,
-          author_reasoning_effort: config.codex?.reasoning_effort ?? null,
+          author_model: authorConfig.model ?? null,
+          author_reasoning_effort: authorConfig.reasoning_effort ?? null,
           repair_count: resumeInfrastructure ? (task.repair_count ?? 0) : repairNumber,
           repair_resume_count: resumeInfrastructure ? (task.repair_resume_count ?? 0) : repairResumeNumber,
           repair_resume_pending: false,
@@ -247,6 +254,7 @@ export async function dispatchGoalAuthors({
               gate_findings: task.pending_gate_findings ?? [],
             }]),
         };
+        task = observeTrialTurn(task, { started_at: startedAt, cache: cacheObservation });
         store.append({ event_id: `${repairIdentity}-started`, type: "task_replaced", payload: { task } });
         dispatched.push(task);
         continue;
@@ -273,8 +281,8 @@ export async function dispatchGoalAuthors({
           official_source_seeds: state.official_source_seeds?.[task.cpc_code] ?? state.default_official_source_seeds ?? [],
         },
         policyPromptPath: config.policy_prompt_path,
-        verifiedCommonUuids: selectRelevantCommonUuids({ stateDir, task }),
-        verifiedSourceReceipts: selectRelevantSourceReceipts({ stateDir, task, state }),
+        verifiedCommonUuids: selectedUuids,
+        verifiedSourceReceipts: selectedSources,
         tools: { ...config.tools, project_root: config.project_root, config_path: path.resolve(state.config_path ?? config.config_path ?? "") },
         materials: materialsQuery,
       });
@@ -294,8 +302,8 @@ export async function dispatchGoalAuthors({
         branch,
         policy_sha256: compiled.policy_sha256,
         allowed_files: compiled.allowed_files,
-        author_model: config.codex?.model ?? null,
-        author_reasoning_effort: config.codex?.reasoning_effort ?? null,
+        author_model: authorConfig.model ?? null,
+        author_reasoning_effort: authorConfig.reasoning_effort ?? null,
         prepared_at: new Date().toISOString(),
       }, null, 2)}\n`);
 
@@ -306,7 +314,7 @@ export async function dispatchGoalAuthors({
           at: new Date().toISOString(),
         });
       }
-      task = { ...task, attempt, dispatch_cycle: dispatchCycle, author_base_commit: authorBaseCommit, author_content_base_commit: authorContentBaseCommit, worktree_path: worktreePath, author_branch: branch, allowed_files: compiled.allowed_files, policy_sha256: compiled.policy_sha256, uuid_search_contract_version: 1, author_model: config.codex?.model ?? null, author_reasoning_effort: config.codex?.reasoning_effort ?? null };
+      task = { ...task, attempt, dispatch_cycle: dispatchCycle, author_base_commit: authorBaseCommit, author_content_base_commit: authorContentBaseCommit, worktree_path: worktreePath, author_branch: branch, allowed_files: compiled.allowed_files, policy_sha256: compiled.policy_sha256, uuid_search_contract_version: 1, author_model: authorConfig.model ?? null, author_reasoning_effort: authorConfig.reasoning_effort ?? null };
       store.append({ event_id: `${transitionIdentity}-prepared`, type: "task_replaced", payload: { task } });
 
       try {
@@ -318,8 +326,8 @@ export async function dispatchGoalAuthors({
           outputSchema: compiled.output_schema,
           sandbox: config.codex?.sandbox ?? "danger-full-access",
           approvalPolicy: config.codex?.approval_policy ?? "never",
-          model: config.codex?.model ?? null,
-          reasoningEffort: config.codex?.reasoning_effort ?? null,
+          model: authorConfig.model ?? null,
+          reasoningEffort: authorConfig.reasoning_effort ?? null,
           clientUserMessageId: `${config.goal_id}-${task.cpc_code}-attempt-${attempt}`,
           projectId: config.codex?.project_id ?? null,
           receiptStateDir: stateDir,
@@ -330,6 +338,7 @@ export async function dispatchGoalAuthors({
           at: new Date().toISOString(),
         });
         task = { ...task, ...visible, dispatched_at: new Date().toISOString() };
+        task = observeTrialTurn(task, { started_at: task.dispatched_at, cache: cacheObservation });
         store.append({ event_id: `${transitionIdentity}-dispatched`, type: "task_replaced", payload: { task } });
         dispatched.push(task);
       } catch (error) {
@@ -353,6 +362,7 @@ export async function dispatchGoalAuthors({
 }
 
 function selectDispatchTasks(state, slots) {
+  state = trialDispatchState(state);
   const repairRequests = state.tasks.filter((task) => !task.coordinator_hold && task.state === "repair_requested" && task.thread_id && task.worktree_path);
   const repairCapacity = Math.max(0, slots - activeAuthorCount(state.tasks));
   const selectedRepairs = repairRequests.slice(0, repairCapacity);
@@ -451,6 +461,11 @@ export async function harvestGoalAuthors({
           || (Boolean(task.previous_thread_ids?.length) && task.repair_history?.at(-1)?.ended_at == null);
         const response = await adapter.readThread({ threadId: task.thread_id, includeTurns: true,
           expectedTurnId: task.turn_id, worktreePath: task.worktree_path });
+        if (task.model_trial) {
+          const usage = readTrialTurnUsage({ sessionPath: response.thread?.path, sessionsRoot: adapter.sessionsRoot,
+            threadId: task.thread_id, turnId: task.turn_id, worktreePath: task.worktree_path });
+          task = { ...task, trial_turns: (task.trial_turns ?? []).map(t => t.thread_id === task.thread_id && t.turn_id === task.turn_id ? { ...t, usage, tokens: usage.tokens ?? "unavailable" } : t) };
+        }
         if (response.session_recovery) task = { ...task, session_recovery: response.session_recovery };
         let extracted;
         try {
@@ -492,6 +507,7 @@ export async function harvestGoalAuthors({
                   : "Continue from the preserved worktree in the same visible thread and finish the machine report."),
             }],
           };
+          task = observeTrialReview(task, { ok: false, findings: task.pending_gate_findings, at: now().toISOString(), durationMs: "unavailable" });
           store.append({ event_id: `${timeoutIdentity}-recorded`, type: "task_replaced", payload: { task } });
           failures.push(task);
           continue;
@@ -517,6 +533,7 @@ export async function harvestGoalAuthors({
               remediation: "Keep the visible thread and worktree intact; resume only after Codex usage capacity is available again.",
             }],
           };
+          task = observeTrialReview(task, { ok: false, findings: task.pending_gate_findings, at: now().toISOString(), durationMs: "unavailable" });
           store.append({ event_id: `${failureIdentity}-recorded`, type: "task_replaced", payload: { task } });
           failures.push(task);
           continue;
@@ -543,6 +560,7 @@ export async function harvestGoalAuthors({
                   : "Resume in the same visible thread and preserved worktree."),
             }],
           };
+          task = observeTrialReview(task, { ok: false, findings: task.pending_gate_findings, at: now().toISOString(), durationMs: "unavailable" });
           store.append({ event_id: `${failureIdentity}-recorded`, type: "task_replaced", payload: { task } });
           failures.push(task);
           continue;
@@ -560,6 +578,7 @@ export async function harvestGoalAuthors({
         report = JSON.parse(readFileSync(task.report_path, "utf8"));
       }
       if (task.coordinator_hold) continue;
+      const trialReviewStarted = Date.now();
       try {
         const unavailableRows = Array.isArray(report?.inventory?.unresolved)
           ? report.inventory.unresolved.filter((entry) => entry?.reason_code === "tiangong_cli_unavailable") : [];
@@ -604,6 +623,14 @@ export async function harvestGoalAuthors({
           report,
           stateDir,
         });
+        if (!trialSemanticApproved(task, report.commit_sha)) {
+          task = observeTrialReview(task, { ok: true, at: now().toISOString(), durationMs: Date.now() - trialReviewStarted });
+          task = { ...task, validation_result: review, evidence_audit: evidenceAudit,
+            coordinator_hold: { reason: "GOAL_TRIAL_SEMANTIC_REVIEW_REQUIRED", commit_sha: report.commit_sha },
+            trial_automatic_gates_passed_at: now().toISOString() };
+          store.append({ event_id: `${reviewIdentity}-trial-semantic-review`, type: "task_replaced", payload: { task } });
+          continue;
+        }
         task = applyTaskTransition(task, { transition_id: `${reviewIdentity}-valid`, to: "valid_result", at: new Date().toISOString() });
         task = {
           ...task,
@@ -619,6 +646,7 @@ export async function harvestGoalAuthors({
           pending_gate_findings: [],
         };
         if (task.evidence_recheck_pending) task = finishEvidenceRecheck(task, { status: "valid_result" }, now().toISOString());
+        task = observeTrialReview(task, { ok: true, at: now().toISOString(), durationMs: Date.now() - trialReviewStarted });
         store.append({ event_id: `${reviewIdentity}-valid-result`, type: "task_replaced", payload: { task } });
         state = store.rebuild();
         const verifiedCommonUuids = mergeVerifiedCommonUuids(state.verified_common_uuids, evidenceAudit.uuid_reads);
@@ -668,6 +696,7 @@ export async function harvestGoalAuthors({
         if (task.evidence_recheck_pending) {
           task = finishEvidenceRecheck(task, { status: "retryable_failure", failure_code: task.failure_code }, now().toISOString());
         }
+        task = observeTrialReview(task, { ok: false, findings, at: now().toISOString(), durationMs: Date.now() - trialReviewStarted });
         store.append({ event_id: `${reviewIdentity}-invalid-result`, type: "task_replaced", payload: { task } });
         failures.push(task);
       }

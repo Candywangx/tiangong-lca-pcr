@@ -63,8 +63,8 @@ export class GoalEventStore {
       previous_hash: previous?.hash ?? null,
     };
     const event = { ...unsigned, hash: sha256(stableJson(unsigned)) };
-    durableAppend(this.eventsPath, `${JSON.stringify(event)}\n`);
     const state = reduceEvent(projection.state, event);
+    durableAppend(this.eventsPath, `${JSON.stringify(event)}\n`);
     atomicWriteJson(this.statePath, state);
     this.projectionCache = {
       signature: eventLogSignature(this.eventsPath),
@@ -129,7 +129,14 @@ function reduceEvent(state, event) {
     last_event_hash: event.hash,
     updated_at: event.at,
   };
-  if (event.type === "scheduling_stopped") {
+  if (event.type === "model_trial_registered") {
+    const trial = event.payload.trial;
+    next.model_trials = [...(next.model_trials ?? []), trial];
+    const assignments = new Map(trial.assignments.map(a => [a.task_id, a]));
+    next.tasks = next.tasks.map(task => assignments.has(task.id)
+      ? { ...task, model_trial: { ...assignments.get(task.id), trial_id: trial.id, controls: trial.controls } }
+      : task);
+  } else if (event.type === "scheduling_stopped") {
     next.stopped = true;
   } else if (event.type === "scheduling_resumed") {
     next.stopped = false;
@@ -174,6 +181,10 @@ function reduceEvent(state, event) {
     const replacements = new Map(event.payload.tasks.map(task => [task.id, task]));
     next.tasks = (next.tasks ?? []).map(task => replacements.get(task.id) ?? task);
   } else if (event.type === "task_replaced") {
+    const previous = next.tasks.find(task => task.id === event.payload.task.id);
+    if (previous?.model_trial && stableJson(previous.model_trial) !== stableJson(event.payload.task.model_trial)) {
+      throw new GoalHarnessError("GOAL_MODEL_TRIAL_IMMUTABLE", "Trial assignment is immutable; record model switches on turns, not assignments.");
+    }
     next.tasks = (next.tasks ?? []).map((task) => task.id === event.payload.task.id ? event.payload.task : task);
   } else if (event.type === "verified_common_uuids_updated") {
     next.verified_common_uuids = event.payload.verified_common_uuids;
