@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -187,5 +187,43 @@ test("runtime installation advances to a later landed snapshot even when Harness
     try { git(root, ["worktree", "remove", "--force", sourceRoot]); } catch {}
     rmSync(sourceRoot, { recursive: true, force: true });
     rmSync(root, { recursive: true, force: true });
+  }
+});
+
+// Exercise installed entry points, not only the path allowlist: both commands
+// eagerly import their complete runtime and Schema dependency graphs.
+test("installed runtime contains the complete measurement and preparation commands", t => {
+  const root = mkdtempSync(path.join(tmpdir(), "goal-runtime-preflight-"));
+  const authorRoot = `${root}-author`;
+  t.after(() => {
+    try { git(root, ["worktree", "remove", "--force", authorRoot]); } catch {}
+    rmSync(authorRoot, {recursive:true,force:true});
+    rmSync(root, {recursive:true,force:true});
+  });
+  const files = [
+    "builder/cli/index.mjs", "builder/cli/goal-prepare-report.mjs",
+    "builder/lib/pcr-check.mjs", "builder/lib/measurement-consistency.mjs", "builder/lib/lint-rules.mjs",
+    "builder/schemas/goal-author-draft.schema.json", "builder/schemas/goal-author-submission.schema.json",
+    "builder/goal-harness/report-preparation.mjs", "builder/goal-harness/receipt-integrity.mjs",
+    "builder/goal-harness/artifact-io.mjs", "builder/goal-harness/author-submission.mjs", "package.json",
+  ];
+  cpSync(new URL("../", import.meta.url), path.join(root,"builder"), {recursive:true});
+  cpSync(new URL("../../packages/pcr-core", import.meta.url), path.join(root,"packages/pcr-core"), {recursive:true});
+  for (const file of files) rmSync(path.join(root,file), {force:true});
+  writeFileSync(path.join(root,".gitignore"),"library/.pcr-builder-state/\nnode_modules/\n");
+  git(root,["init","-q"]); git(root,["config","user.name","Goal Test"]); git(root,["config","user.email","goal@example.invalid"]);
+  git(root,["add","."]); git(root,["commit","-qm","baseline runtime"]);
+  const baseline=git(root,["rev-parse","HEAD"]);
+  for (const file of files) writeFileSync(path.join(root,file),readFileSync(new URL(`../../${file}`,import.meta.url)));
+  git(root,["add","."]);git(root,["commit","-qm","new preflight runtime"]);
+  const stateDir=path.join(root,"library/.pcr-builder-state/goals/fixture");
+  new GoalEventStore({stateDir}).initialize({goal_id:"fixture",baseline:{commit:baseline},tasks:[],snapshots:[]});
+  const runtime=ensureGoalRuntimeBaseline({projectRoot:root,sourceRoot:root,stateDir,goalId:"fixture"});
+  assert.deepEqual(runtime.paths,[...files].sort());
+  git(root,["worktree","add","--detach","-q",authorRoot,runtime.commit]);
+  symlinkSync(new URL("../../node_modules",import.meta.url),path.join(authorRoot,"node_modules"));
+  for (const [script,expected] of [["pcr:check",/measurement/i],["goal:prepare-report",/draft/i]]) {
+    const output=execFileSync("npm",["--silent","run",script,"--","--help"],{cwd:authorRoot,encoding:"utf8"});
+    assert.match(output,expected);
   }
 });

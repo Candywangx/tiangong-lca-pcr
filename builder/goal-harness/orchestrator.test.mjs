@@ -235,7 +235,7 @@ function fixture({ taskCount = 1 } = {}) {
   const stateDir = path.join(root, "library/.pcr-builder-state/goals/fixture");
   const tasks = Array.from({ length: taskCount }, (_, index) => ({
     id: `cpc:3.0:${41111 + index}`, cpc_code: String(41111 + index), product_name_en: `Product ${index + 1}`, product_name_zh: `产品 ${index + 1}`,
-    pcr_path: "library/pcrs/category/item", queue_action: "promote_legacy", state: "queued", queue_order: index + 1,
+    pcr_path: "library/pcrs/category/item", queue_action: "promote_legacy", state: "queued", queue_order: index + 1, authoring_contract_version: 1,
   }));
   new GoalEventStore({ stateDir }).initialize({
     schema_version: 1,
@@ -1683,4 +1683,29 @@ test("repair-limit replacement preserves but does not reuse an unauthorized dirt
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
+});
+
+test('fresh authors pin contract 2 before dispatch; legacy author tasks retain contract 1', async()=>{
+ const f=fixture();
+ try {
+  const store=new GoalEventStore({stateDir:f.stateDir}),task=store.rebuild().tasks[0];delete task.authoring_contract_version;
+  store.append({event_id:'unstarted-v2-fixture',type:'task_replaced',payload:{task}});
+  let call;
+  const result=await dispatchGoalAuthors({...f,slots:1,adapter:{async createAuthorTask(input){call=input;return {thread_id:'new-thread',turn_id:'new-turn'};}}});
+  assert.equal(result.dispatched[0].authoring_contract_version,2);
+  assert.equal(call.outputSchema.properties.schema_version.const,2);
+  assert.match(call.prompt,/pcr:check/);
+ }finally{rmSync(f.root,{recursive:true,force:true});}
+});
+test('new contract intake cannot bypass preparation with a legacy full report',async()=>{
+ const f=fixture();
+ try{
+  const store=new GoalEventStore({stateDir:f.stateDir}),original=store.rebuild().tasks[0];
+  const task={...original,authoring_contract_version:2,state:'author_review',attempt:1,turn_id:'t',worktree_path:f.root,author_submission:{schema_version:1},report_path:'/must-not-read-legacy-path'};
+  store.append({event_id:'v2-unprepared',type:'task_replaced',payload:{task}});
+  let accepted=0;
+  const result=await harvestGoalAuthors({...f,adapter:{},reviewFn:()=>{accepted++;return {valid:true};},validateReportFn:()=>({valid:true}),auditUuidsFn:()=>[],auditHybridSearchFn:()=>[],verifySourcesFn:()=>[]});
+  assert.equal(accepted,0);assert.equal(result.valid_results.length,0);
+  assert.equal(new GoalEventStore({stateDir:f.stateDir}).rebuild().tasks[0].pending_gate_findings[0].code,'GOAL_REPORT_REFERENCE_INVALID');
+ }finally{rmSync(f.root,{recursive:true,force:true});}
 });

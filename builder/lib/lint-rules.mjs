@@ -32,6 +32,7 @@ import {
   structuredProjectionYaml,
 } from "./markdown-projection.mjs";
 import { inspectPublishedRevisionState } from "./published-revision-state.mjs";
+import { checkMeasurementConsistency } from "./measurement-consistency.mjs";
 import { PCR_EN_FILE, PCR_ZH_FILE } from "./scaffold-templates.mjs";
 import { REQUIRED_DIRS } from "./builder-constants.mjs";
 import { validateBuilderContract } from "./schema-contracts.mjs";
@@ -719,11 +720,16 @@ export function inspectPcrDirectory({
   structuredText: structuredTextOverride,
   checkManifestLifecycle = true,
   checkBilingualRuleAlignment = false,
+  measurementPolicy = "report",
 } = {}) {
+  if (!["report", "enforce"].includes(measurementPolicy)) {
+    throw new Error('measurementPolicy must be "report" or "enforce".');
+  }
   const resolvedRoot = rootFromOptions({ root });
   const directory = path.resolve(String(pcrDir));
   const problems = [];
   const warnings = [];
+  let measurement = null;
   const manifestPath = path.join(directory, manifestFileName);
   const inputSpecifications = [
     {
@@ -774,6 +780,7 @@ export function inspectPcrDirectory({
       problems,
       warnings,
       projection: null,
+      measurement,
       expectedStructuredText: null,
       managedInputsSafe: false,
     };
@@ -805,6 +812,7 @@ export function inspectPcrDirectory({
       problems,
       warnings,
       projection: null,
+      measurement,
       expectedStructuredText: null,
       managedInputsSafe: false,
     };
@@ -815,6 +823,7 @@ export function inspectPcrDirectory({
       problems,
       warnings,
       projection: null,
+      measurement,
       expectedStructuredText: null,
       managedInputsSafe: true,
     };
@@ -839,6 +848,7 @@ export function inspectPcrDirectory({
       problems,
       warnings,
       projection: null,
+      measurement,
       expectedStructuredText: null,
       managedInputsSafe: true,
     };
@@ -934,6 +944,28 @@ export function inspectPcrDirectory({
   const expectedStructuredText = structuredProjectionYaml(projection, {
     sourceMarkdown: markdownText,
   });
+  const measurementProblems = [];
+  if (material) {
+    measurement = checkMeasurementConsistency({
+      english: markdownText,
+      chinese: inputTexts.get(PCR_ZH_FILE),
+    });
+    if (measurementPolicy === "report" && measurement.status !== "pass") {
+      warnings.push(
+        `${toRepoRelative(resolvedRoot, directory)}: MEASUREMENT_REPORT: ` +
+          `status=${measurement.status}; findings=${measurement.findings.length}; ` +
+          `skipped=${measurement.coverage.skipped.length}; details are available in inspection.measurement`,
+      );
+    } else if (measurementPolicy === "enforce") {
+      for (const finding of measurement.findings) {
+        measurementProblems.push(
+          `${toRepoRelative(resolvedRoot, directory)}: ${finding.code} ` +
+            `(${finding.language}${finding.row_id ? `; row ${finding.row_id}` : ""}): ${finding.message}`,
+        );
+      }
+      problems.push(...measurementProblems);
+    }
+  }
   if (material) {
     const expectedProjection = parseYaml(expectedStructuredText);
     for (const issue of materialProjectionCompletenessIssues(
@@ -980,6 +1012,12 @@ export function inspectPcrDirectory({
   return {
     problems,
     warnings,
+    measurement,
+    // Only unresolved measurement semantics may request manual review. Definite
+    // Schema, lifecycle, projection or other Builder errors take precedence.
+    measurementReviewRequired: measurement?.status === "manual_review"
+      && measurementProblems.length > 0
+      && problems.length === measurementProblems.length,
     projection,
     expectedStructuredText,
     managedInputsSafe: true,

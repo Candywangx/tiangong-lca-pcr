@@ -35,7 +35,7 @@ The AI produces the current best PCR from available evidence. This workflow writ
 5. Immediately before authoring `pcr.en-US.md` content, read `builder/templates/pcr.en-US.md.hbs`.
 6. Write scope, exclusions, product category identity, typical market state, candidate processes, and likely flows from the current PCR synthesis.
 7. Define product category identity with canonical PCR id, classification refs, covered products, excluded products, representative product, production route, and market state.
-8. Define functional unit and reference flow objects using `Field | Value` tables.
+8. Determine the reference quantity and inventory/collection denominator before detailed bilingual authoring. Define functional unit and reference flow objects using `Field | Value` tables. If collection is per machine and output per kg, follow `builder/docs/methods/measurement-unit-rules.md`: define measured net mass M and its protocol plus conversion; no invented numeric mass is required.
 9. Use Tiangong CLI or database search to select UUID-bearing flow, flow property, and unit group references. Capture
    both English and Chinese `baseName` values from the direct-read record when available. Unresolved UUIDs stay blank
    and are tracked in `manifest.yaml` review metadata.
@@ -71,7 +71,7 @@ The AI produces the current best PCR from available evidence. This workflow writ
 26. Set `review_metadata.inventory_contract.atomic_flows: v1` and
     `review_metadata.inventory_contract.localized_flow_names: tiangong_zh_v1` in `manifest.yaml`; these make
     collection-flow and untranslated Chinese-display findings blocking for the new PCR.
-27. Run `npm run pcr:sync-structured -- --pcr <library/pcrs/...>`.
+27. Run `npm run pcr:sync-structured -- --pcr <library/pcrs/...>` twice; the second sync must be clean. Then run `npm run pcr:check -- --pcr <library/pcrs/...> --format json`. Correct mechanical errors in the current turn and repeat sync/check. An unsupported relationship is pending review, not a pass.
 28. Run `npm run validate`.
 29. Update `manifest.yaml` lifecycle fields with `npm run pcr:lifecycle -- --pcr <library/pcrs/...> ...` when content maturity or translation state changes.
 30. Only if this task adds or accepts a classification mapping edge, and only after semantic scope and methodology
@@ -85,3 +85,8 @@ The AI produces the current best PCR from available evidence. This workflow writ
 - Boundary abstraction: declared starting condition, role, same-category recursive input rule, classification scope, required disclosure, and upstream dataset requirement.
 - Foreground production basis: process map, inventory rows, collection protocols, calculation rules, data quality requirements, and source ids.
 - Published dataset profile: role, downstream use as `secondary_dataset` and/or `background_dataset`, allowed use, excluded use, required metadata, required quality disclosure, and update trigger.
+
+For a Goal task pinned to authoring contract 2, finish the four-file commit, write the author draft, then run
+`goal:prepare-report` as described in `builder/docs/tools/goal-harness.md#prepared-reports-for-new-authors`.
+Return its JSON reference verbatim. Program preparation preserves the draft and copies finalized rejection reasons;
+independent acceptance and the existing repair limit still apply. Existing running tasks keep their original protocol.

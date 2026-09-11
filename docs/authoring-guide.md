@@ -197,3 +197,10 @@ unchanged. Success installs the current files, immutable `releases/<semver>/` sn
 and append-only history together through the recoverable directory transaction. Never edit a published/deprecated
 current workspace or managed release artifact in place; run `pcr:recover` when an interrupted mutation reports
 recovery state.
+
+For new authors and explicitly selected draft/revision updates, sync the target then run `npm run pcr:check -- --pcr
+<library/pcrs/...> --workspace <current|revision> --format json` before full validation. Builder checks the declared
+measurement relationship using finite rules; missing conversion is an error and unsupported prose requires review.
+Symbolic machine mass M is a collection requirement, not a fabricated numeric input. Goal contract-2 tasks additionally
+prepare their report from finalized receipts and submit its reference; follow the assigned Harness prompt and
+`builder/docs/tools/goal-harness.md`.
