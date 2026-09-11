@@ -334,7 +334,9 @@ Infrastructure and interrupted-repair continuations retain the previous model. T
 for review rather than recycling the sample as a new author. Suspicious receipt findings hold new Terra dispatch
 pending adjudication, not a claim of confirmed misconduct; active authors and ordinary Sol dispatch are retained.
 
-Assignments and policy/runtime/config fingerprints are immutable. Runtime drift fails before a trial turn starts.
+Assignments are immutable. Policy/runtime/config fingerprints freeze at the first sample turn. A tested preparation
+fix may revise fingerprints only through an audited `model_trial_controls_prelaunch` event while all six samples
+are still untouched queued tasks; the old controls remain in history. Runtime drift fails before a trial turn starts.
 Both arms use the existing shared-cache rules, with per-turn injected evidence count/fingerprint recorded; warming
 is an explicit confounder. Query-hit counts or query waiting times without reliable observations are unavailable.
 Turn telemetry comes from exact-identity, no-follow, stable session reads. Repeated cumulative snapshots are not

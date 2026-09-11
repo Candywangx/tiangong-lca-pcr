@@ -136,6 +136,19 @@ function reduceEvent(state, event) {
     next.tasks = next.tasks.map(task => assignments.has(task.id)
       ? { ...task, model_trial: { ...assignments.get(task.id), trial_id: trial.id, controls: trial.controls } }
       : task);
+  } else if (event.type === "model_trial_controls_prelaunch") {
+    const trial = next.model_trials?.find(t => t.id === event.payload.trial_id);
+    const samples = next.tasks.filter(t => t.model_trial?.trial_id === event.payload.trial_id);
+    if (!trial || samples.length !== 6 || samples.some(t => t.state !== "queued" || t.thread_id || t.worktree_path || t.attempt || t.trial_turns?.length)) {
+      throw new GoalHarnessError("GOAL_TRIAL_ALREADY_STARTED", "Trial controls cannot change after a sample has started.");
+    }
+    if (stableJson(trial.controls) !== stableJson(event.payload.previous_controls) || !event.payload.reason
+      || ["harness_sha256", "policy_sha256", "config_sha256", "cache_sha256"].some(k => !/^[a-f0-9]{64}$/.test(event.payload.controls?.[k] ?? ""))) {
+      throw new GoalHarnessError("GOAL_TRIAL_CONTROL_CONFLICT", "Trial prelaunch control revision requires exact previous fingerprints and a reason.");
+    }
+    next.model_trials = next.model_trials.map(t => t.id !== trial.id ? t : { ...t, controls: event.payload.controls,
+      control_history: [...(t.control_history ?? []), { controls: t.controls, at: event.at, reason: event.payload.reason }] });
+    next.tasks = next.tasks.map(t => t.model_trial?.trial_id !== trial.id ? t : { ...t, model_trial: { ...t.model_trial, controls: event.payload.controls } });
   } else if (event.type === "scheduling_stopped") {
     next.stopped = true;
   } else if (event.type === "scheduling_resumed") {

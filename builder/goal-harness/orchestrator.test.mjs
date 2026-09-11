@@ -10,6 +10,16 @@ import { GoalEventStore } from "./event-store.mjs";
 import { activeAuthorCount } from "./scheduler.mjs";
 import { registerMaterial, resolveMaterialsRoot } from "../lib/shared-materials.mjs";
 
+test("prepared worktrees never add a seventh author when six slots are active", async (t) => {
+  const { root, stateDir, config } = fixture({ taskCount: 7 });
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const store = new GoalEventStore({ stateDir });
+  for (const [i, task] of store.rebuild().tasks.entries()) store.append({ event_id: `capacity-${i}`, type: "task_replaced", payload: { task: { ...task,
+    state: i < 6 ? "authoring" : "preflight", thread_id: i < 6 ? `thread-${i}` : null, worktree_path: root } } });
+  const result = await dispatchGoalAuthors({ config, stateDir, slots: 6, dryRun: true, adapter: {} });
+  assert.deepEqual(result.would_dispatch, []);
+});
+
 test("trial model is sent to real adapter boundary for initial and same-thread repair without changing default", async (t) => {
   const { root, stateDir, config } = fixture();
   t.after(() => rmSync(root, { recursive: true, force: true }));

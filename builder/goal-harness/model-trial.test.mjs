@@ -36,6 +36,19 @@ test("trial registration is one atomic replayable event; duplicate registration 
   assert.equal(new GoalEventStore({ stateDir }).rebuild().last_event_sequence, 1);
 });
 
+test("protocol fingerprint can be audited before first sample only, never during a running trial", (t) => {
+  const stateDir = mkdtempSync(path.join(tmpdir(), "trial-protocol-"));
+  t.after(() => rmSync(stateDir, { recursive: true, force: true }));
+  const store = new GoalEventStore({ stateDir }); store.initialize({ tasks }); store.append(event());
+  const revised = { ...controls, harness_sha256: "e".repeat(64) };
+  store.append({ event_id: "prelaunch-fix", type: "model_trial_controls_prelaunch", payload: { trial_id: "trial-1", previous_controls: controls, controls: revised, reason: "Fix bounded capacity before any sample starts" } });
+  assert.equal(store.rebuild().tasks[0].model_trial.controls.harness_sha256, revised.harness_sha256);
+  const task = { ...store.rebuild().tasks[0], state: "authoring", thread_id: "started" };
+  store.append({ event_id: "started", type: "task_replaced", payload: { task } });
+  assert.throws(() => store.append({ event_id: "late-fix", type: "model_trial_controls_prelaunch", payload: { trial_id: "trial-1", previous_controls: revised, controls, reason: "too late" } }), /started/i);
+  assert.equal(new GoalEventStore({ stateDir }).rebuild().last_event_sequence, 3);
+});
+
 test("reject started task, duplicate PCR, unbalanced allocation, changed action and unbounded sample count", () => {
   assert.throws(() => event({ tasks: tasks.map((t, i) => i ? t : { ...t, state: "authoring", thread_id: "existing" }) }));
   assert.throws(() => event({ tasks: tasks.map((t, i) => i === 1 ? { ...t, pcr_path: tasks[0].pcr_path } : t) }));

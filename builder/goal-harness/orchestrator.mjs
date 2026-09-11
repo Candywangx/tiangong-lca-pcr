@@ -367,7 +367,8 @@ function selectDispatchTasks(state, slots) {
   const repairCapacity = Math.max(0, slots - activeAuthorCount(state.tasks));
   const selectedRepairs = repairRequests.slice(0, repairCapacity);
   const prepared = state.tasks.filter((task) => !task.coordinator_hold && task.state === "preflight" && task.worktree_path && !task.thread_id);
-  return [...selectedRepairs, ...prepared, ...dispatchCandidates(state.tasks, { slots: slots - selectedRepairs.length })].slice(0, slots);
+  const liveCapacity = Math.max(0, slots - activeAuthorCount(state.tasks.filter(task => task.state !== "preflight")));
+  return [...selectedRepairs, ...prepared, ...dispatchCandidates(state.tasks, { slots: slots - selectedRepairs.length })].slice(0, liveCapacity);
 }
 
 function previewResumedState({ config, state }) {
