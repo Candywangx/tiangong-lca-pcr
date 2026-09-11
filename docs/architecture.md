@@ -290,9 +290,20 @@ builder/AGENTS.md + builder/docs/index.md
   -> unpublished: 编写 top-level pcr.*.md
   -> published: pcr:revise --version <target> 后只编写 revision/pcr.*.md
   -> npm run pcr:sync-structured -- --pcr <library/pcrs/...> --workspace <current|revision>
+  -> 新作者或选定草稿/修订：pcr:check --workspace <current|revision>
   -> npm run validate
   -> lifecycle / bump(unpublished current only) / publish when applicable
 ```
+
+Builder 的通用检查层复用参考数量、清单基准、采集协议和计算规则，检查双语计量关系。
+只读 `pcr:check` 对指定目标执行门禁；全仓 lint 对历史记录只报告新增计量发现。支持的有限关系
+通过后才能自动判合格，缺换算为错误，无法确定的关系为待审核；若同时有过期投影等明确错误，先报错误。
+机器重量 M 可以是后续数据生产时测量的变量，PCR 必须规定其测量方法、净重/配置范围和换算关系。
+
+新建且尚未启动的 Goal 作者任务固定 `authoring_contract_version: 2`：作者定稿凭据决定，程序保留
+草稿并从凭据组装拒绝字段，执行真实检查后生成绑定任务、turn、提交和文件哈希的报告。作者提交
+引用，独立验收重新读取并核验，恢复验收也不跳过校验。旧任务保留原协议和修复次数，生产推广由
+主调度选择自然空出的槽位试用。详细字段与命令见 `builder/docs/tools/goal-harness.md`。
 
 PCR production 可以使用公共证据和领域常识初始化候选过程结构，但最终 UUID 和关键定量规则
 必须来自 Tiangong lookup 或可引用 evidence。lookup trace、session path、API key 和 access

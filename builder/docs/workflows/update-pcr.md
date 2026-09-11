@@ -24,12 +24,12 @@ An update may be driven by:
 5. Identify whether the synthesis or driving input changes identity, reference flow, measurement rules, boundary abstraction, process inventory, evidence, translation, classification refs, or lifecycle status.
 6. If the input is a document, file, or dataset, extract only the PCR-relevant claims and create or update stable source ids.
 7. If the input is a Tiangong alignment change, update UUID-bearing references without adding Tiangong rows to `Data Sources` unless they provide non-default quantitative evidence.
-8. Update canonical `pcr.en-US.md` first.
+8. Confirm the reference and collection basis for the selected change, including any count-to-mass conversion, then update canonical `pcr.en-US.md` first. Use `builder/docs/methods/measurement-unit-rules.md` for finite supported forms; M may be measured during later dataset production.
 9. Update `pcr.zh-CN.md` so it remains aligned with the English rule.
 10. Add or update external data sources when a new range, factor, method, or boundary rule depends on non-default evidence.
 11. Remove stale source ids and inventory rows that no longer support the PCR.
 12. Update the selected workspace manifest's review metadata when the input creates unresolved identity, evidence, or translation gaps.
-13. Run `npm run pcr:sync-structured -- --pcr <library/pcrs/...> --workspace <current|revision>`.
+13. Run `npm run pcr:sync-structured -- --pcr <library/pcrs/...> --workspace <current|revision>` twice. For the explicitly selected draft/revision, run `npm run pcr:check -- --pcr <library/pcrs/...> --workspace <current|revision> --format json`. Repair mechanical errors in the current turn and repeat sync/check; pending measurement review is not a pass.
 14. Run `npm run validate`.
 15. Use `npm run pcr:lifecycle -- --pcr <library/pcrs/...> --workspace <current|revision> --status <status> --content-maturity <state> --translation <lang=status>` when review, maturity, or translation state changes.
 16. For an unpublished current record only, use `npm run pcr:bump -- --pcr <library/pcrs/...> --level <patch|minor|major>` when a pre-publication version increment is needed. Never bump a published/deprecated current record or an open revision.
@@ -45,3 +45,8 @@ override.
 - patch: wording, source clarification, non-breaking range clarification
 - minor: new process, new measurement rule, expanded scope within the same category
 - major: reference flow change, category meaning change, incompatible boundary or allocation change
+
+A contract-2 Goal author additionally prepares the report after committing its authorized four files, following the
+Harness task prompt. Standalone revision checks use the same Builder gate; the Harness four-current-file author
+contract does not grant permission to edit published files or revision/release metadata. Historical findings are
+reported without batch rewrites or repair-budget resets.

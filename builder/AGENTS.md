@@ -98,6 +98,8 @@ For PCR content changes, run before handoff:
 
 ```bash
 npm run pcr:sync-structured -- --pcr <library/pcrs/...>
+# For a new task or explicitly selected draft:
+npm run pcr:check -- --pcr <library/pcrs/...> --format json
 npm run validate
 ```
 
@@ -121,6 +123,7 @@ workspace:
 ```bash
 npm run pcr:revise -- --pcr <library/pcrs/...> --version <target-semver>
 npm run pcr:sync-structured -- --pcr <library/pcrs/...> --workspace revision
+npm run pcr:check -- --pcr <library/pcrs/...> --workspace revision --format json
 npm run pcr:lifecycle -- --pcr <library/pcrs/...> --workspace revision --status active --content-maturity reviewed_methodology --translation zh-CN=reviewed
 npm run pcr:publish -- --pcr <library/pcrs/...> --workspace revision
 ```
@@ -148,6 +151,9 @@ An authored PCR is not acceptable unless:
 
 - reference flow is represented as one `Field | Value` table with required qualifiers
 - measurement and unit rules constrain only modelling consistency, conversion, or validation behavior
+- reference quantity, inventory denominator, collection aggregation and calculation rules express the same basis in both languages. For per-machine collection and per-kg output, define the measured net machine mass M, its collection method/configuration scope and the explicit conversion. PCR rules may require future measurement of M; never invent a concrete weight.
+- new author tasks and explicitly selected draft/revision work run `pcr:check` after sync. Unknown measurement relationships require review and cannot be declared passing. General lint only reports historical findings; do not batch-edit old PCRs.
+- contract-2 Goal authors finalize their decisions once, keep a draft, run `goal:prepare-report` after the four-file commit and submit the generated reference verbatim. Never rewrite finalized rejection reasons or alter receipt artifacts to satisfy an audit.
 - process inventory is organized by process, direction, flow type, and individual flow row
 - every inventory flow card represents exactly one atomic exchange that can resolve to one Tiangong flow: write
   electricity, steam or purchased heat, each fuel, each refrigerant, water, every chemical or ingredient, every

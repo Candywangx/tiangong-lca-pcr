@@ -106,9 +106,13 @@ export function reviewAuthorWorktree({ projectRoot, baselineCommit, worktreePath
     pcrDir,
     checkManifestLifecycle: true,
     checkBilingualRuleAlignment: true,
+    measurementPolicy: task.authoring_contract_version === 2 ? "enforce" : "report",
   });
   if (inspection.problems.length > 0) {
-    throw new GoalHarnessError("GOAL_AUTHOR_PCR_INVALID", `Builder PCR inspection found ${inspection.problems.length} problem(s).`, { problems: inspection.problems, warnings: inspection.warnings });
+    const code = inspection.measurementReviewRequired === true ? "GOAL_MEASUREMENT_REVIEW_REQUIRED" : "GOAL_AUTHOR_PCR_INVALID";
+    throw new GoalHarnessError(code, `Builder PCR inspection found ${inspection.problems.length} problem(s).`, {
+      problems: inspection.problems, warnings: inspection.warnings, measurement: inspection.measurement,
+    });
   }
   const english = parsePcrMarkdownToStructured(readFileSync(path.join(pcrDir, "pcr.en-US.md"), "utf8"));
   const chinese = parsePcrMarkdownToStructured(readFileSync(path.join(pcrDir, "pcr.zh-CN.md"), "utf8"));

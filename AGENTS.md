@@ -185,6 +185,17 @@ branch. Author commits are limited to one PCR's four canonical files. Shared map
 coverage, viewer derivatives, and accepted-mapping ADRs are updated only by serial integration snapshots and land
 through exact-byte compare-and-swap. `goal:stop` preserves worktrees and results.
 
+Builder measurement inspection reuses canonical reference, inventory, collection and calculation rules in both languages.
+General lint is report-only for measurement findings. `pcr:check` enforces a complete, finite measurement check on
+one explicitly selected current/revision workspace; unresolved relationships require review. Symbolic machine mass M
+is valid with a collection method, scope and conversion; PCR methodology never invents a per-machine weight.
+New untouched Goal tasks pin authoring contract 2 at dispatch. Finalized UUID receipts are hash-bound in Goal events;
+`goal:prepare-report` preserves the author's draft, assembles only uniquely derivable receipt fields, performs actual
+PCR/sync/evidence checks and returns a report reference. Intake verifies the reference before independent acceptance.
+Existing authors without that contract, released PCRs, quarantined results and exhausted repair budgets retain their
+previous behavior. Roll out through one naturally free author slot after branch validation; never reset old tasks to
+make them eligible. Detailed commands and field ownership live in `builder/README.md` and the Harness tool note.
+
 Stable machine tokens are authored only in `builder/vocab/*.yaml`. Do not hand-edit the generated runtime constants
 or controlled-vocabulary Schema under `packages/pcr-core/`; run `npm run vocab:generate`, and keep token validity
 separate from lifecycle, readiness, evidence, and other cross-field policy.

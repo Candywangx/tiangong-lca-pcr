@@ -112,6 +112,7 @@ npm run catalog:recover [-- --force-stale-lock]
 npm run pcr:import:cpc -- --source <cpc-structure.csv> --classification-version 3.0 --source-url <official-source-url>
 npm run pcr:import:cpc -- --source <cpc-structure.csv> --classification-version 3.0 --legacy-scaffolds  # migration compatibility only
 npm run pcr:sync-structured -- --pcr <library/pcrs/...> [--workspace current|revision]
+npm run pcr:check -- --pcr <library/pcrs/...> [--workspace current|revision] --format json
 npm run pcr:bump -- --pcr <library/pcrs/...> --level patch
 npm run pcr:publish -- --pcr <library/pcrs/...> --workspace current --version <semver>
 npm run pcr:revise -- --pcr <library/pcrs/...> --version <target-semver>

@@ -11,7 +11,10 @@ import {
 } from "node:fs";
 import path from "node:path";
 
+import { GoalEventStore } from "./event-store.mjs";
 import { GoalHarnessError } from "./errors.mjs";
+import { readArtifact } from "./artifact-io.mjs";
+import { receiptRequiresSeal, sealReceipt, verifyReceiptSeal } from "./receipt-integrity.mjs";
 import { readPublicUuidAudit } from "./evidence-audit.mjs";
 import { appendGoalCacheReceipt, listGoalCacheReceipts } from "./goal-cache.mjs";
 
@@ -152,12 +155,12 @@ export function recordHybridCandidateDirectRead({
   const paths = receiptPaths(stateDir, task, receiptId);
   const normalizedUuid = String(uuid ?? "").toLowerCase();
   if (!existsSync(paths.search)) throw receiptMissing(`Receipt ${receiptId} does not exist.`);
-  const receipt = JSON.parse(readFileSync(paths.search, "utf8"));
+  const receipt = JSON.parse(readReceiptArtifact(paths.search,task,stateDir));
   if (!(receipt.candidate_uuids ?? []).includes(normalizedUuid)) {
     throw new GoalHarnessError("GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH", `UUID ${uuid} is not a candidate in receipt ${receiptId}.`);
   }
   const directPath = directReadPath(paths.directory, receiptId, normalizedUuid);
-  if (existsSync(directPath)) return JSON.parse(readFileSync(directPath, "utf8"));
+  if (existsSync(directPath)) return JSON.parse(readReceiptArtifact(directPath,task,stateDir));
   const actual = reader({ uuid: normalizedUuid, tiangongCliRoot });
   if (actual.state_code !== 100 || actual.uuid !== normalizedUuid) {
     throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", `Public state_code=100 read did not return candidate ${normalizedUuid}.`);
@@ -175,24 +178,24 @@ export function recordHybridCandidateDirectRead({
   return document;
 }
 
-export function finalizeHybridSearchReceipt({ stateDir, taskId, receiptId, decisionsPath, cwd = process.cwd(), now = () => new Date().toISOString() }) {
+export function finalizeHybridSearchReceipt({ stateDir, taskId, receiptId, decisionsPath, cwd = process.cwd(), now = () => new Date().toISOString(), faultInjector = () => {} }) {
   const task = requireBoundTask({ stateDir, taskId, cwd });
   const paths = receiptPaths(stateDir, task, receiptId);
   if (!existsSync(paths.search)) throw new GoalHarnessError("GOAL_HYBRID_SEARCH_RECEIPT_MISSING", `Hybrid-search receipt does not exist: ${receiptId}`);
-  if (existsSync(paths.decisions)) {
+  if (existsSync(paths.decisions) && !receiptRequiresSeal(task)) {
     const existing = JSON.parse(readFileSync(paths.decisions, "utf8"));
-    const requested = JSON.parse(readFileSync(decisionsPath, "utf8"));
+    const requested = JSON.parse(readReceiptArtifact(decisionsPath,task));
     validateCandidateDecisions(receiptCandidateUuids(paths.search), requested);
     if (stableJson(existing.candidate_decisions.map(({ direct_read: _directRead, ...decision }) => decision)) !== stableJson(requested.map(normalizeDecision))) {
       throw new GoalHarnessError("GOAL_HYBRID_SEARCH_DECISIONS_CONFLICT", `Receipt ${receiptId} was already finalized with different decisions.`);
     }
     return existing;
   }
-  const receipt = JSON.parse(readFileSync(paths.search, "utf8"));
+  const receipt = JSON.parse(readReceiptArtifact(paths.search,task,stateDir));
   if (receipt.status !== "succeeded" || receipt.authenticated !== true) {
     throw new GoalHarnessError("GOAL_HYBRID_SEARCH_RECEIPT_INVALID", `Cannot finalize unsuccessful receipt ${receiptId}.`);
   }
-  const decisions = JSON.parse(readFileSync(decisionsPath, "utf8"));
+  const decisions = JSON.parse(readReceiptArtifact(decisionsPath,task));
   if (!Array.isArray(decisions)) throw new GoalHarnessError("GOAL_HYBRID_SEARCH_DECISIONS_INVALID", "Receipt decisions must be a JSON array.");
   validateCandidateDecisions(receipt.candidate_uuids, decisions);
   const normalized = decisions.map(normalizeDecision);
@@ -201,7 +204,7 @@ export function finalizeHybridSearchReceipt({ stateDir, taskId, receiptId, decis
     if (!existsSync(directPath)) {
       throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_RECEIPT_MISSING", `Candidate ${decision.uuid} has no state_code=100 direct-read receipt.`);
     }
-    const directRead = JSON.parse(readFileSync(directPath, "utf8"));
+    const directRead = JSON.parse(readReceiptArtifact(directPath,task,stateDir));
     if (directRead.uuid !== decision.uuid || directRead.state_code !== 100 || !directRead.response_sha256) {
       throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_RECEIPT_INVALID", `Candidate ${decision.uuid} direct-read receipt is invalid.`);
     }
@@ -215,11 +218,12 @@ export function finalizeHybridSearchReceipt({ stateDir, taskId, receiptId, decis
     candidate_decisions: candidateDecisions,
     finalized_at: now(),
   };
+  if (receiptRequiresSeal(task)) return sealReceipt({stateDir,task,receiptId,paths,document,requested:normalized,faultInjector});
   writeExclusive(paths.decisions, `${JSON.stringify(document, null, 2)}\n`);
   return document;
 }
 
-export function auditHybridSearchReceipts({ report, stateDir, task, verifiedUuidReads = [] }) {
+export function loadReportReceiptEvidence({ report, stateDir, task }) {
   const ids = report.hybrid_search_receipt_ids ?? [];
   const referenced = new Set(ids);
   for (const audit of report.uuid_audits ?? []) {
@@ -286,6 +290,11 @@ export function auditHybridSearchReceipts({ report, stateDir, task, verifiedUuid
       return { ...audited, scope: "goal_cache_reuse", source_task_id: audited.task_id };
     }
   });
+  return audits;
+}
+
+export function auditHybridSearchReceipts({ report, stateDir, task, verifiedUuidReads = [] }) {
+  const audits = loadReportReceiptEvidence({report,stateDir,task});
   const byId = new Map(audits.map((entry) => [entry.receipt_id, entry]));
   for (const claimed of report.uuid_audits ?? []) {
     const receipt = byId.get(claimed.hybrid_search_receipt_id);
@@ -350,9 +359,12 @@ function auditOneReceipt({ stateDir, task, receiptId, paths = null, allowGoalCac
   if (!existsSync(resolvedPaths.search) || !existsSync(resolvedPaths.result) || !existsSync(resolvedPaths.decisions)) {
     throw receiptMissing(`Receipt ${receiptId} is incomplete.`);
   }
-  const receipt = JSON.parse(readFileSync(resolvedPaths.search, "utf8"));
-  const raw = readFileSync(resolvedPaths.result, "utf8");
-  const decisions = JSON.parse(readFileSync(resolvedPaths.decisions, "utf8"));
+  const verified = receiptRequiresSeal(task) ? verifyReceiptSeal({stateDir,task,receiptId,paths:{...resolvedPaths,allowGoalCacheReuse}}) : null;
+  const {snapshots, ...integrity} = verified ?? {};
+  const auditedBytes = file => snapshots ? snapshots[path.basename(file)] : readReceiptArtifact(file,task,stateDir);
+  const receipt = JSON.parse(auditedBytes(resolvedPaths.search));
+  const raw = auditedBytes(resolvedPaths.result).toString("utf8");
+  const decisions = JSON.parse(auditedBytes(resolvedPaths.decisions));
   const currentGoalId = readState(stateDir).goal_id;
   const bindingMatches = allowGoalCacheReuse
     ? receipt.goal_id === currentGoalId
@@ -373,7 +385,7 @@ function auditOneReceipt({ stateDir, task, receiptId, paths = null, allowGoalCac
   for (const decision of decisions.candidate_decisions ?? []) {
     const directPath = directReadPath(resolvedPaths.directory, receiptId, decision.uuid);
     if (!existsSync(directPath)) throw receiptMissing(`Receipt ${receiptId} direct read for ${decision.uuid} is missing.`);
-    const direct = JSON.parse(readFileSync(directPath, "utf8"));
+    const direct = JSON.parse(auditedBytes(directPath));
     if (stableJson(direct) !== stableJson(decision.direct_read)) {
       throw new GoalHarnessError("GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH", `Receipt ${receiptId} direct read for ${decision.uuid} changed.`);
     }
@@ -387,6 +399,7 @@ function auditOneReceipt({ stateDir, task, receiptId, paths = null, allowGoalCac
     candidate_decisions: decisions.candidate_decisions,
     authenticated: true,
     finalized_at: decisions.finalized_at,
+    ...(verified ? {integrity} : {}),
   };
 }
 
@@ -443,6 +456,7 @@ function requireBoundTask({ stateDir, taskId, cwd }) {
 }
 
 function readState(stateDir) {
+  if (existsSync(path.join(stateDir,"initial-state.json"))) return new GoalEventStore({stateDir}).rebuild();
   return JSON.parse(readFileSync(path.join(stateDir, "state.json"), "utf8"));
 }
 
@@ -584,3 +598,5 @@ function stableJson(value) {
   return JSON.stringify(value);
 }
 function receiptMissing(message) { return new GoalHarnessError("GOAL_HYBRID_SEARCH_RECEIPT_MISSING", message); }
+
+function readReceiptArtifact(file,task,root=null) { return receiptRequiresSeal(task) ? readArtifact(file,{root,maxBytes:64*1024*1024}) : readFileSync(file); }

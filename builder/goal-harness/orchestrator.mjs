@@ -2,6 +2,7 @@ import { execFileSync } from "node:child_process";
 import { mkdirSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
+import { resolveAuthorSubmission } from "./author-submission.mjs";
 import { GoalEventStore } from "./event-store.mjs";
 import { GoalHarnessError } from "./errors.mjs";
 import { auditReportedUuids, mergeVerifiedCommonUuids, verifySourceLocators } from "./evidence-audit.mjs";
@@ -53,7 +54,7 @@ export async function dispatchGoalAuthors({
       state = store.rebuild();
     }
     if (resumeStopped) {
-      for (const failed of state.tasks.filter((task) => !task.coordinator_hold && task.state === "retryable_failure" && (task.attempt ?? 0) < (config.retry_policy?.max_attempts ?? 3))) {
+      for (const failed of state.tasks.filter((task) => !task.coordinator_hold && task.state === "retryable_failure" && !isSavedEvidenceRecheckTask(task) && (task.attempt ?? 0) < (config.retry_policy?.max_attempts ?? 3))) {
         if (failed.failure_code === "GOAL_EVENT_ID_CONFLICT"
           && failed.thread_id
           && failed.turn_id
@@ -150,8 +151,14 @@ export async function dispatchGoalAuthors({
       state = store.rebuild();
       let task = state.tasks.find((entry) => entry.id === selectedTask.id);
       if (!task) continue;
+      // Pin only at first dispatch. Existing attempts keep their wire contract.
+      if (task.authoring_contract_version === undefined && !task.thread_id && task.state !== "repair_requested") {
+        const fresh = task.state === "queued" && !(task.attempt > 0) && !task.worktree_path && !task.last_author_commit && !task.repair_count;
+        task = { ...task, authoring_contract_version: fresh ? 2 : 1 };
+      }
       const materialsRoot = ensureMaterialsRoot(resolveMaterialsRoot({ cwd: config.project_root, root: config.tools?.materials_root }));
       const materialsQuery = queryMaterials({ root: materialsRoot, request: { product: task.product_name_en }, limit: 5 });
+      const selectedUuids = task.authoring_contract_version === 2 ? [] : selectRelevantCommonUuids({ stateDir, task });
       if (task?.state === "repair_requested") {
         const resumeInfrastructure = task.infrastructure_resume_pending === true;
         const resumeExistingRepair = task.repair_resume_pending === true;
@@ -170,7 +177,7 @@ export async function dispatchGoalAuthors({
             official_source_seeds: state.official_source_seeds?.[task.cpc_code] ?? state.default_official_source_seeds ?? [],
           },
           policyPromptPath: config.policy_prompt_path,
-          verifiedCommonUuids: selectRelevantCommonUuids({ stateDir, task }),
+          verifiedCommonUuids: selectedUuids,
           verifiedSourceReceipts: selectRelevantSourceReceipts({ stateDir, task, state }),
           tools: { ...config.tools, project_root: config.project_root, config_path: path.resolve(state.config_path ?? config.config_path ?? "") },
           materials: materialsQuery,
@@ -266,7 +273,7 @@ export async function dispatchGoalAuthors({
           official_source_seeds: state.official_source_seeds?.[task.cpc_code] ?? state.default_official_source_seeds ?? [],
         },
         policyPromptPath: config.policy_prompt_path,
-        verifiedCommonUuids: selectRelevantCommonUuids({ stateDir, task }),
+        verifiedCommonUuids: selectedUuids,
         verifiedSourceReceipts: selectRelevantSourceReceipts({ stateDir, task, state }),
         tools: { ...config.tools, project_root: config.project_root, config_path: path.resolve(state.config_path ?? config.config_path ?? "") },
         materials: materialsQuery,
@@ -281,6 +288,7 @@ export async function dispatchGoalAuthors({
         task_id: task.id,
         attempt,
         uuid_search_contract_version: 1,
+        authoring_contract_version: task.authoring_contract_version ?? 1,
         author_base_commit: authorBaseCommit,
         author_content_base_commit: authorContentBaseCommit,
         worktree_path: worktreePath,
@@ -355,6 +363,7 @@ function previewResumedState({ config, state }) {
   const maxRepairs = config.retry_policy?.max_repairs ?? 2;
   const tasks = state.tasks.map((failed) => {
     if (failed.coordinator_hold || failed.state !== "retryable_failure" || (failed.attempt ?? 0) >= maxAttempts) return failed;
+    if (isSavedEvidenceRecheckTask(failed)) return failed;
     if (failed.failure_code === "GOAL_EVENT_ID_CONFLICT"
       && failed.thread_id
       && failed.turn_id
@@ -398,10 +407,40 @@ export async function harvestGoalAuthors({
     const validResults = [];
     const failures = [];
     let state = store.rebuild();
-    const candidates = state.tasks.filter((task) => ["authoring", "authoring_repair", "author_review"].includes(task.state));
+    const candidates = state.tasks.filter((task) => ["authoring", "authoring_repair", "author_review"].includes(task.state)
+      || (!task.coordinator_hold && isSavedEvidenceRecheckTask(task)));
     for (const selected of candidates) {
       state = store.rebuild();
       let task = state.tasks.find((entry) => entry.id === selected.id);
+      if (isSavedEvidenceRecheckTask(task)) {
+        const recheckCount = (task.evidence_recheck_count ?? 0) + 1;
+        const recheckIdentity = `${task.id}-evidence-recheck-${recheckCount}`;
+        const startedAt = now().toISOString();
+        task = applyTaskTransition(task, {
+          transition_id: `${recheckIdentity}-review`,
+          to: "author_review",
+          at: startedAt,
+        });
+        task = {
+          ...task,
+          evidence_recheck_count: recheckCount,
+          evidence_recheck_pending: true,
+          evidence_recheck_history: [...(task.evidence_recheck_history ?? []), {
+            recheck_count: recheckCount,
+            started_at: startedAt,
+            ended_at: null,
+            original_failure_code: selected.failure_code,
+            report_path: task.report_path,
+            thread_id: task.thread_id,
+            turn_id: task.turn_id,
+            worktree_path: task.worktree_path,
+          }],
+        };
+        store.append({ event_id: `${recheckIdentity}-started`, type: "task_replaced", payload: { task } });
+      }
+      const reviewIdentity = task.evidence_recheck_pending
+        ? `${task.id}-evidence-recheck-${task.evidence_recheck_count}`
+        : `${task.id}-turn-${task.turn_id}`;
       if (task.coordinator_hold && task.state === "author_review") continue;
       let report;
       if (task.state === "authoring" || task.state === "authoring_repair") {
@@ -512,14 +551,22 @@ export async function harvestGoalAuthors({
         const reportPath = path.join(reportDir, wasRepair ? `author-report-repair-${task.repair_count}.json` : "author-report.json");
         writeFileSync(reportPath, `${JSON.stringify(report, null, 2)}\n`);
         task = applyTaskTransition(task, { transition_id: `${task.id}-turn-${task.turn_id}-review`, to: "author_review", at: new Date().toISOString() });
-        task = { ...task, report_path: reportPath, last_author_commit: report?.commit_sha ?? task.last_author_commit ?? null };
-        if (wasRepair) task = { ...finishLatestRepair(task, report?.commit_sha, now().toISOString()), continuing_repair_after_thread_replacement: false };
+        const reportedCommit = report?.commit_sha ?? report?.prepared_report?.commit_sha ?? report?.boundary_review_report?.commit_sha;
+        task = { ...task, report_path: reportPath,
+          ...(task.authoring_contract_version === 2 ? { author_submission: report, submission_path: reportPath } : {}),
+          last_author_commit: reportedCommit ?? task.last_author_commit ?? null };
+        if (wasRepair) task = { ...finishLatestRepair(task, reportedCommit, now().toISOString()), continuing_repair_after_thread_replacement: false };
         store.append({ event_id: `${task.id}-turn-${task.turn_id}-report`, type: "task_replaced", payload: { task } });
       } else {
-        report = JSON.parse(readFileSync(task.report_path, "utf8"));
+        report = task.authoring_contract_version === 2 ? task.author_submission : JSON.parse(readFileSync(task.report_path, "utf8"));
       }
       if (task.coordinator_hold) continue;
       try {
+        if (task.authoring_contract_version === 2) {
+          const resolved = resolveAuthorSubmission({ stateDir, task, wire: task.author_submission });
+          report = resolved.report;
+          if (resolved.report_path) task = { ...task, report_path: resolved.report_path };
+        }
         const unavailableRows = Array.isArray(report?.inventory?.unresolved)
           ? report.inventory.unresolved.filter((entry) => entry?.reason_code === "tiangong_cli_unavailable") : [];
         if (unavailableRows.length > 0) {
@@ -563,7 +610,7 @@ export async function harvestGoalAuthors({
           report,
           stateDir,
         });
-        task = applyTaskTransition(task, { transition_id: `${task.id}-turn-${task.turn_id}-valid`, to: "valid_result", at: new Date().toISOString() });
+        task = applyTaskTransition(task, { transition_id: `${reviewIdentity}-valid`, to: "valid_result", at: new Date().toISOString() });
         task = {
           ...task,
           author_content_base_commit: authorContentBaseCommit,
@@ -577,7 +624,8 @@ export async function harvestGoalAuthors({
           failure_message: null,
           pending_gate_findings: [],
         };
-        store.append({ event_id: `${task.id}-turn-${task.turn_id}-valid-result`, type: "task_replaced", payload: { task } });
+        if (task.evidence_recheck_pending) task = finishEvidenceRecheck(task, { status: "valid_result" }, now().toISOString());
+        store.append({ event_id: `${reviewIdentity}-valid-result`, type: "task_replaced", payload: { task } });
         state = store.rebuild();
         const verifiedCommonUuids = mergeVerifiedCommonUuids(state.verified_common_uuids, evidenceAudit.uuid_reads);
         if (JSON.stringify(verifiedCommonUuids) !== JSON.stringify(state.verified_common_uuids ?? [])) {
@@ -606,10 +654,20 @@ export async function harvestGoalAuthors({
           throw error;
         }
         const findings = error.details?.findings ?? [{ code: error.code ?? "GOAL_AUTHOR_REVIEW_FAILED", message: error.message }];
+        if (task.authoring_contract_version === 2 && error.code === "GOAL_MEASUREMENT_REVIEW_REQUIRED") {
+          task = applyTaskTransition(task, { transition_id: `${reviewIdentity}-measurement-review`, to: "manual_review", at: now().toISOString() });
+          task = { ...task, measurement_review: {
+            status: "unadjudicated", message: error.message, submission_path: task.submission_path,
+          }, pending_gate_findings: findings };
+          if (task.evidence_recheck_pending) task = finishEvidenceRecheck(task, { status: "manual_review" }, now().toISOString());
+          store.append({ event_id: `${reviewIdentity}-measurement-review-recorded`, type: "task_replaced", payload: { task } });
+          failures.push(task);
+          continue;
+        }
         const repairLimit = config.retry_policy?.max_repairs ?? 2;
         const repairable = isRepairableReviewFailure(error) && (task.repair_count ?? 0) < repairLimit;
         task = applyTaskTransition(task, {
-          transition_id: `${task.id}-turn-${task.turn_id}-review-failed`,
+          transition_id: `${reviewIdentity}-review-failed`,
           to: repairable ? "repair_requested" : "retryable_failure",
           at: new Date().toISOString(),
         });
@@ -623,7 +681,8 @@ export async function harvestGoalAuthors({
           repair_count: task.repair_count ?? 0,
           last_author_commit: report?.commit_sha ?? task.last_author_commit ?? null,
         };
-        store.append({ event_id: `${task.id}-turn-${task.turn_id}-invalid-result`, type: "task_replaced", payload: { task } });
+        if (task.evidence_recheck_pending) task = finishEvidenceRecheck(task, { status: task.state, failure_code: task.failure_code }, now().toISOString());
+        store.append({ event_id: `${reviewIdentity}-invalid-result`, type: "task_replaced", payload: { task } });
         failures.push(task);
       }
     }
@@ -705,6 +764,21 @@ function finishLatestRepair(task, commit, endedAt) {
   const history = [...(task.repair_history ?? [])];
   if (history.length > 0) history[history.length - 1] = { ...history.at(-1), ended_at: endedAt, new_commit: commit ?? null };
   return { ...task, repair_history: history, repair_ended_at: endedAt };
+}
+
+function finishEvidenceRecheck(task, outcome, endedAt) {
+  const history = [...(task.evidence_recheck_history ?? [])];
+  if (history.length > 0) history[history.length - 1] = { ...history.at(-1), ended_at: endedAt, ...outcome };
+  return { ...task, evidence_recheck_pending: false, evidence_recheck_history: history };
+}
+
+function isSavedEvidenceRecheckTask(task) {
+  return task?.authoring_contract_version === 2
+    && task.state === "retryable_failure"
+    && task.failure_code === "GOAL_UUID_DIRECT_READ_FAILED"
+    && typeof task.report_path === "string"
+    && typeof task.thread_id === "string"
+    && typeof task.worktree_path === "string";
 }
 
 function isRepairableReviewFailure(error) {

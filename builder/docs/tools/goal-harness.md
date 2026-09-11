@@ -258,6 +258,92 @@ Cached common UUIDs remain candidates whose row-specific semantic, geography, te
 fit must be checked. Source blobs can be reused only at the same verified content hash and still need PCR-specific
 applicability. Prompt compilation injects only a bounded relevant subset, never the whole Goal history.
 
+## Prepared reports for new authors
+
+Untouched tasks pin `authoring_contract_version: 2` at initial dispatch. Tasks with a prior thread/worktree/attempt,
+repairs, replacements, and legacy tasks without this pin retain their original contract. A pinned task keeps version 2
+across repair turns. No existing author prompt is replaced in flight. Explicit single-PCR checks can also be used for
+selected standalone draft/revision work; the Harness still authorizes exactly the four current PCR files.
+
+The previous flow asked authors to copy receipt decisions into a full final report and often discovered mechanical
+errors only at independent intake. Contract 2 uses this sequence:
+
+1. Determine reference quantity, collection basis and conversion; define measured M when needed.
+2. Author aligned English and Chinese PCRs, then sync structured.yaml twice.
+3. Run `pcr:check` for that PCR and `npm run validate`; correct mechanical problems in this turn.
+4. Commit exactly the four authorized files and write an original draft outside the tracked worktree.
+5. Prepare the report, then return the generated JSON envelope verbatim.
+
+```bash
+# Run from the assigned author worktree. Use the runtime CLI path supplied by the task.
+node <runtime>/builder/cli/goal-prepare-report.mjs \
+  --config <absolute-goal.yaml> --task <task-id> --draft <absolute-draft.json> --format json
+```
+
+The draft follows `builder/schemas/goal-author-draft.schema.json`. It preserves the existing report's author-owned
+identity, sources, adopted UUID/receipt links, semantic judgments, unresolved rows, counts, ranges, validation claims
+and commit. Omit `rejected_uuid_candidates` and top-level `hybrid_search_receipt_ids`; use `receipt_ids` for additional
+receipts whose candidates were rejected. The program derives receipt membership and copies every rejected candidate's
+UUID, receipt id, reason code and exact finalized reason. If an optional explicitly supplied generated field disagrees,
+it fails instead of overwriting it. Adoption decisions and UUID/row applicability are never invented or corrected.
+
+For version 2, finalization validates receipt goal/task/attempt identity, candidate completeness, raw-result hash and
+direct-read artifacts, then appends a hash-bound finalization attestation to the existing Goal event chain. Exact
+retries recover an interrupted final publication using the attested decision bytes. A changed decision conflicts;
+an already finalized unsealed historical artifact cannot be retroactively blessed. New tasks exclude legacy common
+UUID audit caches from adopted evidence: capture, direct-read and finalize task-bound receipts. Shared raw-query and
+original-source caches remain available under their existing rules. These artifacts use bounded regular-file,
+no-follow reads and durable writes; secure traversal requires the existing Linux runtime.
+
+Preparation verifies a clean bound worktree, exact four-file commit and current task/attempt/turn, audits receipt
+integrity and adopted UUID identity, then invokes the actual Builder inspection and two deterministic sync runs in a
+review worktree. It does not trust draft success booleans. It stores a separate immutable directory:
+
+```text
+authors/prepared-<task-hash>/<content-id>/
+  draft.json
+  report.json
+  manifest.json
+```
+
+The manifest binds goal/task/attempt/turn, worktree, commit, four-file hashes, draft/report byte hashes, receipt
+attestations and check contract. The complete directory is published before a ready event; incomplete or substituted
+artifacts cannot become ready. Identical inputs reuse one reference and one ready event. Changed input creates a new
+identity without overwriting previous reports; old references cannot validate the changed task, commit or evidence.
+Preparation never changes repair counts. Normal output is:
+
+```json
+{
+  "schema_version": 2,
+  "prepared_report": {
+    "prepared_report_id": "<64-hex-content-id>",
+    "report_sha256": "sha256:<64-hex>",
+    "commit_sha": "<author-commit>"
+  },
+  "boundary_review_report": null,
+  "failure": null
+}
+```
+
+Exactly one of the three outcomes is non-null. A product-boundary referral wraps the existing complete referral
+report in `boundary_review_report` and still goes through the independent boundary audit. Unsupported measurement
+relationships use `failure: {code: "GOAL_MEASUREMENT_REVIEW_REQUIRED", message: "<affected rows and relationship>"}`;
+the task remains unadjudicated `manual_review`, with no completed result or counter reset. Infrastructure failures use
+`GOAL_UUID_INFRASTRUCTURE_UNAVAILABLE`; other uncorrectable preflight failures use `GOAL_AUTHOR_PREFLIGHT_FAILED`.
+Neither failures nor referrals can count as completed PCRs.
+
+Intake resolves only the stored reference under the bound task, rechecks every artifact and current commit, then runs
+the ordinary independent report, source, UUID, quality and structured-sync gates. A resumed review or saved evidence
+recheck resolves the original submission again; an earlier successful preparation is not permanent approval. Source
+locator/original-evidence review and full integration validation still apply. Mechanical fixes after submission stay
+within the existing repair limit.
+
+Rollout of this change starts only after branch verification, through one naturally free author slot selected by the
+main coordinator. Keep older PCRs, published versions, isolated results and running authors intact; report historical
+findings without batch rewrites. Do not reinstall this runtime, dispatch a pilot, or restore 44125's exhausted repair
+budget as a side effect of development. Broader rollout follows the pilot's same-turn correction, exact-reason,
+independent-acceptance and legacy-preservation results.
+
 ## Gates
 
 The author report Schema and commit-tree review enforce the exact four files, PCR path, material Builder contracts,
