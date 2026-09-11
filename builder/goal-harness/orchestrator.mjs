@@ -54,7 +54,7 @@ export async function dispatchGoalAuthors({
       state = store.rebuild();
     }
     if (resumeStopped) {
-      for (const failed of state.tasks.filter((task) => !task.coordinator_hold && task.state === "retryable_failure" && (task.attempt ?? 0) < (config.retry_policy?.max_attempts ?? 3))) {
+      for (const failed of state.tasks.filter((task) => !task.coordinator_hold && task.state === "retryable_failure" && !isSavedEvidenceRecheckTask(task) && (task.attempt ?? 0) < (config.retry_policy?.max_attempts ?? 3))) {
         if (failed.failure_code === "GOAL_EVENT_ID_CONFLICT"
           && failed.thread_id
           && failed.turn_id
@@ -363,6 +363,7 @@ function previewResumedState({ config, state }) {
   const maxRepairs = config.retry_policy?.max_repairs ?? 2;
   const tasks = state.tasks.map((failed) => {
     if (failed.coordinator_hold || failed.state !== "retryable_failure" || (failed.attempt ?? 0) >= maxAttempts) return failed;
+    if (isSavedEvidenceRecheckTask(failed)) return failed;
     if (failed.failure_code === "GOAL_EVENT_ID_CONFLICT"
       && failed.thread_id
       && failed.turn_id
@@ -406,10 +407,40 @@ export async function harvestGoalAuthors({
     const validResults = [];
     const failures = [];
     let state = store.rebuild();
-    const candidates = state.tasks.filter((task) => ["authoring", "authoring_repair", "author_review"].includes(task.state));
+    const candidates = state.tasks.filter((task) => ["authoring", "authoring_repair", "author_review"].includes(task.state)
+      || (!task.coordinator_hold && isSavedEvidenceRecheckTask(task)));
     for (const selected of candidates) {
       state = store.rebuild();
       let task = state.tasks.find((entry) => entry.id === selected.id);
+      if (isSavedEvidenceRecheckTask(task)) {
+        const recheckCount = (task.evidence_recheck_count ?? 0) + 1;
+        const recheckIdentity = `${task.id}-evidence-recheck-${recheckCount}`;
+        const startedAt = now().toISOString();
+        task = applyTaskTransition(task, {
+          transition_id: `${recheckIdentity}-review`,
+          to: "author_review",
+          at: startedAt,
+        });
+        task = {
+          ...task,
+          evidence_recheck_count: recheckCount,
+          evidence_recheck_pending: true,
+          evidence_recheck_history: [...(task.evidence_recheck_history ?? []), {
+            recheck_count: recheckCount,
+            started_at: startedAt,
+            ended_at: null,
+            original_failure_code: selected.failure_code,
+            report_path: task.report_path,
+            thread_id: task.thread_id,
+            turn_id: task.turn_id,
+            worktree_path: task.worktree_path,
+          }],
+        };
+        store.append({ event_id: `${recheckIdentity}-started`, type: "task_replaced", payload: { task } });
+      }
+      const reviewIdentity = task.evidence_recheck_pending
+        ? `${task.id}-evidence-recheck-${task.evidence_recheck_count}`
+        : `${task.id}-turn-${task.turn_id}`;
       if (task.coordinator_hold && task.state === "author_review") continue;
       let report;
       if (task.state === "authoring" || task.state === "authoring_repair") {
@@ -579,7 +610,7 @@ export async function harvestGoalAuthors({
           report,
           stateDir,
         });
-        task = applyTaskTransition(task, { transition_id: `${task.id}-turn-${task.turn_id}-valid`, to: "valid_result", at: new Date().toISOString() });
+        task = applyTaskTransition(task, { transition_id: `${reviewIdentity}-valid`, to: "valid_result", at: new Date().toISOString() });
         task = {
           ...task,
           author_content_base_commit: authorContentBaseCommit,
@@ -593,7 +624,8 @@ export async function harvestGoalAuthors({
           failure_message: null,
           pending_gate_findings: [],
         };
-        store.append({ event_id: `${task.id}-turn-${task.turn_id}-valid-result`, type: "task_replaced", payload: { task } });
+        if (task.evidence_recheck_pending) task = finishEvidenceRecheck(task, { status: "valid_result" }, now().toISOString());
+        store.append({ event_id: `${reviewIdentity}-valid-result`, type: "task_replaced", payload: { task } });
         state = store.rebuild();
         const verifiedCommonUuids = mergeVerifiedCommonUuids(state.verified_common_uuids, evidenceAudit.uuid_reads);
         if (JSON.stringify(verifiedCommonUuids) !== JSON.stringify(state.verified_common_uuids ?? [])) {
@@ -627,6 +659,7 @@ export async function harvestGoalAuthors({
           task = { ...task, measurement_review: {
             status: "unadjudicated", message: error.message, submission_path: task.submission_path,
           }, pending_gate_findings: findings };
+          if (task.evidence_recheck_pending) task = finishEvidenceRecheck(task, { status: "manual_review" }, now().toISOString());
           store.append({ event_id: `${reviewIdentity}-measurement-review-recorded`, type: "task_replaced", payload: { task } });
           failures.push(task);
           continue;
@@ -634,7 +667,7 @@ export async function harvestGoalAuthors({
         const repairLimit = config.retry_policy?.max_repairs ?? 2;
         const repairable = isRepairableReviewFailure(error) && (task.repair_count ?? 0) < repairLimit;
         task = applyTaskTransition(task, {
-          transition_id: `${task.id}-turn-${task.turn_id}-review-failed`,
+          transition_id: `${reviewIdentity}-review-failed`,
           to: repairable ? "repair_requested" : "retryable_failure",
           at: new Date().toISOString(),
         });
@@ -648,7 +681,8 @@ export async function harvestGoalAuthors({
           repair_count: task.repair_count ?? 0,
           last_author_commit: report?.commit_sha ?? task.last_author_commit ?? null,
         };
-        store.append({ event_id: `${task.id}-turn-${task.turn_id}-invalid-result`, type: "task_replaced", payload: { task } });
+        if (task.evidence_recheck_pending) task = finishEvidenceRecheck(task, { status: task.state, failure_code: task.failure_code }, now().toISOString());
+        store.append({ event_id: `${reviewIdentity}-invalid-result`, type: "task_replaced", payload: { task } });
         failures.push(task);
       }
     }
@@ -730,6 +764,21 @@ function finishLatestRepair(task, commit, endedAt) {
   const history = [...(task.repair_history ?? [])];
   if (history.length > 0) history[history.length - 1] = { ...history.at(-1), ended_at: endedAt, new_commit: commit ?? null };
   return { ...task, repair_history: history, repair_ended_at: endedAt };
+}
+
+function finishEvidenceRecheck(task, outcome, endedAt) {
+  const history = [...(task.evidence_recheck_history ?? [])];
+  if (history.length > 0) history[history.length - 1] = { ...history.at(-1), ended_at: endedAt, ...outcome };
+  return { ...task, evidence_recheck_pending: false, evidence_recheck_history: history };
+}
+
+function isSavedEvidenceRecheckTask(task) {
+  return task?.authoring_contract_version === 2
+    && task.state === "retryable_failure"
+    && task.failure_code === "GOAL_UUID_DIRECT_READ_FAILED"
+    && typeof task.report_path === "string"
+    && typeof task.thread_id === "string"
+    && typeof task.worktree_path === "string";
 }
 
 function isRepairableReviewFailure(error) {

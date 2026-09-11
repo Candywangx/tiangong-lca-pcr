@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 import test from "node:test";
 
 import { GoalEventStore } from "./event-store.mjs";
-import { harvestGoalAuthors } from "./orchestrator.mjs";
+import { dispatchGoalAuthors, harvestGoalAuthors } from "./orchestrator.mjs";
 import { prepareAuthorReport, resolvePreparedReport } from "./report-preparation.mjs";
 import { resolveAuthorSubmission } from "./author-submission.mjs";
 import { runHybridSearchWithReceipt, recordHybridCandidateDirectRead, finalizeHybridSearchReceipt } from "./uuid-search-receipts.mjs";
@@ -419,4 +419,54 @@ for (const stale of [false, true]) test(`default preparation routes unsupported 
   });
   assert.equal(f.store.readEvents().filter(event => event.type === "author_report_prepared").length, 0);
   assert.equal(f.store.rebuild().tasks[0].repair_count, 0);
+});
+
+
+test("contract 2 evidence retries reuse the saved report without author replacement or repair increments", async t => {
+  const f = fixture(t);
+  sealRejectedCandidate(f);
+  const wire = submission(f);
+  const unavailable = () => { throw Object.assign(new Error("Temporary UUID outage"), {code:"GOAL_UUID_DIRECT_READ_FAILED"}); };
+  const first = await harvestGoalAuthors({...f, adapter:completedAdapter(f.task,wire), auditUuidsFn:unavailable});
+  assert.equal(first.state.tasks[0].state,"retryable_failure");
+  const preview = await dispatchGoalAuthors({...f,slots:1,resumeStopped:true,dryRun:true,adapter:{}});
+  assert.deepEqual(preview.would_dispatch,[]);
+  const second = await harvestGoalAuthors({...f,adapter:{},auditUuidsFn:unavailable});
+  assert.equal(second.state.tasks[0].evidence_recheck_count,1);
+  assert.equal(second.state.tasks[0].repair_count,0);
+  assert.equal(second.state.tasks[0].failure_code,"GOAL_UUID_DIRECT_READ_FAILED");
+  const third = await harvestGoalAuthors({...f,adapter:{},reviewFn:reviewed,verifySourcesFn:async()=>[]});
+  assert.equal(third.valid_results.length,1);
+  assert.equal(third.state.tasks[0].evidence_recheck_count,2);
+  assert.equal(third.state.tasks[0].evidence_recheck_history.at(-1).status,"valid_result");
+  assert.equal(third.state.tasks[0].repair_count,0);
+  assert.equal(third.state.tasks[0].turn_id,f.task.turn_id);
+});
+
+test("the main-baseline legacy UUID failure is not enrolled into prepared-report retries", async t => {
+  const f = fixture(t);
+  f.store.append({event_id:"legacy-evidence-failure",type:"task_replaced",payload:{task:{...f.task,authoring_contract_version:1,state:"retryable_failure",failure_code:"GOAL_UUID_DIRECT_READ_FAILED",report_path:"/legacy-report"}}});
+  const before=f.store.rebuild();
+  const result=await harvestGoalAuthors({...f,adapter:{}});
+  assert.equal(result.state.last_event_sequence,before.last_event_sequence);
+  assert.deepEqual(result.valid_results,[]);
+  assert.equal(result.state.tasks[0].failure_code,"GOAL_UUID_DIRECT_READ_FAILED");
+});
+
+for (const outcome of ["manual_review", "repair_requested"]) test(`evidence recheck closes its history with the actual ${outcome} outcome`, async t => {
+  const f=fixture(t);
+  sealRejectedCandidate(f);
+  const wire=submission(f);
+  await harvestGoalAuthors({...f,adapter:completedAdapter(f.task,wire),auditUuidsFn:()=>{throw Object.assign(new Error("Temporary outage"),{code:"GOAL_UUID_DIRECT_READ_FAILED"});}});
+  if(outcome==="repair_requested") {
+    const loaded=resolvePreparedReport({stateDir:f.stateDir,task:f.task,submission:wire.prepared_report});
+    writeFileSync(loaded.report_path,readFileSync(loaded.report_path,"utf8")+"\n");
+  }
+  const result=await harvestGoalAuthors({...f,adapter:{},verifySourcesFn:async()=>[],reviewFn:()=>{throw Object.assign(new Error("Unresolved measurement"),{code:"GOAL_MEASUREMENT_REVIEW_REQUIRED"});}});
+  const task=result.state.tasks[0];
+  assert.equal(task.state,outcome);
+  assert.equal(task.evidence_recheck_pending,false);
+  assert.equal(task.evidence_recheck_history.at(-1).status,outcome);
+  assert.ok(task.evidence_recheck_history.at(-1).ended_at);
+  assert.equal(task.repair_count,0);
 });
