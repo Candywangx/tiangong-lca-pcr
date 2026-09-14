@@ -28,7 +28,7 @@ checkPaths:
   - docs/**
 lastReviewedAt: 2026-09-14
 lastReviewedCommit: b4d45d1d7f379c5ce12cc4844c28d99921f5ba17
-lastReviewedNote: Reviewed for PCR #6: the current sibling CLI command in .env.example, the builder tool contract, and the authoring guide now use the canonical ../cli directory. Package, runtime, business and environment credential content are unchanged.
+lastReviewedNote: "Reviewed for PCR #6: the current sibling CLI command in .env.example, the builder tool contract, and the authoring guide now use the canonical ../cli directory. Package, runtime, business and environment credential content are unchanged."
 ---
 
 # TianGong LCA PCR Library
