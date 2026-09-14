@@ -59,6 +59,43 @@ write a stable error code and details to stderr, and include a next action.
 
 ## State and recovery
 
+### Approved dirty-main reconciliation
+
+`builder/goal-harness/reconciliation.mjs` exposes `planReconciliation` and `applyReconciliation` for a coordinator
+recovering a validated, unlanded snapshot after an explicitly approved external change. Planning takes `config`,
+`stateDir`, `snapshotId`, exact `inputPaths` (canonical PCR files, mapping/index files and ADRs), and optional
+`deliveryPaths` from the narrow runtime allowlist. It returns a SHA-256-bound plan. Applying takes that unchanged
+`plan`, an explicit `approvalReference`, and optional `dryRun`; it never infers approval from a CAS error.
+
+The audited representation is delivery truth: user approval, input hashes, HEAD, author evidence and predecessor
+snapshot are pinned. Its only promotion is a fresh fully validated integration followed by CAS. Changed input or
+evidence invalidates the plan, requiring review; it never silently refreshes an expectation. Tests use disposable
+Git repositories before this API is used on a production Goal.
+
+Stop scheduling and wait for active authors first. A temporary Git index captures only approved files over the
+effective integration baseline, without changing main HEAD, branch, index or files. One hash-chained event preserves
+the old snapshot as `superseded` and queues the same author commits in a new snapshot. All old worktrees and completion
+receipts remain. Repeating the same approved plan is idempotent. Integration reruns every normal validation and smoke
+check. Landing checks original author-file CAS expectations, approved changed-input expectations, untouched preserved
+inputs, and exact committed source bytes; approved reconciliation is not permission to overwrite a later edit.
+
+Repository-coordinated integration still reserves an accepted-head candidate, commits repository validation in order,
+publishes the pinned Viewer snapshot and requires publication before landing. Reconciliation cannot bypass those
+steps. Runtime installation includes the tracked Viewer generator, schemas and core read-context dependencies so
+an author/integration worktree cannot mix old package code with the coordinated Harness.
+
+For a correction after landing, explicitly pass `correction: true` to planning. The predecessor stays byte-for-byte
+unchanged in landed history; the new snapshot carries `correction_of` and reuses the recorded author commits. It
+captures the approved external PCR inputs and rebuilds every shared projection under the next repository sequence.
+No new author result or completed PCR is counted for such a correction, and publication plus CAS remain mandatory.
+
+Viewer recovery tests use `viewer-test-fixture.mjs`: the real pinned publisher, worker, schemas and one four-file PCR,
+one accepted mapping and one coverage leaf. No failure-injection assertions are skipped. On the September 10 local
+baseline, the full main test suite took 697.6 seconds (922 tests; 918 passed, 4 existing skips). After the compatible
+Harness merge and small-fixture replacement it took 32.9 seconds (935 tests; 931 passed, the same 4 skips). These are
+test-runner durations; complete `npm run validate` additionally runs all lint/build checks. Each production snapshot
+still executes that complete command, the bounded Viewer candidate check and consumer smoke checks before publishing.
+
 Runtime state is stored at:
 
 ```text
@@ -368,3 +405,41 @@ The viewer derivation may be restored only from a same-input cache whose PCR, ma
 viewer-code, and core-code SHA-256 fingerprint and output-tree hash both match. Corruption rebuilds safely. Full
 `npm run validate` still runs once for every six-result snapshot; its lint phase performs the authoritative
 aliases/catalog checks, so integration does not repeat those identical checks immediately before validate.
+# Bounded matched-model production trial
+
+`node builder/cli/goal-model-trial.mjs register --config <goal.yaml> --plan <trial.json> --dry-run`
+previews six untouched real queued tasks after the authenticated doctor. Remove `--dry-run` to append one atomic
+registration event to the existing Goal. Repeating the identical plan is idempotent. No author is interrupted or
+dispatched by registration. The approved example is `builder/planning/model-trial-metal-20260911.json`.
+
+Use the existing `goal.mjs resume --config <goal.yaml>` entry for natural-slot dispatch. Trial tasks override only
+their actual app-server model/effort parameters; the global default and existing authors remain unchanged.
+Three pairs each contain Terra/high and Sol/high, with the same action and recorded a priori difficulty reasons.
+One original-model content repair is allowed, followed by Sol rescue for Terra within the existing repair budget.
+Infrastructure and interrupted-repair continuations retain the previous model. Trial exhaustion preserves artifacts
+for review rather than recycling the sample as a new author. Suspicious receipt findings hold new Terra dispatch
+pending adjudication, not a claim of confirmed misconduct; active authors and ordinary Sol dispatch are retained.
+
+Assignments are immutable. Policy/runtime/config fingerprints freeze at the first sample turn. A tested preparation
+fix may revise fingerprints only through an audited `model_trial_controls_prelaunch` event while all six samples
+are still untouched queued tasks; the old controls remain in history. Runtime drift fails before a trial turn starts.
+Both arms use the existing shared-cache rules, with per-turn injected evidence count/fingerprint recorded; warming
+is an explicit confounder. Query-hit counts or query waiting times without reliable observations are unavailable.
+Turn telemetry comes from exact-identity, no-follow, stable session reads. Repeated cumulative snapshots are not
+summed; reset epochs and per-turn identities must be proven. Missing or ambiguous tokens/cost are unavailable, not
+zero. Cached input is a subset of input and must not be added again. Subscription quota is not a token or currency
+measurement. Failed and repair turns remain in the same sample ledger, including Sol rescue.
+
+Automatic success holds a trial task in author_review until the coordinator records `trial_semantic_review` against
+the exact report commit, with `decision: approved`, reviewer, UTC time, a truthful `model_blinded` flag and nonempty
+evidence notes in `source_support`, `uuid_applicability`, `inventory_completeness`, and `chinese_alignment`.
+The coordinator appends this through GoalEventStore under the Goal lock and releases only the corresponding hold;
+resume repeats the ordinary hard gates. A new commit invalidates this extra approval. No trial acceptance bypasses
+the normal earliest-six serial integration, complete validate, pinned Viewer publication or CAS landing.
+
+`node builder/cli/goal-model-trial.mjs report --config <goal.yaml> --trial <id>` emits JSON for individual samples,
+turns, gate findings, measurements and landing status. Separate Terra independent, Sol independent and Terra draft
+plus Sol repair; do not count rescue as independent Terra success. Report the first six before deciding on a second
+explicitly reviewed stage. Automatic extension is disabled; this pilot must not become an unbounded experiment or
+mark the production Goal complete. The supplied allocation contains only promote_legacy and cannot establish
+create_new performance.

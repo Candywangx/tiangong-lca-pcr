@@ -366,6 +366,7 @@ function recoverIncompleteRetirements({ stateDir, faultInjector, allowDeadLockRe
   }
   for (const name of names.filter((entry) => entry.startsWith("goal-lock-stale-")).sort()) {
     const retiredDir = path.join(historyDir, name);
+    if (isLegacyRetiredLease(retiredDir, name)) continue;
     assertRetirementDirectory(retiredDir, path.join(stateDir, "goal.lock"));
     const ownerPath = path.join(retiredDir, "owner.json");
     const owner = tryReadLeaseFile(ownerPath, "retired stale owner");
@@ -410,6 +411,7 @@ function hasIncompleteRetirement(stateDir) {
   }
   for (const name of names.filter((entry) => entry.startsWith("goal-lock-stale-"))) {
     const retiredDir = path.join(historyDir, name);
+    if (isLegacyRetiredLease(retiredDir, name)) continue;
     const owner = tryReadLeaseFile(path.join(retiredDir, "owner.json"), "retired stale owner");
     const completePath = path.join(retiredDir, "complete.json");
     if (!existsSync(completePath)) return true;
@@ -417,6 +419,22 @@ function hasIncompleteRetirement(stateDir) {
     verifyRetirementComplete(completePath, owner.bytes);
   }
   return false;
+}
+
+function isLegacyRetiredLease(filePath, name) {
+  const match = /^goal-lock-stale-([1-9]\d*)-([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})\.json$/u.exec(name);
+  if (!match) return false;
+  const stat = lstatSync(filePath);
+  if (!stat.isFile() || stat.isSymbolicLink() || stat.size > 16 * 1024) {
+    throw new GoalHarnessError("GOAL_LOCKED", "Legacy archived lease has an untrusted filesystem type or size.", { path: filePath });
+  }
+  const { holder } = readLeaseFile(filePath, "legacy archived lease");
+  if (String(holder.pid) !== match[1] || holder.token !== match[2]) {
+    throw new GoalHarnessError("GOAL_LOCKED", "Legacy archived lease does not match its filename identity.", { path: filePath });
+  }
+  // These are already-retired immutable archives, not incomplete directory transactions.
+  // Recognition neither removes an archive nor changes/steals any current lease.
+  return true;
 }
 
 function publishRetirementComplete(retiredDir, staleBytes, faultInjector) {

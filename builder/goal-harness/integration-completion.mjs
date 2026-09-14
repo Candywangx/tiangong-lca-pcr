@@ -62,7 +62,7 @@ export function finalizeIntegrationCompletion({ stateDir, record, resolveFinaliz
     const eventId = `${record.operation_id}-finalized`;
     // A repository CAS can reject a completed build as stale. Its atomic failure
     // event is authoritative on replay; do not repeat the repository side effect.
-    const existing = store.readEvents().find((entry) => entry.event_id === eventId);
+    const existing = store.getEvent(eventId);
     if (existing) {
       if (existing.type !== "integration_finalized") throw corrupt("Completion event identity was reused.");
       assertFinalizationOutcome(record, { ...record, snapshot: existing.payload.snapshot, tasks: existing.payload.tasks });

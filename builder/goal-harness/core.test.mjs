@@ -56,6 +56,27 @@ test("goal configuration validates and applies bounded defaults", () => {
   }
 });
 
+test("goal configuration accepts an auditable author model and reasoning effort", () => {
+  const root = makeRoot();
+  try {
+    const config = loadGoalConfig({ configPath: writeConfig(root, `codex:
+  model: gpt-5.6-terra
+  reasoning_effort: high
+`) });
+    assert.equal(config.codex.model, "gpt-5.6-terra");
+    assert.equal(config.codex.reasoning_effort, "high");
+    assert.throws(
+      () => loadGoalConfig({ configPath: writeConfig(root, `codex:
+  model: gpt-5.6-terra
+  reasoning_effort: extreme
+`) }),
+      (error) => error.code === "GOAL_CONFIG_INVALID" && /reasoning_effort/u.test(error.message),
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("goal configuration rejects all-repository CPC scope and missing policy", () => {
   const root = makeRoot();
   try {
@@ -142,9 +163,9 @@ test("event store reuses its verified projection across appends and invalidates 
   try {
     class CountingStore extends GoalEventStore {
       eventLogReads = 0;
-      readEvents() {
+      iterateEvents(options) {
         this.eventLogReads += 1;
-        return super.readEvents();
+        return super.iterateEvents(options);
       }
     }
     const stateDir = path.join(root, "goal-state");

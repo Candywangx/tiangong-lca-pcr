@@ -7,6 +7,7 @@ import {
   mkdirSync,
   openSync,
   readFileSync,
+  readSync,
   renameSync,
   statSync,
   writeFileSync,
@@ -16,12 +17,14 @@ import path from "node:path";
 import { GoalHarnessError } from "./errors.mjs";
 
 export class GoalEventStore {
-  constructor({ stateDir, clock = () => new Date().toISOString() }) {
+  constructor({ stateDir, clock = () => new Date().toISOString(), chunkSize = 64 * 1024 }) {
+    if (!Number.isSafeInteger(chunkSize) || chunkSize < 1) throw new RangeError("chunkSize must be a positive integer");
     this.stateDir = stateDir;
     this.eventsPath = path.join(stateDir, "events.jsonl");
     this.initialPath = path.join(stateDir, "initial-state.json");
     this.statePath = path.join(stateDir, "state.json");
     this.clock = clock;
+    this.chunkSize = chunkSize;
     this.projectionCache = null;
   }
 
@@ -43,8 +46,7 @@ export class GoalEventStore {
       throw new GoalHarnessError("GOAL_STATE_UNINITIALIZED", `Goal state is not initialized: ${this.stateDir}`);
     }
     const projection = this.loadVerifiedProjection();
-    const events = projection.events;
-    const duplicate = events.find((event) => event.event_id === input.event_id);
+    const duplicate = this.getEvent(input.event_id);
     if (duplicate) {
       const expected = stableJson({ type: input.type, payload: input.payload ?? {} });
       const actual = stableJson({ type: duplicate.type, payload: duplicate.payload ?? {} });
@@ -53,48 +55,79 @@ export class GoalEventStore {
       }
       return duplicate;
     }
-    const previous = events.at(-1);
     const unsigned = {
-      sequence: events.length + 1,
+      sequence: projection.state.last_event_sequence + 1,
       event_id: input.event_id ?? randomUUID(),
       at: input.at ?? this.clock(),
       type: input.type,
       payload: input.payload ?? {},
-      previous_hash: previous?.hash ?? null,
+      previous_hash: projection.state.last_event_hash,
     };
     const event = { ...unsigned, hash: sha256(stableJson(unsigned)) };
-    durableAppend(this.eventsPath, `${JSON.stringify(event)}\n`);
+    const offset = statSync(this.eventsPath).size;
+    const separator = offset > 0 && readRange(this.eventsPath, offset - 1, 1)[0] !== 10 ? "\n" : "";
+    const line = JSON.stringify(event);
+    // Reject invalid transitions before publishing an irreversible log entry.
     const state = reduceEvent(projection.state, event);
+    durableAppend(this.eventsPath, `${separator}${line}\n`);
     atomicWriteJson(this.statePath, state);
     this.projectionCache = {
       signature: eventLogSignature(this.eventsPath),
-      events: [...events, event],
+      eventIndex: projection.eventIndex,
       state,
     };
+    projection.eventIndex.set(event.event_id, eventLocator(event, offset + separator.length, Buffer.byteLength(line)));
     return event;
   }
 
+  // Compatibility API for bounded callers that require array operations.
   readEvents() {
+    return Array.from(this.iterateEvents());
+  }
+
+  // Single-pass iterator: callers must consume it fully to verify the entire chain.
+  // Retain only byte locators and content digests, never historical payload objects.
+  *iterateEvents({ eventIndex = new Map() } = {}) {
     if (!existsSync(this.eventsPath)) {
-      return [];
+      return;
     }
-    const lines = readFileSync(this.eventsPath, "utf8").split("\n").filter(Boolean);
-    const events = [];
-    for (const [index, line] of lines.entries()) {
+    let sequence = 0;
+    let previousHash = null;
+    for (const { bytes, offset } of readLines(this.eventsPath, this.chunkSize)) {
+      if (bytes.length === 0) continue;
+      sequence += 1;
       let event;
       try {
-        event = JSON.parse(line);
+        event = JSON.parse(bytes.toString("utf8"));
+        if (!event || typeof event !== "object" || Array.isArray(event)) throw new Error("Expected an event object");
       } catch (error) {
-        throw new GoalHarnessError("GOAL_EVENT_LOG_CORRUPT", `Invalid event JSON at line ${index + 1}`, { cause: error.message });
+        throw new GoalHarnessError("GOAL_EVENT_LOG_CORRUPT", `Invalid event JSON at event ${sequence}`, { cause: error.message });
       }
       const { hash, ...unsigned } = event;
-      const expectedPrevious = index === 0 ? null : events[index - 1].hash;
-      if (unsigned.sequence !== index + 1 || unsigned.previous_hash !== expectedPrevious || hash !== sha256(stableJson(unsigned))) {
-        throw new GoalHarnessError("GOAL_EVENT_LOG_CORRUPT", `Broken event hash chain at line ${index + 1}`);
+      if (unsigned.sequence !== sequence || unsigned.previous_hash !== previousHash || hash !== sha256(stableJson(unsigned))) {
+        throw new GoalHarnessError("GOAL_EVENT_LOG_CORRUPT", `Broken event hash chain at event ${sequence}`);
       }
-      events.push(event);
+      const locator = eventLocator(event, offset, bytes.length);
+      const previous = eventIndex.get(event.event_id);
+      if (previous && previous.contentHash !== locator.contentHash) {
+        throw new GoalHarnessError("GOAL_EVENT_ID_CONFLICT", `Event id ${event.event_id} was reused with different content`);
+      }
+      if (!previous) eventIndex.set(event.event_id, locator);
+      previousHash = hash;
+      yield event;
     }
-    return events;
+  }
+
+  getEvent(eventId) {
+    const projection = this.loadVerifiedProjection();
+    const locator = projection.eventIndex.get(eventId);
+    if (!locator) return undefined;
+    const event = JSON.parse(readRange(this.eventsPath, locator.offset, locator.length).toString("utf8"));
+    const { hash, ...unsigned } = event;
+    if (hash !== locator.hash || sha256(stableJson(unsigned)) !== hash || eventLogSignature(this.eventsPath) !== projection.signature) {
+      throw new GoalHarnessError("GOAL_EVENT_LOG_CORRUPT", "Event log changed during indexed read");
+    }
+    return event;
   }
 
   rebuild() {
@@ -104,11 +137,69 @@ export class GoalEventStore {
   loadVerifiedProjection() {
     const signature = eventLogSignature(this.eventsPath);
     if (this.projectionCache?.signature === signature) return this.projectionCache;
-    const initial = JSON.parse(readFileSync(this.initialPath, "utf8"));
-    const events = this.readEvents();
-    const projection = { signature, events, state: events.reduce(reduceEvent, initial) };
+    let state = JSON.parse(readFileSync(this.initialPath, "utf8"));
+    const eventIndex = new Map();
+    for (const event of this.iterateEvents({ eventIndex })) state = reduceEvent(state, event);
+    if (eventLogSignature(this.eventsPath) !== signature) {
+      throw new GoalHarnessError("GOAL_EVENT_LOG_CORRUPT", "Event log changed during reconstruction");
+    }
+    const projection = { signature, eventIndex, state };
     this.projectionCache = projection;
     return projection;
+  }
+}
+
+function eventLocator(event, offset, length) {
+  return { offset, length, hash: event.hash, contentHash: sha256(stableJson({ type: event.type, payload: event.payload ?? {} })) };
+}
+
+function* readLines(filePath, chunkSize) {
+  const fd = openSync(filePath, "r");
+  let offset = 0;
+  let lineOffset = 0;
+  let parts = [];
+  let length = 0;
+  try {
+    for (;;) {
+      const chunk = Buffer.allocUnsafe(chunkSize);
+      const count = readSync(fd, chunk, 0, chunk.length, null);
+      if (count === 0) break;
+      let start = 0;
+      for (let i = 0; i < count; i += 1) {
+        if (chunk[i] !== 10) continue;
+        const part = chunk.subarray(start, i);
+        const bytes = parts.length ? Buffer.concat([...parts, part], length + part.length) : part;
+        yield { bytes, offset: lineOffset };
+        parts = [];
+        length = 0;
+        start = i + 1;
+        lineOffset = offset + start;
+      }
+      if (start < count) {
+        parts.push(chunk.subarray(start, count));
+        length += count - start;
+      }
+      offset += count;
+    }
+    if (length) yield { bytes: Buffer.concat(parts, length), offset: lineOffset };
+  } finally {
+    closeSync(fd);
+  }
+}
+
+function readRange(filePath, offset, length) {
+  const fd = openSync(filePath, "r");
+  try {
+    const bytes = Buffer.allocUnsafe(length);
+    let read = 0;
+    while (read < length) {
+      const count = readSync(fd, bytes, read, length - read, offset + read);
+      if (!count) throw new GoalHarnessError("GOAL_EVENT_LOG_CORRUPT", "Event log truncated during indexed read");
+      read += count;
+    }
+    return bytes;
+  } finally {
+    closeSync(fd);
   }
 }
 
@@ -129,7 +220,27 @@ function reduceEvent(state, event) {
     last_event_hash: event.hash,
     updated_at: event.at,
   };
-  if (event.type === "scheduling_stopped") {
+  if (event.type === "model_trial_registered") {
+    const trial = event.payload.trial;
+    next.model_trials = [...(next.model_trials ?? []), trial];
+    const assignments = new Map(trial.assignments.map(a => [a.task_id, a]));
+    next.tasks = next.tasks.map(task => assignments.has(task.id)
+      ? { ...task, model_trial: { ...assignments.get(task.id), trial_id: trial.id, controls: trial.controls } }
+      : task);
+  } else if (event.type === "model_trial_controls_prelaunch") {
+    const trial = next.model_trials?.find(t => t.id === event.payload.trial_id);
+    const samples = next.tasks.filter(t => t.model_trial?.trial_id === event.payload.trial_id);
+    if (!trial || samples.length !== 6 || samples.some(t => t.state !== "queued" || t.thread_id || t.worktree_path || t.attempt || t.trial_turns?.length)) {
+      throw new GoalHarnessError("GOAL_TRIAL_ALREADY_STARTED", "Trial controls cannot change after a sample has started.");
+    }
+    if (stableJson(trial.controls) !== stableJson(event.payload.previous_controls) || !event.payload.reason
+      || ["harness_sha256", "policy_sha256", "config_sha256", "cache_sha256"].some(k => !/^[a-f0-9]{64}$/.test(event.payload.controls?.[k] ?? ""))) {
+      throw new GoalHarnessError("GOAL_TRIAL_CONTROL_CONFLICT", "Trial prelaunch control revision requires exact previous fingerprints and a reason.");
+    }
+    next.model_trials = next.model_trials.map(t => t.id !== trial.id ? t : { ...t, controls: event.payload.controls,
+      control_history: [...(t.control_history ?? []), { controls: t.controls, at: event.at, reason: event.payload.reason }] });
+    next.tasks = next.tasks.map(t => t.model_trial?.trial_id !== trial.id ? t : { ...t, model_trial: { ...t.model_trial, controls: event.payload.controls } });
+  } else if (event.type === "scheduling_stopped") {
     next.stopped = true;
   } else if (event.type === "scheduling_resumed") {
     next.stopped = false;
@@ -169,7 +280,15 @@ function reduceEvent(state, event) {
     next.snapshots = (next.snapshots ?? []).map((snapshot) => snapshot.id === event.payload.snapshot.id ? event.payload.snapshot : snapshot);
     const replacements = new Map(event.payload.tasks.map((task) => [task.id, task]));
     next.tasks = (next.tasks ?? []).map((task) => replacements.get(task.id) ?? task);
+  } else if (event.type === "snapshot_reconciled") {
+    next.snapshots = [...(next.snapshots ?? []).map(s => s.id === event.payload.previous_snapshot.id ? event.payload.previous_snapshot : s), event.payload.snapshot];
+    const replacements = new Map(event.payload.tasks.map(task => [task.id, task]));
+    next.tasks = (next.tasks ?? []).map(task => replacements.get(task.id) ?? task);
   } else if (event.type === "task_replaced") {
+    const previous = next.tasks.find(task => task.id === event.payload.task.id);
+    if (previous?.model_trial && stableJson(previous.model_trial) !== stableJson(event.payload.task.model_trial)) {
+      throw new GoalHarnessError("GOAL_MODEL_TRIAL_IMMUTABLE", "Trial assignment is immutable; record model switches on turns, not assignments.");
+    }
     next.tasks = (next.tasks ?? []).map((task) => task.id === event.payload.task.id ? event.payload.task : task);
   } else if (event.type === "verified_common_uuids_updated") {
     next.verified_common_uuids = event.payload.verified_common_uuids;

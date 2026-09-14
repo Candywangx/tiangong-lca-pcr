@@ -61,6 +61,21 @@ function deadLease(token = "stale-token") {
   return { schema_version: 1, token, pid: 2147483647, operation: "integrate", acquired_at: "2026-09-04T00:00:00.000Z" };
 }
 
+test("pre-coordinator archived JSON leases remain immutable history and do not block acquisition", () => {
+  const stateDir = mkdtempSync(path.join(tmpdir(), "goal-legacy-lock-history-"));
+  try {
+    mkdirSync(path.join(stateDir, "lock-history"));
+    const token = "60b98354-6e72-4d47-a0f9-dd74757aca65";
+    const archive = path.join(stateDir, "lock-history", `goal-lock-stale-2147483647-${token}.json`);
+    const bytes = JSON.stringify(deadLease(token));
+    writeFileSync(archive, bytes);
+    assert.equal(withGoalLock(stateDir, "after-upgrade", () => "entered"), "entered");
+    assert.equal(readFileSync(archive, "utf8"), bytes);
+    writeFileSync(archive, JSON.stringify(deadLease("substituted")));
+    assert.throws(() => withGoalLock(stateDir, "reject-forged-history", () => {}), e => e.code === "GOAL_LOCKED");
+  } finally { rmSync(stateDir, { recursive: true, force: true }); }
+});
+
 test("a paused stale reclaimer cannot unlink a successor's live lease after its final comparison", async () => {
   const stateDir = mkdtempSync(path.join(tmpdir(), "goal-stale-final-unlink-"));
   const lockPath = path.join(stateDir, "goal.lock");

@@ -28,8 +28,8 @@ function applyCoordinatorOperation(action, input) {
   const stateDir = request.state_dir;
   return withGoalLock(stateDir, `coordinator-${action}`, () => {
     const store = new GoalEventStore({ stateDir });
-    const { state, events } = store.loadVerifiedProjection();
-    const previous = events.find((event) => event.payload?.coordinator_operation?.request?.operation_id === request.operation_id);
+    const state = store.rebuild();
+    const previous = store.getEvent(`coordinator-operation-${sha256(request.operation_id)}`);
     if (previous) {
       const operation = previous.payload.coordinator_operation;
       if (stableJson(operation.request) !== stableJson(request)) {
@@ -63,7 +63,7 @@ function applyCoordinatorOperation(action, input) {
         report: {
           path: task.report_path,
           sha256: report.sha256,
-          recorded_provenance: reportProvenance(store, events, task),
+          recorded_provenance: reportProvenance(store, task),
         },
         provenance: taskProvenance(task),
         ...(action === "release" ? { hold_operation_id: task.coordinator_hold.operation_id } : {}),
@@ -119,12 +119,12 @@ function taskProvenance(task) {
   return Object.fromEntries(keys.filter((key) => task[key] !== undefined).map((key) => [key, task[key]]));
 }
 
-function reportProvenance(store, events, task) {
+function reportProvenance(store, task) {
   const initial = JSON.parse(readFileSync(store.initialPath, "utf8"));
   let prior = initial.tasks?.find((entry) => entry.id === task.id);
   let recorded = prior?.report_path === task.report_path
     ? { source: "initial-state", ...taskProvenance(prior) } : null;
-  for (const event of events) {
+  for (const event of store.iterateEvents()) {
     const next = event.type === "task_replaced" ? event.payload.task
       : event.type === "integration_finalized" ? event.payload.tasks?.find((entry) => entry.id === task.id) : null;
     if (next?.id !== task.id) continue;

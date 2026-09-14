@@ -18,10 +18,28 @@ export function mergeVerifiedCommonUuids(existing = [], audited = []) {
   return [...merged.values()].sort((left, right) => String(left.uuid).localeCompare(String(right.uuid)));
 }
 
-export function auditReportedUuids({ report, tiangongCliRoot, runner = runTiangongFlowGet, supportRunner = runTiangongReferenceSupport }) {
+export function auditReportedUuids({
+  report,
+  tiangongCliRoot,
+  runner = runTiangongFlowGet,
+  supportRunner = runTiangongReferenceSupport,
+  retryAttempts = 3,
+  retryDelayMs = 1_000,
+  sleeper = sleepSync,
+}) {
   const results = [];
+  const supportCache = new Map();
   for (const claimed of report.uuid_audits ?? []) {
-    const actual = readPublicUuidAudit({ uuid: claimed.uuid, tiangongCliRoot, runner, supportRunner });
+    const actual = readPublicUuidAudit({
+      uuid: claimed.uuid,
+      tiangongCliRoot,
+      runner,
+      supportRunner,
+      supportCache,
+      retryAttempts,
+      retryDelayMs,
+      sleeper,
+    });
     const mismatches = [];
     if (actual.uuid !== claimed.uuid.toLowerCase()) mismatches.push("uuid");
     if (actual.state_code !== 100 || claimed.state_code !== 100) mismatches.push("state_code");
@@ -89,18 +107,35 @@ export function auditReportedUuids({ report, tiangongCliRoot, runner = runTiango
   return results;
 }
 
-export function readPublicUuidAudit({ uuid, tiangongCliRoot, runner = runTiangongFlowGet, supportRunner = runTiangongReferenceSupport }) {
-    const direct = runner({ uuid, tiangongCliRoot });
+export function readPublicUuidAudit({
+  uuid,
+  tiangongCliRoot,
+  runner = runTiangongFlowGet,
+  supportRunner = runTiangongReferenceSupport,
+  supportCache = new Map(),
+  retryAttempts = 3,
+  retryDelayMs = 1_000,
+  sleeper = sleepSync,
+}) {
+    const retryOptions = { attempts: retryAttempts, delayMs: retryDelayMs, sleeper };
+    const direct = retryUuidInfrastructure(() => runner({ uuid, tiangongCliRoot }), retryOptions);
     const flow = direct?.flow?.flowDataSet;
     const info = flow?.flowInformation?.dataSetInformation;
     const names = localizedTexts(info?.name?.baseName);
     const referenceProperty = referenceFlowProperty(flow);
     const flowPropertyReference = referenceProperty?.referenceToFlowPropertyDataSet;
-    const support = supportRunner({
-      flowPropertyId: String(flowPropertyReference?.["@refObjectId"] ?? ""),
-      flowPropertyVersion: String(flowPropertyReference?.["@version"] ?? ""),
-      tiangongCliRoot,
-    });
+    const flowPropertyId = String(flowPropertyReference?.["@refObjectId"] ?? "");
+    const flowPropertyVersion = String(flowPropertyReference?.["@version"] ?? "");
+    const supportKey = `${flowPropertyId.toLowerCase()}@${flowPropertyVersion}`;
+    let support = supportCache.get(supportKey);
+    if (support === undefined) {
+      support = retryUuidInfrastructure(() => supportRunner({
+        flowPropertyId,
+        flowPropertyVersion,
+        tiangongCliRoot,
+      }), retryOptions);
+      supportCache.set(supportKey, support);
+    }
     return {
       uuid: String(info?.["common:UUID"] ?? "").toLowerCase(),
       state_code: direct?.state_code,
@@ -123,6 +158,28 @@ export function readPublicUuidAudit({ uuid, tiangongCliRoot, runner = runTiangon
       general_comment: localizedTexts(info?.generalComment).en ?? localizedTexts(info?.generalComment).zh ?? "",
       response_sha256: `sha256:${createHash("sha256").update(stableJson({ direct, support })).digest("hex")}`,
     };
+}
+
+function retryUuidInfrastructure(operation, { attempts, delayMs, sleeper }) {
+  const limit = Number.isInteger(attempts) && attempts > 0 ? attempts : 3;
+  const delay = Number.isFinite(delayMs) && delayMs >= 0 ? delayMs : 1_000;
+  for (let attempt = 1; attempt <= limit; attempt += 1) {
+    try {
+      return operation();
+    } catch (error) {
+      if (error?.code !== "GOAL_UUID_DIRECT_READ_FAILED" || error?.details?.retryable === false) throw error;
+      if (attempt === limit) {
+        throw new GoalHarnessError(error.code, error.message, { ...error.details, attempts: attempt });
+      }
+      sleeper(delay * attempt);
+    }
+  }
+  throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "TianGong public UUID audit exhausted its retry budget.", { attempts: limit });
+}
+
+function sleepSync(milliseconds) {
+  if (!Number.isFinite(milliseconds) || milliseconds <= 0) return;
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, milliseconds);
 }
 
 export async function verifySourceLocators({ report, stateDir = null, fetchImpl = globalThis.fetch, timeoutMs = 30_000 }) {
@@ -212,7 +269,7 @@ function runTiangongFlowGet({ uuid, tiangongCliRoot }) {
 
 function runTiangongReferenceSupport({ flowPropertyId, flowPropertyVersion, tiangongCliRoot }) {
   if (!flowPropertyId) {
-    throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "TianGong flow does not declare a reference flow-property UUID.");
+    throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "TianGong flow does not declare a reference flow-property UUID.", { retryable: false });
   }
   const result = spawnSync(process.execPath, [
     "--env-file-if-exists=.env",

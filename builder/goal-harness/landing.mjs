@@ -20,6 +20,7 @@ import { GoalEventStore } from "./event-store.mjs";
 import { withGoalLock } from "./lock.mjs";
 import { assertRepoPath, resolveRepoPath } from "./paths.mjs";
 import { applyTaskTransition } from "./state-machine.mjs";
+import { assertReconciliationInputs } from "./reconciliation.mjs";
 import { listCommittedRepositoryValidations, repositoryCoordinatorStateDir } from "./repository-coordinator.mjs";
 import { listViewerPublications, verifyPublishedViewerArtifact, writeViewerLandingProvenance } from "./viewer-publication.mjs";
 
@@ -115,7 +116,10 @@ export function landGoalSnapshot({ config, stateDir, snapshotId = null, dryRun =
       ? captureActivationLandingPaths({ config, validations, validation })
       : snapshot.changed_files;
     const expectedFromBaseline = captureExpectedFilesFromCommitAllowMissing(config.project_root, validations[0].expected_old_head, landingPaths);
-    const expected = { ...expectedFromBaseline, ...(landingHead.path_fingerprints ?? {}) };
+    const expected = { ...expectedFromBaseline, ...(landingHead.path_fingerprints ?? {}), ...(snapshot.reconciliation?.expected_inputs ?? {}) };
+    if (snapshot.reconciliation) {
+      assertReconciliationInputs({ projectRoot: config.project_root, expected: Object.fromEntries(Object.entries(snapshot.reconciliation.expected_inputs).filter(([file]) => !landingPaths.includes(file))) });
+    }
     const landingTransaction = dryRun ? null : prepareRepositoryLanding({
       landingStateDir,
       landingHeadPath,

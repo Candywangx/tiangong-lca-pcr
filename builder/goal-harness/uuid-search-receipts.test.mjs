@@ -80,6 +80,32 @@ test("authenticated hybrid preflight retries one transient whole-chain failure b
   assert.deepEqual(waits, [25]);
 });
 
+test("authenticated hybrid preflight increases the delay between repeated whole-chain failures", () => {
+  let authAttempts = 0;
+  const waits = [];
+  const check = authenticatedHybridSearchDryRunCheck({
+    tiangongCliRoot: "/tools/tiangong-cli",
+    flowHybridSearchRoot: "/tools/flow-hybrid-search",
+    maxAttempts: 3,
+    retryDelayMs: 25,
+    sleeper: (milliseconds) => waits.push(milliseconds),
+    runner(command, args) {
+      if (args.includes("doctor-auth")) {
+        authAttempts += 1;
+        if (authAttempts < 3) return { status: 1, stdout: "", stderr: "transient upstream failure" };
+        return { status: 0, stdout: JSON.stringify({ status: "passed" }), stderr: "" };
+      }
+      if (args.some((arg) => arg.endsWith("/run-flow-hybrid-search.mjs"))) {
+        return { status: 0, stdout: JSON.stringify({ data: [{ id: UUID_A }] }), stderr: "" };
+      }
+      return { status: 0, stdout: JSON.stringify({ state_code: 100, flow: { flowDataSet: { flowInformation: { dataSetInformation: { "common:UUID": UUID_A } } } } }), stderr: "" };
+    },
+  });
+  assert.equal(check.ok, true);
+  assert.equal(check.detail.attempts, 3);
+  assert.deepEqual(waits, [25, 50]);
+});
+
 test("authenticated hybrid preflight still fails closed after bounded retries without leaking stderr", () => {
   const secret = "must-not-escape";
   let callCount = 0;
