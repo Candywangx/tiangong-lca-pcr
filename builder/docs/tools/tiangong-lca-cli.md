@@ -15,7 +15,7 @@ tiangong-lca --help
 In the workspace checkout, the sibling CLI repository may also be used:
 
 ```bash
-cd ../tiangong-lca-cli
+cd ../cli
 node ./bin/tiangong-lca.js --help
 ```
 

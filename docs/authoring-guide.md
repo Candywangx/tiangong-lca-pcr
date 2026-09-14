@@ -24,8 +24,8 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - library/pcrs/**
   - library/modules/**
-lastReviewedAt: 2026-07-14
-lastReviewedCommit: 41e00bafd03530af7871e4620e59862dd779473e
+lastReviewedAt: 2026-09-13
+lastReviewedCommit: da2301271085ca4db71804ea458d898deaa59cd5
 ---
 
 # Authoring Guide
@@ -102,7 +102,7 @@ The published dataset profile defines how the completed dataset can be used down
 Use `tiangong-lca-cli` as the preferred identity evidence tool when PCR content refers to Tiangong database rows. See `builder/docs/tools/tiangong-lca-cli.md` for the compact operational contract. From the workspace, either use an installed `tiangong-lca` binary or the sibling CLI repo:
 
 ```bash
-cd ../tiangong-lca-cli
+cd ../cli
 node ./bin/tiangong-lca.js search flow --input ./search-flow.request.json --json
 node ./bin/tiangong-lca.js search process --input ./search-process.request.json --json
 node ./bin/tiangong-lca.js flow get --id <flow-id> --json
