@@ -1,3 +1,4 @@
+import { resolveAuthorContract } from "./author-contract.mjs";
 import { readAuthorSubmissionSchema } from "./author-submission.mjs";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
@@ -13,6 +14,7 @@ export function readAuthorReportSchema() {
 }
 
 export function compileAuthorPrompt({ task, policyPromptPath, verifiedCommonUuids = [], verifiedSourceReceipts = [], tools = {}, materials = null }) {
+  const contract = resolveAuthorContract(task);
   const policyBytes = readFileSync(policyPromptPath);
   const policySha256 = `sha256:${createHash("sha256").update(policyBytes).digest("hex")}`;
   const allowedFiles = ["manifest.yaml", "pcr.en-US.md", "pcr.zh-CN.md", "structured.yaml"]
@@ -22,7 +24,7 @@ export function compileAuthorPrompt({ task, policyPromptPath, verifiedCommonUuid
   const hybridSearchRoot = tools.flow_hybrid_search_root ?? "<ABSOLUTE_FLOW_HYBRID_SEARCH_ROOT>";
   const credentialsEnvFile = tools.credentials_env_file ?? `${tiangongCliRoot}/.env`;
   const receiptCli = tools.receipt_cli ?? fileURLToPath(new URL("../cli/goal-uuid-search.mjs", import.meta.url));
-  const receiptBackedCommonUuids = (task.authoring_contract_version === 2 ? [] : verifiedCommonUuids).filter((entry) => entry?.hybrid_search_receipt_id);
+  const receiptBackedCommonUuids = (contract.authoring_contract_version === 2 ? [] : verifiedCommonUuids).filter((entry) => entry?.hybrid_search_receipt_id);
   let prompt = `You are one independent TianGong PCR author. Work only on the single PCR below in the Git worktree already assigned to this visible Codex task.
 
 Assignment
@@ -32,6 +34,7 @@ Assignment
 - PCR target path: ${task.pcr_path}
 - Queue action: ${task.queue_action}
 - Goal policy fingerprint: ${policySha256}
+- Fixed authoring contract: ${contract.authoring_contract_version}; draft schema_version: ${contract.author_draft_schema_version}; generated report schema_version: ${contract.author_report_schema_version}
 - Classification precheck: ${formatItems(task.precheck_results)}
 - Previous structured gate findings: ${formatJson(task.pending_gate_findings ?? [])}
 - Previous validation details: ${task.validation_result ? JSON.stringify(task.validation_result) : "none supplied"}
@@ -59,7 +62,7 @@ Method and evidence
 - Avoid species × tissue × state × route, variant × packaging × energy, or other Cartesian expansions. Above 120 rows provide an auditable complexity justification; above 180 redesign/compress by default; above 250 is unacceptable without separately approved methodology necessity.
 
 UUID audit
-Tool roots (exact):
+${contract.author_draft_schema_version === 2 ? "Inspect all direct-read identity facts for applicability. In draft v2, record only uuid, hybrid_search_receipt_id and semantic_review for each adopted UUID; preparation generates the full identity fields. Explicit optional identity claims remain subject to conflict checks. The generated report remains schema_version 1.\n" : ""}Tool roots (exact):
 - TianGong CLI: ${tiangongCliRoot}
 - Flow hybrid search: ${hybridSearchRoot}
 - Goal receipt CLI: ${receiptCli}
@@ -105,12 +108,13 @@ Authoring sequence and commit (normal PCR results with boundary_review null)
 
 If product identity is ambiguous, a required official boundary source cannot be verified, or the visible worktree is unsafe, fail closed in the report. Missing exact UUIDs and insufficient range evidence are unresolved conditions, not blockers.
 `;
-  if (task.authoring_contract_version === 2) {
-    prompt = prompt.replace(/Authoring sequence and commit \(normal PCR results with boundary_review null\)[\s\S]*?If product identity is ambiguous/u, `${preparedAuthorSequence(task, tools)}\n\nIf product identity is ambiguous`);
+  if (contract.authoring_contract_version === 2) {
+    if (contract.author_draft_schema_version === 2) prompt = prompt.replace("set report uuid_audits[].base_name_zh to the exact empty string,", "allow preparation to generate the exact empty base_name_zh from verified receipts,");
+    prompt = prompt.replace(/Authoring sequence and commit \(normal PCR results with boundary_review null\)[\s\S]*?If product identity is ambiguous/u, `${preparedAuthorSequence(task, tools, contract)}\n\nIf product identity is ambiguous`);
     prompt = prompt.replace('Include every receipt id in hybrid_search_receipt_ids; link each adopted UUID with hybrid_search_receipt_id, each rejected candidate with receipt_id plus the same reason_code/reason, and each no_exact_candidate/manual_review_required unresolved row with hybrid_search_receipt_ids.', 'In the draft, link each adopted UUID with hybrid_search_receipt_id and each no_exact_candidate/manual_review_required row with hybrid_search_receipt_ids. List any additional used receipt ids in receipt_ids. Omit rejected_uuid_candidates and the top-level hybrid_search_receipt_ids; preparation derives them from finalized evidence. Do not retype rejection reasons.');
     prompt += '\nContract 2 output: return exactly one non-null prepared_report, boundary_review_report or failure with schema_version 2; all three keys are required. Normal success is the preparation command JSON verbatim. For an explicit product-boundary referral place the complete legacy-format referral report described above in boundary_review_report. For unresolved measurement relationships return failure {code:"GOAL_MEASUREMENT_REVIEW_REQUIRED",message:"describe the relationship and affected rows"}; for infrastructure outage use GOAL_UUID_INFRASTRUCTURE_UNAVAILABLE; other uncorrectable preflight problems use GOAL_AUTHOR_PREFLIGHT_FAILED. Failure/referral outputs are never completed PCR results. Legacy UUID caches are candidates only: capture and finalize new task-bound receipts before adoption.\n';
   }
-  return { prompt, policy_sha256: policySha256, allowed_files: allowedFiles, output_schema: task.authoring_contract_version === 2 ? readAuthorSubmissionSchema() : readAuthorReportSchema() };
+  return { prompt, author_contract: contract, policy_sha256: policySha256, allowed_files: allowedFiles, output_schema: contract.authoring_contract_version === 2 ? readAuthorSubmissionSchema() : readAuthorReportSchema() };
 }
 
 function formatItems(value = []) {
@@ -143,7 +147,7 @@ Local candidate hits are not adopted-evidence counts. Program checks cover integ
 `;
 }
 
-function preparedAuthorSequence(task, tools) {
+function preparedAuthorSequence(task, tools, contract) {
   const prepareCli = fileURLToPath(new URL("../cli/goal-prepare-report.mjs", import.meta.url));
   return `Authoring sequence and commit (contract 2 normal PCR results)
 1. Determine the reference quantity, collection basis and conversion. Read builder/docs/methods/measurement-unit-rules.md for the supported finite bilingual forms. M is measured later; specify its method, net/configuration scope and rule/protocol links. Never invent a machine weight. Unknown relationships require review.
@@ -151,7 +155,7 @@ function preparedAuthorSequence(task, tools) {
 3. Run npm run pcr:check -- --pcr ${task.pcr_path} --workspace current --format json. Fix every error in this turn; manual_review is not a pass. Repeat sync/check after edits.
 4. Run npm run validate and keep the exact result. A target check does not substitute for full validation; shared artifact errors must be reported exactly and never repaired outside the allowlist.
 5. Run git diff --name-only and git diff --check. Commit exactly the four authorized PCR files.
-6. Write your draft outside the worktree according to builder/schemas/goal-author-draft.schema.json. Keep original author judgment and claims; omit program-derived rejected_uuid_candidates and top-level hybrid_search_receipt_ids. Adopted UUID links and unresolved row receipt links remain explicit; receipt_ids lists any additional task receipts.
-7. Run node ${prepareCli} --config ${tools.config_path ?? '<ABSOLUTE_GOAL_CONFIG_PATH>'} --task ${task.id} --draft <ABSOLUTE_DRAFT_JSON> --format json. This repeats actual PCR/sync checks and audits UUID evidence. If it fails, repair the draft or PCR in this turn; resync and recommit content changes, then prepare again. It does not consume or reset Harness repair attempts.
+6. Write your draft outside the worktree according to builder/schemas/goal-author-draft.schema.json with schema_version ${contract.author_draft_schema_version}. ${contract.author_draft_schema_version === 2 ? "For each uuid_audits entry, provide uuid, hybrid_search_receipt_id, semantic_review. Preparation derives the complete database identity from verified receipts; any explicit optional identity fields must agree exactly or preparation reports a conflict." : "For every uuid_audits entry, retain the full version-1 identity fields required by the schema, together with its receipt and semantic review."} Keep original author judgment and claims; omit program-derived rejected_uuid_candidates and top-level hybrid_search_receipt_ids. Adopted UUID links and unresolved row receipt links remain explicit; receipt_ids lists any additional task receipts.
+7. Run node ${prepareCli} --config ${tools.config_path ?? '<ABSOLUTE_GOAL_CONFIG_PATH>'} --task ${task.id} --draft <ABSOLUTE_DRAFT_JSON> --format json. This repeats actual PCR/sync checks and audits UUID evidence. If author-correctable content checks fail, repair the draft or PCR in this turn; resync and recommit content changes, then prepare again. For infrastructure, exhausted execution windows, integrity or manual-review findings, preserve the structured preparation failure and return the applicable failure outcome for Harness recovery or review. Preparation does not consume or reset Harness repair attempts.
 8. Return the successful preparation JSON verbatim. The Harness reads the generated file by its hash-bound reference and independently rechecks it; never transcribe the whole generated report.`;
 }

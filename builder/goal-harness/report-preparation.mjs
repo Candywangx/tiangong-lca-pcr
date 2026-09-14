@@ -31,6 +31,9 @@ import { auditReportedUuids } from "./evidence-audit.mjs";
 import { reviewAuthorWorktree, inspectAuthorCommit, completeAuthorReviewIdentity } from "./author-review.mjs";
 import { assessRequiredReview, reviewTimeRemaining, failedReview } from "./review-assessment.mjs";
 import { validateAuthorReport } from "./author-gates.mjs";
+import { assembleAuthorReport } from "./report-assembler.mjs";
+export { assembleAuthorReport } from "./report-assembler.mjs";
+import { resolveAuthorContract, assertAuthorArtifactVersions } from "./author-contract.mjs";
 import { resolveAuthorContentBaseCommit } from "./author-baseline.mjs";
 
 const ajv = new Ajv2020({ allErrors: true, strict: true });
@@ -45,62 +48,6 @@ const draftValidator = ajv.compile(
     ),
   ),
 );
-
-export function assembleAuthorReport({ draft, receiptAudits }) {
-  const report = structuredClone(draft);
-  delete report.receipt_ids;
-  const receipts = new Map(receiptAudits.map((r) => [r.receipt_id, r]));
-  for (const claim of report.uuid_audits ?? []) {
-    const decision = receipts
-      .get(claim.hybrid_search_receipt_id)
-      ?.candidate_decisions.find((d) => d.uuid === claim.uuid.toLowerCase());
-    if (decision?.decision !== "adopted")
-      conflict("Adopted UUID disagrees with its finalized receipt.", claim);
-  }
-  const generated = receiptAudits
-    .flatMap((r) =>
-      r.scope === "goal_cache_reuse"
-        ? []
-        : r.candidate_decisions
-            .filter((d) => d.decision === "rejected")
-            .map((d) => ({
-              uuid: d.uuid,
-              receipt_id: r.receipt_id,
-              reason_code: d.reason_code,
-              reason: d.reason,
-            })),
-    )
-    .sort(
-      (a, b) =>
-        a.receipt_id.localeCompare(b.receipt_id) ||
-        a.uuid.localeCompare(b.uuid),
-    );
-  if (report.rejected_uuid_candidates !== undefined) {
-    const claimed = [...report.rejected_uuid_candidates].sort(
-      (a, b) =>
-        a.receipt_id.localeCompare(b.receipt_id) ||
-        a.uuid.localeCompare(b.uuid),
-    );
-    if (stableArtifactJson(claimed) !== stableArtifactJson(generated))
-      conflict("Explicit rejected candidates differ from finalized evidence.", {
-        claimed,
-        expected: generated,
-      });
-  }
-  const membership = [...receipts.keys()].sort();
-  if (
-    report.hybrid_search_receipt_ids !== undefined &&
-    stableArtifactJson([...report.hybrid_search_receipt_ids].sort()) !==
-      stableArtifactJson(membership)
-  )
-    conflict(
-      "Explicit receipt membership differs from the referenced evidence.",
-      { claimed: report.hybrid_search_receipt_ids, expected: membership },
-    );
-  report.rejected_uuid_candidates = generated;
-  report.hybrid_search_receipt_ids = [...receipts.keys()].sort();
-  return report;
-}
 
 export function prepareAuthorReport(options) {
   try { return prepareBoundAuthorReport(options); }
@@ -153,6 +100,7 @@ function prepareBoundAuthorReport({
       { findings: draftValidator.errors.map(detail => ({ code: "GOAL_REPORT_DRAFT_INVALID", message: detail.message, detail,
         details: { phase: "preparation", origin: "harness_review", failure_kind: "author_claim" } })) },
     );
+  assertAuthorArtifactVersions({task,draftVersion:draft.schema_version});
   if (draft.boundary_review != null)
     fail(
       "GOAL_REPORT_DRAFT_INVALID",
@@ -189,6 +137,7 @@ function prepareBoundAuthorReport({
     if (localReceipts.valid !== false) {
       try {
         report = assembleAuthorReport({ draft, receiptAudits });
+        assertAuthorArtifactVersions({task,reportVersion:report.schema_version});
         const schema = validateAuthorReport(report);
         if (!schema.valid) throw new GoalHarnessError("GOAL_REPORT_DRAFT_INVALID", "Assembled report failed Schema validation.", {
           phase, origin: "harness_review", failure_kind: "author_claim", findings: schema.errors.map(detail => ({code:"GOAL_REPORT_DRAFT_INVALID",message:detail.message,detail})),
@@ -275,8 +224,8 @@ function prepareBoundAuthorReport({
       latest = fresh.tasks.find((t) => t.id === task.id);
     assertPreparingTask(latest, cwd);
     if (
-      stableArtifactJson(taskBinding(fresh.goal_id, latest)) !==
-      stableArtifactJson(binding)
+      bindingJson(taskBinding(fresh.goal_id, latest)) !==
+      bindingJson(binding)
     )
       fail(
         "GOAL_REPORT_BINDING_MISMATCH",
@@ -353,8 +302,8 @@ export function resolvePreparedReport({ stateDir, task, submission, deadline = I
   const authoritative = state.tasks.find((t) => t.id === task.id);
   if (
     !authoritative ||
-    stableArtifactJson(taskBinding(state.goal_id, authoritative)) !==
-      stableArtifactJson(taskBinding(state.goal_id, task))
+    bindingJson(taskBinding(state.goal_id, authoritative)) !==
+      bindingJson(taskBinding(state.goal_id, task))
   )
     fail(
       "GOAL_REPORT_BINDING_MISMATCH",
@@ -370,8 +319,8 @@ export function resolvePreparedReport({ stateDir, task, submission, deadline = I
     );
   if (
     !event ||
-    stableArtifactJson(event.payload.binding) !==
-      stableArtifactJson(taskBinding(state.goal_id, task))
+    bindingJson(event.payload.binding) !==
+      bindingJson(taskBinding(state.goal_id, task))
   )
     fail(
       "GOAL_REPORT_BINDING_MISMATCH",
@@ -409,6 +358,7 @@ export function resolvePreparedReport({ stateDir, task, submission, deadline = I
     report.commit_sha !== submission.commit_sha
   )
     fail("GOAL_REPORT_BINDING_MISMATCH", "Draft or commit binding changed.");
+  assertAuthorArtifactVersions({task,draftVersion:JSON.parse(draftBytes).schema_version,reportVersion:report.schema_version,manifestBinding:manifest.binding});
   assertReportTask(report, task);
   if (
     stableArtifactJson(inspectContent(task, report.commit_sha, deadline).files) !==
@@ -457,7 +407,7 @@ function publishPreparationFailure({ stateDir, task, cwd, binding, content, draf
     const store = new GoalEventStore({ stateDir }), state = store.rebuild();
     const latest = state.tasks.find(t => t.id === task.id);
     assertPreparingTask(latest, cwd);
-    if (stableArtifactJson(taskBinding(state.goal_id, latest)) !== stableArtifactJson(binding)
+    if (bindingJson(taskBinding(state.goal_id, latest)) !== bindingJson(binding)
       || stableArtifactJson(readContentFingerprints(latest)) !== stableArtifactJson(content.files))
       fail("GOAL_REPORT_BINDING_MISMATCH", "Inputs changed during failed preparation.");
     publishPreparedDirectory(failureDirectory(stateDir, task, id), {
@@ -474,11 +424,11 @@ export function resolvePreparationFailure({ stateDir, task, forCommit = null, de
   const store = new GoalEventStore({ stateDir }), state = store.rebuild();
   const latest = state.tasks.find(t => t.id === task.id);
   const binding = taskBinding(state.goal_id, task);
-  if (!latest || stableArtifactJson(taskBinding(state.goal_id, latest)) !== stableArtifactJson(binding))
+  if (!latest || bindingJson(taskBinding(state.goal_id, latest)) !== bindingJson(binding))
     fail("GOAL_REPORT_BINDING_MISMATCH", "Preparation failure requires the current task snapshot.");
   let event = null;
   for (const candidate of store.iterateEvents()) {
-    if (stableArtifactJson(candidate.payload?.binding) !== stableArtifactJson(binding)) continue;
+    if (bindingJson(candidate.payload?.binding) !== bindingJson(binding)) continue;
     if (candidate.type === "author_report_preparation_failed") event = candidate;
     if (candidate.type === "author_report_prepared") event = null;
   }
@@ -492,11 +442,11 @@ export function resolvePreparationFailure({ stateDir, task, forCommit = null, de
   const failurePath = path.join(directory, "failure.json"), failureBytes = readArtifact(failurePath, { root: stateDir });
   const draftBytes = readArtifact(path.join(directory, "draft.json"), { root: stateDir });
   if (artifactSha256(failureBytes) !== manifest.failure_sha256 || artifactSha256(draftBytes) !== manifest.draft_sha256
-    || stableArtifactJson(manifest.binding) !== stableArtifactJson(binding)
+    || bindingJson(manifest.binding) !== bindingJson(binding)
     || stableArtifactJson(manifest.content_verified === false ? readContentFingerprints(task) : inspectContent(task, manifest.commit_sha, deadline).files) !== stableArtifactJson(manifest.files))
     fail("GOAL_REPORT_BINDING_MISMATCH", "Preparation failure input or artifact binding changed.");
   const draft = manifest.content_verified === false ? null : JSON.parse(draftBytes);
-  if (draft) assertReportTask(draft, task);
+  if (draft) { assertAuthorArtifactVersions({task,draftVersion:draft.schema_version,manifestBinding:manifest.binding}); assertReportTask(draft, task); }
   // Only successfully verified receipts are asserted here. A failed receipt is
   // recorded as a finding; it cannot masquerade as independently verified data.
   if (manifest.receipt_bindings.length) {
@@ -566,7 +516,11 @@ function inspectContent(task, commit, deadline = Infinity) {
   }
   return { files };
 }
+function bindingJson(binding) {
+  return binding == null ? null : stableArtifactJson({...binding,...resolveAuthorContract(binding)});
+}
 function taskBinding(goalId, task) {
+  resolveAuthorContract(task);
   return {
     goal_id: goalId,
     task_id: task.id,
@@ -576,6 +530,8 @@ function taskBinding(goalId, task) {
     worktree_path: task.worktree_path,
     allowed_files: task.allowed_files,
     authoring_contract_version: task.authoring_contract_version,
+    ...(task.author_draft_schema_version !== undefined ? {author_draft_schema_version:task.author_draft_schema_version} : {}),
+    ...(task.author_report_schema_version !== undefined ? {author_report_schema_version:task.author_report_schema_version} : {}),
   };
 }
 function assertPreparingTask(task, cwd) {
@@ -676,9 +632,6 @@ function preparedGit(cwd, args, {deadline = Infinity, encoding = "utf8", maxBuff
   }
 }
 const git = (cwd,args,deadline=Infinity) => preparedGit(cwd,args,{deadline}).trim();
-function conflict(message, details) {
-  fail("GOAL_REPORT_DECISION_CONFLICT", message, { ...details, phase:"preparation", origin:"harness_review", failure_kind:"author_claim", subject_id:details?.uuid });
-}
 function fail(code, message, details = {}) {
   throw new GoalHarnessError(code, message, details);
 }

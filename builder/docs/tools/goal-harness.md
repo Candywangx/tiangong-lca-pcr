@@ -297,9 +297,12 @@ applicability. Prompt compilation injects only a bounded relevant subset, never 
 
 ## Prepared reports for new authors
 
-Untouched tasks pin `authoring_contract_version: 2` at initial dispatch. Tasks with a prior thread/worktree/attempt,
+Untouched tasks pin `authoring_contract_version: 2`, `author_draft_schema_version: 2` and
+`author_report_schema_version: 1` at initial dispatch. Tasks with a prior thread/worktree/attempt,
 repairs, replacements, and legacy tasks without this pin retain their original contract. A pinned task keeps version 2
-across repair turns. No existing author prompt is replaced in flight. Explicit single-PCR checks can also be used for
+across repair turns. Each newly started visible turn records the same immutable version combination. Missing historical
+fields mean version 1; an existing contract-2 task without a draft pin continues draft 1. Ordinary repair, infrastructure
+continuation and saved-report review never promote an old task. No existing author prompt is replaced in flight. Explicit single-PCR checks can also be used for
 selected standalone draft/revision work; the Harness still authorizes exactly the four current PCR files.
 
 The previous flow asked authors to copy receipt decisions into a full final report and often discovered mechanical
@@ -317,7 +320,22 @@ node <runtime>/builder/cli/goal-prepare-report.mjs \
   --config <absolute-goal.yaml> --task <task-id> --draft <absolute-draft.json> --format json
 ```
 
-The draft follows `builder/schemas/goal-author-draft.schema.json`. It preserves the existing report's author-owned
+The draft follows `builder/schemas/goal-author-draft.schema.json` using its task-pinned version. The wire contracts are:
+
+| Task authoring version | Draft version | Prepared report | Final submission |
+| --- | --- | --- | --- |
+| Historical 1 | 1 | Complete report v1 | Legacy report v1 |
+| Existing 2 without a draft pin | 1 | Complete report v1 | Reference envelope v2 |
+| Freshly adopted 2 | 2 | Complete report v1 | Reference envelope v2 |
+
+Draft v2 requires only `uuid`, `hybrid_search_receipt_id` and `semantic_review` for each adopted UUID. Preparation
+copies public state, bilingual names and flow type from the verified adopted receipt, deterministically projects the
+observed classification (first sorted id, then label), uses the verified property name and unit-group id, and emits the
+unchanged complete report v1. An explicitly supplied identity field must describe that same observed identity; a
+conflict is rejected, never overwritten. Empty Chinese names and classification-free elementary flows are preserved.
+Preparation still independently reads the current public identity and verifies adoption before becoming ready.
+
+Both draft versions preserve the existing report's author-owned
 identity, sources, adopted UUID/receipt links, semantic judgments, unresolved rows, counts, ranges, validation claims
 and commit. Omit `rejected_uuid_candidates` and top-level `hybrid_search_receipt_ids`; use `receipt_ids` for additional
 receipts whose candidates were rejected. The program derives receipt membership and copies every rejected candidate's
@@ -344,7 +362,8 @@ authors/prepared-<task-hash>/<content-id>/
 ```
 
 The manifest binds goal/task/attempt/turn, worktree, commit, four-file hashes, draft/report byte hashes, receipt
-attestations and check contract. The complete directory is published before a ready event; incomplete or substituted
+attestations, the fixed version combination and check contract. Historical missing draft/report version fields are
+interpreted read-only as version 1; old artifact bytes and hashes are never supplemented or regenerated. The complete directory is published before a ready event; incomplete or substituted
 artifacts cannot become ready. Identical inputs reuse one reference and one ready event. Changed input creates a new
 identity without overwriting previous reports; old references cannot validate the changed task, commit or evidence.
 Preparation never changes repair counts. Normal output is:
@@ -400,7 +419,8 @@ Recovery first classifies each finding by observed origin and failure kind. Inte
 and unknown failures hold; confirmed measurement/boundary findings remain manual review; author-correctable content
 is repaired together. Retryable infrastructure resumes the same author if preparation is incomplete, or rechecks a
 saved complete report without starting an author. Content repair, infrastructure recovery and execution-window
-continuation have separate budgets and histories. The incident identity survives new turns, error-code changes and
+continuation have separate budgets and histories. Infrastructure and execution recovery each use `max_attempts` as
+an independent per-incident limit; reaching either limit creates a hold without charging another category. The incident identity survives new turns, error-code changes and
 replayed resume requests. Backoff and Retry-After apply before dispatch; previews remain pure reads. Held/failed tasks
 are not restarted automatically.
 

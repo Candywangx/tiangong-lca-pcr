@@ -3,6 +3,7 @@ import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
+import { pinFirstAuthorContract, recordAuthorTurnContract } from "./author-contract.mjs";
 import { resolveAuthorSubmission } from "./author-submission.mjs";
 import { GoalEventStore } from "./event-store.mjs";
 import { GoalHarnessError, selectRecovery } from "./errors.mjs";
@@ -147,11 +148,7 @@ export async function dispatchGoalAuthors({
       state = store.rebuild();
       let task = state.tasks.find((entry) => entry.id === selectedTask.id);
       if (!task) continue;
-      // Pin only at first dispatch. Existing attempts keep their wire contract.
-      if (task.authoring_contract_version === undefined && !task.thread_id && task.state !== "repair_requested") {
-        const fresh = task.state === "queued" && !(task.attempt > 0) && !task.worktree_path && !task.last_author_commit && !task.repair_count;
-        task = { ...task, authoring_contract_version: fresh ? 2 : 1 };
-      }
+      task = pinFirstAuthorContract(task);
       const materialsRoot = ensureMaterialsRoot(resolveMaterialsRoot({ cwd: config.project_root, root: config.tools?.materials_root }));
       const materialsQuery = queryMaterials({ root: materialsRoot, request: { product: task.product_name_en }, limit: 5 });
       const selectedUuids = task.authoring_contract_version === 2 ? [] : selectRelevantCommonUuids({ stateDir, task });
@@ -266,6 +263,7 @@ export async function dispatchGoalAuthors({
               gate_findings: task.pending_gate_findings ?? [],
             }]),
         };
+        task = recordAuthorTurnContract(task,visible.turn_id);
         task = observeTrialTurn(task, { started_at: startedAt, cache: cacheObservation });
         store.append({ event_id: `${repairIdentity}-started`, type: "task_replaced", payload: { task } });
         dispatched.push(task);
@@ -355,6 +353,7 @@ export async function dispatchGoalAuthors({
           at: new Date().toISOString(),
         });
         task = { ...task, ...visible, dispatched_at: new Date().toISOString() };
+        task = recordAuthorTurnContract(task,visible.turn_id);
         task = observeTrialTurn(task, { started_at: task.dispatched_at, cache: cacheObservation });
         store.append({ event_id: `${transitionIdentity}-dispatched`, type: "task_replaced", payload: { task } });
         dispatched.push(task);

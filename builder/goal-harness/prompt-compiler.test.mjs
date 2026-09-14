@@ -91,3 +91,23 @@ test("Codex wire schema requires nullable boundary_review and returns isolated c
 function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
 }
+
+test("prepared prompts use the task's pinned draft version without upgrading legacy turns", t => {
+  const root=mkdtempSync(path.join(tmpdir(),"prompt-contract-"));t.after(()=>rmSync(root,{recursive:true,force:true}));
+  const policyPromptPath=path.join(root,"policy.txt");writeFileSync(policyPromptPath,"policy");
+  const task={id:"t",cpc_code:"44125",product_name_en:"Baler",pcr_path:"library/pcrs/test/pcr",queue_action:"create_new",authoring_contract_version:2};
+  const previous=compileAuthorPrompt({task,policyPromptPath});
+  const modern=compileAuthorPrompt({task:{...task,author_draft_schema_version:2,author_report_schema_version:1},policyPromptPath});
+  assert.match(previous.prompt,/draft schema_version: 1/u);
+  assert.match(modern.prompt,/draft schema_version: 2/u);
+  assert.match(modern.prompt,/uuid, hybrid_search_receipt_id, semantic_review/u);
+  assert.match(modern.prompt,/explicit.*identity.*conflict/iu);
+  const auditInstructions=modern.prompt.split("Authoring sequence and commit")[0];
+  assert.match(auditInstructions,/In draft v2, record only uuid, hybrid_search_receipt_id and semantic_review/u);
+  assert.doesNotMatch(auditInstructions,/set report uuid_audits\[\]\.base_name_zh|Include every receipt id in hybrid_search_receipt_ids/u);
+  assert.doesNotMatch(modern.prompt,/If it fails, repair the draft or PCR/u);
+  assert.match(modern.prompt,/generated report remains schema_version 1/u);
+  assert.equal(modern.output_schema.properties.schema_version.const,2);
+  assert.deepEqual(modern.author_contract,{authoring_contract_version:2,author_draft_schema_version:2,author_report_schema_version:1});
+  assert.equal(task.author_draft_schema_version,undefined);
+});
