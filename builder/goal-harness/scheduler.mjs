@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { hasAcceptedReview } from "./review-assessment.mjs";
 
 const ACTIVE_AUTHOR_STATES = new Set(["preflight", "authoring", "authoring_repair", "author_review"]);
 
@@ -18,7 +19,7 @@ export function dispatchCandidates(tasks, { slots }) {
 export function buildIntegrationSnapshot({ goalId, tasks, batchSize, snapshots, allowPartial = false }) {
   const assigned = new Set(snapshots.flatMap(snapshotResultKeys));
   const eligible = tasks
-    .filter((task) => task.state === "valid_result" && !assigned.has(taskResultKey(task)))
+    .filter((task) => task.state === "valid_result" && hasAcceptedReview(task) && !assigned.has(taskResultKey(task)))
     .sort((left, right) => String(left.valid_at).localeCompare(String(right.valid_at)) || compareQueueOrder(left, right));
   if (eligible.length < batchSize && !allowPartial) {
     return null;

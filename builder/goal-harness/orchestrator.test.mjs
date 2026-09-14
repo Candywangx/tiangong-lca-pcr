@@ -7,6 +7,8 @@ import test from "node:test";
 
 import { dispatchGoalAuthors, harvestGoalAuthors } from "./orchestrator.mjs";
 import { GoalEventStore } from "./event-store.mjs";
+import { passingReview } from "./fixtures/review-results.mjs";
+import { validateAuthorReport } from "./author-gates.mjs";
 import { activeAuthorCount } from "./scheduler.mjs";
 import { registerMaterial, resolveMaterialsRoot } from "../lib/shared-materials.mjs";
 
@@ -657,6 +659,26 @@ test("visible app-server failure preserves prepared worktree and stops schedulin
   }
 });
 
+// Transport fixtures explicitly attest every independent local check. Actual
+// content validation remains covered by author-review/author-gates tests.
+function completeTransportReport(task, commit) {
+  return { ...boundaryReport(task, commit), boundary_review: null,
+    bilingual: { aligned: true, en_inventory_rows: 0, zh_inventory_rows: 0 },
+    structured_sync: { first_run_ok: true, second_run_clean: true, schema_valid: true },
+    validate: { ok: true, exit_code: 0, known_shared_artifact_only: false, summary: null } };
+}
+
+function failedTransportReview(input, finding) {
+  const review = passingReview(input);
+  const observed = { ...finding, phase: input.phase, origin: "harness_review", failure_kind: "author_claim", subject_id: input.task.pcr_path };
+  return { ...review, valid: false, findings: [observed], quality: { valid: false, findings: [observed] },
+    checks: review.checks.map(check => check.check_id === "quality" ? { ...check, status: "failed", findings: [observed] } : check) };
+}
+
+function canonicalTaskFiles(task) {
+  return ["manifest.yaml", "pcr.en-US.md", "pcr.zh-CN.md", "structured.yaml"].map(file => `${task.pcr_path}/${file}`);
+}
+
 test("harvest records a completed machine report and promotes a reviewed task exactly once", async () => {
   const { root, stateDir, config } = fixture();
   const store = new GoalEventStore({ stateDir });
@@ -667,14 +689,35 @@ test("harvest records a completed machine report and promotes a reviewed task ex
     thread_id: "thread-1",
     turn_id: "turn-1",
     worktree_path: root,
-    allowed_files: ["a", "b", "c", "d"],
+    allowed_files: canonicalTaskFiles(task),
     failure_code: "GOAL_AUTHOR_REPAIR_REQUIRED",
     failure_message: "stale repair finding",
     pending_gate_findings: [{ code: "stale_finding" }],
     transition_ids: ["prepared", "authoring"],
   };
   store.append({ event_id: "fixture-authoring", type: "task_replaced", payload: { task } });
-  const report = { schema_version: 1, commit_sha: "a".repeat(40) };
+  config.tools.tiangong_cli_root = "/unused-local-test-tool";
+  const read = {
+    uuid: "11111111-1111-4111-8111-111111111111", state_code: 100,
+    base_name_en: "Alternating current", base_name_zh: "交流电", flow_type: "product",
+    classifications: [{ id: "17100", label: "Electrical energy" }], property: "Energy",
+    flow_property_uuid: "22222222-2222-4222-8222-222222222222", flow_property_state_code: 100,
+    unit_group_uuid: "33333333-3333-4333-8333-333333333333", unit_group_state_code: 100,
+    unit_group_name_en: "Units of energy", reference_unit: "kWh", general_comment: "Public electricity input flow.",
+    hybrid_search_receipt_id: "receipt-1", response_sha256: `sha256:${"a".repeat(64)}`,
+  };
+  const report = { ...completeTransportReport(task, git(root, ["rev-parse", "HEAD"])),
+    hybrid_search_receipt_ids: ["receipt-1"],
+    uuid_audits: [{ uuid: read.uuid, hybrid_search_receipt_id: "receipt-1", state_code: read.state_code,
+      base_name_en: read.base_name_en, base_name_zh: read.base_name_zh, flow_type: read.flow_type,
+      classification: "17100 Electrical energy", property: read.property, unit_group: "Units of energy",
+      semantic_review: "Matches the purchased alternating-current electricity inventory input." }],
+    inventory: { total_rows: 1, matched_rows: 1, unresolved_rows: 0, unresolved: [] },
+    bilingual: { aligned: true, en_inventory_rows: 1, zh_inventory_rows: 1 } };
+  assert.equal(validateAuthorReport(report).valid, true);
+  const receipt = { receipt_id: "receipt-1", task_id: task.id, authenticated: true,
+    result_sha256: `sha256:${"b".repeat(64)}`, candidate_uuids: [read.uuid],
+    candidate_decisions: [{ uuid: read.uuid, decision: "adopted", direct_read: { ...read } }] };
   const adapter = {
     async readThread() {
       return { thread: { turns: [{ id: "turn-1", status: "completed", items: [{ type: "agentMessage", text: JSON.stringify(report) }] }] } };
@@ -686,19 +729,11 @@ test("harvest records a completed machine report and promotes a reviewed task ex
       config,
       stateDir,
       adapter,
-      auditUuidsFn: () => [{
-        uuid: "11111111-1111-4111-8111-111111111111",
-        state_code: 100,
-        base_name_en: "Alternating current",
-        base_name_zh: "交流电",
-        flow_type: "product",
-        classifications: [{ id: "17100", label: "Electrical energy" }],
-        hybrid_search_receipt_id: "receipt-1",
-        response_sha256: "sha256:fixture",
-      }],
+      auditUuidsFn: () => [{ ...read }],
+      auditHybridSearchFn: () => [receipt],
       verifySourcesFn: async () => [],
-      validateReportFn: () => ({ valid: true, errors: [] }),
-      reviewFn: () => { reviewCount += 1; return { valid: true, counts: { total: 2, matched: 1, unresolved: 1 } }; },
+      validateReportFn: validateAuthorReport,
+      reviewFn: input => { reviewCount += 1; return passingReview(input); },
     });
     assert.equal(first.valid_results.length, 1);
     assert.equal(first.state.tasks[0].state, "valid_result");
@@ -819,9 +854,10 @@ test("a transient UUID direct-read failure rechecks the saved report without rep
   t.after(() => rmSync(root, { recursive: true, force: true }));
   config.retry_policy = { max_attempts: 6, max_repairs: 2 };
   const store = new GoalEventStore({ stateDir });
-  const original = store.rebuild().tasks[0];
+  const queued = store.rebuild().tasks[0];
+  const original = { ...queued, allowed_files: canonicalTaskFiles(queued) };
   const reportPath = path.join(stateDir, "saved-report.json");
-  const report = { schema_version: 1, commit_sha: git(root, ["rev-parse", "HEAD"]), uuid_audits: [] };
+  const report = completeTransportReport(original, git(root, ["rev-parse", "HEAD"]));
   writeFileSync(reportPath, `${JSON.stringify(report)}\n`);
   store.append({
     event_id: "fixture-uuid-read-retryable",
@@ -846,11 +882,11 @@ test("a transient UUID direct-read failure rechecks the saved report without rep
     config,
     stateDir,
     adapter: { async readThread() { assert.fail("saved evidence recheck must not create or read a new author turn"); } },
-    validateReportFn: () => ({ valid: true, errors: [] }),
+    validateReportFn: validateAuthorReport,
     auditUuidsFn: () => { uuidAudits += 1; return []; },
     auditHybridSearchFn: () => [],
     verifySourcesFn: async () => [],
-    reviewFn: () => ({ pcr_id: "fixture-pcr", counts: { unresolved: 0 } }),
+    reviewFn: passingReview,
   });
 
   const reviewed = result.state.tasks[0];
@@ -874,9 +910,10 @@ test("an unsuccessful saved UUID evidence recheck remains retryable without disp
   t.after(() => rmSync(root, { recursive: true, force: true }));
   config.retry_policy = { max_attempts: 6, max_repairs: 2 };
   const store = new GoalEventStore({ stateDir });
-  const original = store.rebuild().tasks[0];
+  const queued = store.rebuild().tasks[0];
+  const original = { ...queued, allowed_files: canonicalTaskFiles(queued) };
   const reportPath = path.join(stateDir, "saved-report.json");
-  writeFileSync(reportPath, `${JSON.stringify({ schema_version: 1, commit_sha: git(root, ["rev-parse", "HEAD"]), uuid_audits: [] })}\n`);
+  writeFileSync(reportPath, `${JSON.stringify(completeTransportReport(original, git(root, ["rev-parse", "HEAD"])))}\n`);
   store.append({
     event_id: "fixture-uuid-read-still-retryable",
     type: "task_replaced",
@@ -902,11 +939,11 @@ test("an unsuccessful saved UUID evidence recheck remains retryable without disp
     config,
     stateDir,
     adapter: {},
-    validateReportFn: () => ({ valid: true, errors: [] }),
+    validateReportFn: validateAuthorReport,
     auditUuidsFn: () => { throw retryError; },
     auditHybridSearchFn: () => [],
     verifySourcesFn: async () => [],
-    reviewFn: () => ({ pcr_id: "fixture-pcr", counts: { unresolved: 0 } }),
+    reviewFn: passingReview,
   });
   const failed = harvested.state.tasks[0];
   assert.equal(failed.state, "retryable_failure");
@@ -1284,7 +1321,8 @@ test("a review failure requests repair in the original visible thread and worktr
   const { root, stateDir, config } = fixture();
   config.retry_policy = { max_repairs: 2 };
   const store = new GoalEventStore({ stateDir });
-  const original = store.rebuild().tasks[0];
+  const queued = store.rebuild().tasks[0];
+  const original = { ...queued, allowed_files: canonicalTaskFiles(queued) };
   store.append({
     event_id: "fixture-review-author",
     type: "task_replaced",
@@ -1297,7 +1335,7 @@ test("a review failure requests repair in the original visible thread and worktr
       transition_ids: ["authoring"],
     } },
   });
-  const report = { schema_version: 1, commit_sha: "a".repeat(40) };
+  const report = completeTransportReport(original, git(root, ["rev-parse", "HEAD"]));
   const adapter = {
     async readThread() {
       return { thread: { turns: [{ id: "turn-original", status: "completed", items: [{ type: "agentMessage", text: JSON.stringify(report) }] }] } };
@@ -1311,13 +1349,8 @@ test("a review failure requests repair in the original visible thread and worktr
       auditHybridSearchFn: () => [],
       auditUuidsFn: () => [],
       verifySourcesFn: async () => [],
-      validateReportFn: () => ({ valid: true, errors: [] }),
-      reviewFn: () => {
-        const error = new Error("four-file gate failed");
-        error.code = "GOAL_AUTHOR_RESULT_INVALID";
-        error.details = { findings: [{ code: "AUTHOR_REPORT_PATH_MISMATCH", files: ["shared.yaml"] }] };
-        throw error;
-      },
+      validateReportFn: validateAuthorReport,
+      reviewFn: input => failedTransportReview(input, { code: "AUTHOR_REPORT_PATH_MISMATCH", files: ["shared.yaml"] }),
     });
     const repair = harvested.state.tasks[0];
     assert.equal(repair.state, "repair_requested");
@@ -1372,7 +1405,8 @@ test("repair limit is the point where a result becomes retryable for replacement
   const { root, stateDir, config } = fixture();
   config.retry_policy = { max_repairs: 1 };
   const store = new GoalEventStore({ stateDir });
-  const original = store.rebuild().tasks[0];
+  const queued = store.rebuild().tasks[0];
+  const original = { ...queued, allowed_files: canonicalTaskFiles(queued) };
   store.append({
     event_id: "fixture-repair-limit",
     type: "task_replaced",
@@ -1387,7 +1421,7 @@ test("repair limit is the point where a result becomes retryable for replacement
       transition_ids: ["author_review"],
     } },
   });
-  writeFileSync(path.join(stateDir, "report.json"), `${JSON.stringify({ schema_version: 1, commit_sha: "b".repeat(40) })}\n`);
+  writeFileSync(path.join(stateDir, "report.json"), `${JSON.stringify(completeTransportReport(original, git(root, ["rev-parse", "HEAD"])))}\n`);
   try {
     const result = await harvestGoalAuthors({
       config,
@@ -1396,8 +1430,8 @@ test("repair limit is the point where a result becomes retryable for replacement
       auditHybridSearchFn: () => [],
       auditUuidsFn: () => [],
       verifySourcesFn: async () => [],
-      validateReportFn: () => ({ valid: true, errors: [] }),
-      reviewFn: () => { const error = new Error("still invalid"); error.code = "GOAL_AUTHOR_RESULT_INVALID"; error.details = { findings: [{ code: "GOAL_AUTHOR_PCR_INVALID" }] }; throw error; },
+      validateReportFn: validateAuthorReport,
+      reviewFn: input => failedTransportReview(input, { code: "GOAL_AUTHOR_PCR_INVALID" }),
     });
     assert.equal(result.state.tasks[0].state, "retryable_failure");
     assert.equal(result.state.tasks[0].failure_code, "GOAL_REPAIR_LIMIT_REACHED");
@@ -1724,8 +1758,8 @@ test('phase1a incident pins provenance through changed code commit and continuat
   const twice=(await dispatchGoalAuthors({config,stateDir,slots:1,adapter,resumeStopped:true})).dispatched[0];
   assert.equal(twice.recovery_incident.id,incidentId);assert.equal(twice.infrastructure_resume_history.filter(h=>h.incident_id===incidentId).length,2);
   assert.equal(recoveryForTask({...twice,state:'retryable_failure',failure_code:'ANOTHER',last_author_commit:'different',failure_details:{origin:'tool_transport',failure_kind:'network',retryable:true}},config).eligible,false);
-  const report={schema_version:1,commit_sha:git(root,['rev-parse','HEAD']),uuid_audits:[]};
-  const complete=await harvestGoalAuthors({config,stateDir,adapter:{async readThread(){return {thread:{turns:[{id:twice.turn_id,status:'completed',items:[{type:'agentMessage',text:JSON.stringify(report)}]}]}};}},validateReportFn:()=>({valid:true,errors:[]}),auditUuidsFn:()=>[],auditHybridSearchFn:()=>[],verifySourcesFn:async()=>[],reviewFn:()=>({pcr_id:'fixture-pcr',counts:{unresolved:0}})});
+  const report=completeTransportReport(twice, git(root,['rev-parse','HEAD']));
+  const complete=await harvestGoalAuthors({config,stateDir,adapter:{async readThread(){return {thread:{turns:[{id:twice.turn_id,status:'completed',items:[{type:'agentMessage',text:JSON.stringify(report)}]}]}};}},validateReportFn:validateAuthorReport,auditUuidsFn:()=>[],auditHybridSearchFn:()=>[],verifySourcesFn:async()=>[],reviewFn:passingReview});
   const closed=complete.state.tasks[0];assert.equal(closed.recovery_incident.status,'closed');
   const next=recoveryForTask({...closed,state:'retryable_failure',turn_id:'fresh-legitimate-source',report_sha256:'new-reviewed-report',report_complete:false,failure_code:'GOAL_CODEX_USAGE_LIMIT_EXCEEDED',failure_details:null},config);
   assert.equal(next.infrastructure_used,0);assert.equal(next.eligible,true);assert.notEqual(next.incident.id,incidentId);
@@ -1737,4 +1771,56 @@ test('phase1a independent enrichment generations use distinct durable first-star
   const first=(await dispatchGoalAuthors({config,stateDir,slots:1,adapter})).dispatched[0];const store=new GoalEventStore({stateDir});
   store.append({event_id:'legitimate-enrichment',type:'task_replaced',payload:{task:{...first,state:'queued',uuid_enrichment_generation:1,attempt:0,thread_id:null,turn_id:null,worktree_path:null,author_branch:null,author_start_intent:null}}});
   await dispatchGoalAuthors({config,stateDir,slots:1,adapter});assert.equal(ids.length,2);assert.notEqual(ids[0],ids[1]);
+});
+
+test('execution recovery has one incident budget across author continuations and saved rechecks',async()=>{
+  const {recoveryForTask}=await import('./orchestrator.mjs');
+  const config={retry_policy:{max_attempts:2,max_repairs:2}};
+  const original={id:'window-task',state:'retryable_failure',attempt:3,repair_count:2,turn_id:'source',
+    failure_code:'GOAL_REVIEW_WINDOW_EXHAUSTED',failure_details:{origin:'harness_deadline',failure_kind:'execution_window',retryable:false}};
+  const initial=recoveryForTask(original,config);assert.equal(initial.eligible,true);assert.equal(initial.execution_used,0);
+  const continued={...original,recovery_incident:initial.incident,execution_continue_count:1,
+    execution_continue_history:[{incident_id:initial.incident.id,turn_id:'continued'}]};
+  assert.equal(recoveryForTask(continued,config).eligible,true);
+  const used={...continued,execution_recheck_count:1,execution_recheck_history:[{incident_id:initial.incident.id,turn_id:'continued'}]};
+  const exhausted=recoveryForTask({...used,turn_id:'changed',failure_code:'CHANGED_WINDOW_CODE'},config);
+  assert.equal(exhausted.execution_used,2);assert.equal(exhausted.eligible,false);assert.equal(exhausted.budget_exhausted,true);
+  assert.equal(exhausted.infrastructure_used,0);
+  const old={...original,execution_recheck_count:2,recovery_incident:{...initial.incident}};
+  delete old.recovery_incident.legacy_execution_used;
+  assert.equal(recoveryForTask(old,config).eligible,false);
+  const legacyTagged={...original,recovery_incident:{...initial.incident},execution_recheck_count:2,
+    execution_recheck_history:[{incident_id:initial.incident.id},{incident_id:initial.incident.id}]};
+  delete legacyTagged.recovery_incident.legacy_execution_used;
+  assert.equal(recoveryForTask(legacyTagged,config).execution_used,2);
+  const closed={...used,recovery_incident:{...initial.incident,status:'closed'}};
+  assert.equal(recoveryForTask(closed,config).execution_used,0);
+});
+
+for(const kind of ['execution_window','network']) test(`exhausted ${kind} recovery holds without starting an author or changing counters`,async t=>{
+  const f=fixture();t.after(()=>rmSync(f.root,{recursive:true,force:true}));
+  const store=new GoalEventStore({stateDir:f.stateDir}),task=store.rebuild().tasks[0];
+  const failed={...task,state:'retryable_failure',thread_id:'same',turn_id:'source',worktree_path:f.root,attempt:3,repair_count:2,
+    failure_code:kind==='execution_window'?'GOAL_REVIEW_WINDOW_EXHAUSTED':'GOAL_UUID_DIRECT_READ_FAILED',
+    failure_details:{origin:kind==='execution_window'?'harness_deadline':'tool_transport',failure_kind:kind,retryable:kind!=='execution_window'},
+    execution_continue_count:kind==='execution_window'?3:0,infrastructure_resume_count:kind==='network'?3:0};
+  store.append({event_id:'exhausted-fixture',type:'task_replaced',payload:{task:failed}});
+  const before=readFileSync(path.join(f.stateDir,'events.jsonl'));
+  const preview=await dispatchGoalAuthors({...f,slots:1,adapter:{},resumeStopped:true,dryRun:true});
+  assert.deepEqual(preview.would_dispatch,[]);assert.deepEqual(readFileSync(path.join(f.stateDir,'events.jsonl')),before);
+  const result=await dispatchGoalAuthors({...f,slots:1,adapter:{},resumeStopped:true});
+  const held=result.state.tasks[0];assert.ok(held.coordinator_hold);assert.equal(result.dispatched.length,0);
+  for(const key of ['attempt','repair_count','execution_continue_count','infrastructure_resume_count'])assert.equal(held[key],failed[key]);
+});
+
+test('window recovery backoff uses the latest continuation across the same mixed incident',async()=>{
+  const {recoveryForTask}=await import('./orchestrator.mjs');
+  const task={id:'mixed-window',state:'retryable_failure',updated_at:'2026-01-01T00:01:40Z',
+    failure_code:'GOAL_REVIEW_WINDOW_EXHAUSTED',failure_details:{origin:'harness_deadline',failure_kind:'execution_window',retryable:false},
+    recovery_incident:{id:'same',status:'open',legacy_infrastructure_used:0,legacy_execution_used:0},
+    infrastructure_resume_history:[{incident_id:'same',started_at:'2026-01-01T00:00:00Z'}],
+    execution_continue_history:[{incident_id:'same',started_at:'2026-01-01T00:01:40Z'}]};
+  const config={retry_policy:{max_attempts:5,backoff_seconds:60}};
+  assert.equal(recoveryForTask(task,config,{now:new Date('2026-01-01T00:02:00Z')}).eligible,false);
+  assert.equal(recoveryForTask(task,config,{now:new Date('2026-01-01T00:02:41Z')}).eligible,true);
 });

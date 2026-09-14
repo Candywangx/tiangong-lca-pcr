@@ -281,7 +281,7 @@ test("source audit performs original locator reads and rejects discovery pages a
     let consumed = false;
     return {
       ok: true, status: 200, url, headers: new Map([["content-type", "application/pdf"]]),
-      body: { getReader: () => ({ read: async () => consumed ? { done: true } : (consumed = true, { done: false, value: new TextEncoder().encode("%PDF-1.7 original text") }), cancel: async () => {} }) },
+      body: { getReader: () => ({ read: async () => consumed ? { done: true } : (consumed = true, { done: false, value: new TextEncoder().encode("%PDF-1.7 Standard A original text") }), cancel: async () => {} }) },
     };
   };
   const result = await verifySourceLocators({
@@ -302,7 +302,7 @@ test("source audit reuses an exact hash-verified original-text receipt after a t
   let consumed = false;
   const successfulFetch = async (url) => ({
     ok: true, status: 200, url, headers: new Map([["content-type", "application/pdf"]]),
-    body: { getReader: () => ({ read: async () => consumed ? { done: true } : (consumed = true, { done: false, value: new TextEncoder().encode("%PDF-1.7 original text") }), cancel: async () => {} }) },
+    body: { getReader: () => ({ read: async () => consumed ? { done: true } : (consumed = true, { done: false, value: new TextEncoder().encode("%PDF-1.7 Standard A original text") }), cancel: async () => {} }) },
   });
   try {
     const first = await verifySourceLocators({ report: { sources: [source] }, stateDir, fetchImpl: successfulFetch });
@@ -320,7 +320,7 @@ test("source audit reuses an exact hash-verified original-text receipt after a t
       stateDir,
       fetchImpl: async (url) => ({
         ok: true, status: 200, url, headers: new Map([["content-type", "application/pdf"]]),
-        body: { getReader: () => ({ read: async () => changedConsumed ? { done: true } : (changedConsumed = true, { done: false, value: new TextEncoder().encode("%PDF-1.7 changed original text") }), cancel: async () => {} }) },
+        body: { getReader: () => ({ read: async () => changedConsumed ? { done: true } : (changedConsumed = true, { done: false, value: new TextEncoder().encode("%PDF-1.7 Standard A changed original text") }), cancel: async () => {} }) },
       }),
     });
     assert.equal(changed[0].cache_hit, undefined);
@@ -354,6 +354,54 @@ test('HTTP 200 login or captcha and unidentified originals are held, not cached 
   }
 });
 
+test("PDF format alone cannot verify the source identity, while a matching title can", async () => {
+  const source = { source_id: "standard-a", name: "Standard A", locator: "https://standards.example/a.pdf", original_text_verified: true };
+  const stateDir = mkdtempSync(path.join(tmpdir(), "source-pdf-identity-"));
+  const { listGoalCacheReceipts } = await import("./goal-cache.mjs");
+  try {
+    await assert.rejects(
+      verifySourceLocators({ report: { sources: [source] }, stateDir,
+        fetchImpl: async () => new Response("%PDF-1.7 Unrelated document", { headers: { "content-type": "application/pdf" } }) }),
+      error => error.code === "GOAL_SOURCE_ORIGINAL_IDENTITY_UNVERIFIED"
+        && error.details.failure_kind === "unknown" && error.details.retryable === false,
+    );
+    assert.equal(listGoalCacheReceipts({ stateDir, namespace: "source_original_text_receipts" }).length, 0);
+    const [verified] = await verifySourceLocators({ report: { sources: [source] }, stateDir,
+      fetchImpl: async () => new Response("%PDF-1.7 Standard A original text", { headers: { "content-type": "application/pdf" } }) });
+    assert.equal(verified.original_identity_verified, true);
+  } finally { rmSync(stateDir, { recursive: true, force: true }); }
+});
+
+test("403 fallback rechecks historical PDF blobs against the current source identity without changing receipts", async () => {
+  const { appendGoalCacheReceipt } = await import("./goal-cache.mjs");
+  const { createHash } = await import("node:crypto");
+  const { readFileSync } = await import("node:fs");
+  const source = { source_id: "standard-a", name: "Standard A", locator: "https://standards.example/a.pdf", original_text_verified: true };
+  for (const [text, requestedSource] of [
+    ["%PDF-1.7 Unrelated original document", source],
+    ["%PDF-1.7 Standard A original text", { ...source, name: "Standard B" }],
+    ["%PDF-1.7 Standard A original text", { ...source, locator: "https://standards.example/b.pdf" }],
+    ["%PDF-1.7 Standard A <title>Sign in</title><input type=\"password\">", source],
+  ]) {
+    const stateDir = mkdtempSync(path.join(tmpdir(), "source-pdf-old-cache-"));
+    try {
+      const blob = Buffer.from(text);
+      const hash = `sha256:${createHash("sha256").update(blob).digest("hex")}`;
+      const receipt = appendGoalCacheReceipt({ stateDir, namespace: "source_original_text_receipts",
+        keyInput: { source_id: source.source_id, locator: source.locator },
+        tool: { name: "http-original-text-fetch", version: "1" }, sourceFingerprint: hash, blob,
+        value: { source_id: source.source_id, locator: source.locator, original_identity_verified: true,
+          content_sha256: hash, content_byte_length: blob.length, http_status: 200 } });
+      const receiptBytes = readFileSync(receipt.receipt_path);
+      await assert.rejects(verifySourceLocators({ report: { sources: [requestedSource] }, stateDir,
+        fetchImpl: async () => new Response("", { status: 403 }) }),
+      error => error.code === "GOAL_SOURCE_LOCATOR_UNREADABLE" && error.details.status === 403);
+      assert.deepEqual(readFileSync(receipt.receipt_path), receiptBytes);
+      assert.deepEqual(readFileSync(receipt.blob_path), blob);
+    } finally { rmSync(stateDir, { recursive: true, force: true }); }
+  }
+});
+
 test('source 429 retains Retry-After machine evidence', async () => {
   await assert.rejects(verifySourceLocators({report:{sources:[{source_id:'s',locator:'https://example.test/s'}]},fetchImpl:async()=>new Response('',{status:429,headers:{'retry-after':'120'}})}),e=>e.details.retry_after_seconds === 120 && e.details.retryable === true);
 });
@@ -366,4 +414,111 @@ test('unattributed direct-read failures do not retry and retain structured nonre
   calls=0;
   assert.throws(()=>readPublicUuidAudit({uuid:'u',runner:()=>{calls++;throw new GoalHarnessError('GOAL_UUID_DIRECT_READ_FAILED','no retry',{origin:'tool_transport',failure_kind:'network',retryable:false,subject_id:'u'});},sleeper:()=>{}}),e=>e.details.subject_id==='u');
   assert.equal(calls,1);
+});
+
+test('collected source checks retain failures and later successes independently', async () => {
+  const report = { sources: ['broken', 'good'].map(source_id => ({ source_id, name:source_id, locator:`https://example.test/${source_id}`, original_text_verified:true })) };
+  const result = await verifySourceLocators({ report, collect:true, phase:'preparation', fetchImpl:async url => url.endsWith('broken') ? new Response('', {status:503}) : new Response('good original text') });
+  assert.equal(result.valid,false);
+  assert.deepEqual(result.checks.map(c => [c.phase,c.check_id,c.subject_id,c.status]), [['preparation','source_original','broken','failed'],['preparation','source_original','good','passed']]);
+  assert.deepEqual(result.results.map(r=>r.source_id),['good']);
+  assert.equal(result.findings[0].details.failure_kind,'service_unavailable');
+});
+
+test('source execution window preserves progress and resumes with the next source', async () => {
+  const report={sources:['first','second','third'].map(source_id=>({source_id,locator:`https://example.test/${source_id}`}))};
+  let tick=0; const visited=[];
+  const first=await verifySourceLocators({report,collect:true,deadline:50,now:()=>tick,fetchImpl:async url=>{visited.push(url);tick=100;return new Response('content');}});
+  assert.equal(first.valid,false);
+  assert.equal(first.findings[0].details.failure_kind,'execution_window');
+  assert.equal(first.findings[0].details.origin,'harness_deadline');
+  assert.equal(first.progress.next_subject,'second');
+  tick=0;
+  const next=await verifySourceLocators({report,collect:true,deadline:50,now:()=>tick,startAfter:first.progress.start_after,fetchImpl:async url=>{visited.push(url);tick=100;return new Response('content');}});
+  assert.ok(visited[1].endsWith('/second'));
+  assert.equal(next.progress.next_subject,'third');
+});
+
+test('collected UUID checks continue after a failed read and clamp retry waiting to the execution window', () => {
+  let tick=0; const waits=[]; const seen=[];
+  const report={uuid_audits:[{uuid:'a'},{uuid:'b'}]};
+  const result=auditReportedUuids({report,collect:true,deadline:50,now:()=>tick,retryDelayMs:1000,sleeper:ms=>{waits.push(ms);tick+=ms;},runner:({uuid,timeoutMs})=>{seen.push({uuid,timeoutMs});throw new GoalHarnessError('GOAL_UUID_DIRECT_READ_FAILED','offline',{origin:'tool_transport',failure_kind:'network',retryable:true});}});
+  assert.equal(result.valid,false);
+  assert.equal(result.checks.length,2);
+  assert.equal(result.checks[1].status,'skipped');
+  assert.deepEqual(waits,[50]);
+  assert.equal(seen[0].timeoutMs,50);
+  assert.equal(result.findings[0].details.failure_kind,'execution_window');
+  assert.equal(result.progress.next_subject,'b');
+});
+
+test('an exhausted UUID collection makes no external reads and never reports empty success', () => {
+  const result=auditReportedUuids({report:{uuid_audits:[{uuid:'a'},{uuid:'b'}]},collect:true,deadline:0,now:()=>1,runner:()=>assert.fail('no I/O after deadline')});
+  assert.equal(result.valid,false);
+  assert.deepEqual(result.results,[]);
+  assert.deepEqual(result.checks.map(c=>c.status),['skipped','skipped']);
+});
+
+test('source response stream is bounded by the actual item timer and does not hide later sources', async()=>{
+  let cancelled=0;
+  const result=await verifySourceLocators({report:{sources:[{source_id:'stuck',locator:'https://example.test/stuck'},{source_id:'later',locator:'https://example.test/later'}]},collect:true,timeoutMs:15,
+    fetchImpl:async url=>url.endsWith('stuck')?{ok:true,status:200,headers:new Map(),body:{getReader:()=>({read:()=>new Promise(()=>{}),cancel:()=>{cancelled++;}})}}:new Response('later source')});
+  assert.equal(result.valid,false);assert.equal(result.checks[0].status,'failed');
+  assert.equal(result.findings[0].details.origin,'source_http');assert.equal(result.findings[0].details.retryable,true);
+  assert.equal(result.results[0].source_id,'later');assert.equal(cancelled,1);
+});
+
+test('actual UUID child process is killed at the remaining review deadline', async t=>{
+  const {mkdirSync,writeFileSync}=await import('node:fs');
+  const root=mkdtempSync(path.join(tmpdir(),'uuid-deadline-'));t.after(()=>rmSync(root,{recursive:true,force:true}));
+  mkdirSync(path.join(root,'bin'));writeFileSync(path.join(root,'bin','tiangong-lca.js'),'setTimeout(()=>process.stdout.write("{}"),5000);');
+  const started=Date.now();
+  const result=auditReportedUuids({report:{uuid_audits:[{uuid:'a'}]},tiangongCliRoot:root,collect:true,deadline:started+40});
+  assert.ok(Date.now()-started<1500,'child must not survive its review window');
+  assert.equal(result.valid,false);assert.equal(result.findings[0].details.failure_kind,'execution_window');
+});
+
+test('completed source results survive a later exhausted execution window', async()=>{
+  let tick=0;
+  const result=await verifySourceLocators({report:{sources:['done','slow','remaining'].map(source_id=>({source_id,locator:`https://example.test/${source_id}`}))},collect:true,deadline:50,now:()=>tick,
+    fetchImpl:async url=>{if(url.endsWith('slow'))tick=100;return new Response('source text');}});
+  assert.equal(result.valid,false);assert.deepEqual(result.results.map(r=>r.source_id),['done']);
+  assert.deepEqual(result.checks.map(c=>c.status),['passed','skipped','skipped']);
+  assert.equal(result.progress.next_subject,'remaining');
+});
+
+test('a failed UUID does not discard an independent successful public identity', ()=>{
+  const first='11111111-1111-4111-8111-111111111111',second='22222222-2222-4222-8222-222222222222';
+  const property='33333333-3333-4333-8333-333333333333';
+  const result=auditReportedUuids({collect:true,phase:'preparation',report:{uuid_audits:[first,second].map(uuid=>({uuid,state_code:100,base_name_en:'Electricity',base_name_zh:'电力',flow_type:'product',classification:'17100',property:'Mass',unit_group:'Units of mass',hybrid_search_receipt_id:`r-${uuid}`}))},
+    runner:({uuid})=>{
+      if(uuid===first)throw new GoalHarnessError('GOAL_UUID_DIRECT_READ_FAILED','Unavailable',{origin:'tool_transport',failure_kind:'network',retryable:false});
+      return {state_code:100,flow:{flowDataSet:{flowInformation:{dataSetInformation:{'common:UUID':uuid,name:{baseName:[{'@xml:lang':'en','#text':'Electricity'},{'@xml:lang':'zh','#text':'电力'}]},classificationInformation:{'common:classification':{'common:class':[{'@classId':'17100','#text':'Electricity'}]}}}},modellingAndValidation:{LCIMethod:{typeOfDataSet:'Product flow'}},flowProperties:{flowProperty:[{referenceToFlowPropertyDataSet:{'@refObjectId':property,'common:shortDescription':[{'@xml:lang':'en','#text':'Mass'}]}}]}}}};
+    },supportRunner:()=>({flow_property:{id:property,state_code:100,name_en:'Mass'},unit_group:{id:property,state_code:100,name_en:'Units of mass',name_zh:'质量',reference_unit:'kg'}})});
+  assert.equal(result.valid,false);assert.deepEqual(result.results.map(r=>r.uuid),[second]);
+  assert.deepEqual(result.checks.map(c=>c.status),['failed','passed']);
+});
+
+for (const [status,kind,retryable] of [[503,'service_unavailable',true],[401,'authentication',false],[403,'authorization',false]]) {
+  test(`actual support child preserves safe structured ${status} provenance`,async t=>{
+    const {mkdirSync,writeFileSync}=await import('node:fs');
+    const {readPublicUuidAudit}=await import('./evidence-audit.mjs');
+    const root=mkdtempSync(path.join(tmpdir(),'uuid-support-protocol-'));t.after(()=>rmSync(root,{recursive:true,force:true}));
+    const directory=path.join(root,'dist','src','lib');mkdirSync(directory,{recursive:true});
+    writeFileSync(path.join(root,'package.json'),JSON.stringify({type:'module'}));
+    writeFileSync(path.join(root,'.env'),'');
+    writeFileSync(path.join(directory,'supabase-session.js'),'export function createSupabaseDataRuntime(){return {}}');
+    writeFileSync(path.join(directory,'supabase-client.js'),`export function requireSupabaseRestRuntime(){return {}};export function createSupabaseDataClient(){const query={select(){return this},eq(){return this},order(){return this},limit(){return this},then(resolve){resolve({data:null,error:{code:'UPSTREAM_TEST',message:'secret-must-not-leak'},status:${status}})}};return {client:{from(){return query}}}}`);
+    assert.throws(()=>readPublicUuidAudit({uuid:'u',tiangongCliRoot:root,retryAttempts:1,runner:()=>({state_code:100,flow:{flowDataSet:{flowInformation:{dataSetInformation:{'common:UUID':'u'}},flowProperties:{flowProperty:[{referenceToFlowPropertyDataSet:{'@refObjectId':'property-id'}}]}}}})}),error=>{
+      assert.equal(error.details.failure_kind,kind);assert.equal(error.details.retryable,retryable);assert.equal(error.details.origin,'tool_transport');assert.equal(error.details.http_status,status);assert.equal(error.details.subject_id,'property-id');assert.equal(JSON.stringify(error).includes('secret-must-not-leak'),false);return true;
+    });
+  });
+}
+
+test('collector rejects empty or explicitly failed success records', async()=>{
+  const {collectEvidenceItems}=await import('./evidence-audit.mjs');
+  for(const value of [{},{valid:false,uuid:'u'},{uuid:'u',state_code:100}]){
+    const result=collectEvidenceItems({items:['u'],subject:item=>item,checkId:'uuid_public_read',phase:'harvest',deadline:Infinity,now:Date.now,run:()=>[value]});
+    assert.equal(result.valid,false);assert.deepEqual(result.results,[]);assert.equal(result.findings[0].code,'GOAL_EVIDENCE_RESULT_INVALID');
+  }
 });

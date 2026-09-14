@@ -1,9 +1,11 @@
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
+import { closeSync, constants, fstatSync, openSync, readFileSync } from "node:fs";
 import path from "node:path";
 
 import { GoalHarnessError, classifyFinding } from "./errors.mjs";
 import { appendGoalCacheReceipt, listGoalCacheReceipts } from "./goal-cache.mjs";
+import { reviewTimeRemaining } from "./review-assessment.mjs";
 
 const REUSABLE_COMMON_UUID_PATTERN = /^(?:alternating current|electricity(?:,.*)?|natural gas(?: .*)?|liquefied petroleum gas|lpg|diesel(?: fuel)?|steam(?:,.*)?|hot water|process water|drinking water|industrial oxygen|industrial nitrogen|carbon dioxide(?: \(fossil\))?|methane|nitrous oxide|sodium hydroxide|sodium hypochlorite|peracetic acid|(?:refrigerant|polyethylene film|pet tray|corrugated paperboard)(?:,.*)?)$/iu;
 
@@ -26,9 +28,14 @@ export function auditReportedUuids({
   retryAttempts = 3,
   retryDelayMs = 1_000,
   sleeper = sleepSync,
+  collect = false, phase = "harvest", deadline = Infinity, now = Date.now, startAfter = null,
+  supportCache = new Map(),
 }) {
+  if (collect) return collectEvidenceItems({ items: report.uuid_audits ?? [], subject: item => String(item.uuid).toLowerCase(),
+    checkId: "uuid_public_read", phase, deadline, now, startAfter,
+    run: claimed => auditReportedUuids({ report: { uuid_audits: [claimed] }, tiangongCliRoot, runner, supportRunner,
+      retryAttempts, retryDelayMs, sleeper, supportCache, phase, deadline, now }) });
   const results = [];
-  const supportCache = new Map();
   for (const claimed of report.uuid_audits ?? []) {
     const actual = readPublicUuidAudit({
       uuid: claimed.uuid,
@@ -38,7 +45,7 @@ export function auditReportedUuids({
       supportCache,
       retryAttempts,
       retryDelayMs,
-      sleeper,
+      sleeper, phase, deadline, now,
     });
     const mismatches = [];
     if (actual.uuid !== claimed.uuid.toLowerCase()) mismatches.push("uuid");
@@ -96,6 +103,7 @@ export function auditReportedUuids({
         }],
       });
     }
+    reviewTimeRemaining(deadline, { now, phase, subjectId: claimed.uuid.toLowerCase() });
     results.push({
       ...actual,
       unit_group_claim: claimed.unit_group,
@@ -116,9 +124,15 @@ export function readPublicUuidAudit({
   retryAttempts = 3,
   retryDelayMs = 1_000,
   sleeper = sleepSync,
+  phase = "harvest", deadline = Infinity, now = Date.now,
 }) {
-    const retryOptions = { attempts: retryAttempts, delayMs: retryDelayMs, sleeper };
-    const direct = retryUuidInfrastructure(() => runner({ uuid, tiangongCliRoot }), retryOptions);
+    const retryOptions = { attempts: retryAttempts, delayMs: retryDelayMs, sleeper, deadline, now, phase, subjectId: uuid };
+    const direct = retryUuidInfrastructure(() => runner({ uuid, tiangongCliRoot,
+      timeoutMs: reviewTimeRemaining(deadline, { now, phase, subjectId: uuid }), deadline, now, phase }), retryOptions);
+    if (direct?.valid === false || direct?.ok === false || !direct?.flow?.flowDataSet?.flowInformation?.dataSetInformation) {
+      throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "Public UUID read did not return a flow record.",
+        { phase, origin: "tool_transport", failure_kind: "unknown", retryable: false, subject_id: uuid });
+    }
     const flow = direct?.flow?.flowDataSet;
     const info = flow?.flowInformation?.dataSetInformation;
     const names = localizedTexts(info?.name?.baseName);
@@ -132,8 +146,12 @@ export function readPublicUuidAudit({
       support = retryUuidInfrastructure(() => supportRunner({
         flowPropertyId,
         flowPropertyVersion,
-        tiangongCliRoot,
+        tiangongCliRoot, timeoutMs: reviewTimeRemaining(deadline, { now, phase, subjectId: uuid }), deadline, now, phase,
       }), retryOptions);
+      if (support?.valid === false || support?.ok === false || !support?.flow_property || !support?.unit_group) {
+        throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "Public reference support did not return property and unit-group records.",
+          { phase, origin: "tool_transport", failure_kind: "unknown", retryable: false, subject_id: uuid });
+      }
       supportCache.set(supportKey, support);
     }
     return {
@@ -160,18 +178,23 @@ export function readPublicUuidAudit({
     };
 }
 
-function retryUuidInfrastructure(operation, { attempts, delayMs, sleeper }) {
+function retryUuidInfrastructure(operation, { attempts, delayMs, sleeper, deadline = Infinity, now = Date.now, phase = "harvest", subjectId }) {
   const limit = Number.isInteger(attempts) && attempts > 0 ? attempts : 3;
   const delay = Number.isFinite(delayMs) && delayMs >= 0 ? delayMs : 1_000;
   for (let attempt = 1; attempt <= limit; attempt += 1) {
     try {
-      return operation();
+      reviewTimeRemaining(deadline, { now, phase, subjectId });
+      const result = operation();
+      reviewTimeRemaining(deadline, { now, phase, subjectId });
+      return result;
     } catch (error) {
+      reviewTimeRemaining(deadline, { now, phase, subjectId });
       if (classifyFinding(error).category !== "infrastructure" || error?.details?.retryable === false) throw error;
       if (attempt === limit) {
         throw new GoalHarnessError(error.code, error.message, { ...error.details, attempts: attempt });
       }
-      sleeper(delay * attempt);
+      sleeper(Math.min(delay * attempt, reviewTimeRemaining(deadline, { now, phase, subjectId })));
+      reviewTimeRemaining(deadline, { now, phase, subjectId });
     }
   }
   throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "TianGong public UUID audit exhausted its retry budget.", { attempts: limit });
@@ -182,7 +205,11 @@ function sleepSync(milliseconds) {
   Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, milliseconds);
 }
 
-export async function verifySourceLocators({ report, stateDir = null, fetchImpl = globalThis.fetch, timeoutMs = 30_000 }) {
+export async function verifySourceLocators({ report, stateDir = null, fetchImpl = globalThis.fetch, timeoutMs = 30_000,
+  collect = false, phase = "harvest", deadline = Infinity, now = Date.now, startAfter = null }) {
+  if (collect) return collectEvidenceItemsAsync({ items: report.sources ?? [], subject: item => item.source_id,
+    checkId: "source_original", phase, deadline, now, startAfter, applicable: source => source.discovery_only !== true,
+    run: source => verifySourceLocators({ report: { sources: [source] }, stateDir, fetchImpl, timeoutMs, phase, deadline, now }) });
   const audits = [];
   for (const source of report.sources ?? []) {
     if (source.discovery_only === true) continue;
@@ -191,10 +218,12 @@ export async function verifySourceLocators({ report, stateDir = null, fetchImpl 
       throw new GoalHarnessError("GOAL_SOURCE_DISCOVERY_ONLY", `Discovery/search locator cannot be final evidence: ${source.source_id}`, { source_id: source.source_id, locator });
     }
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), timeoutMs);
+    const ioBudget = Math.min(timeoutMs, reviewTimeRemaining(deadline, { now, phase, subjectId: source.source_id }));
+    const timeout = setTimeout(() => controller.abort(), ioBudget);
     let response, content;
     try {
-      response = await fetchImpl(locator, { method: "GET", redirect: "follow", signal: controller.signal, headers: { "user-agent": "tiangong-pcr-goal-harness/1.0" } });
+      response = await abortable(fetchImpl(locator, { method: "GET", redirect: "follow", signal: controller.signal, headers: { "user-agent": "tiangong-pcr-goal-harness/1.0" } }), controller.signal);
+      reviewTimeRemaining(deadline, { now, phase, subjectId: source.source_id });
       if (!response.ok) {
         const status = response.status;
         const retryable = status === 429 || status >= 500;
@@ -206,10 +235,13 @@ export async function verifySourceLocators({ report, stateDir = null, fetchImpl 
           retry_after_seconds:Number.isFinite(retrySeconds) ? retrySeconds : null,
         });
       }
-      content = await readResponseBytes(response, 64 * 1024 * 1024);
+      content = await readResponseBytes(response, 64 * 1024 * 1024, { signal: controller.signal, deadline, now, phase, subjectId: source.source_id });
+      reviewTimeRemaining(deadline, { now, phase, subjectId: source.source_id });
     } catch (error) {
-      const cached = source.original_text_verified === true && stateDir
-        ? findCachedOriginalSource({ stateDir, sourceId: source.source_id, locator }) : null;
+      reviewTimeRemaining(deadline, { now, phase, subjectId: source.source_id });
+      const fallbackAllowed = !(error instanceof GoalHarnessError) || error.code === "GOAL_SOURCE_LOCATOR_UNREADABLE";
+      const cached = fallbackAllowed && source.original_text_verified === true && stateDir
+        ? findCachedOriginalSource({ stateDir, source, locator, deadline, now, phase }) : null;
       if (cached) {
         audits.push({ ...cached.value, cache_hit:true, cache_receipt_id:cached.receipt_id, cache_reused_at:new Date().toISOString() });
         continue;
@@ -224,9 +256,7 @@ export async function verifySourceLocators({ report, stateDir = null, fetchImpl 
     } finally { clearTimeout(timeout); }
     // Identity and durable writes deliberately sit outside the transport catch.
     const contentType = response.headers?.get?.('content-type') ?? null;
-    const text = content.toString('utf8');
-    const challenge = /<input[^>]*type=["']?password|<title>[^<]*(?:sign in|log in|login)|captcha|verify you are human|checking your browser/iu.test(text);
-    const identifiable = content.length > 0 && (text.startsWith('%PDF-') || (source.name && text.toLowerCase().includes(source.name.toLowerCase())));
+    const { challenge, identifiable } = originalSourceIdentity(source, content);
     if (challenge || (source.original_text_verified === true && !identifiable)) {
       throw new GoalHarnessError('GOAL_SOURCE_ORIGINAL_IDENTITY_UNVERIFIED', `Original source identity needs review: ${source.source_id}`, {
         phase:'source_identity',origin:'harness_review',failure_kind:'unknown',retryable:false,subject_id:source.source_id,source_id:source.source_id,locator,http_status:response.status,
@@ -242,27 +272,56 @@ export async function verifySourceLocators({ report, stateDir = null, fetchImpl 
       appendGoalCacheReceipt({stateDir,namespace:'source_locator_checks',keyInput,tool,sourceFingerprint:contentSha256,value:audit});
       if (source.original_text_verified === true) appendGoalCacheReceipt({stateDir,namespace:'source_original_text_receipts',keyInput,tool,sourceFingerprint:contentSha256,value:audit,blob:content});
     }
+    reviewTimeRemaining(deadline, { now, phase, subjectId: source.source_id });
     audits.push(audit);
   }
   return audits;
 }
 
-function findCachedOriginalSource({ stateDir, sourceId, locator }) {
-  return listGoalCacheReceipts({ stateDir, namespace: "source_original_text_receipts" })
-    .filter((receipt) => receipt.tool?.name === "http-original-text-fetch" && receipt.tool?.version === "1")
-    .filter((receipt) => receipt.key_input?.source_id === sourceId && receipt.key_input?.locator === locator)
-    .filter((receipt) => receipt.blob_path && receipt.blob_sha256 === receipt.value?.content_sha256 && receipt.value?.original_identity_verified === true)
-    .filter((receipt) => receipt.source_fingerprint === receipt.value?.content_sha256)
-    .at(-1) ?? null;
+function originalSourceIdentity(source, content) {
+  const text = content.toString("utf8");
+  const title = typeof source.name === "string" ? source.name.trim().toLowerCase() : "";
+  const challenge = /<input[^>]*type=["']?password|<title>[^<]*(?:sign in|log in|login)|captcha|verify you are human|checking your browser/iu.test(text);
+  // A PDF signature identifies a format, not the document claimed by the source.
+  const identifiable = content.length > 0 && title.length > 0 && text.toLowerCase().includes(title);
+  return { challenge, identifiable };
 }
 
-function runTiangongFlowGet({ uuid, tiangongCliRoot }) {
+function findCachedOriginalSource({ stateDir, source, locator, deadline, now, phase }) {
+  const candidates = listGoalCacheReceipts({ stateDir, namespace: "source_original_text_receipts" })
+    .filter((receipt) => receipt.tool?.name === "http-original-text-fetch" && receipt.tool?.version === "1")
+    .filter((receipt) => receipt.key_input?.source_id === source.source_id && receipt.key_input?.locator === locator)
+    .filter((receipt) => receipt.value?.source_id === source.source_id && receipt.value?.locator === locator)
+    .filter((receipt) => receipt.blob_path && receipt.blob_sha256 === receipt.value?.content_sha256 && receipt.value?.original_identity_verified === true)
+    .filter((receipt) => receipt.source_fingerprint === receipt.value?.content_sha256);
+  for (const receipt of candidates.reverse()) {
+    reviewTimeRemaining(deadline, { now, phase, subjectId: source.source_id });
+    let descriptor;
+    try {
+      descriptor = openSync(receipt.blob_path, constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK);
+      const stat = fstatSync(descriptor);
+      if (!stat.isFile() || stat.size > 64 * 1024 * 1024) continue;
+      const content = readFileSync(descriptor);
+      if (`sha256:${createHash("sha256").update(content).digest("hex")}` !== receipt.blob_sha256) continue;
+      const { challenge, identifiable } = originalSourceIdentity(source, content);
+      reviewTimeRemaining(deadline, { now, phase, subjectId: source.source_id });
+      if (identifiable && !challenge) return receipt;
+    } catch (error) {
+      if (error instanceof GoalHarnessError) throw error;
+    } finally { if (descriptor !== undefined) closeSync(descriptor); }
+  }
+  reviewTimeRemaining(deadline, { now, phase, subjectId: source.source_id });
+  return null;
+}
+
+function runTiangongFlowGet({ uuid, tiangongCliRoot, timeoutMs = 30_000 }) {
   const cliPath = path.join(tiangongCliRoot, "bin", "tiangong-lca.js");
   const result = spawnSync(process.execPath, [`--env-file-if-exists=${path.join(tiangongCliRoot, ".env")}`, cliPath, "flow", "get", "--id", uuid, "--state-code", "100", "--json"], {
     cwd: tiangongCliRoot,
     encoding: "utf8",
     stdio: ["ignore", "pipe", "pipe"],
     maxBuffer: 64 * 1024 * 1024,
+    timeout: Math.min(30_000, timeoutMs), killSignal: "SIGKILL",
   });
   if (result.status !== 0) {
     throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", `TianGong state_code=100 direct read failed for ${uuid}`, toolFailureDetails(result, { subject_id: uuid, uuid }));
@@ -274,7 +333,7 @@ function runTiangongFlowGet({ uuid, tiangongCliRoot }) {
   }
 }
 
-function runTiangongReferenceSupport({ flowPropertyId, flowPropertyVersion, tiangongCliRoot }) {
+function runTiangongReferenceSupport({ flowPropertyId, flowPropertyVersion, tiangongCliRoot, timeoutMs = 30_000 }) {
   if (!flowPropertyId) {
     throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "TianGong flow does not declare a reference flow-property UUID.", { phase: "uuid_support", origin: "harness_review", failure_kind: "author_claim", retryable: false });
   }
@@ -290,6 +349,7 @@ function runTiangongReferenceSupport({ flowPropertyId, flowPropertyVersion, tian
     encoding: "utf8",
     stdio: ["ignore", "pipe", "pipe"],
     maxBuffer: 16 * 1024 * 1024,
+    timeout: Math.min(30_000, timeoutMs), killSignal: "SIGKILL",
   });
   if (result.status !== 0) {
     throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", `TianGong public flow-property/unit-group audit failed for ${flowPropertyId}`, toolFailureDetails(result, { subject_id: flowPropertyId, flow_property_uuid: flowPropertyId }));
@@ -305,13 +365,14 @@ const TIANGONG_REFERENCE_SUPPORT_SCRIPT = String.raw`
 import { createSupabaseDataClient, requireSupabaseRestRuntime } from "./dist/src/lib/supabase-client.js";
 import { createSupabaseDataRuntime } from "./dist/src/lib/supabase-session.js";
 const [flowPropertyId, requestedVersion] = process.argv.slice(1);
+async function main() {
 const runtime = createSupabaseDataRuntime({ runtime: requireSupabaseRestRuntime(process.env), fetchImpl: fetch, timeoutMs: 10000, now: new Date() });
 const { client } = createSupabaseDataClient(runtime, fetch, 10000);
 async function readPublic(table, id, version) {
   let query = client.from(table).select("id,version,state_code,json").eq("id", id).eq("state_code", 100);
   query = version ? query.eq("version", version) : query.order("version", { ascending: false }).limit(1);
-  const { data, error } = await query;
-  if (error) throw error;
+  const { data, error, status } = await query;
+  if (error) throw Object.assign(new Error("Public query failed"), error, { status });
   if (!Array.isArray(data) || data.length !== 1) throw new Error("Expected exactly one public " + table + " row for " + id);
   return data[0];
 }
@@ -339,6 +400,20 @@ process.stdout.write(JSON.stringify({
   flow_property: { id: flowPropertyRow.id, version: flowPropertyRow.version, state_code: flowPropertyRow.state_code, name_en: flowPropertyNames.en ?? flowPropertyNames["en-US"] ?? "" },
   unit_group: { id: unitGroupRow.id, version: unitGroupRow.version, state_code: unitGroupRow.state_code, name_en: unitGroupNames.en ?? unitGroupNames["en-US"] ?? "", name_zh: unitGroupNames.zh ?? unitGroupNames["zh-CN"] ?? "", reference_unit: String(referenceUnit?.name ?? "") },
 }));
+}
+main().catch(error => {
+  const rawCode = error?.code ?? error?.cause?.code;
+  const status = Number.isInteger(error?.status) && error.status >= 100 && error.status <= 599 ? error.status : null;
+  const allowed = new Set(["ECONNRESET", "ECONNREFUSED", "ETIMEDOUT", "ENETUNREACH", "EAI_AGAIN", "RATE_LIMITED", "UNAUTHENTICATED", "UNAUTHORIZED"]);
+  const code = status === 401 || ["PGRST301", "PGRST302"].includes(rawCode) ? "UNAUTHENTICATED"
+    : status === 403 ? "UNAUTHORIZED" : status === 429 ? "RATE_LIMITED"
+    : status >= 500 ? "SERVICE_UNAVAILABLE" : allowed.has(rawCode) ? rawCode
+    : ["AbortError", "TimeoutError"].includes(error?.name) ? "ETIMEDOUT" : "UPSTREAM_ERROR";
+  process.stdout.write(JSON.stringify({ error: { code, status,
+    retryable: ["ECONNRESET", "ECONNREFUSED", "ETIMEDOUT", "ENETUNREACH", "EAI_AGAIN", "RATE_LIMITED", "SERVICE_UNAVAILABLE"].includes(code),
+    details: { subject_id: flowPropertyId, credentials_redacted: true } } }));
+  process.exitCode = 1;
+});
 `;
 
 function localizedTexts(value) {
@@ -412,24 +487,29 @@ function normalizeLocator(value) {
   }
 }
 
-async function readResponseBytes(response, limit) {
+async function readResponseBytes(response, limit, { signal, deadline = Infinity, now = Date.now, phase = "harvest", subjectId } = {}) {
   const reader = response.body?.getReader?.();
   if (!reader) return Buffer.alloc(0);
   const chunks = [];
   let length = 0;
-  while (length < limit) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    const chunk = Buffer.from(value);
-    if (length + chunk.length > limit) {
-      await reader.cancel?.();
-      throw new GoalHarnessError("GOAL_SOURCE_ORIGINAL_TEXT_TOO_LARGE", `Source original text exceeds the ${limit}-byte cache limit.`);
+  try {
+    for (;;) {
+      reviewTimeRemaining(deadline, { now, phase, subjectId });
+      const { done, value } = await abortable(reader.read(), signal);
+      reviewTimeRemaining(deadline, { now, phase, subjectId });
+      if (done) break;
+      const chunk = Buffer.from(value);
+      if (length + chunk.length > limit) {
+        throw new GoalHarnessError("GOAL_SOURCE_ORIGINAL_TEXT_TOO_LARGE", `Source original text exceeds the ${limit}-byte cache limit.`);
+      }
+      chunks.push(chunk);
+      length += chunk.length;
     }
-    chunks.push(chunk);
-    length += chunk.length;
+    return Buffer.concat(chunks);
+  } finally {
+    // Cancellation must happen on failed reads too; cleanup cannot extend the deadline.
+    Promise.resolve(reader.cancel?.()).catch(() => {});
   }
-  await reader.cancel?.();
-  return Buffer.concat(chunks);
 }
 
 function stableJson(value) {
@@ -444,9 +524,99 @@ function toolFailureDetails(result, subject) {
     try { const parsed = JSON.parse(text); machine = parsed.error ?? parsed; if (machine && typeof machine === 'object') break; } catch {}
   }
   const code = machine?.code ?? result.error?.code;
-  const kinds = {ECONNRESET:'network',ECONNREFUSED:'network',ETIMEDOUT:'timeout',EAI_AGAIN:'network',RATE_LIMITED:'rate_limit',UNAUTHENTICATED:'authentication',UNAUTHORIZED:'authorization'};
+  const kinds = {ECONNRESET:'network',ECONNREFUSED:'network',ETIMEDOUT:'timeout',ENETUNREACH:'network',EAI_AGAIN:'network',RATE_LIMITED:'rate_limit',SERVICE_UNAVAILABLE:'service_unavailable',UNAUTHENTICATED:'authentication',UNAUTHORIZED:'authorization'};
   const failureKind = kinds[code] ?? 'unknown';
   return { ...subject, phase:'tool_execution', origin:'tool_transport', failure_kind:failureKind,
-    retryable:machine?.retryable === false || machine?.details?.retryable === false ? false : ['network','timeout','rate_limit'].includes(failureKind),
-    machine_code:code ?? null, exit_code:result.status, credentials_redacted:true };
+    retryable:machine?.retryable === false || machine?.details?.retryable === false ? false : ['network','timeout','rate_limit','service_unavailable'].includes(failureKind),
+    machine_code:code ?? null, http_status:Number.isInteger(machine?.status) ? machine.status : null, exit_code:result.status, signal:result.signal ?? null, credentials_redacted:true };
+}
+
+
+function abortable(operation, signal) {
+  if (!signal) return operation;
+  if (signal.aborted) return Promise.reject(signal.reason ?? new DOMException("Aborted", "AbortError"));
+  return new Promise((resolve, reject) => {
+    const abort = () => reject(signal.reason ?? new DOMException("Aborted", "AbortError"));
+    signal.addEventListener("abort", abort, { once: true });
+    Promise.resolve(operation).then(resolve, reject).finally(() => signal.removeEventListener("abort", abort));
+  });
+}
+
+export function evidenceFailureFindings(error, { phase, subjectId }) {
+  const { findings, ...details } = error?.details ?? {};
+  return (findings ?? [{ code: error?.code ?? "GOAL_EVIDENCE_CHECK_FAILED", message: error?.message ?? String(error) }])
+    .map(finding => ({ ...finding, details: { ...details, ...(finding.details ?? {}), phase, subject_id: subjectId } }));
+}
+
+function evidenceCollection({ items, subject, checkId, phase, deadline, now, startAfter, applicable = () => true }) {
+  const after = items.findIndex(item => subject(item) === startAfter);
+  const ordered = after >= 0 ? [...items.slice(after + 1), ...items.slice(0, after + 1)] : items;
+  const checks = [], findings = [], results = [];
+  let lastAttempted = startAfter, nextSubject = null;
+  return {
+    ordered,
+    begin(item) {
+      const subjectId = subject(item);
+      const check = { phase, check_id: checkId, subject_id: subjectId, status: "passed", applicable: applicable(item) };
+      checks.push(check);
+      if (!check.applicable) { check.status = "skipped"; check.reason = "not_applicable"; return null; }
+      try { reviewTimeRemaining(deadline, { now, phase, subjectId }); }
+      catch (error) { this.fail(check, error); nextSubject ??= subjectId; return null; }
+      lastAttempted = subjectId;
+      return check;
+    },
+    pass(check, values) {
+      if (!Array.isArray(values) || values.length === 0 || values.some(value => !successfulEvidenceValue(check.check_id, value))) {
+        throw new GoalHarnessError("GOAL_EVIDENCE_RESULT_INVALID", "Evidence check did not return successful data.", { origin:"harness_review", failure_kind:"unknown", retryable:false });
+      }
+      results.push(...values);
+    },
+    fail(check, error) {
+      const found = evidenceFailureFindings(error, { phase, subjectId: check.subject_id });
+      const exhausted = found.some(f => f.details.failure_kind === "execution_window");
+      check.status = exhausted ? "skipped" : "failed";
+      if (exhausted) check.reason = "execution_window";
+      check.findings = found;
+      findings.push(...found);
+    },
+    finish() {
+      if (!nextSubject && findings.some(f => f.details.failure_kind === "execution_window") && ordered.length) {
+        const index = ordered.findIndex(item => subject(item) === lastAttempted);
+        nextSubject = subject(ordered[(index + 1) % ordered.length]);
+      }
+      return { valid: checks.every(c => !c.applicable || c.status === "passed") && findings.length === 0,
+        checks, findings, results, progress: { next_subject: nextSubject, start_after: lastAttempted } };
+    },
+  };
+}
+
+export function collectEvidenceItems(options) {
+  const collection = evidenceCollection(options);
+  for (const item of collection.ordered) {
+    const check = collection.begin(item);
+    if (!check) continue;
+    try { collection.pass(check, options.run(item)); }
+    catch (error) { collection.fail(check, error); }
+  }
+  return collection.finish();
+}
+
+async function collectEvidenceItemsAsync(options) {
+  const collection = evidenceCollection(options);
+  for (const item of collection.ordered) {
+    const check = collection.begin(item);
+    if (!check) continue;
+    try { collection.pass(check, await options.run(item)); }
+    catch (error) { collection.fail(check, error); }
+  }
+  return collection.finish();
+}
+
+
+function successfulEvidenceValue(checkId, value) {
+  if (!value || typeof value !== "object" || value.valid === false || value.ok === false) return false;
+  if (checkId === "uuid_public_read") return typeof value.uuid === "string" && value.uuid.length > 0 && value.state_code === 100 && /^sha256:[a-f0-9]{64}$/u.test(value.response_sha256 ?? "");
+  if (checkId === "receipt_integrity") return typeof value.receipt_id === "string" && value.authenticated === true && Array.isArray(value.candidate_decisions) && /^sha256:[a-f0-9]{64}$/u.test(value.result_sha256 ?? "");
+  if (checkId === "source_original") return typeof value.source_id === "string" && /^sha256:[a-f0-9]{64}$/u.test(value.content_sha256 ?? "") && value.content_byte_length > 0;
+  return false;
 }

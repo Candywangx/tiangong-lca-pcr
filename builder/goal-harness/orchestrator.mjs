@@ -10,10 +10,12 @@ import { auditReportedUuids, mergeVerifiedCommonUuids, verifySourceLocators } fr
 import { withGoalLockAsync } from "./lock.mjs";
 import { compileAuthorPrompt } from "./prompt-compiler.mjs";
 import { auditHybridSearchReceipts, isReusableCommonUuidAudit } from "./uuid-search-receipts.mjs";
+import { assessRequiredReview, reviewTimeRemaining, failedReview } from "./review-assessment.mjs";
+import { findUuidEnrichmentCandidates } from "./uuid-enrichment-audit.mjs";
 import { activeAuthorCount, buildIntegrationSnapshot, dispatchCandidates } from "./scheduler.mjs";
 import { applyTaskTransition } from "./state-machine.mjs";
 import { ensureGoalWorktree } from "./worktrees.mjs";
-import { extractCompletedTurnReport, inspectAuthorCommit, reviewAuthorWorktree } from "./author-review.mjs";
+import { extractCompletedTurnReport, inspectAuthorCommit, reviewAuthorWorktree, completeAuthorReviewIdentity } from "./author-review.mjs";
 import { appendGoalCacheReceipt, listGoalCacheReceipts } from "./goal-cache.mjs";
 import { validateAuthorReport } from "./author-gates.mjs";
 import { selectGoalRuntimeBaseCommit } from "./runtime-baseline.mjs";
@@ -55,6 +57,7 @@ export async function dispatchGoalAuthors({
       state = store.rebuild();
     }
     if (resumeStopped) {
+      state = holdExhaustedRecoveries(store, config, now());
       for (const failed of trialDispatchState(state).tasks.filter((task) => !task.coordinator_hold
         && task.state === "retryable_failure"
         && recoveryForTask(task, config, {now:now()}).eligible
@@ -224,6 +227,11 @@ export async function dispatchGoalAuthors({
           infrastructure_resume_pending: false,
           execution_continue_pending: false,
           execution_continue_count: resumeExecution ? infrastructureResumeNumber : (task.execution_continue_count ?? 0),
+          execution_continue_history: resumeExecution ? [...(task.execution_continue_history ?? []), {
+            incident_id: task.recovery_incident.id, resume_count: infrastructureResumeNumber,
+            turn_id: visible.turn_id, source_turn_id: task.turn_id ?? null,
+            started_at: startedAt, failure_code: task.failure_code ?? null,
+          }] : (task.execution_continue_history ?? []),
           infrastructure_resume_target_state: null,
           infrastructure_resume_count: resumeInfrastructure && !resumeExecution ? infrastructureResumeNumber : (task.infrastructure_resume_count ?? 0),
           infrastructure_resume_history: resumeInfrastructure && !resumeExecution
@@ -384,7 +392,7 @@ function selectDispatchTasks(state, slots) {
 function previewResumedState({ config, state, now = new Date() }) {
   return {...state, stopped:false, tasks:state.tasks.map(task => {
     const recovery = recoveryForTask(task,config,{now});
-    if (!recovery.eligible || recovery.action === 'recheck') return task;
+    if (!recovery.eligible || isSavedEvidenceRecheckTask(task)) return task;
     if (['resume','defer'].includes(recovery.action)) return {...task,state:'repair_requested',infrastructure_resume_pending:recovery.action === 'resume',execution_continue_pending:recovery.action === 'defer'};
     return {...task,state:'repair_requested'};
   })};
@@ -402,17 +410,26 @@ export function recoveryForTask(task, config = {}, {now = new Date()} = {}) {
   const infraUsed = incident.legacy_infrastructure_used
     + (task.infrastructure_resume_history ?? []).filter(entry=>entry.incident_id === incident.id).length
     + (task.evidence_recheck_history ?? []).filter(entry=>entry.incident_id === incident.id).length;
+  const executionUsed = (incident.legacy_execution_used ?? unboundExecutionCount(task))
+    + (task.execution_continue_history ?? []).filter(entry=>entry.incident_id === incident.id).length
+    + (task.execution_recheck_history ?? []).filter(entry=>entry.incident_id === incident.id).length;
   const retryAfter = Math.max(config.retry_policy?.backoff_seconds ?? 0,...recovery.findings.map(f=>f.details.retry_after_seconds ?? 0));
-  const incidentHistory = [...(task.evidence_recheck_history ?? []),...(task.infrastructure_resume_history ?? [])]
-    .filter(entry=>entry.incident_id === incident.id || (incident.legacy_infrastructure_used > 0 && !entry.incident_id))
+  const incidentHistory = [
+    ["evidence_recheck", incident.legacy_infrastructure_used], ["infrastructure_resume", incident.legacy_infrastructure_used],
+    ["execution_recheck", incident.legacy_execution_used ?? unboundExecutionCount(task)],
+    ["execution_continue", incident.legacy_execution_used ?? unboundExecutionCount(task)],
+  ].flatMap(([prefix, legacy]) => (task[`${prefix}_history`] ?? [])
+    .filter(entry=>entry.incident_id === incident.id || (legacy > 0 && !entry.incident_id)))
     .map(entry=>entry.ended_at ?? entry.started_at).filter(Boolean).sort();
   const lastAt = incidentHistory.at(-1) ?? task.updated_at;
   const due = retryAfter === 0 || !lastAt || new Date(now).getTime() >= Date.parse(lastAt) + retryAfter * 1000;
   const allowed = ['resume','recheck'].includes(recovery.action) ? infraUsed < (config.retry_policy?.max_attempts ?? 3)
     : recovery.action === 'repair' ? (task.attempt ?? 0) < (config.retry_policy?.max_attempts ?? 3) && (task.repair_count ?? 0) < (config.retry_policy?.max_repairs ?? 2)
-    : recovery.action === 'defer';
+    : recovery.action === 'defer' && executionUsed < (config.retry_policy?.max_attempts ?? 3);
   return {...recovery,eligible:!task.coordinator_hold && task.state === 'retryable_failure' && allowed && due,
-    infrastructure_used:infraUsed,backoff_seconds:retryAfter,incident};
+    infrastructure_used:infraUsed,execution_used:executionUsed,
+    budget_exhausted:["resume","recheck","defer"].includes(recovery.action) && !allowed,
+    backoff_seconds:retryAfter,incident};
 }
 
 function recoveryIncident(task) {
@@ -425,7 +442,32 @@ function recoveryIncident(task) {
   const legacyUsed = task.recovery_incident?.status === 'closed' ? 0
     : Math.max(task.infrastructure_resume_count ?? 0,task.infrastructure_resume_history?.length ?? 0)
       + Math.max(task.evidence_recheck_count ?? 0,task.evidence_recheck_history?.length ?? 0);
-  return {id:createHash('sha256').update(JSON.stringify(binding)).digest('hex').slice(0,24),status:'open',binding,legacy_infrastructure_used:legacyUsed};
+  return {id:createHash('sha256').update(JSON.stringify(binding)).digest('hex').slice(0,24),status:'open',binding,legacy_infrastructure_used:legacyUsed,
+    legacy_execution_used:task.recovery_incident?.status === "closed" ? 0 : unboundExecutionCount(task)};
+}
+
+function unboundExecutionCount(task) {
+  return ["execution_continue", "execution_recheck"].reduce((count, prefix) => {
+    const history = task[`${prefix}_history`] ?? [];
+    return count + history.filter(entry => !entry.incident_id).length
+      + Math.max(0, (task[`${prefix}_count`] ?? 0) - history.length);
+  }, 0);
+}
+
+function holdExhaustedRecoveries(store, config, now) {
+  const state = store.rebuild();
+  for (const task of state.tasks) {
+    if (task.state !== "retryable_failure" || task.coordinator_hold) continue;
+    const recovery = recoveryForTask(task, config, {now});
+    if (!recovery.budget_exhausted) continue;
+    const reason = recovery.action === "defer" ? "GOAL_EXECUTION_RECOVERY_LIMIT_REACHED" : "GOAL_INFRASTRUCTURE_RECOVERY_LIMIT_REACHED";
+    store.append({event_id:`${task.id}-recovery-${recovery.incident.id}-${reason}`,type:"task_replaced",payload:{task:{
+      ...task,recovery_incident:recovery.incident,coordinator_hold:{reason,incident_id:recovery.incident.id,
+        limit:config.retry_policy?.max_attempts ?? 3,
+        used:recovery.action === "defer" ? recovery.execution_used : recovery.infrastructure_used},
+    }}});
+  }
+  return store.rebuild();
 }
 
 function recoveryIdentity(task, target) {
@@ -443,12 +485,14 @@ export async function harvestGoalAuthors({
   validateReportFn = validateAuthorReport,
   auditBoundaryReviewFn = auditBoundaryReview,
   now = () => new Date(),
+  reviewBudgetMs = 60_000,
 }) {
   return withGoalLockAsync(stateDir, "harvest", async () => {
     const store = new GoalEventStore({ stateDir });
+    const deadline = Date.now() + reviewBudgetMs;
     const validResults = [];
     const failures = [];
-    let state = store.rebuild();
+    let state = holdExhaustedRecoveries(store, config, now());
     const candidates = state.tasks.map(task => {
       if (task.state !== 'retryable_failure' || task.coordinator_hold || task.authoring_contract_version === 2 || task.report_complete === true || !task.report_path) return task;
       try {
@@ -457,14 +501,20 @@ export async function harvestGoalAuthors({
       } catch { return task; }
     }).filter((task) => ["authoring", "authoring_repair", "author_review"].includes(task.state)
       || (isSavedEvidenceRecheckTask(task) && recoveryForTask(task, config, {now:now()}).eligible));
+    candidates.sort((a, b) => (a.review_window_started_at ?? "").localeCompare(b.review_window_started_at ?? ""));
+    let assessedCount = 0;
     for (const selected of candidates) {
+      if (assessedCount > 0 && Date.now() >= deadline) break;
       state = store.rebuild();
       let task = state.tasks.find((entry) => entry.id === selected.id);
+      assessedCount++;
       if (selected.report_complete === true) task = {...task,report_complete:true};
       if (isSavedEvidenceRecheckTask(task)) {
         task = {...task,recovery_incident:recoveryIncident(task)};
-        const recheckCount = (task.evidence_recheck_count ?? 0) + 1;
-        const recheckIdentity = `${recoveryIdentity(task, "recheck")}-${recheckCount}`;
+        const executionRecheck = recoveryForTask(task).action === "defer";
+        const prefix = executionRecheck ? "execution_recheck" : "evidence_recheck";
+        const recheckCount = (task[`${prefix}_count`] ?? 0) + 1;
+        const recheckIdentity = `${recoveryIdentity(task, executionRecheck ? "window-recheck" : "recheck")}-${recheckCount}`;
         const startedAt = now().toISOString();
         task = applyTaskTransition(task, {
           transition_id: `${recheckIdentity}-review`,
@@ -473,10 +523,10 @@ export async function harvestGoalAuthors({
         });
         task = {
           ...task,
-          evidence_recheck_count: recheckCount,
-          evidence_recheck_pending: true,
+          [`${prefix}_count`]: recheckCount,
+          [`${prefix}_pending`]: true,
           recovery_source_turn_id: task.recovery_source_turn_id ?? task.turn_id,
-          evidence_recheck_history: [...(task.evidence_recheck_history ?? []), {
+          [`${prefix}_history`]: [...(task[`${prefix}_history`] ?? []), {
             incident_id: task.recovery_incident.id,
             recheck_count: recheckCount,
             started_at: startedAt,
@@ -490,7 +540,9 @@ export async function harvestGoalAuthors({
         };
         store.append({ event_id: `${recheckIdentity}-started`, type: "task_replaced", payload: { task } });
       }
-      const reviewIdentity = task.evidence_recheck_pending
+      const reviewIdentity = task.execution_recheck_pending
+        ? `${recoveryIdentity(task, "window-recheck")}-${task.execution_recheck_count}`
+        : task.evidence_recheck_pending
         ? `${recoveryIdentity(task, "recheck")}-${task.evidence_recheck_count}`
         : `${task.id}-turn-${task.turn_id}`;
       if (task.coordinator_hold && task.state === "author_review") continue;
@@ -499,8 +551,26 @@ export async function harvestGoalAuthors({
         const wasRepair = task.state === "authoring_repair"
           || task.continuing_repair_after_thread_replacement === true
           || (Boolean(task.previous_thread_ids?.length) && task.repair_history?.at(-1)?.ended_at == null);
-        const response = await adapter.readThread({ threadId: task.thread_id, includeTurns: true,
-          expectedTurnId: task.turn_id, worktreePath: task.worktree_path });
+        let response;
+        if (!task.coordinator_hold) {
+          task = {...task,review_window_started_at:new Date().toISOString()};
+          store.append({event_id:`${task.id}-turn-${task.turn_id}-observation-${store.rebuild().last_event_sequence+1}`,
+            type:"task_replaced",payload:{task}});
+        }
+        try {
+          reviewTimeRemaining(deadline,{phase:"harvest",subjectId:task.id});
+          response = await adapter.readThread({threadId:task.thread_id,includeTurns:true,
+            expectedTurnId:task.turn_id,worktreePath:task.worktree_path,deadline});
+        } catch (error) {
+          const observation = selectRecovery(error);
+          task = {...task,author_observation:{status:"incomplete",findings:observation.findings},
+            ...(observation.action === "hold" && !task.coordinator_hold ? {coordinator_hold:{reason:error.code ?? "GOAL_AUTHOR_OBSERVATION_FAILED"}} : {})};
+          store.append({event_id:`${task.id}-turn-${task.turn_id}-observation-incomplete-${store.rebuild().last_event_sequence+1}`,
+            type:"task_replaced",payload:{task}});
+          // An unavailable observation says nothing about whether the real author
+          // is still running. Preserve its active turn; never start a replacement.
+          continue;
+        }
         if (task.model_trial) {
           const usage = readTrialTurnUsage({ sessionPath: response.thread?.path, sessionsRoot: adapter.sessionsRoot,
             threadId: task.thread_id, turnId: task.turn_id, worktreePath: task.worktree_path });
@@ -595,26 +665,27 @@ export async function harvestGoalAuthors({
       }
       if (task.coordinator_hold) continue;
       const trialReviewStarted = Date.now();
+      task = { ...task, review_window_started_at: new Date().toISOString() };
       try {
         if (task.authoring_contract_version === 2) {
-          const resolved = resolveAuthorSubmission({ stateDir, task, wire: task.author_submission });
+          const resolved = resolveAuthorSubmission({ stateDir, task, wire: task.author_submission, deadline });
           report = resolved.report;
           if (resolved.report_path) task = { ...task, report_path: resolved.report_path };
         }
-        const unavailableRows = Array.isArray(report?.inventory?.unresolved)
-          ? report.inventory.unresolved.filter((entry) => entry?.reason_code === "tiangong_cli_unavailable") : [];
-        if (unavailableRows.length > 0) {
-          throw new GoalHarnessError("GOAL_REPORTED_UUID_INFRASTRUCTURE_UNAVAILABLE", "tiangong_cli_unavailable cannot be accepted as unresolved PCR coverage; repair it now that Goal infrastructure preflight is healthy.", { origin: "author_reported", phase: "report_gate", failure_kind: "unknown", retryable: false, row_ids: unavailableRows.map((entry) => entry.row_id) });
-        }
+        const unavailableRows = (Array.isArray(report?.inventory?.unresolved) ? report.inventory.unresolved : []).filter(entry => entry?.reason_code === "tiangong_cli_unavailable");
+        const reportedFindings = unavailableRows.length ? [{code:"GOAL_REPORTED_UUID_INFRASTRUCTURE_UNAVAILABLE",
+          message:"Author-reported tool unavailability requires independent observation.",
+          details:{origin:"author_reported",phase:"report_gate",failure_kind:"unknown",retryable:false,row_ids:unavailableRows.map(entry=>entry.row_id)}}] : [];
         if (task.author_turn_observation?.turn_id === task.turn_id && task.author_turn_observation.extracted_status !== "completed") {
-          throw new GoalHarnessError("GOAL_AUTHOR_TURN_REPAIR_REQUIRED", "Preserved held turn did not complete with a machine report.", { observation: task.author_turn_observation });
+          throw new GoalHarnessError("GOAL_AUTHOR_TURN_REPAIR_REQUIRED", "Preserved held turn did not complete with a machine report.", { observation: task.author_turn_observation, findings: [...reportedFindings,{code:"GOAL_AUTHOR_TURN_REPAIR_REQUIRED",message:"Preserved held turn did not complete with a machine report."}] });
         }
         const reportSchema = validateReportFn(report);
         if (!reportSchema.valid) {
-          throw new GoalHarnessError("GOAL_AUTHOR_RESULT_INVALID", `Author report failed ${reportSchema.errors.length} Schema check(s).`, { findings: reportSchema.errors.map((detail) => ({ code: "AUTHOR_REPORT_SCHEMA_INVALID", message: detail.message, detail })) });
+          throw new GoalHarnessError("GOAL_AUTHOR_RESULT_INVALID", `Author report failed ${reportSchema.errors.length} Schema check(s).`, { findings: [...reportedFindings,...reportSchema.errors.map((detail) => ({ code: "AUTHOR_REPORT_SCHEMA_INVALID", message: detail.message, detail }))] });
         }
         task = {...task,report_complete:true};
         if (report.boundary_review != null) {
+          if(reportedFindings.length) throw new GoalHarnessError(reportedFindings[0].code,reportedFindings[0].message,{findings:reportedFindings});
           const authorContentBaseCommit = resolveAuthorContentBaseCommit({ projectRoot: config.project_root, task, fallbackCommit: task.author_base_commit ?? state.baseline.commit });
           const audit = await auditBoundaryReviewFn({ projectRoot: config.project_root, baselineCommit: authorContentBaseCommit, worktreePath: task.worktree_path, task: { ...task, goal_id: config.goal_id }, report, stateDir });
           task = applyTaskTransition(task, { transition_id: `${task.id}-turn-${task.turn_id}-boundary-review`, to: "manual_review", at: now().toISOString() });
@@ -623,36 +694,66 @@ export async function harvestGoalAuthors({
           store.append({ event_id: `${task.id}-turn-${task.turn_id}-boundary-review-recorded`, type: "task_replaced", payload: { task } });
           continue;
         }
-        if ((report.uuid_audits?.length ?? 0) > 0 && !config.tools?.tiangong_cli_root) {
-          throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "tools.tiangong_cli_root is required to independently audit final UUIDs.", {origin:"harness_probe",failure_kind:"configuration",retryable:false});
-        }
-        const uuidReads = auditUuidsFn({ report, tiangongCliRoot: config.tools?.tiangong_cli_root });
-        const evidenceAudit = {
-          uuid_reads: uuidReads,
-          hybrid_search_receipts: auditHybridSearchFn({ report, stateDir, task, verifiedUuidReads: uuidReads }),
-          source_reads: await verifySourcesFn({ report, stateDir }),
+        const phase = "harvest";
+        const capture = operation => {
+          try { return operation(); }
+          catch (error) { return {valid:false,results:[],checks:[],findings:selectRecovery(error).findings}; }
         };
-        const authorContentBaseCommit = resolveAuthorContentBaseCommit({
-          projectRoot: config.project_root,
-          task,
-          fallbackCommit: task.author_base_commit ?? state.baseline.commit,
+        const priorProgress = task.validation_result?.assessment?.progress ?? task.validation_result?.progress ?? {};
+        const authorContentBaseCommit = resolveAuthorContentBaseCommit({ projectRoot: config.project_root, task,
+          fallbackCommit: task.author_base_commit ?? state.baseline.commit });
+        let review;
+        try { review = reviewFn({ projectRoot: config.project_root, baselineCommit: authorContentBaseCommit,
+          worktreePath: task.worktree_path, task: { ...task, goal_id: config.goal_id }, report, stateDir,
+          phase, deadline, verifiedUuidReads: [] }); }
+        catch (error) { review = failedReview(error,{phase,task}); }
+        if(reportedFindings.length) review = {...review,valid:false,findings:[...(review.findings??[]),...reportedFindings]};
+        // Rotate independent evidence scopes across execution windows. UUIDs
+        // still precede their dependent adoption check; sources are independent.
+        const readSources = async () => {
+          try { return await verifySourcesFn({report,stateDir,collect:true,phase,deadline,startAfter:priorProgress.sources?.start_after}); }
+          catch(error) { return {valid:false,results:[],checks:[],findings:selectRecovery(error).findings}; }
+        };
+        let sourceAudit;
+        if (priorProgress.next_group === "sources") sourceAudit = await readSources();
+        const uuidAudit = capture(() => {
+          if ((report.uuid_audits?.length ?? 0) > 0 && !config.tools?.tiangong_cli_root)
+            throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "tools.tiangong_cli_root is required to independently audit final UUIDs.", {origin:"harness_probe",failure_kind:"configuration",retryable:false});
+          return auditUuidsFn({ report, tiangongCliRoot: config.tools?.tiangong_cli_root, collect:true, phase, deadline,
+            startAfter:priorProgress.uuids?.start_after });
         });
-        const review = reviewFn({
-          projectRoot: config.project_root,
-          baselineCommit: authorContentBaseCommit,
-          worktreePath: task.worktree_path,
-          task: { ...task, goal_id: config.goal_id },
-          report,
-          stateDir,
-        });
-        if (!trialSemanticApproved(task, report.commit_sha)) {
+        const values = result => Array.isArray(result) ? result : result?.results ?? [];
+        const uuidReads = values(uuidAudit);
+        const receiptAudit = capture(() => auditHybridSearchFn({report,stateDir,task,verifiedUuidReads:uuidReads,collect:true,phase,deadline,
+          startAfter:priorProgress.receipts?.start_after}));
+        if (sourceAudit === undefined) sourceAudit = await readSources();
+        if (review.quality_context) review = completeAuthorReviewIdentity({review,task,report,verifiedUuidReads:uuidReads,phase,deadline});
+        const evidenceAudit = { uuid_reads:uuidReads, hybrid_search_receipts:values(receiptAudit), source_reads:values(sourceAudit) };
+        const enrichmentFindings = (task.uuid_enrichment_generation ?? 0) > 0
+          ? findUuidEnrichmentCandidates({tasks:[task]},{stateDir}).flatMap(f => f.reasons.map(reason => ({code:"GOAL_UUID_ENRICHMENT_INCOMPLETE",message:reason,origin:"harness_review",failure_kind:"author_claim"}))) : [];
+        const assessment = assessRequiredReview({phase,task,report,review,uuidAudit,receiptAudit,sourceAudit,
+          enrichment:{valid:enrichmentFindings.length===0,task_id:task.id,commit_sha:report.commit_sha,findings:enrichmentFindings}});
+        assessment.progress={next_group:priorProgress.next_group === "sources" ? "uuids" : "sources",uuids:uuidAudit?.progress??null,receipts:receiptAudit?.progress??null,sources:sourceAudit?.progress??null};
+        // The existing trial hold is reached only when all automatic checks have
+        // completed and the sole remaining requirement is its semantic decision.
+        if (!assessment.valid && assessment.findings.length > 0
+          && assessment.findings.every(f=>f.code === "GOAL_TRIAL_SEMANTIC_REVIEW_REQUIRED")
+          && assessment.checks.filter(c=>c.applicable!==false&&c.status!=="passed").every(c=>c.check_id==="semantic")) {
           task = observeTrialReview(task, { ok: true, at: now().toISOString(), durationMs: Date.now() - trialReviewStarted });
-          task = { ...task, validation_result: review, evidence_audit: evidenceAudit,
+          task = { ...task, validation_result: {...review,assessment}, evidence_audit: evidenceAudit,
             coordinator_hold: { reason: "GOAL_TRIAL_SEMANTIC_REVIEW_REQUIRED", commit_sha: report.commit_sha },
             trial_automatic_gates_passed_at: now().toISOString() };
           store.append({ event_id: `${reviewIdentity}-trial-semantic-review`, type: "task_replaced", payload: { task } });
           continue;
         }
+        if (!assessment.valid) {
+          const decision = selectRecovery(assessment.findings);
+          const primary = decision.findings.find(f => f.category === decision.category) ?? decision.findings[0];
+          throw new GoalHarnessError(primary?.code ?? "GOAL_AUTHOR_REVIEW_INCOMPLETE", "Final acceptance has failed or incomplete required checks.", {
+            ...primary?.details, ...assessment, review, evidence_audit:evidenceAudit,
+          });
+        }
+        review = {...review,assessment};
         task = applyTaskTransition(task, { transition_id: `${reviewIdentity}-valid`, to: "valid_result", at: new Date().toISOString() });
         task = {
           ...task,
@@ -668,7 +769,7 @@ export async function harvestGoalAuthors({
           pending_gate_findings: [],
         };
         if (task.recovery_incident?.status === "open") task = {...task,recovery_incident:{...task.recovery_incident,status:"closed",closed_at:now().toISOString(),closed_by:{turn_id:task.turn_id,commit:report.commit_sha,report_sha256:task.report_sha256}},recovery_source_turn_id:null};
-        if (task.evidence_recheck_pending) task = finishEvidenceRecheck(task, { status: "valid_result" }, now().toISOString());
+        if (task.evidence_recheck_pending || task.execution_recheck_pending) task = finishEvidenceRecheck(task, { status: "valid_result" }, now().toISOString());
         task = observeTrialReview(task, { ok: true, at: now().toISOString(), durationMs: Date.now() - trialReviewStarted });
         store.append({ event_id: `${reviewIdentity}-valid-result`, type: "task_replaced", payload: { task } });
         state = store.rebuild();
@@ -700,12 +801,14 @@ export async function harvestGoalAuthors({
         }
         const recovery = selectRecovery(error, {completeReport:task.report_complete === true});
         const findings = recovery.findings;
+        const primaryCode = findings.find(f => f.category === recovery.category)?.code ?? error.code;
         if (recovery.action === "manual_review") {
           task = applyTaskTransition(task, { transition_id: `${reviewIdentity}-measurement-review`, to: "manual_review", at: now().toISOString() });
           task = { ...task, measurement_review: {
             status: "unadjudicated", message: error.message, submission_path: task.submission_path,
-          }, pending_gate_findings: findings };
-          if (task.evidence_recheck_pending) task = finishEvidenceRecheck(task, { status: "manual_review" }, now().toISOString());
+          }, pending_gate_findings: findings, validation_result: error.details ?? null,
+            ...(error.details?.evidence_audit ? { evidence_audit:error.details.evidence_audit } : {}) };
+          if (task.evidence_recheck_pending || task.execution_recheck_pending) task = finishEvidenceRecheck(task, { status: "manual_review" }, now().toISOString());
           task = observeTrialReview(task, {ok:false,findings,at:now().toISOString(),durationMs:Date.now()-trialReviewStarted});
           store.append({ event_id: `${reviewIdentity}-measurement-review-recorded`, type: "task_replaced", payload: { task } });
           failures.push(task);
@@ -721,17 +824,18 @@ export async function harvestGoalAuthors({
         task = {
           ...task,
           failure_code: repairable ? "GOAL_AUTHOR_REPAIR_REQUIRED" : (recovery.action !== "repair"
-            ? error.code : ((task.repair_count ?? 0) >= repairLimit ? "GOAL_REPAIR_LIMIT_REACHED" : (error.code ?? "GOAL_AUTHOR_REVIEW_FAILED"))),
+            ? primaryCode : ((task.repair_count ?? 0) >= repairLimit ? "GOAL_REPAIR_LIMIT_REACHED" : (error.code ?? "GOAL_AUTHOR_REVIEW_FAILED"))),
           failure_message: error.message,
           failure_details: { ...error.details, findings },
           recovery_action: recovery.action,
-          coordinator_hold: recovery.action === "hold" ? {reason:error.code ?? "GOAL_UNKNOWN_FAILURE"} : task.coordinator_hold,
+          coordinator_hold: recovery.action === "hold" ? {reason:primaryCode ?? "GOAL_UNKNOWN_FAILURE"} : task.coordinator_hold,
           validation_result: error.details ?? null,
+          ...(error.details?.evidence_audit ? { evidence_audit:error.details.evidence_audit } : {}),
           pending_gate_findings: findings,
           repair_count: task.repair_count ?? 0,
           last_author_commit: report?.commit_sha ?? task.last_author_commit ?? null,
         };
-        if (task.evidence_recheck_pending) task = finishEvidenceRecheck(task, { status: task.state, failure_code: task.failure_code }, now().toISOString());
+        if (task.evidence_recheck_pending || task.execution_recheck_pending) task = finishEvidenceRecheck(task, { status: task.state, failure_code: task.failure_code }, now().toISOString());
         task = observeTrialReview(task, { ok: false, findings, at: now().toISOString(), durationMs: Date.now() - trialReviewStarted });
         store.append({ event_id: `${reviewIdentity}-invalid-result`, type: "task_replaced", payload: { task } });
         failures.push(task);
@@ -818,13 +922,16 @@ function finishLatestRepair(task, commit, endedAt) {
 }
 
 function finishEvidenceRecheck(task, outcome, endedAt) {
-  const history = [...(task.evidence_recheck_history ?? [])];
+  const prefix = task.execution_recheck_pending ? "execution_recheck" : "evidence_recheck";
+  const history = [...(task[`${prefix}_history`] ?? [])];
   if (history.length > 0) history[history.length - 1] = { ...history.at(-1), ended_at: endedAt, ...outcome };
-  return { ...task, evidence_recheck_pending: false, evidence_recheck_history: history };
+  return { ...task, [`${prefix}_pending`]: false, [`${prefix}_history`]: history };
 }
 
 export function isSavedEvidenceRecheckTask(task) {
-  return task?.state === 'retryable_failure' && recoveryForTask(task).action === 'recheck';
+  const recovery = recoveryForTask(task);
+  return task?.state === "retryable_failure" && (recovery.action === "recheck"
+    || (recovery.action === "defer" && task.report_complete === true));
 }
 
 function isCodexUsageLimitFailure(extracted) {

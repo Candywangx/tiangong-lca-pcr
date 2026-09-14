@@ -210,10 +210,10 @@ export class CodexAppServerAdapter {
     }
   }
 
-  async readThread({ threadId, includeTurns = true, expectedTurnId = null, worktreePath = null }) {
+  async readThread({ threadId, includeTurns = true, expectedTurnId = null, worktreePath = null, deadline = Infinity }) {
     try {
-      await this.connect();
-      const response = await this.request("thread/read", { threadId, includeTurns });
+      await this.connect({ deadline });
+      const response = await this.request("thread/read", { threadId, includeTurns }, { deadline });
       if (includeTurns && expectedTurnId && worktreePath && response.thread?.status?.type === "idle"
         && !response.thread.turns?.some((turn) => turn.id === expectedTurnId)) {
         if (response.thread.id !== threadId || response.thread.cwd !== worktreePath) {
@@ -239,32 +239,37 @@ export class CodexAppServerAdapter {
     }
   }
 
-  async connect() {
+  async connect({ deadline = Infinity } = {}) {
+    waitBudget(this.requestTimeoutMs, deadline, "connect");
     if (this.connected) {
       return this.initializeResult;
     }
-    if (!this.child && !this.socket) await this.startTransport();
+    if (!this.child && !this.socket) await this.startTransport({ deadline });
     const result = await this.request("initialize", {
       clientInfo: { name: "tiangong-pcr-goal-harness", title: "TianGong PCR Goal Harness", version: "1.0.0" },
       capabilities: { experimentalApi: true },
-    });
+    }, { deadline });
     this.notify("initialized", {});
     this.initializeResult = result;
     this.connected = true;
     return result;
   }
 
-  request(method, params) {
+  request(method, params, { timeoutMs = this.requestTimeoutMs, deadline = Infinity } = {}) {
+    const budget = waitBudget(timeoutMs, deadline, method, params?.threadId);
     if (!this.child && !this.socket) throw new Error("Codex app-server transport is not connected");
     const id = this.nextId;
     this.nextId += 1;
     return new Promise((resolve, reject) => {
       const timeout = setTimeout(() => {
         this.pending.delete(id);
-        reject(new Error(`Timed out waiting for ${method}`));
-      }, this.requestTimeoutMs);
+        // Cancel only this client wait. The durable author turn keeps running;
+        // a late response is ignored because its request id is no longer pending.
+        reject(budget.deadlineLimited ? reviewWindowError(method, params?.threadId) : new Error(`Timed out waiting for ${method}`));
+      }, budget.timeoutMs);
       this.pending.set(id, { resolve, reject, timeout, method });
-      this.write({ id, method, params });
+      try { this.write({ id, method, params }); }
+      catch (error) { clearTimeout(timeout); this.pending.delete(id); reject(error); }
     });
   }
 
@@ -286,15 +291,16 @@ export class CodexAppServerAdapter {
     this.connected = false;
   }
 
-  async startTransport() {
+  async startTransport({ deadline = Infinity } = {}) {
     if (this.endpoint) {
-      await this.startWebSocket();
+      await this.startWebSocket({ deadline });
     } else {
       this.startProcess();
     }
   }
 
-  async startWebSocket() {
+  async startWebSocket({ deadline = Infinity } = {}) {
+    const budget = waitBudget(this.requestTimeoutMs, deadline, "connect");
     let socket;
     try {
       socket = this.webSocketFactory(this.endpoint);
@@ -303,15 +309,25 @@ export class CodexAppServerAdapter {
     }
     this.socket = socket;
     await new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => reject(new Error(`Timed out connecting to ${this.endpoint}`)), this.requestTimeoutMs);
-      socket.addEventListener("open", () => {
+      const cleanup = () => {
         clearTimeout(timeout);
-        resolve();
-      }, { once: true });
-      socket.addEventListener("error", (event) => {
-        clearTimeout(timeout);
+        socket.removeEventListener?.("open", onOpen);
+        socket.removeEventListener?.("error", onError);
+      };
+      const onOpen = () => { cleanup(); resolve(); };
+      const onError = event => {
+        cleanup();
         reject(new Error(`WebSocket connection failed: ${event.message ?? "unknown error"}`));
-      }, { once: true });
+      };
+      const timeout = setTimeout(() => {
+        cleanup();
+        if (this.socket === socket) this.socket = null;
+        this.connected = false;
+        reject(budget.deadlineLimited ? reviewWindowError("connect") : new Error(`Timed out connecting to ${this.endpoint}`));
+        socket.close();
+      }, budget.timeoutMs);
+      socket.addEventListener("open", onOpen, { once: true });
+      socket.addEventListener("error", onError, { once: true });
     });
     socket.addEventListener("message", (event) => this.handleLine(String(event.data)));
     socket.addEventListener("error", (event) => this.rejectPending(new Error(`Codex app-server WebSocket error: ${event.message ?? "unknown error"}`)));
@@ -443,3 +459,16 @@ function compact(value) {
 
 function syncPath(file) {const fd=openSync(file,'r');try {fsyncSync(fd);} finally {closeSync(fd);}}
 function startUncertain(message) {return new GoalHarnessError('GOAL_AUTHOR_START_UNCERTAIN',message,{phase:'author_start',origin:'app_server',failure_kind:'unknown',retryable:false});}
+
+function reviewWindowError(operation, subjectId) {
+  return new GoalHarnessError("GOAL_REVIEW_WINDOW_EXHAUSTED", "The current review execution window is exhausted.", {
+    phase: "harvest", origin: "harness_deadline", failure_kind: "execution_window", retryable: false,
+    operation, ...(subjectId ? { subject_id: subjectId } : {}),
+  });
+}
+
+function waitBudget(timeoutMs, deadline, operation, subjectId) {
+  const remaining = deadline - Date.now();
+  if (!(remaining > 0)) throw reviewWindowError(operation, subjectId);
+  return { timeoutMs: Math.min(timeoutMs, remaining), deadlineLimited: remaining <= timeoutMs };
+}

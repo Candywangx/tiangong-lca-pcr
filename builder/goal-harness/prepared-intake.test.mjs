@@ -6,9 +6,10 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
 
+import { passingReview } from "./fixtures/review-results.mjs";
 import { GoalEventStore } from "./event-store.mjs";
 import { dispatchGoalAuthors, harvestGoalAuthors } from "./orchestrator.mjs";
-import { prepareAuthorReport, resolvePreparedReport } from "./report-preparation.mjs";
+import { prepareAuthorReport, resolvePreparedReport, resolvePreparationFailure } from "./report-preparation.mjs";
 import { resolveAuthorSubmission } from "./author-submission.mjs";
 import { runHybridSearchWithReceipt, recordHybridCandidateDirectRead, finalizeHybridSearchReceipt } from "./uuid-search-receipts.mjs";
 import { flattenProcessInventory } from "./author-gates.mjs";
@@ -21,7 +22,7 @@ const candidate = evidence.findings[0];
 const git = (cwd, args) => execFileSync("git", args, { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
 // This stub isolates the submission transport from PCR content quality. Tests below
 // also exercise the default reviewer to show that the author's booleans cannot bypass it.
-const reviewed = () => ({ valid: true, builder: { measurement: { status: "pass", coverage: { complete: true } } }, sync: { first_run_clean: true, second_run_clean: true } });
+const reviewed = passingReview;
 
 function fixture(t, { repair = false, conflictingMaterial = false, materialTransform = null } = {}) {
   const root = mkdtempSync(path.join(tmpdir(), "pcr-prepared-intake-"));
@@ -104,11 +105,99 @@ function submission(f) {
   return { schema_version: 2, prepared_report: prepareAuthorReport(f.options), boundary_review_report: null, failure: null };
 }
 
+test("partial sealed receipt success does not prevent reading a preparation failure", t => {
+  const f = fixture(t);
+  sealRejectedCandidate(f);
+  f.draft.receipt_ids.push("missing-second-receipt");
+  writeFileSync(f.draftPath, JSON.stringify(f.draft));
+  assert.throws(() => prepareAuthorReport(f.options), error => Boolean(error.details?.preparation_failure_id));
+  const loaded = resolvePreparationFailure({stateDir:f.stateDir,task:f.task});
+  assert.deepEqual(loaded.manifest.receipt_bindings.map(r=>r.receipt_id), ["receipt-44125"]);
+  assert.ok(loaded.failure.details.findings.length > 0);
+});
+
 function completedAdapter(task, wire) {
   return { async readThread() {
     return { thread: { turns: [{ id: task.turn_id, status: "completed", items: [{ type: "agentMessage", text: JSON.stringify(wire) }] }] } };
   } };
 }
+
+for (const returned of [{ valid: false, findings: [{ code: "GOAL_AUTHOR_PCR_INVALID", message: "Explicitly failed." }] },
+  { valid: true, checks: [], findings: [] }, { valid: true, checks: [{ check_id: "quality", status: "skipped" }], findings: [] }]) {
+  test(`returned incomplete harvest review cannot enter pool or publish shared evidence: ${JSON.stringify(returned)}`, async t => {
+    const f = fixture(t);
+    const wire = submission(f);
+    const result = await harvestGoalAuthors({ ...f, adapter: completedAdapter(f.task, wire), reviewFn: () => returned,
+      verifySourcesFn: async () => [] });
+    assert.equal(result.valid_results.length, 0);
+    assert.equal(result.snapshot, null);
+    assert.notEqual(result.state.tasks[0].state, "valid_result");
+    assert.equal(f.store.readEvents().some(e => e.type === "verified_common_uuids_updated"), false);
+    assert.equal(f.store.readEvents().some(e => e.type === "snapshot_created"), false);
+  });
+}
+
+test("harvest uses independently bound preparation failure and preserves content budgets", async t => {
+  const f = fixture(t);
+  assert.throws(() => prepareAuthorReport({ ...f.options, auditUuidsFn() {
+    const error = new Error("Recorded public read transport failure.");
+    error.code = "GOAL_UUID_DIRECT_READ_FAILED";
+    error.details = { phase: "preparation", origin: "tool_transport", failure_kind: "network", retryable: true, subject_id: "test-uuid" };
+    throw error;
+  } }));
+  const wire = { schema_version: 2, prepared_report: null, boundary_review_report: null,
+    failure: { code: "GOAL_AUTHOR_PREFLIGHT_FAILED", message: "See the preparation output." } };
+  const result = await harvestGoalAuthors({ ...f, adapter: completedAdapter(f.task, wire), reviewFn: () => { throw new Error("No ready report exists."); } });
+  const failed = result.state.tasks[0];
+  assert.equal(result.valid_results.length, 0);
+  assert.equal(result.snapshot, null);
+  assert.equal(failed.repair_count, f.task.repair_count);
+  assert.equal(failed.attempt, f.task.attempt);
+  assert.equal(failed.recovery?.action ?? failed.recovery_action, "resume");
+  assert.equal(failed.coordinator_hold ?? null, null);
+});
+
+test("a completed report interrupted by the review window is rechecked without an author or infrastructure budget", async t => {
+  const f = fixture(t), wire = submission(f);
+  const first = await harvestGoalAuthors({...f,adapter:completedAdapter(f.task,wire),reviewFn:reviewed,auditUuidsFn:()=>{
+    throw Object.assign(new Error("Execution window expired."),{code:"GOAL_REVIEW_WINDOW_EXHAUSTED",details:{
+      phase:"harvest",origin:"harness_deadline",failure_kind:"execution_window",retryable:false,
+    }});
+  },verifySourcesFn:async()=>[]});
+  assert.equal(first.valid_results.length,0);
+  const preview=await dispatchGoalAuthors({...f,dryRun:true,slots:1,adapter:{}});
+  assert.deepEqual(preview.would_dispatch,[]);
+  const next=await harvestGoalAuthors({...f,adapter:{},reviewFn:reviewed,verifySourcesFn:async()=>[]});
+  assert.equal(next.valid_results.length,1);
+  const task=next.state.tasks[0];
+  assert.equal(task.execution_recheck_count,1);
+  assert.equal(task.evidence_recheck_count??0,0);
+  assert.equal(task.infrastructure_resume_count??0,0);
+  assert.equal(task.repair_count,0);
+  assert.equal(task.attempt,1);
+  assert.equal(task.turn_id,f.task.turn_id);
+});
+
+test("in-progress observations obey one harvest window and rotate without restarting authors", async t => {
+  const f=fixture(t), stateDir=path.join(f.stateDir,"observations");
+  const store=new GoalEventStore({stateDir});
+  const tasks=[0,1,2].map(i=>({...f.task,id:`observation-${i}`,thread_id:`thread-${i}`}));
+  store.initialize({...f.store.rebuild(),tasks,last_event_sequence:0});
+  let clock=Date.now(); t.mock.method(Date,"now",()=>clock);
+  const seen=[];
+  const adapter={async readThread({threadId,deadline}) {
+    assert.ok(Number.isFinite(deadline)); seen.push(threadId);
+    clock=deadline;
+    return {thread:{turns:[{id:f.task.turn_id,status:"inProgress",items:[]}]}};
+  }};
+  await harvestGoalAuthors({...f,stateDir,adapter,reviewBudgetMs:30});
+  assert.deepEqual(seen,["thread-0"]);
+  await harvestGoalAuthors({...f,stateDir,adapter,reviewBudgetMs:30});
+  assert.deepEqual(seen,["thread-0","thread-1"]);
+  for(const task of store.rebuild().tasks) {
+    assert.equal(task.state,"authoring");assert.equal(task.repair_count,0);assert.equal(task.attempt,1);
+  }
+});
 
 function makeMeasurementExplicit(directory) {
   for (const language of ["en-US", "zh-CN"]) {
@@ -160,6 +249,10 @@ function populateMaterialReport(f) {
     uuid: row.uuid, state_code: 100, base_name_en: row.name, base_name_zh: localized.get(row.row_id).name,
     flow_type: row.flow_type, classifications: [], property: row.property_unit.split("/")[0].trim(),
     response_sha256: `sha256:${"a".repeat(64)}`,
+    flow_property_uuid: "22222222-2222-4222-8222-222222222222", flow_property_state_code:100,
+    flow_property_name_en: row.property_unit.split("/")[0].trim(),
+    unit_group_uuid: "33333333-3333-4333-8333-333333333333", unit_group_state_code:100,
+    unit_group_name_en:"Synthetic fixture units", unit_group_name_zh:"测试单位", reference_unit:"fixture-unit",
   }));
   for (const actual of reads) recordHybridCandidateDirectRead({
     stateDir: f.stateDir, taskId: f.task.id, cwd: f.root, receiptId, uuid: actual.uuid,
@@ -179,6 +272,10 @@ function populateMaterialReport(f) {
   }));
   const manifest = parseYaml(readFileSync(path.join(directory, "manifest.yaml"), "utf8"));
   const unresolved = manifest.review_metadata.unresolved.inventory_flow_uuids.map(row => ({ ...row, hybrid_search_receipt_ids: ["receipt-44125"] }));
+  f.draft.sources = parsePcrMarkdownToStructured(readFileSync(path.join(directory,"pcr.en-US.md"),"utf8")).dataSources.map(source=>({
+    source_id:source.id,name:source.reference,locator:source.reference.match(/https?:\/\/\S+/u)[0],original_text_verified:true,
+    supports:[source.used_for],independence_key:source.id,discovery_only:false,
+  }));
   f.draft.inventory = { total_rows: english.length, matched_rows: english.filter(row => row.uuid).length, unresolved_rows: unresolved.length, unresolved };
   f.draft.bilingual = { aligned: true, en_inventory_rows: english.length, zh_inventory_rows: chinese.length };
   writeFileSync(f.draftPath, JSON.stringify(f.draft));
@@ -211,7 +308,7 @@ test("sealed decisions are assembled once and normal intake preserves the origin
   let reviews = 0;
   const first = await harvestGoalAuthors({
     ...f, adapter: completedAdapter(f.task, wire), verifySourcesFn: async () => [],
-    reviewFn: () => { reviews += 1; return reviewed(); },
+    reviewFn: input => { reviews += 1; return reviewed(input); },
   });
   assert.equal(first.valid_results.length, 1);
   assert.equal(first.state.tasks[0].author_commit, f.commit);
@@ -284,7 +381,7 @@ test("default preparation inspection rejects the real 44125 measurement conflict
   assert.equal(f.draft.validate.ok, true);
   assert.throws(() => prepareAuthorReport(actualOptions), error => {
     assert.equal(error.code, "GOAL_AUTHOR_PCR_INVALID");
-    assert.match(error.details.problems.join("\n"), /MEASUREMENT_/);
+    assert.match(error.details.review.builder.problems.join("\n"), /MEASUREMENT_/);
     return true;
   });
   assert.equal(f.store.readEvents().filter(event => event.type === "author_report_prepared").length, 0);
@@ -375,7 +472,9 @@ test("a material PCR passes default preparation, both actual syncs, and independ
   sealRejectedCandidate(f);
   const reads = populateMaterialReport(f);
   const { reviewFn, ...options } = f.options;
-  const prepared = prepareAuthorReport({ ...options, auditUuidsFn: () => reads });
+  let prepared;
+  try { prepared = prepareAuthorReport({ ...options, auditUuidsFn: () => reads }); }
+  catch (error) { assert.fail(JSON.stringify(error.details?.findings ?? error.message, null, 2)); }
   const loaded = resolvePreparedReport({ stateDir: f.stateDir, task: f.task, submission: prepared });
   assert.equal(loaded.manifest.checks.measurement.status, "pass");
   assert.equal(loaded.manifest.checks.measurement.coverage.complete, true);
@@ -387,7 +486,9 @@ test("a material PCR passes default preparation, both actual syncs, and independ
   const wire = { schema_version: 2, prepared_report: prepared, boundary_review_report: null, failure: null };
   const result = await harvestGoalAuthors({
     ...f, config: { ...f.config, tools: { tiangong_cli_root: "/unused-local-test-tool" } },
-    adapter: completedAdapter(f.task, wire), auditUuidsFn: () => reads, verifySourcesFn: async () => [],
+    adapter: completedAdapter(f.task, wire), auditUuidsFn: () => reads, verifySourcesFn: async ({report}) => report.sources.map(source=>({
+      source_id:source.source_id,locator:source.locator,original_identity_verified:true,content_sha256:`sha256:${"b".repeat(64)}`,content_byte_length:100,
+    })),
   });
   assert.equal(result.valid_results.length, 1);
   assert.equal(result.state.tasks[0].author_commit, f.commit);
@@ -396,7 +497,7 @@ test("a material PCR passes default preparation, both actual syncs, and independ
   assert.equal(result.state.tasks[0].validation_result.sync.second_run_clean, true);
 });
 
-for (const stale of [false, true]) test(`default preparation routes unsupported measurement to review only when no hard error exists (stale=${stale})`, t => {
+for (const stale of [false, true]) test(`default preparation preserves measurement review alongside independent content failures (stale=${stale})`, t => {
   const f = fixture(t, { conflictingMaterial: true, materialTransform(directory) {
     makeMeasurementExplicit(directory);
     for (const language of ["en-US", "zh-CN"]) {
@@ -416,8 +517,9 @@ for (const stale of [false, true]) test(`default preparation routes unsupported 
   assert.equal(inspection.problems.length > inspection.measurement.findings.length, stale);
   const { reviewFn, ...options } = f.options;
   assert.throws(() => prepareAuthorReport({ ...options, auditUuidsFn: () => reads }), error => {
-    assert.equal(error.code, stale ? "GOAL_AUTHOR_PCR_INVALID" : "GOAL_MEASUREMENT_REVIEW_REQUIRED");
-    assert.equal(error.details.measurement.status, "manual_review");
+    assert.equal(error.code, "GOAL_MEASUREMENT_REVIEW_REQUIRED");
+    if (stale) assert.ok(error.details.findings.some(f=>f.code === "GOAL_AUTHOR_PCR_INVALID"));
+    assert.equal(error.details.review.builder.measurement.status, "manual_review");
     return true;
   });
   assert.equal(f.store.readEvents().filter(event => event.type === "author_report_prepared").length, 0);
@@ -430,11 +532,11 @@ test("contract 2 evidence retries reuse the saved report without author replacem
   sealRejectedCandidate(f);
   const wire = submission(f);
   const unavailable = () => { throw Object.assign(new Error("Temporary UUID outage"), {code:"GOAL_UUID_DIRECT_READ_FAILED",details:{origin:"tool_transport",failure_kind:"network",retryable:true}}); };
-  const first = await harvestGoalAuthors({...f, adapter:completedAdapter(f.task,wire), auditUuidsFn:unavailable});
+  const first = await harvestGoalAuthors({...f, adapter:completedAdapter(f.task,wire), reviewFn:reviewed, auditUuidsFn:unavailable});
   assert.equal(first.state.tasks[0].state,"retryable_failure");
   const preview = await dispatchGoalAuthors({...f,slots:1,resumeStopped:true,dryRun:true,adapter:{}});
   assert.deepEqual(preview.would_dispatch,[]);
-  const second = await harvestGoalAuthors({...f,adapter:{},auditUuidsFn:unavailable});
+  const second = await harvestGoalAuthors({...f,adapter:{},reviewFn:reviewed,auditUuidsFn:unavailable});
   assert.equal(second.state.tasks[0].evidence_recheck_count,1);
   assert.equal(second.state.tasks[0].repair_count,0);
   assert.equal(second.state.tasks[0].failure_code,"GOAL_UUID_DIRECT_READ_FAILED");
@@ -460,14 +562,61 @@ for (const outcome of ["manual_review", "repair_requested"]) test(`evidence rech
   const f=fixture(t);
   sealRejectedCandidate(f);
   const wire=submission(f);
-  await harvestGoalAuthors({...f,adapter:completedAdapter(f.task,wire),auditUuidsFn:()=>{throw Object.assign(new Error("Temporary outage"),{code:"GOAL_UUID_DIRECT_READ_FAILED",details:{origin:"tool_transport",failure_kind:"network",retryable:true}});}});
-  // The placeholder PCR is genuinely invalid: use the default independent
-  // reviewer for a content repair; never represent hash tampering as repairable.
-  const result=await harvestGoalAuthors({...f,adapter:{},verifySourcesFn:async()=>[],reviewFn:outcome === "repair_requested" ? undefined : ()=>{throw Object.assign(new Error("Unresolved measurement"),{code:"GOAL_MEASUREMENT_REVIEW_REQUIRED"});}});
+  await harvestGoalAuthors({...f,adapter:completedAdapter(f.task,wire),reviewFn:reviewed,auditUuidsFn:()=>{throw Object.assign(new Error("Temporary outage"),{code:"GOAL_UUID_DIRECT_READ_FAILED",details:{origin:"tool_transport",failure_kind:"network",retryable:true}});}});
+  // Isolate recovery routing with a complete local check proof and a genuine
+  // content finding; measurement remains its separate manual outcome.
+  const result=await harvestGoalAuthors({...f,adapter:{},verifySourcesFn:async()=>[],reviewFn:outcome === "repair_requested" ? options=>{
+    const review=reviewed(options), finding={code:"GOAL_AUTHOR_PCR_INVALID",message:"Missing inventory coverage",details:{origin:"harness_review",failure_kind:"author_claim"}};
+    review.valid=false; review.findings=[finding]; review.quality={valid:false,findings:[finding]};
+    review.checks.find(check=>check.check_id==="quality").status="failed";
+    return review;
+  } : ()=>{throw Object.assign(new Error("Unresolved measurement"),{code:"GOAL_MEASUREMENT_REVIEW_REQUIRED"});}});
   const task=result.state.tasks[0];
   assert.equal(task.state,outcome);
   assert.equal(task.evidence_recheck_pending,false);
   assert.equal(task.evidence_recheck_history.at(-1).status,outcome);
   assert.ok(task.evidence_recheck_history.at(-1).ended_at);
   assert.equal(task.repair_count,0);
+});
+
+test('saved review progress gives sources a turn after UUID exhausts the window', async t => {
+  const f=fixture(t,{conflictingMaterial:true,materialTransform:makeMeasurementExplicit});
+  sealRejectedCandidate(f);
+  const reads=populateMaterialReport(f);
+  const wire={schema_version:2,prepared_report:prepareAuthorReport({...f.options,auditUuidsFn:()=>reads}),boundary_review_report:null,failure:null};
+  let clock=Date.now(), slow=true, sourceFetches=0;
+  t.mock.method(Date,'now',()=>clock);
+  const {verifySourceLocators}=await import('./evidence-audit.mjs');
+  const options={...f,config:{...f.config,tools:{tiangong_cli_root:'/unused-test'}},adapter:completedAdapter(f.task,wire),reviewFn:reviewed,reviewBudgetMs:50,
+    auditUuidsFn({report,phase,deadline}) {
+      if(!slow) return reads;
+      clock=deadline;
+      const checks=report.uuid_audits.map(a=>({phase,check_id:'uuid_public_read',subject_id:a.uuid,status:'skipped',applicable:true,reason:'execution_window',findings:[{code:'GOAL_REVIEW_WINDOW_EXHAUSTED',details:{phase,subject_id:a.uuid,origin:'harness_deadline',failure_kind:'execution_window',retryable:false}}]}));
+      return {valid:false,results:[],checks,findings:checks.flatMap(c=>c.findings),progress:{next_subject:report.uuid_audits[0].uuid,start_after:report.uuid_audits[0].uuid}};
+    },
+    verifySourcesFn:args=>verifySourceLocators({...args,fetchImpl:async()=>{sourceFetches++;return new Response(args.report.sources.map(s=>s.name).join('\n'),{status:200});}})
+  };
+  const first=await harvestGoalAuthors(options);
+  assert.equal(first.valid_results.length,0); assert.equal(sourceFetches,0);
+  const second=await harvestGoalAuthors({...options,adapter:{}});
+  assert.ok(sourceFetches>0,'independent sources must receive execution on the next window');
+  assert.equal(second.valid_results.length,0); assert.equal(second.snapshot,null);
+  assert.equal(f.store.readEvents().some(e=>e.type==='verified_common_uuids_updated'),false);
+  slow=false;
+  const third=await harvestGoalAuthors({...options,adapter:{}});
+  assert.equal(third.valid_results.length,1);
+});
+
+for(const limit of [1,5]) test(`saved report window recovery stops at its independent configured limit ${limit}`,async t=>{
+  const f=fixture(t),wire=submission(f);f.config.retry_policy={max_attempts:limit,max_repairs:2};let audits=0;
+  const options={...f,reviewFn:reviewed,verifySourcesFn:async()=>[],auditUuidsFn:()=>{
+    audits++;throw Object.assign(new Error('Window expired'),{code:'GOAL_REVIEW_WINDOW_EXHAUSTED',details:{origin:'harness_deadline',failure_kind:'execution_window',retryable:false}});
+  }};
+  await harvestGoalAuthors({...options,adapter:completedAdapter(f.task,wire)});
+  for(let i=0;i<limit;i++)await harvestGoalAuthors({...options,adapter:{}});
+  const before=audits,result=await harvestGoalAuthors({...options,adapter:{}}),held=result.state.tasks[0];
+  assert.equal(audits,before);assert.equal(held.coordinator_hold.reason,'GOAL_EXECUTION_RECOVERY_LIMIT_REACHED');
+  assert.equal(held.execution_recheck_count,limit);assert.equal(held.repair_count,0);assert.equal(held.evidence_recheck_count??0,0);
+  assert.equal(held.infrastructure_resume_count??0,0);assert.equal(held.turn_id,f.task.turn_id);
+  assert.deepEqual(result.valid_results,[]);assert.equal(result.snapshot,null);
 });

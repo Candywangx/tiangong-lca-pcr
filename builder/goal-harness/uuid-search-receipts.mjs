@@ -15,7 +15,8 @@ import { GoalEventStore } from "./event-store.mjs";
 import { GoalHarnessError } from "./errors.mjs";
 import { readArtifact } from "./artifact-io.mjs";
 import { receiptRequiresSeal, sealReceipt, verifyReceiptSeal } from "./receipt-integrity.mjs";
-import { readPublicUuidAudit } from "./evidence-audit.mjs";
+import { readPublicUuidAudit, collectEvidenceItems, evidenceFailureFindings } from "./evidence-audit.mjs";
+import { reviewTimeRemaining } from "./review-assessment.mjs";
 import { appendGoalCacheReceipt, listGoalCacheReceipts } from "./goal-cache.mjs";
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
@@ -104,6 +105,7 @@ export function runHybridSearchWithReceipt({
   } catch {
     throw new GoalHarnessError("GOAL_HYBRID_SEARCH_RESULT_INVALID", "Authenticated hybrid search did not return JSON.", { receipt_id: receiptId });
   }
+  assertHybridResult(parsed, receiptId);
   writeExclusive(resultPath, stdout);
   const receipt = {
     schema_version: 1,
@@ -223,7 +225,35 @@ export function finalizeHybridSearchReceipt({ stateDir, taskId, receiptId, decis
   return document;
 }
 
-export function loadReportReceiptEvidence({ report, stateDir, task }) {
+export function loadReportReceiptEvidence({ report, stateDir, task,
+  collect = false, phase = "harvest", deadline = Infinity, now = Date.now, startAfter = null, onReceipt = null }) {
+  if (collect) {
+    const ids = [...new Set([...(report.hybrid_search_receipt_ids ?? []),
+      ...(report.uuid_audits ?? []).map(a => a.hybrid_search_receipt_id),
+      ...(report.rejected_uuid_candidates ?? []).map(a => a.receipt_id),
+      ...(report.inventory?.unresolved ?? []).flatMap(a => a.hybrid_search_receipt_ids ?? [])].filter(Boolean))];
+    const missing = [
+      ...(report.uuid_audits ?? []).filter(a => !a.hybrid_search_receipt_id).map(a => ({ missing: `UUID ${a.uuid} has no receipt.`, id: `missing:${a.uuid}` })),
+      ...(report.rejected_uuid_candidates ?? []).filter(a => !a.receipt_id).map(a => ({ missing: `Rejected UUID ${a.uuid} has no receipt.`, id: `missing:${a.uuid}` })),
+      ...(report.inventory?.unresolved ?? []).filter(a => ["no_exact_candidate", "manual_review_required"].includes(a.reason_code) && !(a.hybrid_search_receipt_ids?.length)).map(a => ({ missing: `Unresolved row ${a.row_id} has no receipt.`, id: `missing:${a.row_id}` })),
+    ];
+    return collectEvidenceItems({ items: [...ids.map(id => ({ id })), ...missing], subject: item => item.id,
+      checkId: "receipt_integrity", phase, deadline, now, startAfter,
+      run: item => {
+        if (item.missing) throw receiptMissing(item.missing);
+        const findings = [];
+        if (!(report.hybrid_search_receipt_ids ?? []).includes(item.id)) {
+          findings.push(...evidenceFailureFindings(receiptMissing(`Referenced receipt ${item.id} is absent from hybrid_search_receipt_ids.`), { phase, subjectId: item.id }));
+        }
+        let audit;
+        try { audit = auditReportReceipt({ report, stateDir, task, receiptId: item.id }); }
+        catch (error) { findings.push(...evidenceFailureFindings(error, { phase, subjectId: item.id })); }
+        if (findings.length) throw new GoalHarnessError(findings[0].code, `Receipt ${item.id} has ${findings.length} independent finding(s).`, { findings });
+        reviewTimeRemaining(deadline, { now, phase, subjectId: item.id });
+        onReceipt?.(audit);
+        return [audit];
+      } });
+  }
   const ids = report.hybrid_search_receipt_ids ?? [];
   const referenced = new Set(ids);
   for (const audit of report.uuid_audits ?? []) {
@@ -258,20 +288,20 @@ export function loadReportReceiptEvidence({ report, stateDir, task }) {
       { findings },
     );
   }
-  const taskBoundReceiptIds = new Set([
-    ...(report.inventory?.unresolved ?? []).flatMap((entry) => entry.hybrid_search_receipt_ids ?? []),
-  ]);
-  const adoptedByReceipt = new Map();
-  for (const claimed of report.uuid_audits ?? []) {
-    const entries = adoptedByReceipt.get(claimed.hybrid_search_receipt_id) ?? [];
-    entries.push(claimed);
-    adoptedByReceipt.set(claimed.hybrid_search_receipt_id, entries);
-  }
-  const audits = ids.map((receiptId) => {
+  return ids.map(receiptId => {
+    reviewTimeRemaining(deadline, {now,phase,subjectId:receiptId});
+    const result = auditReportReceipt({ report, stateDir, task, receiptId });
+    reviewTimeRemaining(deadline, {now,phase,subjectId:receiptId});
+    return result;
+  });
+}
+
+function auditReportReceipt({ report, stateDir, task, receiptId }) {
+  const taskBoundReceiptIds = new Set((report.inventory?.unresolved ?? []).flatMap(entry => entry.hybrid_search_receipt_ids ?? []));
     try {
       return auditOneReceipt({ stateDir, task, receiptId });
     } catch (error) {
-      const adopted = adoptedByReceipt.get(receiptId) ?? [];
+      const adopted = (report.uuid_audits ?? []).filter(entry => entry.hybrid_search_receipt_id === receiptId);
       if (error.code !== "GOAL_HYBRID_SEARCH_RECEIPT_MISSING") throw error;
       const paths = findCompleteReceiptPaths({ stateDir, receiptId });
       try {
@@ -289,11 +319,11 @@ export function loadReportReceiptEvidence({ report, stateDir, task }) {
       const audited = auditOneReceipt({ stateDir, task, receiptId, paths, allowGoalCacheReuse: true });
       return { ...audited, scope: "goal_cache_reuse", source_task_id: audited.task_id };
     }
-  });
-  return audits;
 }
 
-export function auditHybridSearchReceipts({ report, stateDir, task, verifiedUuidReads = [] }) {
+export function auditHybridSearchReceipts({ report, stateDir, task, verifiedUuidReads = [],
+  collect = false, verifyAdoption = true, phase = "harvest", deadline = Infinity, now = Date.now, startAfter = null }) {
+  if (collect) return collectHybridReceiptAudit({ report, stateDir, task, verifiedUuidReads, verifyAdoption, phase, deadline, now, startAfter });
   const audits = loadReportReceiptEvidence({report,stateDir,task});
   const byId = new Map(audits.map((entry) => [entry.receipt_id, entry]));
   for (const claimed of report.uuid_audits ?? []) {
@@ -378,6 +408,7 @@ function auditOneReceipt({ stateDir, task, receiptId, paths = null, allowGoalCac
   }
   let parsed;
   try { parsed = JSON.parse(raw); } catch { throw new GoalHarnessError("GOAL_HYBRID_SEARCH_RECEIPT_HASH_MISMATCH", `Receipt ${receiptId} result is not JSON.`); }
+  assertHybridResult(parsed, receiptId);
   const candidates = collectCandidateUuids(parsed);
   if (!sameStrings(candidates, receipt.candidate_uuids ?? [])) {
     throw new GoalHarnessError("GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH", `Receipt ${receiptId} candidate UUID projection is stale.`, { phase:"receipt_audit", origin:"receipt_verifier", failure_kind:"receipt_integrity", subject_id:receiptId });
@@ -441,7 +472,7 @@ function defaultHybridSearchRunner({ requestPath, toolConfig }) {
     cwd: hybridRoot,
     encoding: "utf8",
     stdio: ["ignore", "pipe", "pipe"],
-    timeout: 120_000,
+    timeout: 30_000, killSignal: "SIGKILL",
     maxBuffer: 64 * 1024 * 1024,
   });
 }
@@ -601,3 +632,87 @@ function stableJson(value) {
 function receiptMissing(message) { return new GoalHarnessError("GOAL_HYBRID_SEARCH_RECEIPT_MISSING", message); }
 
 function readReceiptArtifact(file,task,root=null) { return receiptRequiresSeal(task) ? readArtifact(file,{root,maxBytes:64*1024*1024}) : readFileSync(file); }
+
+
+function collectHybridReceiptAudit({ report, stateDir, task, verifiedUuidReads, verifyAdoption, phase, deadline, now, startAfter }) {
+  const extraChecks = [], findings = [], receiptOverrides = new Map(), seenAdoptions = new Set();
+  const claims = report.uuid_audits ?? [];
+  const adoptionId = claimed => `${claimed.hybrid_search_receipt_id}:${String(claimed.uuid).toLowerCase()}`;
+  const receiptIds = [...new Set([...(report.hybrid_search_receipt_ids ?? []), ...claims.map(a => a.hybrid_search_receipt_id),
+    ...(report.rejected_uuid_candidates ?? []).map(a => a.receipt_id), ...(report.inventory?.unresolved ?? []).flatMap(a => a.hybrid_search_receipt_ids ?? [])].filter(Boolean))];
+  const resumedClaim = claims.find(claimed => adoptionId(claimed) === startAfter);
+  const resumedIndex = resumedClaim ? receiptIds.indexOf(resumedClaim.hybrid_search_receipt_id) : -1;
+  const receiptStartAfter = resumedIndex >= 0 ? receiptIds[(resumedIndex + receiptIds.length - 1) % receiptIds.length] : startAfter;
+  let lastAdoption = startAfter, nextAdoption = null;
+  const recordFailure = (check, error) => {
+    const found = evidenceFailureFindings(error, { phase, subjectId: check.subject_id });
+    const exhausted = found.some(f => f.details.failure_kind === "execution_window");
+    check.status = exhausted ? "skipped" : "failed";
+    if (exhausted) check.reason = "execution_window";
+    check.findings = [...(check.findings ?? []), ...found]; findings.push(...found);
+  };
+  const local = loadReportReceiptEvidence({ report, stateDir, task, collect: true, phase, deadline, now, startAfter: receiptStartAfter,
+    onReceipt(receipt) {
+      const localCheck = { phase, check_id: "receipt_integrity", subject_id: receipt.receipt_id, applicable: true, status: "passed" };
+      for (const claimed of (report.rejected_uuid_candidates ?? []).filter(a => a.receipt_id === receipt.receipt_id)) {
+        try {
+          reviewTimeRemaining(deadline, { now, phase, subjectId: receipt.receipt_id });
+          const decision = receipt.candidate_decisions.find(entry => entry.uuid === claimed.uuid.toLowerCase());
+          if (decision?.decision !== "rejected" || decision.reason_code !== claimed.reason_code || decision.reason !== claimed.reason) {
+            throw new GoalHarnessError("GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH", `Rejected candidate ${claimed.uuid} disagrees with receipt ${claimed.receipt_id}.`,
+              { origin: "harness_review", failure_kind: "author_claim", retryable: false, receipt_id: claimed.receipt_id, uuid: claimed.uuid,
+                expected: decision ? { decision: decision.decision, reason_code: decision.reason_code, reason: decision.reason } : null,
+                claimed: { decision: "rejected", reason_code: claimed.reason_code, reason: claimed.reason } });
+          }
+        } catch (error) { recordFailure(localCheck, error); }
+      }
+      if (localCheck.status !== "passed") receiptOverrides.set(receipt.receipt_id, localCheck);
+      const receiptClaims = claims.filter(a => a.hybrid_search_receipt_id === receipt.receipt_id);
+      const after = receiptClaims.findIndex(a => adoptionId(a) === startAfter);
+      const ordered = after >= 0 ? [...receiptClaims.slice(after + 1), ...receiptClaims.slice(0, after + 1)] : receiptClaims;
+      for (const claimed of ordered) {
+        const subjectId = adoptionId(claimed);
+        const check = { phase, check_id: "receipt_adoption", subject_id: subjectId, applicable: true, status: "passed" };
+        seenAdoptions.add(claimed); extraChecks.push(check);
+        try {
+          reviewTimeRemaining(deadline, { now, phase, subjectId });
+          lastAdoption = subjectId;
+          const decision = receipt.candidate_decisions.find(entry => entry.uuid === claimed.uuid.toLowerCase());
+          if (decision?.decision !== "adopted") throw receiptMissing(`UUID ${claimed.uuid} is not adopted by receipt ${claimed.hybrid_search_receipt_id}.`);
+          if (!verifyAdoption) { check.status = "skipped"; check.applicable = false; check.reason = "online_check_not_requested"; continue; }
+          const verified = verifiedUuidReads.find(entry => entry.uuid === claimed.uuid.toLowerCase());
+          if (!verified) {
+            check.status = "skipped"; check.reason = "dependency_unavailable";
+            check.depends_on = [{ phase, check_id: "uuid_public_read", subject_id: claimed.uuid.toLowerCase() }];
+            continue;
+          }
+          if (verified.valid === false || !directReadMatches(decision.direct_read, verified)) {
+            throw new GoalHarnessError("GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH", `Receipt direct read for ${claimed.uuid} disagrees with the Harness public read.`,
+              { origin: "receipt_verifier", failure_kind: "identity_change", retryable: false });
+          }
+        } catch (error) {
+          recordFailure(check, error);
+          if (check.reason === "execution_window") nextAdoption ??= subjectId;
+        }
+      }
+    } });
+  const checks = local.checks.map(check => receiptOverrides.get(check.subject_id) ?? check);
+  for (const claimed of claims.filter(claim => !seenAdoptions.has(claim))) {
+    const dependency = checks.find(check => check.subject_id === claimed.hybrid_search_receipt_id);
+    extraChecks.push({ phase, check_id: "receipt_adoption", subject_id: adoptionId(claimed), applicable: true, status: "skipped",
+      reason: dependency?.reason === "execution_window" ? "execution_window" : "dependency_unavailable",
+      depends_on: [{ phase, check_id: "receipt_integrity", subject_id: claimed.hybrid_search_receipt_id }] });
+  }
+  checks.push(...extraChecks); findings.push(...local.findings);
+  return { valid: findings.length === 0 && checks.every(check => !check.applicable || check.status === "passed"), checks, findings,
+    results: local.results.filter(receipt => !receiptOverrides.has(receipt.receipt_id)),
+    progress: nextAdoption ? { next_subject: nextAdoption, start_after: lastAdoption } : local.progress };
+}
+
+
+function assertHybridResult(result, receiptId) {
+  if (result?.valid === false || result?.ok === false || !(Array.isArray(result) || Array.isArray(result?.data))) {
+    throw new GoalHarnessError("GOAL_HYBRID_SEARCH_RESULT_INVALID", "Hybrid search did not return a successful candidate array.",
+      { origin: "tool_transport", failure_kind: "unknown", retryable: false, receipt_id: receiptId });
+  }
+}

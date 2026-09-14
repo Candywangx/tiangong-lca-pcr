@@ -3,6 +3,7 @@ import { pathToFileURL } from "node:url";
 import { loadGoalConfig } from "../goal-harness/config.mjs";
 import { goalStateDir } from "../goal-harness/commands.mjs";
 import { prepareAuthorReport } from "../goal-harness/report-preparation.mjs";
+import { selectRecovery } from "../goal-harness/errors.mjs";
 const HELP = `Prepare an independently checkable author report from a draft and finalized receipts.
 
 Usage: npm run goal:prepare-report -- --config <goal.yaml> --task <task-id> --draft <absolute-json-file> [--format human|json]
@@ -12,7 +13,7 @@ The program fills rejected candidate reasons and receipt membership, preserves t
 JSON success is a submission envelope with a prepared-report reference; failures leave stdout empty and return stable error/details on stderr.
 Next: return the successful JSON envelope verbatim as your final answer; independent coordinator acceptance still runs.
 `;
-export function main(argv = process.argv.slice(2), io = process) {
+export function main(argv = process.argv.slice(2), io = process, dependencies = {}) {
   if (argv.length === 0 || argv.includes("--help")) {
     io.stdout.write(HELP);
     return 0;
@@ -49,8 +50,8 @@ export function main(argv = process.argv.slice(2), io = process) {
         ),
         { code: "GOAL_REPORT_ARGUMENT_INVALID" },
       );
-    const config = loadGoalConfig({ configPath: options["--config"] });
-    const prepared = prepareAuthorReport({
+    const config = (dependencies.loadGoalConfig ?? loadGoalConfig)({ configPath: options["--config"] });
+    const prepared = (dependencies.prepareAuthorReport ?? prepareAuthorReport)({
       config,
       stateDir: goalStateDir(config),
       taskId: options["--task"],
@@ -78,15 +79,31 @@ export function main(argv = process.argv.slice(2), io = process) {
         message: error.message,
         details: error.details ?? null,
       },
-      next_action:
-        "Fix the draft or PCR in this turn, resync/recommit when needed, and repeat preparation. Do not alter finalized receipts.",
+      next_action: preparationNextAction(error),
     };
     io.stderr.write(
       format === "human"
-        ? `[${result.error.code}] ${error.message}\n`
+        ? `[${result.error.code}] ${error.message}\nNext: ${result.next_action}\n`
         : `${JSON.stringify(result, null, 2)}\n`,
     );
     return 2;
+  }
+}
+
+function preparationNextAction(error) {
+  if (error.code === "GOAL_REPORT_ARGUMENT_INVALID") return "Fix the command options using goal:prepare-report --help, then repeat preparation.";
+  const recovery = selectRecovery(error, { completeReport: false });
+  switch (recovery.action) {
+    case "repair":
+      return "Fix the reported draft or PCR findings, resync/recommit when needed, and repeat preparation to finish all remaining checks. Preserve finalized receipts.";
+    case "resume":
+      return "Preserve the draft, receipts, and PCR worktree; repeat preparation after the service recovers. If this turn has ended, use the existing goal:resume path. This is not a content repair.";
+    case "defer":
+      return "Continue preparation in the next execution window using the preserved draft, receipts, and PCR worktree; this continuation consumes neither content-repair nor infrastructure-retry budget.";
+    case "manual_review":
+      return `Preserve the draft, receipts, and PCR worktree and request ${recovery.category} review before repeating preparation.`;
+    default:
+      return "Pause preparation and have the coordinator inspect the reported failure before retrying. Preserve the draft, finalized receipts, and PCR worktree.";
   }
 }
 if (import.meta.url === pathToFileURL(process.argv[1] ?? "").href)

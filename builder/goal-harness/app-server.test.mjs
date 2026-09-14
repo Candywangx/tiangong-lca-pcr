@@ -9,7 +9,7 @@ import test from "node:test";
 
 import { CodexAppServerAdapter } from "./app-server.mjs";
 
-function mockSpawn({ failMethod = null } = {}) {
+function mockSpawn({ failMethod = null, delayMethod = null, delayMs = 120 } = {}) {
   const requests = [];
   const child = new EventEmitter();
   child.stdin = new PassThrough();
@@ -27,7 +27,8 @@ function mockSpawn({ failMethod = null } = {}) {
       const request = JSON.parse(line);
       requests.push(request);
       if (!Object.hasOwn(request, "id")) continue;
-      queueMicrotask(() => {
+      const schedule = request.method === delayMethod ? callback => setTimeout(callback, delayMs) : queueMicrotask;
+      schedule(() => {
         if (request.method === failMethod) {
           child.stdout.write(`${JSON.stringify({ id: request.id, error: { code: -32000, message: "unsupported" } })}\n`);
           return;
@@ -313,4 +314,64 @@ test('phase1a unprovable start stays held rather than retrying a thread or turn 
   await assert.rejects(adapter.createAuthorTask(args));
   await assert.rejects(adapter.createAuthorTask(args),e=>e.code==='GOAL_AUTHOR_START_UNCERTAIN');
   assert.equal(starts,1);
+});
+
+for (const delayMethod of ["initialize", "thread/read"]) test(`review deadline bounds delayed ${delayMethod} without interrupting the author`, async t => {
+  const mock = mockSpawn({ delayMethod });
+  const adapter = new CodexAppServerAdapter({ spawnFactory: () => mock.child });
+  t.after(() => adapter.close());
+  const started = Date.now();
+  await assert.rejects(adapter.readThread({ threadId: "durable-author", deadline: started + 25 }), error => {
+    assert.equal(error.code, "GOAL_REVIEW_WINDOW_EXHAUSTED");
+    assert.equal(error.details.origin, "harness_deadline");
+    assert.equal(error.details.failure_kind, "execution_window");
+    assert.equal(error.details.retryable, false);
+    return true;
+  });
+  assert.ok(Date.now() - started < 100, "must use remaining review window rather than default RPC timeout");
+  assert.equal(adapter.pending.size, 0);
+  assert.equal(mock.requests.some(request => request.method === "turn/interrupt"), false);
+  // A late response cannot leave or recreate a pending client request.
+  await new Promise(resolve => setTimeout(resolve, 130));
+  assert.equal(adapter.pending.size, 0);
+});
+
+test("review deadline also bounds websocket connection establishment", async t => {
+  const emitter = new EventEmitter();
+  const requests = [];
+  const socket = { readyState: 0, closed: false,
+    addEventListener(name, listener, options = {}) { emitter[options.once ? "once" : "on"](name, listener); },
+    removeEventListener(name, listener) { emitter.removeListener(name, listener); },
+    send(line) { const request = JSON.parse(line); requests.push(request); if (request.id) queueMicrotask(() => emitter.emit("message", { data: JSON.stringify({ id: request.id, result: {} }) })); },
+    close() { this.closed = true; this.readyState = 3; },
+  };
+  const opening = setTimeout(() => { socket.readyState = 1; emitter.emit("open"); }, 120);
+  t.after(() => clearTimeout(opening));
+  const adapter = new CodexAppServerAdapter({ endpoint: "ws://fake.invalid", webSocketFactory: () => socket });
+  t.after(() => adapter.close());
+  await assert.rejects(adapter.readThread({ threadId: "durable-author", deadline: Date.now() + 25 }), { code: "GOAL_REVIEW_WINDOW_EXHAUSTED" });
+  assert.equal(adapter.pending.size, 0);
+  assert.equal(socket.closed, true);
+  assert.equal(adapter.socket, null);
+  assert.deepEqual(requests, []);
+});
+
+test("request timeout override cancels its pending wait and leaves author turn untouched", async t => {
+  const mock = mockSpawn({ delayMethod: "thread/read" });
+  const adapter = new CodexAppServerAdapter({ spawnFactory: () => mock.child });
+  t.after(() => adapter.close());
+  await adapter.connect();
+  const started = Date.now();
+  await assert.rejects(adapter.request("thread/read", { threadId: "durable-author" }, { timeoutMs: 25 }), /Timed out waiting for thread\/read/);
+  assert.ok(Date.now() - started < 100);
+  assert.equal(adapter.pending.size, 0);
+  assert.equal(mock.requests.some(request => request.method === "turn/interrupt"), false);
+});
+
+test("an already exhausted review deadline starts no app-server transport", async () => {
+  let starts = 0;
+  const adapter = new CodexAppServerAdapter({ spawnFactory: () => { starts += 1; throw new Error("must not spawn"); } });
+  await assert.rejects(adapter.readThread({ threadId: "durable-author", deadline: Date.now() - 1 }), { code: "GOAL_REVIEW_WINDOW_EXHAUSTED" });
+  assert.equal(starts, 0);
+  assert.equal(adapter.pending.size, 0);
 });

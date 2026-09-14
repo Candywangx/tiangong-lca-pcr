@@ -3,8 +3,13 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import Ajv2020 from "ajv/dist/2020.js";
 
-import { assertAuthorQuality, validateAuthorReport } from "./author-gates.mjs";
+import { assertAuthorQuality as runAuthorQuality, validateAuthorReport } from "./author-gates.mjs";
 import { readAuthorReportSchema } from "./prompt-compiler.mjs";
+
+// Successful direct-read fixtures are supplied separately from the report.
+function assertAuthorQuality(options) {
+  return runAuthorQuality({ verifiedUuidReads: structuredClone(options.report.uuid_audits ?? []), ...options });
+}
 
 test("author report response schema avoids keywords rejected by Codex Structured Outputs", async () => {
   const schema = readAuthorReportSchema();
@@ -142,6 +147,60 @@ function rows() {
   };
 }
 
+test("actual reference-product UUID requires its own adopted declaration", () => {
+  assert.throws(() => assertAuthorQuality({
+    report: report(), authorizedFiles: files, changedFiles: files, inventoryRows: rows(),
+    referenceRows: { en: [{ row_id: "reference_product", uuid: "22222222-2222-4222-8222-222222222222", name: "Other product" }], zh: [] },
+    verifiedUuidReads: report().uuid_audits,
+  }), error => error.details.findings.some(f => f.code === "UUID_ADOPTION_MISSING" && f.uuid.startsWith("2222")));
+});
+
+test("duplicate adopted UUID declarations cannot silently overwrite each other", () => {
+  const candidate = report();
+  candidate.uuid_audits.push({ ...candidate.uuid_audits[0], hybrid_search_receipt_id: "conflicting-receipt" });
+  assert.throws(() => assertAuthorQuality({ report: candidate, authorizedFiles: files, changedFiles: files, inventoryRows: rows(), verifiedUuidReads: report().uuid_audits }),
+    error => error.details.findings.some(f => f.code === "UUID_ADOPTION_DUPLICATE"));
+});
+
+test("an unavailable independent UUID read skips identity checks without inventing a name or declaration failure", () => {
+  const candidate = report();
+  candidate.uuid_audits[0].base_name_zh = "untrusted name";
+  assert.throws(() => assertAuthorQuality({ report: candidate, authorizedFiles: files, changedFiles: files, inventoryRows: rows(), verifiedUuidReads: [] }), error => {
+    assert.equal(error.details.findings.some(f => ["UUID_ADOPTION_MISSING", "UUID_NOT_DIRECTLY_VERIFIED", "ZH_FLOW_NAME_NOT_OFFICIAL"].includes(f.code)), false);
+    return error.details.checks.some(c => c.check_id === "uuid_identity" && c.status === "skipped");
+  });
+});
+
+test("failed PCR parsing is a missing dependency instead of an empty inventory", () => {
+  assert.throws(() => assertAuthorQuality({ report: report(), authorizedFiles: files, changedFiles: files, inventoryRows: null }),
+    error => error.code === "GOAL_QUALITY_DEPENDENCY_UNAVAILABLE" && !error.details.findings?.some(f => f.code === "INVENTORY_ACCOUNTING_MISMATCH"));
+});
+
+test("official names come from independent reads rather than matching author assertions", () => {
+  const candidate = report();
+  const actual = structuredClone(candidate.uuid_audits);
+  actual[0].base_name_zh = "独立读取的名称";
+  assert.throws(() => assertAuthorQuality({ report: candidate, authorizedFiles: files, changedFiles: files, inventoryRows: rows(), verifiedUuidReads: actual }),
+    error => error.details.findings.some(finding => finding.code === "ZH_FLOW_NAME_NOT_OFFICIAL" && finding.expected === actual[0].base_name_zh));
+});
+
+test("omitting the independent reader never turns authored identity into a verified fact", () => {
+  assert.throws(() => runAuthorQuality({ report: report(), authorizedFiles: files, changedFiles: files, inventoryRows: rows() }),
+    error => error.details.checks.some(check => check.status === "skipped"));
+});
+
+test("reference-product UUID alignment is checked in both languages", () => {
+  const uuid = report().uuid_audits[0].uuid;
+  assert.throws(() => assertAuthorQuality({ report: report(), authorizedFiles: files, changedFiles: files, inventoryRows: rows(),
+    referenceRows: { en: [{ row_id: "reference_product", uuid, name: "Pig iron" }], zh: [{ row_id: "reference_product", uuid: "22222222-2222-4222-8222-222222222222", name: "生铁" }] },
+  }), error => error.details.findings.some(finding => finding.code === "REFERENCE_PRODUCT_ALIGNMENT_MISMATCH"));
+});
+
+test("actual source ids need a unique original-source declaration", () => {
+  assert.throws(() => assertAuthorQuality({ report: report({ sources: [] }), authorizedFiles: files, changedFiles: files, inventoryRows: rows(), sourceIds: ["actual-source"] }),
+    error => error.details.findings.some(finding => finding.code === "SOURCE_DECLARATION_MISSING" && finding.source_id === "actual-source"));
+});
+
 test("author report schema and semantic accounting accept a complete report", () => {
   assert.equal(validateAuthorReport(report()).valid, true);
   const result = assertAuthorQuality({ report: report(), authorizedFiles: files, changedFiles: files, inventoryRows: rows() });
@@ -215,7 +274,7 @@ test("report rejects total rows that do not equal matched plus unresolved", () =
   );
 });
 
-test("tiangong_cli_unavailable is an infrastructure retryable failure, never valid unresolved coverage", () => {
+test("tiangong_cli_unavailable is an author-reported failure, never valid unresolved coverage", () => {
   const invalid = report({
     inventory: {
       total_rows: 2,
@@ -228,6 +287,16 @@ test("tiangong_cli_unavailable is an infrastructure retryable failure, never val
     () => assertAuthorQuality({ report: invalid, authorizedFiles: files, changedFiles: files, inventoryRows: rows() }),
     (error) => error.code === "GOAL_UUID_INFRASTRUCTURE_UNAVAILABLE",
   );
+});
+
+test("an authored infrastructure claim preserves its provenance and does not hide accounting failures", () => {
+  const candidate = report();
+  candidate.inventory.unresolved[0].reason_code = "tiangong_cli_unavailable";
+  candidate.inventory.total_rows = 99;
+  assert.throws(() => assertAuthorQuality({ report: candidate, authorizedFiles: files, changedFiles: files, inventoryRows: rows() }), error => {
+    assert.ok(error.details.findings.some(finding => finding.code === "INVENTORY_ACCOUNTING_MISMATCH"));
+    return error.details.findings.some(finding => finding.code === "GOAL_UUID_INFRASTRUCTURE_UNAVAILABLE" && finding.origin === "author_reported" && finding.retryable === false);
+  });
 });
 
 test("commit-tree gate rejects any file outside the exact four-file allowlist", () => {

@@ -381,6 +381,41 @@ findings without batch rewrites. Do not reinstall this runtime, dispatch a pilot
 budget as a side effect of development. Broader rollout follows the pilot's same-turn correction, exact-reason,
 independent-acceptance and legacy-preservation results.
 
+## Explicit acceptance and bounded recovery
+
+Preparation and harvest use the same explicit-success assessment with different scopes. Both require the authorized
+commit, local Builder/parse/quality/sync checks, actual PCR UUID declarations, authenticated receipt membership and
+current public identity. Contract 2 also requires measurement to pass. Harvest additionally checks original sources,
+applicable enrichment and the existing trial semantic decision. Preparation ready is not final acceptance. Missing,
+empty, false or dependent-skipped results cannot enter the integration pool, snapshot or shared verified UUID cache.
+Checks are identified by `(phase, check_id, subject_id)`; independent failures are collected together and dependent
+checks retain their reason instead of producing invented identity conflicts.
+
+Failed preparation publishes a separate immutable `failed-<id>/` artifact containing the original draft, failure
+findings/progress and manifest. It is not a ready report. The scheduler can independently read the failure only after
+rechecking its current task/turn/worktree/content and successful receipt bindings. A bare author `failure` remains an
+unverified claim. Neither failure evidence nor partial successful reads are shared as fully verified evidence.
+
+Recovery first classifies each finding by observed origin and failure kind. Integrity, authorization, configuration
+and unknown failures hold; confirmed measurement/boundary findings remain manual review; author-correctable content
+is repaired together. Retryable infrastructure resumes the same author if preparation is incomplete, or rechecks a
+saved complete report without starting an author. Content repair, infrastructure recovery and execution-window
+continuation have separate budgets and histories. The incident identity survives new turns, error-code changes and
+replayed resume requests. Backoff and Retry-After apply before dispatch; previews remain pure reads. Held/failed tasks
+are not restarted automatically.
+
+Each preparation/harvest invocation has a 60-second internal window; individual external operations are bounded by
+the smaller of 30 seconds and the remaining window. Child processes and adapter waits receive the actual remaining
+time. Window exhaustion is not infrastructure failure and consumes neither infrastructure nor content repair budget.
+Task and subject cursors, plus rotation of independent UUID/source scopes, give unfinished checks another execution
+opportunity. Successful UUID reads are rechecked in the next window; stale partial evidence cannot complete acceptance.
+
+Author startup records a stable intent and client user-message id before invoking the adapter. Crash recovery must
+reconcile that intent with the durable visible turn; uncertainty holds instead of starting another author or counting
+a repair twice. Runtime and model-trial fingerprints remain mandatory. Original-source cache fallback is separate from
+automatic retry: a 403 may use a matching verified blob, while 429 honors Retry-After. Blob identity, content hash and
+original-document qualification are rechecked; PDF magic bytes or a login/challenge page are insufficient.
+
 ## Gates
 
 The author report Schema and commit-tree review enforce the exact four files, PCR path, material Builder contracts,
