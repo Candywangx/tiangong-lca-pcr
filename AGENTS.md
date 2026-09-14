@@ -27,13 +27,16 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-07-14
-lastReviewedCommit: 41e00bafd03530af7871e4620e59862dd779473e
+lastReviewedAt: 2026-09-14
+lastReviewedCommit: b4d45d1d7f379c5ce12cc4844c28d99921f5ba17
+lastReviewedNote: "Reviewed for PCR #6: the current sibling CLI command in .env.example, the builder tool contract, and the authoring guide now use the canonical ../cli directory. Package, runtime, business and environment credential content are unchanged."
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
 
 This repository owns canonical PCR and modelling methodology assets for TianGong LCA data authoring.
+
+The canonical GitHub repository is `tiangong-lca/pcr`. When the consuming workspace delivery profile includes this repository, use its controller and `pcr` label for tracked delivery. Keep repository changes in this repository, target `main`, and hand off the exact eligible commit for workspace integration. Physical submodule presence alone does not establish delivery-controller support.
 
 ## Boundaries
 

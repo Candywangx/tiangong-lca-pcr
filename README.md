@@ -26,13 +26,16 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-07-14
-lastReviewedCommit: 41e00bafd03530af7871e4620e59862dd779473e
+lastReviewedAt: 2026-09-14
+lastReviewedCommit: b4d45d1d7f379c5ce12cc4844c28d99921f5ba17
+lastReviewedNote: "Reviewed for PCR #6: the current sibling CLI command in .env.example, the builder tool contract, and the authoring guide now use the canonical ../cli directory. Package, runtime, business and environment credential content are unchanged."
 ---
 
 # TianGong LCA PCR Library
 
 This repository stores TianGong LCA product category rules and data production methodology assets.
+
+Canonical source: [tiangong-lca/pcr](https://github.com/tiangong-lca/pcr). The workspace's retained local directory is `tiangong-lca-pcr`; repository renaming does not change PCR identifiers, package names, or release history.
 
 PCR records are canonical methodology documents. Classification systems such as CPC, HS, ISIC, and NAICS are entry points that map to canonical PCR records; they do not own the PCR directory structure.
 
