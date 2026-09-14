@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { readFileSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import { GoalHarnessError } from "./errors.mjs";
+import { GoalHarnessError, selectRecovery } from "./errors.mjs";
 
 const TERRA = "gpt-5.6-terra";
 const SOL = "gpt-5.6-sol";
@@ -48,7 +48,7 @@ export function trialAssignmentEvent({ state, trialId, assignments, controls }) 
 export function trialModel(task, config) {
   if (!task.model_trial) return config.codex ?? {};
   const repairing = task.state === "repair_requested";
-  const continuation = task.infrastructure_resume_pending || task.repair_resume_pending;
+  const continuation = task.infrastructure_resume_pending || task.execution_continue_pending || task.repair_resume_pending;
   if (repairing && !continuation && (task.repair_count ?? 0) >= (config.retry_policy?.max_repairs ?? 2)) reject("Trial repair budget exhausted; preserve original worktree for review.");
   const model = continuation ? (task.author_model ?? task.model_trial.model)
     : (repairing && (task.repair_count ?? 0) >= 1 ? SOL : task.model_trial.model);
@@ -62,7 +62,9 @@ export function trialDispatchState(state) {
     .map(t => t.model_trial.trial_id));
   return { ...state, tasks: state.tasks.map(task => {
     if (!task.model_trial || ["authoring", "authoring_repair"].includes(task.state)) return task;
-    const exhausted = (task.repair_count ?? 0) >= 2 && ["retryable_failure", "repair_requested"].includes(task.state) && !task.infrastructure_resume_pending && !task.repair_resume_pending;
+    const recovery = selectRecovery(task.failure_details ? {code:task.failure_code,details:task.failure_details} : {code:task.failure_code});
+    const recovering = ['resume','recheck','defer'].includes(recovery.action);
+    const exhausted = !recovering && (task.repair_count ?? 0) >= 2 && ["retryable_failure", "repair_requested"].includes(task.state) && !task.infrastructure_resume_pending && !task.execution_continue_pending && !task.repair_resume_pending;
     const risk = risks.has(task.model_trial.trial_id) && task.model_trial.model === TERRA && !task.thread_id;
     if (exhausted || risk) return { ...task, coordinator_hold: task.coordinator_hold ?? { reason: risk ? "GOAL_TRIAL_SAFETY_REVIEW_REQUIRED" : "GOAL_TRIAL_REPAIR_LIMIT_REACHED" } };
     return task.state === "queued" ? { ...task, queue_order: -100 + (state.model_trials?.find(t => t.id === task.model_trial.trial_id)?.assignments.findIndex(a => a.task_id === task.id) ?? 0) } : task;
@@ -85,10 +87,10 @@ export function observeTrialReview(task, { ok, findings = [], at, durationMs }) 
   const key = `${task.thread_id}:${task.turn_id}`;
   const reviews = task.trial_reviews ?? [];
   if (reviews.some(r => r.key === key)) return task;
-  const infrastructure = findings.some(f => /unavailable|rate.limit|authenticat|endpoint|HTTP|timeout|usage.limit/i.test(`${f.code} ${f.message ?? ""}`));
+  const classification = selectRecovery(findings);
   const incidents = findings.filter(safetyFinding).map(f => ({ key: `${key}:${f.code}`, status: "needs_adjudication", at, finding: f }));
   return { ...task, trial_safety_incidents: [...(task.trial_safety_incidents ?? []), ...incidents], trial_reviews: [...reviews, { key, ok, at, duration_ms: durationMs, model: task.author_model,
-    category: ok ? "pass" : infrastructure ? "infrastructure" : "quality", findings, commit: task.author_commit ?? task.last_author_commit ?? null }] };
+    category: ok ? "pass" : classification.category === "content" ? "quality" : classification.category, findings, commit: task.author_commit ?? task.last_author_commit ?? null }] };
 }
 
 export function trialCacheObservation({ uuids, sources, materials }) {

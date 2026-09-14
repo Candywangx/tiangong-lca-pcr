@@ -314,6 +314,7 @@ export function auditHybridSearchReceipts({ report, stateDir, task, verifiedUuid
       rejectionFindings.push({
         code: "GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH",
         message,
+        details: { phase: "receipt_audit", origin: "harness_review", failure_kind: "author_claim", subject_id: claimed.uuid },
         receipt_id: claimed.receipt_id,
         uuid: claimed.uuid,
         expected: decision
@@ -370,7 +371,7 @@ function auditOneReceipt({ stateDir, task, receiptId, paths = null, allowGoalCac
     ? receipt.goal_id === currentGoalId
     : receipt.task_id === task.id && receipt.cpc_code === task.cpc_code;
   if (!bindingMatches || receipt.status !== "succeeded" || receipt.authenticated !== true) {
-    throw new GoalHarnessError("GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH", `Receipt ${receiptId} is not bound to this task.`);
+    throw new GoalHarnessError("GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH", `Receipt ${receiptId} is not bound to this task.`, { phase:"receipt_audit", origin:"receipt_verifier", failure_kind:"task_binding", subject_id:receiptId });
   }
   if (receipt.result_sha256 !== sha256(raw) || receipt.result_byte_length !== Buffer.byteLength(raw)) {
     throw new GoalHarnessError("GOAL_HYBRID_SEARCH_RECEIPT_HASH_MISMATCH", `Receipt ${receiptId} result bytes changed after capture.`);
@@ -379,7 +380,7 @@ function auditOneReceipt({ stateDir, task, receiptId, paths = null, allowGoalCac
   try { parsed = JSON.parse(raw); } catch { throw new GoalHarnessError("GOAL_HYBRID_SEARCH_RECEIPT_HASH_MISMATCH", `Receipt ${receiptId} result is not JSON.`); }
   const candidates = collectCandidateUuids(parsed);
   if (!sameStrings(candidates, receipt.candidate_uuids ?? [])) {
-    throw new GoalHarnessError("GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH", `Receipt ${receiptId} candidate UUID projection is stale.`);
+    throw new GoalHarnessError("GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH", `Receipt ${receiptId} candidate UUID projection is stale.`, { phase:"receipt_audit", origin:"receipt_verifier", failure_kind:"receipt_integrity", subject_id:receiptId });
   }
   validateCandidateDecisions(candidates, decisions.candidate_decisions ?? []);
   for (const decision of decisions.candidate_decisions ?? []) {
@@ -387,7 +388,7 @@ function auditOneReceipt({ stateDir, task, receiptId, paths = null, allowGoalCac
     if (!existsSync(directPath)) throw receiptMissing(`Receipt ${receiptId} direct read for ${decision.uuid} is missing.`);
     const direct = JSON.parse(auditedBytes(directPath));
     if (stableJson(direct) !== stableJson(decision.direct_read)) {
-      throw new GoalHarnessError("GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH", `Receipt ${receiptId} direct read for ${decision.uuid} changed.`);
+      throw new GoalHarnessError("GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH", `Receipt ${receiptId} direct read for ${decision.uuid} changed.`, { phase:"receipt_audit", origin:"receipt_verifier", failure_kind:"receipt_integrity", subject_id:decision.uuid });
     }
   }
   return {

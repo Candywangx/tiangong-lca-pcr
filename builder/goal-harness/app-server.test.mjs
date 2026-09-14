@@ -81,7 +81,8 @@ function mockWebSocket() {
   return { socket, requests };
 }
 
-test("app-server adapter creates one durable visible thread bound to the author worktree", async () => {
+test("app-server adapter creates one durable visible thread bound to the author worktree", async t => {
+  const receiptStateDir=mkdtempSync(path.join(tmpdir(),"adapter-receipt-"));t.after(()=>rmSync(receiptStateDir,{recursive:true,force:true}));
   const mock = mockSpawn();
   const starts = [];
   const adapter = new CodexAppServerAdapter({
@@ -105,7 +106,7 @@ test("app-server adapter creates one durable visible thread bound to the author 
       model: "gpt-5.6-terra",
       reasoningEffort: "high",
       clientUserMessageId: "goal-task-41111-attempt-1",
-      receiptStateDir: "/tmp/goal-state",
+      receiptStateDir,
     });
     assert.deepEqual(task, { thread_id: "thread-visible-1", turn_id: "turn-1" });
     assert.deepEqual(starts[0], { command: "codex", args: ["app-server", "--stdio"] });
@@ -124,7 +125,7 @@ test("app-server adapter creates one durable visible thread bound to the author 
     assert.equal(turn.params.outputSchema.type, "object");
     assert.deepEqual(turn.params.sandboxPolicy, {
       type: "workspaceWrite",
-      writableRoots: ["/tmp/visible-author-worktree", "/tmp/goal-state", "/tmp/shared-materials"],
+      writableRoots: ["/tmp/visible-author-worktree", receiptStateDir, "/tmp/shared-materials"],
       networkAccess: true,
     });
   } finally {
@@ -191,7 +192,8 @@ test("app-server failure is a stable fail-closed error with no hidden fallback",
   }
 });
 
-test("repair starts a new turn without resuming an interrupted turn in the original durable thread", async () => {
+test("repair starts a new turn without resuming an interrupted turn in the original durable thread", async t => {
+  const receiptStateDir=mkdtempSync(path.join(tmpdir(),"adapter-receipt-"));t.after(()=>rmSync(receiptStateDir,{recursive:true,force:true}));
   const mock = mockSpawn();
   const adapter = new CodexAppServerAdapter({ spawnFactory: () => mock.child, requestTimeoutMs: 1000 });
   try {
@@ -204,7 +206,7 @@ test("repair starts a new turn without resuming an interrupted turn in the origi
       model: "gpt-5.6-terra",
       reasoningEffort: "high",
       clientUserMessageId: "task-repair-1",
-      receiptStateDir: "/tmp/goal-state",
+      receiptStateDir,
     });
     assert.equal(result.thread_id, "thread-visible-1");
     assert.equal(mock.requests.some((request) => request.method === "thread/resume"), false);
@@ -218,7 +220,7 @@ test("repair starts a new turn without resuming an interrupted turn in the origi
     assert.equal(turn.params.clientUserMessageId, "task-repair-1");
     assert.deepEqual(turn.params.sandboxPolicy, {
       type: "workspaceWrite",
-      writableRoots: ["/tmp/visible-author-worktree", "/tmp/goal-state", "/tmp/shared-materials"],
+      writableRoots: ["/tmp/visible-author-worktree", receiptStateDir, "/tmp/shared-materials"],
       networkAccess: true,
     });
   } finally {
@@ -226,7 +228,8 @@ test("repair starts a new turn without resuming an interrupted turn in the origi
   }
 });
 
-test("repair reloads a durable thread once when a restarted daemon reports thread not found", async () => {
+test("repair reloads a durable thread once when a restarted daemon reports thread not found", async t => {
+  const receiptStateDir=mkdtempSync(path.join(tmpdir(),"adapter-receipt-"));t.after(()=>rmSync(receiptStateDir,{recursive:true,force:true}));
   const mock = mockSpawn();
   let turnStartCount = 0;
   const calls = [];
@@ -252,7 +255,7 @@ test("repair reloads a durable thread once when a restarted daemon reports threa
       prompt: "repair after daemon restart",
       outputSchema: { type: "object" },
       clientUserMessageId: "task-repair-daemon-reload",
-      receiptStateDir: "/tmp/goal-state",
+      receiptStateDir,
     });
     assert.deepEqual(result, {
       thread_id: "thread-visible-1",
@@ -282,4 +285,32 @@ test("websocket adapter closes only its client connection so a persistent Goal d
   assert.equal(mock.requests[0].method, "initialize");
   await adapter.close();
   assert.equal(mock.socket.closed, true);
+});
+
+test('phase1a durable start receipt reconciles a lost turn response without starting twice',async t=>{
+  const stateDir=mkdtempSync(path.join(tmpdir(),'start-intent-'));t.after(()=>rmSync(stateDir,{recursive:true,force:true}));
+  const adapter=new CodexAppServerAdapter();adapter.connect=async()=>({});
+  let starts=0;let threadStarts=0;
+  adapter.request=async(method,params)=>{
+    if(method==='thread/start'){threadStarts++;return {thread:{id:'durable'}};}
+    if(method==='turn/start'){starts++;throw new Error('response lost after server accepted');}
+    if(method==='thread/read')return {thread:{id:'durable',cwd:'/worktree',turns:[{id:'accepted-turn',clientUserMessageId:'stable-message',items:[]}]}};
+    return {};
+  };
+  const args={worktreePath:'/worktree',prompt:'do task',title:'PCR',clientUserMessageId:'stable-message',receiptStateDir:stateDir};
+  await assert.rejects(adapter.createAuthorTask(args));
+  const result=await adapter.createAuthorTask(args);
+  assert.deepEqual(result,{thread_id:'durable',turn_id:'accepted-turn'});
+  assert.deepEqual(await adapter.createAuthorTask(args),result);
+  assert.equal(starts,1);assert.equal(threadStarts,1);
+});
+
+test('phase1a unprovable start stays held rather than retrying a thread or turn start',async t=>{
+  const stateDir=mkdtempSync(path.join(tmpdir(),'start-unknown-'));t.after(()=>rmSync(stateDir,{recursive:true,force:true}));
+  const adapter=new CodexAppServerAdapter();adapter.connect=async()=>({});let starts=0;
+  adapter.request=async method=>{if(method==='thread/start'){starts++;throw new Error('unknown outcome');}return {};};
+  const args={worktreePath:'/worktree',prompt:'do task',clientUserMessageId:'stable-message',receiptStateDir:stateDir};
+  await assert.rejects(adapter.createAuthorTask(args));
+  await assert.rejects(adapter.createAuthorTask(args),e=>e.code==='GOAL_AUTHOR_START_UNCERTAIN');
+  assert.equal(starts,1);
 });

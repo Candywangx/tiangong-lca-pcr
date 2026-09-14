@@ -108,3 +108,11 @@ test("turn observation is idempotent, rejects parameter drift, and rescue succes
   assert.equal(cost.samples[0].tokens.total_tokens, 24);
   assert.equal(cost.samples[0].tokens.input_tokens, 20);
 });
+
+test('phase1a trial review categories follow machine classification instead of error prose',()=>{
+  const task={id:'t',thread_id:'thread',turn_id:'turn',model_trial:{model:'gpt-5.6-terra'},author_model:'gpt-5.6-terra'};
+  const unknown=observeTrialReview(task,{ok:false,findings:[{code:'NEW',message:'HTTP timeout unavailable'}],at:'2026-01-01',durationMs:1});
+  assert.equal(unknown.trial_reviews[0].category,'unknown');
+  const window=observeTrialReview(task,{ok:false,findings:[{code:'GOAL_AUTHOR_TIMEOUT',details:{origin:'harness',failure_kind:'execution_window'}}],at:'2026-01-01',durationMs:1});
+  assert.equal(window.trial_reviews[0].category,'execution_window');
+});

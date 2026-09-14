@@ -1,5 +1,6 @@
+import { createHash, randomUUID } from "node:crypto";
 import { spawn } from "node:child_process";
-import { readFileSync, realpathSync } from "node:fs";
+import { closeSync, existsSync, fsyncSync, mkdirSync, openSync, readFileSync, realpathSync, renameSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { homedir } from "node:os";
 import { StringDecoder } from "node:string_decoder";
@@ -44,7 +45,45 @@ export class CodexAppServerAdapter {
     }
   }
 
-  async createAuthorTask({
+  async createAuthorTask(input) {
+    return this.withStartIntent(input, 'author', async save => this.createAuthorTaskWire({...input, saveStartIntent:save}));
+  }
+
+  async withStartIntent(input, kind, start) {
+    if (!input.receiptStateDir || !input.clientUserMessageId) return start(() => {});
+    const binding = {kind,client_user_message_id:input.clientUserMessageId,worktree_path:input.worktreePath,thread_id:input.threadId ?? null,
+      model:input.model ?? null,reasoning_effort:input.reasoningEffort ?? null,
+      prompt_sha256:createHash('sha256').update(input.prompt ?? '').digest('hex')};
+    const intentDir = path.join(input.receiptStateDir,'author-start-intents');
+    mkdirSync(intentDir,{recursive:true});
+    const intentPath = path.join(intentDir,`${createHash('sha256').update(input.clientUserMessageId).digest('hex')}.json`);
+    let intent;
+    const save = patch => {
+      intent = {...intent,...patch};
+      const temp = `${intentPath}.${randomUUID()}.tmp`;
+      writeFileSync(temp,JSON.stringify(intent),{flag:'wx',mode:0o600});
+      syncPath(temp);renameSync(temp,intentPath);syncPath(intentDir);
+    };
+    if (existsSync(intentPath)) {
+      intent=JSON.parse(readFileSync(intentPath,'utf8'));
+      if (JSON.stringify(intent.binding) !== JSON.stringify(binding)) throw startUncertain('Saved author start binding changed.');
+      if (intent.visible) return intent.visible;
+      if (!intent.thread_id) throw startUncertain('Thread start outcome cannot be proved; preserve its intent for reconciliation.');
+      await this.connect();
+      const response = await this.request('thread/read',{threadId:intent.thread_id,includeTurns:true});
+      if (response.thread?.id !== intent.thread_id || response.thread?.cwd !== input.worktreePath) throw startUncertain('Thread identity cannot be reconciled.');
+      const matching=(response.thread.turns ?? []).filter(turn=>turn.clientUserMessageId === input.clientUserMessageId
+        || (turn.items ?? []).some(item=>item.type === 'userMessage' && (item.id === input.clientUserMessageId || item.clientUserMessageId === input.clientUserMessageId)));
+      if (matching.length !== 1 || !matching[0].id) throw startUncertain('No unique turn is bound to the persisted clientUserMessageId.');
+      const visible={thread_id:intent.thread_id,turn_id:matching[0].id};save({visible,status:'started'});return visible;
+    }
+    intent={schema_version:1,binding,status:'start_requested',thread_id:input.threadId ?? null,created_at:new Date().toISOString()};
+    // Exclusive creation makes an unproved concurrent or crashed start fail closed.
+    writeFileSync(intentPath,JSON.stringify(intent),{flag:'wx',mode:0o600});syncPath(intentPath);syncPath(intentDir);
+    const visible=await start(save);save({visible,status:'started'});return visible;
+  }
+
+  async createAuthorTaskWire({
     worktreePath,
     additionalWorkspaceRoots = [],
     title,
@@ -57,6 +96,7 @@ export class CodexAppServerAdapter {
     clientUserMessageId = null,
     projectId = null,
     receiptStateDir = null,
+    saveStartIntent = () => {},
   }) {
     try {
       await this.connect();
@@ -73,7 +113,9 @@ export class CodexAppServerAdapter {
       if (!threadId) {
         throw new Error("thread/start returned no thread.id");
       }
+      saveStartIntent({thread_id:threadId,status:"thread_started"});
       await this.request("thread/name/set", { threadId, name: title });
+      saveStartIntent({status:"turn_start_requested"});
       const turn = await this.request("turn/start", compact({
         threadId,
         cwd: worktreePath,
@@ -104,7 +146,11 @@ export class CodexAppServerAdapter {
     }
   }
 
-  async startRepairTurn({
+  async startRepairTurn(input) {
+    return this.withStartIntent(input,'repair',async save=>this.startRepairTurnWire({...input,saveStartIntent:save}));
+  }
+
+  async startRepairTurnWire({
     threadId,
     worktreePath,
     additionalWorkspaceRoots = [],
@@ -114,6 +160,7 @@ export class CodexAppServerAdapter {
     reasoningEffort = null,
     clientUserMessageId = null,
     receiptStateDir = null,
+    saveStartIntent = () => {},
   }) {
     try {
       await this.connect();
@@ -129,6 +176,7 @@ export class CodexAppServerAdapter {
         sandboxPolicy: authorSandboxPolicy(worktreePath, receiptStateDir, additionalWorkspaceRoots),
       });
       let turn;
+      saveStartIntent({status:"turn_start_requested"});
       try {
         turn = await this.request("turn/start", params);
       } catch (error) {
@@ -392,3 +440,6 @@ function visibleTaskError(operation, error, stderr) {
 function compact(value) {
   return Object.fromEntries(Object.entries(value).filter(([, entry]) => entry !== null && entry !== undefined));
 }
+
+function syncPath(file) {const fd=openSync(file,'r');try {fsyncSync(fd);} finally {closeSync(fd);}}
+function startUncertain(message) {return new GoalHarnessError('GOAL_AUTHOR_START_UNCERTAIN',message,{phase:'author_start',origin:'app_server',failure_kind:'unknown',retryable:false});}

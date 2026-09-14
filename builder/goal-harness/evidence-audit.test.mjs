@@ -133,7 +133,7 @@ test("UUID audit retries a transient public flow read with bounded linear backof
     sleeper: (milliseconds) => waits.push(milliseconds),
     runner: () => {
       attempts += 1;
-      if (attempts < 3) throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "transient read failure");
+      if (attempts < 3) throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "transient read failure", {origin:"tool_transport", failure_kind:"network", retryable:true});
       return direct;
     },
     supportRunner: () => ({
@@ -174,7 +174,7 @@ test("UUID audit retries a transient public property read without retrying seman
     runner: () => direct,
     supportRunner: () => {
       supportAttempts += 1;
-      if (supportAttempts === 1) throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "transient support failure");
+      if (supportAttempts === 1) throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "transient support failure", {origin:"tool_transport", failure_kind:"network", retryable:true});
       return {
         flow_property: { id: "93a60a56-a3c8-11da-a746-0800200b9a66", state_code: 100, name_en: "Mass" },
         unit_group: { id: "93a60a57-a4c8-11da-a746-0800200c9a66", state_code: 100, name_en: "Units of mass", name_zh: "质量", reference_unit: "kg" },
@@ -221,7 +221,7 @@ test("UUID audit fails closed with the stable infrastructure code after bounded 
       sleeper: () => {},
       runner: () => {
         attempts += 1;
-        throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "upstream unavailable", { credentials_redacted: true });
+        throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "upstream unavailable", { credentials_redacted: true, origin:"tool_transport", failure_kind:"network", retryable:true });
       },
       supportRunner: () => assert.fail("support must not run without a flow response"),
     }),
@@ -281,7 +281,7 @@ test("source audit performs original locator reads and rejects discovery pages a
     let consumed = false;
     return {
       ok: true, status: 200, url, headers: new Map([["content-type", "application/pdf"]]),
-      body: { getReader: () => ({ read: async () => consumed ? { done: true } : (consumed = true, { done: false, value: new TextEncoder().encode("original text") }), cancel: async () => {} }) },
+      body: { getReader: () => ({ read: async () => consumed ? { done: true } : (consumed = true, { done: false, value: new TextEncoder().encode("%PDF-1.7 original text") }), cancel: async () => {} }) },
     };
   };
   const result = await verifySourceLocators({
@@ -302,7 +302,7 @@ test("source audit reuses an exact hash-verified original-text receipt after a t
   let consumed = false;
   const successfulFetch = async (url) => ({
     ok: true, status: 200, url, headers: new Map([["content-type", "application/pdf"]]),
-    body: { getReader: () => ({ read: async () => consumed ? { done: true } : (consumed = true, { done: false, value: new TextEncoder().encode("original text") }), cancel: async () => {} }) },
+    body: { getReader: () => ({ read: async () => consumed ? { done: true } : (consumed = true, { done: false, value: new TextEncoder().encode("%PDF-1.7 original text") }), cancel: async () => {} }) },
   });
   try {
     const first = await verifySourceLocators({ report: { sources: [source] }, stateDir, fetchImpl: successfulFetch });
@@ -320,7 +320,7 @@ test("source audit reuses an exact hash-verified original-text receipt after a t
       stateDir,
       fetchImpl: async (url) => ({
         ok: true, status: 200, url, headers: new Map([["content-type", "application/pdf"]]),
-        body: { getReader: () => ({ read: async () => changedConsumed ? { done: true } : (changedConsumed = true, { done: false, value: new TextEncoder().encode("changed original text") }), cancel: async () => {} }) },
+        body: { getReader: () => ({ read: async () => changedConsumed ? { done: true } : (changedConsumed = true, { done: false, value: new TextEncoder().encode("%PDF-1.7 changed original text") }), cancel: async () => {} }) },
       }),
     });
     assert.equal(changed[0].cache_hit, undefined);
@@ -328,4 +328,42 @@ test("source audit reuses an exact hash-verified original-text receipt after a t
   } finally {
     rmSync(stateDir, { recursive: true, force: true });
   }
+});
+
+test('403 cache fallback requires a verified same-source real blob independently of retryability', async () => {
+  const { listGoalCacheReceipts } = await import('./goal-cache.mjs');
+  const { writeFileSync } = await import('node:fs');
+  const stateDir = mkdtempSync(path.join(tmpdir(),'source-403-'));
+  const source = { source_id:'standard-a', name:'Standard A', locator:'https://standards.example/a.pdf', original_text_verified:true };
+  const denied = async () => new Response('', {status:403});
+  try {
+    await assert.rejects(verifySourceLocators({report:{sources:[source]},stateDir,fetchImpl:denied}),e => e.details.retryable === false && e.details.origin === 'source_http');
+    await verifySourceLocators({report:{sources:[source]},stateDir,fetchImpl:async()=>new Response('%PDF-1.7 Standard A original text',{headers:{'content-type':'application/pdf'}})});
+    const cached=await verifySourceLocators({report:{sources:[source]},stateDir,fetchImpl:denied});
+    assert.equal(cached[0].cache_hit,true);
+    const receipt=listGoalCacheReceipts({stateDir,namespace:'source_original_text_receipts'})[0];
+    writeFileSync(receipt.blob_path,'corrupted');
+    await assert.rejects(verifySourceLocators({report:{sources:[source]},stateDir,fetchImpl:denied}),e=>e.details.retryable === false);
+  } finally { rmSync(stateDir,{recursive:true,force:true}); }
+});
+
+test('HTTP 200 login or captcha and unidentified originals are held, not cached as original text', async () => {
+  const source={source_id:'standard-a',name:'Standard A',locator:'https://standards.example/a',original_text_verified:true};
+  for (const text of ['<html><title>Sign in</title><input type="password"></html>', '<html>Verify you are human captcha</html>', '<html><title>Unrelated page</title>Unknown identity</html>']) {
+    await assert.rejects(verifySourceLocators({report:{sources:[source]},fetchImpl:async()=>new Response(text,{headers:{'content-type':'text/html'}})}),e=>e.code === 'GOAL_SOURCE_ORIGINAL_IDENTITY_UNVERIFIED' && e.details.retryable === false);
+  }
+});
+
+test('source 429 retains Retry-After machine evidence', async () => {
+  await assert.rejects(verifySourceLocators({report:{sources:[{source_id:'s',locator:'https://example.test/s'}]},fetchImpl:async()=>new Response('',{status:429,headers:{'retry-after':'120'}})}),e=>e.details.retry_after_seconds === 120 && e.details.retryable === true);
+});
+
+test('unattributed direct-read failures do not retry and retain structured nonretryable failures', async () => {
+  const { readPublicUuidAudit }=await import('./evidence-audit.mjs');
+  let calls=0;
+  assert.throws(()=>readPublicUuidAudit({uuid:'u',runner:()=>{calls++;throw new GoalHarnessError('GOAL_UUID_DIRECT_READ_FAILED','network timeout');},sleeper:()=>{}}));
+  assert.equal(calls,1);
+  calls=0;
+  assert.throws(()=>readPublicUuidAudit({uuid:'u',runner:()=>{calls++;throw new GoalHarnessError('GOAL_UUID_DIRECT_READ_FAILED','no retry',{origin:'tool_transport',failure_kind:'network',retryable:false,subject_id:'u'});},sleeper:()=>{}}),e=>e.details.subject_id==='u');
+  assert.equal(calls,1);
 });

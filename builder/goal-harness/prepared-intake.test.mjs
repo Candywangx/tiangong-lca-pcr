@@ -250,7 +250,8 @@ test("resumed author review rejects changed finalized evidence before independen
   const result = await harvestGoalAuthors({ ...f, adapter: {}, reviewFn: () => assert.fail("tampered receipt reached acceptance") });
   assert.equal(result.valid_results.length, 0);
   assert.equal(result.failures.length, 1);
-  assert.equal(result.state.tasks[0].state, "repair_requested");
+  assert.equal(result.state.tasks[0].state, "retryable_failure");
+  assert.ok(result.state.tasks[0].coordinator_hold);
   assert.equal(result.state.tasks[0].repair_count, 0);
   assert.equal(result.state.tasks[0].pending_gate_findings[0].code, "GOAL_RECEIPT_INTEGRITY_MISMATCH");
 });
@@ -262,14 +263,16 @@ test("saved evidence recheck revalidates prepared content and preserves exhauste
   const loaded = resolvePreparedReport({ stateDir: f.stateDir, task: f.task, submission: wire.prepared_report });
   f.store.append({ event_id: "saved-evidence-failure", type: "task_replaced", payload: { task: {
     ...f.task, state: "retryable_failure", failure_code: "GOAL_UUID_DIRECT_READ_FAILED", repair_count: 2,
-    author_submission: wire, report_path: loaded.report_path,
+    author_submission: wire, report_path: loaded.report_path, report_complete:true,
+    failure_details:{origin:"tool_transport",failure_kind:"network",retryable:true},
   } } });
   writeFileSync(loaded.report_path, `${readFileSync(loaded.report_path, "utf8")}\n`);
   const result = await harvestGoalAuthors({ ...f, adapter: {}, reviewFn: () => assert.fail("modified report reached acceptance") });
   assert.equal(result.valid_results.length, 0);
   assert.equal(result.state.tasks[0].repair_count, 2);
   assert.equal(result.state.tasks[0].state, "retryable_failure");
-  assert.equal(result.state.tasks[0].failure_code, "GOAL_REPAIR_LIMIT_REACHED");
+  assert.equal(result.state.tasks[0].failure_code, "GOAL_REPORT_BINDING_MISMATCH");
+  assert.ok(result.state.tasks[0].coordinator_hold);
   assert.equal(result.state.tasks[0].pending_gate_findings[0].code, "GOAL_REPORT_BINDING_MISMATCH");
   assert.equal(result.state.tasks[0].evidence_recheck_history.at(-1).status, "retryable_failure");
 });
@@ -426,7 +429,7 @@ test("contract 2 evidence retries reuse the saved report without author replacem
   const f = fixture(t);
   sealRejectedCandidate(f);
   const wire = submission(f);
-  const unavailable = () => { throw Object.assign(new Error("Temporary UUID outage"), {code:"GOAL_UUID_DIRECT_READ_FAILED"}); };
+  const unavailable = () => { throw Object.assign(new Error("Temporary UUID outage"), {code:"GOAL_UUID_DIRECT_READ_FAILED",details:{origin:"tool_transport",failure_kind:"network",retryable:true}}); };
   const first = await harvestGoalAuthors({...f, adapter:completedAdapter(f.task,wire), auditUuidsFn:unavailable});
   assert.equal(first.state.tasks[0].state,"retryable_failure");
   const preview = await dispatchGoalAuthors({...f,slots:1,resumeStopped:true,dryRun:true,adapter:{}});
@@ -457,12 +460,10 @@ for (const outcome of ["manual_review", "repair_requested"]) test(`evidence rech
   const f=fixture(t);
   sealRejectedCandidate(f);
   const wire=submission(f);
-  await harvestGoalAuthors({...f,adapter:completedAdapter(f.task,wire),auditUuidsFn:()=>{throw Object.assign(new Error("Temporary outage"),{code:"GOAL_UUID_DIRECT_READ_FAILED"});}});
-  if(outcome==="repair_requested") {
-    const loaded=resolvePreparedReport({stateDir:f.stateDir,task:f.task,submission:wire.prepared_report});
-    writeFileSync(loaded.report_path,readFileSync(loaded.report_path,"utf8")+"\n");
-  }
-  const result=await harvestGoalAuthors({...f,adapter:{},verifySourcesFn:async()=>[],reviewFn:()=>{throw Object.assign(new Error("Unresolved measurement"),{code:"GOAL_MEASUREMENT_REVIEW_REQUIRED"});}});
+  await harvestGoalAuthors({...f,adapter:completedAdapter(f.task,wire),auditUuidsFn:()=>{throw Object.assign(new Error("Temporary outage"),{code:"GOAL_UUID_DIRECT_READ_FAILED",details:{origin:"tool_transport",failure_kind:"network",retryable:true}});}});
+  // The placeholder PCR is genuinely invalid: use the default independent
+  // reviewer for a content repair; never represent hash tampering as repairable.
+  const result=await harvestGoalAuthors({...f,adapter:{},verifySourcesFn:async()=>[],reviewFn:outcome === "repair_requested" ? undefined : ()=>{throw Object.assign(new Error("Unresolved measurement"),{code:"GOAL_MEASUREMENT_REVIEW_REQUIRED"});}});
   const task=result.state.tasks[0];
   assert.equal(task.state,outcome);
   assert.equal(task.evidence_recheck_pending,false);

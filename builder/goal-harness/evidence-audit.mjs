@@ -2,7 +2,7 @@ import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import path from "node:path";
 
-import { GoalHarnessError } from "./errors.mjs";
+import { GoalHarnessError, classifyFinding } from "./errors.mjs";
 import { appendGoalCacheReceipt, listGoalCacheReceipts } from "./goal-cache.mjs";
 
 const REUSABLE_COMMON_UUID_PATTERN = /^(?:alternating current|electricity(?:,.*)?|natural gas(?: .*)?|liquefied petroleum gas|lpg|diesel(?: fuel)?|steam(?:,.*)?|hot water|process water|drinking water|industrial oxygen|industrial nitrogen|carbon dioxide(?: \(fossil\))?|methane|nitrous oxide|sodium hydroxide|sodium hypochlorite|peracetic acid|(?:refrigerant|polyethylene film|pet tray|corrugated paperboard)(?:,.*)?)$/iu;
@@ -167,7 +167,7 @@ function retryUuidInfrastructure(operation, { attempts, delayMs, sleeper }) {
     try {
       return operation();
     } catch (error) {
-      if (error?.code !== "GOAL_UUID_DIRECT_READ_FAILED" || error?.details?.retryable === false) throw error;
+      if (classifyFinding(error).category !== "infrastructure" || error?.details?.retryable === false) throw error;
       if (attempt === limit) {
         throw new GoalHarnessError(error.code, error.message, { ...error.details, attempts: attempt });
       }
@@ -192,51 +192,57 @@ export async function verifySourceLocators({ report, stateDir = null, fetchImpl 
     }
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), timeoutMs);
+    let response, content;
     try {
-      const response = await fetchImpl(locator, { method: "GET", redirect: "follow", signal: controller.signal, headers: { "user-agent": "tiangong-pcr-goal-harness/1.0" } });
+      response = await fetchImpl(locator, { method: "GET", redirect: "follow", signal: controller.signal, headers: { "user-agent": "tiangong-pcr-goal-harness/1.0" } });
       if (!response.ok) {
-        throw new GoalHarnessError("GOAL_SOURCE_LOCATOR_UNREADABLE", `Source locator returned HTTP ${response.status}: ${source.source_id}`, { source_id: source.source_id, locator, status: response.status });
-      }
-      const content = await readResponseBytes(response, 64 * 1024 * 1024);
-      const contentSha256 = `sha256:${createHash("sha256").update(content).digest("hex")}`;
-      const audit = {
-        source_id: source.source_id,
-        locator,
-        resolved_url: response.url ?? locator,
-        http_status: response.status,
-        content_type: response.headers?.get?.("content-type") ?? null,
-        original_text_claimed_verified: source.original_text_verified === true,
-        checked_at: new Date().toISOString(),
-        content_sha256: contentSha256,
-        content_byte_length: content.byteLength,
-      };
-      audits.push(audit);
-      if (stateDir) {
-        const keyInput = { source_id: source.source_id, locator };
-        const tool = { name: "http-original-text-fetch", version: "1" };
-        appendGoalCacheReceipt({ stateDir, namespace: "source_locator_checks", keyInput, tool, sourceFingerprint: contentSha256, value: audit });
-        if (source.original_text_verified === true) {
-          appendGoalCacheReceipt({ stateDir, namespace: "source_original_text_receipts", keyInput, tool, sourceFingerprint: contentSha256, value: audit, blob: content });
-        }
-      }
-    } catch (error) {
-      if (error instanceof GoalHarnessError) throw error;
-      const cached = source.original_text_verified === true && stateDir
-        ? findCachedOriginalSource({ stateDir, sourceId: source.source_id, locator })
-        : null;
-      if (cached) {
-        audits.push({
-          ...cached.value,
-          cache_hit: true,
-          cache_receipt_id: cached.receipt_id,
-          cache_reused_at: new Date().toISOString(),
+        const status = response.status;
+        const retryable = status === 429 || status >= 500;
+        const retryAfter = response.headers?.get?.('retry-after');
+        const retrySeconds = retryAfter == null ? null : /^\d+$/u.test(retryAfter) ? Number(retryAfter) : Math.max(0, Math.ceil((Date.parse(retryAfter) - Date.now()) / 1000));
+        throw new GoalHarnessError("GOAL_SOURCE_LOCATOR_UNREADABLE", `Source locator returned HTTP ${status}: ${source.source_id}`, {
+          phase:'source_fetch', origin:'source_http', failure_kind:status === 429 ? 'rate_limit' : status >= 500 ? 'service_unavailable' : status === 401 || status === 403 ? 'authorization' : 'unknown',
+          retryable, source_id:source.source_id, subject_id:source.source_id, locator, status,
+          retry_after_seconds:Number.isFinite(retrySeconds) ? retrySeconds : null,
         });
+      }
+      content = await readResponseBytes(response, 64 * 1024 * 1024);
+    } catch (error) {
+      const cached = source.original_text_verified === true && stateDir
+        ? findCachedOriginalSource({ stateDir, sourceId: source.source_id, locator }) : null;
+      if (cached) {
+        audits.push({ ...cached.value, cache_hit:true, cache_receipt_id:cached.receipt_id, cache_reused_at:new Date().toISOString() });
         continue;
       }
-      throw new GoalHarnessError("GOAL_SOURCE_LOCATOR_UNREADABLE", `Cannot read source locator for ${source.source_id}: ${error.message}`, { source_id: source.source_id, locator });
-    } finally {
-      clearTimeout(timeout);
+      if (error instanceof GoalHarnessError) throw error;
+      const machineCode = error?.cause?.code ?? error?.code;
+      const reliable = ['ECONNRESET','ECONNREFUSED','ETIMEDOUT','ENETUNREACH','EAI_AGAIN'].includes(machineCode) || ['AbortError','TimeoutError'].includes(error?.name);
+      throw new GoalHarnessError("GOAL_SOURCE_LOCATOR_UNREADABLE", `Cannot read source locator for ${source.source_id}: ${error.message}`, {
+        phase:'source_fetch', origin:'source_http', failure_kind:reliable ? 'network' : 'unknown', retryable:reliable,
+        subject_id:source.source_id, source_id:source.source_id, locator, machine_code:machineCode ?? null,
+      });
+    } finally { clearTimeout(timeout); }
+    // Identity and durable writes deliberately sit outside the transport catch.
+    const contentType = response.headers?.get?.('content-type') ?? null;
+    const text = content.toString('utf8');
+    const challenge = /<input[^>]*type=["']?password|<title>[^<]*(?:sign in|log in|login)|captcha|verify you are human|checking your browser/iu.test(text);
+    const identifiable = content.length > 0 && (text.startsWith('%PDF-') || (source.name && text.toLowerCase().includes(source.name.toLowerCase())));
+    if (challenge || (source.original_text_verified === true && !identifiable)) {
+      throw new GoalHarnessError('GOAL_SOURCE_ORIGINAL_IDENTITY_UNVERIFIED', `Original source identity needs review: ${source.source_id}`, {
+        phase:'source_identity',origin:'harness_review',failure_kind:'unknown',retryable:false,subject_id:source.source_id,source_id:source.source_id,locator,http_status:response.status,
+      });
     }
+    const contentSha256 = `sha256:${createHash('sha256').update(content).digest('hex')}`;
+    const audit = { source_id:source.source_id, locator, resolved_url:response.url || locator, http_status:response.status,
+      content_type:contentType, original_text_claimed_verified:source.original_text_verified === true,
+      original_identity_verified:identifiable && !challenge, checked_at:new Date().toISOString(), content_sha256:contentSha256, content_byte_length:content.byteLength };
+    if (stateDir) {
+      const keyInput = {source_id:source.source_id,locator};
+      const tool = {name:'http-original-text-fetch',version:'1'};
+      appendGoalCacheReceipt({stateDir,namespace:'source_locator_checks',keyInput,tool,sourceFingerprint:contentSha256,value:audit});
+      if (source.original_text_verified === true) appendGoalCacheReceipt({stateDir,namespace:'source_original_text_receipts',keyInput,tool,sourceFingerprint:contentSha256,value:audit,blob:content});
+    }
+    audits.push(audit);
   }
   return audits;
 }
@@ -245,6 +251,7 @@ function findCachedOriginalSource({ stateDir, sourceId, locator }) {
   return listGoalCacheReceipts({ stateDir, namespace: "source_original_text_receipts" })
     .filter((receipt) => receipt.tool?.name === "http-original-text-fetch" && receipt.tool?.version === "1")
     .filter((receipt) => receipt.key_input?.source_id === sourceId && receipt.key_input?.locator === locator)
+    .filter((receipt) => receipt.blob_path && receipt.blob_sha256 === receipt.value?.content_sha256 && receipt.value?.original_identity_verified === true)
     .filter((receipt) => receipt.source_fingerprint === receipt.value?.content_sha256)
     .at(-1) ?? null;
 }
@@ -258,18 +265,18 @@ function runTiangongFlowGet({ uuid, tiangongCliRoot }) {
     maxBuffer: 64 * 1024 * 1024,
   });
   if (result.status !== 0) {
-    throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", `TianGong state_code=100 direct read failed for ${uuid}`, { uuid, exit_code: result.status, credentials_redacted: true });
+    throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", `TianGong state_code=100 direct read failed for ${uuid}`, toolFailureDetails(result, { subject_id: uuid, uuid }));
   }
   try {
     return JSON.parse(result.stdout);
   } catch (error) {
-    throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", `TianGong direct read returned invalid JSON for ${uuid}`, { cause: error.message });
+    throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", `TianGong direct read returned invalid JSON for ${uuid}`, { phase: "tool_decode", origin: "tool_transport", failure_kind: "unknown", retryable: false, cause: error.message });
   }
 }
 
 function runTiangongReferenceSupport({ flowPropertyId, flowPropertyVersion, tiangongCliRoot }) {
   if (!flowPropertyId) {
-    throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "TianGong flow does not declare a reference flow-property UUID.", { retryable: false });
+    throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "TianGong flow does not declare a reference flow-property UUID.", { phase: "uuid_support", origin: "harness_review", failure_kind: "author_claim", retryable: false });
   }
   const result = spawnSync(process.execPath, [
     "--env-file-if-exists=.env",
@@ -285,12 +292,12 @@ function runTiangongReferenceSupport({ flowPropertyId, flowPropertyVersion, tian
     maxBuffer: 16 * 1024 * 1024,
   });
   if (result.status !== 0) {
-    throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", `TianGong public flow-property/unit-group audit failed for ${flowPropertyId}`, { flow_property_uuid: flowPropertyId, exit_code: result.status, credentials_redacted: true });
+    throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", `TianGong public flow-property/unit-group audit failed for ${flowPropertyId}`, toolFailureDetails(result, { subject_id: flowPropertyId, flow_property_uuid: flowPropertyId }));
   }
   try {
     return JSON.parse(result.stdout);
   } catch (error) {
-    throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", `TianGong flow-property/unit-group audit returned invalid JSON for ${flowPropertyId}`, { cause: error.message });
+    throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", `TianGong flow-property/unit-group audit returned invalid JSON for ${flowPropertyId}`, { phase: "tool_decode", origin: "tool_transport", failure_kind: "unknown", retryable: false, cause: error.message });
   }
 }
 
@@ -401,7 +408,7 @@ function normalizeLocator(value) {
     if (!["http:", "https:"].includes(url.protocol)) throw new Error("unsupported protocol");
     return url.href;
   } catch (error) {
-    throw new GoalHarnessError("GOAL_SOURCE_LOCATOR_INVALID", `Source locator must be an HTTP(S) URL or DOI: ${locator}`, { cause: error.message });
+    throw new GoalHarnessError("GOAL_SOURCE_LOCATOR_INVALID", `Source locator must be an HTTP(S) URL or DOI: ${locator}`, { phase: "tool_decode", origin: "tool_transport", failure_kind: "unknown", retryable: false, cause: error.message });
   }
 }
 
@@ -429,4 +436,17 @@ function stableJson(value) {
   if (Array.isArray(value)) return `[${value.map(stableJson).join(",")}]`;
   if (value && typeof value === "object") return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${stableJson(value[key])}`).join(",")}}`;
   return JSON.stringify(value);
+}
+
+function toolFailureDetails(result, subject) {
+  let machine = null;
+  for (const text of [result.stderr, result.stdout]) {
+    try { const parsed = JSON.parse(text); machine = parsed.error ?? parsed; if (machine && typeof machine === 'object') break; } catch {}
+  }
+  const code = machine?.code ?? result.error?.code;
+  const kinds = {ECONNRESET:'network',ECONNREFUSED:'network',ETIMEDOUT:'timeout',EAI_AGAIN:'network',RATE_LIMITED:'rate_limit',UNAUTHENTICATED:'authentication',UNAUTHORIZED:'authorization'};
+  const failureKind = kinds[code] ?? 'unknown';
+  return { ...subject, phase:'tool_execution', origin:'tool_transport', failure_kind:failureKind,
+    retryable:machine?.retryable === false || machine?.details?.retryable === false ? false : ['network','timeout','rate_limit'].includes(failureKind),
+    machine_code:code ?? null, exit_code:result.status, credentials_redacted:true };
 }

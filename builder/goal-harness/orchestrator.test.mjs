@@ -502,7 +502,7 @@ test("dispatch advances past a legacy transition cycle whose persisted counter i
   }
 });
 
-test("resume recovers a visible turn created before a dispatch event conflict without duplicating it", async () => {
+test("event conflict holds the existing visible turn without starting a duplicate", async () => {
   const { root, stateDir, config } = fixture();
   config.retry_policy = { max_attempts: 6, max_repairs: 2 };
   const first = await dispatchGoalAuthors({
@@ -546,10 +546,10 @@ test("resume recovers a visible turn created before a dispatch event conflict wi
     });
     assert.equal(createCalls, 0);
     assert.equal(result.state.stopped, false);
-    assert.equal(result.state.tasks[0].state, "authoring");
+    assert.equal(result.state.tasks[0].state, "retryable_failure");
     assert.equal(result.state.tasks[0].thread_id, "thread-already-created");
     assert.equal(result.state.tasks[0].turn_id, "turn-already-created");
-    assert.equal(result.state.tasks[0].dispatch_recovered_from_event_conflict, true);
+    assert.equal(result.state.tasks[0].dispatch_recovered_from_event_conflict, undefined);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
@@ -749,8 +749,8 @@ test("harvest interrupts an expired visible author and requests recovery in the 
       now: () => new Date("2026-09-02T00:02:00.000Z"),
     });
     assert.equal(result.failures.length, 1);
-    assert.equal(result.state.tasks[0].state, "repair_requested");
-    assert.equal(result.state.tasks[0].failure_code, "GOAL_AUTHOR_TIMEOUT_REPAIR_REQUIRED");
+    assert.equal(result.state.tasks[0].state, "retryable_failure");
+    assert.equal(result.state.tasks[0].failure_code, "GOAL_AUTHOR_TIMEOUT");
     assert.equal(result.state.tasks[0].thread_id, "thread-expired");
     assert.equal(result.state.tasks[0].worktree_path, root);
     assert.deepEqual(interrupts, [{ threadId: "thread-expired", turnId: "turn-expired" }]);
@@ -837,6 +837,7 @@ test("a transient UUID direct-read failure rechecks the saved report without rep
       report_path: reportPath,
       failure_code: "GOAL_UUID_DIRECT_READ_FAILED",
       failure_message: "temporary public read failure",
+      failure_details:{origin:"tool_transport",failure_kind:"network",retryable:true},
       transition_ids: ["authoring", "author_review", "uuid-read-failed"],
     } },
   });
@@ -890,11 +891,13 @@ test("an unsuccessful saved UUID evidence recheck remains retryable without disp
       report_path: reportPath,
       failure_code: "GOAL_UUID_DIRECT_READ_FAILED",
       failure_message: "temporary public read failure",
+      failure_details:{origin:"tool_transport",failure_kind:"network",retryable:true},
       transition_ids: ["authoring", "author_review", "uuid-read-failed"],
     } },
   });
   const retryError = new Error("public direct read is still unavailable");
   retryError.code = "GOAL_UUID_DIRECT_READ_FAILED";
+  retryError.details={origin:"tool_transport",failure_kind:"network",retryable:true};
   const harvested = await harvestGoalAuthors({
     config,
     stateDir,
@@ -1094,157 +1097,32 @@ test("a content repair after legacy quota migration uses a distinct event identi
   }
 });
 
-test("an interrupted repair resumes once in the same thread without consuming another repair", async () => {
-  const { root, stateDir, config } = fixture();
-  config.retry_policy = { max_repairs: 2 };
-  const store = new GoalEventStore({ stateDir });
-  const original = store.rebuild().tasks[0];
-  store.append({
-    event_id: "fixture-interrupted-repair",
-    type: "task_replaced",
-    payload: { task: {
-      ...original,
-      state: "authoring_repair",
-      thread_id: "thread-same",
-      turn_id: "turn-repair-2",
-      worktree_path: root,
-      repair_count: 2,
-      repair_history: [{
-        repair_count: 2,
-        turn_id: "turn-repair-2",
-        started_at: "2026-09-02T00:00:00.000Z",
-        ended_at: null,
-        original_commit: "a".repeat(40),
-        new_commit: null,
-        gate_findings: [{ code: "missing_receipt" }],
-      }],
-      transition_ids: ["authoring_repair"],
-    } },
-  });
-  const adapter = {
-    async readThread() {
-      return { thread: { turns: [{ id: "turn-repair-2", status: "interrupted", items: [] }] } };
-    },
-  };
-  try {
-    const harvested = await harvestGoalAuthors({ config, stateDir, adapter });
-    const pending = harvested.state.tasks[0];
-    assert.equal(pending.state, "repair_requested");
-    assert.equal(pending.repair_count, 2);
-    assert.equal(pending.repair_resume_pending, true);
-    assert.equal(pending.thread_id, "thread-same");
-    assert.equal(pending.worktree_path, root);
-
-    const starts = [];
-    const resumed = await dispatchGoalAuthors({
-      config,
-      stateDir,
-      slots: 1,
-      adapter: {
-        async startRepairTurn(input) {
-          starts.push(input);
-          return { thread_id: input.threadId, turn_id: "turn-repair-2-resume-1" };
-        },
-      },
-    });
-    const active = resumed.state.tasks[0];
-    assert.equal(starts.length, 1);
-    assert.equal(active.state, "authoring_repair");
-    assert.equal(active.repair_count, 2);
-    assert.equal(active.repair_resume_count, 1);
-    assert.equal(active.repair_resume_pending, false);
-    assert.equal(active.repair_history[0].turn_id, "turn-repair-2");
-    assert.deepEqual(active.repair_history[0].resume_turn_ids, ["turn-repair-2-resume-1"]);
-    const repairDir = path.join(stateDir, "authors", "goal-fixture-41111-a1");
-    assert.equal(existsSync(path.join(repairDir, "repair-2-resume-1-prompt.txt")), true);
-    assert.equal(existsSync(path.join(repairDir, "repair-2-resume-1-output-schema.json")), true);
-
-    const repeated = await dispatchGoalAuthors({
-      config,
-      stateDir,
-      slots: 1,
-      adapter: { async startRepairTurn() { throw new Error("must not duplicate repair continuation"); } },
-    });
-    assert.equal(repeated.dispatched.length, 0);
-  } finally {
-    rmSync(root, { recursive: true, force: true });
-  }
+test("unattributed interrupted repair turn is held with continuation count 0", async t => {
+  const {root,stateDir,config}=fixture();t.after(()=>rmSync(root,{recursive:true,force:true}));
+  const first=(await dispatchGoalAuthors({config,stateDir,slots:1,adapter:{async createAuthorTask(){return {thread_id:'original',turn_id:'original-turn'};}}})).dispatched[0];
+  const store=new GoalEventStore({stateDir});
+  store.append({event_id:'terminal-fixture',type:'task_replaced',payload:{task:{...first,state:'authoring_repair',repair_count:2,repair_resume_count:0}}});
+  const adapter={async readThread(){return {thread:{turns:[{id:'original-turn',status:'interrupted',items:[]}]}};},async startRepairTurn(){assert.fail('Unknown failure must not start a repair');},async createAuthorTask(){assert.fail('Unknown failure must not replace its author');}};
+  const failed=(await harvestGoalAuthors({config,stateDir,adapter})).state.tasks[0];
+  assert.equal(failed.state,'retryable_failure');assert.ok(failed.coordinator_hold);assert.equal(failed.repair_count,2);
+  const before=readFileSync(path.join(stateDir,'events.jsonl'),'utf8');
+  await harvestGoalAuthors({config,stateDir,adapter});assert.equal(readFileSync(path.join(stateDir,'events.jsonl'),'utf8'),before);
+  const result=await dispatchGoalAuthors({config,stateDir,slots:1,adapter,resumeStopped:true});
+  assert.equal(result.dispatched.length,0);assert.equal(result.state.tasks[0].worktree_path,first.worktree_path);assert.equal(result.state.tasks[0].thread_id,'original');assert.equal(result.state.tasks[0].repair_resume_count,0);
 });
 
-test("a missing repair continuation replaces only the thread and preserves its safe worktree", async () => {
-  const { root, stateDir, config } = fixture();
-  config.retry_policy = { max_attempts: 3, max_repairs: 2 };
-  const first = await dispatchGoalAuthors({
-    config,
-    stateDir,
-    slots: 1,
-    adapter: { async createAuthorTask() { return { thread_id: "thread-old", turn_id: "turn-original" }; } },
-  });
-  const original = first.dispatched[0];
-  const store = new GoalEventStore({ stateDir });
-  store.append({
-    event_id: "fixture-missing-repair-continuation",
-    type: "task_replaced",
-    payload: { task: {
-      ...original,
-      state: "authoring_repair",
-      turn_id: "turn-repair-resume-missing",
-      repair_count: 1,
-      repair_resume_count: 1,
-      repair_history: [{
-        repair_count: 1,
-        turn_id: "turn-repair",
-        resume_turn_ids: ["turn-repair-resume-missing"],
-        started_at: "2026-09-02T00:00:00.000Z",
-        ended_at: null,
-        original_commit: original.author_base_commit,
-        new_commit: null,
-        gate_findings: [{ code: "missing_receipt" }],
-      }],
-      transition_ids: [...original.transition_ids, "authoring_repair", "repair-resume-1"],
-    } },
-  });
-  try {
-    const harvested = await harvestGoalAuthors({
-      config,
-      stateDir,
-      adapter: {
-        async readThread() {
-          return { thread: { turns: [{ id: "turn-original", status: "interrupted", items: [] }] } };
-        },
-      },
-    });
-    const failed = harvested.state.tasks[0];
-    assert.equal(failed.state, "retryable_failure");
-    assert.equal(failed.failure_code, "GOAL_REPAIR_RESUME_FAILED");
-    assert.equal(failed.thread_id, "thread-old");
-    assert.equal(failed.worktree_path, original.worktree_path);
-
-    let repairStarts = 0;
-    let replacements = 0;
-    const resumed = await dispatchGoalAuthors({
-      config,
-      stateDir,
-      slots: 1,
-      resumeStopped: true,
-      adapter: {
-        async startRepairTurn() { repairStarts += 1; throw new Error("same thread must not be resumed again"); },
-        async createAuthorTask() {
-          replacements += 1;
-          return { thread_id: "thread-replacement", turn_id: "turn-replacement" };
-        },
-      },
-    });
-    const replacement = resumed.state.tasks[0];
-    assert.equal(repairStarts, 0);
-    assert.equal(replacements, 1);
-    assert.equal(replacement.state, "authoring");
-    assert.equal(replacement.worktree_path, original.worktree_path);
-    assert.equal(replacement.thread_id, "thread-replacement");
-    assert.deepEqual(replacement.previous_thread_ids, ["thread-old"]);
-  } finally {
-    rmSync(root, { recursive: true, force: true });
-  }
+test("unattributed missing repair turn is held with continuation count 1", async t => {
+  const {root,stateDir,config}=fixture();t.after(()=>rmSync(root,{recursive:true,force:true}));
+  const first=(await dispatchGoalAuthors({config,stateDir,slots:1,adapter:{async createAuthorTask(){return {thread_id:'original',turn_id:'original-turn'};}}})).dispatched[0];
+  const store=new GoalEventStore({stateDir});
+  store.append({event_id:'terminal-fixture',type:'task_replaced',payload:{task:{...first,state:'authoring_repair',repair_count:2,repair_resume_count:1}}});
+  const adapter={async readThread(){return {thread:{turns:[]}};},async startRepairTurn(){assert.fail('Unknown failure must not start a repair');},async createAuthorTask(){assert.fail('Unknown failure must not replace its author');}};
+  const failed=(await harvestGoalAuthors({config,stateDir,adapter})).state.tasks[0];
+  assert.equal(failed.state,'retryable_failure');assert.ok(failed.coordinator_hold);assert.equal(failed.repair_count,2);
+  const before=readFileSync(path.join(stateDir,'events.jsonl'),'utf8');
+  await harvestGoalAuthors({config,stateDir,adapter});assert.equal(readFileSync(path.join(stateDir,'events.jsonl'),'utf8'),before);
+  const result=await dispatchGoalAuthors({config,stateDir,slots:1,adapter,resumeStopped:true});
+  assert.equal(result.dispatched.length,0);assert.equal(result.state.tasks[0].worktree_path,first.worktree_path);assert.equal(result.state.tasks[0].thread_id,'original');assert.equal(result.state.tasks[0].repair_resume_count,1);
 });
 
 test("a queued repair turn is not duplicated while another turn in the same thread is active", async () => {
@@ -1299,63 +1177,18 @@ test("a queued repair turn is not duplicated while another turn in the same thre
   }
 });
 
-test("a repeated missing turn id advances from one repair continuation to replacement without event conflict", async () => {
-  const { root, stateDir, config } = fixture();
-  config.retry_policy = { max_attempts: 3, max_repairs: 2 };
-  const first = await dispatchGoalAuthors({
-    config,
-    stateDir,
-    slots: 1,
-    adapter: { async createAuthorTask() { return { thread_id: "thread-same", turn_id: "turn-original" }; } },
-  });
-  const store = new GoalEventStore({ stateDir });
-  const original = first.dispatched[0];
-  store.append({
-    event_id: "fixture-repeated-missing-turn",
-    type: "task_replaced",
-    payload: { task: {
-      ...original,
-      state: "authoring_repair",
-      turn_id: "turn-missing",
-      repair_count: 1,
-      repair_resume_count: 0,
-      repair_history: [{ repair_count: 1, turn_id: "turn-missing", resume_turn_ids: [], started_at: "2026-09-02T00:00:00.000Z" }],
-      transition_ids: [...original.transition_ids, "repair-1-authoring"],
-    } },
-  });
-  const missingThread = { thread: { turns: [{ id: "turn-original", status: "interrupted", items: [] }] } };
-  try {
-    const firstHarvest = await harvestGoalAuthors({
-      config,
-      stateDir,
-      adapter: { async readThread() { return missingThread; } },
-    });
-    assert.equal(firstHarvest.state.tasks[0].state, "repair_requested");
-    assert.equal(firstHarvest.state.tasks[0].repair_resume_pending, true);
-
-    const resumed = await dispatchGoalAuthors({
-      config,
-      stateDir,
-      slots: 1,
-      adapter: {
-        async startRepairTurn() {
-          return { thread_id: "thread-same", turn_id: "turn-missing" };
-        },
-      },
-    });
-    assert.equal(resumed.state.tasks[0].repair_resume_count, 1);
-    assert.equal(resumed.state.tasks[0].turn_id, "turn-missing");
-
-    const secondHarvest = await harvestGoalAuthors({
-      config,
-      stateDir,
-      adapter: { async readThread() { return missingThread; } },
-    });
-    assert.equal(secondHarvest.state.tasks[0].state, "retryable_failure");
-    assert.equal(secondHarvest.state.tasks[0].failure_code, "GOAL_REPAIR_RESUME_FAILED");
-  } finally {
-    rmSync(root, { recursive: true, force: true });
-  }
+test("unattributed missing repair turn is held with continuation count 0", async t => {
+  const {root,stateDir,config}=fixture();t.after(()=>rmSync(root,{recursive:true,force:true}));
+  const first=(await dispatchGoalAuthors({config,stateDir,slots:1,adapter:{async createAuthorTask(){return {thread_id:'original',turn_id:'original-turn'};}}})).dispatched[0];
+  const store=new GoalEventStore({stateDir});
+  store.append({event_id:'terminal-fixture',type:'task_replaced',payload:{task:{...first,state:'authoring_repair',repair_count:2,repair_resume_count:0}}});
+  const adapter={async readThread(){return {thread:{turns:[]}};},async startRepairTurn(){assert.fail('Unknown failure must not start a repair');},async createAuthorTask(){assert.fail('Unknown failure must not replace its author');}};
+  const failed=(await harvestGoalAuthors({config,stateDir,adapter})).state.tasks[0];
+  assert.equal(failed.state,'retryable_failure');assert.ok(failed.coordinator_hold);assert.equal(failed.repair_count,2);
+  const before=readFileSync(path.join(stateDir,'events.jsonl'),'utf8');
+  await harvestGoalAuthors({config,stateDir,adapter});assert.equal(readFileSync(path.join(stateDir,'events.jsonl'),'utf8'),before);
+  const result=await dispatchGoalAuthors({config,stateDir,slots:1,adapter,resumeStopped:true});
+  assert.equal(result.dispatched.length,0);assert.equal(result.state.tasks[0].worktree_path,first.worktree_path);assert.equal(result.state.tasks[0].thread_id,'original');assert.equal(result.state.tasks[0].repair_resume_count,0);
 });
 
 test("a timed-out repair is interrupted then offered one same-thread continuation", async () => {
@@ -1394,10 +1227,10 @@ test("a timed-out repair is interrupted then offered one same-thread continuatio
     });
     const pending = harvested.state.tasks[0];
     assert.deepEqual(interrupts, [{ threadId: "thread-same", turnId: "turn-repair-2" }]);
-    assert.equal(pending.state, "repair_requested");
+    assert.equal(pending.state, "retryable_failure");
     assert.equal(pending.repair_count, 2);
-    assert.equal(pending.repair_resume_pending, true);
-    assert.equal(pending.failure_code, "GOAL_REPAIR_TIMEOUT_RESUME_REQUIRED");
+    assert.equal(pending.repair_resume_pending, false);
+    assert.equal(pending.failure_code, "GOAL_AUTHOR_TIMEOUT");
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
@@ -1482,7 +1315,7 @@ test("a review failure requests repair in the original visible thread and worktr
       reviewFn: () => {
         const error = new Error("four-file gate failed");
         error.code = "GOAL_AUTHOR_RESULT_INVALID";
-        error.details = { findings: [{ code: "unauthorized_file", files: ["shared.yaml"] }] };
+        error.details = { findings: [{ code: "AUTHOR_REPORT_PATH_MISMATCH", files: ["shared.yaml"] }] };
         throw error;
       },
     });
@@ -1491,7 +1324,8 @@ test("a review failure requests repair in the original visible thread and worktr
     assert.equal(repair.thread_id, "thread-same");
     assert.equal(repair.worktree_path, root);
     assert.equal(repair.repair_count, 0);
-    assert.deepEqual(repair.pending_gate_findings, [{ code: "unauthorized_file", files: ["shared.yaml"] }]);
+    assert.equal(repair.pending_gate_findings[0].code,"AUTHOR_REPORT_PATH_MISMATCH");
+    assert.deepEqual(repair.pending_gate_findings[0].files,["shared.yaml"]);
 
     const starts = [];
     const dispatched = await dispatchGoalAuthors({
@@ -1508,7 +1342,7 @@ test("a review failure requests repair in the original visible thread and worktr
     assert.equal(starts.length, 1);
     assert.equal(starts[0].threadId, "thread-same");
     assert.equal(starts[0].worktreePath, root);
-    assert.match(starts[0].prompt, /unauthorized_file/u);
+    assert.match(starts[0].prompt, /AUTHOR_REPORT_PATH_MISMATCH/u);
     assert.match(starts[0].prompt, /goal-uuid-search\.mjs query/u);
     assert.match(starts[0].prompt, /goal-uuid-search\.mjs direct-read/u);
     assert.ok(starts[0].outputSchema.required.includes("hybrid_search_receipt_ids"));
@@ -1563,7 +1397,7 @@ test("repair limit is the point where a result becomes retryable for replacement
       auditUuidsFn: () => [],
       verifySourcesFn: async () => [],
       validateReportFn: () => ({ valid: true, errors: [] }),
-      reviewFn: () => { const error = new Error("still invalid"); error.code = "GOAL_AUTHOR_RESULT_INVALID"; error.details = { findings: [{ code: "bad" }] }; throw error; },
+      reviewFn: () => { const error = new Error("still invalid"); error.code = "GOAL_AUTHOR_RESULT_INVALID"; error.details = { findings: [{ code: "GOAL_AUTHOR_PCR_INVALID" }] }; throw error; },
     });
     assert.equal(result.state.tasks[0].state, "retryable_failure");
     assert.equal(result.state.tasks[0].failure_code, "GOAL_REPAIR_LIMIT_REACHED");
@@ -1573,7 +1407,7 @@ test("repair limit is the point where a result becomes retryable for replacement
   }
 });
 
-test("failed repair continuation replaces only the thread and preserves the safe worktree", async () => {
+test("unattributed failed continuation preserves safe worktree and never replaces the thread", async () => {
   const { root, stateDir, config } = fixture();
   config.retry_policy = { max_attempts: 3, max_repairs: 2 };
   const first = await dispatchGoalAuthors({
@@ -1614,13 +1448,12 @@ test("failed repair continuation replaces only the thread and preserves the safe
       },
     });
     const replacement = result.state.tasks[0];
-    assert.equal(starts.length, 1);
-    assert.equal(starts[0].worktreePath, worktreePath);
+    assert.equal(starts.length, 0);
     assert.equal(replacement.worktree_path, worktreePath);
     assert.equal(readFileSync(markerPath, "utf8"), "preserved repair bytes\n");
-    assert.equal(replacement.thread_id, "thread-new-1");
-    assert.deepEqual(replacement.previous_thread_ids, ["thread-old"]);
-    assert.equal(replacement.continuing_repair_after_thread_replacement, true);
+    assert.equal(replacement.thread_id, "thread-old");
+    assert.deepEqual(replacement.previous_thread_ids ?? [], []);
+    assert.equal(replacement.continuing_repair_after_thread_replacement, undefined);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
@@ -1673,18 +1506,18 @@ test("failed repair continuation never falls back to the same thread when its wo
     });
     const replacement = result.state.tasks[0];
     assert.equal(repairStarts, 0);
-    assert.equal(replacements, 1);
-    assert.notEqual(replacement.worktree_path, oldWorktree);
-    assert.equal(replacement.thread_id, "thread-replacement");
-    assert.deepEqual(replacement.previous_thread_ids, ["thread-old"]);
-    assert.equal(replacement.attempt, 2);
+    assert.equal(replacements, 0);
+    assert.equal(replacement.worktree_path, oldWorktree);
+    assert.equal(replacement.thread_id, "thread-old");
+    assert.deepEqual(replacement.previous_thread_ids ?? [], []);
+    assert.equal(replacement.attempt, 1);
     assert.equal(readFileSync(unauthorized, "utf8"), "preserve me\n");
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
 });
 
-test("repair-limit replacement reuses a worktree only when its dirty paths remain authorized", async () => {
+test("repair exhaustion preserves authorized work without refreshing the content budget", async () => {
   const { root, stateDir, config } = fixture();
   config.retry_policy = { max_attempts: 3, max_repairs: 2 };
   const first = await dispatchGoalAuthors({
@@ -1738,65 +1571,15 @@ test("repair-limit replacement reuses a worktree only when its dirty paths remai
         },
       },
     });
-    assert.equal(starts[0].worktreePath, worktreePath);
-    assert.equal(result.state.tasks[0].worktree_path, worktreePath);
-    assert.equal(readFileSync(allowedPath, "utf8"), "authored manifest.yaml\n");
-    assert.equal(result.state.tasks[0].author_content_base_commit, originalContentBase);
-    assert.equal(result.state.tasks[0].author_base_commit, authoredCommit);
-    assert.equal(result.state.tasks[0].attempt, 2);
-    assert.match(starts[0].prompt, /GOAL_AUTHOR_PCR_INVALID/u);
-    assert.match(starts[0].prompt, /Reference Flow Definition is missing flow_property_ref\.uuid/u);
-
-    const firstReplacement = result.state.tasks[0];
-    store.append({
-      event_id: "fixture-repair-limit-safe-worktree-again",
-      type: "task_replaced",
-      payload: { task: {
-        ...firstReplacement,
-        state: "retryable_failure",
-        failure_code: "GOAL_REPAIR_LIMIT_REACHED",
-        transition_ids: [...firstReplacement.transition_ids, "repair-limit-again"],
-      } },
-    });
-    const second = await dispatchGoalAuthors({
-      config,
-      stateDir,
-      slots: 1,
-      resumeStopped: true,
-      adapter: {
-        async createAuthorTask(input) {
-          starts.push(input);
-          return { thread_id: `thread-new-${starts.length}`, turn_id: `turn-new-${starts.length}` };
-        },
-      },
-    });
-    assert.equal(starts.length, 2);
-    assert.equal(second.state.tasks[0].state, "authoring");
-    assert.equal(second.state.tasks[0].thread_id, "thread-new-2");
-    assert.deepEqual(second.state.tasks[0].previous_thread_ids, ["thread-old", "thread-new"]);
-    assert.equal(second.state.tasks[0].author_content_base_commit, originalContentBase);
-    assert.equal(second.state.tasks[0].attempt, 3);
-
-    const secondReplacement = second.state.tasks[0];
-    store.append({
-      event_id: "fixture-repair-limit-safe-worktree-max-attempts",
-      type: "task_replaced",
-      payload: { task: {
-        ...secondReplacement,
-        state: "retryable_failure",
-        failure_code: "GOAL_REPAIR_LIMIT_REACHED",
-        transition_ids: [...secondReplacement.transition_ids, "repair-limit-max-attempts"],
-      } },
-    });
-    const exhausted = await dispatchGoalAuthors({
-      config,
-      stateDir,
-      slots: 1,
-      resumeStopped: true,
-      adapter: { async createAuthorTask() { throw new Error("max_attempts must prevent another replacement thread"); } },
-    });
-    assert.equal(exhausted.dispatched.length, 0);
-    assert.equal(exhausted.state.tasks[0].state, "retryable_failure");
+    assert.equal(starts.length,0);
+    assert.equal(result.state.tasks[0].worktree_path,worktreePath);
+    assert.equal(readFileSync(allowedPath,'utf8'),'authored manifest.yaml\n');
+    assert.equal(result.state.tasks[0].attempt,1);
+    assert.equal(result.state.tasks[0].last_author_commit,authoredCommit);
+    assert.equal(result.state.tasks[0].state,'retryable_failure');
+    const again=await dispatchGoalAuthors({config,stateDir,slots:1,resumeStopped:true,adapter:{async createAuthorTask(){assert.fail('Exhausted repair cannot refresh its attempt budget');}}});
+    assert.equal(again.dispatched.length,0);
+    assert.equal(again.state.tasks[0].repair_count,2);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
@@ -1842,12 +1625,13 @@ test("repair-limit replacement preserves but does not reuse an unauthorized dirt
       resumeStopped: true,
       adapter: { async createAuthorTask() { return { thread_id: "thread-new", turn_id: "turn-new" }; } },
     });
-    assert.notEqual(result.state.tasks[0].worktree_path, oldWorktree);
+    assert.equal(result.state.tasks[0].worktree_path, oldWorktree);
+    assert.equal(result.dispatched.length,0);
     assert.equal(readFileSync(unauthorized, "utf8"), "must remain preserved\n");
     assert.equal(git(result.state.tasks[0].worktree_path, ["rev-parse", "HEAD"]), authoredCommit);
-    assert.equal(result.state.tasks[0].author_base_commit, authoredCommit);
+    assert.equal(result.state.tasks[0].last_author_commit, authoredCommit);
     assert.equal(readFileSync(path.join(result.state.tasks[0].worktree_path, "library/pcrs/category/item/manifest.yaml"), "utf8"), "last recorded author commit\n");
-    assert.equal(result.state.tasks[0].attempt, 2);
+    assert.equal(result.state.tasks[0].attempt, 1);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
@@ -1876,4 +1660,81 @@ test('new contract intake cannot bypass preparation with a legacy full report',a
   assert.equal(accepted,0);assert.equal(result.valid_results.length,0);
   assert.equal(new GoalEventStore({stateDir:f.stateDir}).rebuild().tasks[0].pending_gate_findings[0].code,'GOAL_REPORT_REFERENCE_INVALID');
  }finally{rmSync(f.root,{recursive:true,force:true});}
+});
+
+test('phase1a infrastructure resumes when content attempt and repair budgets are full', async t => {
+  const {root,stateDir,config}=fixture(); t.after(()=>rmSync(root,{recursive:true,force:true}));
+  config.retry_policy={max_attempts:2,max_repairs:2,backoff_seconds:0};
+  const adapter={async createAuthorTask(){return {thread_id:'original',turn_id:'source-turn'};},async startRepairTurn(){return {thread_id:'original',turn_id:'continued'};}};
+  const first=(await dispatchGoalAuthors({config,stateDir,slots:1,adapter})).dispatched[0];
+  const store=new GoalEventStore({stateDir});
+  store.append({event_id:'full-content',type:'task_replaced',payload:{task:{...first,state:'retryable_failure',attempt:2,repair_count:2,failure_code:'GOAL_CODEX_USAGE_LIMIT_EXCEEDED',model_trial:{model:'gpt-5.6-terra',trial_id:'t'},author_model:'gpt-5.6-terra'}}});
+  const preview=await dispatchGoalAuthors({config,stateDir,slots:1,adapter:{},resumeStopped:true,dryRun:true});
+  assert.deepEqual(preview.would_dispatch,[first.id]);
+  const result=await dispatchGoalAuthors({config,stateDir,slots:1,adapter,resumeStopped:true});
+  assert.equal(result.dispatched[0].attempt,2);assert.equal(result.dispatched[0].repair_count,2);assert.equal(result.dispatched[0].infrastructure_resume_count,1);
+});
+
+test('phase1a cold preview does not create lock state or inspect worktree filesystem', async t => {
+  const {root,stateDir,config}=fixture();t.after(()=>rmSync(root,{recursive:true,force:true}));
+  const store=new GoalEventStore({stateDir}); const task=store.rebuild().tasks[0];
+  store.append({event_id:'cold',type:'task_replaced',payload:{task:{...task,state:'retryable_failure',attempt:3,repair_count:2,thread_id:'t',worktree_path:'/does-not-exist',failure_code:'GOAL_CODEX_USAGE_LIMIT_EXCEEDED'}}});
+  writeFileSync(path.join(stateDir,'goal.lock'),JSON.stringify({pid:process.pid,token:'occupied'}));
+  const before=readFileSync(path.join(stateDir,'events.jsonl'),'utf8');
+  const preview=await dispatchGoalAuthors({config,stateDir,slots:1,adapter:{},resumeStopped:true,dryRun:true});
+  assert.deepEqual(preview.would_dispatch,[task.id]);assert.equal(readFileSync(path.join(stateDir,'events.jsonl'),'utf8'),before);
+});
+
+test('phase1a infrastructure budget and backoff are independent of changed failure code or continuation turn', async t => {
+  const {recoveryForTask}=await import('./orchestrator.mjs');assert.equal(typeof recoveryForTask,'function');
+  const config={retry_policy:{max_attempts:2,max_repairs:2,backoff_seconds:60}};
+  const task={id:'t',state:'retryable_failure',attempt:3,repair_count:2,thread_id:'t',worktree_path:'/unused',failure_code:'GOAL_UUID_DIRECT_READ_FAILED',failure_details:{origin:'tool_transport',failure_kind:'network',retryable:true},infrastructure_resume_count:1,updated_at:'2026-01-01T00:00:00Z'};
+  assert.equal(recoveryForTask(task,config,{now:new Date('2026-01-01T00:00:01Z')}).eligible,false);
+  assert.equal(recoveryForTask(task,config,{now:new Date('2026-01-01T00:02:00Z')}).eligible,true);
+  assert.equal(recoveryForTask({...task,failure_code:'NEW',turn_id:'new',infrastructure_resume_count:2},config,{now:new Date('2026-01-01T00:02:00Z')}).eligible,false);
+});
+
+test('phase1a dispatch crash after observed start reuses its durable intent and counts once',async t=>{
+  const {root,stateDir,config}=fixture();t.after(()=>rmSync(root,{recursive:true,force:true}));let starts=0;
+  const adapter={async createAuthorTask(){starts++;return {thread_id:'once',turn_id:'once-turn'};}};
+  await assert.rejects(dispatchGoalAuthors({config,stateDir,slots:1,adapter,faultInjector(point){if(point==='after_start_observed')throw new Error('injected crash');}}));
+  const result=await dispatchGoalAuthors({config,stateDir,slots:1,adapter,resumeStopped:true});
+  assert.equal(starts,1);assert.equal(result.state.tasks[0].attempt,1);assert.equal(result.state.tasks[0].turn_id,'once-turn');
+});
+
+test('phase1a author execution window defers without spending repair or infrastructure budget',async t=>{
+  const {root,stateDir,config}=fixture();t.after(()=>rmSync(root,{recursive:true,force:true}));config.author_timeout_seconds=1;
+  const adapter={async createAuthorTask(){return {thread_id:'same',turn_id:'source'};},async readThread(){return {thread:{turns:[{id:'source',status:'inProgress',items:[]}]}};},async interruptTurn(){},async startRepairTurn(){return {thread_id:'same',turn_id:'continue'};}};
+  const task=(await dispatchGoalAuthors({config,stateDir,slots:1,adapter})).dispatched[0];
+  const result=await harvestGoalAuthors({config,stateDir,adapter,now:()=>new Date(Date.parse(task.dispatched_at)+2000)});
+  assert.equal(result.state.tasks[0].failure_details.failure_kind,'execution_window');assert.equal(result.state.tasks[0].state,'retryable_failure');
+  const resumed=(await dispatchGoalAuthors({config,stateDir,slots:1,adapter,resumeStopped:true})).state.tasks[0];
+  assert.equal(resumed.repair_count ?? 0,0);assert.equal(resumed.infrastructure_resume_count ?? 0,0);assert.equal(resumed.execution_continue_count,1);
+});
+
+test('phase1a incident pins provenance through changed code commit and continuation then closes on actual success',async t=>{
+  const {recoveryForTask}=await import('./orchestrator.mjs');
+  const {root,stateDir,config}=fixture();t.after(()=>rmSync(root,{recursive:true,force:true}));config.retry_policy={max_attempts:2,max_repairs:2};
+  let turn=0;const adapter={async createAuthorTask(){return {thread_id:'source',turn_id:'source-turn'};},async startRepairTurn(){return {thread_id:'source',turn_id:`continued-${++turn}`};}};
+  const first=(await dispatchGoalAuthors({config,stateDir,slots:1,adapter})).dispatched[0];const store=new GoalEventStore({stateDir});
+  store.append({event_id:'incident-failure',type:'task_replaced',payload:{task:{...first,state:'retryable_failure',failure_code:'GOAL_UUID_DIRECT_READ_FAILED',failure_details:{origin:'tool_transport',failure_kind:'network',retryable:true,findings:[{code:'GOAL_UUID_DIRECT_READ_FAILED'}]}}}});
+  const once=(await dispatchGoalAuthors({config,stateDir,slots:1,adapter,resumeStopped:true})).dispatched[0];
+  assert.ok(once?.recovery_incident?.id);const incidentId=once.recovery_incident.id;
+  store.append({event_id:'incident-repeat',type:'task_replaced',payload:{task:{...once,state:'retryable_failure',failure_code:'CHANGED',last_author_commit:git(root,['rev-parse','HEAD']),report_sha256:'changed-report',failure_details:{origin:'tool_transport',failure_kind:'network',retryable:true}}}});
+  const twice=(await dispatchGoalAuthors({config,stateDir,slots:1,adapter,resumeStopped:true})).dispatched[0];
+  assert.equal(twice.recovery_incident.id,incidentId);assert.equal(twice.infrastructure_resume_history.filter(h=>h.incident_id===incidentId).length,2);
+  assert.equal(recoveryForTask({...twice,state:'retryable_failure',failure_code:'ANOTHER',last_author_commit:'different',failure_details:{origin:'tool_transport',failure_kind:'network',retryable:true}},config).eligible,false);
+  const report={schema_version:1,commit_sha:git(root,['rev-parse','HEAD']),uuid_audits:[]};
+  const complete=await harvestGoalAuthors({config,stateDir,adapter:{async readThread(){return {thread:{turns:[{id:twice.turn_id,status:'completed',items:[{type:'agentMessage',text:JSON.stringify(report)}]}]}};}},validateReportFn:()=>({valid:true,errors:[]}),auditUuidsFn:()=>[],auditHybridSearchFn:()=>[],verifySourcesFn:async()=>[],reviewFn:()=>({pcr_id:'fixture-pcr',counts:{unresolved:0}})});
+  const closed=complete.state.tasks[0];assert.equal(closed.recovery_incident.status,'closed');
+  const next=recoveryForTask({...closed,state:'retryable_failure',turn_id:'fresh-legitimate-source',report_sha256:'new-reviewed-report',report_complete:false,failure_code:'GOAL_CODEX_USAGE_LIMIT_EXCEEDED',failure_details:null},config);
+  assert.equal(next.infrastructure_used,0);assert.equal(next.eligible,true);assert.notEqual(next.incident.id,incidentId);
+});
+
+test('phase1a independent enrichment generations use distinct durable first-start identities',async t=>{
+  const {root,stateDir,config}=fixture();t.after(()=>rmSync(root,{recursive:true,force:true}));const ids=[];
+  const adapter={async createAuthorTask(input){ids.push(input.clientUserMessageId);return {thread_id:`thread-${ids.length}`,turn_id:`turn-${ids.length}`};}};
+  const first=(await dispatchGoalAuthors({config,stateDir,slots:1,adapter})).dispatched[0];const store=new GoalEventStore({stateDir});
+  store.append({event_id:'legitimate-enrichment',type:'task_replaced',payload:{task:{...first,state:'queued',uuid_enrichment_generation:1,attempt:0,thread_id:null,turn_id:null,worktree_path:null,author_branch:null,author_start_intent:null}}});
+  await dispatchGoalAuthors({config,stateDir,slots:1,adapter});assert.equal(ids.length,2);assert.notEqual(ids[0],ids[1]);
 });
