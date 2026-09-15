@@ -10,7 +10,10 @@ import {
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
+import { passingReview } from "./fixtures/review-results.mjs";
 import { GoalEventStore } from "./event-store.mjs";
+import { GoalHarnessError } from "./errors.mjs";
+import { resolveAuthorSubmission } from "./author-submission.mjs";
 const api = await import("./report-preparation.mjs").catch(() => ({}));
 const { assembleAuthorReport, prepareAuthorReport, resolvePreparedReport } =
   api;
@@ -118,13 +121,7 @@ function fixture(t) {
     taskId: task.id,
     draftPath,
     cwd: root,
-    reviewFn: () => ({
-      valid: true,
-      builder: {
-        measurement: { status: "pass", coverage: { complete: true } },
-      },
-      sync: { first_run_clean: true, second_run_clean: true },
-    }),
+    reviewFn: passingReview,
   };
   return { root, stateDir, task, store, draft, draftPath, options, files };
 }
@@ -298,4 +295,91 @@ test("dirty PCR content cannot produce a prepared report even with a passing rev
   assert.equal(reviews, 0);
   assert.equal(f.store.readEvents().filter(event => event.type === "author_report_prepared").length, 0);
   assert.equal(f.store.rebuild().tasks[0].repair_count, 0);
+});
+
+test("preparation failure is independently bound and readable without trusting the author's failure code", t => {
+  const f = fixture(t);
+  const observed = new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "Public identity read timed out.", {
+    phase: "preparation", origin: "tool_transport", failure_kind: "network", retryable: true,
+    subject_id: "fixture-uuid", findings: [{ code: "GOAL_UUID_DIRECT_READ_FAILED", message: "Public read timed out." }],
+  });
+  assert.throws(() => prepareAuthorReport({ ...f.options, auditUuidsFn: () => { throw observed; } }),
+    error => error.code === observed.code && Boolean(error.details.preparation_failure_id));
+  const loaded = api.resolvePreparationFailure({ stateDir: f.stateDir, task: f.task });
+  assert.equal(loaded.failure.code, observed.code);
+  assert.equal(loaded.failure.details.origin, "tool_transport");
+  assert.equal(loaded.manifest.binding.turn_id, "turn-1");
+  assert.deepEqual(f.store.rebuild().tasks[0], f.task);
+  assert.equal(f.store.readEvents().filter(e => e.type === "author_report_prepared").length, 0);
+  assert.throws(() => resolveAuthorSubmission({ stateDir: f.stateDir, task: f.task, wire: {
+    schema_version: 2, prepared_report: null, boundary_review_report: null,
+    failure: { code: "GOAL_AUTHOR_PREFLIGHT_FAILED", message: "Author guessed a different cause." },
+  } }), error => error.code === observed.code && error.details.independently_observed === true);
+  writeFileSync(loaded.failure_path, "{}");
+  assert.throws(() => api.resolvePreparationFailure({ stateDir: f.stateDir, task: f.task }),
+    error => error.code === "GOAL_REPORT_BINDING_MISMATCH");
+});
+
+test("a preparation failure from an earlier turn is never reused for a continuation", t => {
+  const f = fixture(t);
+  assert.throws(() => prepareAuthorReport({ ...f.options, auditUuidsFn: () => {
+    throw new GoalHarnessError("GOAL_REVIEW_WINDOW_EXHAUSTED", "Assessment window expired.", {
+      phase: "preparation", origin: "harness_deadline", failure_kind: "execution_window", retryable: false,
+    });
+  } }));
+  assert.equal(typeof api.resolvePreparationFailure, "function");
+  const next = { ...f.task, turn_id: "turn-2" };
+  f.store.append({ event_id: "continue", type: "task_replaced", payload: { task: next } });
+  assert.equal(api.resolvePreparationFailure({ stateDir: f.stateDir, task: next }), null);
+  assert.throws(() => api.resolvePreparationFailure({ stateDir: f.stateDir, task: f.task }),
+    error => error.code === "GOAL_REPORT_BINDING_MISMATCH");
+});
+
+test("a returned failed or incomplete UUID result cannot publish a ready preparation", t => {
+  const f = fixture(t);
+  for (const result of [ { valid: false, results: [], checks: [], findings: [] },
+    { valid: true, results: [], checks: [{ phase: "preparation", check_id: "uuid_public_read", subject_id: "missing", status: "skipped" }], findings: [] } ]) {
+    assert.throws(() => prepareAuthorReport({ ...f.options, auditUuidsFn: () => result }));
+    assert.equal(f.store.readEvents().filter(e => e.type === "author_report_prepared").length, 0);
+  }
+});
+
+test("an exhausted preparation window before commit inspection leaves a bound failure observation", t => {
+  const f = fixture(t);
+  assert.throws(() => prepareAuthorReport({ ...f.options, deadline: Date.now() - 1 }), error =>
+    error.details?.failure_kind === "execution_window" && Boolean(error.details.preparation_failure_id));
+  const loaded = api.resolvePreparationFailure({ stateDir: f.stateDir, task: f.task });
+  assert.equal(loaded.failure.details.failure_kind, "execution_window");
+  assert.equal(loaded.manifest.content_verified, false);
+  assert.equal(f.store.rebuild().tasks[0].attempt, 1);
+});
+
+test("early missing-file and invalid-schema failures remain independently readable", t => {
+  const f = fixture(t);
+  const missing = path.join(f.root, f.files[3]);
+  rmSync(missing);
+  assert.throws(() => prepareAuthorReport(f.options), error => Boolean(error.details?.preparation_failure_id));
+  const loaded = api.resolvePreparationFailure({ stateDir:f.stateDir, task:f.task });
+  assert.equal(loaded.manifest.files[f.files[3]], null);
+  writeFileSync(missing, `test ${f.files[3]}\n`);
+  assert.throws(() => api.resolvePreparationFailure({ stateDir:f.stateDir, task:f.task }), error => error.code === "GOAL_REPORT_BINDING_MISMATCH");
+  delete f.draft.product_name_en;
+  writeFileSync(f.draftPath, JSON.stringify(f.draft));
+  assert.throws(() => prepareAuthorReport(f.options), error => Boolean(error.details?.preparation_failure_id));
+  const schemaFailure = api.resolvePreparationFailure({ stateDir:f.stateDir,task:f.task });
+  assert.ok(schemaFailure.failure.details.findings.every(finding => finding.details.failure_kind === "author_claim"));
+});
+
+test('preparation cannot publish ready when its final input recheck has exhausted the window', t => {
+  const f=fixture(t); let clock=Date.now(); const deadline=clock+5000;
+  t.mock.method(Date,'now',()=>clock);
+  assert.throws(()=>prepareAuthorReport({...f.options,deadline,reviewFn:args=>{
+    const result=passingReview(args); clock=deadline; return result;
+  }}),error=>error.code==='GOAL_REVIEW_WINDOW_EXHAUSTED');
+  assert.equal(f.store.readEvents().filter(event=>event.type==='author_report_prepared').length,0);
+});
+
+test('prepared reference resolution observes the harvest deadline before git inspection', t => {
+  const f=fixture(t), reference=prepareAuthorReport(f.options);
+  assert.throws(()=>resolveAuthorSubmission({stateDir:f.stateDir,task:f.task,wire:{schema_version:2,prepared_report:reference,boundary_review_report:null,failure:null},deadline:Date.now()-1}),error=>error.code==='GOAL_REVIEW_WINDOW_EXHAUSTED');
 });

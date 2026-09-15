@@ -18,6 +18,7 @@ import {
 import { commitRepositoryValidation, listCommittedRepositoryValidations, reserveRepositoryCandidate } from "./repository-coordinator.mjs";
 import { publishAllPendingViewerSnapshots } from "./viewer-publication.mjs";
 import { checkViewerCandidates } from "../../packages/pcr-viewer/scripts/build-viewer-data.mjs";
+import { acceptedReviewTask } from "./fixtures/review-results.mjs";
 
 const repositoryRoot = path.resolve(import.meta.dirname, "../..");
 const boundedPcrs = [
@@ -75,6 +76,26 @@ function fixtureBuild({ cwd, name }) {
 function integrateFixtureSnapshot(options) {
   return integrateGoalSnapshot({ artifactStoreProbe: () => {}, viewerPublisher: () => {}, ...options });
 }
+
+test("partial integration cannot manufacture a snapshot from unaccepted or held valid_result state", () => {
+  withIntegrationFixture(({ stateDir, config, task, commit }) => {
+    const accepted = acceptedReviewTask({ ...task, state: "valid_result" });
+    for (const [index, mutate] of [
+      value => { delete value.validation_result; },
+      value => { value.validation_result.assessment.valid = false; },
+      value => { value.coordinator_hold = { reason: "review_pending" }; },
+    ].entries()) {
+      const candidate = structuredClone(accepted);
+      mutate(candidate);
+      const proofStateDir = path.join(stateDir, `unaccepted-${index}`);
+      const store = new GoalEventStore({ stateDir: proofStateDir });
+      store.initialize({ goal_id: "fixture", baseline: { commit }, tasks: [candidate], snapshots: [] });
+      assert.throws(() => integrateFixtureSnapshot({ config, stateDir: proofStateDir, allowPartial: true, dryRun: true }), error => error.code === "GOAL_INTEGRATION_NOT_READY");
+      assert.deepEqual(store.rebuild().snapshots, []);
+      assert.equal(store.rebuild().tasks[0].state, "valid_result");
+    }
+  });
+});
 
 for (const taskState of ["integrating", "integrated"]) {
   test(`legacy validated snapshot with ${taskState} tasks is not offered as ready to land`, () => {

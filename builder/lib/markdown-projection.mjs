@@ -72,6 +72,20 @@ function normalizeProjectionHeader(value) {
   return localizedHeaders.get(raw) ?? normalizeHeader(raw);
 }
 
+function normalizeReferenceField(value) {
+  const localizedFields = new Map([
+    ["参考数量", "reference_amount"],
+    ["参考产品流", "reference_product_flow"],
+    ["参考产品", "reference_product_flow"],
+    ["参考流属性", "reference_flow_property"],
+    ["参考单位组", "reference_unit_group"],
+    ["参考单位", "reference_unit"],
+    ["必需限定信息", "required_qualifiers"],
+    ["必填限定信息", "required_qualifiers"],
+  ]);
+  return localizedFields.get(stripInlineCode(value).trim()) ?? normalizeHeader(value);
+}
+
 function inlineCodeValues(value) {
   return [...String(value ?? "").matchAll(/`([^`]+)`/gu)].map((match) => match[1].trim()).filter(Boolean);
 }
@@ -366,7 +380,7 @@ function parseReferenceFlowDefinitionTable(table) {
   }
   const fields = new Map();
   for (const row of table.rows) {
-    const key = normalizeHeader(tableCell(row, headerIndex, ["field"]));
+    const key = normalizeReferenceField(tableCell(row, headerIndex, ["field"]));
     const value = tableCell(row, headerIndex, ["value"]);
     if (key) {
       fields.set(key, value);

@@ -9,7 +9,7 @@ import test from "node:test";
 
 import { CodexAppServerAdapter } from "./app-server.mjs";
 
-function mockSpawn({ failMethod = null } = {}) {
+function mockSpawn({ failMethod = null, delayMethod = null, delayMs = 120 } = {}) {
   const requests = [];
   const child = new EventEmitter();
   child.stdin = new PassThrough();
@@ -27,7 +27,8 @@ function mockSpawn({ failMethod = null } = {}) {
       const request = JSON.parse(line);
       requests.push(request);
       if (!Object.hasOwn(request, "id")) continue;
-      queueMicrotask(() => {
+      const schedule = request.method === delayMethod ? callback => setTimeout(callback, delayMs) : queueMicrotask;
+      schedule(() => {
         if (request.method === failMethod) {
           child.stdout.write(`${JSON.stringify({ id: request.id, error: { code: -32000, message: "unsupported" } })}\n`);
           return;
@@ -81,7 +82,8 @@ function mockWebSocket() {
   return { socket, requests };
 }
 
-test("app-server adapter creates one durable visible thread bound to the author worktree", async () => {
+test("app-server adapter creates one durable visible thread bound to the author worktree", async t => {
+  const receiptStateDir=mkdtempSync(path.join(tmpdir(),"adapter-receipt-"));t.after(()=>rmSync(receiptStateDir,{recursive:true,force:true}));
   const mock = mockSpawn();
   const starts = [];
   const adapter = new CodexAppServerAdapter({
@@ -102,24 +104,29 @@ test("app-server adapter creates one durable visible thread bound to the author 
       outputSchema: { type: "object" },
       sandbox: "danger-full-access",
       approvalPolicy: "never",
+      model: "gpt-5.6-terra",
+      reasoningEffort: "high",
       clientUserMessageId: "goal-task-41111-attempt-1",
-      receiptStateDir: "/tmp/goal-state",
+      receiptStateDir,
     });
     assert.deepEqual(task, { thread_id: "thread-visible-1", turn_id: "turn-1" });
     assert.deepEqual(starts[0], { command: "codex", args: ["app-server", "--stdio"] });
     const started = mock.requests.find((request) => request.method === "thread/start");
     assert.equal(started.params.cwd, "/tmp/visible-author-worktree");
     assert.equal(started.params.ephemeral, false);
+    assert.equal(started.params.model, "gpt-5.6-terra");
     assert.deepEqual(started.params.runtimeWorkspaceRoots, ["/tmp/visible-author-worktree", "/tmp/shared-materials"]);
     assert.equal(mock.requests.some((request) => request.method === "thread/name/set"), true);
     const turn = mock.requests.find((request) => request.method === "turn/start");
     assert.equal(turn.params.threadId, "thread-visible-1");
+    assert.equal(turn.params.model, "gpt-5.6-terra");
+    assert.equal(turn.params.effort, "high");
     assert.deepEqual(turn.params.runtimeWorkspaceRoots, ["/tmp/visible-author-worktree", "/tmp/shared-materials"]);
     assert.equal(turn.params.input[0].type, "text");
     assert.equal(turn.params.outputSchema.type, "object");
     assert.deepEqual(turn.params.sandboxPolicy, {
       type: "workspaceWrite",
-      writableRoots: ["/tmp/visible-author-worktree", "/tmp/goal-state", "/tmp/shared-materials"],
+      writableRoots: ["/tmp/visible-author-worktree", receiptStateDir, "/tmp/shared-materials"],
       networkAccess: true,
     });
   } finally {
@@ -186,7 +193,8 @@ test("app-server failure is a stable fail-closed error with no hidden fallback",
   }
 });
 
-test("repair starts a new turn without resuming an interrupted turn in the original durable thread", async () => {
+test("repair starts a new turn without resuming an interrupted turn in the original durable thread", async t => {
+  const receiptStateDir=mkdtempSync(path.join(tmpdir(),"adapter-receipt-"));t.after(()=>rmSync(receiptStateDir,{recursive:true,force:true}));
   const mock = mockSpawn();
   const adapter = new CodexAppServerAdapter({ spawnFactory: () => mock.child, requestTimeoutMs: 1000 });
   try {
@@ -196,20 +204,24 @@ test("repair starts a new turn without resuming an interrupted turn in the origi
       additionalWorkspaceRoots: ["/tmp/shared-materials"],
       prompt: "repair structured findings",
       outputSchema: { type: "object" },
+      model: "gpt-5.6-terra",
+      reasoningEffort: "high",
       clientUserMessageId: "task-repair-1",
-      receiptStateDir: "/tmp/goal-state",
+      receiptStateDir,
     });
     assert.equal(result.thread_id, "thread-visible-1");
     assert.equal(mock.requests.some((request) => request.method === "thread/resume"), false);
     const turn = mock.requests.find((request) => request.method === "turn/start");
     assert.equal(turn.params.threadId, "thread-visible-1");
+    assert.equal(turn.params.model, "gpt-5.6-terra");
+    assert.equal(turn.params.effort, "high");
     assert.deepEqual(turn.params.runtimeWorkspaceRoots, ["/tmp/visible-author-worktree", "/tmp/shared-materials"]);
     assert.equal(turn.params.sandboxPolicy.writableRoots.includes("/tmp/shared-materials"), true);
     assert.equal(turn.params.cwd, "/tmp/visible-author-worktree");
     assert.equal(turn.params.clientUserMessageId, "task-repair-1");
     assert.deepEqual(turn.params.sandboxPolicy, {
       type: "workspaceWrite",
-      writableRoots: ["/tmp/visible-author-worktree", "/tmp/goal-state", "/tmp/shared-materials"],
+      writableRoots: ["/tmp/visible-author-worktree", receiptStateDir, "/tmp/shared-materials"],
       networkAccess: true,
     });
   } finally {
@@ -217,7 +229,8 @@ test("repair starts a new turn without resuming an interrupted turn in the origi
   }
 });
 
-test("repair reloads a durable thread once when a restarted daemon reports thread not found", async () => {
+test("repair reloads a durable thread once when a restarted daemon reports thread not found", async t => {
+  const receiptStateDir=mkdtempSync(path.join(tmpdir(),"adapter-receipt-"));t.after(()=>rmSync(receiptStateDir,{recursive:true,force:true}));
   const mock = mockSpawn();
   let turnStartCount = 0;
   const calls = [];
@@ -243,7 +256,7 @@ test("repair reloads a durable thread once when a restarted daemon reports threa
       prompt: "repair after daemon restart",
       outputSchema: { type: "object" },
       clientUserMessageId: "task-repair-daemon-reload",
-      receiptStateDir: "/tmp/goal-state",
+      receiptStateDir,
     });
     assert.deepEqual(result, {
       thread_id: "thread-visible-1",
@@ -273,4 +286,92 @@ test("websocket adapter closes only its client connection so a persistent Goal d
   assert.equal(mock.requests[0].method, "initialize");
   await adapter.close();
   assert.equal(mock.socket.closed, true);
+});
+
+test('phase1a durable start receipt reconciles a lost turn response without starting twice',async t=>{
+  const stateDir=mkdtempSync(path.join(tmpdir(),'start-intent-'));t.after(()=>rmSync(stateDir,{recursive:true,force:true}));
+  const adapter=new CodexAppServerAdapter();adapter.connect=async()=>({});
+  let starts=0;let threadStarts=0;
+  adapter.request=async(method,params)=>{
+    if(method==='thread/start'){threadStarts++;return {thread:{id:'durable'}};}
+    if(method==='turn/start'){starts++;throw new Error('response lost after server accepted');}
+    if(method==='thread/read')return {thread:{id:'durable',cwd:'/worktree',turns:[{id:'accepted-turn',clientUserMessageId:'stable-message',items:[]}]}};
+    return {};
+  };
+  const args={worktreePath:'/worktree',prompt:'do task',title:'PCR',clientUserMessageId:'stable-message',receiptStateDir:stateDir};
+  await assert.rejects(adapter.createAuthorTask(args));
+  const result=await adapter.createAuthorTask(args);
+  assert.deepEqual(result,{thread_id:'durable',turn_id:'accepted-turn'});
+  assert.deepEqual(await adapter.createAuthorTask(args),result);
+  assert.equal(starts,1);assert.equal(threadStarts,1);
+});
+
+test('phase1a unprovable start stays held rather than retrying a thread or turn start',async t=>{
+  const stateDir=mkdtempSync(path.join(tmpdir(),'start-unknown-'));t.after(()=>rmSync(stateDir,{recursive:true,force:true}));
+  const adapter=new CodexAppServerAdapter();adapter.connect=async()=>({});let starts=0;
+  adapter.request=async method=>{if(method==='thread/start'){starts++;throw new Error('unknown outcome');}return {};};
+  const args={worktreePath:'/worktree',prompt:'do task',clientUserMessageId:'stable-message',receiptStateDir:stateDir};
+  await assert.rejects(adapter.createAuthorTask(args));
+  await assert.rejects(adapter.createAuthorTask(args),e=>e.code==='GOAL_AUTHOR_START_UNCERTAIN');
+  assert.equal(starts,1);
+});
+
+for (const delayMethod of ["initialize", "thread/read"]) test(`review deadline bounds delayed ${delayMethod} without interrupting the author`, async t => {
+  const mock = mockSpawn({ delayMethod });
+  const adapter = new CodexAppServerAdapter({ spawnFactory: () => mock.child });
+  t.after(() => adapter.close());
+  const started = Date.now();
+  await assert.rejects(adapter.readThread({ threadId: "durable-author", deadline: started + 25 }), error => {
+    assert.equal(error.code, "GOAL_REVIEW_WINDOW_EXHAUSTED");
+    assert.equal(error.details.origin, "harness_deadline");
+    assert.equal(error.details.failure_kind, "execution_window");
+    assert.equal(error.details.retryable, false);
+    return true;
+  });
+  assert.ok(Date.now() - started < 100, "must use remaining review window rather than default RPC timeout");
+  assert.equal(adapter.pending.size, 0);
+  assert.equal(mock.requests.some(request => request.method === "turn/interrupt"), false);
+  // A late response cannot leave or recreate a pending client request.
+  await new Promise(resolve => setTimeout(resolve, 130));
+  assert.equal(adapter.pending.size, 0);
+});
+
+test("review deadline also bounds websocket connection establishment", async t => {
+  const emitter = new EventEmitter();
+  const requests = [];
+  const socket = { readyState: 0, closed: false,
+    addEventListener(name, listener, options = {}) { emitter[options.once ? "once" : "on"](name, listener); },
+    removeEventListener(name, listener) { emitter.removeListener(name, listener); },
+    send(line) { const request = JSON.parse(line); requests.push(request); if (request.id) queueMicrotask(() => emitter.emit("message", { data: JSON.stringify({ id: request.id, result: {} }) })); },
+    close() { this.closed = true; this.readyState = 3; },
+  };
+  const opening = setTimeout(() => { socket.readyState = 1; emitter.emit("open"); }, 120);
+  t.after(() => clearTimeout(opening));
+  const adapter = new CodexAppServerAdapter({ endpoint: "ws://fake.invalid", webSocketFactory: () => socket });
+  t.after(() => adapter.close());
+  await assert.rejects(adapter.readThread({ threadId: "durable-author", deadline: Date.now() + 25 }), { code: "GOAL_REVIEW_WINDOW_EXHAUSTED" });
+  assert.equal(adapter.pending.size, 0);
+  assert.equal(socket.closed, true);
+  assert.equal(adapter.socket, null);
+  assert.deepEqual(requests, []);
+});
+
+test("request timeout override cancels its pending wait and leaves author turn untouched", async t => {
+  const mock = mockSpawn({ delayMethod: "thread/read" });
+  const adapter = new CodexAppServerAdapter({ spawnFactory: () => mock.child });
+  t.after(() => adapter.close());
+  await adapter.connect();
+  const started = Date.now();
+  await assert.rejects(adapter.request("thread/read", { threadId: "durable-author" }, { timeoutMs: 25 }), /Timed out waiting for thread\/read/);
+  assert.ok(Date.now() - started < 100);
+  assert.equal(adapter.pending.size, 0);
+  assert.equal(mock.requests.some(request => request.method === "turn/interrupt"), false);
+});
+
+test("an already exhausted review deadline starts no app-server transport", async () => {
+  let starts = 0;
+  const adapter = new CodexAppServerAdapter({ spawnFactory: () => { starts += 1; throw new Error("must not spawn"); } });
+  await assert.rejects(adapter.readThread({ threadId: "durable-author", deadline: Date.now() - 1 }), { code: "GOAL_REVIEW_WINDOW_EXHAUSTED" });
+  assert.equal(starts, 0);
+  assert.equal(adapter.pending.size, 0);
 });

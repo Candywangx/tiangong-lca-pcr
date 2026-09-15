@@ -218,7 +218,10 @@ export function integrateGoalSnapshot({
         snapshotId: snapshot.id,
         fallbackHead: goalBase,
       });
-      const baseCommit = candidate.observed_integration_head;
+      const baseCommit = snapshot.reconciliation?.base_commit ?? candidate.observed_integration_head;
+      if (!isAncestor(config.project_root, candidate.observed_integration_head, baseCommit)) {
+        throw new GoalHarnessError("GOAL_RECONCILIATION_INPUT_CHANGED", "Repository integration head advanced beyond the approved reconciliation baseline.");
+      }
       const workspace = prepareIntegrationWorkspace({ config, snapshot, baseCommit });
       const { worktreePath, branch, integrationAttempt } = workspace;
 
@@ -297,7 +300,7 @@ export function integrateGoalSnapshot({
       ...snapshot,
       state: "validated",
       integration_commit: integrationCommit,
-      changed_files: integratedFiles,
+      changed_files: [...new Set([...integratedFiles, ...(snapshot.reconciliation?.delivery_paths ?? [])])].sort(),
       decision_ref: decision.decision_ref,
       accepted_codes: decision.additions.map((entry) => entry.code),
       command_results: commandResults,

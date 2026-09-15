@@ -58,16 +58,19 @@ export function validateAuthorReport(report) {
   };
 }
 
-export function assertAuthorQuality({ report, authorizedFiles, changedFiles, inventoryRows, manifestUnresolved = null }) {
-  const infrastructureRows = (report.inventory?.unresolved ?? []).filter((entry) => entry.reason_code === "tiangong_cli_unavailable");
-  if (infrastructureRows.length > 0) {
-    throw new GoalHarnessError(
-      "GOAL_UUID_INFRASTRUCTURE_UNAVAILABLE",
-      "tiangong_cli_unavailable is an infrastructure-level retryable failure, not valid unresolved PCR coverage.",
-      { retryable: true, row_ids: infrastructureRows.map((entry) => entry.row_id) },
-    );
+export function assertAuthorQuality({ report, authorizedFiles, changedFiles, inventoryRows, referenceRows = { en: [], zh: [] }, sourceIds = [], manifestUnresolved = null, verifiedUuidReads = [], phase = "harvest" }) {
+  if (!Array.isArray(inventoryRows?.en) || !Array.isArray(inventoryRows?.zh)) {
+    throw new GoalHarnessError("GOAL_QUALITY_DEPENDENCY_UNAVAILABLE", "Quality checks require both successfully parsed inventory projections.", {
+      phase, origin: "harness_review", failure_kind: "dependency_unavailable", checks: [{ phase, check_id: "quality", subject_id: report?.pcr_path, status: "skipped", reason: "parsed_inventory_unavailable" }],
+    });
   }
+  const infrastructureRows = (report.inventory?.unresolved ?? []).filter((entry) => entry.reason_code === "tiangong_cli_unavailable");
   const findings = [];
+  if (infrastructureRows.length > 0) findings.push({
+    code: "GOAL_UUID_INFRASTRUCTURE_UNAVAILABLE", message: "An author's tool-unavailable assertion cannot establish valid unresolved coverage or independently prove a retryable outage.",
+    phase, origin: "author_reported", failure_kind: "unconfirmed_failure", retryable: false, row_ids: infrastructureRows.map(entry => entry.row_id),
+  });
+  const checks = [];
   const schemaResult = validateAuthorReport(report);
   if (!schemaResult.valid) {
     findings.push(...schemaResult.errors.map((error) => ({ code: "AUTHOR_REPORT_SCHEMA_INVALID", message: error.message, detail: error })));
@@ -117,24 +120,52 @@ export function assertAuthorQuality({ report, authorizedFiles, changedFiles, inv
   if (alignmentMismatch || report.bilingual?.aligned !== true || report.bilingual?.en_inventory_rows !== enRows.length || report.bilingual?.zh_inventory_rows !== zhRows.length) {
     findings.push({ code: "BILINGUAL_ROW_ALIGNMENT_MISMATCH", message: "English and Chinese inventory row order, ids, UUIDs, and controlled flow types must align." });
   }
+  if (referenceRows.en.length !== referenceRows.zh.length || referenceRows.en.some((row, index) => String(row.uuid ?? "").toLowerCase() !== String(referenceRows.zh[index]?.uuid ?? "").toLowerCase())) {
+    findings.push({ code: "REFERENCE_PRODUCT_ALIGNMENT_MISMATCH", message: "English and Chinese reference-product UUIDs must align." });
+  }
 
-  const audits = new Map((report.uuid_audits ?? []).map((audit) => [audit.uuid.toLowerCase(), audit]));
+  const declarations = groupByUuid(report.uuid_audits ?? []);
+  const identities = groupByUuid(verifiedUuidReads);
+  for (const [uuid, entries] of declarations) {
+    if (entries.length > 1) findings.push({ code: "UUID_ADOPTION_DUPLICATE", uuid, message: "An adopted UUID must have exactly one unambiguous declaration; duplicate declarations cannot overwrite each other." });
+  }
+  const actualRows = [...referenceRows.en, ...enRows];
+  for (const [uuid, entries] of groupByUuid(actualRows)) {
+    const adopted = declarations.get(uuid) ?? [];
+    if (adopted.length === 0 || !adopted[0]?.hybrid_search_receipt_id) {
+      findings.push({ code: "UUID_ADOPTION_MISSING", uuid, row_ids: entries.map(row => row.row_id), message: "Every actual reference-product and inventory UUID requires an adopted declaration linked to a receipt." });
+    }
+  }
+  const checkIdentity = (row, translated) => {
+    const uuid = String(row.uuid).toLowerCase();
+    const adopted = declarations.get(uuid) ?? [];
+    if (adopted.length !== 1 || !adopted[0].hybrid_search_receipt_id) return;
+    const reads = identities.get(uuid) ?? [];
+    if (reads.length !== 1 || reads[0]?.state_code !== 100 || typeof reads[0]?.base_name_en !== "string" || !reads[0].base_name_en || typeof reads[0]?.base_name_zh !== "string") {
+      checks.push({ phase, check_id: "uuid_identity", subject_id: `${row.row_id}:${uuid}`, status: "skipped", reason: "independent_uuid_read_unavailable", depends_on: [{ check_id: "uuid_public_read", subject_id: uuid }] });
+      return;
+    }
+    const audit = reads[0];
+    const before = findings.length;
+    if (audit.base_name_zh && translated?.name !== audit.base_name_zh) {
+      findings.push({ code: "ZH_FLOW_NAME_NOT_OFFICIAL", row_id: row.row_id, expected: audit.base_name_zh, actual: translated?.name ?? null, message: "A UUID-bearing Chinese flow name must equal the independently read TianGong Chinese baseName." });
+    } else if (!audit.base_name_zh && translated?.name !== audit.base_name_en) {
+      findings.push({ code: "ZH_FLOW_NAME_CANONICAL_FALLBACK_REQUIRED", row_id: row.row_id, expected: audit.base_name_en, actual: translated?.name ?? null, message: "When TianGong has no Chinese baseName, retain its verified canonical English baseName." });
+    } else if (!audit.base_name_zh && !/(?:Chinese\s+baseName.*unavailable|no\s+(?:official\s+)?Chinese\s+baseName|中文\s*(?:baseName|基础名称|名称).*(?:不可用|缺失|为空|未提供))/iu.test(adopted[0].semantic_review ?? "")) {
+      findings.push({ code: "ZH_FLOW_NAME_UNAVAILABLE_EXPLANATION_MISSING", row_id: row.row_id, message: "The UUID audit must explain that the TianGong Chinese baseName is unavailable." });
+    }
+    checks.push({ phase, check_id: "uuid_identity", subject_id: `${row.row_id}:${uuid}`, status: findings.length === before ? "passed" : "failed" });
+  };
+  for (const [index, row] of referenceRows.en.entries()) {
+    if (row.uuid) checkIdentity(row, referenceRows.zh[index]);
+  }
   for (const [index, row] of enRows.entries()) {
     const translated = zhRows[index];
     if (SET_FLOW_PATTERNS.some((pattern) => pattern.test(row.name ?? "") || pattern.test(translated?.name ?? ""))) {
       findings.push({ code: "INVENTORY_FLOW_NOT_ATOMIC", row_id: row.row_id, message: `Selected flow is set-like rather than atomic: ${row.name}` });
     }
     if (row.uuid) {
-      const audit = audits.get(row.uuid.toLowerCase());
-      if (!audit || !audit.hybrid_search_receipt_id || audit.state_code !== 100) {
-        findings.push({ code: "UUID_NOT_DIRECTLY_VERIFIED", row_id: row.row_id, uuid: row.uuid, message: "Every final UUID needs hybrid discovery and public state_code=100 direct read audit." });
-      } else if (audit.base_name_zh && translated?.name !== audit.base_name_zh) {
-        findings.push({ code: "ZH_FLOW_NAME_NOT_OFFICIAL", row_id: row.row_id, expected: audit.base_name_zh, actual: translated?.name ?? null, message: "A UUID-bearing Chinese flow name must equal the directly read TianGong Chinese baseName." });
-      } else if (!audit.base_name_zh && translated?.name !== audit.base_name_en) {
-        findings.push({ code: "ZH_FLOW_NAME_CANONICAL_FALLBACK_REQUIRED", row_id: row.row_id, expected: audit.base_name_en, actual: translated?.name ?? null, message: "When TianGong has no Chinese baseName, retain the verified canonical English baseName instead of inventing a Chinese official name." });
-      } else if (!audit.base_name_zh && !/(?:Chinese\s+baseName.*unavailable|no\s+(?:official\s+)?Chinese\s+baseName|中文\s*(?:baseName|基础名称|名称).*(?:不可用|缺失|为空|未提供))/iu.test(audit.semantic_review ?? "")) {
-        findings.push({ code: "ZH_FLOW_NAME_UNAVAILABLE_EXPLANATION_MISSING", row_id: row.row_id, message: "The UUID audit must explain that the TianGong Chinese baseName is unavailable." });
-      }
+      checkIdentity(row, translated);
     } else if (translated && !/\p{Script=Han}/u.test(translated.name ?? "")) {
       findings.push({ code: "ZH_FLOW_NAME_NOT_LOCALIZED", row_id: row.row_id, message: "An unresolved concrete flow needs a clear professional Chinese name." });
     }
@@ -155,6 +186,11 @@ export function assertAuthorQuality({ report, authorizedFiles, changedFiles, inv
     }
   }
 
+  for (const sourceId of sourceIds) {
+    const declarations = (report.sources ?? []).filter(source => source.source_id === sourceId);
+    if (declarations.length !== 1) findings.push({ code: declarations.length ? "SOURCE_DECLARATION_DUPLICATE" : "SOURCE_DECLARATION_MISSING", source_id: sourceId, message: "Every actual PCR source reference needs one unambiguous author source declaration." });
+    else if (declarations[0].discovery_only === true) findings.push({ code: "SOURCE_REFERENCE_DISCOVERY_ONLY", source_id: sourceId, message: "An actual PCR evidence reference cannot be declared discovery-only." });
+  }
   for (const source of report.sources ?? []) {
     if (/codex/iu.test(source.source_id) && !/codex alimentarius/iu.test(source.name)) {
       findings.push({ code: "SOURCE_ID_CODEX_FORBIDDEN", source_id: source.source_id, message: "Source ids must not label discovery by Codex." });
@@ -202,10 +238,41 @@ export function assertAuthorQuality({ report, authorizedFiles, changedFiles, inv
     findings.push({ code: "AUTHOR_VALIDATE_FAILED", message: "Author validation may fail only for a precisely reported central shared-artifact dependency." });
   }
 
-  if (findings.length > 0) {
-    throw new GoalHarnessError("GOAL_AUTHOR_RESULT_INVALID", `Author result failed ${findings.length} machine gate(s)`, { findings });
+  if (findings.length > 0 || checks.some(check => check.status !== "passed")) {
+    throw new GoalHarnessError(infrastructureRows.length ? "GOAL_UUID_INFRASTRUCTURE_UNAVAILABLE" : "GOAL_AUTHOR_RESULT_INVALID", `Author result has ${findings.length} failed finding(s) and ${checks.filter(check => check.status === "skipped").length} unavailable identity check(s).`, {
+      findings: findings.map(finding => ({ phase, origin: "harness_review", failure_kind: ["UNAUTHORIZED_COMMIT_PATH", "AUTHOR_REPORT_PATH_MISMATCH"].includes(finding.code) ? "authorization" : "author_claim", ...finding })), checks,
+    });
   }
-  return { valid: true, counts: { total: enRows.length, matched, unresolved: unresolvedRows.length }, findings: [] };
+  return { valid: true, counts: { total: enRows.length, matched, unresolved: unresolvedRows.length }, findings: [], checks };
+}
+
+function groupByUuid(entries) {
+  const grouped = new Map();
+  for (const entry of entries ?? []) {
+    const uuid = String(entry?.uuid ?? "").toLowerCase();
+    if (uuid) grouped.set(uuid, [...(grouped.get(uuid) ?? []), entry]);
+  }
+  return grouped;
+}
+
+export function referenceProductRows(projection) {
+  const product = projection?.referenceFlowDefinition?.product_flow;
+  if (product) return [{ ...product, row_id: "reference_product", flow_type: "product" }];
+  return (projection?.referenceFlows ?? []).map((row, index) => ({ ...row, row_id: `reference_product_${index}` }));
+}
+
+export function pcrSourceIds(projection) {
+  const ids = new Set((projection?.dataSources ?? []).map(source => source.id).filter(Boolean));
+  const visit = value => {
+    if (!value || typeof value !== "object") return;
+    for (const [key, entry] of Object.entries(value)) {
+      if (key === "source_ids" && Array.isArray(entry)) {
+        for (const id of entry) if (typeof id === "string" && id) ids.add(id);
+      } else if (typeof entry === "object") visit(entry);
+    }
+  };
+  visit(projection);
+  return [...ids].filter(id => !id.startsWith("tg-")).sort();
 }
 
 export function flattenProcessInventory(projection) {

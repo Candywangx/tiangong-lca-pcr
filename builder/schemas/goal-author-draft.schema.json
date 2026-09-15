@@ -85,7 +85,10 @@
     },
     "schema_version": {
       "type": "integer",
-      "const": 1
+      "enum": [
+        1,
+        2
+      ]
     },
     "cpc_code": {
       "type": "string",
@@ -132,7 +135,7 @@
     "uuid_audits": {
       "type": "array",
       "items": {
-        "$ref": "#/$defs/uuidAudit"
+        "$ref": "#/$defs/uuidAuditV2"
       }
     },
     "rejected_uuid_candidates": {
@@ -540,6 +543,80 @@
           ]
         }
       }
+    },
+    "uuidAuditV2": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "uuid",
+        "hybrid_search_receipt_id",
+        "semantic_review"
+      ],
+      "properties": {
+        "uuid": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "hybrid_search_receipt_id": {
+          "$ref": "#/$defs/receiptId"
+        },
+        "state_code": {
+          "type": "integer",
+          "const": 100
+        },
+        "base_name_en": {
+          "type": "string",
+          "minLength": 1
+        },
+        "base_name_zh": {
+          "type": "string",
+          "description": "Exact state_code=100 Chinese baseName; use an empty string when TianGong provides none."
+        },
+        "flow_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "classification": {
+          "type": "string"
+        },
+        "property": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unit_group": {
+          "type": "string",
+          "minLength": 1
+        },
+        "semantic_review": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "description": "Draft v2 records adopted UUID judgment and receipt binding. Explicit optional identity claims must be checked against verified receipt data during preparation."
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "schema_version": {
+            "const": 1
+          }
+        },
+        "required": [
+          "schema_version"
+        ]
+      },
+      "then": {
+        "properties": {
+          "uuid_audits": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/uuidAudit"
+            }
+          }
+        }
+      }
+    }
+  ]
 }

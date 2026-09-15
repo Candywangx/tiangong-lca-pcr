@@ -12,6 +12,7 @@ import {
   dispatchCandidates,
 } from "./scheduler.mjs";
 import { applyTaskTransition, canTransition } from "./state-machine.mjs";
+import { acceptedReviewTask } from "./fixtures/review-results.mjs";
 
 function makeRoot() {
   return mkdtempSync(path.join(tmpdir(), "tiangong-goal-core-"));
@@ -51,6 +52,27 @@ test("goal configuration validates and applies bounded defaults", () => {
     assert.equal(config.cpc_selector.value, "all");
     assert.equal(config.cpc_selector.mode, "target_category");
     assert.equal(config.target_category_relative, "library/pcrs/metal-products-machinery-and-equipment");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("goal configuration accepts an auditable author model and reasoning effort", () => {
+  const root = makeRoot();
+  try {
+    const config = loadGoalConfig({ configPath: writeConfig(root, `codex:
+  model: gpt-5.6-terra
+  reasoning_effort: high
+`) });
+    assert.equal(config.codex.model, "gpt-5.6-terra");
+    assert.equal(config.codex.reasoning_effort, "high");
+    assert.throws(
+      () => loadGoalConfig({ configPath: writeConfig(root, `codex:
+  model: gpt-5.6-terra
+  reasoning_effort: extreme
+`) }),
+      (error) => error.code === "GOAL_CONFIG_INVALID" && /reasoning_effort/u.test(error.message),
+    );
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
@@ -142,9 +164,9 @@ test("event store reuses its verified projection across appends and invalidates 
   try {
     class CountingStore extends GoalEventStore {
       eventLogReads = 0;
-      readEvents() {
+      iterateEvents(options) {
         this.eventLogReads += 1;
-        return super.readEvents();
+        return super.iterateEvents(options);
       }
     }
     const stateDir = path.join(root, "goal-state");
@@ -168,6 +190,27 @@ test("event store reuses its verified projection across appends and invalidates 
   }
 });
 
+test("new snapshots require complete accepted proof in both normal and partial scheduling", () => {
+  const accepted = acceptedReviewTask({ id: "proof", state: "valid_result", author_commit: "a".repeat(40), valid_at: "2026-09-14" });
+  for (const mutate of [
+    task => { delete task.validation_result; },
+    task => { task.validation_result.assessment.valid = false; },
+    task => { task.validation_result.assessment.checks = []; },
+    task => { task.validation_result.assessment.required_checks = []; },
+    task => { task.validation_result.subjects.source_ids = ["unverified-source"]; },
+    task => { task.validation_result.subjects.uuid_ids = ["11111111-1111-4111-8111-111111111111"]; },
+    task => { task.coordinator_hold = { reason: "GOAL_TRIAL_SEMANTIC_REVIEW_REQUIRED" }; },
+    task => { task.author_commit = "b".repeat(40); },
+  ]) {
+    for (const allowPartial of [false, true]) {
+      const task = structuredClone(accepted);
+      mutate(task);
+      assert.equal(buildIntegrationSnapshot({ goalId: "fixture", tasks: [task], batchSize: allowPartial ? 6 : 1, snapshots: [], allowPartial }), null);
+      assert.equal(task.state, "valid_result", "historical records are never silently rewritten");
+    }
+  }
+});
+
 test("scheduler rolls slots, replaces blocked tasks, and snapshots earliest six exactly once", () => {
   const tasks = [
     { id: "a", state: "authoring", queue_order: 1 },
@@ -179,7 +222,7 @@ test("scheduler rolls slots, replaces blocked tasks, and snapshots earliest six 
   assert.equal(activeAuthorCount(tasks), 1);
   assert.deepEqual(dispatchCandidates(tasks, { slots: 2 }).map((task) => task.id), ["c"]);
 
-  const valid = Array.from({ length: 7 }, (_, index) => ({
+  const valid = Array.from({ length: 7 }, (_, index) => acceptedReviewTask({
     id: `pcr-${index + 1}`,
     state: "valid_result",
     valid_at: `2026-09-02T00:00:0${index}.000Z`,
@@ -195,16 +238,16 @@ test("scheduler rolls slots, replaces blocked tasks, and snapshots earliest six 
     snapshots: [snapshot],
   }), null);
 
-  const enriched = [{ ...valid[0], author_commit: "f".repeat(40), valid_at: "2026-01-02T00:00:00Z" }];
+  const enriched = [acceptedReviewTask({ ...valid[0], author_commit: "f".repeat(40), valid_at: "2026-01-02T00:00:00Z" })];
   const enrichmentSnapshot = buildIntegrationSnapshot({ goalId: "fixture", tasks: enriched, batchSize: 1, snapshots: [snapshot] });
   assert.deepEqual(enrichmentSnapshot.task_ids, [valid[0].id]);
   assert.deepEqual(enrichmentSnapshot.author_commits, ["f".repeat(40)]);
 
-  const receiptOnlyCorrection = [{
+  const receiptOnlyCorrection = [acceptedReviewTask({
     ...valid[0],
     uuid_enrichment_generation: 1,
     valid_at: "2026-01-03T00:00:00Z",
-  }];
+  })];
   const correctionSnapshot = buildIntegrationSnapshot({
     goalId: "fixture",
     tasks: receiptOnlyCorrection,

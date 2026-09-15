@@ -59,6 +59,43 @@ write a stable error code and details to stderr, and include a next action.
 
 ## State and recovery
 
+### Approved dirty-main reconciliation
+
+`builder/goal-harness/reconciliation.mjs` exposes `planReconciliation` and `applyReconciliation` for a coordinator
+recovering a validated, unlanded snapshot after an explicitly approved external change. Planning takes `config`,
+`stateDir`, `snapshotId`, exact `inputPaths` (canonical PCR files, mapping/index files and ADRs), and optional
+`deliveryPaths` from the narrow runtime allowlist. It returns a SHA-256-bound plan. Applying takes that unchanged
+`plan`, an explicit `approvalReference`, and optional `dryRun`; it never infers approval from a CAS error.
+
+The audited representation is delivery truth: user approval, input hashes, HEAD, author evidence and predecessor
+snapshot are pinned. Its only promotion is a fresh fully validated integration followed by CAS. Changed input or
+evidence invalidates the plan, requiring review; it never silently refreshes an expectation. Tests use disposable
+Git repositories before this API is used on a production Goal.
+
+Stop scheduling and wait for active authors first. A temporary Git index captures only approved files over the
+effective integration baseline, without changing main HEAD, branch, index or files. One hash-chained event preserves
+the old snapshot as `superseded` and queues the same author commits in a new snapshot. All old worktrees and completion
+receipts remain. Repeating the same approved plan is idempotent. Integration reruns every normal validation and smoke
+check. Landing checks original author-file CAS expectations, approved changed-input expectations, untouched preserved
+inputs, and exact committed source bytes; approved reconciliation is not permission to overwrite a later edit.
+
+Repository-coordinated integration still reserves an accepted-head candidate, commits repository validation in order,
+publishes the pinned Viewer snapshot and requires publication before landing. Reconciliation cannot bypass those
+steps. Runtime installation includes the tracked Viewer generator, schemas and core read-context dependencies so
+an author/integration worktree cannot mix old package code with the coordinated Harness.
+
+For a correction after landing, explicitly pass `correction: true` to planning. The predecessor stays byte-for-byte
+unchanged in landed history; the new snapshot carries `correction_of` and reuses the recorded author commits. It
+captures the approved external PCR inputs and rebuilds every shared projection under the next repository sequence.
+No new author result or completed PCR is counted for such a correction, and publication plus CAS remain mandatory.
+
+Viewer recovery tests use `viewer-test-fixture.mjs`: the real pinned publisher, worker, schemas and one four-file PCR,
+one accepted mapping and one coverage leaf. No failure-injection assertions are skipped. On the September 10 local
+baseline, the full main test suite took 697.6 seconds (922 tests; 918 passed, 4 existing skips). After the compatible
+Harness merge and small-fixture replacement it took 32.9 seconds (935 tests; 931 passed, the same 4 skips). These are
+test-runner durations; complete `npm run validate` additionally runs all lint/build checks. Each production snapshot
+still executes that complete command, the bounded Viewer candidate check and consumer smoke checks before publishing.
+
 Runtime state is stored at:
 
 ```text
@@ -260,9 +297,12 @@ applicability. Prompt compilation injects only a bounded relevant subset, never 
 
 ## Prepared reports for new authors
 
-Untouched tasks pin `authoring_contract_version: 2` at initial dispatch. Tasks with a prior thread/worktree/attempt,
+Untouched tasks pin `authoring_contract_version: 2`, `author_draft_schema_version: 2` and
+`author_report_schema_version: 1` at initial dispatch. Tasks with a prior thread/worktree/attempt,
 repairs, replacements, and legacy tasks without this pin retain their original contract. A pinned task keeps version 2
-across repair turns. No existing author prompt is replaced in flight. Explicit single-PCR checks can also be used for
+across repair turns. Each newly started visible turn records the same immutable version combination. Missing historical
+fields mean version 1; an existing contract-2 task without a draft pin continues draft 1. Ordinary repair, infrastructure
+continuation and saved-report review never promote an old task. No existing author prompt is replaced in flight. Explicit single-PCR checks can also be used for
 selected standalone draft/revision work; the Harness still authorizes exactly the four current PCR files.
 
 The previous flow asked authors to copy receipt decisions into a full final report and often discovered mechanical
@@ -280,7 +320,22 @@ node <runtime>/builder/cli/goal-prepare-report.mjs \
   --config <absolute-goal.yaml> --task <task-id> --draft <absolute-draft.json> --format json
 ```
 
-The draft follows `builder/schemas/goal-author-draft.schema.json`. It preserves the existing report's author-owned
+The draft follows `builder/schemas/goal-author-draft.schema.json` using its task-pinned version. The wire contracts are:
+
+| Task authoring version | Draft version | Prepared report | Final submission |
+| --- | --- | --- | --- |
+| Historical 1 | 1 | Complete report v1 | Legacy report v1 |
+| Existing 2 without a draft pin | 1 | Complete report v1 | Reference envelope v2 |
+| Freshly adopted 2 | 2 | Complete report v1 | Reference envelope v2 |
+
+Draft v2 requires only `uuid`, `hybrid_search_receipt_id` and `semantic_review` for each adopted UUID. Preparation
+copies public state, bilingual names and flow type from the verified adopted receipt, deterministically projects the
+observed classification (first sorted id, then label), uses the verified property name and unit-group id, and emits the
+unchanged complete report v1. An explicitly supplied identity field must describe that same observed identity; a
+conflict is rejected, never overwritten. Empty Chinese names and classification-free elementary flows are preserved.
+Preparation still independently reads the current public identity and verifies adoption before becoming ready.
+
+Both draft versions preserve the existing report's author-owned
 identity, sources, adopted UUID/receipt links, semantic judgments, unresolved rows, counts, ranges, validation claims
 and commit. Omit `rejected_uuid_candidates` and top-level `hybrid_search_receipt_ids`; use `receipt_ids` for additional
 receipts whose candidates were rejected. The program derives receipt membership and copies every rejected candidate's
@@ -307,7 +362,8 @@ authors/prepared-<task-hash>/<content-id>/
 ```
 
 The manifest binds goal/task/attempt/turn, worktree, commit, four-file hashes, draft/report byte hashes, receipt
-attestations and check contract. The complete directory is published before a ready event; incomplete or substituted
+attestations, the fixed version combination and check contract. Historical missing draft/report version fields are
+interpreted read-only as version 1; old artifact bytes and hashes are never supplemented or regenerated. The complete directory is published before a ready event; incomplete or substituted
 artifacts cannot become ready. Identical inputs reuse one reference and one ready event. Changed input creates a new
 identity without overwriting previous reports; old references cannot validate the changed task, commit or evidence.
 Preparation never changes repair counts. Normal output is:
@@ -344,6 +400,64 @@ findings without batch rewrites. Do not reinstall this runtime, dispatch a pilot
 budget as a side effect of development. Broader rollout follows the pilot's same-turn correction, exact-reason,
 independent-acceptance and legacy-preservation results.
 
+## Explicit acceptance and bounded recovery
+
+Preparation and harvest use the same explicit-success assessment with different scopes. Both require the authorized
+commit, local Builder/parse/quality/sync checks, actual PCR UUID declarations, authenticated receipt membership and
+current public identity. Contract 2 also requires measurement to pass. Harvest additionally checks original sources,
+applicable enrichment and the existing trial semantic decision. Preparation ready is not final acceptance. Missing,
+empty, false or dependent-skipped results cannot enter the integration pool, snapshot or shared verified UUID cache.
+Checks are identified by `(phase, check_id, subject_id)`; independent failures are collected together and dependent
+checks retain their reason instead of producing invented identity conflicts.
+
+Failed preparation publishes a separate immutable `failed-<id>/` artifact containing the original draft, failure
+findings/progress and manifest. It is not a ready report. The scheduler can independently read the failure only after
+rechecking its current task/turn/worktree/content and successful receipt bindings. A bare author `failure` remains an
+unverified claim. Neither failure evidence nor partial successful reads are shared as fully verified evidence.
+
+Recovery first classifies each finding by observed origin and failure kind. Integrity, authorization, configuration
+and unknown failures hold; confirmed measurement/boundary findings remain manual review; author-correctable content
+is repaired together. Retryable infrastructure resumes the same author if preparation is incomplete, or rechecks a
+saved complete report without starting an author. Content repair, infrastructure recovery and execution-window
+continuation have separate budgets and histories. Infrastructure recovery and execution windows without reusable progress each use `max_attempts` as
+an independent per-incident limit; reaching either limit creates a hold without charging another category. The incident identity survives new turns, error-code changes and
+replayed resume requests. Backoff and Retry-After apply before dispatch; previews remain pure reads. Held/failed tasks
+are not restarted automatically.
+
+Each preparation/harvest invocation has a 60-second internal window; individual external operations are bounded by
+the smaller of 30 seconds and the remaining window. Child processes and adapter waits receive the actual remaining
+time. Window exhaustion is not infrastructure failure and consumes neither infrastructure nor content repair budget.
+Harvest separates a logical acceptance from its execution windows. Completed builder inspection, parsing and
+structured-sync checks are reused only under the same policy version, task/goal/turn, report, commit, authorization,
+baseline and worktree binding. Worktree safety is checked on every invocation; identity-dependent quality, receipt
+integrity/adoption and all public UUID reads run again. Local receipt checks remain cheap integrity checks rather than
+cached authority. A report or binding change discards saved progress; policy changes must bump the checkpoint version.
+Fixed original-source completions pin the source declaration and content hash, and revalidate the existing receipt,
+blob and document qualification before reuse. These completions run first, then unfinished sources, then fresh UUIDs.
+Only exceeding the previous high-water count of bound reusable completions credits a saved-report execution window. The history records
+before/after counts and binding; replay, changed bindings, repeating the same checks and windows without progress
+cannot earn credit. Infrastructure failures retain their separate limit. Successful UUID reads from previous windows
+are never accumulated: all UUIDs and their dependent final checks must fit in a fresh window, otherwise bounded recovery
+holds for review. No larger attempt count substitutes for evidence completion.
+
+Author startup records a stable intent and client user-message id before invoking the adapter. Crash recovery must
+reconcile that intent with the durable visible turn; uncertainty holds instead of starting another author or counting
+a repair twice. Runtime and model-trial fingerprints remain mandatory. Original-source cache fallback is separate from
+automatic retry: a 403 may use a matching verified blob, while 429 honors Retry-After. Blob identity, content hash and
+original-document qualification are rechecked; PDF magic bytes or a login/challenge page are insufficient.
+Legacy receipts without `original_identity_verified` can enter the same revalidation after receipt/blob integrity
+checks; current audit results expose the new verification without rewriting historical bytes or hashes. Only observed
+HTTP access failures and recognized transport errors allow fallback; an unknown program exception holds even if a
+cache exists.
+
+Original-source qualification normalizes HTML body text (including inline tags and common/numeric entities), removes
+navigation/script content, and uses Poppler `pdftotext` for PDF bytes under the remaining execution deadline. Install
+`poppler-utils` on Linux (or Poppler on other hosts); a missing extractor is a configuration hold. CI installs it explicitly.
+The conservative automatic gate requires a matching normalized title and at least two substantive document sections
+with prose, beyond title/abstract/download metadata. Results distinguish `original`, `metadata`, `access_challenge`
+and `unrecognized`; unknown or unsupported documents remain for review. This supports ordinary text-bearing methodology
+documents, not every publisher format or scanned PDF, and does not replace semantic relevance review.
+
 ## Gates
 
 The author report Schema and commit-tree review enforce the exact four files, PCR path, material Builder contracts,
@@ -368,3 +482,41 @@ The viewer derivation may be restored only from a same-input cache whose PCR, ma
 viewer-code, and core-code SHA-256 fingerprint and output-tree hash both match. Corruption rebuilds safely. Full
 `npm run validate` still runs once for every six-result snapshot; its lint phase performs the authoritative
 aliases/catalog checks, so integration does not repeat those identical checks immediately before validate.
+# Bounded matched-model production trial
+
+`node builder/cli/goal-model-trial.mjs register --config <goal.yaml> --plan <trial.json> --dry-run`
+previews six untouched real queued tasks after the authenticated doctor. Remove `--dry-run` to append one atomic
+registration event to the existing Goal. Repeating the identical plan is idempotent. No author is interrupted or
+dispatched by registration. The approved example is `builder/planning/model-trial-metal-20260911.json`.
+
+Use the existing `goal.mjs resume --config <goal.yaml>` entry for natural-slot dispatch. Trial tasks override only
+their actual app-server model/effort parameters; the global default and existing authors remain unchanged.
+Three pairs each contain Terra/high and Sol/high, with the same action and recorded a priori difficulty reasons.
+One original-model content repair is allowed, followed by Sol rescue for Terra within the existing repair budget.
+Infrastructure and interrupted-repair continuations retain the previous model. Trial exhaustion preserves artifacts
+for review rather than recycling the sample as a new author. Suspicious receipt findings hold new Terra dispatch
+pending adjudication, not a claim of confirmed misconduct; active authors and ordinary Sol dispatch are retained.
+
+Assignments are immutable. Policy/runtime/config fingerprints freeze at the first sample turn. A tested preparation
+fix may revise fingerprints only through an audited `model_trial_controls_prelaunch` event while all six samples
+are still untouched queued tasks; the old controls remain in history. Runtime drift fails before a trial turn starts.
+Both arms use the existing shared-cache rules, with per-turn injected evidence count/fingerprint recorded; warming
+is an explicit confounder. Query-hit counts or query waiting times without reliable observations are unavailable.
+Turn telemetry comes from exact-identity, no-follow, stable session reads. Repeated cumulative snapshots are not
+summed; reset epochs and per-turn identities must be proven. Missing or ambiguous tokens/cost are unavailable, not
+zero. Cached input is a subset of input and must not be added again. Subscription quota is not a token or currency
+measurement. Failed and repair turns remain in the same sample ledger, including Sol rescue.
+
+Automatic success holds a trial task in author_review until the coordinator records `trial_semantic_review` against
+the exact report commit, with `decision: approved`, reviewer, UTC time, a truthful `model_blinded` flag and nonempty
+evidence notes in `source_support`, `uuid_applicability`, `inventory_completeness`, and `chinese_alignment`.
+The coordinator appends this through GoalEventStore under the Goal lock and releases only the corresponding hold;
+resume repeats the ordinary hard gates. A new commit invalidates this extra approval. No trial acceptance bypasses
+the normal earliest-six serial integration, complete validate, pinned Viewer publication or CAS landing.
+
+`node builder/cli/goal-model-trial.mjs report --config <goal.yaml> --trial <id>` emits JSON for individual samples,
+turns, gate findings, measurements and landing status. Separate Terra independent, Sol independent and Terra draft
+plus Sol repair; do not count rescue as independent Terra success. Report the first six before deciding on a second
+explicitly reviewed stage. Automatic extension is disabled; this pilot must not become an unbounded experiment or
+mark the production Goal complete. The supplied allocation contains only promote_legacy and cannot establish
+create_new performance.

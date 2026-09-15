@@ -80,6 +80,32 @@ test("authenticated hybrid preflight retries one transient whole-chain failure b
   assert.deepEqual(waits, [25]);
 });
 
+test("authenticated hybrid preflight increases the delay between repeated whole-chain failures", () => {
+  let authAttempts = 0;
+  const waits = [];
+  const check = authenticatedHybridSearchDryRunCheck({
+    tiangongCliRoot: "/tools/tiangong-cli",
+    flowHybridSearchRoot: "/tools/flow-hybrid-search",
+    maxAttempts: 3,
+    retryDelayMs: 25,
+    sleeper: (milliseconds) => waits.push(milliseconds),
+    runner(command, args) {
+      if (args.includes("doctor-auth")) {
+        authAttempts += 1;
+        if (authAttempts < 3) return { status: 1, stdout: "", stderr: "transient upstream failure" };
+        return { status: 0, stdout: JSON.stringify({ status: "passed" }), stderr: "" };
+      }
+      if (args.some((arg) => arg.endsWith("/run-flow-hybrid-search.mjs"))) {
+        return { status: 0, stdout: JSON.stringify({ data: [{ id: UUID_A }] }), stderr: "" };
+      }
+      return { status: 0, stdout: JSON.stringify({ state_code: 100, flow: { flowDataSet: { flowInformation: { dataSetInformation: { "common:UUID": UUID_A } } } } }), stderr: "" };
+    },
+  });
+  assert.equal(check.ok, true);
+  assert.equal(check.detail.attempts, 3);
+  assert.deepEqual(waits, [25, 50]);
+});
+
 test("authenticated hybrid preflight still fails closed after bounded retries without leaking stderr", () => {
   const secret = "must-not-escape";
   let callCount = 0;
@@ -375,4 +401,101 @@ test("no_exact_candidate and manual_review_required need a finalized receipt", (
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
+});
+
+test('collected local receipt failures do not hide subsequent receipt checks', async t => {
+  const f=fixture();t.after(()=>rmSync(f.root,{recursive:true,force:true}));
+  const {loadReportReceiptEvidence}=await import('./uuid-search-receipts.mjs');
+  const task=JSON.parse(readFileSync(path.join(f.stateDir,'state.json'),'utf8')).tasks[0];
+  const result=loadReportReceiptEvidence({stateDir:f.stateDir,task,report:{hybrid_search_receipt_ids:['missing-a','missing-b']},collect:true,phase:'preparation'});
+  assert.equal(result.valid,false);
+  assert.deepEqual(result.checks.map(c=>[c.phase,c.check_id,c.subject_id,c.status]),[['preparation','receipt_integrity','missing-a','failed'],['preparation','receipt_integrity','missing-b','failed']]);
+  assert.equal(result.findings.length,2);
+});
+
+function adoptedReceiptCollectionFixture(t) {
+  const f=fixture();t.after(()=>rmSync(f.root,{recursive:true,force:true}));
+  runHybridSearchWithReceipt({stateDir:f.stateDir,taskId:'task-1',query:'pig iron',cwd:f.worktreePath,
+    toolConfig:{tiangong_cli_root:'/unused/cli',flow_hybrid_search_root:'/unused/hybrid'},randomId:()=> 'adopted-receipt',
+    runner:()=>({status:0,stdout:JSON.stringify({data:[{id:UUID_A},{id:UUID_B}]})})});
+  const direct={uuid:UUID_A,state_code:100,base_name_en:'Pig iron',base_name_zh:'生铁',flow_type:'product',classifications:[],property:'Mass',flow_property_uuid:UUID_B,unit_group_uuid:UUID_C,unit_group_name_en:'Units of mass',unit_group_name_zh:'质量',reference_unit:'kg',response_sha256:`sha256:${'a'.repeat(64)}`};
+  for(const uuid of [UUID_A,UUID_B]) recordHybridCandidateDirectRead({stateDir:f.stateDir,taskId:'task-1',receiptId:'adopted-receipt',uuid,cwd:f.worktreePath,tiangongCliRoot:'/unused/cli',reader:()=>({...direct,uuid})});
+  const decisionsPath=path.join(f.root,'decisions.json');
+  writeFileSync(decisionsPath,JSON.stringify([
+    {uuid:UUID_A,decision:'adopted',reason_code:null,reason:'Suitable iron flow.',general_comment_review:'No limitation.'},
+    {uuid:UUID_B,decision:'rejected',reason_code:'semantic_mismatch',reason:'Different material.',general_comment_review:'Different material.'},
+  ]));
+  finalizeHybridSearchReceipt({stateDir:f.stateDir,taskId:'task-1',receiptId:'adopted-receipt',decisionsPath,cwd:f.worktreePath});
+  const task=JSON.parse(readFileSync(path.join(f.stateDir,'state.json'),'utf8')).tasks[0];
+  const report={hybrid_search_receipt_ids:['adopted-receipt'],uuid_audits:[{uuid:UUID_A,hybrid_search_receipt_id:'adopted-receipt'}],rejected_uuid_candidates:[{uuid:UUID_B,receipt_id:'adopted-receipt',reason_code:'semantic_mismatch',reason:'Different material.'}]};
+  return {...f,task,report,direct};
+}
+
+test('receipt local integrity passes while unavailable online adoption is skipped as a dependency', t=>{
+  const f=adoptedReceiptCollectionFixture(t);
+  const result=auditHybridSearchReceipts({...f,collect:true,verifiedUuidReads:[]});
+  assert.equal(result.valid,false);
+  assert.equal(result.checks.find(c=>c.check_id==='receipt_integrity').status,'passed');
+  const adoption=result.checks.find(c=>c.check_id==='receipt_adoption');
+  assert.equal(adoption.subject_id,`adopted-receipt:${UUID_A}`);
+  assert.equal(adoption.status,'skipped');assert.equal(adoption.reason,'dependency_unavailable');
+  assert.deepEqual(result.findings,[]);
+  assert.equal(result.results.length,1);
+  assert.equal(auditHybridSearchReceipts({...f,collect:true,verifiedUuidReads:[f.direct]}).valid,true);
+});
+
+test('local rejected claims are checked even while adopted UUID online evidence is unavailable', t=>{
+  const f=adoptedReceiptCollectionFixture(t);f.report.rejected_uuid_candidates[0].reason='Changed wording';
+  const result=auditHybridSearchReceipts({...f,collect:true,verifiedUuidReads:[]});
+  assert.equal(result.valid,false);assert.equal(result.findings.length,1);
+  assert.equal(result.findings[0].details.failure_kind,'author_claim');
+  assert.equal(result.checks.find(c=>c.check_id==='receipt_adoption').status,'skipped');
+});
+
+test('missing local adoption is a content finding even when the online read is unavailable', t=>{
+  const f=adoptedReceiptCollectionFixture(t);f.report.uuid_audits[0].uuid=UUID_B;
+  const result=auditHybridSearchReceipts({...f,collect:true,verifiedUuidReads:[]});
+  assert.equal(result.checks.find(c=>c.check_id==='receipt_adoption').status,'failed');
+  assert.equal(result.findings[0].code,'GOAL_HYBRID_SEARCH_RECEIPT_MISSING');
+});
+
+test('missing receipt membership does not conceal an independently damaged receipt', async t=>{
+  const f=adoptedReceiptCollectionFixture(t);
+  const {loadReportReceiptEvidence}=await import('./uuid-search-receipts.mjs');
+  const paths=[];
+  const {readdirSync}=await import('node:fs');
+  const visit=dir=>{for(const entry of readdirSync(dir,{withFileTypes:true})){const file=path.join(dir,entry.name);if(entry.isDirectory())visit(file);else if(entry.name==='adopted-receipt.result.json')paths.push(file);}};
+  visit(path.join(f.stateDir,'uuid-search-receipts'));
+  writeFileSync(paths[0],readFileSync(paths[0],'utf8')+'\n');
+  f.report.hybrid_search_receipt_ids=[];
+  const result=loadReportReceiptEvidence({...f,collect:true});
+  assert.equal(result.valid,false);
+  assert.deepEqual(result.findings.map(finding=>finding.code).sort(),['GOAL_HYBRID_SEARCH_RECEIPT_HASH_MISMATCH','GOAL_HYBRID_SEARCH_RECEIPT_MISSING']);
+});
+
+test('all rejection mismatches within one receipt remain visible', t=>{
+  const f=adoptedReceiptCollectionFixture(t);
+  f.report.rejected_uuid_candidates=[{uuid:UUID_B,receipt_id:'adopted-receipt',reason_code:'semantic_mismatch',reason:'Changed one'}, {uuid:UUID_B,receipt_id:'adopted-receipt',reason_code:'semantic_mismatch',reason:'Changed two'}];
+  const result=auditHybridSearchReceipts({...f,collect:true,verifiedUuidReads:[]});
+  assert.equal(result.findings.length,2);
+});
+
+for (const result of [{}, {valid:false,data:[]}]) test(`hybrid tool protocol failure cannot become an empty successful receipt: ${JSON.stringify(result)}`, t=>{
+  const f=fixture();t.after(()=>rmSync(f.root,{recursive:true,force:true}));
+  assert.throws(()=>runHybridSearchWithReceipt({stateDir:f.stateDir,taskId:'task-1',query:'pig iron',cwd:f.worktreePath,
+    toolConfig:{tiangong_cli_root:'/unused/cli',flow_hybrid_search_root:'/unused/hybrid'},randomId:()=> 'invalid-receipt',runner:()=>({status:0,stdout:JSON.stringify(result)})}),error=>error.code==='GOAL_HYBRID_SEARCH_RESULT_INVALID');
+});
+
+test('receipt adoption continuation advances within a receipt after the execution window ends', t=>{
+  const f=adoptedReceiptCollectionFixture(t);
+  f.report.uuid_audits.push({uuid:UUID_B,hybrid_search_receipt_id:'adopted-receipt'});
+  let tick=0;
+  const first=auditHybridSearchReceipts({...f,collect:true,verifiedUuidReads:[f.direct],deadline:5,now:()=>++tick});
+  assert.equal(first.checks.find(c=>c.subject_id===`adopted-receipt:${UUID_A}`).status,'passed');
+  assert.equal(first.checks.find(c=>c.subject_id===`adopted-receipt:${UUID_B}`).reason,'execution_window');
+  assert.equal(first.progress.start_after,`adopted-receipt:${UUID_A}`);
+  tick=0;
+  const resumed=auditHybridSearchReceipts({...f,collect:true,verifiedUuidReads:[f.direct],deadline:5,now:()=>++tick,startAfter:first.progress.start_after});
+  assert.equal(resumed.checks.find(c=>c.subject_id===`adopted-receipt:${UUID_B}`).status,'failed');
+  assert.equal(resumed.findings.some(finding=>finding.code==='GOAL_HYBRID_SEARCH_RECEIPT_MISSING'),true);
 });

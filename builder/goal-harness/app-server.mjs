@@ -1,5 +1,6 @@
+import { createHash, randomUUID } from "node:crypto";
 import { spawn } from "node:child_process";
-import { readFileSync, realpathSync } from "node:fs";
+import { closeSync, existsSync, fsyncSync, mkdirSync, openSync, readFileSync, realpathSync, renameSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { homedir } from "node:os";
 import { StringDecoder } from "node:string_decoder";
@@ -44,7 +45,45 @@ export class CodexAppServerAdapter {
     }
   }
 
-  async createAuthorTask({
+  async createAuthorTask(input) {
+    return this.withStartIntent(input, 'author', async save => this.createAuthorTaskWire({...input, saveStartIntent:save}));
+  }
+
+  async withStartIntent(input, kind, start) {
+    if (!input.receiptStateDir || !input.clientUserMessageId) return start(() => {});
+    const binding = {kind,client_user_message_id:input.clientUserMessageId,worktree_path:input.worktreePath,thread_id:input.threadId ?? null,
+      model:input.model ?? null,reasoning_effort:input.reasoningEffort ?? null,
+      prompt_sha256:createHash('sha256').update(input.prompt ?? '').digest('hex')};
+    const intentDir = path.join(input.receiptStateDir,'author-start-intents');
+    mkdirSync(intentDir,{recursive:true});
+    const intentPath = path.join(intentDir,`${createHash('sha256').update(input.clientUserMessageId).digest('hex')}.json`);
+    let intent;
+    const save = patch => {
+      intent = {...intent,...patch};
+      const temp = `${intentPath}.${randomUUID()}.tmp`;
+      writeFileSync(temp,JSON.stringify(intent),{flag:'wx',mode:0o600});
+      syncPath(temp);renameSync(temp,intentPath);syncPath(intentDir);
+    };
+    if (existsSync(intentPath)) {
+      intent=JSON.parse(readFileSync(intentPath,'utf8'));
+      if (JSON.stringify(intent.binding) !== JSON.stringify(binding)) throw startUncertain('Saved author start binding changed.');
+      if (intent.visible) return intent.visible;
+      if (!intent.thread_id) throw startUncertain('Thread start outcome cannot be proved; preserve its intent for reconciliation.');
+      await this.connect();
+      const response = await this.request('thread/read',{threadId:intent.thread_id,includeTurns:true});
+      if (response.thread?.id !== intent.thread_id || response.thread?.cwd !== input.worktreePath) throw startUncertain('Thread identity cannot be reconciled.');
+      const matching=(response.thread.turns ?? []).filter(turn=>turn.clientUserMessageId === input.clientUserMessageId
+        || (turn.items ?? []).some(item=>item.type === 'userMessage' && (item.id === input.clientUserMessageId || item.clientUserMessageId === input.clientUserMessageId)));
+      if (matching.length !== 1 || !matching[0].id) throw startUncertain('No unique turn is bound to the persisted clientUserMessageId.');
+      const visible={thread_id:intent.thread_id,turn_id:matching[0].id};save({visible,status:'started'});return visible;
+    }
+    intent={schema_version:1,binding,status:'start_requested',thread_id:input.threadId ?? null,created_at:new Date().toISOString()};
+    // Exclusive creation makes an unproved concurrent or crashed start fail closed.
+    writeFileSync(intentPath,JSON.stringify(intent),{flag:'wx',mode:0o600});syncPath(intentPath);syncPath(intentDir);
+    const visible=await start(save);save({visible,status:'started'});return visible;
+  }
+
+  async createAuthorTaskWire({
     worktreePath,
     additionalWorkspaceRoots = [],
     title,
@@ -53,9 +92,11 @@ export class CodexAppServerAdapter {
     sandbox = "danger-full-access",
     approvalPolicy = "never",
     model = null,
+    reasoningEffort = null,
     clientUserMessageId = null,
     projectId = null,
     receiptStateDir = null,
+    saveStartIntent = () => {},
   }) {
     try {
       await this.connect();
@@ -72,13 +113,17 @@ export class CodexAppServerAdapter {
       if (!threadId) {
         throw new Error("thread/start returned no thread.id");
       }
+      saveStartIntent({thread_id:threadId,status:"thread_started"});
       await this.request("thread/name/set", { threadId, name: title });
+      saveStartIntent({status:"turn_start_requested"});
       const turn = await this.request("turn/start", compact({
         threadId,
         cwd: worktreePath,
         runtimeWorkspaceRoots: [...new Set([worktreePath, ...additionalWorkspaceRoots])],
         input: [{ type: "text", text: prompt }],
         outputSchema,
+        model,
+        effort: reasoningEffort,
         clientUserMessageId,
         sandboxPolicy: authorSandboxPolicy(worktreePath, receiptStateDir, additionalWorkspaceRoots),
       }));
@@ -101,14 +146,21 @@ export class CodexAppServerAdapter {
     }
   }
 
-  async startRepairTurn({
+  async startRepairTurn(input) {
+    return this.withStartIntent(input,'repair',async save=>this.startRepairTurnWire({...input,saveStartIntent:save}));
+  }
+
+  async startRepairTurnWire({
     threadId,
     worktreePath,
     additionalWorkspaceRoots = [],
     prompt,
     outputSchema,
+    model = null,
+    reasoningEffort = null,
     clientUserMessageId = null,
     receiptStateDir = null,
+    saveStartIntent = () => {},
   }) {
     try {
       await this.connect();
@@ -118,10 +170,13 @@ export class CodexAppServerAdapter {
         runtimeWorkspaceRoots: [...new Set([worktreePath, ...additionalWorkspaceRoots])],
         input: [{ type: "text", text: prompt }],
         outputSchema,
+        model,
+        effort: reasoningEffort,
         clientUserMessageId,
         sandboxPolicy: authorSandboxPolicy(worktreePath, receiptStateDir, additionalWorkspaceRoots),
       });
       let turn;
+      saveStartIntent({status:"turn_start_requested"});
       try {
         turn = await this.request("turn/start", params);
       } catch (error) {
@@ -155,10 +210,10 @@ export class CodexAppServerAdapter {
     }
   }
 
-  async readThread({ threadId, includeTurns = true, expectedTurnId = null, worktreePath = null }) {
+  async readThread({ threadId, includeTurns = true, expectedTurnId = null, worktreePath = null, deadline = Infinity }) {
     try {
-      await this.connect();
-      const response = await this.request("thread/read", { threadId, includeTurns });
+      await this.connect({ deadline });
+      const response = await this.request("thread/read", { threadId, includeTurns }, { deadline });
       if (includeTurns && expectedTurnId && worktreePath && response.thread?.status?.type === "idle"
         && !response.thread.turns?.some((turn) => turn.id === expectedTurnId)) {
         if (response.thread.id !== threadId || response.thread.cwd !== worktreePath) {
@@ -184,32 +239,37 @@ export class CodexAppServerAdapter {
     }
   }
 
-  async connect() {
+  async connect({ deadline = Infinity } = {}) {
+    waitBudget(this.requestTimeoutMs, deadline, "connect");
     if (this.connected) {
       return this.initializeResult;
     }
-    if (!this.child && !this.socket) await this.startTransport();
+    if (!this.child && !this.socket) await this.startTransport({ deadline });
     const result = await this.request("initialize", {
       clientInfo: { name: "tiangong-pcr-goal-harness", title: "TianGong PCR Goal Harness", version: "1.0.0" },
       capabilities: { experimentalApi: true },
-    });
+    }, { deadline });
     this.notify("initialized", {});
     this.initializeResult = result;
     this.connected = true;
     return result;
   }
 
-  request(method, params) {
+  request(method, params, { timeoutMs = this.requestTimeoutMs, deadline = Infinity } = {}) {
+    const budget = waitBudget(timeoutMs, deadline, method, params?.threadId);
     if (!this.child && !this.socket) throw new Error("Codex app-server transport is not connected");
     const id = this.nextId;
     this.nextId += 1;
     return new Promise((resolve, reject) => {
       const timeout = setTimeout(() => {
         this.pending.delete(id);
-        reject(new Error(`Timed out waiting for ${method}`));
-      }, this.requestTimeoutMs);
+        // Cancel only this client wait. The durable author turn keeps running;
+        // a late response is ignored because its request id is no longer pending.
+        reject(budget.deadlineLimited ? reviewWindowError(method, params?.threadId) : new Error(`Timed out waiting for ${method}`));
+      }, budget.timeoutMs);
       this.pending.set(id, { resolve, reject, timeout, method });
-      this.write({ id, method, params });
+      try { this.write({ id, method, params }); }
+      catch (error) { clearTimeout(timeout); this.pending.delete(id); reject(error); }
     });
   }
 
@@ -231,15 +291,16 @@ export class CodexAppServerAdapter {
     this.connected = false;
   }
 
-  async startTransport() {
+  async startTransport({ deadline = Infinity } = {}) {
     if (this.endpoint) {
-      await this.startWebSocket();
+      await this.startWebSocket({ deadline });
     } else {
       this.startProcess();
     }
   }
 
-  async startWebSocket() {
+  async startWebSocket({ deadline = Infinity } = {}) {
+    const budget = waitBudget(this.requestTimeoutMs, deadline, "connect");
     let socket;
     try {
       socket = this.webSocketFactory(this.endpoint);
@@ -248,15 +309,25 @@ export class CodexAppServerAdapter {
     }
     this.socket = socket;
     await new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => reject(new Error(`Timed out connecting to ${this.endpoint}`)), this.requestTimeoutMs);
-      socket.addEventListener("open", () => {
+      const cleanup = () => {
         clearTimeout(timeout);
-        resolve();
-      }, { once: true });
-      socket.addEventListener("error", (event) => {
-        clearTimeout(timeout);
+        socket.removeEventListener?.("open", onOpen);
+        socket.removeEventListener?.("error", onError);
+      };
+      const onOpen = () => { cleanup(); resolve(); };
+      const onError = event => {
+        cleanup();
         reject(new Error(`WebSocket connection failed: ${event.message ?? "unknown error"}`));
-      }, { once: true });
+      };
+      const timeout = setTimeout(() => {
+        cleanup();
+        if (this.socket === socket) this.socket = null;
+        this.connected = false;
+        reject(budget.deadlineLimited ? reviewWindowError("connect") : new Error(`Timed out connecting to ${this.endpoint}`));
+        socket.close();
+      }, budget.timeoutMs);
+      socket.addEventListener("open", onOpen, { once: true });
+      socket.addEventListener("error", onError, { once: true });
     });
     socket.addEventListener("message", (event) => this.handleLine(String(event.data)));
     socket.addEventListener("error", (event) => this.rejectPending(new Error(`Codex app-server WebSocket error: ${event.message ?? "unknown error"}`)));
@@ -384,4 +455,20 @@ function visibleTaskError(operation, error, stderr) {
 
 function compact(value) {
   return Object.fromEntries(Object.entries(value).filter(([, entry]) => entry !== null && entry !== undefined));
+}
+
+function syncPath(file) {const fd=openSync(file,'r');try {fsyncSync(fd);} finally {closeSync(fd);}}
+function startUncertain(message) {return new GoalHarnessError('GOAL_AUTHOR_START_UNCERTAIN',message,{phase:'author_start',origin:'app_server',failure_kind:'unknown',retryable:false});}
+
+function reviewWindowError(operation, subjectId) {
+  return new GoalHarnessError("GOAL_REVIEW_WINDOW_EXHAUSTED", "The current review execution window is exhausted.", {
+    phase: "harvest", origin: "harness_deadline", failure_kind: "execution_window", retryable: false,
+    operation, ...(subjectId ? { subject_id: subjectId } : {}),
+  });
+}
+
+function waitBudget(timeoutMs, deadline, operation, subjectId) {
+  const remaining = deadline - Date.now();
+  if (!(remaining > 0)) throw reviewWindowError(operation, subjectId);
+  return { timeoutMs: Math.min(timeoutMs, remaining), deadlineLimited: remaining <= timeoutMs };
 }
