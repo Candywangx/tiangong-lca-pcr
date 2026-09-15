@@ -7,6 +7,7 @@ import {
   rmSync,
   symlinkSync,
   unlinkSync,
+  utimesSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -121,6 +122,26 @@ test("new finalization anchors exact artifacts in the append-only Goal audit and
     }).length,
     1,
   );
+});
+test("repeated receipt audits scan an unchanged Goal event log only once", (t) => {
+  const f = fixture(t);
+  finalizeHybridSearchReceipt(f.options);
+  const original = GoalEventStore.prototype.iterateEvents;
+  let scans = 0;
+  GoalEventStore.prototype.iterateEvents = function* (...args) {
+    scans += 1;
+    yield* original.apply(this, args);
+  };
+  t.after(() => {
+    GoalEventStore.prototype.iterateEvents = original;
+  });
+  const changed = new Date(Date.now() + 5_000);
+  utimesSync(f.store.eventsPath, changed, changed);
+
+  auditHybridSearchReceipts({ report: f.report, stateDir: f.stateDir, task: f.task });
+  auditHybridSearchReceipts({ report: f.report, stateDir: f.stateDir, task: f.task });
+
+  assert.equal(scans, 1);
 });
 test("changing finalized rejection and report together cannot make tampered evidence valid", (t) => {
   const f = fixture(t);

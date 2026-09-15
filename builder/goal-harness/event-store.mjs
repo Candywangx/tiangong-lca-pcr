@@ -16,6 +16,9 @@ import path from "node:path";
 
 import { GoalHarnessError } from "./errors.mjs";
 
+const sharedProjectionCache = new Map();
+const SHARED_PROJECTION_LIMIT = 4;
+
 export class GoalEventStore {
   constructor({ stateDir, clock = () => new Date().toISOString(), chunkSize = 64 * 1024 }) {
     if (!Number.isSafeInteger(chunkSize) || chunkSize < 1) throw new RangeError("chunkSize must be a positive integer");
@@ -71,12 +74,18 @@ export class GoalEventStore {
     const state = reduceEvent(projection.state, event);
     durableAppend(this.eventsPath, `${separator}${line}\n`);
     atomicWriteJson(this.statePath, state);
+    const locator = eventLocator(event, offset + separator.length, Buffer.byteLength(line));
+    projection.eventIndex.set(event.event_id, locator);
+    const typed = projection.eventTypes.get(event.type) ?? [];
+    typed.push(locator);
+    projection.eventTypes.set(event.type, typed);
     this.projectionCache = {
       signature: eventLogSignature(this.eventsPath),
       eventIndex: projection.eventIndex,
+      eventTypes: projection.eventTypes,
       state,
     };
-    projection.eventIndex.set(event.event_id, eventLocator(event, offset + separator.length, Buffer.byteLength(line)));
+    rememberSharedProjection(this.eventsPath, this.projectionCache);
     return event;
   }
 
@@ -87,7 +96,7 @@ export class GoalEventStore {
 
   // Single-pass iterator: callers must consume it fully to verify the entire chain.
   // Retain only byte locators and content digests, never historical payload objects.
-  *iterateEvents({ eventIndex = new Map() } = {}) {
+  *iterateEvents({ eventIndex = new Map(), eventTypes = new Map() } = {}) {
     if (!existsSync(this.eventsPath)) {
       return;
     }
@@ -113,9 +122,28 @@ export class GoalEventStore {
         throw new GoalHarnessError("GOAL_EVENT_ID_CONFLICT", `Event id ${event.event_id} was reused with different content`);
       }
       if (!previous) eventIndex.set(event.event_id, locator);
+      const typed = eventTypes.get(event.type) ?? [];
+      typed.push(locator);
+      eventTypes.set(event.type, typed);
       previousHash = hash;
       yield event;
     }
+  }
+
+  readEventsByType(type) {
+    const projection = this.loadVerifiedProjection();
+    const events = (projection.eventTypes.get(type) ?? []).map((locator) => {
+      const event = JSON.parse(readRange(this.eventsPath, locator.offset, locator.length).toString("utf8"));
+      const { hash, ...unsigned } = event;
+      if (hash !== locator.hash || sha256(stableJson(unsigned)) !== hash) {
+        throw new GoalHarnessError("GOAL_EVENT_LOG_CORRUPT", "Indexed event content changed");
+      }
+      return event;
+    });
+    if (eventLogSignature(this.eventsPath) !== projection.signature) {
+      throw new GoalHarnessError("GOAL_EVENT_LOG_CORRUPT", "Event log changed during indexed type read");
+    }
+    return events;
   }
 
   getEvent(eventId) {
@@ -137,20 +165,36 @@ export class GoalEventStore {
   loadVerifiedProjection() {
     const signature = eventLogSignature(this.eventsPath);
     if (this.projectionCache?.signature === signature) return this.projectionCache;
+    const shared = sharedProjectionCache.get(this.eventsPath);
+    if (shared?.signature === signature) {
+      this.projectionCache = shared;
+      rememberSharedProjection(this.eventsPath, shared);
+      return shared;
+    }
     let state = JSON.parse(readFileSync(this.initialPath, "utf8"));
     const eventIndex = new Map();
-    for (const event of this.iterateEvents({ eventIndex })) state = reduceEvent(state, event);
+    const eventTypes = new Map();
+    for (const event of this.iterateEvents({ eventIndex, eventTypes })) state = reduceEvent(state, event);
     if (eventLogSignature(this.eventsPath) !== signature) {
       throw new GoalHarnessError("GOAL_EVENT_LOG_CORRUPT", "Event log changed during reconstruction");
     }
-    const projection = { signature, eventIndex, state };
+    const projection = { signature, eventIndex, eventTypes, state };
     this.projectionCache = projection;
+    rememberSharedProjection(this.eventsPath, projection);
     return projection;
   }
 }
 
 function eventLocator(event, offset, length) {
-  return { offset, length, hash: event.hash, contentHash: sha256(stableJson({ type: event.type, payload: event.payload ?? {} })) };
+  return { offset, length, type: event.type, hash: event.hash, contentHash: sha256(stableJson({ type: event.type, payload: event.payload ?? {} })) };
+}
+
+function rememberSharedProjection(eventsPath, projection) {
+  sharedProjectionCache.delete(eventsPath);
+  sharedProjectionCache.set(eventsPath, projection);
+  while (sharedProjectionCache.size > SHARED_PROJECTION_LIMIT) {
+    sharedProjectionCache.delete(sharedProjectionCache.keys().next().value);
+  }
 }
 
 function* readLines(filePath, chunkSize) {

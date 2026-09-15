@@ -171,11 +171,9 @@ export function sealReceipt({
 }
 
 export function verifyReceiptSeal({ stateDir, task, receiptId, paths }) {
-  const events = new GoalEventStore({ stateDir }).readEvents();
-  const matches = events.filter(
-    (e) =>
-      e.type === "uuid_receipt_finalized" && e.payload.receipt_id === receiptId,
-  );
+  const matches = new GoalEventStore({ stateDir })
+    .readEventsByType("uuid_receipt_finalized")
+    .filter((event) => event.payload.receipt_id === receiptId);
   if (matches.length !== 1)
     fail(
       "MISSING",
