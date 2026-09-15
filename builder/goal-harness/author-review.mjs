@@ -1,6 +1,6 @@
 import { execFileSync, spawnSync } from "node:child_process";
 import { existsSync, lstatSync, mkdirSync, readFileSync, realpathSync } from "node:fs";
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import path from "node:path";
 
 import { inspectPcrDirectory } from "../lib/lint-rules.mjs";
@@ -96,7 +96,7 @@ export function runStructuredSyncDeterminism({ projectRoot, commit, pcrPath, rev
 
 export function reviewAuthorWorktree({
   projectRoot, baselineCommit, worktreePath, task, report, stateDir, runSync = true,
-  reportAvailable = true, verifiedUuidReads = [], deadline = Date.now() + 60_000, phase = "harvest",
+  priorReview = null, reportAvailable = true, verifiedUuidReads = [], deadline = Date.now() + 60_000, phase = "harvest",
   inspectFn = inspectPcrDirectory, parseMarkdownFn = parsePcrMarkdownToStructured,
   parseManifestFn = parseYaml, qualityFn = assertAuthorQuality, syncFn = runStructuredSyncDeterminism,
 }) {
@@ -108,7 +108,23 @@ export function reviewAuthorWorktree({
   const commitInspection = inspectAuthorCommit({ projectRoot, baselineCommit, authorCommit: report.commit_sha, ...context });
   const pcrDir = assertReviewBoundary({ worktreePath, task, report, changedFiles: commitInspection.changed_files });
   const checks = [{ phase, check_id: "worktree_safety", subject_id: task.pcr_path, status: "passed", findings: [] }];
-  const run = (id, action, options) => collectCheck({ checks, id, subject: task.pcr_path, phase, deadline, action, ...options });
+  const checkpointBinding = createHash("sha256").update(JSON.stringify({ policy: 1, phase, projectRoot, baselineCommit, worktreePath,
+    task: { id: task.id, goal_id: task.goal_id, thread_id: task.thread_id, turn_id: task.turn_id, pcr_path: task.pcr_path,
+      allowed_files: task.allowed_files, authoring_contract_version: task.authoring_contract_version }, report })).digest("hex");
+  const prior = priorReview?.checkpoint_binding === checkpointBinding ? priorReview : null;
+  const checkpoints = {};
+  const run = (id, action, options) => {
+    // Safety is always checked above; quality depends on this window's UUID reads.
+    const reusable = ["builder", "parse_en", "parse_zh", "parse_manifest", "structured_sync"].includes(id);
+    if (reusable && prior?.checkpoints?.[id] != null && prior.checks?.filter(c => c.phase === phase && c.check_id === id
+      && c.subject_id === task.pcr_path && c.status === "passed" && !c.findings?.length).length === 1) {
+      checks.push({ phase, check_id: id, subject_id: task.pcr_path, status: "passed", findings: [], checkpoint_reused: true });
+      return checkpoints[id] = prior.checkpoints[id];
+    }
+    const value = collectCheck({ checks, id, subject: task.pcr_path, phase, deadline, action, ...options });
+    if (reusable && value != null && checks.at(-1)?.status === "passed") { checkpoints[id] = value; }
+    return value;
+  };
   const inspection = run("builder", () => {
     const result = inspectFn({ root: worktreePath, pcrDir, checkManifestLifecycle: true, checkBilingualRuleAlignment: true, measurementPolicy: task.authoring_contract_version === 2 ? "enforce" : "report" });
     if (!Array.isArray(result?.problems)) throw new GoalHarnessError("GOAL_REVIEW_RESULT_INVALID", "Builder returned an unrecognized inspection.");
@@ -151,7 +167,7 @@ export function reviewAuthorWorktree({
     receipt_ids: [...new Set([...(report.hybrid_search_receipt_ids ?? []), ...(report.uuid_audits ?? []).map(entry => entry.hybrid_search_receipt_id), ...(report.rejected_uuid_candidates ?? []).map(entry => entry.receipt_id), ...(report.inventory?.unresolved ?? []).flatMap(entry => entry.hybrid_search_receipt_ids ?? [])].filter(Boolean))].sort(),
     source_ids: qualityContext.sourceIds,
   } : null;
-  return reviewResult({ phase, checks, pcr_id: manifest?.id ?? null, commit: commitInspection, builder: inspection, quality, sync, subjects, quality_context: qualityContext, report_available: reportAvailable, warnings: inspection?.warnings ?? [] });
+  return reviewResult({ phase, checks, checkpoint_binding: checkpointBinding, checkpoints, pcr_id: manifest?.id ?? null, commit: commitInspection, builder: inspection, quality, sync, subjects, quality_context: qualityContext, report_available: reportAvailable, warnings: inspection?.warnings ?? [] });
 }
 
 /** Finish only identity-dependent quality work after bounded independent reads. */

@@ -206,9 +206,18 @@ function sleepSync(milliseconds) {
 }
 
 export async function verifySourceLocators({ report, stateDir = null, fetchImpl = globalThis.fetch, timeoutMs = 30_000,
-  collect = false, phase = "harvest", deadline = Infinity, now = Date.now, startAfter = null }) {
+  collect = false, phase = "harvest", deadline = Infinity, now = Date.now, startAfter = null, priorProgress = null }) {
   if (collect) return collectEvidenceItemsAsync({ items: report.sources ?? [], subject: item => item.source_id,
-    checkId: "source_original", phase, deadline, now, startAfter, applicable: source => source.discovery_only !== true,
+    checkId: "source_original", phase, deadline, now, startAfter: startAfter ?? priorProgress?.start_after,
+    priority: source => priorProgress?.completed?.some(entry => entry.binding === sourceBinding(source, phase)) ? 0 : 1,
+    reuse: source => {
+      const saved = priorProgress?.completed?.find(entry => entry.binding === sourceBinding(source, phase));
+      if (!saved || !stateDir) return null;
+      const receipt = findCachedOriginalSource({ stateDir, source, locator: normalizeLocator(source.locator), deadline, now, phase, expectedHash: saved.content_sha256 });
+      return receipt ? [{ ...receipt.value, checkpoint_reused: true, cache_receipt_id: receipt.receipt_id }] : null;
+    },
+    completion: (item, values) => ({ binding: sourceBinding(item, phase), content_sha256: values[0].content_sha256 }),
+    applicable: source => source.discovery_only !== true,
     run: source => verifySourceLocators({ report: { sources: [source] }, stateDir, fetchImpl, timeoutMs, phase, deadline, now }) });
   const audits = [];
   for (const source of report.sources ?? []) {
@@ -239,7 +248,12 @@ export async function verifySourceLocators({ report, stateDir = null, fetchImpl 
       reviewTimeRemaining(deadline, { now, phase, subjectId: source.source_id });
     } catch (error) {
       reviewTimeRemaining(deadline, { now, phase, subjectId: source.source_id });
-      const fallbackAllowed = !(error instanceof GoalHarnessError) || error.code === "GOAL_SOURCE_LOCATOR_UNREADABLE";
+      const machineCode = error?.cause?.code ?? error?.code;
+      const reliable = ['ECONNRESET','ECONNREFUSED','ETIMEDOUT','ENETUNREACH','EAI_AGAIN'].includes(machineCode) || ['AbortError','TimeoutError'].includes(error?.name);
+      const fallbackAllowed = error instanceof GoalHarnessError
+        ? error.code === "GOAL_SOURCE_LOCATOR_UNREADABLE" && error.details?.origin === "source_http"
+          && [401, 403, 404, 408, 410, 429, 500, 502, 503, 504].includes(error.details?.status)
+        : reliable;
       const cached = fallbackAllowed && source.original_text_verified === true && stateDir
         ? findCachedOriginalSource({ stateDir, source, locator, deadline, now, phase }) : null;
       if (cached) {
@@ -247,8 +261,6 @@ export async function verifySourceLocators({ report, stateDir = null, fetchImpl 
         continue;
       }
       if (error instanceof GoalHarnessError) throw error;
-      const machineCode = error?.cause?.code ?? error?.code;
-      const reliable = ['ECONNRESET','ECONNREFUSED','ETIMEDOUT','ENETUNREACH','EAI_AGAIN'].includes(machineCode) || ['AbortError','TimeoutError'].includes(error?.name);
       throw new GoalHarnessError("GOAL_SOURCE_LOCATOR_UNREADABLE", `Cannot read source locator for ${source.source_id}: ${error.message}`, {
         phase:'source_fetch', origin:'source_http', failure_kind:reliable ? 'network' : 'unknown', retryable:reliable,
         subject_id:source.source_id, source_id:source.source_id, locator, machine_code:machineCode ?? null,
@@ -256,16 +268,16 @@ export async function verifySourceLocators({ report, stateDir = null, fetchImpl 
     } finally { clearTimeout(timeout); }
     // Identity and durable writes deliberately sit outside the transport catch.
     const contentType = response.headers?.get?.('content-type') ?? null;
-    const { challenge, identifiable } = originalSourceIdentity(source, content);
+    const { challenge, identifiable, kind } = originalSourceIdentity(source, content, { deadline, now, phase });
     if (challenge || (source.original_text_verified === true && !identifiable)) {
       throw new GoalHarnessError('GOAL_SOURCE_ORIGINAL_IDENTITY_UNVERIFIED', `Original source identity needs review: ${source.source_id}`, {
-        phase:'source_identity',origin:'harness_review',failure_kind:'unknown',retryable:false,subject_id:source.source_id,source_id:source.source_id,locator,http_status:response.status,
+        content_kind:kind,phase:'source_identity',origin:'harness_review',failure_kind:'unknown',retryable:false,subject_id:source.source_id,source_id:source.source_id,locator,http_status:response.status,
       });
     }
     const contentSha256 = `sha256:${createHash('sha256').update(content).digest('hex')}`;
     const audit = { source_id:source.source_id, locator, resolved_url:response.url || locator, http_status:response.status,
       content_type:contentType, original_text_claimed_verified:source.original_text_verified === true,
-      original_identity_verified:identifiable && !challenge, checked_at:new Date().toISOString(), content_sha256:contentSha256, content_byte_length:content.byteLength };
+      original_identity_verified:identifiable && !challenge, content_kind:kind, checked_at:new Date().toISOString(), content_sha256:contentSha256, content_byte_length:content.byteLength };
     if (stateDir) {
       const keyInput = {source_id:source.source_id,locator};
       const tool = {name:'http-original-text-fetch',version:'1'};
@@ -278,36 +290,80 @@ export async function verifySourceLocators({ report, stateDir = null, fetchImpl 
   return audits;
 }
 
-function originalSourceIdentity(source, content) {
-  const text = content.toString("utf8");
-  const title = typeof source.name === "string" ? source.name.trim().toLowerCase() : "";
+// Conservative document-content qualification. This is not a semantic relevance review.
+function originalSourceIdentity(source, content, { deadline, now, phase }) {
+  let text = content.toString("utf8");
+  const isPdf = content.subarray(0, 5).toString() === "%PDF-";
+  if (isPdf) {
+    const extracted = spawnSync("pdftotext", ["-enc", "UTF-8", "-", "-"], {
+      input: content, encoding: "utf8", maxBuffer: 64 * 1024 * 1024,
+      timeout: reviewTimeRemaining(deadline, { now, phase, subjectId: source.source_id }), killSignal: "SIGKILL",
+    });
+    reviewTimeRemaining(deadline, { now, phase, subjectId: source.source_id });
+    if (extracted.error?.code === "ENOENT") throw new GoalHarnessError("GOAL_SOURCE_PDF_EXTRACTOR_UNAVAILABLE", "PDF originals require pdftotext on PATH.", {
+      phase: "source_identity", origin: "harness_review", failure_kind: "configuration", retryable: false, subject_id: source.source_id,
+    });
+    if (extracted.status !== 0 || extracted.error) return { challenge: false, identifiable: false, kind: "unrecognized" };
+    text = extracted.stdout;
+  }
   const challenge = /<input[^>]*type=["']?password|<title>[^<]*(?:sign in|log in|login)|captcha|verify you are human|checking your browser/iu.test(text);
-  // A PDF signature identifies a format, not the document claimed by the source.
-  const identifiable = content.length > 0 && title.length > 0 && text.toLowerCase().includes(title);
-  return { challenge, identifiable };
+  if (challenge) return { challenge: true, identifiable: false, kind: "access_challenge" };
+  if (!isPdf) {
+    text = text.replace(/<!--[^]*?-->/gu, "").replace(/<(script|style|nav|header|footer|head)\b[^>]*>[^]*?<\/\1\s*>/giu, "");
+    const body = text.match(/<(article|main)\b[^>]*>([^]*?)<\/\1\s*>/iu);
+    if (body) text = body[2];
+    text = text.replace(/<\/?(?:h[1-6]|p|div|section|br|li|tr|body)\b[^>]*>/giu, "\n").replace(/<[^>]*>/gu, "");
+    text = text.replace(/&(#x[0-9a-f]+|#\d+|nbsp|amp|lt|gt|quot|apos);/giu, (_, entity) => {
+      if (!entity.startsWith("#")) return ({nbsp:" ",amp:"&",lt:"<",gt:">",quot:'"',apos:"'"})[entity.toLowerCase()];
+      const code = entity[1].toLowerCase() === "x" ? parseInt(entity.slice(2),16) : Number(entity.slice(1));
+      return code > 0 && code <= 0x10ffff ? String.fromCodePoint(code) : " ";
+    });
+  }
+  const title = normalizeComparableText(source.name ?? "");
+  const normalized = normalizeComparableText(text);
+  // At least two substantive document sections with prose, beyond abstract/TOC/download metadata.
+  const sectionHeading = /^(?:\d+(?:\.\d+)*[.)]?\s+)?(?:scope|methods?|materials and methods|measurement methods|methodology|requirements|results|discussion|system boundary|inventory|allocation|范围|方法|要求|结果|系统边界)\s*[:：]?$/iu;
+  const sections = [];
+  let section = null;
+  for (const line of text.split(/\r?\n/u)) {
+    if (sectionHeading.test(line.trim())) {
+      if (section !== null) sections.push(section);
+      section = "";
+    } else if (section !== null) section += ` ${line}`;
+  }
+  if (section !== null) sections.push(section);
+  const substantiveSections = sections.filter(body => normalizeComparableText(body).length >= 150);
+  const identifiable = Boolean(title && normalized.includes(title) && normalized.length >= 500 && substantiveSections.length >= 2);
+  const metadata = /abstract|table of contents|purchase|buy now|download (?:full text|instructions)|摘要|目录|购买|下载/iu.test(text);
+  return { challenge: false, identifiable, kind: identifiable ? "original" : metadata ? "metadata" : "unrecognized" };
 }
 
-function findCachedOriginalSource({ stateDir, source, locator, deadline, now, phase }) {
+function sourceBinding(source, phase) {
+  return createHash("sha256").update(JSON.stringify({ policy: 2, phase, source })).digest("hex");
+}
+
+function findCachedOriginalSource({ stateDir, source, locator, deadline, now, phase, expectedHash = null }) {
   const candidates = listGoalCacheReceipts({ stateDir, namespace: "source_original_text_receipts" })
     .filter((receipt) => receipt.tool?.name === "http-original-text-fetch" && receipt.tool?.version === "1")
     .filter((receipt) => receipt.key_input?.source_id === source.source_id && receipt.key_input?.locator === locator)
     .filter((receipt) => receipt.value?.source_id === source.source_id && receipt.value?.locator === locator)
-    .filter((receipt) => receipt.blob_path && receipt.blob_sha256 === receipt.value?.content_sha256 && receipt.value?.original_identity_verified === true)
-    .filter((receipt) => receipt.source_fingerprint === receipt.value?.content_sha256);
+    .filter((receipt) => receipt.blob_path && receipt.blob_sha256 === receipt.value?.content_sha256)
+    .filter((receipt) => receipt.source_fingerprint === receipt.value?.content_sha256)
+    .filter((receipt) => expectedHash === null || receipt.value.content_sha256 === expectedHash);
   for (const receipt of candidates.reverse()) {
     reviewTimeRemaining(deadline, { now, phase, subjectId: source.source_id });
     let descriptor;
     try {
       descriptor = openSync(receipt.blob_path, constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK);
       const stat = fstatSync(descriptor);
-      if (!stat.isFile() || stat.size > 64 * 1024 * 1024) continue;
+      if (!stat.isFile() || stat.size > 64 * 1024 * 1024 || stat.size !== receipt.value.content_byte_length) continue;
       const content = readFileSync(descriptor);
       if (`sha256:${createHash("sha256").update(content).digest("hex")}` !== receipt.blob_sha256) continue;
-      const { challenge, identifiable } = originalSourceIdentity(source, content);
+      const { challenge, identifiable } = originalSourceIdentity(source, content, { deadline, now, phase });
       reviewTimeRemaining(deadline, { now, phase, subjectId: source.source_id });
-      if (identifiable && !challenge) return receipt;
+      if (identifiable && !challenge) return { ...receipt, value: { ...receipt.value, original_identity_verified: true, content_kind: "original" } };
     } catch (error) {
-      if (error instanceof GoalHarnessError) throw error;
+      if (!["ENOENT", "ELOOP", "EACCES", "ENOTDIR"].includes(error.code)) throw error;
     } finally { if (descriptor !== undefined) closeSync(descriptor); }
   }
   reviewTimeRemaining(deadline, { now, phase, subjectId: source.source_id });
@@ -548,10 +604,12 @@ export function evidenceFailureFindings(error, { phase, subjectId }) {
     .map(finding => ({ ...finding, details: { ...details, ...(finding.details ?? {}), phase, subject_id: subjectId } }));
 }
 
-function evidenceCollection({ items, subject, checkId, phase, deadline, now, startAfter, applicable = () => true }) {
+function evidenceCollection({ items, subject, checkId, phase, deadline, now, startAfter, applicable = () => true, reuse = () => null, completion = () => null, priority = () => 0 }) {
   const after = items.findIndex(item => subject(item) === startAfter);
-  const ordered = after >= 0 ? [...items.slice(after + 1), ...items.slice(0, after + 1)] : items;
-  const checks = [], findings = [], results = [];
+  const ordered = (after >= 0 ? [...items.slice(after + 1), ...items.slice(0, after + 1)] : [...items]).sort((a, b) => priority(a) - priority(b));
+  const checks = [], findings = [], results = [], completed = [];
+  const itemForCheck = new Map();
+  let newCompleted = 0;
   let lastAttempted = startAfter, nextSubject = null;
   return {
     ordered,
@@ -559,17 +617,24 @@ function evidenceCollection({ items, subject, checkId, phase, deadline, now, sta
       const subjectId = subject(item);
       const check = { phase, check_id: checkId, subject_id: subjectId, status: "passed", applicable: applicable(item) };
       checks.push(check);
+      itemForCheck.set(check, item);
       if (!check.applicable) { check.status = "skipped"; check.reason = "not_applicable"; return null; }
       try { reviewTimeRemaining(deadline, { now, phase, subjectId }); }
       catch (error) { this.fail(check, error); nextSubject ??= subjectId; return null; }
+      try {
+        const reused = reuse(item);
+        if (reused) { this.pass(check, reused, true); return null; }
+      } catch (error) { this.fail(check, error); return null; }
       lastAttempted = subjectId;
       return check;
     },
-    pass(check, values) {
+    pass(check, values, reused = false) {
       if (!Array.isArray(values) || values.length === 0 || values.some(value => !successfulEvidenceValue(check.check_id, value))) {
         throw new GoalHarnessError("GOAL_EVIDENCE_RESULT_INVALID", "Evidence check did not return successful data.", { origin:"harness_review", failure_kind:"unknown", retryable:false });
       }
       results.push(...values);
+      const saved = completion(itemForCheck.get(check), values);
+      if (saved) { completed.push(saved); if (!reused) newCompleted++; }
     },
     fail(check, error) {
       const found = evidenceFailureFindings(error, { phase, subjectId: check.subject_id });
@@ -585,7 +650,7 @@ function evidenceCollection({ items, subject, checkId, phase, deadline, now, sta
         nextSubject = subject(ordered[(index + 1) % ordered.length]);
       }
       return { valid: checks.every(c => !c.applicable || c.status === "passed") && findings.length === 0,
-        checks, findings, results, progress: { next_subject: nextSubject, start_after: lastAttempted } };
+        checks, findings, results, progress: { next_subject: nextSubject, start_after: lastAttempted, completed, new_completed: newCompleted } };
     },
   };
 }

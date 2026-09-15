@@ -579,7 +579,7 @@ for (const outcome of ["manual_review", "repair_requested"]) test(`evidence rech
   assert.equal(task.repair_count,0);
 });
 
-test('saved review progress gives sources a turn after UUID exhausts the window', async t => {
+test('saved fixed-source progress leaves later windows for fresh UUID acceptance', async t => {
   const f=fixture(t,{conflictingMaterial:true,materialTransform:makeMeasurementExplicit});
   sealRejectedCandidate(f);
   const reads=populateMaterialReport(f);
@@ -587,6 +587,7 @@ test('saved review progress gives sources a turn after UUID exhausts the window'
   let clock=Date.now(), slow=true, sourceFetches=0;
   t.mock.method(Date,'now',()=>clock);
   const {verifySourceLocators}=await import('./evidence-audit.mjs');
+  const {originalHtml}=await import('./fixtures/original-source.mjs');
   const options={...f,config:{...f.config,tools:{tiangong_cli_root:'/unused-test'}},adapter:completedAdapter(f.task,wire),reviewFn:reviewed,reviewBudgetMs:50,
     auditUuidsFn({report,phase,deadline}) {
       if(!slow) return reads;
@@ -594,12 +595,13 @@ test('saved review progress gives sources a turn after UUID exhausts the window'
       const checks=report.uuid_audits.map(a=>({phase,check_id:'uuid_public_read',subject_id:a.uuid,status:'skipped',applicable:true,reason:'execution_window',findings:[{code:'GOAL_REVIEW_WINDOW_EXHAUSTED',details:{phase,subject_id:a.uuid,origin:'harness_deadline',failure_kind:'execution_window',retryable:false}}]}));
       return {valid:false,results:[],checks,findings:checks.flatMap(c=>c.findings),progress:{next_subject:report.uuid_audits[0].uuid,start_after:report.uuid_audits[0].uuid}};
     },
-    verifySourcesFn:args=>verifySourceLocators({...args,fetchImpl:async()=>{sourceFetches++;return new Response(args.report.sources.map(s=>s.name).join('\n'),{status:200});}})
+    verifySourcesFn:args=>verifySourceLocators({...args,fetchImpl:async()=>{sourceFetches++;return new Response(originalHtml(args.report.sources.map(s=>s.name).join(' / ')),{status:200});}})
   };
   const first=await harvestGoalAuthors(options);
-  assert.equal(first.valid_results.length,0); assert.equal(sourceFetches,0);
+  assert.equal(first.valid_results.length,0); assert.ok(sourceFetches>0);
+  const completedFetches=sourceFetches;
   const second=await harvestGoalAuthors({...options,adapter:{}});
-  assert.ok(sourceFetches>0,'independent sources must receive execution on the next window');
+  assert.equal(sourceFetches,completedFetches,'completed fixed originals are reused while UUIDs are read afresh');
   assert.equal(second.valid_results.length,0); assert.equal(second.snapshot,null);
   assert.equal(f.store.readEvents().some(e=>e.type==='verified_common_uuids_updated'),false);
   slow=false;

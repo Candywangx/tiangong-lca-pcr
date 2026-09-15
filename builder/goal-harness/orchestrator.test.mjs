@@ -1824,3 +1824,64 @@ test('window recovery backoff uses the latest continuation across the same mixed
   assert.equal(recoveryForTask(task,config,{now:new Date('2026-01-01T00:02:00Z')}).eligible,false);
   assert.equal(recoveryForTask(task,config,{now:new Date('2026-01-01T00:02:41Z')}).eligible,true);
 });
+
+test('harvest completes healthy sources across more windows than max_attempts',async t=>{
+  const {verifySourceLocators}=await import('./evidence-audit.mjs');
+  const {originalHtml}=await import('./fixtures/original-source.mjs');
+  const {root,stateDir,config}=fixture();t.after(()=>rmSync(root,{recursive:true,force:true}));
+  config.retry_policy={max_attempts:1,max_repairs:1,backoff_seconds:0};
+  const task=(await dispatchGoalAuthors({config,stateDir,slots:1,adapter:{async createAuthorTask(){return {thread_id:'healthy',turn_id:'healthy-turn'};}}})).dispatched[0];
+  const report={...completeTransportReport(task,git(root,['rev-parse','HEAD'])),sources:['A','B','C','D','E','F','G','H'].map(id=>({source_id:id,name:`Standard ${id}`,locator:`https://example.test/${id}`,original_text_verified:true,supports:['boundary'],independence_key:id,discovery_only:false}))};
+  let tick=0,reads=0,outcome;
+  const adapter={async readThread(){return {thread:{turns:[{id:task.turn_id,status:'completed',items:[{type:'agentMessage',text:JSON.stringify(report)}]}]}};}};
+  for(let window=0;window<6;window++) {
+    tick=0;
+    outcome=await harvestGoalAuthors({config,stateDir,adapter,reviewFn:passingReview,auditUuidsFn:()=>[],auditHybridSearchFn:()=>[],
+      verifySourcesFn:options=>verifySourceLocators({...options,deadline:60_000,now:()=>tick,fetchImpl:async url=>{reads++;tick+=20_000;return new Response(originalHtml(`Standard ${url.at(-1)}`));}})});
+    if(outcome.valid_results.length) break;
+  }
+  assert.equal(outcome.state.tasks[0].state,'valid_result');
+  assert.ok(reads<20);assert.equal(outcome.state.tasks[0].coordinator_hold??null,null);
+  assert.equal(outcome.state.tasks[0].evidence_audit.source_reads.length,8);
+  assert.equal(outcome.state.tasks[0].repair_count??0,0);
+});
+
+test('progress credits do not remove the limit on subsequent non-progress windows',async()=>{
+  const {recoveryForTask}=await import('./orchestrator.mjs');
+  const config={retry_policy:{max_attempts:1}};
+  const task={id:'bounded',state:'retryable_failure',failure_code:'GOAL_REVIEW_WINDOW_EXHAUSTED',failure_details:{origin:'harness_deadline',failure_kind:'execution_window',retryable:false},recovery_incident:{id:'bound',status:'open',legacy_infrastructure_used:0,legacy_execution_used:0},
+    execution_recheck_history:[{incident_id:'bound',progress_credited:true,completed_before:2,completed_after:4}]};
+  assert.equal(recoveryForTask(task,config).eligible,true);
+  task.execution_recheck_history.push({incident_id:'bound'});
+  assert.equal(recoveryForTask(task,config).budget_exhausted,true);
+});
+
+test('fixed-source progress never substitutes an earlier UUID read for a failed fresh read',async t=>{
+  const {verifySourceLocators}=await import('./evidence-audit.mjs');
+  const {originalHtml}=await import('./fixtures/original-source.mjs');
+  const {GoalHarnessError}=await import('./errors.mjs');
+  const {root,stateDir,config}=fixture();t.after(()=>rmSync(root,{recursive:true,force:true}));
+  config.retry_policy={max_attempts:3,max_repairs:1,backoff_seconds:0};config.tools.tiangong_cli_root='/unused';
+  const task=(await dispatchGoalAuthors({config,stateDir,slots:1,adapter:{async createAuthorTask(){return {thread_id:'fresh',turn_id:'fresh-turn'};}}})).dispatched[0];
+  const read={uuid:'11111111-1111-4111-8111-111111111111',state_code:100,base_name_en:'Alternating current',base_name_zh:'交流电',flow_type:'product',classifications:[{id:'17100',label:'Electrical energy'}],property:'Energy',
+    flow_property_uuid:'22222222-2222-4222-8222-222222222222',flow_property_state_code:100,unit_group_uuid:'33333333-3333-4333-8333-333333333333',unit_group_state_code:100,unit_group_name_en:'Units of energy',reference_unit:'kWh',general_comment:'Electricity input.',hybrid_search_receipt_id:'receipt-1',response_sha256:`sha256:${'a'.repeat(64)}`};
+  const report={...completeTransportReport(task,git(root,['rev-parse','HEAD'])),hybrid_search_receipt_ids:['receipt-1'],uuid_audits:[{uuid:read.uuid,hybrid_search_receipt_id:'receipt-1',state_code:100,base_name_en:read.base_name_en,base_name_zh:read.base_name_zh,flow_type:'product',classification:'17100 Electrical energy',property:'Energy',unit_group:'Units of energy',semantic_review:'Matches the purchased electricity inventory input.'}],
+    sources:['A','B','C','D'].map(id=>({source_id:id,name:`Standard ${id}`,locator:`https://example.test/${id}`,original_text_verified:true,supports:['boundary'],independence_key:id,discovery_only:false}))};
+  const receipt={receipt_id:'receipt-1',task_id:task.id,authenticated:true,result_sha256:`sha256:${'b'.repeat(64)}`,candidate_uuids:[read.uuid],candidate_decisions:[{uuid:read.uuid,decision:'adopted',direct_read:read}]};
+  assert.equal(validateAuthorReport(report).valid,true);
+  let tick=0,uuidCalls=0;
+  const options={config,stateDir,adapter:{async readThread(){return {thread:{turns:[{id:task.turn_id,status:'completed',items:[{type:'agentMessage',text:JSON.stringify(report)}]}]}};}},reviewFn:passingReview,
+    auditUuidsFn:()=>{uuidCalls++;if(uuidCalls===2)throw new GoalHarnessError('GOAL_UUID_DIRECT_READ_FAILED','temporary transport failure',{origin:'tool_transport',failure_kind:'network',retryable:true,subject_id:read.uuid});return [read];},auditHybridSearchFn:({verifiedUuidReads,phase})=>verifiedUuidReads.length ? [receipt] : {
+      valid:false,results:[receipt],findings:[],checks:[
+        {phase,check_id:'receipt_integrity',subject_id:'receipt-1',status:'passed'},
+        {phase,check_id:'receipt_adoption',subject_id:`receipt-1:${read.uuid}`,status:'skipped',depends_on:[{phase,check_id:'uuid_public_read',subject_id:read.uuid}]},
+      ]},
+    verifySourcesFn:input=>verifySourceLocators({...input,deadline:60_000,now:()=>tick,fetchImpl:async url=>{tick+=20_000;return new Response(originalHtml(`Standard ${url.at(-1)}`));}})};
+  const first=await harvestGoalAuthors(options);assert.equal(first.valid_results.length,0);
+  tick=0;const second=await harvestGoalAuthors(options);
+  assert.equal(uuidCalls,2);assert.equal(second.valid_results.length,0);
+  assert.equal(second.state.tasks[0].evidence_audit.uuid_reads.length,0);
+  assert.equal(second.state.verified_common_uuids.length,0);
+  tick=0;const third=await harvestGoalAuthors(options);
+  assert.equal(uuidCalls,3);assert.equal(third.valid_results.length,1);
+});

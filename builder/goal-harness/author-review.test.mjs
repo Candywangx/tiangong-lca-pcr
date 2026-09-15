@@ -239,3 +239,16 @@ test("structured sync determinism uses an isolated review worktree and requires 
     rmSync(root, { recursive: true, force: true });
   }
 });
+
+test('local completed checks resume only for the same report and always recheck worktree safety',t=>{
+  const fixture=reviewFixture();t.after(()=>rmSync(fixture.root,{recursive:true,force:true}));
+  let inspections=0,syncs=0;
+  const options={...fixture.options,inspectFn:()=>{inspections++;return {problems:[],measurement:{status:'pass'}};},syncFn:()=>{syncs++;return {first_run_clean:true,second_run_clean:true};}};
+  const first=reviewAuthorWorktree(options);
+  const resumed=reviewAuthorWorktree({...options,priorReview:JSON.parse(JSON.stringify(first))});
+  assert.equal(resumed.valid,true);assert.equal(inspections,1);assert.equal(syncs,1);
+  reviewAuthorWorktree({...options,report:{...options.report,unresolved_issues:['changed report']},priorReview:first});
+  assert.equal(inspections,2);assert.equal(syncs,2);
+  writeFileSync(path.join(fixture.root,'pcr','manifest.yaml'),'dirty');
+  assert.throws(()=>reviewAuthorWorktree({...options,priorReview:first}),e=>e.code==='GOAL_AUTHOR_WORKTREE_DIRTY');
+});

@@ -419,7 +419,7 @@ Recovery first classifies each finding by observed origin and failure kind. Inte
 and unknown failures hold; confirmed measurement/boundary findings remain manual review; author-correctable content
 is repaired together. Retryable infrastructure resumes the same author if preparation is incomplete, or rechecks a
 saved complete report without starting an author. Content repair, infrastructure recovery and execution-window
-continuation have separate budgets and histories. Infrastructure and execution recovery each use `max_attempts` as
+continuation have separate budgets and histories. Infrastructure recovery and execution windows without reusable progress each use `max_attempts` as
 an independent per-incident limit; reaching either limit creates a hold without charging another category. The incident identity survives new turns, error-code changes and
 replayed resume requests. Backoff and Retry-After apply before dispatch; previews remain pure reads. Held/failed tasks
 are not restarted automatically.
@@ -427,14 +427,36 @@ are not restarted automatically.
 Each preparation/harvest invocation has a 60-second internal window; individual external operations are bounded by
 the smaller of 30 seconds and the remaining window. Child processes and adapter waits receive the actual remaining
 time. Window exhaustion is not infrastructure failure and consumes neither infrastructure nor content repair budget.
-Task and subject cursors, plus rotation of independent UUID/source scopes, give unfinished checks another execution
-opportunity. Successful UUID reads are rechecked in the next window; stale partial evidence cannot complete acceptance.
+Harvest separates a logical acceptance from its execution windows. Completed builder inspection, parsing and
+structured-sync checks are reused only under the same policy version, task/goal/turn, report, commit, authorization,
+baseline and worktree binding. Worktree safety is checked on every invocation; identity-dependent quality, receipt
+integrity/adoption and all public UUID reads run again. Local receipt checks remain cheap integrity checks rather than
+cached authority. A report or binding change discards saved progress; policy changes must bump the checkpoint version.
+Fixed original-source completions pin the source declaration and content hash, and revalidate the existing receipt,
+blob and document qualification before reuse. These completions run first, then unfinished sources, then fresh UUIDs.
+Only exceeding the previous high-water count of bound reusable completions credits a saved-report execution window. The history records
+before/after counts and binding; replay, changed bindings, repeating the same checks and windows without progress
+cannot earn credit. Infrastructure failures retain their separate limit. Successful UUID reads from previous windows
+are never accumulated: all UUIDs and their dependent final checks must fit in a fresh window, otherwise bounded recovery
+holds for review. No larger attempt count substitutes for evidence completion.
 
 Author startup records a stable intent and client user-message id before invoking the adapter. Crash recovery must
 reconcile that intent with the durable visible turn; uncertainty holds instead of starting another author or counting
 a repair twice. Runtime and model-trial fingerprints remain mandatory. Original-source cache fallback is separate from
 automatic retry: a 403 may use a matching verified blob, while 429 honors Retry-After. Blob identity, content hash and
 original-document qualification are rechecked; PDF magic bytes or a login/challenge page are insufficient.
+Legacy receipts without `original_identity_verified` can enter the same revalidation after receipt/blob integrity
+checks; current audit results expose the new verification without rewriting historical bytes or hashes. Only observed
+HTTP access failures and recognized transport errors allow fallback; an unknown program exception holds even if a
+cache exists.
+
+Original-source qualification normalizes HTML body text (including inline tags and common/numeric entities), removes
+navigation/script content, and uses Poppler `pdftotext` for PDF bytes under the remaining execution deadline. Install
+`poppler-utils` on Linux (or Poppler on other hosts); a missing extractor is a configuration hold. CI installs it explicitly.
+The conservative automatic gate requires a matching normalized title and at least two substantive document sections
+with prose, beyond title/abstract/download metadata. Results distinguish `original`, `metadata`, `access_challenge`
+and `unrecognized`; unknown or unsupported documents remain for review. This supports ordinary text-bearing methodology
+documents, not every publisher format or scanned PDF, and does not replace semantic relevance review.
 
 ## Gates
 

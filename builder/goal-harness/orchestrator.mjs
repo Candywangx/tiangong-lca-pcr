@@ -411,7 +411,7 @@ export function recoveryForTask(task, config = {}, {now = new Date()} = {}) {
     + (task.evidence_recheck_history ?? []).filter(entry=>entry.incident_id === incident.id).length;
   const executionUsed = (incident.legacy_execution_used ?? unboundExecutionCount(task))
     + (task.execution_continue_history ?? []).filter(entry=>entry.incident_id === incident.id).length
-    + (task.execution_recheck_history ?? []).filter(entry=>entry.incident_id === incident.id).length;
+    + (task.execution_recheck_history ?? []).filter(entry=>entry.incident_id === incident.id && entry.progress_credited !== true).length;
   const retryAfter = Math.max(config.retry_policy?.backoff_seconds ?? 0,...recovery.findings.map(f=>f.details.retry_after_seconds ?? 0));
   const incidentHistory = [
     ["evidence_recheck", incident.legacy_infrastructure_used], ["infrastructure_resume", incident.legacy_infrastructure_used],
@@ -698,23 +698,28 @@ export async function harvestGoalAuthors({
           try { return operation(); }
           catch (error) { return {valid:false,results:[],checks:[],findings:selectRecovery(error).findings}; }
         };
-        const priorProgress = task.validation_result?.assessment?.progress ?? task.validation_result?.progress ?? {};
+        const progressBinding = createHash("sha256").update(JSON.stringify({ policy: 2, phase, goal_id: config.goal_id,
+          task_id: task.id, thread_id: task.thread_id, turn_id: task.turn_id, worktree_path: task.worktree_path,
+          contract: task.authoring_contract_version, allowed_files: task.allowed_files, baseline: task.author_base_commit ?? state.baseline.commit,
+          tools: config.tools, report })).digest("hex");
+        const savedProgress = task.validation_result?.assessment?.progress ?? task.validation_result?.progress;
+        const priorProgress = savedProgress?.binding === progressBinding ? savedProgress : {};
+        const priorReview = priorProgress.binding ? task.validation_result?.review ?? task.validation_result : null;
         const authorContentBaseCommit = resolveAuthorContentBaseCommit({ projectRoot: config.project_root, task,
           fallbackCommit: task.author_base_commit ?? state.baseline.commit });
         let review;
         try { review = reviewFn({ projectRoot: config.project_root, baselineCommit: authorContentBaseCommit,
           worktreePath: task.worktree_path, task: { ...task, goal_id: config.goal_id }, report, stateDir,
-          phase, deadline, verifiedUuidReads: [] }); }
+          phase, deadline, verifiedUuidReads: [], priorReview }); }
         catch (error) { review = failedReview(error,{phase,task}); }
         if(reportedFindings.length) review = {...review,valid:false,findings:[...(review.findings??[]),...reportedFindings]};
-        // Rotate independent evidence scopes across execution windows. UUIDs
-        // still precede their dependent adoption check; sources are independent.
+        // Finish fixed evidence first. A later window can then spend its budget
+        // on fresh UUID reads and their dependent adoption/quality checks.
         const readSources = async () => {
-          try { return await verifySourcesFn({report,stateDir,collect:true,phase,deadline,startAfter:priorProgress.sources?.start_after}); }
+          try { return await verifySourcesFn({report,stateDir,collect:true,phase,deadline,priorProgress:priorProgress.sources}); }
           catch(error) { return {valid:false,results:[],checks:[],findings:selectRecovery(error).findings}; }
         };
-        let sourceAudit;
-        if (priorProgress.next_group === "sources") sourceAudit = await readSources();
+        const sourceAudit = await readSources();
         const uuidAudit = capture(() => {
           if ((report.uuid_audits?.length ?? 0) > 0 && !config.tools?.tiangong_cli_root)
             throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "tools.tiangong_cli_root is required to independently audit final UUIDs.", {origin:"harness_probe",failure_kind:"configuration",retryable:false});
@@ -725,14 +730,18 @@ export async function harvestGoalAuthors({
         const uuidReads = values(uuidAudit);
         const receiptAudit = capture(() => auditHybridSearchFn({report,stateDir,task,verifiedUuidReads:uuidReads,collect:true,phase,deadline,
           startAfter:priorProgress.receipts?.start_after}));
-        if (sourceAudit === undefined) sourceAudit = await readSources();
         if (review.quality_context) review = completeAuthorReviewIdentity({review,task,report,verifiedUuidReads:uuidReads,phase,deadline});
         const evidenceAudit = { uuid_reads:uuidReads, hybrid_search_receipts:values(receiptAudit), source_reads:values(sourceAudit) };
         const enrichmentFindings = (task.uuid_enrichment_generation ?? 0) > 0
           ? findUuidEnrichmentCandidates({tasks:[task]},{stateDir}).flatMap(f => f.reasons.map(reason => ({code:"GOAL_UUID_ENRICHMENT_INCOMPLETE",message:reason,origin:"harness_review",failure_kind:"author_claim"}))) : [];
         const assessment = assessRequiredReview({phase,task,report,review,uuidAudit,receiptAudit,sourceAudit,
           enrichment:{valid:enrichmentFindings.length===0,task_id:task.id,commit_sha:report.commit_sha,findings:enrichmentFindings}});
-        assessment.progress={next_group:priorProgress.next_group === "sources" ? "uuids" : "sources",uuids:uuidAudit?.progress??null,receipts:receiptAudit?.progress??null,sources:sourceAudit?.progress??null};
+        const completedCount = Object.keys(review.checkpoints ?? {}).length + (sourceAudit?.progress?.completed?.length ?? 0);
+        const previousCompleted = priorProgress.completed_high_water ?? priorProgress.completed_count ?? 0;
+        assessment.progress={binding:progressBinding,uuids:uuidAudit?.progress??null,receipts:receiptAudit?.progress??null,sources:sourceAudit?.progress??null,
+          completed_count:completedCount,completed_high_water:Math.max(previousCompleted,completedCount),
+          previous_completed_count:previousCompleted,
+          continued_binding:priorProgress.binding === progressBinding};
         // The existing trial hold is reached only when all automatic checks have
         // completed and the sole remaining requirement is its semantic decision.
         if (!assessment.valid && assessment.findings.length > 0
@@ -923,7 +932,13 @@ function finishLatestRepair(task, commit, endedAt) {
 function finishEvidenceRecheck(task, outcome, endedAt) {
   const prefix = task.execution_recheck_pending ? "execution_recheck" : "evidence_recheck";
   const history = [...(task[`${prefix}_history`] ?? [])];
-  if (history.length > 0) history[history.length - 1] = { ...history.at(-1), ended_at: endedAt, ...outcome };
+  const progress = task.validation_result?.assessment?.progress ?? task.validation_result?.progress;
+  const progressed = prefix === "execution_recheck" && progress?.continued_binding === true
+    && progress.completed_count > progress.previous_completed_count
+    && selectRecovery({ code: task.failure_code, details: task.failure_details }).action === "defer";
+  if (history.length > 0) history[history.length - 1] = { ...history.at(-1), ended_at: endedAt, ...outcome,
+    ...(progressed ? { progress_credited: true, progress_binding: progress.binding,
+      completed_before: progress.previous_completed_count, completed_after: progress.completed_count } : {}) };
   return { ...task, [`${prefix}_pending`]: false, [`${prefix}_history`]: history };
 }
 

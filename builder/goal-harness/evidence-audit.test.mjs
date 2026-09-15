@@ -281,7 +281,7 @@ test("source audit performs original locator reads and rejects discovery pages a
     let consumed = false;
     return {
       ok: true, status: 200, url, headers: new Map([["content-type", "application/pdf"]]),
-      body: { getReader: () => ({ read: async () => consumed ? { done: true } : (consumed = true, { done: false, value: new TextEncoder().encode("%PDF-1.7 Standard A original text") }), cancel: async () => {} }) },
+      body: { getReader: () => ({ read: async () => consumed ? { done: true } : (consumed = true, { done: false, value: originalPdf() }), cancel: async () => {} }) },
     };
   };
   const result = await verifySourceLocators({
@@ -302,14 +302,14 @@ test("source audit reuses an exact hash-verified original-text receipt after a t
   let consumed = false;
   const successfulFetch = async (url) => ({
     ok: true, status: 200, url, headers: new Map([["content-type", "application/pdf"]]),
-    body: { getReader: () => ({ read: async () => consumed ? { done: true } : (consumed = true, { done: false, value: new TextEncoder().encode("%PDF-1.7 Standard A original text") }), cancel: async () => {} }) },
+    body: { getReader: () => ({ read: async () => consumed ? { done: true } : (consumed = true, { done: false, value: originalPdf() }), cancel: async () => {} }) },
   });
   try {
     const first = await verifySourceLocators({ report: { sources: [source] }, stateDir, fetchImpl: successfulFetch });
     const second = await verifySourceLocators({
       report: { sources: [source] },
       stateDir,
-      fetchImpl: async () => { throw new Error("temporary network failure"); },
+      fetchImpl: async () => { throw Object.assign(new Error("temporary network failure"), {code:"ECONNRESET"}); },
     });
     assert.equal(second[0].cache_hit, true);
     assert.match(second[0].cache_receipt_id, /.+/u);
@@ -320,7 +320,7 @@ test("source audit reuses an exact hash-verified original-text receipt after a t
       stateDir,
       fetchImpl: async (url) => ({
         ok: true, status: 200, url, headers: new Map([["content-type", "application/pdf"]]),
-        body: { getReader: () => ({ read: async () => changedConsumed ? { done: true } : (changedConsumed = true, { done: false, value: new TextEncoder().encode("%PDF-1.7 Standard A changed original text") }), cancel: async () => {} }) },
+        body: { getReader: () => ({ read: async () => changedConsumed ? { done: true } : (changedConsumed = true, { done: false, value: originalPdf("Standard A updated edition") }), cancel: async () => {} }) },
       }),
     });
     assert.equal(changed[0].cache_hit, undefined);
@@ -338,7 +338,7 @@ test('403 cache fallback requires a verified same-source real blob independently
   const denied = async () => new Response('', {status:403});
   try {
     await assert.rejects(verifySourceLocators({report:{sources:[source]},stateDir,fetchImpl:denied}),e => e.details.retryable === false && e.details.origin === 'source_http');
-    await verifySourceLocators({report:{sources:[source]},stateDir,fetchImpl:async()=>new Response('%PDF-1.7 Standard A original text',{headers:{'content-type':'application/pdf'}})});
+    await verifySourceLocators({report:{sources:[source]},stateDir,fetchImpl:async()=>new Response(originalPdf(),{headers:{'content-type':'application/pdf'}})});
     const cached=await verifySourceLocators({report:{sources:[source]},stateDir,fetchImpl:denied});
     assert.equal(cached[0].cache_hit,true);
     const receipt=listGoalCacheReceipts({stateDir,namespace:'source_original_text_receipts'})[0];
@@ -354,20 +354,20 @@ test('HTTP 200 login or captcha and unidentified originals are held, not cached 
   }
 });
 
-test("PDF format alone cannot verify the source identity, while a matching title can", async () => {
+test("PDF originals require extracted matching identity and substantive document content", async () => {
   const source = { source_id: "standard-a", name: "Standard A", locator: "https://standards.example/a.pdf", original_text_verified: true };
   const stateDir = mkdtempSync(path.join(tmpdir(), "source-pdf-identity-"));
   const { listGoalCacheReceipts } = await import("./goal-cache.mjs");
   try {
     await assert.rejects(
       verifySourceLocators({ report: { sources: [source] }, stateDir,
-        fetchImpl: async () => new Response("%PDF-1.7 Unrelated document", { headers: { "content-type": "application/pdf" } }) }),
+        fetchImpl: async () => new Response(originalPdf("Unrelated document"), { headers: { "content-type": "application/pdf" } }) }),
       error => error.code === "GOAL_SOURCE_ORIGINAL_IDENTITY_UNVERIFIED"
         && error.details.failure_kind === "unknown" && error.details.retryable === false,
     );
     assert.equal(listGoalCacheReceipts({ stateDir, namespace: "source_original_text_receipts" }).length, 0);
     const [verified] = await verifySourceLocators({ report: { sources: [source] }, stateDir,
-      fetchImpl: async () => new Response("%PDF-1.7 Standard A original text", { headers: { "content-type": "application/pdf" } }) });
+      fetchImpl: async () => new Response(originalPdf(), { headers: { "content-type": "application/pdf" } }) });
     assert.equal(verified.original_identity_verified, true);
   } finally { rmSync(stateDir, { recursive: true, force: true }); }
 });
@@ -378,9 +378,9 @@ test("403 fallback rechecks historical PDF blobs against the current source iden
   const { readFileSync } = await import("node:fs");
   const source = { source_id: "standard-a", name: "Standard A", locator: "https://standards.example/a.pdf", original_text_verified: true };
   for (const [text, requestedSource] of [
-    ["%PDF-1.7 Unrelated original document", source],
-    ["%PDF-1.7 Standard A original text", { ...source, name: "Standard B" }],
-    ["%PDF-1.7 Standard A original text", { ...source, locator: "https://standards.example/b.pdf" }],
+    [originalPdf("Unrelated document"), source],
+    [originalPdf(), { ...source, name: "Standard B" }],
+    [originalPdf(), { ...source, locator: "https://standards.example/b.pdf" }],
     ["%PDF-1.7 Standard A <title>Sign in</title><input type=\"password\">", source],
   ]) {
     const stateDir = mkdtempSync(path.join(tmpdir(), "source-pdf-old-cache-"));
@@ -418,7 +418,7 @@ test('unattributed direct-read failures do not retry and retain structured nonre
 
 test('collected source checks retain failures and later successes independently', async () => {
   const report = { sources: ['broken', 'good'].map(source_id => ({ source_id, name:source_id, locator:`https://example.test/${source_id}`, original_text_verified:true })) };
-  const result = await verifySourceLocators({ report, collect:true, phase:'preparation', fetchImpl:async url => url.endsWith('broken') ? new Response('', {status:503}) : new Response('good original text') });
+  const result = await verifySourceLocators({ report, collect:true, phase:'preparation', fetchImpl:async url => url.endsWith('broken') ? new Response('', {status:503}) : new Response(originalHtml('good')) });
   assert.equal(result.valid,false);
   assert.deepEqual(result.checks.map(c => [c.phase,c.check_id,c.subject_id,c.status]), [['preparation','source_original','broken','failed'],['preparation','source_original','good','passed']]);
   assert.deepEqual(result.results.map(r=>r.source_id),['good']);
@@ -521,4 +521,82 @@ test('collector rejects empty or explicitly failed success records', async()=>{
     const result=collectEvidenceItems({items:['u'],subject:item=>item,checkId:'uuid_public_read',phase:'harvest',deadline:Infinity,now:Date.now,run:()=>[value]});
     assert.equal(result.valid,false);assert.deepEqual(result.results,[]);assert.equal(result.findings[0].code,'GOAL_EVIDENCE_RESULT_INVALID');
   }
+});
+
+for (const body of [
+  '<h1>Standard A</h1><p>Abstract and purchase information.</p><a href="a.pdf">Download full text</a>',
+  '<h1>Standard A</h1><p>Download instructions: sign up, buy and click the download button.</p>',
+]) test('same-title metadata/download page is not original text', async () => {
+  await assert.rejects(verifySourceLocators({report:{sources:[originalSource]}, fetchImpl:async()=>new Response(body,{headers:{'content-type':'text/html'}})}), e=>e.code==='GOAL_SOURCE_ORIGINAL_IDENTITY_UNVERIFIED');
+});
+
+const originalSource = {source_id:'standard-a',name:'Standard A',locator:'https://example.test/a',original_text_verified:true};
+import { originalHtml, originalPdf } from './fixtures/original-source.mjs';
+
+test('normalized HTML title and real compressed PDF original are recognized', async () => {
+  const pdf = originalPdf();
+  assert.equal(pdf.includes(Buffer.from('Standard A')),false);
+  for (const [body,type] of [[originalHtml('Standard <em>A</em>'),'text/html'],[pdf,'application/pdf']]) {
+    const [read]=await verifySourceLocators({report:{sources:[originalSource]},fetchImpl:async()=>new Response(body,{headers:{'content-type':type}})});
+    assert.equal(read.original_identity_verified,true);
+  }
+});
+
+test('legacy original blob lacking the new identity field is reverified on 403 without rewriting history',async t=>{
+  const {appendGoalCacheReceipt}=await import('./goal-cache.mjs');
+  const {createHash}=await import('node:crypto');
+  const {readFileSync}=await import('node:fs');
+  const stateDir=mkdtempSync(path.join(tmpdir(),'legacy-original-'));t.after(()=>rmSync(stateDir,{recursive:true,force:true}));
+  const blob=originalPdf(), hash=`sha256:${createHash('sha256').update(blob).digest('hex')}`;
+  const receipt=appendGoalCacheReceipt({stateDir,namespace:'source_original_text_receipts',keyInput:{source_id:originalSource.source_id,locator:originalSource.locator},tool:{name:'http-original-text-fetch',version:'1'},sourceFingerprint:hash,blob,
+    value:{source_id:originalSource.source_id,locator:originalSource.locator,original_text_claimed_verified:true,content_sha256:hash,content_byte_length:blob.length,content_type:'application/pdf'}});
+  const before=readFileSync(receipt.receipt_path);
+  const [read]=await verifySourceLocators({report:{sources:[originalSource]},stateDir,fetchImpl:async()=>new Response('',{status:403})});
+  assert.equal(read.original_identity_verified,true);assert.equal(read.cache_hit,true);
+  assert.deepEqual(readFileSync(receipt.receipt_path),before);assert.deepEqual(readFileSync(receipt.blob_path),blob);
+});
+
+test('unknown TypeError cannot become a successful cached source read',async t=>{
+  const stateDir=mkdtempSync(path.join(tmpdir(),'unknown-source-'));t.after(()=>rmSync(stateDir,{recursive:true,force:true}));
+  await verifySourceLocators({report:{sources:[originalSource]},stateDir,fetchImpl:async()=>new Response(originalHtml())});
+  await assert.rejects(verifySourceLocators({report:{sources:[originalSource]},stateDir,fetchImpl:async()=>{throw new TypeError('implementation fault');}}),e=>e.details.failure_kind==='unknown' && e.details.retryable===false);
+});
+
+test('four healthy twenty-second sources finish cumulatively in bounded windows',async t=>{
+  const stateDir=mkdtempSync(path.join(tmpdir(),'cumulative-source-'));t.after(()=>rmSync(stateDir,{recursive:true,force:true}));
+  const report={sources:['A','B','C','D'].map(id=>({...originalSource,source_id:id,name:`Standard ${id}`,locator:`https://example.test/${id}`}))};
+  let tick=0, priorProgress, audit; const visited=[];
+  for(let window=0;window<4;window++) {
+    tick=0;
+    audit=await verifySourceLocators({report,stateDir,collect:true,deadline:60_000,now:()=>tick,priorProgress,
+      fetchImpl:async url=>{visited.push(url);tick+=20_000;return new Response(originalHtml(`Standard ${url.at(-1)}`));}});
+    priorProgress=audit.progress;
+    if(audit.valid) break;
+  }
+  assert.equal(audit.valid,true);assert.deepEqual(audit.results.map(r=>r.source_id).sort(),['A','B','C','D']);
+  assert.ok(visited.length<8,'completed fixed originals must not be downloaded again');
+});
+
+test('completed source checkpoint revalidates binding and blob integrity before reuse',async t=>{
+  const {listGoalCacheReceipts}=await import('./goal-cache.mjs');
+  const {writeFileSync}=await import('node:fs');
+  const stateDir=mkdtempSync(path.join(tmpdir(),'checkpoint-binding-'));t.after(()=>rmSync(stateDir,{recursive:true,force:true}));
+  const report={sources:[originalSource]};
+  const first=await verifySourceLocators({report,stateDir,collect:true,fetchImpl:async()=>new Response(originalHtml())});
+  const resumed=await verifySourceLocators({report,stateDir,collect:true,priorProgress:first.progress,fetchImpl:async()=>assert.fail('no repeat HTTP')});
+  assert.equal(resumed.valid,true);assert.equal(resumed.progress.new_completed,0);
+  for(const changed of [{report:{sources:[{...originalSource,name:'Different document'}]}},{phase:'preparation'}]) {
+    let fetched=0;
+    const result=await verifySourceLocators({report,stateDir,collect:true,priorProgress:first.progress,...changed,fetchImpl:async()=>{fetched++;return new Response('',{status:403});}});
+    assert.equal(fetched,1);
+    if(changed.report) assert.equal(result.valid,false);
+  }
+  const receipt=listGoalCacheReceipts({stateDir,namespace:'source_original_text_receipts'})[0];
+  writeFileSync(receipt.blob_path,'corrupt blob');
+  const corrupt=await verifySourceLocators({report,stateDir,collect:true,priorProgress:first.progress,fetchImpl:async()=>new Response('',{status:403})});
+  assert.equal(corrupt.valid,false);assert.equal(corrupt.results.length,0);
+});
+
+test('PDF magic with a plaintext title is not a parsed original',async()=>{
+  await assert.rejects(verifySourceLocators({report:{sources:[originalSource]},fetchImpl:async()=>new Response('%PDF-1.7 Standard A original text')}),e=>e.code==='GOAL_SOURCE_ORIGINAL_IDENTITY_UNVERIFIED');
 });
