@@ -290,3 +290,6 @@ Run the local validation entry point before handoff when files in this repo chan
 ```bash
 npm run validate
 ```
+
+Canonical lint retains full diagnostics in `.reports/pcr-lint.json` and prints a bounded summary.
+Warnings retain their existing severity; report-write failures fail validation. See `builder/README.md`.

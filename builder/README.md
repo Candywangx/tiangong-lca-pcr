@@ -201,3 +201,40 @@ The direct CLI entry point is:
 ```bash
 node builder/cli/index.mjs <command>
 ```
+
+
+## Complete lint diagnostics
+
+`npm run lint` (also the first part of `npm run validate`) keeps all existing
+vocabulary, alias, catalog, CPC-chain and library checks. Its final library scan
+uses explicit report mode:
+
+```bash
+node builder/cli/index.mjs lint --report .reports/pcr-lint.json
+```
+
+The terminal shows exact error/warning totals and at most 20 abbreviated samples.
+The versioned JSON report preserves every full diagnostic, counts, status and
+whether collection completed. The printed SHA256 binds the full file. Reports
+are replaced atomically only after writing succeeds; a report failure exits 1
+and retains unsaved diagnostics on stderr instead of claiming success. Warnings
+alone still exit 0, errors or incomplete collection exit 1. A lint pass is not a
+claim that warnings or professional review requirements are resolved.
+
+Report paths must be JSON filenames directly inside the selected root's ignored
+`.reports/` directory, with letters, digits, dots, underscores or hyphens in the
+filename. Source/state paths, linked directories and linked/shared destination
+files are rejected. A root path containing spaces or Unicode is supported.
+Treat a previous report as historical until the current command prints its new
+successful report location; an earlier vocabulary/catalog failure can stop the
+pipeline before the library report is generated.
+
+Direct `node builder/cli/index.mjs lint` keeps its existing complete human output;
+`pcr:check --format json` keeps its separate single-PCR validation contract.
+No validation result is cached and no publishing/recovery command is invoked.
+
+CI retains a validation transcript and, when produced, the current full JSON in
+`pcr-validation-<run-id>-<attempt>` for 14 days, including failed validation runs.
+A failure before the library scan is recorded as a missing report, not a complete
+empty result. The workflow refuses pre-existing reports and preserves npm's
+failure status. An early setup failure leaves the explicit not-started transcript.

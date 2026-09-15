@@ -18,6 +18,11 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Initialize validation evidence
+        run: |
+          mkdir -p "$RUNNER_TEMP/pcr-validation"
+          printf 'Validation has not started.\n' > "$RUNNER_TEMP/pcr-validation/validation.log"
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -34,7 +39,33 @@ jobs:
           pdftotext -v
 
       - name: Validate library contracts
-        run: npm run validate
+        run: |
+          evidence="$RUNNER_TEMP/pcr-validation"
+          if [ -e .reports/pcr-lint.json ] || [ -L .reports/pcr-lint.json ]; then
+            printf 'Refusing a pre-existing lint report; validation did not run.\n' > "$evidence/validation.log"
+            cat "$evidence/validation.log"
+            exit 1
+          fi
+          set +e
+          npm run validate > "$evidence/validation.log" 2>&1
+          validation_status=$?
+          set -e
+          cat "$evidence/validation.log"
+          if [ -f .reports/pcr-lint.json ] && [ ! -L .reports/pcr-lint.json ]; then
+            cp .reports/pcr-lint.json "$evidence/pcr-lint.json"
+          else
+            printf 'Whole-library lint report was not produced; inspect the validation error above.\n' >> "$evidence/validation.log"
+          fi
+          exit "$validation_status"
+
+      - name: Preserve complete validation diagnostics
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: pcr-validation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pcr-validation/
+          if-no-files-found: error
+          retention-days: 14
 
   documentation:
     runs-on: ubuntu-latest

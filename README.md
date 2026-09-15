@@ -133,6 +133,11 @@ npm run goal:stop -- --config <goal.yaml>
 npm run validate
 ```
 
+Canonical lint writes complete diagnostics to `.reports/pcr-lint.json` while
+printing a bounded summary. Warning/error semantics and every check are unchanged;
+see [Complete lint diagnostics](builder/README.md#complete-lint-diagnostics) for
+report paths, failure behavior and CI artifacts.
+
 The local `goal:*` Harness turns a bounded classification/category objective into a persistent, hash-chained queue.
 It captures an allowlisted synthetic commit without changing the user's index or branch, gives each author a durable
 Codex-visible task in its own Git worktree through one Goal-owned loopback app-server daemon, verifies the exact four-file
