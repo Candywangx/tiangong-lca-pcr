@@ -1,10 +1,1300 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41239"
-  title: "Flat-rolled products of alloy steel, n.e.c., further worked"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.flat-rolled-products-of-alloy-steel-n-e-c-further-worked"
+  classification_refs: "CPC 3.0: 41239, exact product-classification context"
+  covered_products: "Flat-rolled alloy-steel coil, strip, or sheet, n.e.c., with one or more declared further-working operations beyond the incoming hot-rolled or cold-rolled state"
+  excluded_products: "Non-alloy steel; stainless steel; silicon-electrical steel; products only hot-rolled or only cold-rolled; fabricated parts; pipe, bar, rod, section, and wire products"
+  representative_product: "Finished alloy-steel coil or sheet from a qualified flat-rolled alloy-steel input and a declared further-working route"
+  production_route: "Gate-to-gate further working; route steps are explicitly selected from the process map"
+  market_state: "Dry finished coil, strip, or sheet at the factory gate, with dimensions, surface, coating, oiling, and packaging declared"
+functional_unit:
+  what: "Provision of further-worked flat-rolled alloy steel, n.e.c., in the declared market state"
+  how_much: "1,000 kg net saleable product"
+  how_well: "Conforming to the declared alloy grade, dimensions, mechanical properties, surface finish, coating status, and applicable product specification"
+  how_long_or_cycle: "One production campaign represented at the factory gate; no use duration is assigned"
+  reference_flow_link: "finished_alloy_steel_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_start_at_qualified_flat_product
+      applies_to: "Foreground boundary"
+      rule: "Start at receipt of the qualified flat-product input and include declared further-working operations through net saleable factory-gate product."
+      source_ids:
+        - unsd-cpc-3-0-structure-2025
+        - eu-jrc-fmp-bref-2022
+    - rule_id: boundary_route_conditioning
+      applies_to: "Process selection"
+      rule: "Include each conditional process only when site records show it occurs; do not average absent route steps into the product."
+      source_ids:
+        - eu-jrc-fmp-bref-2022
+    - rule_id: boundary_support_operations
+      applies_to: "Supporting operations"
+      rule: "Include attributable roll preparation, bath maintenance, fume control, on-site effluent treatment, handling, inspection, and packing."
+      source_ids:
+        - eu-jrc-fmp-bref-2022
+boundary_abstraction:
+  declared_starting_condition: "Qualified flat-rolled alloy-steel input, including alloy grade, hot-rolled or cold-rolled state, dimensions, scale or surface condition, and existing coating"
+  starting_condition_role: "Purchased or transferred product input represented by a separate upstream dataset"
+  product_classification_scope: "Flat-rolled alloy-steel products n.e.c. undergoing further working consistent with CPC 3.0 code 41239"
+  recursive_input_rule: "Record a same-category input once at its declared incoming state and do not recursively expand this PCR"
+  upstream_dataset_requirement: "Match alloy grade, production route, geography, recycled-content basis, and incoming state; disclose any proxy"
+  disclosure: "Included and omitted steps, internal recirculation, acid recovery, water-loop configuration, coating route, scrap destination, packaging, and shared-facility cut-offs"
+reference_flow_definition:
+  reference_amount: "1,000 kg net saleable product"
+  product_flow_ref:
+    name: "Flat-rolled products of alloy steel, n.e.c., further worked"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "alloy designation and standard"
+    - "incoming hot-rolled or cold-rolled state"
+    - "incoming and final thickness and width"
+    - coil
+    - strip
+    - "or sheet form"
+    - "process sequence"
+    - "annealing technology and atmosphere when used"
+    - "coating metal and mass when used"
+    - "surface finish"
+    - "oiling state"
+    - "net saleable mass"
+    - site
+    - geography
+    - "production period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "Reference product and solid material balances"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize net saleable product and material exchanges to 1,000 kg; exclude removable transport packaging from product mass."
+  - id: electricity_energy_conversion
+    applies_to: "Alternating-current electricity rows"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the meter reading and conversion basis; convert kWh using 3.6 MJ per kWh."
+  - id: gas_volume_conditions
+    applies_to: "Gaseous natural-gas rows"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Declare reference temperature, pressure, and dry/wet basis and retain the supplier energy conversion."
+  - id: coating_mass_separation
+    applies_to: "Metallic coating"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record coating metal separately from steel substrate and declare final coating mass or mass per coated area."
+process_map:
+  - id: feedstock_receiving_preparation
+    name: "Feedstock receiving and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always; establishes incoming state and campaign mass balance"
+    role: "Foreground input control and preparation"
+    quantitative_reference: "kg qualified input and prepared output"
+  - id: pickling_rinsing
+    name: "Pickling, rinsing, and drying"
+    inclusion: "conditional"
+    inclusion_condition: "Include when oxide scale or surface condition is removed chemically"
+    role: "Foreground surface preparation"
+    quantitative_reference: "kg pickled output and m2 treated surface"
+  - id: cold_reduction
+    name: "Cold reduction"
+    inclusion: "conditional"
+    inclusion_condition: "Include when thickness or mechanical properties are changed by cold rolling"
+    role: "Foreground forming"
+    quantitative_reference: "kg cold-rolled output"
+  - id: annealing_heat_treatment
+    name: "Annealing or heat treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared route uses batch or continuous heat treatment"
+    role: "Foreground thermal treatment"
+    quantitative_reference: "kg annealed output"
+  - id: temper_skin_pass
+    name: "Temper or skin-pass rolling"
+    inclusion: "conditional"
+    inclusion_condition: "Include when a light rolling pass sets final properties, flatness, or surface finish"
+    role: "Foreground final rolling"
+    quantitative_reference: "kg tempered output"
+  - id: metallic_coating
+    name: "Zinc metallic coating"
+    inclusion: "conditional"
+    inclusion_condition: "Include only for a declared zinc-coated CPC 41239 product"
+    role: "Foreground surface coating"
+    quantitative_reference: "kg coated output and m2 coated area"
+  - id: finishing_packaging
+    name: "Finishing and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always; record the actual finishing and packaging configuration"
+    role: "Foreground final conditioning"
+    quantitative_reference: "1,000 kg net saleable product"
+  - id: wastewater_treatment
+    name: "On-site cold-processing wastewater treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when process wastewater is treated inside the foreground boundary"
+    role: "Foreground pollution control"
+    quantitative_reference: "m3 treatment feed"
+process_inventory:
+  - id: feedstock_receiving_preparation
+    label: "Feedstock receiving and preparation"
+    inputs:
+      product:
+        - row_id: hot_rolled_alloy_steel_feedstock
+          role: "Hot-rolled alloy-steel flat-product feedstock"
+          name: "Hot-rolled alloy-steel flat product"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Measured net incoming mass attributable to the campaign; include only when the declared input state is hot-rolled"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feedstock_mass_balance
+              source_ids:
+                - unsd-cpc-3-0-structure-2025
+            ranges: []
+        - row_id: cold_rolled_alloy_steel_feedstock
+          role: "Cold-rolled alloy-steel flat-product feedstock"
+          name: "Cold-rolled alloy-steel flat product"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Measured net incoming mass attributable to the campaign; include only when the declared input state is cold-rolled"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feedstock_mass_balance
+              source_ids:
+                - unsd-cpc-3-0-structure-2025
+            ranges: []
+        - row_id: receiving_electricity
+          role: "Receiving and preparation electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Metered or equipment-runtime-allocated electricity converted to MJ"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stage_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_alloy_steel_intermediate
+          role: "Prepared alloy-steel intermediate"
+          name: "Prepared alloy-steel flat-product intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Measured transfer mass to the first declared further-working operation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feedstock_mass_balance
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: pickling_rinsing
+    label: "Pickling, rinsing, and drying"
+    inputs:
+      product:
+        - row_id: pickling_feedstock_intermediate
+          role: "Pickling-stage alloy-steel feed"
+          name: "Alloy-steel flat-product intermediate entering pickling"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Measured line-entry mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pickling_records
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: hydrochloric_acid
+          role: "Hydrochloric acid pickling agent"
+          name: "Hydrochloric acid solution"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "As-supplied consumption from stock balance; include only when used and declare concentration"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pickling_records
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: demineralized_rinse_water
+          role: "Demineralized rinse water"
+          name: "Demineralized water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9385842f-1815-4f19-a6b9-3dbb7ccbbffc"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Metered fresh make-up volume excluding internal recirculation, converted to mass using measured or documented density at declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pickling_records
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: pickling_electricity
+          role: "Pickling electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Submetered electricity or documented equipment allocation converted to MJ"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stage_energy
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: pickling_natural_gas
+          role: "Pickling natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Metered gas for bath heating, drying, or attributable acid recovery at declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stage_fuel_and_emissions
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: pickled_alloy_steel_intermediate
+          role: "Pickled alloy-steel intermediate"
+          name: "Pickled alloy-steel flat-product intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Measured rinsed and dried transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pickling_records
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        - row_id: acidic_pickling_effluent
+          role: "Acidic pickling effluent"
+          name: "Acidic alloy-steel pickling effluent"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Net treatment-feed volume after internal recirculation"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pickling_records
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      elementary:
+        - row_id: pickling_fossil_co2
+          role: "Fossil carbon dioxide from pickling heat"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Calculated from pickling natural gas and documented site or supplier carbon factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stage_fuel_and_emissions
+              source_ids: []
+            ranges: []
+  - id: cold_reduction
+    label: "Cold reduction"
+    inputs:
+      product:
+        - row_id: cold_rolling_feedstock
+          role: "Cold-rolling feedstock"
+          name: "Pickled alloy-steel flat product entering cold reduction"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Measured mill-entry mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_rolling_records
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: rolling_oil
+          role: "Rolling oil"
+          name: "Cold-rolling lubricant oil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Fresh rolling-oil make-up from stock balance, excluding recirculated oil"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_rolling_records
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: cold_rolling_electricity
+          role: "Cold-rolling electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Submetered electricity or documented equipment allocation converted to MJ"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stage_energy
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cold_rolled_alloy_steel_intermediate
+          role: "Cold-rolled alloy-steel intermediate"
+          name: "Cold-rolled alloy-steel flat-product intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Measured mill-exit mass at declared gauge"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_rolling_records
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        - row_id: cold_rolling_steel_scrap
+          role: "Cold-rolling alloy-steel scrap"
+          name: "Alloy-steel scrap from cold rolling"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Weighed clean edge trim and rejected alloy-steel output with destination declared"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_rolling_records
+              source_ids:
+                - worldsteel-lci-methodology-2017
+            ranges: []
+      elementary:
+        []
+  - id: annealing_heat_treatment
+    label: "Annealing or heat treatment"
+    inputs:
+      product:
+        - row_id: annealing_feedstock
+          role: "Annealing feedstock"
+          name: "Alloy-steel flat-product intermediate entering annealing"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Measured furnace-entry mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_annealing_records
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: protective_nitrogen
+          role: "Protective nitrogen"
+          name: "Nitrogen gas for protective annealing atmosphere"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Metered or supplier-recorded volume at declared reference conditions; include only when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_annealing_records
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: annealing_electricity
+          role: "Annealing electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Submetered electricity for heating and auxiliaries or documented equipment allocation converted to MJ"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stage_energy
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: annealing_natural_gas
+          role: "Annealing natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Metered furnace gas at declared reference conditions; include only for gas-fired heat treatment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stage_fuel_and_emissions
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: annealed_alloy_steel_intermediate
+          role: "Annealed alloy-steel intermediate"
+          name: "Annealed alloy-steel flat-product intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Measured furnace-exit mass with achieved properties and surface state declared"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_annealing_records
+              source_ids:
+                - worldsteel-finished-cold-rolled-coil-2026
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: annealing_fossil_co2
+          role: "Fossil carbon dioxide from annealing"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Calculated from annealing natural gas and documented site or supplier carbon factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stage_fuel_and_emissions
+              source_ids: []
+            ranges: []
+  - id: temper_skin_pass
+    label: "Temper or skin-pass rolling"
+    inputs:
+      product:
+        - row_id: temper_feedstock
+          role: "Temper-rolling feedstock"
+          name: "Alloy-steel flat-product intermediate entering temper rolling"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Measured temper-mill entry mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_temper_finishing_records
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: temper_electricity
+          role: "Temper-rolling electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Submetered electricity or documented equipment allocation converted to MJ"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stage_energy
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: tempered_alloy_steel_intermediate
+          role: "Tempered alloy-steel intermediate"
+          name: "Tempered alloy-steel flat-product intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Measured temper-mill exit mass with achieved surface and property qualifiers"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_temper_finishing_records
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: metallic_coating
+    label: "Zinc metallic coating"
+    inputs:
+      product:
+        - row_id: coating_feedstock
+          role: "Metallic-coating feedstock"
+          name: "Alloy-steel flat-product intermediate entering zinc coating"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Measured coating-line entry mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_records
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: coating_zinc
+          role: "Zinc coating metal"
+          name: "Zinc metal for strip coating"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Net zinc input from stock balance; declare grade and add separate atomic rows for any alloy additions"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_records
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: coating_electricity
+          role: "Coating-line electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Submetered electricity or documented equipment allocation converted to MJ"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stage_energy
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: coating_natural_gas
+          role: "Coating-line natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Metered gas for directly associated cleaning, heat treatment, or bath support"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stage_fuel_and_emissions
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: coated_alloy_steel_intermediate
+          role: "Zinc-coated alloy-steel intermediate"
+          name: "Zinc-coated alloy-steel flat-product intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Measured coating-line exit mass with coating mass and coated area declared"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_records
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: coating_fossil_co2
+          role: "Fossil carbon dioxide from coating-line heat"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Calculated from coating-line natural gas and documented site or supplier carbon factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_stage_fuel_and_emissions
+              source_ids: []
+            ranges: []
+  - id: finishing_packaging
+    label: "Finishing and packaging"
+    inputs:
+      product:
+        - row_id: finishing_feedstock
+          role: "Finishing-stage alloy-steel feed"
+          name: "Further-worked alloy-steel flat-product intermediate entering finishing"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Measured finishing-line entry mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_temper_finishing_records
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: anticorrosion_oil
+          role: "Anticorrosion oil"
+          name: "Anticorrosion oil for finished alloy-steel strip"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "As-supplied stock-balance consumption; include only when intentionally applied"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_temper_finishing_records
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: steel_strapping
+          role: "Steel strapping"
+          name: "Steel packaging strap"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Mass delivered with product, excluding reusable plant-internal bands"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: finishing_electricity
+          role: "Finishing and packaging electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Submetered electricity or documented equipment allocation converted to MJ"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stage_energy
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_alloy_steel_product
+          role: "Finished further-worked alloy-steel product"
+          name: "Flat-rolled products of alloy steel, n.e.c., further worked"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Measured net saleable output normalized to 1,000 kg, excluding removable transport packaging"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_feedstock_mass_balance
+              source_ids:
+                - worldsteel-finished-cold-rolled-coil-2026
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: wastewater_treatment
+    label: "On-site cold-processing wastewater treatment"
+    inputs:
+      product:
+        - row_id: sodium_hydroxide
+          role: "Sodium hydroxide neutralizing agent"
+          name: "Sodium hydroxide solution"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "As-supplied stock-balance consumption with concentration declared; include only when used"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_treatment_records
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: wastewater_treatment_electricity
+          role: "Wastewater-treatment electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Submetered electricity or documented equipment allocation converted to MJ"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stage_energy
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        - row_id: wastewater_treatment_feed
+          role: "Cold-processing wastewater treatment feed"
+          name: "Cold-processing wastewater treatment feed from alloy-steel finishing"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Metered net treatment-feed volume after internal recirculation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_treatment_records
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: metal_hydroxide_sludge
+          role: "Dewatered metal-hydroxide sludge"
+          name: "Dewatered metal-hydroxide sludge from cold-processing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange crosses the declared process boundary when its route condition applies; its quantity is obtained as specified below."
+          amount:
+            expression: "Weighed wet mass with dry-solids fraction, metal content, and destination declared"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_treatment_records
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "Multi-product lines and shared utilities"
+    rule: "Prefer campaign, meter, runtime, mass-throughput, coated-area, or treated-volume subdivision before allocation; document every shared-service driver."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: allocation_internal_scrap
+    applies_to: "Scrap returned inside the represented site"
+    rule: "Record scrap mass and destination, but do not count it as external scrap input or grant an avoided-product credit in the foreground inventory."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: allocation_exported_residues
+    applies_to: "Scrap, scale, recovered acid, or sludge leaving the boundary"
+    rule: "Record each physical output without a foreground avoided-burden credit; report any downstream system expansion or recycling method separately."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_feedstock_mass_balance
+      process_id: "feedstock_receiving_preparation_finishing_packaging"
+      flow_role: "Feedstock, intermediate, product mass"
+      record_type: "Scale and coil-genealogy records"
+      raw_fields: "coil id; alloy; state; gross; tare; scrap; saleable mass; time"
+      collection_method: "Reconcile calibrated scales to genealogy"
+      unit: "kg"
+      frequency: "Each coil and campaign"
+      temporal_coverage: "Representative 12 months or full shorter campaign"
+      site_scope: "Included lines"
+      aggregation_rule: "Sum and normalize by net saleable output"
+      quality_evidence: "Calibration and stock reconciliation"
+    - protocol_id: cp_stage_energy
+      process_id: "all_stages"
+      flow_role: "Electricity"
+      record_type: "Submeters and reconciled main meter"
+      raw_fields: "meter; readings; runtime; load; driver; supplier; voltage"
+      collection_method: "Prefer submetering; otherwise documented equipment allocation"
+      unit: "kWh, MJ"
+      frequency: "Monthly and campaign"
+      temporal_coverage: "Same production period"
+      site_scope: "Included equipment"
+      aggregation_rule: "Convert to MJ and normalize by saleable output"
+      quality_evidence: "Calibration, invoices, allocation worksheet"
+    - protocol_id: cp_stage_fuel_and_emissions
+      process_id: "pickling_rinsing_annealing_heat_treatment_metallic_coating"
+      flow_role: "Natural gas and direct CO2"
+      record_type: "Fuel meters, invoices, factors"
+      raw_fields: "volume; conditions; calorific value; carbon factor; oxidation factor; attribution"
+      collection_method: "Reconcile meters and calculate CO2 from documented factor"
+      unit: "m3, MJ, kg"
+      frequency: "Monthly and campaign"
+      temporal_coverage: "Same production period"
+      site_scope: "Each combustion unit"
+      aggregation_rule: "Attribute by stage and normalize"
+      quality_evidence: "Calibration, supplier statement, formula check"
+    - protocol_id: cp_pickling_records
+      process_id: "pickling_rinsing"
+      flow_role: "Steel, acid, water, effluent"
+      record_type: "Line, tank, meter, waste records"
+      raw_fields: "input/output mass; acid and concentration; stock; recovery; water; effluent"
+      collection_method: "Reconcile line and inventories"
+      unit: "kg, m3, m2"
+      frequency: "Campaign and monthly"
+      temporal_coverage: "Same production period"
+      site_scope: "Pickling and recovery"
+      aggregation_rule: "Net make-up and outputs only"
+      quality_evidence: "Calibration, analysis, manifests"
+    - protocol_id: cp_cold_rolling_records
+      process_id: "cold_reduction"
+      flow_role: "Steel, oil, scrap"
+      record_type: "Mill, stock, waste records"
+      raw_fields: "input/output mass; gauge; oil stock; scrap; destination"
+      collection_method: "Reconcile genealogy and inventories"
+      unit: "kg"
+      frequency: "Campaign and monthly"
+      temporal_coverage: "Same production period"
+      site_scope: "Rolling and support equipment"
+      aggregation_rule: "Net make-up and outputs"
+      quality_evidence: "Calibration and manifests"
+    - protocol_id: cp_annealing_records
+      process_id: "annealing_heat_treatment"
+      flow_role: "Steel and nitrogen"
+      record_type: "Furnace and gas records"
+      raw_fields: "coil mass; furnace; cycle; temperature; nitrogen; purity; conditions"
+      collection_method: "Link furnace batches to genealogy"
+      unit: "kg, m3"
+      frequency: "Batch or campaign"
+      temporal_coverage: "Same production period"
+      site_scope: "Included furnaces"
+      aggregation_rule: "Sum route-specific records"
+      quality_evidence: "Log completeness and calibration"
+    - protocol_id: cp_temper_finishing_records
+      process_id: "temper_skin_pass_finishing_packaging"
+      flow_role: "Steel, oil, losses"
+      record_type: "Line, stock, inspection records"
+      raw_fields: "mass; oil; trim; rejects; rework; surface state"
+      collection_method: "Reconcile genealogy and stock"
+      unit: "kg"
+      frequency: "Campaign and monthly"
+      temporal_coverage: "Same production period"
+      site_scope: "Temper and finishing"
+      aggregation_rule: "Count rework once and normalize"
+      quality_evidence: "Calibration and dispositions"
+    - protocol_id: cp_coating_records
+      process_id: "metallic_coating"
+      flow_role: "Substrate, zinc, coated product"
+      record_type: "Line, metal, coating-test records"
+      raw_fields: "substrate/output; zinc stock; area; coating mass"
+      collection_method: "Reconcile metal inventory and measured coating"
+      unit: "kg, m2"
+      frequency: "Campaign and monthly"
+      temporal_coverage: "Same production period"
+      site_scope: "Zinc coating line"
+      aggregation_rule: "Close zinc and substrate balances"
+      quality_evidence: "Calibration and coating test"
+    - protocol_id: cp_packaging_records
+      process_id: "finishing_packaging"
+      flow_role: "Delivered steel strap"
+      record_type: "Bill of materials and issue records"
+      raw_fields: "material; mass per item; count; return status"
+      collection_method: "Weigh items and reconcile to shipments"
+      unit: "kg, item"
+      frequency: "Configuration and campaign"
+      temporal_coverage: "Same production period"
+      site_scope: "Delivered packaging"
+      aggregation_rule: "Convert counts to mass"
+      quality_evidence: "Weighing and bill of materials"
+    - protocol_id: cp_wastewater_treatment_records
+      process_id: "wastewater_treatment"
+      flow_role: "Feed, NaOH, sludge"
+      record_type: "Flow, chemical, lab, waste records"
+      raw_fields: "feed; pH; reagent concentration; stock; sludge wet/dry mass; metals; destination"
+      collection_method: "Reconcile flow, chemistry, and sludge"
+      unit: "m3, kg"
+      frequency: "Daily or batch and monthly"
+      temporal_coverage: "Same production period"
+      site_scope: "On-site treatment"
+      aggregation_rule: "Allocate by flow and pollutant load"
+      quality_evidence: "Calibration, lab QA/QC, manifests"
+  calculation_rules:
+    - id: calc_normalize_to_reference_mass
+      applies_to: "All rows"
+      rule: "normalized amount = campaign amount / campaign net saleable mass × 1,000 kg"
+      inputs:
+        - "Campaign exchange"
+        - "saleable mass"
+      output: "Exchange per reference flow"
+      source_ids: []
+    - id: calc_electricity_to_mj
+      applies_to: "Electricity"
+      rule: "MJ = metered kWh × 3.6"
+      inputs:
+        - kWh
+      output: "MJ"
+      source_ids: []
+    - id: calc_direct_fossil_co2
+      applies_to: "Direct fossil CO2"
+      rule: "CO2 = stage fuel quantity × documented carbon factor × oxidation factor"
+      inputs:
+        - Fuel
+        - conditions
+        - factors
+      output: "kg fossil CO2"
+      source_ids: []
+    - id: calc_mass_balance_check
+      applies_to: "Material stages"
+      rule: "unexplained difference = inputs − measured product and waste outputs; investigate rather than allocate"
+      inputs:
+        - Inputs
+        - outputs
+        - "stock change"
+      output: "Difference"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Product and intermediates"
+      requirement: "Preserve genealogy from incoming alloy and state through final dimensions, properties, surface, coating, and packaging."
+      evidence: "Specification, mill certificate, route sheet"
+    - id: dq_temporal_alignment
+      applies_to: "All records"
+      requirement: "Use one representative period and explain shutdowns, trials, abnormal campaigns, and substitutions."
+      evidence: "Period reconciliation and exception log"
+    - id: dq_meter_scale_control
+      applies_to: "Measured exchanges"
+      requirement: "Retain calibration or verification evidence for scales, utility and flow meters, and laboratory methods."
+      evidence: "Calibration and QA/QC records"
+    - id: dq_route_completeness
+      applies_to: "Conditional processes"
+      requirement: "Justify each inclusion/exclusion and prevent double counting across coupled lines."
+      evidence: "Route decision and cross-process reconciliation"
+    - id: dq_supplier_representativeness
+      applies_to: "Purchased inputs"
+      requirement: "Match grade, state, geography, technology, and period; disclose proxies."
+      evidence: "Supplier declaration and dataset selection"
+validation_rules:
+  - rule_id: validate_identity_and_reference_flow
+    applies_to: "Product dataset"
+    rule: "Confirm PCR id, CPC context, required qualifiers, and exactly 1,000 kg net saleable reference product."
+    source_ids:
+      - unsd-cpc-3-0-structure-2025
+      - worldsteel-finished-cold-rolled-coil-2026
+  - rule_id: validate_route_and_atomic_inventory
+    applies_to: "Process map and inventory"
+    rule: "Confirm every included process occurred, every absent conditional step is documented, and every row is one atomic exchange."
+    source_ids:
+      - eu-jrc-fmp-bref-2022
+  - rule_id: validate_mass_internal_transfers
+    applies_to: "Material balances"
+    rule: "Reconcile feedstock, intermediates, saleable product, scrap, zinc, sludge, and stock changes; flag every unexplained difference."
+    source_ids:
+      - eu-jrc-fmp-bref-2022
+  - rule_id: validate_energy_direct_co2
+    applies_to: "Electricity, gas, and CO2"
+    rule: "Reconcile meters and invoices, verify conversions and gas conditions, and calculate direct fossil CO2 once."
+    source_ids: []
+  - rule_id: validate_recycling_allocation
+    applies_to: "Scrap and exported outputs"
+    rule: "Confirm internal scrap is not external input, exported outputs receive no foreground credit, and downstream recycling is separately declared."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: validate_unresolved_evidence
+    applies_to: "Candidate use"
+    rule: "Treat blank UUIDs and missing independent ranges as review needs; do not use proxies or invented intervals."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for further working of a declared flat-rolled alloy-steel input"
+  downstream_use: "secondary_dataset; background_dataset after review and resolution of evidence gaps"
+  allowed_use: "LCA, carbon-footprint, EPD, supply-chain, and improvement studies matching alloy, incoming state, route, geography, period, and market state"
+  excluded_use: "Upstream steelmaking; excluded steel categories; fabrication; use; end-of-life; undisclosed generic substitution"
+  required_metadata: "PCR and CPC context; alloy; supplier and incoming state; process sequence; site; period; dimensions; surface/coating; energy; water and acid systems; scrap; packaging; allocation and recycling method"
+  required_quality_disclosure: "Coverage, meter quality, supplier representativeness, route exclusions, shared-service allocation, mass-balance gaps, proxies, unresolved UUIDs, and unresolved ranges"
+  update_trigger: "Change in alloy, incoming state, route, furnace/coating technology, energy, acid/water system, specification, packaging, site, or period"
+data_sources:
+  - id: "unsd-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *CPC Version 3.0 Structure*, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-03)"
+    used_for: "CPC 41239 identity"
+  - id: "eu-jrc-fmp-bref-2022"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, *Best Available Techniques Reference Document for the Ferrous Metals Processing Industry*, 2022. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2022-12/FMP%20BREF_Final%20Version.pdf (retrieved 2026-09-03)"
+    used_for: "Boundary, processes, exchanges, water, and waste treatment"
+  - id: "worldsteel-lci-methodology-2017"
+    type: "method_factor"
+    reference: "World Steel Association, *Life Cycle Inventory Methodology Report*, 2017. https://worldsteel.org/media/publications/lci-report-2017-pdf/?do_download_id=7f96813a-3756-4842-8dbc-38ce201f2914 (retrieved 2026-09-03)"
+    used_for: "Process chain, allocation, scrap, recycling"
+  - id: "worldsteel-finished-cold-rolled-coil-2026"
+    type: "dataset"
+    reference: "World Steel Association, *Global Finished Cold Rolled Coil - Construction*, April 2026. https://worldsteel.org/wider-sustainability/life-cycle-thinking/lca-eco-profiles-2026-release/global-finished-cold-rolled-coil-construction/ (retrieved 2026-09-03)"
+    used_for: "Declared unit and representative finished product state"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:1b864b9943615bceab882f2e71b82deee470e1067a162014de2378771f22d113"
+  generated_content_sha256: "sha256:aa816405b9f7c0cc521e5e8c597b810041d8fd05c7e5e37ca6ca8164a589efd1"

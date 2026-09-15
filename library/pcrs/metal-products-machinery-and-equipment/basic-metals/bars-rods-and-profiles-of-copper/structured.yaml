@@ -1,10 +1,492 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41512"
-  title: "Bars, rods and profiles, of copper"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.bars-rods-and-profiles-of-copper"
+  classification_refs: "CPC 3.0: 41512, Bars, rods and profiles, of copper"
+  covered_products: "Solid copper and copper-alloy bars and rods supplied in straight lengths; solid constant-cross-section copper and copper-alloy profiles, whether coiled or straight, that do not meet the definitions of wire, flat products, foil, tubes or pipes"
+  excluded_products: "Copper wire in coils; wire-bars and billets that remain unwrought feed; plates, sheets, strip and foil; tubes, pipes and fittings; powder and flakes; castings or fabricated articles with a more specific product function"
+  representative_product: "Copper rod, with bar and profile form variants governed by the same mass-based rules and mandatory form disclosure"
+  production_route: "Integrated or purchased-precursor manufacture by casting where applicable, hot extrusion or rolling, optional cold drawing, optional heat treatment and surface treatment, and final straightening/cutting"
+  market_state: "Factory-gate saleable straight-length bar, rod or profile, or a coiled profile only when it is not wire; declared alloy grade, temper, dimensions and surface condition"
+functional_unit:
+  what: "Saleable copper or copper-alloy bar, rod or profile meeting the declared grade, form, dimensions, temper and surface specification"
+  how_much: "1 kg net conforming product at the factory gate"
+  how_well: "Conforming to the declared product specification, with nonconforming offcuts and rejects excluded from net product mass"
+  how_long_or_cycle: "One production reporting period, normally 12 consecutive months, covering representative campaigns for the declared product mix"
+  reference_flow_link: "The normalized output row copper_rod_output provides the representative reference product; datasets for bar or profile variants must retain the same mass basis and declare the different form."
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary begins with externally supplied copper-bearing feed and other products crossing the facility gate and ends with net conforming bar, rod or profile released at the factory gate. For an integrated facility it includes relevant melting, holding, casting, extrusion or rolling, drawing, annealing, surface treatment, straightening, sawing, recirculation and on-site treatment operations. A purchased billet or other precursor is represented by its upstream product dataset; upstream mining, concentration, smelting, refining and off-site recycling are not recreated inside this foreground inventory."
+      source_ids: []
+    - rule_id: boundary_product_form
+      applies_to: "product category boundary"
+      rule: "Include only worked products with a uniform solid cross-section that meet the declared bar, rod or profile form; exclude coiled wire and hollow tube or pipe."
+      source_ids:
+        - un-cpc-3-0-2025
+        - cjeu-hydro-energo-2020
+    - rule_id: boundary_integrated_operations
+      applies_to: "foreground operations"
+      rule: "Include every manufacturing and on-site treatment operation controlled by the reporting facility that materially serves the reference product, and disclose which melting, casting, forming, heat-treatment and cleaning steps are present."
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+    - rule_id: boundary_upstream_products
+      applies_to: "supplied feed, energy and chemicals"
+      rule: "Link supplied cathode, billet, scrap accepted as a product or waste, energy, gases, water and chemicals to separate upstream datasets; do not place their upstream burdens in direct site exchanges."
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+boundary_abstraction:
+  declared_starting_condition: "Externally supplied copper cathode, billet, or segregated copper-bearing feed entering the controlled manufacturing site; the selected starting condition and copper grade must be declared"
+  starting_condition_role: "Upstream product or waste input whose prior production or recovery is represented by a separate dataset"
+  product_classification_scope: "Solid worked copper and copper-alloy bars, rods and profiles corresponding to CPC 3.0 code 41512, subject to the physical form boundary above"
+  recursive_input_rule: "A same-category bar, rod or profile received for further drawing, annealing or finishing is recorded once as a product input with its own upstream dataset; its embedded production is not recursively rebuilt in the receiving process."
+  upstream_dataset_requirement: "Use product- and geography-appropriate datasets for externally supplied copper feed, alloying content, electricity, fuel, gases, water and treatment reagents; disclose missing or proxy datasets."
+  disclosure: "Declare the starting copper state, refined-copper or alloy grade, recycled-content accounting, included process sequence, internal copper recirculation, surface-treatment route, energy supply, water recirculation and factory-gate product state."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Copper rod"
+    uuid: "d5e5708d-dac7-4278-b2a0-068ed90df983"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product form: bar"
+    - "rod or profile"
+    - "refined-copper or alloy designation and composition"
+    - temper
+    - "cross-section and nominal dimensions"
+    - "straight length or permitted profile coil state"
+    - "surface treatment"
+    - "recycled-content accounting method"
+    - "manufacturing route"
+    - "facility geography"
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product and all copper-bearing inputs and outputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize net conforming output to exactly 1 kg. Measure gross output, offcuts, rejects and returned internal scrap separately; do not count internally recycled copper twice as a new external input."
+  - id: gas_reference_conditions
+    applies_to: "natural gas and industrial oxygen"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Record metered volume with temperature, pressure and whether the reading is standard, normal or actual volume; convert only with documented reference conditions."
+  - id: electricity_energy
+    applies_to: "electricity crossing the foreground boundary"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the metered energy record and document any kWh-to-MJ conversion; do not include upstream grid emissions as direct site emissions."
+  - id: solution_mass
+    applies_to: "sodium-hydroxide solution"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record delivered solution mass and active-ingredient concentration separately so solution mass is not confused with dry NaOH mass."
+process_map:
+  - id: integrated_manufacture
+    name: "Integrated manufacture and finishing of copper bar, rod or profile"
+    inclusion: "required"
+    inclusion_condition: "Always; disclose which melting/casting, extrusion/rolling/drawing, annealing, cleaning, straightening and cutting operations are present and retain submetered records where available."
+    role: "Foreground production from declared copper feed to factory-gate conforming product"
+    quantitative_reference: "Net kg of conforming bar, rod or profile released at the factory gate"
+process_inventory:
+  - id: integrated_manufacture
+    label: "Integrated manufacture and finishing of copper bar, rod or profile"
+    inputs:
+      product:
+        - row_id: cathode_copper_input
+          role: "Copper feed"
+          name: "Cathode copper"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record externally supplied cathode copper. A site receiving billet or same-category worked stock must preserve that specific identity in its foreground record and disclose the different starting condition; unlike copper-bearing feeds are not combined in one measured record."
+          amount:
+            expression: "measured mass of externally supplied cathode copper charged to production"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_copper_feed
+              source_ids: []
+            ranges: []
+        - row_id: electricity_input
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for all included production and treatment operations. Exclude electricity embedded in upstream product datasets."
+          amount:
+            expression: "metered electricity attributable to the reference-product production system"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity
+              source_ids: []
+            ranges: []
+        - row_id: natural_gas_input
+          role: "Natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas combusted in melting, billet heating, holding, annealing or drying. Mark not applicable only when no natural gas crosses the foreground boundary."
+          amount:
+            expression: "metered natural-gas volume attributable to the reference-product production system"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_natural_gas
+              source_ids: []
+            ranges: []
+        - row_id: industrial_oxygen_input
+          role: "Industrial oxygen"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume / m3"
+          description: "Record delivered industrial oxygen used for fire refining or another declared on-site metallurgical operation, only when that route is present."
+          amount:
+            expression: "metered industrial-oxygen volume consumed by applicable on-site operations"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming reference product for a route using supplied oxygen"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_industrial_oxygen
+              source_ids: []
+            ranges: []
+        - row_id: process_water_input
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process-water intake for casting cooling, equipment cooling, cleaning, rinsing and on-site treatment. Report recirculation separately and do not count the same closed-loop water repeatedly as external intake."
+          amount:
+            expression: "measured gross process-water intake crossing the foreground boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_water
+              source_ids: []
+            ranges: []
+        - row_id: sodium_hydroxide_input
+          role: "Sodium hydroxide"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium-hydroxide solution used to neutralize spent pickling or rinsing water when treatment occurs within the foreground boundary. Retain solution concentration."
+          amount:
+            expression: "measured delivered sodium-hydroxide solution mass used for attributable wastewater treatment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming reference product for a route with on-site neutralisation"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sodium_hydroxide
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: copper_rod_output
+          role: "Net conforming copper rod"
+          name: "Copper rod"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d5e5708d-dac7-4278-b2a0-068ed90df983"
+          property_unit: "Mass / kg"
+          description: "Record net conforming factory-gate product after subtracting offcuts, rejects and work in progress. Copper rod is the representative Tiangong flow; bar and profile datasets retain the mass basis and declare their actual form."
+          amount:
+            expression: "measured net conforming product mass used as the normalization denominator"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "exactly 1 kg net conforming reference product after normalization"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_output
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: fossil_carbon_dioxide_output
+          role: "Direct fossil carbon dioxide"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil carbon dioxide from foreground fuel combustion or a documented on-site carbon balance. Do not copy upstream electricity or supplied-material emissions into this direct output."
+          amount:
+            expression: "measured direct stack emission or site-specific calculation from foreground fossil-carbon records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_co2
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "shared operations and treatment systems"
+    rule: "Subdivide or meter product lines and stages before allocation whenever records permit."
+    source_ids: []
+  - rule_id: allocation_internal_copper
+    applies_to: "internally returned copper-bearing material"
+    rule: "Treat internal recirculation as an internal loop: record its mass for balance and quality control, but assign neither a new upstream burden nor an external co-product credit."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: allocation_external_outputs
+    applies_to: "externally transferred co-products and wastes"
+    rule: "Where subdivision is infeasible, apply declared physical allocation when a causal physical relation exists; otherwise use justified economic allocation. Do not apply avoided-burden credit unless a separate consequential study is declared."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_copper_feed
+      process_id: "integrated_manufacture"
+      flow_role: "cathode copper feed"
+      record_type: "weighbridge, invoice and charge record"
+      raw_fields: "identity; supplier; grade; recycled-content claim; gross mass; returns; charge mass"
+      collection_method: "reconcile receipts to charge records"
+      unit: "kg"
+      frequency: "each delivery and charge"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all product-serving lines"
+      aggregation_rule: "sum external charged mass by specific feed identity"
+      quality_evidence: "calibrated scales, invoices, stock reconciliation and supplier specification"
+    - protocol_id: cp_electricity
+      process_id: "integrated_manufacture"
+      flow_role: "electricity input"
+      record_type: "meter and production log"
+      raw_fields: "meter id; readings; generated electricity; exports; allocation driver; downtime"
+      collection_method: "read submeters or reconcile facility meter to equipment"
+      unit: "MJ"
+      frequency: "at least monthly"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all included operations"
+      aggregation_rule: "net imports plus attributable generation less exports, after subdivision"
+      quality_evidence: "meter calibration, bills and meter map"
+    - protocol_id: cp_natural_gas
+      process_id: "integrated_manufacture"
+      flow_role: "natural-gas input"
+      record_type: "fuel meter and invoice"
+      raw_fields: "volume; temperature; pressure; reference condition; heating value; equipment; hours"
+      collection_method: "reconcile meters and invoices to operating logs"
+      unit: "m3"
+      frequency: "at least monthly"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all included gas-fired equipment"
+      aggregation_rule: "sum attributable gas at one documented reference condition"
+      quality_evidence: "calibration, invoice reconciliation and fuel specification"
+    - protocol_id: cp_industrial_oxygen
+      process_id: "integrated_manufacture"
+      flow_role: "industrial-oxygen input"
+      record_type: "flow meter or delivery record"
+      raw_fields: "source; purity; pressure; reference condition; volume; operation"
+      collection_method: "reconcile delivery or generation meter with route logs"
+      unit: "m3"
+      frequency: "each delivery or campaign"
+      temporal_coverage: "applicable campaigns"
+      site_scope: "oxygen-using operations"
+      aggregation_rule: "sum attributable supplied volume at one reference condition"
+      quality_evidence: "delivery tickets, meter checks and route logs"
+    - protocol_id: cp_process_water
+      process_id: "integrated_manufacture"
+      flow_role: "process-water intake"
+      record_type: "water meter and balance"
+      raw_fields: "source; intake; makeup; recirculation; blowdown; discharge"
+      collection_method: "meter external intake and construct a water balance"
+      unit: "kg"
+      frequency: "at least monthly"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all included water systems"
+      aggregation_rule: "sum external intake once; report recirculation separately"
+      quality_evidence: "calibrated meters and water-balance reconciliation"
+    - protocol_id: cp_sodium_hydroxide
+      process_id: "integrated_manufacture"
+      flow_role: "sodium-hydroxide solution"
+      record_type: "delivery and dosing record"
+      raw_fields: "solution mass; concentration; batch; dosing point; treated-water volume"
+      collection_method: "reconcile inventory with dosing logs"
+      unit: "kg solution"
+      frequency: "each delivery and batch"
+      temporal_coverage: "applicable campaigns"
+      site_scope: "on-site treatment"
+      aggregation_rule: "sum attributable solution mass and retain concentration"
+      quality_evidence: "analysis certificates, stock reconciliation and dosing calibration"
+    - protocol_id: cp_product_output
+      process_id: "integrated_manufacture"
+      flow_role: "conforming product output"
+      record_type: "certified scale and release record"
+      raw_fields: "form; alloy; temper; dimensions; surface; gross output; offcuts; rejects; net mass"
+      collection_method: "reconcile line output to release records"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all covered products"
+      aggregation_rule: "sum released conforming mass by specification"
+      quality_evidence: "scale calibration, release certificate and mass balance"
+    - protocol_id: cp_direct_co2
+      process_id: "integrated_manufacture"
+      flow_role: "direct fossil carbon dioxide"
+      record_type: "stack measurement or carbon ledger"
+      raw_fields: "equipment; measured emission; fuel carbon; fuel use; oxidation basis; biogenic fraction"
+      collection_method: "monitor directly or retain a documented facility calculation"
+      unit: "kg"
+      frequency: "each monitoring period or monthly"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all included direct fossil sources"
+      aggregation_rule: "sum direct foreground fossil CO2 only"
+      quality_evidence: "monitoring QA or traceable carbon calculation and fuel records"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every inventory exchange"
+      rule: "normalized amount = attributable reporting-period exchange / reporting-period net conforming product mass"
+      inputs:
+        - "exchange record"
+        - "cp_product_output net mass"
+      output: "exchange per 1 kg reference product"
+      source_ids: []
+    - id: calc_copper_mass_balance
+      applies_to: "copper-bearing feed, product, internal returns and external losses"
+      rule: "Reconcile external copper-bearing inputs with conforming product, work-in-progress change, internal-loop inventory change and each specific external copper-bearing output; investigate unexplained loss."
+      inputs:
+        - cp_copper_feed
+        - cp_product_output
+        - "site mass-balance ledger"
+      output: "documented copper mass-balance closure"
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+    - id: calc_solution_active_mass
+      applies_to: "sodium-hydroxide solution"
+      rule: "active NaOH mass = delivered solution mass × measured mass fraction; retain both values"
+      inputs:
+        - "cp_sodium_hydroxide mass and concentration"
+      output: "kg active NaOH and kg delivered solution"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Report form, copper or alloy designation, composition, temper, dimensions, surface condition and route for each aggregated product group."
+      evidence: "specification, analysis certificate and release record"
+    - id: dq_process_coverage
+      applies_to: "foreground system"
+      requirement: "Document the actual sequence and demonstrate that all product-serving melting, casting, forming, heat-treatment, cleaning, extraction and treatment operations are included or justified as excluded."
+      evidence: "flow diagram, equipment list and meter map"
+    - id: dq_atomic_outputs
+      applies_to: "waste and elementary exchanges"
+      requirement: "Add each actual external waste and direct elementary emission as a separate specific flow; a collective label is not an acceptable dataset exchange."
+      evidence: "manifests, treatment records, permits and monitoring reports"
+    - id: dq_temporal_representativeness
+      applies_to: "all records"
+      requirement: "Cover a representative reporting period and material campaigns for the declared product mix; explain shutdowns, trials and abnormal campaigns."
+      evidence: "dated production, meter, maintenance and quality records"
+    - id: dq_reconciliation
+      applies_to: "material, water and energy"
+      requirement: "Reconcile supplier records, meters, inventories and product output; document allocation where shared meters remain."
+      evidence: "signed reconciliation, calibration records and retained source documents"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "reference product"
+    rule: "Confirm exactly 1 kg net conforming bar, rod or profile and all required qualifiers."
+    source_ids:
+      - un-cpc-3-0-2025
+      - cjeu-hydro-energo-2020
+  - rule_id: validate_boundary
+    applies_to: "foreground system"
+    rule: "Confirm that the starting condition and actual integrated process sequence match included meters, records and upstream links."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: validate_no_double_count
+    applies_to: "copper and utilities"
+    rule: "Confirm internal copper recirculation is not a new external input and upstream product burdens are not repeated as direct foreground emissions."
+    source_ids: []
+  - rule_id: validate_completeness
+    applies_to: "waste and elementary outputs"
+    rule: "Require each actual dross, dust, refractory, sludge, spent solution, offcut, reject, wastewater discharge and direct air emission to be a specific atomic exchange or demonstrated absent."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: validate_ranges
+    applies_to: "important flows"
+    rule: "Treat absent external benchmark ranges as evidence gaps; retain foreground measurement and review unresolved range-evidence needs before publication."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset after independent review and publication"
+  downstream_use: "Attributional modelling of factory-gate copper or copper-alloy bar, rod or profile"
+  allowed_use: "Use for the declared form, alloy, route, geography, time and factory-gate boundary; aggregate only representative disclosed variants."
+  excluded_use: "Wire, flat products, foil, tubes, unwrought copper, fabricated components, materially different undisclosed alloys or routes, and cradle-to-grave results"
+  required_metadata: "PCR id and version; form; alloy and composition; temper; dimensions; surface treatment; starting state; recycled-content accounting; sequence; geography; technology; period; allocation; cut-offs; upstream dataset identities; data quality"
+  required_quality_disclosure: "Meter coverage; mass, water and energy reconciliation; shared-meter allocation; missing atomic outputs; unresolved cathode-flow UUID; absent external benchmark ranges; proxies; abnormal operations; review status"
+  update_trigger: "Material change in product mix, copper feed, recycled-content method, forming or treatment route, energy or water system, controls, allocation, geography, or a new exact UUID or independently supported range"
+data_sources:
+  - id: "un-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, code 41512, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-04)"
+    used_for: "Official classification identity and hierarchy"
+  - id: "cjeu-hydro-energo-2020"
+    type: "official_guidance"
+    reference: "Court of Justice of the European Union, Judgment of 18 June 2020, Case C-340/19, Hydro Energo, ECLI:EU:C:2020:488, paragraphs 37-44 and Chapter 74 definitions reproduced in the judgment, https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:62019CJ0340 (retrieved 2026-09-04)"
+    used_for: "Physical distinction among bars/rods, profiles, wire, tubes and unwrought precursors"
+  - id: "eu-jrc-nfm-bref-2017"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Non-Ferrous Metals Industries, 2017, Sections 3.1.3, 3.1.4 and 3.3.5.2, https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2020-01/JRC107041_NFM_bref2017.pdf (retrieved 2026-09-04)"
+    used_for: "Process sequence, boundary, water recirculation, surface treatment, residue and emission completeness"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:813d8baa0b22c38f3bc8415db869a1d3a1e551a249f6bccbfc494502fae9d908"
+  generated_content_sha256: "sha256:f6ad44fb7eb98e089010258b060d79371dba75839657a56b27b0ecefad3d8493"

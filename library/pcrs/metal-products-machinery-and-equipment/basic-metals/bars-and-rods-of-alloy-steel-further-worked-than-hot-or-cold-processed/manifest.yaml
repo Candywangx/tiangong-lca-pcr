@@ -2,10 +2,11 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.basic-metals.bars-and-rods-of-alloy-steel-further-worked-than-hot-or-cold-processed
 title:
   en-US: "Bars and rods of alloy steel, further worked than hot- or cold-processed"
-  zh-CN: null
-status: scaffold
+  zh-CN: "经进一步加工且加工程度超过热加工或冷加工的合金钢条材和棒材"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
+updated_at_utc: "2026-09-04T01:21:53Z"
 domains:
   - "metal-products-machinery-and-equipment"
 modules:
@@ -22,16 +23,92 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "41265"
     title: "Bars and rods of alloy steel, further worked than hot- or cold-processed"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  product_boundary_review:
+    result: distinct_semantic_boundary
+    note: "No existing material PCR identity was found for alloy-steel bars and rods that retain bar or rod character after at least one declared operation beyond hot or cold processing. Adjacent retained scaffolds describe earlier processing states or different steel/product categories."
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: input_alloy_steel_bar_rod
+        reason_code: product_state_mismatch
+        explanation: "The ranked candidates covered rebar, non-alloy products, the finished further-worked product, or only a hot-processed alloy-steel subset; none exactly covers the route-general received bar-or-rod state while preserving the declared alloy grade and starting condition."
+        hybrid_search_receipt_ids: [b72e0fd3-a3a2-4bff-92dd-47e275072516]
+      - row_id: hydrochloric_acid_input
+        reason_code: product_state_mismatch
+        explanation: "The correctly classified candidates fix 30%, 36%, or 0.2 N solution states, while the foreground concentration is site-declared; generic-name candidates carried a conflicting classification."
+        hybrid_search_receipt_ids: [89997cd8-b53b-49fd-a316-b8ab7914c12a]
+      - row_id: sulfuric_acid_input
+        reason_code: product_state_mismatch
+        explanation: "The only sulfuric-acid candidate fixes a 98% solution state; the remaining candidates are hydrogen fluoride, oleum, or ferric sulfate and are not exact for the route-general site-declared bath."
+        hybrid_search_receipt_ids: [d66988f4-33bd-404d-b134-16ae759e2d6a]
+      - row_id: hydrofluoric_acid_input
+        reason_code: product_state_mismatch
+        explanation: "Correctly classified candidates fix 55%, 40%, or anhydrous states, while the generic hydrofluoric-acid candidate carried a conflicting classification; no exact site-declared solution state was established."
+        hybrid_search_receipt_ids: [caed9bf6-304f-4a6a-9dc2-c3d517f10063]
+      - row_id: sodium_hydroxide_input
+        reason_code: product_state_mismatch
+        explanation: "All sodium-hydroxide candidates fix 30%, 50%, or 0.2 N solution states, none of which can be selected before the actual foreground concentration is declared."
+        hybrid_search_receipt_ids: [f959f009-26a6-48e3-8b0a-5d9de12e8846]
+      - row_id: zinc_input
+        reason_code: product_state_mismatch
+        explanation: "Candidates represented a semi-finished zinc ingot classification, an ore-classified primary-zinc record, Special High Grade zinc quantified by zinc content, battery powder, or crude zinc; none exactly establishes the purchased coating-bath metal grade and Mass property."
+        hybrid_search_receipt_ids: [f5239f6d-daa6-46fb-9624-29244876a8e4]
+      - row_id: alloy_steel_scrap
+        reason_code: product_state_mismatch
+        explanation: "Mass-based candidates were explicitly low-alloy steel only, while generic steel-scrap candidates used Aluminium content; no exact waste flow spans the campaign's declared alloy grade and contamination state."
+        hybrid_search_receipt_ids: [2b1a2556-220d-43fb-ba9d-183969901f8a]
+      - row_id: steel_grinding_dust
+        reason_code: semantic_mismatch
+        explanation: "Candidates were generic grinding dust without steel composition, upstream basic-oxygen-furnace dust, wood sawdust, generic collection ash, or generic dust; none exactly denotes collected steel-grinding dust."
+        hybrid_search_receipt_ids: [e268aca1-6a6b-4c69-beab-16efd1061a8a]
+      - row_id: spent_pickling_liquor
+        reason_code: semantic_mismatch
+        explanation: "The ranked candidates were steel feedstock, steel scrap, pulp black liquor, or other scrap; no candidate denotes spent steel-pickling liquor with route-specific acid and dissolved-metal composition."
+        hybrid_search_receipt_ids: [6438b494-d357-4dd2-b15d-d73906850778]
+      - row_id: acidic_process_wastewater
+        reason_code: semantic_mismatch
+        explanation: "The sole ranked candidate was hydrogen sulfide waste, not acidic steel-processing wastewater crossing the declared treatment boundary."
+        hybrid_search_receipt_ids: [007ee03a-4d5c-440e-aaf6-ce5945789774]
+      - row_id: zinc_dross
+        reason_code: semantic_mismatch
+        explanation: "The candidates were copper-based mixed waste or unspecified zinc slag; neither exactly establishes hot-dip coating dross state and composition."
+        hybrid_search_receipt_ids: [4bb7394d-33bd-4c6c-8fc9-13ad20610ca5]
+      - row_id: hydrogen_fluoride_air
+        reason_code: semantic_mismatch
+        explanation: "Two bounded searches returned only elemental fluorine resource or emissions in non-matching media/long-term air; none denotes molecular hydrogen fluoride emitted to unspecified air."
+        hybrid_search_receipt_ids: [1a8dcee0-d3da-406c-8e2f-a11f5ac05a49, 7da97693-a1cf-44e9-bc56-373ab0bc7fe6]
+    range_evidence_needs:
+      - row_ids: [input_alloy_steel_bar_rod, reference_product, alloy_steel_scrap]
+        explanation: "Two independent original sources with this factory-gate further-working boundary, mass reference flow, alloy-steel product state, and comparable yield accounting were not verified; collect site mass records and retain an external yield-range review need."
+      - row_ids: [rolling_electricity]
+        explanation: "The verified BAT energy figures are regulatory performance levels for broader ferrous-processing sectors, not two independent empirical ranges for this product state and further-working boundary; collect metered electricity."
+      - row_ids: [natural_gas_input, fossil_co2_air]
+        explanation: "No two independent boundary-compatible sources were verified for route-specific thermal energy and fossil carbon dioxide per tonne of this reference product; collect fuel and emission-factor records."
+      - row_ids: [process_water_input, acidic_process_wastewater]
+        explanation: "The verified BAT water figures are regulatory performance levels for broader process sectors and cannot be represented as an empirical PCR range; collect segregated water and effluent records."
+      - row_ids: [hydrochloric_acid_input, sulfuric_acid_input, nitric_acid_input, hydrofluoric_acid_input, sodium_hydroxide_input, spent_pickling_liquor, hydrogen_chloride_air, hydrogen_fluoride_air]
+        explanation: "Acid and alkali consumption and releases depend on the declared surface-treatment chemistry, bath management, steel grade, and abatement; two independent compatible empirical sources were not verified."
+      - row_ids: [lubricating_oil_input, used_lubricating_oil]
+        explanation: "Lubricant quantities depend on the declared machining or grinding technology and recirculation practice; two independent compatible empirical sources were not verified."
+      - row_ids: [zinc_input, zinc_dross]
+        explanation: "Zinc consumption and dross generation depend on whether hot-dip coating is in scope, product surface area, coating specification, and bath practice; two independent compatible empirical sources were not verified."
+      - row_ids: [steel_grinding_dust, steel_particulate_air]
+        explanation: "Dust generation and capture depend on the declared mechanical-working operation and abatement boundary; two independent compatible empirical sources were not verified."

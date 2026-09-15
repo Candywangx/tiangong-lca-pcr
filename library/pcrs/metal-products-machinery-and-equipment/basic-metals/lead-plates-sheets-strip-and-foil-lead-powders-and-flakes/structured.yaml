@@ -1,10 +1,749 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41542"
-  title: "Lead plates, sheets, strip and foil; lead powders and flakes"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.lead-plates-sheets-strip-and-foil-lead-powders-and-flakes"
+  classification_refs: "CPC 3.0: 41542, exact category context"
+  covered_products: "Lead plate, sheet, strip, foil, elemental metallic lead powder, and elemental metallic lead flakes, declared as one specific market form"
+  excluded_products: "Refined lead sold without conversion; distinct lead alloys; solder; batteries; finished articles; non-lead metal products"
+  representative_product: "One kilogram of the single declared lead plate, sheet, strip, foil, powder, or flake product at the factory gate"
+  production_route: "Refined-lead melting and casting followed by flat forming, atomization, or flake making, as applicable"
+  market_state: "Saleable semi-finished lead product with declared form, dimensions or particle specification, composition, surface condition, and packaging state"
+functional_unit:
+  what: "One saleable semi-finished lead product in exactly one declared form covered by this PCR"
+  how_much: "1 kg net product mass, excluding packaging"
+  how_well: "Conforming to the producer's declared composition, dimensions or particle-size specification, surface condition, and acceptance criteria"
+  how_long_or_cycle: "At the factory gate after the applicable production batch"
+  reference_flow_link: "Exactly one of out_lead_plate, out_lead_sheet, out_lead_strip, out_lead_foil, out_lead_powder, or out_lead_flakes, matching the declared form"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground includes refined-lead receipt and handling, applicable melting and casting, applicable flat or particle forming, direct energy and fuel use, controlled fume or particulate capture, residual direct releases, and lead-bearing wastes or scrap. Melting and casting is required when performed at the reporting site; a dataset beginning from purchased cast slab shall disclose that starting condition and omit non-occurring melting exchanges."
+      source_ids: []
+    - rule_id: boundary_gate_to_gate
+      applies_to: "foreground_system_boundary"
+      rule: "Include controlled operations from refined-lead or disclosed slab receipt through the declared factory-gate product; link upstream supplies as product inputs."
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+        - us-epa-ap42-12-17-background
+    - rule_id: boundary_route_selection
+      applies_to: "process_route"
+      rule: "Include only route processes that occur for the declared form and mark other conditional routes not applicable."
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+        - cn103128297a-lead-powder-atomization
+    - rule_id: boundary_controlled_releases
+      applies_to: "direct_emissions_and_residues"
+      rule: "Include dross or scrap leaving the system and residual direct lead releases after actual controls; exclude upstream electricity emissions from foreground releases."
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+        - us-epa-ap42-12-17-background
+boundary_abstraction:
+  declared_starting_condition: "Refined lead received at the site, or purchased cast lead slab when on-site melting does not occur"
+  starting_condition_role: "Upstream product input to the first foreground transformation"
+  product_classification_scope: "One declared CPC 41542 market form only; the category label is not a mixed-output reference product"
+  recursive_input_rule: "Internal same-category returns remain internal; purchased same-category lead feed is recorded once with its supplier dataset and not recursively expanded here"
+  upstream_dataset_requirement: "Link refined lead, purchased slab, electricity, and natural gas to representative upstream datasets"
+  disclosure: "Starting material, composition, recycled content, route, furnace and forming technology, controls, site, period, product form, and cut-offs"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Lead plate"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product form"
+    - "lead composition"
+    - "thickness and width for flat products"
+    - "particle-size distribution for powder or flakes"
+    - "surface treatment"
+    - "recycled-content method"
+    - route
+    - site
+    - period
+    - "net-mass and packaging boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "declared product output and reference flow"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize exchanges to 1 kg net saleable product; exclude packaging and record rejects or offcuts separately."
+  - id: energy_conversion
+    applies_to: "electricity records"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electricity and multiply billed kWh by 3.6 to convert to MJ."
+  - id: gas_volume_conditions
+    applies_to: "gaseous natural gas records"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report temperature, pressure, and dry or wet basis; do not combine natural gas with another fuel."
+  - id: mass_balance
+    applies_to: "each process"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile lead-bearing inputs, product, scrap or dross, and measured lead releases over one period and disclose the residual."
+process_map:
+  - id: melt_cast
+    name: "Refined-lead melting and casting"
+    inclusion: "required"
+    inclusion_condition: "Required when melting or casting occurs on site; otherwise disclose purchased cast slab and mark this process not applicable"
+    role: "foreground conditioning"
+    quantitative_reference: "kg cast lead transferred to forming"
+  - id: flat_forming
+    name: "Rolling and flat-product finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Include for declared plate, sheet, strip, or foil"
+    role: "foreground production"
+    quantitative_reference: "kg saleable flat product"
+  - id: powder_atomization
+    name: "Lead-powder atomization and classification"
+    inclusion: "conditional"
+    inclusion_condition: "Include for declared elemental metallic lead powder"
+    role: "foreground production"
+    quantitative_reference: "kg saleable lead powder"
+  - id: flake_making
+    name: "Lead-flake formation and classification"
+    inclusion: "conditional"
+    inclusion_condition: "Include for declared elemental metallic lead flakes"
+    role: "foreground production"
+    quantitative_reference: "kg saleable lead flakes"
+process_inventory:
+  - id: melt_cast
+    label: "Refined-lead melting and casting"
+    inputs:
+      product:
+        - row_id: in_refined_lead
+          role: "Refined lead feed"
+          name: "Refined lead"
+          flow_type: "product"
+          flow_ref:
+            uuid: "fb2dea4d-384a-48ec-8736-55a664bc959b"
+          property_unit: "Mass / kg"
+          description: "Record refined lead entering the site before melting."
+          amount:
+            expression: "measured net mass charged to the furnace or kettle"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable declared product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: in_melt_electricity
+          role: "Melting electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for melting, holding, casting, extraction, and assigned controls."
+          amount:
+            expression: "metered or allocated melting-and-casting electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cast lead transferred from melt_cast"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: in_melt_natural_gas
+          role: "Direct-fired melting natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas only when combusted in melting or holding equipment."
+          amount:
+            expression: "metered gas volume assigned to direct-fired melting and holding"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cast lead transferred from melt_cast"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: out_lead_dross
+          role: "Lead-bearing melting dross"
+          name: "Lead-bearing melting dross"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record dross skimmed from molten lead and transferred off site or to separate recovery."
+          amount:
+            expression: "measured dry-basis dross mass leaving this process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cast lead transferred from melt_cast"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_mass
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      elementary:
+        - row_id: out_melt_fossil_co2
+          role: "Direct fossil carbon dioxide from melting"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil carbon dioxide from on-site natural-gas combustion assigned to melting."
+          amount:
+            expression: "facility-reported direct fossil carbon dioxide allocated to melting"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cast lead transferred from melt_cast"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: out_melt_lead_air
+          role: "Residual lead emission to air from melting"
+          name: "lead"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4d9a8790-3ddd-11dd-91dc-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct residual lead after actual capture and abatement; use a more specific air compartment only with site evidence."
+          amount:
+            expression: "stack measurement or permit-consistent mass balance assigned to melting"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cast lead transferred from melt_cast"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-12-17-background
+            ranges: []
+  - id: flat_forming
+    label: "Rolling and flat-product finishing"
+    inputs:
+      product:
+        - row_id: in_flat_electricity
+          role: "Flat-forming electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for rolling, annealing, slitting, trimming, finishing, and assigned extraction."
+          amount:
+            expression: "metered or allocated flat-forming electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable declared flat product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - us-epa-ap42-12-17-background
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: out_lead_plate
+          role: "Lead plate product"
+          name: "Lead plate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use this output only when plate is the single declared reference product form."
+          amount:
+            expression: "measured net mass of saleable lead plate"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per production batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_mass
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+        - row_id: out_lead_sheet
+          role: "Lead sheet product"
+          name: "Lead sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use this output only when sheet is the single declared reference product form."
+          amount:
+            expression: "measured net mass of saleable lead sheet"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per production batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_mass
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+        - row_id: out_lead_strip
+          role: "Lead strip product"
+          name: "Lead strip"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use this output only when strip is the single declared reference product form."
+          amount:
+            expression: "measured net mass of saleable lead strip"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per production batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_mass
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+        - row_id: out_lead_foil
+          role: "Lead foil product"
+          name: "Lead foil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use this output only when foil is the single declared reference product form."
+          amount:
+            expression: "measured net mass of saleable lead foil"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per production batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_mass
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: out_lead_scrap
+          role: "Lead offcut and trim scrap"
+          name: "Lead offcut and trim scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record clean lead offcuts and trim leaving for external recycling; internal returns remain internal."
+          amount:
+            expression: "measured net mass transferred off site"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable declared flat product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_mass
+              source_ids:
+                - us-epa-ap42-12-17-background
+            ranges: []
+      elementary:
+        - row_id: out_flat_lead_air
+          role: "Residual lead emission to air from flat forming"
+          name: "lead"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4d9a8790-3ddd-11dd-91dc-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record residual lead released to air from rolling, cutting, or finishing after actual controls."
+          amount:
+            expression: "stack measurement or permit-consistent mass balance assigned to flat forming"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable declared flat product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - us-epa-ap42-12-17-background
+            ranges: []
+  - id: powder_atomization
+    label: "Lead-powder atomization and classification"
+    inputs:
+      product:
+        - row_id: in_powder_electricity
+          role: "Powder-route electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for pressure-air supply, atomization auxiliaries, cooling, collection, screening, and extraction."
+          amount:
+            expression: "metered or allocated powder-route electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable lead powder"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - cn103128297a-lead-powder-atomization
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: out_lead_powder
+          role: "Lead powder product"
+          name: "Lead powder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only elemental metallic lead powder meeting the declared particle-size specification."
+          amount:
+            expression: "measured net mass of saleable classified lead powder"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per production batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_mass
+              source_ids:
+                - un-cpc-3-0-structure-2025
+                - cn103128297a-lead-powder-atomization
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: out_powder_lead_air
+          role: "Residual lead emission to air from powder atomization"
+          name: "lead"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4d9a8790-3ddd-11dd-91dc-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record residual lead released to air after powder collection and abatement."
+          amount:
+            expression: "stack measurement or permit-consistent mass balance assigned to atomization"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable lead powder"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - cn103128297a-lead-powder-atomization
+                - us-epa-ap42-12-17-background
+            ranges: []
+  - id: flake_making
+    label: "Lead-flake formation and classification"
+    inputs:
+      product:
+        - row_id: in_flake_electricity
+          role: "Flake-route electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for flake formation, classification, collection, and extraction."
+          amount:
+            expression: "metered or allocated flake-route electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable lead flakes"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - us-epa-ap42-12-17-background
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: out_lead_flakes
+          role: "Lead flakes product"
+          name: "Lead flakes"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only elemental metallic lead flakes meeting the declared particle specification."
+          amount:
+            expression: "measured net mass of saleable classified lead flakes"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per production batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_mass
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: out_flake_lead_air
+          role: "Residual lead emission to air from flake making"
+          name: "lead"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4d9a8790-3ddd-11dd-91dc-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record residual lead released to air after collection and abatement."
+          amount:
+            expression: "stack measurement or permit-consistent mass balance assigned to flake making"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable lead flakes"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - us-epa-ap42-12-17-background
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "route_and_product_form"
+    rule: "First subdivide meters and batches so only the selected route and product form carry their exchanges."
+    source_ids: []
+  - rule_id: allocation_internal_returns
+    applies_to: "internal_lead_returns"
+    rule: "Treat internally remelted offcuts, powder returns, and captured lead returned to this system as internal flows without external credit or burden."
+    source_ids: []
+  - rule_id: allocation_external_scrap
+    applies_to: "lead_scrap_leaving_system"
+    rule: "Record lead-bearing scrap or dross leaving the foreground separately without avoided-burden credit; disclose later allocation or substitution outside this PCR."
+    source_ids: []
+  - rule_id: allocation_shared_services
+    applies_to: "shared_energy_and_controls"
+    rule: "If subdivision is impossible, use a documented causal driver such as operating time, throughput, or exhaust volume; justify mass allocation if used as fallback."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass
+      process_id: "melt_cast"
+      flow_role: "refined lead feed"
+      record_type: "scale, receipt, and charge log"
+      raw_fields: "lot; gross; tare; charge mass; composition; recycled-content claim"
+      collection_method: "reconcile receipts, charges, and inventory change"
+      unit: "kg"
+      frequency: "each lot and batch"
+      temporal_coverage: "output period"
+      site_scope: "reporting site"
+      aggregation_rule: "sum net charged mass"
+      quality_evidence: "calibration, supplier certificate, reconciliation"
+    - protocol_id: cp_process_energy
+      process_id: "all_applicable_processes"
+      flow_role: "electricity or natural gas"
+      record_type: "meter, invoice, and operating log"
+      raw_fields: "meter start; end; unit; runtime; allocation driver; gas conditions"
+      collection_method: "prefer submeters; otherwise allocate a reconciled site meter causally"
+      unit: "MJ or m3"
+      frequency: "batch or monthly"
+      temporal_coverage: "output period"
+      site_scope: "reporting site"
+      aggregation_rule: "subtract verified non-process use and normalize"
+      quality_evidence: "calibration, invoice, allocation worksheet"
+    - protocol_id: cp_product_mass
+      process_id: "route_process"
+      flow_role: "saleable output"
+      record_type: "finished-goods scale and release record"
+      raw_fields: "batch; form; specification; gross; tare; reject mass"
+      collection_method: "measure net accepted output separately by form"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "input period"
+      site_scope: "reporting site"
+      aggregation_rule: "sum accepted net product only"
+      quality_evidence: "calibration, release certificate, reconciliation"
+    - protocol_id: cp_residue_mass
+      process_id: "melt_cast_or_flat_forming"
+      flow_role: "dross or lead scrap"
+      record_type: "container scale and transfer record"
+      raw_fields: "residue type; gross; tare; destination; internal-return flag"
+      collection_method: "weigh each outbound residue and exclude internal returns"
+      unit: "kg"
+      frequency: "each transfer"
+      temporal_coverage: "output period"
+      site_scope: "reporting site"
+      aggregation_rule: "sum net outbound mass by residue"
+      quality_evidence: "scale and transfer record"
+    - protocol_id: cp_direct_emissions
+      process_id: "all_applicable_processes"
+      flow_role: "fossil carbon dioxide or lead to air"
+      record_type: "monitor, stack test, permit report, fuel balance, and operating log"
+      raw_fields: "pollutant; concentration; gas flow; duration; fuel; control status; runtime"
+      collection_method: "align pollutant measurement with source and process operation"
+      unit: "kg"
+      frequency: "valid test or reporting interval"
+      temporal_coverage: "representative operation"
+      site_scope: "site and emission point"
+      aggregation_rule: "calculate matched pollutant mass and normalize"
+      quality_evidence: "laboratory, monitor QA, permit, worksheet"
+  calculation_rules:
+    - id: calc_normalize_mass
+      applies_to: "all inventory rows"
+      rule: "Divide the batch or period exchange by net saleable mass of the single declared form."
+      inputs:
+        - exchange
+        - "accepted product mass"
+      output: "exchange per kg reference product"
+      source_ids: []
+    - id: calc_electricity_mj
+      applies_to: "metered electricity"
+      rule: "Multiply kWh by 3.6 and retain the original record."
+      inputs:
+        - "electricity in kWh"
+      output: "electricity in MJ"
+      source_ids: []
+    - id: calc_lead_balance
+      applies_to: "lead-bearing flows"
+      rule: "Compare lead in feed with lead in product, outbound residues, and releases; investigate rather than force-close the residual."
+      inputs:
+        - "masses and lead fractions"
+      output: "disclosed lead-balance residual"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_temporal
+      applies_to: "foreground records"
+      requirement: "Cover one representative period and identify startup, shutdown, and maintenance intervals."
+      evidence: "dated meters, batch logs, exception register"
+    - id: dq_technology
+      applies_to: "process description"
+      requirement: "Identify melting, energy, forming or atomization, collection, abatement, and batch or continuous operation."
+      evidence: "equipment list, flow diagram, operating records"
+    - id: dq_product
+      applies_to: "reference product"
+      requirement: "Report form, composition, dimension or particle specification, surface treatment, net-mass basis, and acceptance rate."
+      evidence: "specification and release records"
+    - id: dq_geography
+      applies_to: "upstream links and direct emissions"
+      requirement: "State site geography, representative upstream supply, and the actual air-release point."
+      evidence: "supplier, utility, and emission-point records"
+    - id: dq_completeness
+      applies_to: "inventory"
+      requirement: "Account for each applicable atomic exchange and document zero or not-applicable determinations."
+      evidence: "completeness review and lead mass balance"
+validation_rules:
+  - rule_id: validate_reference_form
+    applies_to: "reference_flow"
+    rule: "Exactly one product-form output row shall be the reference flow and equal 1 kg net saleable product."
+    source_ids: []
+  - rule_id: validate_route
+    applies_to: "process_inventory"
+    rule: "Include melt_cast only when it occurs on site and exactly one applicable forming route; document omitted conditional routes."
+    source_ids: []
+  - rule_id: validate_uuid_identity
+    applies_to: "uuid_bearing_rows"
+    rule: "Retain each audited state-100 base name, flow type, property, unit group, and unit; keep unresolved output forms UUID-empty."
+    source_ids: []
+  - rule_id: validate_atomicity
+    applies_to: "process_inventory"
+    rule: "Do not combine electricity with fuel, multiple product forms, or dross, scrap, and air emissions."
+    source_ids: []
+  - rule_id: validate_mass_balance
+    applies_to: "lead_bearing_flows"
+    rule: "Complete a same-period lead balance and investigate and disclose material residuals."
+    source_ids: []
+  - rule_id: validate_ranges
+    applies_to: "amount_ranges"
+    rule: "Add no external numeric range until two independent original-text sources have compatible boundary, basis, state, geography, and technology."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Gate-to-gate foreground inventory for one semi-finished lead product form"
+  downstream_use: "TianGong flow, process, dataset, and lifecycle-model projections with upstream links"
+  allowed_use: "LCA modeling when form, route, site, period, composition, and upstream supplies are representative"
+  excluded_use: "Upstream lead production, alloys, batteries, solder, finished articles, use, or end-of-life"
+  required_metadata: "form and specification; output mass; composition; recycled-content method; starting material; route; equipment; abatement; geography; period; allocation; cut-offs; upstream datasets"
+  required_quality_disclosure: "measurement coverage; meter quality; allocations; mass-balance residual; gaps; substitutions; unresolved UUIDs; absence of external ranges"
+  update_trigger: "change in specification, composition, recycled-content method, equipment, energy, route, controls, supplier mix, site, or period"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "CPC 41542 identity and product-form wording"
+  - id: "china-costa-rica-fta-product-specific-origin-rules"
+    type: "official_guidance"
+    reference: "General Administration of Customs of China, bilingual HS 7804 entry in Product-specific Rules of Origin for the China-Costa Rica Free Trade Agreement, https://www.ks.gov.cn/kss/Upload_zwgk/ggxx2015122195763975384.pdf"
+    used_for: "Verified Chinese terminology for lead plates, sheets, strip, foil, powders, and flakes"
+  - id: "eu-jrc-nfm-bref-2017"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques (BAT) Reference Document for the Non-Ferrous Metals Industries, 2017, https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2020-01/JRC107041_NFM_bref2017.pdf"
+    used_for: "Lead melting, casting, energy, dross, fume capture, and controls"
+  - id: "us-epa-ap42-12-17-background"
+    type: "official_guidance"
+    reference: "US EPA, Background Report AP-42 Section 12.17, Miscellaneous Lead Products, https://www.epa.gov/sites/default/files/2020-11/documents/b12s17.pdf"
+    used_for: "Sheet-lead process decomposition and direct lead dust or emission collection"
+  - id: "cn103128297a-lead-powder-atomization"
+    type: "literature"
+    reference: "CN103128297A, A kind of production method of metallic lead powder, https://patents.google.com/patent/CN103128297A/en"
+    used_for: "Powder-route melting, pressure-air atomization, cooling, collection, and screening"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:013401b746e039465a553f6cac2ae05adb40857190daeb003c2adc2ad798a109"
+  generated_content_sha256: "sha256:06849ba99deaefbca25c62eb9b375227fe5061e4ac5f464897b16e11bb6ba9d0"

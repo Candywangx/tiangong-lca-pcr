@@ -1,10 +1,433 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "45272"
-  title: "Removable media storage units"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.office-accounting-and-computing-machinery.removable-media-storage-units"
+  classification_refs: "CPC 3.0: 45272; classification identity only"
+  covered_products: "Removable optical-disc drives, magnetic-disk drives, magnetic-tape drives and flash-card readers for computing"
+  excluded_products: "Fixed-media drives; flash cards and recording media; host computers; standalone audiovisual players"
+  representative_product: "Factory-tested optical-disc drive supplied without removable media"
+  production_route: "Purchased populated controller board and finished mechanical components; assembly; functional testing; packaging"
+  market_state: "New, tested device at factory gate; packaging recorded separately from net device mass"
+functional_unit:
+  what: "Read or write a declared removable-media format for a host computer"
+  how_much: "1 kg net finished devices of one declared model; also report device count and kg/device"
+  how_well: "Declare interface, supported media, read/write capability, throughput and acceptance-test criteria"
+  how_long_or_cycle: "One production batch through final acceptance; service lifetime is not normalized into this production-only package"
+  reference_flow_link: "reference_product; production declared unit, not a claim of equal lifetime storage service"
+system_boundary:
+  rules:
+    - rule_id: boundary_production
+      applies_to: "foreground"
+      rule: "Include component receipt, assembly, testing, rework, packing and associated energy and production rejects. Record purchased components with upstream production links."
+      source_ids:
+        - epa-sustainable-electronics-roadmap
+    - rule_id: boundary_disclosure
+      applies_to: "data package"
+      rule: "Disclose the gate-to-gate foreground and upstream coverage separately; include inbound transport in linked supply datasets or separately measured transport processes, once only. Excluded downstream use and disposal mean this is not a complete product life-cycle footprint."
+      source_ids:
+        - ghg-protocol-product-standard
+    - rule_id: boundary_completeness
+      applies_to: "site inventory"
+      rule: "Reconcile the actual bill of materials and site process register with the listed exchanges. Add separate atomic rows for any additional component, chemical, fuel, water, waste or direct emission actually crossing the boundary; absence needs site evidence, not an assumed zero."
+      source_ids:
+        - ghg-protocol-product-standard
+boundary_abstraction:
+  declared_starting_condition: "Purchased finished components and populated boards received for device assembly"
+  starting_condition_role: "Foreground entry gate; not a zero-burden cut-off"
+  product_classification_scope: "Removable-media computing storage devices, excluding the removable media"
+  recursive_input_rule: "Purchased complete drives used inside an enclosure are recorded once as a same-category input with supplier boundary and upstream dataset; never recursively recreate the same assembly or omit its burdens."
+  upstream_dataset_requirement: "Link each purchased component to a geographically and technologically suitable production dataset; state missing links and avoid overlapping component and raw-material inventories."
+  disclosure: "Starting state; component make/buy boundary; transport coverage; production period; included accessories; losses; exclusions; downstream stages not represented"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Removable media storage units"
+    uuid: "d0af9a31-3017-4ab7-a6e4-172f40cd7bb1"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "device type"
+    - model
+    - "supported removable-media format"
+    - interface
+    - "read/write capability"
+    - "throughput and test method"
+    - "net kg/device"
+    - "accessories included"
+    - "packaging configuration"
+    - factory
+    - country
+    - "production period"
+    - "purchased-component boundary"
+    - "acceptance yield"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Weigh accepted devices without packaging or removable media; convert count using measured model-specific kg/device. Never convert storage capacity to device mass."
+  - id: energy
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Preserve metered energy; convert kWh to MJ by multiplying by 3.6. Allocate meter coverage once; test electricity must not be counted again in assembly electricity."
+  - id: component_mass
+    applies_to: "components"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use received component mass and reconcile installed mass, rejects, returns and stock changes. A populated board dataset includes its mounted components; do not count them twice."
+process_map:
+  - id: assembly
+    name: "Component assembly, functional testing and packing"
+    inclusion: "required"
+    inclusion_condition: "All devices; component cards are conditional on the bill of materials"
+    role: "foreground production"
+    quantitative_reference: "1 kg accepted net devices"
+process_inventory:
+  - id: assembly
+    label: "Component assembly, functional testing and packing"
+    inputs:
+      product:
+        - row_id: controller_board
+          role: "Populated storage-drive controller board"
+          name: "Populated storage-drive controller board"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "When the specified controller board is purchased for the device."
+          amount:
+            expression: "Aggregate matched-period net exchange from cp_batch and divide by accepted net output mass using normalize_batch."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net devices"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch
+              source_ids: []
+            ranges: []
+        - row_id: steel_housing
+          role: "Finished steel drive housing"
+          name: "Finished steel drive housing"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "When the model has a purchased steel housing; do not apply to a plastic enclosure."
+          amount:
+            expression: "Aggregate matched-period net exchange from cp_batch and divide by accepted net output mass using normalize_batch."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net devices"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch
+              source_ids: []
+            ranges: []
+        - row_id: motor
+          role: "Optical-disc drive spindle motor"
+          name: "Optical-disc drive spindle motor"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "When an optical-drive spindle motor is separately purchased; exclude if already included in a purchased mechanism dataset."
+          amount:
+            expression: "Aggregate matched-period net exchange from cp_batch and divide by accepted net output mass using normalize_batch."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net devices"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch
+              source_ids: []
+            ranges: []
+        - row_id: laser_pickup
+          role: "Optical disc drive laser pickup unit"
+          name: "Optical disc drive laser pickup unit"
+          flow_type: "product"
+          flow_ref:
+            uuid: "634db7bf-732f-47ee-9546-ac7f2026a939"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "When an optical laser pickup is separately purchased; include the module, not its constituent parts again."
+          amount:
+            expression: "Aggregate matched-period net exchange from cp_batch and divide by accepted net output mass using normalize_batch."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net devices"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch
+              source_ids: []
+            ranges: []
+        - row_id: tape_head
+          role: "Magnetic tape-drive read/write head"
+          name: "Magnetic tape-drive read/write head"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "When a magnetic tape-drive head is separately purchased."
+          amount:
+            expression: "Aggregate matched-period net exchange from cp_batch and divide by accepted net output mass using normalize_batch."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net devices"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch
+              source_ids: []
+            ranges: []
+        - row_id: card_connector
+          role: "Flash-memory card socket"
+          name: "Flash-memory card socket"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "When a flash-card socket is separately purchased; exclude if already mounted on the purchased populated board."
+          amount:
+            expression: "Aggregate matched-period net exchange from cp_batch and divide by accepted net output mass using normalize_batch."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net devices"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch
+              source_ids: []
+            ranges: []
+        - row_id: screws
+          role: "Steel screw"
+          name: "Steel screw"
+          flow_type: "product"
+          flow_ref:
+            uuid: "895204f6-6425-4814-afc5-cb97e530e892"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "When steel screws are issued for assembly; record actual grade and coating."
+          amount:
+            expression: "Aggregate matched-period net exchange from cp_batch and divide by accepted net output mass using normalize_batch."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net devices"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch
+              source_ids: []
+            ranges: []
+        - row_id: box
+          role: "corrugated board boxes"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "When a corrugated-board shipping box is used; record mass per package and devices per box."
+          amount:
+            expression: "Aggregate matched-period net exchange from cp_batch and divide by accepted net output mass using normalize_batch."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net devices"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; unit group 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Purchased electricity for assembly, testing and packing, including attributable shared services; retain operation submeter records."
+          amount:
+            expression: "Aggregate matched-period net exchange from cp_batch and divide by accepted net output mass using normalize_batch."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net devices"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Removable media storage units"
+          name: "Removable media storage units"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d0af9a31-3017-4ab7-a6e4-172f40cd7bb1"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Accepted device output only; packaging mass is excluded from this reference output."
+          amount:
+            expression: "Calculate accepted net mass from accepted count and measured kg/device, then normalize to 1 kg."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net devices"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: reject
+          role: "Discarded optical-disc drive"
+          name: "Discarded optical-disc drive"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "When a failed optical drive is discarded as a whole device; record waste destination. Rework is not waste until discarded."
+          amount:
+            expression: "Aggregate matched-period net exchange from cp_batch and divide by accepted net output mass using normalize_batch."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net devices"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "shared production"
+    rule: "Use product-line and operation metering before allocating shared burdens. Where subdivision is infeasible use a demonstrated physical driver such as occupied equipment time; document why it reflects resource use and test sensitivity."
+    source_ids:
+      - ghg-protocol-product-standard
+  - rule_id: allocation_rejects
+    applies_to: "yield and recycling"
+    rule: "Retain failed-test and rework burdens in accepted output. Track rejects separately and do not treat them as saleable reference product. Declare a consistent recycling allocation method; do not deduct an assumed avoided virgin-material credit."
+    source_ids:
+      - ghg-protocol-product-standard
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_batch
+      process_id: "assembly"
+      flow_role: "Components, energy, packaging, accepted product and rejects"
+      record_type: "batch ledger and meters"
+      raw_fields: "model; lot; component identity; issued mass; returns; opening and closing stock; accepted count; net device mass; reject mass; meter readings; run and test hours; destinations"
+      collection_method: "Reconcile BOM, purchasing and production ledgers with calibrated weighing, submetering, acceptance tests and waste transfer records"
+      unit: "kg; count; MJ; h"
+      frequency: "each batch and meter interval"
+      temporal_coverage: "Full declared production period including shutdowns and rework"
+      site_scope: "Declared factory and shared services"
+      aggregation_rule: "Aggregate net exchanges over the same period; allocate shared service once; divide by accepted net mass"
+      quality_evidence: "Calibration; supplier specifications; invoices; test logs; waste receipts; allocation reconciliation"
+  calculation_rules:
+    - id: normalize_batch
+      applies_to: "all exchanges"
+      rule: "q_i = allocated net batch exchange i / accepted net batch mass; reference output = 1 kg"
+      inputs:
+        - "cp_batch quantities and accepted count times measured kg/device"
+      output: "kg or MJ per kg reference product"
+      source_ids: []
+    - id: net_issues
+      applies_to: "purchased components"
+      rule: "Net issue = opening stock + receipts - closing stock - supplier returns; reconcile against installed components and measured rejects"
+      inputs:
+        - "cp_batch mass ledger"
+      output: "Component input mass"
+      source_ids: []
+    - id: meter_partition
+      applies_to: "electricity"
+      rule: "Sum operation meters; allocate unmetered shared services using justified occupied equipment time; reconcile total to the site bill"
+      inputs:
+        - "cp_batch energy and runtime"
+      output: "Purchased electricity attributable to this batch"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "device and components"
+      requirement: "Verify removable-media function and actual BOM; record purchased board population and mechanical-module scope"
+      evidence: "Supplier drawings and acceptance specifications"
+    - id: dq_period
+      applies_to: "all records"
+      requirement: "Use one matched production period and report missing periods, meter allocation, representativeness and uncertainty"
+      evidence: "cp_batch; ghg-protocol-product-standard chapter 8"
+    - id: dq_coverage
+      applies_to: "material and waste balances"
+      requirement: "Investigate discrepancy between issued mass, device output, scrap, returns and stock movement using measurement uncertainty; no unsupported tolerance is prescribed"
+      evidence: "Signed mass reconciliation and waste receipts"
+    - id: dq_ranges
+      applies_to: "foreground amounts"
+      requirement: "Collect actual amounts; do not replace absent measurements with a generic optical-drive, tape-drive or reader benchmark"
+      evidence: "cp_batch"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference product"
+    rule: "Require all qualifiers, net device mass and acceptance records. Reject a fixed-media drive or a removable medium presented as the reference device."
+    source_ids:
+      - un-cpc-2-1-removable-storage
+  - rule_id: validate_inventory
+    applies_to: "quantities"
+    rule: "Verify each actual exchange is atomic, normalized to accepted output, supported by cp_batch, and assigned once; reconcile BOM, electricity and waste totals. Missing data are unresolved, not zero."
+    source_ids:
+      - ghg-protocol-product-standard
+  - rule_id: validate_boundary
+    applies_to: "downstream claims"
+    rule: "Require explicit upstream links and disclosure of unmodelled stages; prohibit lifetime service comparisons from this production-only package without an additional use and end-of-life model."
+    source_ids:
+      - ghg-protocol-product-standard
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for a specified removable-media device model"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Production input to host-computer or peripheral-device life-cycle models with compatible boundaries"
+  excluded_use: "Removable-media manufacture; fixed-media drive production; generic lifetime storage-service comparison; claim of a full life-cycle footprint"
+  required_metadata: "Model; device technology; site; country; period; net mass; count; acceptance criteria; BOM scope; upstream links; transport treatment; allocation"
+  required_quality_disclosure: "Measurement coverage; supplier-data gaps; unresolved flow identities; missing upstream datasets; uncertainty; exclusions"
+  update_trigger: "BOM, manufacturing route, supplier technology, test protocol, site energy or reference-product specification changes"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "UNSD, CPC 3.0 structure, 30 June 2025; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv ; retrieved 2026-09-09"
+    used_for: "Exact classification title; independence_key: un-cpc-3-0-structure-2025"
+  - id: "un-cpc-2-1-removable-storage"
+    type: "official_guidance"
+    reference: "UNSD, CPC 2.1 explanatory note 45272; https://unstats.un.org/unsd/classifications/Econ/Detail/EN/1074/45272 ; retrieved 2026-09-09"
+    used_for: "Prior-version device/media boundary explanation, not asserted as CPC 3.0 explanatory text; independence_key: un-cpc-2-1"
+  - id: "epa-sustainable-electronics-roadmap"
+    type: "official_guidance"
+    reference: "US EPA, E. Sahle-Demessie, Sustainable Electronics Roadmap, slides 7, 11 and 16; https://www.epa.gov/sites/default/files/2014-05/documents/roadmap.pdf ; retrieved 2026-09-09"
+    used_for: "Electronics components/assembly/reject decomposition and measured energy need; no amount factors; independence_key: epa-sustainable-electronics-roadmap"
+  - id: "ghg-protocol-product-standard"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard, 2011, chapters 7–9; https://ghgprotocol.org/sites/default/files/ghgp/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf ; retrieved 2026-09-09"
+    used_for: "Boundary disclosure, primary records and allocation hierarchy adapted to a production dataset; not a claim of full standard conformance; independence_key: ghg-protocol-product-standard-2011"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b3396f53b36e11583369c8cf0815ac96af1b10f37ca5f2a68df3bb47f85a5bb5"
+  generated_content_sha256: "sha256:f83c3e12fceea859341a72e6e3675023bc1db11c6dc228ef36173526fcf1b671"

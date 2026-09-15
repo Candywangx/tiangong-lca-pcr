@@ -1,10 +1,700 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43133"
-  title: "Reaction engines other than turbo-jets"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.reaction-engines-other-than-turbo-jets"
+  classification_refs: "CPC 3.0: 43133, Reaction engines other than turbo-jets (exact)"
+  covered_products: "Complete non-turbojet reaction engines or motors supplied as finished thrust-producing units within CPC 43133"
+  excluded_products: "Turbo-jets; turbo-propellers; piston aircraft engines; stationary gas turbines; separately supplied parts; complete aircraft, spacecraft, missiles, or launch vehicles"
+  representative_product: "A finished, dry, acceptance-tested non-turbojet reaction engine at the manufacturing factory gate"
+  production_route: "Received material and component control; machining, forming or joining; precision cleaning; assembly; route-specific acceptance testing; protective shipping packaging"
+  market_state: "Finished dry engine, without operational propellant unless propellant is an inseparable sold constituent; protected for shipment at factory gate"
+functional_unit:
+  what: "Supply of a finished non-turbojet reaction engine capable of the declared thrust-producing function"
+  how_much: "1 kg accepted dry engine mass at the manufacturing factory gate"
+  how_well: "Conforms to the declared engine configuration, material and cleanliness specifications, and acceptance criteria"
+  how_long_or_cycle: "One factory-gate delivery; declared design life, duty cycle, starts, or impulse capability is disclosed but the use stage is outside this production inventory"
+  reference_flow_link: "The accepted dry product output is normalized to the reference product flow below"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "manufacturing foreground"
+      rule: "Include received-material control, fabrication, joining, precision cleaning, assembly, acceptance testing, and factory-applied shipping protection through release of the accepted dry engine at the factory gate."
+      source_ids:
+        - nasa-jsc-manufacturing-assembly-integration
+        - nasa-wstf-development-qualification-acceptance
+    - rule_id: boundary_test_media
+      applies_to: "acceptance testing"
+      rule: "Add every actual propellant, oxidizer, pressurant, purge gas, cleaning liquid, and direct exhaust species as its own atomic exchange when it crosses the foreground boundary; the listed natural-gas and oxygen rows apply only to that declared route."
+      source_ids:
+        - ecss-e-st-35-10c-2009
+    - rule_id: boundary_cleanliness
+      applies_to: "precision cleaning"
+      rule: "Include cleaning media, rejected baths, rinses, drying energy, and cleanliness verification that occur at the manufacturing site; preserve product-specific cleanliness criteria."
+      source_ids:
+        - ecss-e-st-35-06c-rev2-2020
+        - nasa-jsc-manufacturing-assembly-integration
+    - rule_id: boundary_exclusions
+      applies_to: "downstream stages"
+      rule: "Exclude installation in a vehicle, distribution after the factory gate, operational propellant loaded outside manufacturing, launch or flight, maintenance, and end-of-life unless a study explicitly extends the boundary and reports those stages separately."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased materials and components accepted at the manufacturing site, with supplier identity, supplied state, mass, and upstream dataset declared"
+  starting_condition_role: "Cradle-to-gate starting inventory for the reaction-engine manufacturing foreground"
+  product_classification_scope: "Complete CPC 43133 reaction engines other than turbo-jets; separately supplied parts and excluded engine classes remain outside scope"
+  recursive_input_rule: "A purchased complete CPC 43133 engine used in the foreground is recorded once as a same-category product input with its upstream dataset and is not recursively decomposed unless the producer has non-overlapping primary records"
+  upstream_dataset_requirement: "Every purchased material, component, utility, gas, chemical, and package shall link to a geography-, technology-, and state-appropriate upstream dataset"
+  disclosure: "Declare engine technology, material and component supply states, site geography, test sequence and media, direct test emissions, dry-mass convention, packaging, cut-offs, and exclusions"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Reaction engines other than turbo-jets"
+    uuid: "f425fe92-1cdd-45c2-9695-3486a06fbf2c"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "engine technology"
+    - "model and configuration"
+    - "dry-mass definition"
+    - "propellant inclusion state"
+    - "rated thrust or impulse basis"
+    - "acceptance-test status"
+    - "cleanliness class"
+    - "production site and geography"
+    - "reporting period"
+    - "shipping-package inclusion"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_dry_mass
+    applies_to: "reference product and mass-normalized inventory"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure the accepted engine after draining temporary test fluids and before external shipping packaging; disclose any inseparable sold propellant, igniter, actuator, controller, or insulation included in dry mass."
+  - id: material_mass
+    applies_to: "material, cleaning chemical, packaging, scrap, and aqueous waste rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use net mass crossing the foreground boundary; do not substitute purchase value, nominal stock size, or gross container mass."
+  - id: utility_energy
+    applies_to: "electricity rows"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Record delivered electrical energy in MJ; when meters report kWh, multiply the measured kWh by 3.6 and retain the original meter reading."
+  - id: test_gas_volume
+    applies_to: "gaseous natural-gas and industrial-oxygen test rows"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report metered gas volume at the declared temperature and absolute pressure; do not combine gases or mix standard and actual volumes without a documented conversion."
+process_map:
+  - id: engine_manufacture
+    name: "Component fabrication, cleaning, assembly, and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always included for a finished factory-gate engine; individual material and cleaning rows apply only when used"
+    role: "foreground production"
+    quantitative_reference: "1 kg accepted dry reaction engine output"
+  - id: acceptance_testing
+    name: "Engine acceptance and qualification testing"
+    inclusion: "required"
+    inclusion_condition: "Include the actual release test sequence; hot-fire media and emissions apply only when that route is performed at the reporting site"
+    role: "foreground quality assurance"
+    quantitative_reference: "Test campaign attributable to 1 kg accepted dry reaction engine output"
+process_inventory:
+  - id: engine_manufacture
+    label: "Component fabrication, cleaning, assembly, and packaging"
+    inputs:
+      product:
+        - row_id: stainless_steel_input
+          role: "Stainless-steel stock"
+          name: "Stainless steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "84c2403f-5062-5d68-8276-838384d32b89"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record stainless steel consumed in engine parts and tooling losses attributable to saleable production when the declared bill of materials contains stainless steel."
+          amount:
+            expression: "Net stainless-steel input from accepted material issues less documented return to stock"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted dry reaction engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_inputs
+              source_ids: []
+            ranges: []
+        - row_id: aluminium_magnesium_alloy_input
+          role: "Aluminium-magnesium alloy stock"
+          name: "Aluminium Magnesium Alloy"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ab57ae32-8ffe-47fe-9550-53381391a038"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record this alloy only when the bill of materials identifies aluminium-magnesium alloy bar, rod, or profile stock."
+          amount:
+            expression: "Net aluminium-magnesium alloy input from accepted material issues less documented return to stock"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted dry reaction engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_inputs
+              source_ids: []
+            ranges: []
+        - row_id: titanium_plate_input
+          role: "Titanium plate stock"
+          name: "Titanium Plate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f32fc628-252f-40fe-8f8d-fd0efb955e92"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record titanium plate only when it is issued to the declared engine configuration."
+          amount:
+            expression: "Net titanium-plate input from accepted material issues less documented return to stock"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted dry reaction engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_inputs
+              source_ids: []
+            ranges: []
+        - row_id: manufacturing_electricity
+          role: "Manufacturing electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ / Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Record electricity for machining, joining, cleaning, drying, assembly, environmental control, and attributable factory support within this process."
+          amount:
+            expression: "Metered or allocated delivered electricity for the reporting-period manufacturing output"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted dry reaction engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_manufacturing_electricity
+              source_ids: []
+            ranges: []
+        - row_id: process_water_input
+          role: "Process water for precision cleaning"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record process water that enters precision cleaning or rinsing. Do not use this row for a distinct recirculating cooling-water flow."
+          amount:
+            expression: "Measured cleaning and rinse-water mass, or measured volume converted with documented density and temperature"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted dry reaction engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_inputs
+              source_ids: []
+            ranges: []
+        - row_id: sodium_hydroxide_input
+          role: "Sodium hydroxide cleaning chemical"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record sodium hydroxide only when it is delivered into an alkaline cleaning bath; declare supplied state and concentration and report pure-product-equivalent mass separately from carrier water."
+          amount:
+            expression: "Purchased sodium-hydroxide product mass multiplied by declared mass fraction used in production"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted dry reaction engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_inputs
+              source_ids: []
+            ranges: []
+        - row_id: wooden_shipping_crate
+          role: "Wooden shipping crate"
+          name: "Wooden shipping crate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of a wooden crate newly supplied with the engine; reusable crates are amortized over documented uses. No exact TianGong flow UUID was confirmed."
+          amount:
+            expression: "Net crate mass allocated to shipped accepted engines"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted dry reaction engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_crate
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Accepted reaction engine"
+          name: "Reaction engines other than turbo-jets"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f425fe92-1cdd-45c2-9695-3486a06fbf2c"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "The accepted dry engine is the reference product after the declared manufacturing and acceptance-test sequence."
+          amount:
+            expression: "Measured accepted dry engine mass normalized to 1 kg reference product"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg accepted dry reaction engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_output
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: machining_metal_scrap
+          role: "Machining metal scrap"
+          name: "Metal scrap from machining"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "616bb9e9-a954-475e-b1b8-a73f659ff694"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record metal chips and offcuts leaving machining as one measured waste stream; disclose alloy segregation, contamination, and destination."
+          amount:
+            expression: "Measured net machining-scrap mass transferred out of the foreground process"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted dry reaction engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_machining_scrap
+              source_ids: []
+            ranges: []
+        - row_id: spent_sodium_hydroxide_cleaning_solution
+          role: "Spent sodium-hydroxide cleaning solution"
+          name: "Spent sodium-hydroxide cleaning solution"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record a discharged bath containing sodium hydroxide and removed soil as a distinct waste. Do not merge it with other wastewater. No exact TianGong flow UUID was confirmed."
+          amount:
+            expression: "Measured discharged solution mass attributable to engine production"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted dry reaction engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_spent_cleaning_solution
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: acceptance_testing
+    label: "Engine acceptance and qualification testing"
+    inputs:
+      product:
+        - row_id: test_electricity
+          role: "Acceptance-test electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ / Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Record delivered electricity for instrumentation, pumps, controls, ventilation, and test-stand operation attributable to the accepted production units."
+          amount:
+            expression: "Metered test-stand electricity attributed to accepted engines in the test campaign"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted dry reaction engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_test_electricity
+              source_ids: []
+            ranges: []
+        - row_id: test_natural_gas
+          role: "Gaseous natural gas test fuel"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3 / Units of volume 93a60a57-a3c8-12da-a746-0800200c9a66"
+          description: "Record gaseous natural gas only for a declared acceptance-test route that meters this fuel. Do not use it as a proxy for methane, hydrogen, kerosene, or another test fuel."
+          amount:
+            expression: "Metered natural-gas volume corrected to the declared reference temperature and absolute pressure"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted dry reaction engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_test_fluids
+              source_ids: []
+            ranges: []
+        - row_id: test_industrial_oxygen
+          role: "Industrial oxygen test oxidizer"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3 / Units of volume 93a60a57-a3c8-12da-a746-0800200c9a66"
+          description: "Record industrial oxygen only when gaseous oxygen crosses the acceptance-test boundary; disclose purity, pressure, reference conditions, and whether supply is purchased or generated on site."
+          amount:
+            expression: "Metered gaseous-oxygen volume corrected to the declared reference temperature and absolute pressure"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted dry reaction engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_test_fluids
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: test_fossil_carbon_dioxide
+          role: "Direct fossil carbon dioxide from natural-gas testing"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record only directly measured fossil carbon dioxide discharged from the natural-gas test route. Upstream emissions embedded in electricity, gas, or oxygen datasets are not repeated here."
+          amount:
+            expression: "Measured direct fossil-carbon-dioxide mass discharged during attributable natural-gas acceptance testing"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted dry reaction engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_test_fossil_co2
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "shared manufacturing and test operations"
+    rule: "Prefer direct metering or subdivision by engine model, work order, machine hour, test firing, or accepted dry mass before allocation."
+    source_ids: []
+  - rule_id: allocation_shared_facility
+    applies_to: "residual shared utilities and support activities"
+    rule: "Allocate only the residual unmetered share using a documented causal driver; disclose the driver and test sensitivity when the residual materially affects results."
+    source_ids: []
+  - rule_id: allocation_scrap
+    applies_to: "machining metal scrap"
+    rule: "Keep input-material burdens with the engine product and report scrap at the measured factory-gate waste amount; do not claim an avoided-burden credit unless the governing LCA study method requires it and the credit is reported separately."
+    source_ids: []
+  - rule_id: allocation_rework
+    applies_to: "rejected or reworked units"
+    rule: "Attribute rework, retest, and scrapped-unit burdens to the accepted output of the same reporting period; do not omit failed tests from the production yield."
+    source_ids:
+      - nasa-wstf-development-qualification-acceptance
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_inputs
+      process_id: "engine_manufacture"
+      flow_role: "stainless steel, aluminium-magnesium alloy, and titanium plate inputs"
+      record_type: "receiving and material-issue records"
+      raw_fields: "flow UUID; material designation; grade; stock form; lot; issued mass; returned mass; supplier; upstream dataset"
+      collection_method: "reconcile accepted receipts, work-order issues, and returns to stock"
+      unit: "kg"
+      frequency: "each lot and work order"
+      temporal_coverage: "full reporting period"
+      site_scope: "all production areas serving the declared engine"
+      aggregation_rule: "sum net issued mass by atomic material and divide by accepted dry output mass"
+      quality_evidence: "purchase record; material certificate; calibrated scale record; work-order trace"
+    - protocol_id: cp_manufacturing_electricity
+      process_id: "engine_manufacture"
+      flow_role: "manufacturing electricity"
+      record_type: "electricity meter and allocation record"
+      raw_fields: "meter id; opening and closing reading; kWh; machine or area; allocation driver; downtime; accepted output mass"
+      collection_method: "use submeter first; allocate residual facility consumption with documented causal driver"
+      unit: "kWh and MJ"
+      frequency: "continuous meter, aggregated monthly"
+      temporal_coverage: "full reporting period"
+      site_scope: "manufacturing, cleaning, assembly, and attributable support"
+      aggregation_rule: "convert kWh to MJ, subtract excluded loads, then divide by accepted dry output mass"
+      quality_evidence: "meter calibration; utility invoice; load map; allocation worksheet"
+    - protocol_id: cp_cleaning_inputs
+      process_id: "engine_manufacture"
+      flow_role: "process water and sodium hydroxide"
+      record_type: "bath make-up, rinse meter, and chemical issue records"
+      raw_fields: "water mass or volume; temperature; density; sodium-hydroxide product mass; concentration; bath id; engine work orders"
+      collection_method: "meter water and weigh chemical additions; link batches to cleaned engine hardware"
+      unit: "kg and m3"
+      frequency: "each bath make-up, addition, and discharge"
+      temporal_coverage: "full reporting period"
+      site_scope: "all in-scope precision-cleaning lines"
+      aggregation_rule: "calculate water mass and pure-product-equivalent sodium hydroxide; divide attributable totals by accepted dry output mass"
+      quality_evidence: "calibrated meter or scale; chemical certificate; bath log; work-order trace"
+    - protocol_id: cp_packaging_crate
+      process_id: "engine_manufacture"
+      flow_role: "wooden shipping crate"
+      record_type: "packaging bill and reuse log"
+      raw_fields: "crate id; tare mass; engine id; new or reused status; prior and expected uses"
+      collection_method: "weigh the crate and record each documented use"
+      unit: "kg"
+      frequency: "each shipment"
+      temporal_coverage: "full reporting period"
+      site_scope: "factory-gate packaging"
+      aggregation_rule: "allocate new-crate mass once or amortize reusable-crate mass over documented uses; divide by shipped accepted dry mass"
+      quality_evidence: "scale calibration; packing list; reuse log"
+    - protocol_id: cp_machining_scrap
+      process_id: "engine_manufacture"
+      flow_role: "machining metal scrap"
+      record_type: "scrap container and dispatch records"
+      raw_fields: "container id; tare and gross mass; alloy segregation; contamination; work orders; destination"
+      collection_method: "weigh each outbound scrap container and link to production work orders"
+      unit: "kg"
+      frequency: "each dispatch"
+      temporal_coverage: "full reporting period"
+      site_scope: "all in-scope machining areas"
+      aggregation_rule: "subtract tare, sum attributable net scrap, and divide by accepted dry output mass"
+      quality_evidence: "calibrated scale; dispatch note; segregation log"
+    - protocol_id: cp_spent_cleaning_solution
+      process_id: "engine_manufacture"
+      flow_role: "spent sodium-hydroxide cleaning solution"
+      record_type: "bath discharge record"
+      raw_fields: "bath id; solution mass or volume; density; sodium-hydroxide concentration; contamination; destination; work orders"
+      collection_method: "weigh discharge or convert measured volume with documented density"
+      unit: "kg"
+      frequency: "each discharge"
+      temporal_coverage: "full reporting period"
+      site_scope: "in-scope alkaline cleaning lines"
+      aggregation_rule: "calculate attributable discharged mass and divide by accepted dry output mass"
+      quality_evidence: "discharge log; meter or scale calibration; waste transfer record; bath analysis"
+    - protocol_id: cp_product_output
+      process_id: "engine_manufacture"
+      flow_role: "accepted dry reaction engine"
+      record_type: "final inspection and weighing record"
+      raw_fields: "engine id; model; configuration; dry-mass inclusions; gross mass; removable test fluid; packaging tare; acceptance status"
+      collection_method: "calibrated final weighing after drainage and before external shipping package"
+      unit: "kg"
+      frequency: "every accepted engine"
+      temporal_coverage: "full reporting period"
+      site_scope: "all declared production sites"
+      aggregation_rule: "sum accepted dry mass; exclude rejected units from output but retain their burdens"
+      quality_evidence: "calibrated scale record; configuration baseline; acceptance release"
+    - protocol_id: cp_test_electricity
+      process_id: "acceptance_testing"
+      flow_role: "acceptance-test electricity"
+      record_type: "test-stand meter record"
+      raw_fields: "test id; engine id; meter readings; kWh; auxiliary loads; accepted or failed result"
+      collection_method: "submeter the test stand and its attributable auxiliaries"
+      unit: "kWh and MJ"
+      frequency: "every test"
+      temporal_coverage: "full reporting period"
+      site_scope: "all in-scope test stands"
+      aggregation_rule: "sum all attributable tests including failures and retests; convert to MJ and divide by accepted dry output mass"
+      quality_evidence: "meter calibration; test log; engine serial trace"
+    - protocol_id: cp_test_fluids
+      process_id: "acceptance_testing"
+      flow_role: "gaseous natural gas and industrial oxygen"
+      record_type: "calibrated flow-meter and supply record"
+      raw_fields: "gas identity; purity or composition; meter id; measured volume; temperature; absolute pressure; test id; engine id"
+      collection_method: "meter each gas separately and correct to the declared reference conditions"
+      unit: "m3"
+      frequency: "every test"
+      temporal_coverage: "full reporting period"
+      site_scope: "all in-scope test stands"
+      aggregation_rule: "sum corrected volume by atomic gas including failed tests and divide by accepted dry output mass"
+      quality_evidence: "meter calibration; gas certificate; test log; pressure and temperature record"
+    - protocol_id: cp_test_fossil_co2
+      process_id: "acceptance_testing"
+      flow_role: "direct fossil carbon dioxide"
+      record_type: "exhaust measurement record"
+      raw_fields: "test id; engine id; CO2 concentration; exhaust flow; temperature; pressure; duration; calibration gases"
+      collection_method: "integrate calibrated concentration and exhaust-flow measurements over each test"
+      unit: "kg"
+      frequency: "every natural-gas test"
+      temporal_coverage: "full reporting period"
+      site_scope: "natural-gas test exhaust boundary"
+      aggregation_rule: "sum measured direct fossil CO2 including failed tests and divide by accepted dry output mass"
+      quality_evidence: "analyzer and flow calibration; raw time series; test log"
+  calculation_rules:
+    - id: normalize_by_dry_mass
+      applies_to: "every manufacturing and test exchange"
+      rule: "normalized amount = reporting-period exchange amount / reporting-period accepted dry reaction-engine mass"
+      inputs:
+        - "atomic exchange total"
+        - "accepted dry output mass"
+      output: "exchange amount per 1 kg reference product"
+      source_ids: []
+    - id: convert_electricity
+      applies_to: "electricity meter records"
+      rule: "delivered electricity MJ = measured kWh × 3.6"
+      inputs:
+        - "measured kWh"
+      output: "MJ electricity"
+      source_ids: []
+    - id: convert_water_mass
+      applies_to: "process-water records"
+      rule: "water mass = measured water volume × documented density at the measured temperature; use direct weighed mass when available"
+      inputs:
+        - "water volume or weighed mass"
+        - density
+        - temperature
+      output: "kg process water"
+      source_ids: []
+    - id: net_material_issue
+      applies_to: "material inputs"
+      rule: "net material input = accepted issued mass − documented return-to-stock mass; scrap remains a separate output"
+      inputs:
+        - "issued mass"
+        - "returned mass"
+      output: "kg atomic material input"
+      source_ids: []
+    - id: correct_test_gas_volume
+      applies_to: "natural gas and industrial oxygen"
+      rule: "correct each measured gas volume to the dataset's declared reference temperature and absolute pressure without combining gas identities"
+      inputs:
+        - "measured volume"
+        - temperature
+        - "absolute pressure"
+        - "compressibility method when material"
+      output: "m3 of each gas at declared conditions"
+      source_ids:
+        - ecss-e-st-35-10c-2009
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and all inventory rows"
+      requirement: "Preserve the selected TianGong UUID and exact flow identity; unresolved crate and spent-cleaning-solution rows remain explicit and may not be replaced by generic packaging or wastewater."
+      evidence: "finalized UUID-search receipts; bill of materials; waste description"
+    - id: dq_completeness
+      applies_to: "foreground inventory"
+      requirement: "Reconcile every bill-of-material item, utility meter, cleaning batch, test campaign, rejected unit, package, waste transfer, and direct test emission to the reporting period; add omitted exchanges as atomic rows."
+      evidence: "completeness reconciliation signed by data owner"
+    - id: dq_temporal
+      applies_to: "reporting period"
+      requirement: "Use one representative production period that includes all accepted units, failures, rework, and tests; disclose low-volume or campaign-production effects."
+      evidence: "production, test, meter, and shipment date coverage"
+    - id: dq_cleanliness
+      applies_to: "cleaning and assembly"
+      requirement: "Retain the applicable cleanliness specification, cleaning batch record, verification result, and post-test re-cleaning record."
+      evidence: "cleanliness certificate and inspection record supported by ecss-e-st-35-06c-rev2-2020"
+    - id: dq_test_traceability
+      applies_to: "acceptance testing"
+      requirement: "Link every fluid, energy, test result, retest, and directly measured emission to engine serial numbers and the declared acceptance sequence."
+      evidence: "test procedure, raw test log, calibration record, and release decision supported by nasa-wstf-development-qualification-acceptance"
+    - id: dq_upstream
+      applies_to: "purchased inputs"
+      requirement: "Select upstream datasets matching material grade or product state, supplier geography, production technology, gas reference conditions, and electricity grid; disclose proxies."
+      evidence: "supplier certificate and documented upstream-dataset selection"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference product"
+    rule: "Confirm the product flow UUID, CPC 43133 identity, accepted dry-mass measurement, and all required qualifiers before dataset release."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_atomic_inventory
+    applies_to: "all inventory rows"
+    rule: "Reject collection labels or combined flows; each reported material, utility, cleaning chemical, test fluid, package, waste, and elementary emission shall be one atomic exchange."
+    source_ids: []
+  - rule_id: validate_mass_reconciliation
+    applies_to: "manufacturing process"
+    rule: "Reconcile material issues, return to stock, accepted dry product, machining scrap, cleaning waste, rejected hardware, and inventory changes; explain any material residual."
+    source_ids: []
+  - rule_id: validate_test_route
+    applies_to: "acceptance testing"
+    rule: "Natural gas, industrial oxygen, and fossil carbon dioxide rows may be nonzero only for a documented compatible test route; add separately identified flows for every other test medium or direct emission."
+    source_ids:
+      - ecss-e-st-35-10c-2009
+      - nasa-wstf-development-qualification-acceptance
+  - rule_id: validate_direct_emissions
+    applies_to: "test exhaust"
+    rule: "Confirm direct fossil carbon dioxide is measured at the foreground exhaust boundary and does not repeat upstream emissions embedded in purchased-input datasets."
+    source_ids: []
+  - rule_id: validate_cleanliness_records
+    applies_to: "cleaning and assembly"
+    rule: "Confirm that cleaning requirements, verification results, and any post-test re-cleaning are present for the declared engine configuration."
+    source_ids:
+      - ecss-e-st-35-06c-rev2-2020
+  - rule_id: validate_unresolved
+    applies_to: "unresolved flow identities and ranges"
+    rule: "Keep the wooden-crate and spent-cleaning-solution UUID gaps and all range-evidence needs open until exact identity or independent compatible evidence is reviewed; do not invent proxies or numeric ranges."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground production dataset eligible for publication as a secondary_dataset or background_dataset after review"
+  downstream_use: "cradle-to-gate product-footprint models for non-turbojet reaction engines and separately disclosed aircraft or spacecraft system models"
+  allowed_use: "comparisons or aggregation only when engine technology, dry-mass convention, configuration, acceptance-test boundary, geography, and data quality are compatible"
+  excluded_use: "direct substitution for turbo-jets, turbo-propellers, piston engines, separate parts, complete vehicles, operational propellant supply, use-stage thrust or impulse, maintenance, or end-of-life"
+  required_metadata: "canonical PCR id; engine technology and model; configuration; CPC identity; dry-mass inclusions; rated thrust or impulse basis; production site and period; test sequence and media; cleanliness class; packaging state; allocation; cut-offs; unresolved identities; data-quality rating"
+  required_quality_disclosure: "primary-record share; meter and scale coverage; bill-of-material completeness; upstream dataset representativeness; failures and rework; test traceability; direct-emission measurement; unresolved UUID and range-evidence needs"
+  update_trigger: "material change in engine technology, configuration, bill of materials, manufacturing site, cleaning route, acceptance-test sequence or media, dry-mass definition, allocation method, upstream datasets, or resolution of an open identity or range-evidence need"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-05)"
+    used_for: "CPC 43133 identity, hierarchy, and exclusion from adjacent engine subclasses"
+  - id: "prc-customs-rcep-origin-rules-2022"
+    type: "official_guidance"
+    reference: "General Administration of Customs of the People's Republic of China, Announcement No. 129 of 2022, RCEP product-specific rules of origin, Annex 1, HS 8412.10, official copy at https://www.tid.gov.hk/en/tradecircular/files/2022/ci2022998a.pdf (retrieved 2026-09-05)"
+    used_for: "Professional Chinese terminology cross-check for non-turbojet reaction engines"
+  - id: "nasa-jsc-manufacturing-assembly-integration"
+    type: "official_guidance"
+    reference: "NASA Johnson Space Center, Manufacturing, Assembly & Integration, https://www.nasa.gov/reference/jsc-manufacturing-assembly-integration/ (retrieved 2026-09-05)"
+    used_for: "Fabrication, materials, precision cleaning, assembly, packaging protection, acceptance testing, and quality-record process decomposition"
+  - id: "nasa-wstf-development-qualification-acceptance"
+    type: "official_guidance"
+    reference: "NASA White Sands Test Facility, Development, Qualification, and Acceptance, updated 15 October 2023, https://www.nasa.gov/centers-and-facilities/white-sands/development-qualification-and-acceptance/ (retrieved 2026-09-05)"
+    used_for: "Engine hardware fabrication, system assembly, qualification, acceptance testing, and traceability requirements"
+  - id: "ecss-e-st-35-06c-rev2-2020"
+    type: "standard"
+    reference: "European Cooperation for Space Standardization, ECSS-E-ST-35-06C Rev.2, Cleanliness requirements for spacecraft propulsion hardware, 7 April 2020, https://ecss.nl/standard/ecss-e-st-35-06c-rev-2-cleanliness-requirements-for-spacecraft-propulsion-hardware-7-april-2020/ (retrieved 2026-09-05)"
+    used_for: "Cleaning, cleanliness verification, contamination-control boundary, and evidence requirements"
+  - id: "ecss-e-st-35-10c-2009"
+    type: "standard"
+    reference: "European Cooperation for Space Standardization, ECSS-E-ST-35-10C, Compatibility testing for liquid propulsion systems, 6 March 2009, https://ecss.nl/standard/ecss-e-st-35-10c-compatibility-testing-for-liquid-propulsion-systems/ (retrieved 2026-09-05)"
+    used_for: "Atomic test-media boundary, reference-condition disclosure, and compatibility-test traceability"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:60ff916653b824a9cc3b16f0f18621a337beaef62df5077a9a670b746bc04aa0"
+  generated_content_sha256: "sha256:03242d1b65cd309bc7728f5a903c7e406651262cd25cea109fecbcf479f44156"

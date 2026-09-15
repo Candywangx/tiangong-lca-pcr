@@ -1,10 +1,723 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "46121"
-  title: "Electrical transformers"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.electrical-machinery-and-apparatus.electrical-transformers"
+  classification_refs: "CPC 3.0: 46121 Electrical transformers"
+  covered_products: "Complete electrical transformers that transform voltage and current by electromagnetic induction, including liquid-immersed and dry-type products and application-specific transformer designs"
+  excluded_products: "Static converters, ballasts, stand-alone inductors, stand-alone transformer parts, substations and construction works, and contract manufacturing services without ownership of the finished transformer"
+  representative_product: "One complete factory-tested electrical transformer configured to the declared rated power, voltage ratio, frequency, phase count, insulation and cooling system, and application"
+  production_route: "Purchased material and subassembly receipt; core and winding manufacture; insulation and enclosure or tank assembly; route-specific drying, casting, liquid filling, cleaning and finishing; final assembly and factory testing"
+  market_state: "Finished, factory-tested, unpackaged transformer at the manufacturer's gate before outbound transport, installation, use, or end-of-life"
+functional_unit:
+  what: "Transform an alternating-voltage and current system into another declared alternating-voltage and current system by electromagnetic induction for transmission, distribution, supply, measurement, control, isolation, testing, welding, or another declared transformer application"
+  how_much: "Provide the declared rated apparent power in kVA under the declared operating and loading profile"
+  how_well: "Meet the declared voltage ratio, frequency, phase count, insulation and cooling technology, no-load loss, load loss, impedance, temperature-rise, and applicable performance or conformity requirements"
+  how_long_or_cycle: "Operate for the declared reference service life and declared lifetime operating hours or duty cycles; the manufacturing dataset itself ends at the factory gate"
+  reference_flow_link: "One complete factory-tested transformer required to provide the declared function"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "foreground manufacturing"
+      rule: "Include material preparation, core and winding manufacture, insulation and structural assembly, applicable drying or casting or liquid filling, cleaning and finishing, final assembly, and factory testing through acceptance of the finished transformer at the factory gate."
+      source_ids:
+        - ec-transformer-impact-assessment-2014
+    - rule_id: boundary_variant_disclosure
+      applies_to: "product and route selection"
+      rule: "Distinguish liquid-immersed and dry-type insulation systems and conventional electrical-steel and amorphous-core routes; include each conditional atomic exchange only when the declared product and site records demonstrate that route."
+      source_ids:
+        - eu-power-transformers-regulation-548-2014
+        - ec-transformer-impact-assessment-2014
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "downstream lifecycle stages"
+      rule: "Exclude outbound transport, installation, use-phase electricity losses, maintenance, refurbishment, and end-of-life from this factory-gate foreground inventory; model them as separate downstream processes when the study goal requires them."
+      source_ids:
+        - ec-transformer-impact-assessment-2014
+boundary_abstraction:
+  declared_starting_condition: "Purchased materials, purchased transformer subassemblies, water, fuels, gases, and electricity as received at the declared manufacturing site"
+  starting_condition_role: "Upstream production is represented by supplier or background datasets; the foreground starts when each input crosses the manufacturing-site boundary"
+  product_classification_scope: "Complete electrical transformers; not static converters, ballasts, stand-alone inductors, stand-alone parts, substations, or contract manufacturing services"
+  recursive_input_rule: "A purchased complete transformer entering the factory is recorded as an upstream transformer product only when it is physically incorporated or transformed; it must not be recursively remodelled inside this manufacturing process, and its supplier dataset and treatment must be disclosed"
+  upstream_dataset_requirement: "Use geographically, technologically, temporally, and product-state-representative supplier or background datasets for every purchased input, with explicit treatment of recycled content and allocation"
+  disclosure: "Declare site, production period, transformer design and rating, bill-of-materials coverage, core and winding technologies, insulation and cooling system, included accessories, factory test scope, meter boundaries, stock changes, scrap destinations, direct emissions, and all exclusions"
+reference_flow_definition:
+  reference_amount: "1 Item(s)"
+  product_flow_ref:
+    name: "Transformer"
+    uuid: "734249ea-34e6-471b-a05a-f5b26b818167"
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "Item(s)"
+  required_qualifiers:
+    - "transformer application"
+    - "rated apparent power"
+    - "primary and secondary rated voltages"
+    - frequency
+    - "phase count"
+    - "winding conductor metal"
+    - "magnetic-core technology and grade"
+    - "liquid-immersed or dry-type insulation system"
+    - "cooling method"
+    - "no-load and load losses and their test conditions"
+    - impedance
+    - "total product mass"
+    - "factory location and production period"
+    - "reference service life"
+    - "lifetime operating and loading profile"
+    - "included accessories and unpackaged factory-gate state"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_item_count
+    applies_to: "Finished transformer reference flow"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "Item(s)"
+    rule: "Record exactly one accepted, factory-tested transformer as the quantitative reference; report its measured total mass separately as a required qualifier."
+  - id: material_mass_balance
+    applies_to: "Material inputs and solid or liquid wastes"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh or derive mass from traceable receipts and product-specific issue and return records; reconcile input material with incorporated mass, recoverable scrap, other documented loss, and stock change without forcing unlike materials into one balance."
+  - id: electricity_energy_basis
+    applies_to: "Purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electrical energy and convert kWh to MJ only by multiplying by 3.6; exclude use-phase transformer losses and state the meter boundary and loss treatment."
+  - id: gas_volume_basis
+    applies_to: "Natural gas and industrial oxygen"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Record delivered or metered volume at declared reference temperature and pressure; do not combine the two gases or convert mass and volume without a documented composition and conversion basis."
+  - id: factory_test_separation
+    applies_to: "Factory acceptance and routine testing"
+    required_property_ref:
+      name: "Measured energy and electrical test results"
+      uuid: ""
+    required_unit: "MJ; W; kVA; V; Hz"
+    rule: "Record test-bay electricity in manufacturing electricity, while no-load and load-loss results remain product-performance metadata and must not be added as manufacturing energy."
+process_map:
+  - id: transformer_manufacturing
+    name: "Electrical-transformer manufacturing and factory testing"
+    inclusion: "required"
+    inclusion_condition: "Always included for a factory-gate transformer dataset"
+    role: "Foreground production"
+    quantitative_reference: "1 accepted factory-tested transformer"
+  - id: transformer_use
+    name: "Transformer operation"
+    inclusion: "excluded_by_default"
+    inclusion_condition: "Model downstream only when the study goal extends beyond the factory gate"
+    role: "Downstream use"
+    quantitative_reference: "Declared operating and loading profile"
+  - id: transformer_end_of_life
+    name: "Transformer decommissioning and treatment"
+    inclusion: "excluded_by_default"
+    inclusion_condition: "Model downstream only when the study goal extends beyond the factory gate"
+    role: "Downstream end-of-life"
+    quantitative_reference: "Declared treatment scenario"
+process_inventory:
+  - id: transformer_manufacturing
+    label: "Electrical-transformer manufacturing and factory testing"
+    inputs:
+      product:
+        - row_id: grain_oriented_electrical_steel
+          role: "Grain-oriented electrical steel for a conventional magnetic core"
+          name: "Grain-oriented electrical steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record one specific grain-oriented electrical-steel sheet or strip input used in the manufactured core. This row is conditional on a conventional grain-oriented electrical-steel core and is omitted for an amorphous-core design."
+          amount:
+            expression: "Product-specific issued mass less traceable unused returns, normalized to one accepted transformer"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 accepted factory-tested transformer"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_balance
+              source_ids: []
+            ranges: []
+        - row_id: amorphous_alloy_strip
+          role: "Amorphous magnetic-core strip"
+          name: "Amorphous alloy strip"
+          flow_type: "product"
+          flow_ref:
+            uuid: "db4d6a66-a479-428f-b005-f5efbee3106d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record amorphous alloy strip only for an amorphous-core design; do not also record grain-oriented electrical steel for the same core unless both are physically incorporated and separately documented."
+          amount:
+            expression: "Product-specific issued mass less traceable unused returns, normalized to one accepted transformer"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 accepted factory-tested transformer"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_balance
+              source_ids: []
+            ranges: []
+        - row_id: copper_wire
+          role: "Copper winding conductor"
+          name: "copper wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "da2d966d-fe62-44dc-ba0f-b1cd7c7cf33e"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record copper wire when copper conductor is incorporated in transformer windings. Do not use this row for aluminum conductor or for mixed conductor stock."
+          amount:
+            expression: "Product-specific issued copper-wire mass less traceable unused returns, normalized to one accepted transformer"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 accepted factory-tested transformer"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_balance
+              source_ids: []
+            ranges: []
+        - row_id: aluminum_wire
+          role: "Aluminum winding conductor"
+          name: "Aluminum wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "89db8507-09bd-45f8-ba96-4e459058412c"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record aluminum wire only when aluminum conductor is incorporated in transformer windings. Do not substitute unwrought aluminum or a conductor of unspecified metal."
+          amount:
+            expression: "Product-specific issued aluminum-wire mass less traceable unused returns, normalized to one accepted transformer"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 accepted factory-tested transformer"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_balance
+              source_ids: []
+            ranges: []
+        - row_id: epoxy_resin
+          role: "Epoxy resin for a cast-resin insulation system"
+          name: "Epoxy resin"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record formulated epoxy resin only when it is consumed in a cast-resin or resin-encapsulated transformer insulation system. Other distinct resin, hardener, filler, or solvent inputs must be added as separate atomic rows."
+          amount:
+            expression: "Product-specific net resin mass issued to casting and curing, normalized to one accepted transformer"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 accepted factory-tested transformer"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_balance
+              source_ids: []
+            ranges: []
+        - row_id: electrical_insulation_paper
+          role: "Electrical insulation paper"
+          name: "Electrical insulation paper"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record electrical insulation paper when incorporated between turns, layers, windings, or core-and-coil components. Distinct pressboard or other insulation products must be added separately when used."
+          amount:
+            expression: "Product-specific issued insulation-paper mass less traceable unused returns, normalized to one accepted transformer"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 accepted factory-tested transformer"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_balance
+              source_ids: []
+            ranges: []
+        - row_id: transformer_insulating_oil
+          role: "Transformer insulating oil"
+          name: "Transformer insulating oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "252efad6-76d5-55f4-a338-0ed8d03cf335"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record transformer insulating oil only for a liquid-filled design and include both the oil retained in the accepted product and documented manufacturing losses crossing the site boundary."
+          amount:
+            expression: "Product-specific delivered or issued oil mass less traceable unused return and stock change, normalized to one accepted transformer"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 accepted factory-tested transformer"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_balance
+              source_ids: []
+            ranges: []
+        - row_id: transformer_structural_components
+          role: "Purchased transformer structural components and casing"
+          name: "Transformer structural components and casing"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d4d9d3f9-9a57-4ca3-953c-f9bad98d5bc1"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record the purchased transformer-specific structural subassembly when it crosses the foreground boundary as one supplied product. If the site fabricates individual tank or enclosure materials, replace this subassembly row with separate concrete input rows and avoid double counting."
+          amount:
+            expression: "Product-specific received subassembly mass incorporated in one accepted transformer"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 accepted factory-tested transformer"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_balance
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Factory electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200b9a66 / MJ; unit group 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Record electricity delivered to the declared manufacturing and factory-test meter boundary. Exclude electricity attributable to downstream transformer operation."
+          amount:
+            expression: "Metered manufacturing and factory-test electricity allocated by traceable submeter or documented causal allocation, normalized to one accepted transformer"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 accepted factory-tested transformer"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges: []
+        - row_id: natural_gas
+          role: "Gaseous natural gas for on-site thermal operations"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3; unit group 93a60a57-a3c8-12da-a746-0800200c9a66"
+          description: "Record gaseous natural gas only when it is burned or otherwise consumed on site for drying, curing, heating, or another declared manufacturing operation. Do not include upstream gas combustion embedded in purchased electricity or materials."
+          amount:
+            expression: "Metered or invoiced site consumption for included manufacturing operations, normalized to one accepted transformer and reported at declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 accepted factory-tested transformer"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges: []
+        - row_id: industrial_oxygen
+          role: "Industrial oxygen for on-site oxy-fuel cutting"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3; unit group 93a60a57-a3c8-12da-a746-0800200c9a66"
+          description: "Record industrial oxygen only when oxy-fuel cutting or another identified manufacturing operation consumes purchased oxygen within the site boundary."
+          amount:
+            expression: "Metered or cylinder-delivery oxygen volume consumed by included operations, normalized to one accepted transformer at declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 accepted factory-tested transformer"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges: []
+        - row_id: process_water
+          role: "Process water for cleaning or testing"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record process water only when water crosses the site boundary for transformer-part cleaning, leak testing, or another identified manufacturing operation. Cooling water must be represented by a distinct row if it crosses the boundary."
+          amount:
+            expression: "Metered or batch-record process-water mass consumed by included operations, normalized to one accepted transformer"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 accepted factory-tested transformer"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_chemical_records
+              source_ids: []
+            ranges: []
+        - row_id: sodium_hydroxide
+          role: "Sodium hydroxide for alkaline cleaning"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record sodium hydroxide only when an alkaline cleaning bath consumes it within the foreground boundary. Report dry NaOH-equivalent mass and separately disclose supplied solution concentration."
+          amount:
+            expression: "Dry NaOH-equivalent mass from product mass multiplied by documented concentration, normalized to one accepted transformer"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 accepted factory-tested transformer"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_chemical_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: transformer_product
+          role: "Accepted finished transformer"
+          name: "Transformer"
+          flow_type: "product"
+          flow_ref:
+            uuid: "734249ea-34e6-471b-a05a-f5b26b818167"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s); unit group 5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+          description: "Record the accepted reference product after factory tests and any rework required for acceptance. Rejected units are not counted as reference output."
+          amount:
+            expression: "One accepted factory-tested transformer"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1 accepted factory-tested transformer"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_acceptance
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: post_industrial_steel_scrap
+          role: "Post-industrial steel scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record ferrous offcuts and rejected steel parts leaving the site as post-industrial steel scrap. Do not combine copper, aluminum, oil, or mixed hazardous residues in this row."
+          amount:
+            expression: "Weighed shipment mass plus documented stock change attributable to the accepted transformer"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 accepted factory-tested transformer"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: copper_scrap
+          role: "Copper winding scrap"
+          name: "Copper Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "4fbbb5f1-560a-4052-ba0c-652c5dfc282e"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record copper offcuts and rejected copper winding material leaving the site as copper scrap. Keep contaminated or mixed metal waste separate."
+          amount:
+            expression: "Weighed shipment mass plus documented stock change attributable to the accepted transformer"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 accepted factory-tested transformer"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: aluminum_scrap
+          role: "Aluminum winding scrap"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record aluminum offcuts and rejected aluminum winding material only when the aluminum-conductor route applies. Keep contaminated or mixed metal waste separate."
+          amount:
+            expression: "Weighed shipment mass plus documented stock change attributable to the accepted transformer"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 accepted factory-tested transformer"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: waste_transformer_insulating_oil
+          role: "Waste transformer insulating oil"
+          name: "Waste transformer insulating oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record off-spec, spilled, drained, or otherwise discarded mineral transformer insulating oil that leaves the site for treatment. Do not use generic lubricating-oil identities or combine aqueous cleaning waste with this row."
+          amount:
+            expression: "Weighed or volume-to-mass-converted shipment quantity attributable to the accepted liquid-filled transformer, with density and reference conditions documented"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 accepted factory-tested transformer"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: fossil_carbon_dioxide
+          role: "Direct fossil carbon dioxide from on-site natural-gas combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record only direct fossil carbon dioxide crossing from the foreground site to air when on-site natural-gas combustion occurs. Upstream emissions from purchased electricity, fuels, or materials remain in their upstream datasets."
+          amount:
+            expression: "Directly measured site emission attributable to included natural-gas combustion and normalized to one accepted transformer; if calculated instead, add a reviewed calculation rule and factor source before use"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 accepted factory-tested transformer"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "shared manufacturing operations"
+    rule: "Avoid allocation by product-specific bills of materials, batch records, test records, and submetered utilities; subdivide production cells or time periods whenever the records permit."
+    source_ids: []
+  - rule_id: allocation_causal_shared_inputs
+    applies_to: "residual shared utilities and consumables"
+    rule: "When subdivision is not possible, use a documented causal driver such as machine time, oven occupancy, test duration, or measured throughput that reflects consumption; disclose the driver and test sensitivity to a reasonable alternative."
+    source_ids: []
+  - rule_id: allocation_scrap_no_credit
+    applies_to: "scrap and waste outputs"
+    rule: "Report scrap and waste as physical outputs at the factory gate. Do not subtract avoided virgin-material burdens or recycling credits from the foreground manufacturing inventory; downstream models may apply a separately disclosed end-of-life allocation convention."
+    source_ids: []
+  - rule_id: allocation_rework_and_rejects
+    applies_to: "rework and rejected units"
+    rule: "Attribute rework inputs and the material and energy burden of rejected units to accepted output using the same production-period records; do not count a rejected transformer as reference output."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_balance
+      process_id: "transformer_manufacturing"
+      flow_role: "material and purchased-subassembly inputs"
+      record_type: "purchase, warehouse issue, return, stock and bill-of-material records"
+      raw_fields: "material identity; supplier; lot; received mass; issued mass; unused return; opening and closing stock; product serial or batch; route applicability"
+      collection_method: "Reconcile purchasing and stores records to the product-specific bill of materials and production order"
+      unit: "kg"
+      frequency: "Each receipt and production order"
+      temporal_coverage: "Representative continuous production period, normally at least 12 months unless justified"
+      site_scope: "All included manufacturing buildings and stores at the declared site"
+      aggregation_rule: "Net input equals receipts plus opening stock minus returns, closing stock and documented transfers; normalize to accepted units"
+      quality_evidence: "Calibrated scale records; invoices; material certificates; stock reconciliation; bill-of-material revision"
+    - protocol_id: cp_utility_records
+      process_id: "transformer_manufacturing"
+      flow_role: "electricity, natural gas and industrial oxygen inputs"
+      record_type: "meter, invoice and cylinder-delivery records"
+      raw_fields: "meter id; opening and closing readings; energy or gas quantity; reference conditions; delivery quantity; process area; production period; allocation driver"
+      collection_method: "Prefer process or production-area submeters; reconcile to site invoices and delivery records"
+      unit: "MJ for electricity; m3 for gases"
+      frequency: "Meter interval or each delivery, aggregated monthly"
+      temporal_coverage: "Same production period as accepted product output"
+      site_scope: "All included production and factory-test meters"
+      aggregation_rule: "Subtract excluded loads, apply documented causal allocation, and divide by accepted transformer count"
+      quality_evidence: "Meter calibration; invoice reconciliation; meter map; excluded-load log"
+    - protocol_id: cp_water_chemical_records
+      process_id: "transformer_manufacturing"
+      flow_role: "process water and sodium hydroxide inputs"
+      record_type: "water-meter, batch make-up and chemical issue records"
+      raw_fields: "water volume or mass; chemical product mass; NaOH concentration; bath make-up; bath disposal; production order; density conversion"
+      collection_method: "Read meters and cleaning-bath records; calculate dry NaOH-equivalent from supplied product mass and concentration"
+      unit: "kg"
+      frequency: "Each batch or meter interval, aggregated monthly"
+      temporal_coverage: "Same production period as accepted product output"
+      site_scope: "Included cleaning and testing operations"
+      aggregation_rule: "Sum net input, document reuse and stock change, and normalize to accepted transformer count"
+      quality_evidence: "Meter calibration; concentration certificate; batch sheet; stock reconciliation"
+    - protocol_id: cp_product_acceptance
+      process_id: "transformer_manufacturing"
+      flow_role: "accepted transformer output"
+      record_type: "production order and factory acceptance test record"
+      raw_fields: "serial number; product model; acceptance status; rated power; voltages; frequency; phases; losses; impedance; insulation and cooling system; total mass; accessories"
+      collection_method: "Count only units with completed acceptance records and link each unit to its product configuration"
+      unit: "Item(s) and kg"
+      frequency: "Each unit"
+      temporal_coverage: "Same production period as inventory records"
+      site_scope: "Declared factory and test bay"
+      aggregation_rule: "Count accepted units and retain product-level qualifiers; normalize inventory to one accepted unit"
+      quality_evidence: "Signed acceptance record; calibrated test equipment; weigh record; configuration release"
+    - protocol_id: cp_waste_records
+      process_id: "transformer_manufacturing"
+      flow_role: "steel, copper, aluminum and waste insulating-oil outputs"
+      record_type: "waste container, scale, shipment, stock and treatment records"
+      raw_fields: "waste identity; source operation; container; gross and tare mass; stock change; shipment date; destination; treatment route"
+      collection_method: "Weigh each shipment or container and reconcile opening and closing waste stock"
+      unit: "kg"
+      frequency: "Each container or shipment, aggregated monthly"
+      temporal_coverage: "Same production period as accepted product output"
+      site_scope: "All included production and waste-storage areas"
+      aggregation_rule: "Net waste equals shipments plus closing stock minus opening stock and documented incoming transfers; allocate by source records and normalize to accepted units"
+      quality_evidence: "Scale calibration; waste manifest; carrier receipt; stock reconciliation; photographs or contamination classification"
+    - protocol_id: cp_direct_emissions
+      process_id: "transformer_manufacturing"
+      flow_role: "direct fossil carbon dioxide output"
+      record_type: "stack or exhaust measurement record"
+      raw_fields: "source id; fuel-consuming operation; concentration; flow rate; sampling duration; operating hours; fossil attribution; production period"
+      collection_method: "Use calibrated direct measurement covering included on-site combustion; calculated values require a separately reviewed rule and factor source"
+      unit: "kg"
+      frequency: "Each test or continuous interval according to monitoring system"
+      temporal_coverage: "Representative operating period aligned with production"
+      site_scope: "Every included combustion source"
+      aggregation_rule: "Integrate measured mass over operating time, apply documented production allocation, and normalize to accepted units"
+      quality_evidence: "Calibration; sampling report; operating log; source inventory; fossil-origin evidence"
+  calculation_rules:
+    - id: calc_normalize_per_transformer
+      applies_to: "all foreground exchanges"
+      rule: "Normalized amount equals the net exchange assigned to the product configuration divided by the count of accepted transformers represented by the records."
+      inputs:
+        - "net exchange"
+        - "accepted transformer count"
+      output: "exchange per 1 accepted transformer"
+      source_ids: []
+    - id: calc_electricity_conversion
+      applies_to: "electricity reported in kWh"
+      rule: "Electrical energy in MJ equals metered kWh multiplied by 3.6; retain the original meter value and conversion."
+      inputs:
+        - "metered kWh"
+      output: "electricity MJ"
+      source_ids: []
+    - id: calc_naoh_dry_equivalent
+      applies_to: "sodium hydroxide solution"
+      rule: "Dry NaOH-equivalent mass equals supplied solution mass multiplied by the supplier-certified NaOH mass fraction."
+      inputs:
+        - "solution mass"
+        - "certified NaOH mass fraction"
+      output: "kg dry NaOH equivalent"
+      source_ids: []
+    - id: calc_inventory_reconciliation
+      applies_to: "each material family"
+      rule: "Net material input must reconcile to incorporated product mass plus same-material waste, documented other loss, and stock change; investigate and disclose any residual rather than assigning it to an umbrella flow."
+      inputs:
+        - "net input"
+        - "incorporated mass"
+        - "waste mass"
+        - "other loss"
+        - "stock change"
+      output: "material-specific reconciliation residual"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Link every accepted item to a serial number or production order and retain all required reference-flow qualifiers."
+      evidence: "Product configuration, nameplate data, acceptance record and bill-of-material revision"
+    - id: dq_temporal_alignment
+      applies_to: "all foreground records"
+      requirement: "Use one representative production period across inputs, outputs and accepted units; disclose shutdowns, commissioning, unusual rework and any shorter-than-12-month period."
+      evidence: "Dated meter, purchasing, stock, production, test and waste records"
+    - id: dq_completeness
+      applies_to: "site boundary"
+      requirement: "Reconcile purchasing, utility, output and waste totals; disclose missing meters, estimates, excluded buildings and every actual atomic flow added beyond the minimum rows."
+      evidence: "Site flow map, reconciliation worksheet and signed completeness review"
+    - id: dq_variant_consistency
+      applies_to: "conditional routes"
+      requirement: "Apply mutually exclusive or combined core, conductor and insulation rows according to the actual bill of materials; do not infer route from the category name."
+      evidence: "Bill of materials, drawings, material certificates and production traveller"
+    - id: dq_source_representativeness
+      applies_to: "upstream datasets"
+      requirement: "Select upstream datasets matching material grade, product state, supplier technology, geography and period where possible; disclose proxies and sensitivity."
+      evidence: "Supplier declarations, dataset metadata and proxy log"
+    - id: dq_performance_metadata
+      applies_to: "downstream interpretation"
+      requirement: "Retain rated power, voltage ratio, frequency, phase count, no-load and load losses, test conditions, impedance, cooling and insulation system, reference service life and loading profile because factory-gate mass alone does not describe transformer function."
+      evidence: "Nameplate, type or routine test report, technical specification and declared use scenario"
+validation_rules:
+  - rule_id: validation_reference_flow
+    applies_to: "reference product"
+    rule: "Fail validation unless the output is exactly one accepted Transformer item with the listed product, property and unit-group UUIDs and every required qualifier is populated."
+    source_ids:
+      - eu-power-transformers-regulation-548-2014
+  - rule_id: validation_inventory_identity
+    applies_to: "inventory rows"
+    rule: "Fail validation when a selected flow combines multiple materials, utilities, wastes, or emissions, when an unresolved row is assigned a proxy UUID, or when a conditional row lacks route applicability."
+    source_ids: []
+  - rule_id: validation_mass_reconciliation
+    applies_to: "material families"
+    rule: "Require a documented material-specific reconciliation and investigate non-zero residuals; do not balance one material with another or silently assign a residual to other waste."
+    source_ids: []
+  - rule_id: validation_boundary_separation
+    applies_to: "manufacturing energy and emissions"
+    rule: "Fail validation if use-phase transformer losses or upstream emissions from purchased electricity, fuels, or materials are counted as direct factory exchanges."
+    source_ids:
+      - ec-transformer-impact-assessment-2014
+  - rule_id: validation_bilingual_identity
+    applies_to: "localized flow displays"
+    rule: "Require identical row ids, UUIDs and controlled values across languages and require the exact Tiangong Chinese baseName for every UUID-bearing flow."
+    source_ids: []
+  - rule_id: validation_unresolved_evidence
+    applies_to: "publication readiness"
+    rule: "Treat the four unresolved flow UUIDs and every unresolved external range-evidence need as review blockers for publication, while retaining foreground collection requirements for candidate use."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Product-specific factory-gate foreground manufacturing dataset for one accepted electrical transformer"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Supplier-specific or representative transformer manufacturing in product systems when the declared design, rating, technology, geography, period and factory-gate boundary match; linkage to separately modelled transport, installation, use, maintenance and end-of-life stages"
+  excluded_use: "Direct comparison of transformer efficiency, lifetime performance or whole-life impacts without compatible rated power, voltage, loss, loading, service-life and downstream scenarios; representation of static converters, inductors, parts, substations or contract manufacturing services"
+  required_metadata: "Canonical PCR id; product and UUID identity; all required reference-flow qualifiers; site and production period; bill-of-material revision; route applicability; collection protocols; allocation drivers; accepted-unit count; total mass; upstream dataset choices; exclusions and unresolved evidence"
+  required_quality_disclosure: "Temporal and site coverage; meter and scale calibration; record completeness; material reconciliation residuals; data gaps and estimates; proxy upstream datasets; conditional rows; stock changes; scrap destinations; direct-emission measurement coverage; uncertainty and review status"
+  update_trigger: "Change in transformer design, rated power family, core or conductor technology, insulation or cooling system, factory or production line, bill of materials, energy supply, cleaning or finishing route, allocation driver, upstream dataset, applicable performance specification, or evidence that materially changes the normalized inventory"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "dataset"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv, retrieved 2026-09-04"
+    used_for: "Official CPC 46121 product classification identity and exclusions of neighbouring CPC products"
+  - id: "eu-power-transformers-regulation-548-2014"
+    type: "standard"
+    reference: "Commission Regulation (EU) No 548/2014 of 21 May 2014 with regard to small, medium and large power transformers, https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX%3A32014R0548, retrieved 2026-09-04"
+    used_for: "Power-transformer definition; rated power, voltage, frequency, liquid-immersed and dry-type qualifiers; performance disclosure context"
+  - id: "ec-transformer-impact-assessment-2014"
+    type: "official_guidance"
+    reference: "European Commission, Commission Staff Working Document Impact Assessment accompanying power-transformer ecodesign requirements, SWD(2014) 162, https://ec.europa.eu/smart-regulation/impact/ia_carried_out/docs/ia_2014/swd_2014_0162_en.pdf, retrieved 2026-09-04"
+    used_for: "Transformer variant and lifecycle context; magnetic steel, copper or aluminum, resin and oil relevance; factory loss testing and downstream-stage separation"
+  - id: "gbt-1094-1-2013"
+    type: "standard"
+    reference: "State Administration for Market Regulation and Standardization Administration of China, GB/T 1094.1-2013 Power transformers—Part 1: General, https://openstd.samr.gov.cn/bzgk/std/newGbInfo?hcno=C3539A02733314553221D30BB7A2A0DF, retrieved 2026-09-04"
+    used_for: "Professional Chinese product title 电力变压器 and terminology alignment"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:9761bde6cb9b0489bab3cd15ca98ba499a58627d513c125401eeaf3d21c73d05"
+  generated_content_sha256: "sha256:5b9dd0171525e3e9f885db45869733cb57a5fc1f78d340552a4016e13c16e05c"

@@ -2,12 +2,13 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.fittings-for-loose-leaf-binders-or-files-letter-clips-letter-corners-paper-clips-indexi-7878e38f
 title:
   en-US: "Fittings for loose-leaf binders or files; letter clips, letter corners, paper clips, indexing tags and similar office articles, of base metal; staples in strips, of base metal"
-  zh-CN: null
-status: scaffold
+  zh-CN: "活页夹或文件夹用配件；贱金属制信夹、信件护角、回形针、索引标签及类似办公用品；贱金属制成条订书钉"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
+updated_at_utc: "2026-09-04T23:24:45Z"
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +23,93 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "42995"
     title: "Fittings for loose-leaf binders or files; letter clips, letter corners, paper clips, indexing tags and similar office articles, of base metal; staples in strips, of base metal"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: cold_rolled_steel_strip_input
+        reason_code: no_exact_candidate
+        explanation: "Ranked state-100 candidates were hot-rolled stock or had contradictory English, Chinese and classification identities; none exactly represented cold-rolled carbon-steel strip."
+      - row_id: forming_lubricating_oil
+        reason_code: no_exact_candidate
+        explanation: "Ranked oils were specific to cold, sheet or hot rolling, insulation service, or waste oil; none exactly represented lubricant used for bending, stamping and cutting."
+      - row_id: formed_article_intermediate
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "The formed but unfinished office article is an internal route-specific intermediate and needs a foreground flow identity if processes are modelled separately."
+      - row_id: finishing_nickel_metal
+        reason_code: classification_mismatch
+        explanation: "The apparent nickel-metal candidate was classified as nickel matte or another intermediate metallurgy product, so no classification-consistent exact UUID was adopted."
+      - row_id: finished_surface_intermediate
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "The surface-finished but unpacked office article is an internal route-specific intermediate and needs a foreground flow identity if processes are modelled separately."
+      - row_id: metal_finishing_wastewater
+        reason_code: no_exact_candidate
+        explanation: "The only ranked waste candidate was evaporation condensate, not metal-finishing wastewater containing dissolved metals and treatment chemicals."
+      - row_id: metal_bearing_sludge
+        reason_code: no_exact_candidate
+        explanation: "Ranked waste candidates were generic, municipal, or biological-treatment sludges and did not exactly represent metal-bearing finishing sludge."
+      - row_id: formed_staple_intermediate
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "Individual formed staples before strip assembly are an internal intermediate and need a foreground flow identity when the assembly process is split."
+      - row_id: tissue_paper_strip
+        reason_code: no_exact_candidate
+        explanation: "Ranked paper candidates were sanitary paper, unconverted paper webs, or unrelated grades; none exactly represented a cut tissue-paper assembly strip."
+      - row_id: packable_article_intermediate
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "The inspected unpacked article transferred to packaging is an internal product state and needs a foreground flow identity when packaging is modelled separately."
+    range_evidence_needs:
+      - range_id: forming_material_yield_and_energy
+        row_ids:
+          - steel_wire_input
+          - cold_rolled_steel_strip_input
+          - forming_lubricating_oil
+          - forming_electricity
+          - formed_article_intermediate
+          - steel_scrap_output
+        explanation: "No two independent original sources with compatible factory-gate boundaries, product states, wire/strip forming technologies and one-kilogram output basis were verified for transferable material-yield, lubricant or electricity ranges; collect batch mass balances and meters."
+      - range_id: surface_finishing_consumption_and_waste
+        row_ids:
+          - finishing_process_water
+          - finishing_sodium_hydroxide
+          - finishing_hydrochloric_acid_30pct
+          - finishing_shg_zinc_metal
+          - finishing_nickel_metal
+          - finishing_electricity
+          - finishing_natural_gas
+          - finished_surface_intermediate
+          - metal_finishing_wastewater
+          - metal_bearing_sludge
+          - finishing_fossil_co2
+        explanation: "Coating route, bath chemistry, recirculation, drying technology and wastewater treatment differ materially; the verified JRC BREF is process evidence, not two-source empirical range evidence, so site- and route-specific foreground collection is required."
+      - range_id: staple_strip_assembly_consumption
+        row_ids:
+          - formed_staple_intermediate
+          - water_based_adhesive
+          - tissue_paper_strip
+          - assembly_electricity
+          - staple_strip_output
+        explanation: "The verified patent establishes adhesive and optional tissue-strip process structure but supplies no transferable modern factory-gate consumption range, and no second independent compatible source was verified; collect product-specific assembly records."
+      - range_id: packaging_consumption_and_energy
+        row_ids:
+          - packable_article_intermediate
+          - paper_box_input
+          - packaging_electricity
+          - reference_office_article_output
+        explanation: "Package count, box grammage, printing and packing automation vary by SKU and market; two independent compatible original sources were not verified for empirical ranges, so collect packaging bills of materials and electricity records."

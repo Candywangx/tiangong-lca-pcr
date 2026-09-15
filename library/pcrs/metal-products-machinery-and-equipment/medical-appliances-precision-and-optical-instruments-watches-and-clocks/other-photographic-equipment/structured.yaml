@@ -1,10 +1,609 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "48329"
-  title: "Other photographic equipment"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.medical-appliances-precision-and-optical-instruments-watches-and-clocks.other-photographic-equipment"
+  classification_refs: "CPC 3.0: 48329, Other photographic equipment (exact)"
+  covered_products: "Finished photographic flashlight apparatus; non-cinematographic image projectors; photographic enlargers and reducers; photographic-laboratory apparatus; negatoscopes; projection screens"
+  excluded_products: "Objective lenses sold separately; photographic and cinematographic cameras; cinematographic projectors; sensitized plates, film, or instant-print film; photographic chemical preparations; parts and accessories sold separately; digital cameras and television/video cameras"
+  representative_product: "Factory-gate finished electronic photographic flash unit, used only as the representative route for process and BOM prompts and not as a restriction on other covered equipment"
+  production_route: "Receipt of purchased materials and components; product-specific fabrication or conditioning where performed at the reporting site; final assembly; cleaning when used; functional testing; packing"
+  market_state: "Complete, tested, factory-gate finished equipment, with included accessories and sales packaging declared"
+functional_unit:
+  what: "Provide finished equipment that performs the declared photographic illumination, image projection/enlargement/reduction, laboratory handling, negative viewing, or projection-screen function"
+  how_much: "1 kg net mass of complete factory-gate finished equipment"
+  how_well: "Conforming to the producer's declared model specification and acceptance test, with equipment family, model, BOM revision, included accessories, and packaging scope declared"
+  how_long_or_cycle: "Factory-gate production only; service life or operating cycles are metadata and do not change the 1 kg production reference"
+  reference_flow_link: "finished_other_photographic_equipment"
+system_boundary:
+  rules:
+    - rule_id: boundary_received_inputs
+      applies_to: "Foreground starting condition"
+      rule: "Start the foreground inventory at the site gate for received materials and components; link their upstream production and inbound transport separately when the study boundary includes them."
+      source_ids:
+        - kth-moqvist-photo-flash-2020
+    - rule_id: boundary_site_operations
+      applies_to: "Factory-gate production"
+      rule: "Include site-performed fabrication, assembly, cleaning or conditioning, functional testing, rejects, wastewater, and packing needed to produce accepted equipment."
+      source_ids:
+        - kth-moqvist-photo-flash-2020
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "Distribution, use, and end-of-life"
+      rule: "Exclude downstream distribution, use electricity or consumables, maintenance, and end-of-life from this factory-gate PCR unless the study goal adds them as separately reported modules."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Received materials, components, subassemblies, accessories, and packaging at the reporting site's gate"
+  starting_condition_role: "Foreground assembly/manufacturing input boundary; upstream production is represented by separately linked supplier or background datasets"
+  product_classification_scope: "Finished residual photographic equipment described in Product Category Identity, independent of any one model or route"
+  recursive_input_rule: "A received input that is itself finished equipment within this PCR is recorded once as a product input with its own upstream dataset; do not recursively decompose it inside the receiving process and also link the complete-equipment dataset"
+  upstream_dataset_requirement: "Every material, component, energy, water, packaging, and waste-treatment exchange requires a geographically and technologically appropriate upstream or downstream dataset, with proxy use disclosed"
+  disclosure: "Declare factory location, reporting period, equipment family/model, BOM revision, component manufacturing included at the site, cleaning and testing route, allocation, cut-offs, data gaps, recycled-content assumptions, and packaging scope"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Other photographic equipment (Tiangong UUID unresolved)"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "equipment family"
+    - "manufacturer and model"
+    - "BOM revision"
+    - electronic
+    - optical
+    - laboratory-apparatus
+    - "or passive-screen route"
+    - "net product mass"
+    - "included accessories"
+    - "packaging scope"
+    - "manufacturing site and geography"
+    - "reporting period"
+    - "acceptance-test specification"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product and all mass-normalized inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh complete accepted equipment without sales packaging for net reference-product mass. Normalize each reporting-period exchange by accepted net output mass to 1 kg; disclose whether included accessories are inside the net product mass."
+  - id: energy_conversion
+    applies_to: "Purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve meter data in its original unit and convert kWh to MJ using exactly 1 kWh = 3.6 MJ. Record voltage level, grid geography, onsite generation treatment, and loss boundary."
+  - id: water_mass_basis
+    applies_to: "Process water and cleaning wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer direct mass records. When volume is metered, use a documented measured or supplier density for the reporting temperature; do not silently assume density."
+  - id: bom_component_mass
+    applies_to: "Materials, components, and packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use supplier mass declarations or verified weighing. Distinguish supplied component mass from primary-material-equivalent mass and do not double-count both representations."
+process_map:
+  - id: final_assembly_test_pack
+    name: "Final assembly, cleaning, functional testing, and packing"
+    inclusion: "required"
+    inclusion_condition: "Always; individual atomic exchanges apply only when present in the declared model BOM or site route"
+    role: "Foreground production"
+    quantitative_reference: "1 kg accepted net finished equipment"
+process_inventory:
+  - id: final_assembly_test_pack
+    label: "Final assembly, cleaning, functional testing, and packing"
+    inputs:
+      product:
+        - row_id: aluminium_sheet
+          role: "Aluminium sheet for housings, frames, or reflectors"
+          name: "aluminium sheet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197be4-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record this exchange when aluminium sheet enters the foreground process as a purchased material. Product design, alloy, thickness, recycled content, and forming boundary remain foreground qualifiers."
+          amount:
+            expression: "measured net input during the reporting period, less returned unopened material"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_mass
+              source_ids:
+                - kth-moqvist-photo-flash-2020
+            ranges: []
+        - row_id: abs_granulate
+          role: "ABS moulding resin"
+          name: "Acrylonitrile-butadiene-styrene (ABS) copolymer, granulate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8f1317c1-aa51-4524-8692-74079c923e2c"
+          property_unit: "Mass / kg"
+          description: "Record ABS granulate only when the reporting site moulds ABS parts or consumes purchased ABS granulate; do not also count the mass of the resulting purchased moulded part."
+          amount:
+            expression: "measured net granulate charged to site-performed moulding, including documented process loss"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_mass
+              source_ids:
+                - kth-moqvist-photo-flash-2020
+            ranges: []
+        - row_id: printed_wire_board
+          role: "Printed wire board"
+          name: "Printed Wire Board"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a8bd954c-59b3-4317-b4de-02a17d6da5ca"
+          property_unit: "Mass / kg"
+          description: "Record each purchased printed wire board entering an electronic equipment route. Declare whether it is bare or populated; mounted parts not included in the selected flow require separate BOM records or a documented assembly dataset."
+          amount:
+            expression: "supplier-declared or weighed board mass entering accepted and rejected units"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_mass
+              source_ids:
+                - kth-moqvist-photo-flash-2020
+            ranges: []
+        - row_id: photographic_objective_lens
+          role: "Objective lens"
+          name: "Objective lenses for cameras, projectors or photographic enlargers or reducers"
+          flow_type: "product"
+          flow_ref:
+            uuid: "cfef9f14-3271-428b-bebe-47ded2db11d4"
+          property_unit: "Mass / kg"
+          description: "Record this component only for equipment whose declared BOM contains a separately received objective lens."
+          amount:
+            expression: "supplier-declared or weighed lens mass entering accepted and rejected units"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_mass
+              source_ids:
+                - wco-hs-2022-chapter-90
+            ranges: []
+        - row_id: xenon_flash_tube
+          role: "Xenon photographic flash tube"
+          name: "Xenon photographic flash tube (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this component only for xenon-discharge photographic flash products. The Tiangong identity remains unresolved; do not substitute glass, xylene, or a ballast."
+          amount:
+            expression: "supplier-declared or weighed flash-tube mass entering accepted and rejected units"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_mass
+              source_ids:
+                - wco-hs-2022-chapter-90
+            ranges: []
+        - row_id: electronic_flash_capacitor
+          role: "Electronic flash capacitor"
+          name: "Electronic flash capacitor (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this component only for electronic flash products whose BOM contains a discrete energy-storage capacitor. The Tiangong identity remains unresolved; insulation oil is not an acceptable substitute."
+          amount:
+            expression: "supplier-declared or weighed capacitor mass entering accepted and rejected units"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_mass
+              source_ids:
+                - kth-moqvist-photo-flash-2020
+            ranges: []
+        - row_id: polyester_projection_screen_fabric
+          role: "Polyester projection-screen fabric"
+          name: "Polyester projection-screen fabric (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this exchange only for projection-screen products using a polyester-based optical surface. Declare coating, backing, weave or knit, recycled content, and flame-retardant treatment."
+          amount:
+            expression: "supplier-declared or weighed finished fabric mass entering accepted and rejected screens"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_mass
+              source_ids:
+                - wco-hs-2022-chapter-90
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity consumed by site-performed fabrication, assembly, cleaning or conditioning, testing, and packing. Allocate shared meters using the rule in section 7."
+          amount:
+            expression: "metered or invoice-reconciled electricity attributable to the reporting process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_meter
+              source_ids:
+                - kth-moqvist-photo-flash-2020
+            ranges: []
+        - row_id: process_water
+          role: "Process water for aqueous cleaning"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water only when aqueous cleaning occurs at the reporting site. Water for sanitation or unrelated building services is outside this row."
+          amount:
+            expression: "measured water supplied to product or component cleaning during the reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_meter
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_board_box
+          role: "Corrugated-board sales box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record the formed corrugated-board box supplied with the finished equipment; do not also count its cardboard mass as a separate raw-board input."
+          amount:
+            expression: "supplier-declared or weighed box mass packed with accepted product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_mass
+              source_ids:
+                - kth-moqvist-photo-flash-2020
+            ranges: []
+        - row_id: ldpe_packaging_film
+          role: "Low-density polyethylene protective film"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass / kg"
+          description: "Record PE-LD film only when it is supplied with the product as sales or protective packaging."
+          amount:
+            expression: "supplier-declared or weighed PE-LD film mass packed with accepted product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_mass
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_other_photographic_equipment
+          role: "Accepted finished equipment"
+          name: "Other photographic equipment (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This is the reference product crossing the factory gate after assembly, acceptance testing, and packing. Record net equipment mass separately from sales packaging."
+          amount:
+            expression: "measured net mass of accepted finished equipment produced in the reporting period"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg accepted net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_output_mass
+              source_ids:
+                - un-cpc-3-0-2025
+                - wco-hs-2022-chapter-90
+            ranges: []
+      waste:
+        - row_id: weee_manufacturing_scrap
+          role: "Rejected electronic assemblies"
+          name: "Waste electrical and electronic equipment manufacturing scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "46be0534-0f3c-44a9-8523-63c4ad41ed8e"
+          property_unit: "Mass / kg"
+          description: "Record rejected electronic assemblies only for electronic routes and before downstream treatment. Separate recoverable components if measured as distinct waste flows."
+          amount:
+            expression: "measured mass transferred from production control to a waste-treatment or recovery route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+        - row_id: cleaning_wastewater
+          role: "Cleaning wastewater"
+          name: "Wastewater from cleaning"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f0402393-e82c-47e8-9cd8-a486c97f3e89"
+          property_unit: "Mass / kg"
+          description: "Record wastewater only when aqueous cleaning occurs. Characterize contaminants and treatment state in the foreground record."
+          amount:
+            expression: "measured wastewater transferred to onsite or offsite treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_mass
+              source_ids: []
+            ranges: []
+        - row_id: aluminium_scrap
+          role: "Aluminium offcuts and rejected parts"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass / kg"
+          description: "Record aluminium scrap only when sheet forming, trimming, or rejection occurs at the reporting site. Do not net it against aluminium input."
+          amount:
+            expression: "measured mass transferred to recovery or waste treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids:
+                - kth-moqvist-photo-flash-2020
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "Multi-product factory operations"
+    rule: "First subdivide metered processes, production lines, batches, and waste records wherever independent measurement is practicable."
+    source_ids: []
+  - rule_id: allocation_shared_operations
+    applies_to: "Shared assembly, conditioning, testing, and building services"
+    rule: "When subdivision is not practicable, allocate shared electricity, water, and waste by a documented causal driver such as machine time, test time, batch count, or measured throughput; use mass only when no more causal driver is available and disclose sensitivity."
+    source_ids: []
+  - rule_id: allocation_scrap_no_credit
+    applies_to: "Aluminium scrap and rejected electronic assemblies"
+    rule: "Report waste flows gross at the foreground boundary. Do not subtract scrap revenue or an avoided-primary-material credit from the foreground inventory; model recovery consequences in the selected downstream dataset or an explicitly separate scenario."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_bom_mass
+      process_id: "final_assembly_test_pack"
+      flow_role: "BOM material, component, accessory, or packaging input"
+      record_type: "supplier declaration plus receiving and issue record"
+      raw_fields: "item code; material description; supplier; lot; quantity; unit mass; returned mass; BOM revision; accepted and rejected unit counts"
+      collection_method: "Reconcile approved BOM to purchasing/warehouse records and verify representative unit mass by calibrated scale"
+      unit: "kg"
+      frequency: "Per lot, aggregated monthly"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "All lines and outsourced steps included in declared site boundary"
+      aggregation_rule: "Sum net issued mass by item and map each item once to an atomic flow"
+      quality_evidence: "BOM approval, supplier mass evidence, scale calibration, reconciliation record"
+    - protocol_id: cp_energy_meter
+      process_id: "final_assembly_test_pack"
+      flow_role: "electricity input"
+      record_type: "meter interval or utility invoice"
+      raw_fields: "meter id; start/end reading; interval consumption; voltage; grid supplier; onsite generation/export; allocation driver"
+      collection_method: "Read dedicated meter or reconcile submeter totals to invoices"
+      unit: "kWh and MJ"
+      frequency: "At least monthly"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "All included fabrication, assembly, cleaning, testing, and packing operations"
+      aggregation_rule: "Convert kWh to MJ and allocate shared consumption using section 7"
+      quality_evidence: "Meter calibration or invoice reconciliation and allocation worksheet"
+    - protocol_id: cp_water_meter
+      process_id: "final_assembly_test_pack"
+      flow_role: "process-water input"
+      record_type: "meter, batch log, or supplier record"
+      raw_fields: "source; meter id; volume or mass; temperature; density source; batch; cleaning route"
+      collection_method: "Meter or weigh water supplied to included aqueous cleaning"
+      unit: "kg"
+      frequency: "Per batch or monthly"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "Included cleaning equipment only"
+      aggregation_rule: "Convert documented volume to mass when needed and normalize by accepted output mass"
+      quality_evidence: "Meter calibration, density record, and batch reconciliation"
+    - protocol_id: cp_product_output_mass
+      process_id: "final_assembly_test_pack"
+      flow_role: "accepted finished-product output"
+      record_type: "production and acceptance record"
+      raw_fields: "model; serial or batch; BOM revision; accepted count; rejected count; measured unit mass; included accessories; packaging excluded"
+      collection_method: "Reconcile acceptance-test release records with calibrated mass measurements"
+      unit: "kg"
+      frequency: "Per batch"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "Every covered model produced at the site"
+      aggregation_rule: "Sum accepted net product mass by model and reporting period"
+      quality_evidence: "Acceptance record, scale calibration, and production reconciliation"
+    - protocol_id: cp_waste_mass
+      process_id: "final_assembly_test_pack"
+      flow_role: "solid manufacturing waste output"
+      record_type: "waste transfer and internal scrap record"
+      raw_fields: "waste type; source process; container tare/gross mass; contamination; destination; treatment route; date"
+      collection_method: "Weigh each waste transfer and reconcile internal scrap movements"
+      unit: "kg"
+      frequency: "Per transfer, aggregated monthly"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "All included production waste destinations"
+      aggregation_rule: "Sum net mass by atomic waste identity without netting revenue"
+      quality_evidence: "Scale calibration, transfer note, and treatment receipt"
+    - protocol_id: cp_wastewater_mass
+      process_id: "final_assembly_test_pack"
+      flow_role: "cleaning-wastewater output"
+      record_type: "effluent meter and characterization record"
+      raw_fields: "volume or mass; temperature; density source; contaminants; treatment state; destination; batch/date"
+      collection_method: "Meter wastewater and retain representative characterization"
+      unit: "kg"
+      frequency: "Per batch or monthly"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "Included aqueous-cleaning discharges only"
+      aggregation_rule: "Convert documented volume to mass when needed and normalize by accepted output mass"
+      quality_evidence: "Meter calibration, sampling record, and treatment receipt"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Every inventory row"
+      rule: "Normalized amount = reporting-period row total / reporting-period accepted net equipment mass"
+      inputs:
+        - "Collected row total"
+        - "accepted net equipment mass"
+      output: "Exchange per 1 kg accepted net finished equipment"
+      source_ids: []
+    - id: calc_electricity_mj
+      applies_to: "Electricity"
+      rule: "MJ = metered kWh × 3.6"
+      inputs:
+        - "Metered kWh"
+      output: "Electricity in MJ"
+      source_ids: []
+    - id: calc_material_balance_screen
+      applies_to: "Materials and wastes"
+      rule: "Compare total mass inputs with accepted product, separately reported waste, inventory change, and documented evaporation or unmeasured residuals; investigate rather than force a balance"
+      inputs:
+        - "BOM input mass"
+        - "product output mass"
+        - "waste mass"
+        - "opening/closing inventories"
+      output: "Material-balance residual and explanation"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Product and inventory identity"
+      requirement: "Preserve model, BOM revision, equipment family, material/part specification, Tiangong flow UUID where resolved, and supplier or waste-route identity."
+      evidence: "Approved BOM, supplier specification, flow mapping record, waste transfer record"
+    - id: dq_temporal
+      applies_to: "Foreground activity"
+      requirement: "Cover a representative continuous 12-month period where available; otherwise disclose start/end dates, seasonality, ramp-up, shutdown, and extrapolation."
+      evidence: "Meter coverage, production calendar, reconciliation worksheet"
+    - id: dq_completeness
+      applies_to: "Factory-gate inventory"
+      requirement: "Reconcile product output to production records, component inputs to BOM/purchasing, electricity and water to meters/invoices, and waste to transfer records; quantify all exclusions."
+      evidence: "Signed completeness checklist and reconciliations"
+    - id: dq_technology_geography
+      applies_to: "Upstream datasets and shared operations"
+      requirement: "Match component state, manufacturing technology, electricity geography/voltage, recycled content, and waste-treatment route; document every proxy."
+      evidence: "Dataset selection log and proxy justification"
+    - id: dq_uncertainty
+      applies_to: "Missing external ranges"
+      requirement: "Do not replace missing independent range evidence with an unlabeled case value. Report foreground variability and uncertainty from the collected period and flag the unresolved external benchmark need."
+      evidence: "Batch statistics, meter variability, and review metadata"
+validation_rules:
+  - rule_id: validate_identity_and_scope
+    applies_to: "Reference product"
+    rule: "Confirm the product is finished equipment within the covered boundary, not a camera, cinematographic projector, separately sold objective lens, sensitized medium, chemical preparation, or part/accessory."
+    source_ids:
+      - un-cpc-3-0-2025
+      - wco-hs-2022-chapter-90
+  - rule_id: validate_reference_mass
+    applies_to: "Functional unit and reference flow"
+    rule: "Confirm accepted net equipment mass equals the normalization denominator, packaging is separately reported, and all required qualifiers are present."
+    source_ids: []
+  - rule_id: validate_atomic_inventory
+    applies_to: "Process inventory"
+    rule: "Reject combined or umbrella exchanges; each product, waste, and elementary flow must have one physical or chemical identity and one applicable property/unit."
+    source_ids: []
+  - rule_id: validate_bom_and_meter_reconciliation
+    applies_to: "Foreground completeness"
+    rule: "Confirm BOM/material, accepted-output, electricity, water, wastewater, and solid-waste records reconcile to the reporting period and declared site scope; explain every residual or excluded route."
+    source_ids:
+      - kth-moqvist-photo-flash-2020
+  - rule_id: validate_uuid_and_range_gaps
+    applies_to: "Unresolved references and ranges"
+    rule: "Keep unresolved UUID rows blank and linked to manifest review metadata. Do not treat the single product-specific LCA as an external amount range; require two independent boundary-compatible sources before authoring an inferred range."
+    source_ids:
+      - kth-moqvist-photo-flash-2020
+published_dataset_profile:
+  dataset_role: "Factory-gate foreground production dataset for a declared other-photographic-equipment model or homogeneous model family"
+  downstream_use: "secondary_dataset; background_dataset after review and publication"
+  allowed_use: "Product carbon-footprint and LCA models requiring mass-normalized factory-gate production of the declared model and route"
+  excluded_use: "Unqualified average for all CPC 48329 equipment; camera production; use-phase service comparison; end-of-life claims; substitution or avoided-burden claims without separate modelling"
+  required_metadata: "PCR id/version; equipment family/model; BOM revision; net product mass; included accessories; packaging scope; site/geography; reporting period; route; acceptance test; allocation drivers; cut-offs; unresolved UUIDs; upstream dataset and proxy choices"
+  required_quality_disclosure: "Foreground data coverage and reconciliation; meter and scale quality; supplier-data share; temporal/geographical/technological representativeness; recycled content; waste-treatment route; uncertainty; missing independent range evidence"
+  update_trigger: "Material change in model or BOM, component supplier/technology, production site, electricity supply, cleaning/testing route, packaging, allocation driver, waste treatment, or a newly resolved Tiangong reference-product/inventory UUID"
+data_sources:
+  - id: "un-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure and Explanatory Notes, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-09-07)"
+    used_for: "Official classification identity and hierarchy"
+  - id: "wco-hs-2022-chapter-90"
+    type: "standard"
+    reference: "World Customs Organization, HS Nomenclature 2022, Chapter 90, https://www.wcoomd.org/-/media/wco/public/global/pdf/topics/nomenclature/instruments-and-tools/hs-nomenclature-2022/2022/1890_2022e.pdf?la=en (retrieved 2026-09-07)"
+    used_for: "Concrete covered goods and parts exclusions underlying the residual equipment boundary"
+  - id: "kth-moqvist-photo-flash-2020"
+    type: "literature"
+    reference: "Tim Storfeldt Moqvist, Environmental Impact of a Portable Photo Flash – Using Life Cycle Assessment Methodology, KTH, 2020, https://urn.kb.se/resolve?urn=urn:nbn:se:kth:diva-275710 (retrieved 2026-09-07)"
+    used_for: "Representative electronic-flash route, BOM/component inventory, assembly, electricity, plastics, aluminium reflector, PCB, and cardboard packaging process decomposition; not used for an external amount range"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:c61fbbcc6744d1dab215829ca9de93eed1ba9cbe4efe9d62dc29cb5a6b711592"
+  generated_content_sha256: "sha256:7ba22d11eb16ea75ca2ab2c1fe91570907982f8c9d749878599049910a5953bb"

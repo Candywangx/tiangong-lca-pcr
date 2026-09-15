@@ -1,10 +1,829 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41285"
-  title: "Line pipe of a kind used for oil or gas pipelines, welded, of steel"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.line-pipe-of-a-kind-used-for-oil-or-gas-pipelines-welded-of-steel"
+  classification_refs: "CPC 3.0: 41285, exact product-category context"
+  covered_products: "Welded circular steel line pipe for oil or gas pipeline transportation, including HFW/ERW, HSAW, and LSAW manufacture"
+  excluded_products: "Seamless line pipe; cast pipe; casing, tubing, and drill pipe; non-pipeline structural pipe; fittings; field-welded pipeline systems; separately applied external functional coating systems"
+  representative_product: "Plain-end, inspected welded steel line pipe conforming to the declared line-pipe specification and delivered at the producing mill gate"
+  production_route: "Hot-rolled coil forming plus HFW/ERW or HSAW; or steel plate forming plus LSAW; followed by applicable heat treatment, sizing, end finishing, inspection, and hydrostatic testing"
+  market_state: "Finished bare or routine mill-finished welded line pipe at factory gate, dry, marked, and accepted to the declared specification; any external functional coating is modelled separately"
+functional_unit:
+  what: "Provision of welded steel line pipe suitable for the declared oil or natural gas pipeline transportation specification"
+  how_much: "1 kg of conforming welded steel line pipe at the producing mill factory gate"
+  how_well: "Meets the declared specification, product specification level, steel grade, dimensional tolerances, weld type, inspection and test acceptance criteria"
+  how_long_or_cycle: "One production lot at factory-gate acceptance; service life is outside this gate-to-gate product boundary"
+  reference_flow_link: "The functional unit is realized by exactly 1 kg net mass of accepted reference product; packaging and external functional coatings are excluded unless separately modelled"
+system_boundary:
+  rules:
+    - rule_id: boundary_pipe_mill_gate
+      applies_to: "foreground pipe manufacture"
+      rule: "Include steel preparation, forming, seam welding, applicable post-weld heat treatment, sizing, cooling, cutting, beveling, inspection, marking, and hydrostatic testing through accepted product at the producing mill gate."
+      source_ids:
+        - usitc-welded-line-pipe-2014
+        - api-spec-5l-47-announcement-2026
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased products and energy"
+      rule: "Keep purchased-input production outside the foreground gate but link representative upstream datasets; prevent double counting between supplier and pipe-mill inventories."
+      source_ids:
+        - worldsteel-lci-methodology-2017
+    - rule_id: boundary_route_specificity
+      applies_to: "HFW/ERW, HSAW, and LSAW"
+      rule: "Declare only the applicable feedstock form and welding consumables: coil for HFW/ERW and HSAW, plate for LSAW, and welding wire plus flux only for SAW routes."
+      source_ids:
+        - usitc-welded-line-pipe-2014
+    - rule_id: boundary_external_coating
+      applies_to: "externally applied functional coating"
+      rule: "Exclude external corrosion, thermal-insulation, and concrete-weight coating by default; when present in the declared market state, append a separately measured foreground coating process and disclose the changed boundary."
+      source_ids:
+        - api-spec-5l-47-announcement-2026
+boundary_abstraction:
+  declared_starting_condition: "Purchased hot-rolled steel coil for HFW/ERW or HSAW, or purchased steel plate for LSAW, is received at the pipe-mill gate with declared grade, dimensions, supplier, origin, and upstream dataset"
+  starting_condition_role: "Purchased steel feedstock entering downstream forming and welding; upstream ironmaking, steelmaking, casting, and hot rolling remain in linked upstream datasets"
+  product_classification_scope: "Welded steel line pipe for oil or natural gas pipelines; classification context does not include seamless, cast, drilling tubular, or structural-pipe products"
+  recursive_input_rule: "If purchased or transferred welded line pipe of this same category is further finished, record it as a separate input with supplier/transfer dataset and do not recursively reproduce its upstream pipe manufacture"
+  upstream_dataset_requirement: "Link geographically and technologically representative upstream datasets for purchased coil or plate, electricity, natural gas, process water, welding consumables, and waste treatment; disclose any proxy"
+  disclosure: "Declare site, period, route, feedstock form, grade, dimensions, heat treatment, end finish, testing, coating state, allocation, internal recycling, scrap destination, water recirculation, and excluded downstream operations"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Line pipe of a kind used for oil or gas pipelines, welded, of steel"
+    uuid: "e505f1de-c307-4319-a6b6-371b34e7b1ed"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "manufacturing route (HFW/ERW"
+    - HSAW
+    - "or LSAW)"
+    - "steel grade and alloy status"
+    - "governing line-pipe specification and edition"
+    - "product specification level"
+    - "outside diameter"
+    - "wall thickness"
+    - "pipe length"
+    - "weld orientation"
+    - "heat-treatment condition"
+    - "end finish"
+    - "inspection and hydrostatic-test status"
+    - "coating state"
+    - "production site and country"
+    - "production period"
+    - "net product mass basis"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "accepted factory-gate line pipe"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use net dry mass of accepted pipe. Exclude removable transport packaging and separately modelled external functional coatings from the 1 kg reference amount."
+  - id: material_mass_normalization
+    applies_to: "coil, plate, welding wire, flux, scrap, and internal pipe intermediates"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg/kg reference product"
+    rule: "Reconcile weighed receipts, issues, returns, inventory change, recovered flux, scrap, and accepted product over the same reporting period before normalization."
+  - id: electricity_energy_conversion
+    applies_to: "alternating-current inputs"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered kWh in raw records and convert to MJ using 1 kWh = 3.6 MJ; disclose voltage level and supplier or grid geography."
+  - id: gas_volume_conditions
+    applies_to: "gaseous natural gas input"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report metered volume together with temperature, pressure, and dry/wet reference conditions; do not combine natural gas with another fuel."
+  - id: water_mass_conversion
+    applies_to: "process water for hydrostatic testing"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer weighed or mass-metered water. If volume is metered, document density and reference conditions used for conversion and distinguish gross circulation from make-up water crossing the boundary."
+process_map:
+  - id: forming
+    name: "Feedstock preparation and pipe forming"
+    inclusion: "required"
+    inclusion_condition: "Always; use coil only for HFW/ERW or HSAW and plate only for LSAW"
+    role: "Foreground preparation and forming"
+    quantitative_reference: "Per kg formed pipe shell transferred to welding and per 1 kg accepted reference product"
+  - id: welding
+    name: "Seam welding and applicable post-weld heat treatment"
+    inclusion: "required"
+    inclusion_condition: "Always; SAW wire and flux apply only to HSAW or LSAW, and natural gas applies only when consumed on site for heat treatment"
+    role: "Foreground joining and thermal treatment"
+    quantitative_reference: "Per kg unfinished welded pipe transferred to finishing and per 1 kg accepted reference product"
+  - id: finishing_testing
+    name: "Sizing, cutting, end finishing, inspection, marking, and hydrostatic testing"
+    inclusion: "required"
+    inclusion_condition: "Always; record hydrotest make-up water and wastewater only when they cross the site boundary"
+    role: "Foreground finishing and quality acceptance"
+    quantitative_reference: "Per 1 kg accepted welded line pipe at factory gate"
+process_inventory:
+  - id: forming
+    label: "Feedstock preparation and pipe forming"
+    inputs:
+      product:
+        - row_id: forming_coil_input
+          role: "Hot-rolled steel coil for coil-fed routes"
+          name: "steel hot rolled coil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f1a1835-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record purchased flat-rolled hot-rolled coil issued to HFW/ERW or HSAW forming. The row is not applicable to an LSAW plate route."
+          amount:
+            expression: "Net coil mass issued to conforming production, adjusted for coil returns and inventory change"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted welded steel line pipe"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts_issues
+              source_ids:
+                - usitc-welded-line-pipe-2014
+            ranges: []
+        - row_id: forming_plate_input
+          role: "Hot-rolled steel plate for LSAW"
+          name: "Hot-rolled steel plate for LSAW line-pipe manufacture"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each purchased cut-to-length hot-rolled steel plate issued to LSAW forming. Keep UUID empty pending an exact public flow identity."
+          amount:
+            expression: "Net plate mass issued to conforming LSAW production, adjusted for returns and inventory change"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted welded steel line pipe"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts_issues
+              source_ids:
+                - usitc-welded-line-pipe-2014
+            ranges: []
+        - row_id: forming_electricity_input
+          role: "Forming electricity"
+          name: "alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Record alternating current metered to decoiling, slitting, edge preparation, presses, and forming rolls; allocate a shared meter by documented operating or engineering evidence."
+          amount:
+            expression: "Metered or defensibly allocated electricity used by forming equipment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted welded steel line pipe"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - worldsteel-lci-methodology-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: formed_shell_output
+          role: "Formed unwelded pipe shell"
+          name: "Formed unwelded steel pipe shell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the weighed or mass-balanced internal transfer of the formed, unwelded shell to welding. This internal intermediate requires a foreground-specific flow."
+          amount:
+            expression: "Mass transferred from forming to welding after edge preparation"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted welded steel line pipe"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_internal_transfers
+              source_ids:
+                - usitc-welded-line-pipe-2014
+            ranges: []
+      waste:
+        - row_id: forming_scrap_output
+          role: "Forming steel scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Record edge trim, slitting loss, cropping, and rejected formed steel leaving the process as post-industrial scrap; exclude metal still carried in the formed shell."
+          amount:
+            expression: "Weighed forming scrap leaving the process, net of same-period returns to production"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted welded steel line pipe"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_scrap_and_waste
+              source_ids:
+                - usitc-welded-line-pipe-2014
+            ranges: []
+      elementary:
+        []
+  - id: welding
+    label: "Seam welding and applicable post-weld heat treatment"
+    inputs:
+      product:
+        - row_id: formed_shell_input
+          role: "Formed unwelded pipe shell input"
+          name: "Formed unwelded steel pipe shell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the same internal intermediate transferred from forming; match its reporting-period mass and flow identity to formed_shell_output."
+          amount:
+            expression: "Mass received by welding from forming"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted welded steel line pipe"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_internal_transfers
+              source_ids:
+                - usitc-welded-line-pipe-2014
+            ranges: []
+        - row_id: welding_electricity_input
+          role: "Welding electricity"
+          name: "alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Record alternating current used by HFW/ERW or submerged-arc welding equipment and associated weld-line auxiliaries."
+          amount:
+            expression: "Metered or defensibly allocated welding-line electricity"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted welded steel line pipe"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - usitc-welded-line-pipe-2014
+                - worldsteel-lci-methodology-2017
+            ranges: []
+        - row_id: postweld_natural_gas_input
+          role: "Natural gas for post-weld heat treatment"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas only when it crosses the site boundary and is burned for seam or full-body post-weld heat treatment; otherwise mark the row not applicable."
+          amount:
+            expression: "Metered natural gas attributable to applicable post-weld heat treatment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted welded steel line pipe"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_fuel
+              source_ids:
+                - usitc-welded-line-pipe-2014
+                - worldsteel-lci-methodology-2017
+            ranges: []
+        - row_id: saw_welding_wire_input
+          role: "Submerged-arc welding wire"
+          name: "Submerged-arc steel welding wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the declared solid or otherwise specified welding wire consumed only for HSAW or LSAW; do not substitute flux-cored wire unless it is the actual qualified consumable."
+          amount:
+            expression: "Issued welding-wire mass less measured returns over the production lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted welded steel line pipe"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts_issues
+              source_ids:
+                - usitc-welded-line-pipe-2014
+            ranges: []
+        - row_id: saw_welding_flux_input
+          role: "Submerged-arc welding flux"
+          name: "Granular submerged-arc welding flux"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record granular submerged-arc welding flux consumed only for HSAW or LSAW. Gross issue, recovered flux, return, and disposal must be reconciled."
+          amount:
+            expression: "Fresh flux issued plus opening inventory minus recovered reusable flux, closing inventory, and returns"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted welded steel line pipe"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_receipts_issues
+              source_ids:
+                - usitc-welded-line-pipe-2014
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: unfinished_pipe_output
+          role: "Unfinished welded line pipe"
+          name: "Unfinished welded steel line pipe before finishing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record welded pipe transferred to sizing and finishing before final inspection and hydrostatic-test acceptance. This is not the factory-gate reference product."
+          amount:
+            expression: "Mass transferred from welding to finishing after weld treatment"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted welded steel line pipe"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_internal_transfers
+              source_ids:
+                - usitc-welded-line-pipe-2014
+            ranges: []
+      waste:
+        - row_id: welding_scrap_output
+          role: "Welding steel scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Record weld flash, cut-out repairs, and rejected welded steel leaving the welding process as post-industrial scrap."
+          amount:
+            expression: "Weighed welding scrap leaving the process, net of same-period returns to production"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted welded steel line pipe"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_scrap_and_waste
+              source_ids:
+                - usitc-welded-line-pipe-2014
+            ranges: []
+        - row_id: spent_flux_output
+          role: "Spent submerged-arc welding flux"
+          name: "Spent submerged-arc welding flux"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record only spent granular flux that can no longer be returned to the SAW operation and crosses the waste boundary. Keep it separate from welding fumes and steel scrap."
+          amount:
+            expression: "Weighed spent flux sent to the declared treatment or disposal route"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted welded steel line pipe"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_scrap_and_waste
+              source_ids:
+                - usitc-welded-line-pipe-2014
+            ranges: []
+      elementary:
+        - row_id: direct_fossil_co2_output
+          role: "Direct fossil carbon dioxide from heat treatment"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil carbon dioxide released from on-site natural-gas combustion for applicable heat treatment. Exclude upstream fuel and electricity emissions."
+          amount:
+            expression: "Site-reported direct fossil CO2 attributable to the recorded natural-gas combustion"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted welded steel line pipe"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - worldsteel-lci-methodology-2017
+            ranges: []
+  - id: finishing_testing
+    label: "Sizing, cutting, end finishing, inspection, marking, and hydrostatic testing"
+    inputs:
+      product:
+        - row_id: unfinished_pipe_input
+          role: "Unfinished welded line pipe input"
+          name: "Unfinished welded steel line pipe before finishing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal intermediate received from welding and match its mass and identity to unfinished_pipe_output."
+          amount:
+            expression: "Mass received by finishing from welding"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted welded steel line pipe"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_internal_transfers
+              source_ids:
+                - usitc-welded-line-pipe-2014
+            ranges: []
+        - row_id: finishing_electricity_input
+          role: "Finishing and testing electricity"
+          name: "alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value / MJ"
+          description: "Record alternating current used by sizing, cooling auxiliaries, cutting, beveling, inspection, marking, handling, and hydrostatic-test equipment."
+          amount:
+            expression: "Metered or defensibly allocated finishing and testing electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted welded steel line pipe"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - usitc-welded-line-pipe-2014
+                - worldsteel-lci-methodology-2017
+            ranges: []
+        - row_id: hydrotest_water_input
+          role: "Hydrostatic-test make-up water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water entering the site or inventory boundary to replace losses from hydrostatic testing. Do not report recirculated water repeatedly as new input."
+          amount:
+            expression: "Metered hydrostatic-test make-up water crossing the foreground boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted welded steel line pipe"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hydrotest_water
+              source_ids:
+                - usitc-welded-line-pipe-2014
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_line_pipe_output
+          role: "Accepted welded steel line pipe"
+          name: "Line pipe of a kind used for oil or gas pipelines, welded, of steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e505f1de-c307-4319-a6b6-371b34e7b1ed"
+          property_unit: "Mass / kg"
+          description: "Record only pipe accepted after required sizing, finishing, inspection, marking, and hydrostatic testing. This row carries the reference-product identity."
+          amount:
+            expression: "Net dry mass of accepted factory-gate pipe; reference output equals 1 kg after normalization"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg accepted welded steel line pipe"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_acceptance
+              source_ids:
+                - un-cpc-3-structure-2025
+                - iso-3183-2019
+                - api-spec-5l-47-announcement-2026
+            ranges: []
+      waste:
+        - row_id: finishing_scrap_output
+          role: "Finishing steel scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Record end crops, beveling swarf collected as steel, destructive-test pieces, and rejected finished pipe leaving the process as post-industrial scrap."
+          amount:
+            expression: "Weighed finishing scrap leaving the process, net of same-period returns to production"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted welded steel line pipe"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_scrap_and_waste
+              source_ids:
+                - usitc-welded-line-pipe-2014
+            ranges: []
+        - row_id: hydrotest_wastewater_output
+          role: "Hydrostatic-test wastewater"
+          name: "Hydrostatic-test wastewater from welded line-pipe finishing"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record hydrostatic-test water discharged from the foreground boundary to on-site or off-site treatment. Identify water quality and destination; do not combine it with unrelated wastewater."
+          amount:
+            expression: "Metered or mass-converted hydrostatic-test wastewater sent to the declared treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted welded steel line pipe"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hydrotest_water
+              source_ids:
+                - usitc-welded-line-pipe-2014
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide_routes
+    applies_to: "mixed pipe products and routes"
+    rule: "Subdivide HFW/ERW, HSAW, and LSAW lines and separately metered operations before allocation wherever records permit."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: allocation_shared_operations
+    applies_to: "shared forming, finishing, utilities, and treatment"
+    rule: "Allocate shared burdens by a documented causal driver such as equipment electricity, operating time, processed mass, water volume, or waste-treatment mass; use accepted-product mass only when no more causal measurement exists."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: allocation_scrap
+    applies_to: "post-industrial steel scrap"
+    rule: "Report scrap mass, quality, destination, internal return, and any external recovery separately. Do not assign an avoided-primary-steel credit inside this gate-to-gate dataset unless the downstream study explicitly selects and documents a consistent recycling method."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: allocation_recovered_flux
+    applies_to: "recovered submerged-arc welding flux"
+    rule: "Treat flux returned to the same SAW operation as an internal loop, not a co-product. Record only fresh make-up flux as boundary input and only non-returnable spent flux as waste output."
+    source_ids:
+      - usitc-welded-line-pipe-2014
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_receipts_issues
+      process_id: "forming_welding"
+      flow_role: "coil, plate, welding wire, and welding flux"
+      record_type: "purchase, weighbridge, warehouse issue, return, and inventory records"
+      raw_fields: "material_id; specification; grade; supplier; origin; opening_stock; receipts; issues; returns; recovered_flux; closing_stock; mass"
+      collection_method: "Reconcile traceable material lots to route and production lot"
+      unit: "kg"
+      frequency: "Each receipt and issue; monthly reconciliation"
+      temporal_coverage: "At least 12 consecutive representative months or the full shorter production campaign"
+      site_scope: "All foreground mill operations producing the declared product"
+      aggregation_rule: "Sum net consumption by material and route, then divide by accepted reference-product mass"
+      quality_evidence: "Calibrated scales; supplier certificates; warehouse ledger; lot traceability; reconciliation sign-off"
+    - protocol_id: cp_process_energy
+      process_id: "forming_welding_finishing_testing"
+      flow_role: "alternating current"
+      record_type: "interval meter, submeter, utility invoice, and equipment allocation records"
+      raw_fields: "meter_id; voltage_level; start_reading; end_reading; kWh; production_line; route; operating_hours; allocation_driver"
+      collection_method: "Read dedicated meters; allocate shared electricity with documented causal driver"
+      unit: "kWh"
+      frequency: "Meter interval and monthly close"
+      temporal_coverage: "Same period as product output"
+      site_scope: "All relevant meters at the foreground site"
+      aggregation_rule: "Convert net kWh to MJ and normalize by accepted product mass"
+      quality_evidence: "Meter calibration; invoice reconciliation; allocation worksheet; grid or supplier identity"
+    - protocol_id: cp_process_fuel
+      process_id: "welding"
+      flow_role: "natural gas for heat treatment"
+      record_type: "gas meter, invoice, and heat-treatment campaign log"
+      raw_fields: "meter_id; volume; temperature; pressure; moisture_basis; route; furnace_id; campaign; allocation_driver"
+      collection_method: "Meter fuel at furnace or allocate a reconciled site meter using heat-treatment records"
+      unit: "m3"
+      frequency: "Each campaign and monthly close"
+      temporal_coverage: "Same period as applicable heat-treated production"
+      site_scope: "On-site heat-treatment equipment"
+      aggregation_rule: "Normalize reference-condition volume by accepted applicable product mass"
+      quality_evidence: "Meter calibration; invoice reconciliation; reference-condition calculation; campaign log"
+    - protocol_id: cp_internal_transfers
+      process_id: "forming_welding_finishing_testing"
+      flow_role: "formed shell and unfinished welded pipe"
+      record_type: "transfer weight, line counter, dimensional record, and mass-balance worksheet"
+      raw_fields: "transfer_id; route; count; length; outside_diameter; wall_thickness; measured_mass; calculated_mass; rejects"
+      collection_method: "Weigh transfer where practical; otherwise calculate from verified dimensions and density and reconcile to feedstock, scrap, and output"
+      unit: "kg"
+      frequency: "Each lot or shift"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Transfers inside the foreground pipe mill"
+      aggregation_rule: "Match output and input of each internal intermediate; normalize by accepted product mass"
+      quality_evidence: "Transfer record; dimensional inspection; scale calibration; signed mass-balance reconciliation"
+    - protocol_id: cp_scrap_and_waste
+      process_id: "forming_welding_finishing_testing"
+      flow_role: "steel scrap and spent flux"
+      record_type: "scrap-bin weights, waste manifest, recovered-flux ledger, and treatment record"
+      raw_fields: "waste_id; process_origin; material; gross_mass; tare; net_mass; destination; internal_return; treatment; hazardous_status"
+      collection_method: "Weigh each dispatched waste lot and reconcile internal returns separately"
+      unit: "kg"
+      frequency: "Each dispatch; monthly close"
+      temporal_coverage: "Same period as product output"
+      site_scope: "All foreground waste collection points"
+      aggregation_rule: "Sum net waste by atomic stream and process, then normalize by accepted product mass"
+      quality_evidence: "Calibrated scale; waste manifest; consignee receipt; recovered-material ledger"
+    - protocol_id: cp_hydrotest_water
+      process_id: "finishing_testing"
+      flow_role: "process-water make-up and hydrotest wastewater"
+      record_type: "inlet and discharge meters, tank balance, recirculation log, and treatment record"
+      raw_fields: "inlet_volume; discharge_volume; opening_storage; closing_storage; recirculated_volume; density; water_quality; destination"
+      collection_method: "Meter boundary make-up and discharge; use storage balance only when meters are unavailable"
+      unit: "kg or m3"
+      frequency: "Each test campaign and monthly close"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Hydrostatic-test system and declared treatment boundary"
+      aggregation_rule: "Convert boundary volumes to mass with documented density; exclude internal recirculation from repeated input"
+      quality_evidence: "Meter calibration; tank calibration; water analysis; discharge or treatment record"
+    - protocol_id: cp_direct_emissions
+      process_id: "welding"
+      flow_role: "direct fossil carbon dioxide"
+      record_type: "continuous monitor, verified emissions report, or site combustion inventory"
+      raw_fields: "source_id; fuel_id; monitored_CO2; reporting_method; period; allocation_driver"
+      collection_method: "Use site-reported direct emissions and allocate only among products sharing the combustion source"
+      unit: "kg"
+      frequency: "Continuous or reporting-period total"
+      temporal_coverage: "Same period as fuel and product output"
+      site_scope: "On-site heat-treatment combustion sources"
+      aggregation_rule: "Sum direct fossil CO2 and normalize by applicable accepted-product mass"
+      quality_evidence: "Monitor QA/QC or verified emissions inventory; fuel reconciliation; allocation worksheet"
+    - protocol_id: cp_product_acceptance
+      process_id: "finishing_testing"
+      flow_role: "accepted welded line pipe"
+      record_type: "production, inspection, hydrotest, marking, and dispatch records"
+      raw_fields: "lot_id; route; specification; edition; product_specification_level; grade; dimensions; heat_treatment; end_finish; coating_state; accepted_mass; rejected_mass; test_status"
+      collection_method: "Weigh accepted lots and reconcile to inspection and hydrostatic-test acceptance"
+      unit: "kg"
+      frequency: "Each lot"
+      temporal_coverage: "Same period as all inputs and outputs"
+      site_scope: "All declared product lines at the foreground site"
+      aggregation_rule: "Sum only accepted net dry product mass and set normalized output to 1 kg"
+      quality_evidence: "Scale calibration; material certificate; inspection and test record; lot traceability"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every inventory row"
+      rule: "normalized amount = reporting-period atomic-flow amount / reporting-period accepted reference-product mass"
+      inputs:
+        - "atomic-flow amount"
+        - "accepted product mass"
+      output: "amount per 1 kg accepted welded steel line pipe"
+      source_ids:
+        - worldsteel-lci-methodology-2017
+    - id: calc_material_reconciliation
+      applies_to: "coil, plate, wire, and flux"
+      rule: "net consumed = opening stock + receipts - returns - verified reusable recovery - closing stock"
+      inputs:
+        - "stock and transaction records"
+      output: "net material consumption by atomic material and route"
+      source_ids:
+        - worldsteel-lci-methodology-2017
+    - id: calc_internal_mass_balance
+      applies_to: "formed shell and unfinished welded pipe"
+      rule: "transferred mass must be identical on the output and input sides of each internal transfer; investigate any difference before publication"
+      inputs:
+        - "transfer weights or dimensional mass"
+        - "recorded rejects"
+      output: "reconciled internal-intermediate mass"
+      source_ids:
+        - usitc-welded-line-pipe-2014
+    - id: calc_water_boundary
+      applies_to: "hydrostatic-test water"
+      rule: "net water input = boundary make-up; wastewater output = boundary discharge; recirculated water is an internal loop and is reported only as supporting information"
+      inputs:
+        - inlet
+        - discharge
+        - storage
+        - recirculation
+        - "and density records"
+      output: "process-water input and hydrotest-wastewater output"
+      source_ids:
+        - usitc-welded-line-pipe-2014
+  data_quality_requirements:
+    - id: dq_identity_traceability
+      applies_to: "reference product and steel feedstock"
+      requirement: "Trace every production lot to route, governing specification and edition, product specification level, grade, dimensions, weld orientation, heat treatment, inspection status, and supplier steel lot."
+      evidence: "Mill test certificate; production traveler; inspection and hydrotest record; supplier certificate"
+    - id: dq_temporal_representativeness
+      applies_to: "all foreground records"
+      requirement: "Use at least 12 consecutive representative months unless production is campaign-based or the site operated for a shorter period; disclose the period, shutdowns, abnormal operation, and exclusions."
+      evidence: "Dated ledgers, meter exports, production calendar, and exception log"
+    - id: dq_geographic_technology
+      applies_to: "upstream datasets"
+      requirement: "Select supplier- and region-representative upstream steel and country/region-representative electricity and fuel datasets; justify every proxy and disclose HFW/ERW, HSAW, or LSAW route."
+      evidence: "Supplier origin; dataset metadata; grid or contract record; route declaration"
+    - id: dq_completeness_reconciliation
+      applies_to: "mass, energy, water, waste, and direct emissions"
+      requirement: "Reconcile each collection protocol to source ledgers; explain missing meters, estimated allocations, stock differences, unmeasured releases, and any flow excluded from the reported inventory."
+      evidence: "Signed reconciliation worksheets; meter coverage list; waste manifests; emissions inventory"
+    - id: dq_no_cartesian_variants
+      applies_to: "route and product variants"
+      requirement: "Model actual production lots and route-specific atomic flows. Do not expand combinations of grade, diameter, wall thickness, coating, and route into synthetic inventory rows."
+      evidence: "Lot-weighted aggregation file and variant-to-lot mapping"
+validation_rules:
+  - rule_id: validation_reference_identity
+    applies_to: "reference flow"
+    rule: "Confirm the reference product UUID, 1 kg net dry mass, welded route, oil-or-gas pipeline use, specification, grade, dimensions, heat treatment, end finish, test status, and coating state."
+    source_ids:
+      - un-cpc-3-structure-2025
+      - iso-3183-2019
+      - api-spec-5l-47-announcement-2026
+  - rule_id: validation_route_inputs
+    applies_to: "route-specific inventory"
+    rule: "Require coil and no plate for HFW/ERW or HSAW, plate and no coil for LSAW, and welding wire plus flux only for SAW routes; any exception requires documented process evidence."
+    source_ids:
+      - usitc-welded-line-pipe-2014
+  - rule_id: validation_internal_transfers
+    applies_to: "internal product flows"
+    rule: "Require paired internal output and input rows for formed shell and unfinished welded pipe to have identical reporting-period mass and identity."
+    source_ids:
+      - usitc-welded-line-pipe-2014
+  - rule_id: validation_mass_balance
+    applies_to: "foreground mill"
+    rule: "Reconcile steel feedstock mass to accepted product, all separately recorded steel scrap, stock change, and documented unmeasured loss; investigate unresolved imbalance before release."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: validation_energy_water_emissions
+    applies_to: "utilities and direct releases"
+    rule: "Reconcile electricity and natural gas to meters or invoices, hydrotest make-up and discharge to the water balance, and direct fossil CO2 to the site emissions or combustion record without adding upstream electricity or fuel emissions."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: validation_boundary
+    applies_to: "dataset completeness"
+    rule: "Reject silent inclusion of external functional coating, pipeline installation, use, or end-of-life and reject silent omission of applicable heat treatment, inspection, hydrostatic testing, scrap, or wastewater."
+    source_ids:
+      - iso-3183-2019
+      - api-spec-5l-47-announcement-2026
+published_dataset_profile:
+  dataset_role: "Gate-to-gate foreground production dataset for welded steel line pipe at the producing mill factory gate"
+  downstream_use: "May be used as a secondary_dataset or background_dataset for pipeline products and systems when product, route, geography, time, steel grade, dimensions, specification, and coating state are compatible"
+  allowed_use: "Product carbon-footprint, EPD, procurement, design, and life-cycle studies that link compatible upstream steel and energy datasets and append downstream coating, transport, construction, use, and end-of-life as required"
+  excluded_use: "Direct comparison of incompatible pipe routes or grades; representation of seamless, cast, drilling tubular, structural pipe, coated pipe without appended coating data, pipeline installation, service performance, or end-of-life"
+  required_metadata: "PCR id and version; site and geography; reporting period; HFW/ERW, HSAW, or LSAW route; specification and edition; product specification level; grade; diameter; wall thickness; length; heat treatment; end finish; inspection and hydrotest status; coating state; reference mass; upstream dataset identities; allocation rules"
+  required_quality_disclosure: "Primary-data share and meter coverage; route and product weighting; supplier and upstream dataset representativeness; material, energy, water, waste, and emissions reconciliation; proxy datasets; exclusions; internal recycling; uncertainty and unresolved UUID or range evidence needs"
+  update_trigger: "Recalculate when route, feedstock form or supplier steel dataset, product mix, specification, furnace or welding technology, electricity or fuel supply, hydrotest-water system, allocation method, site geography, or representative production period materially changes"
+data_sources:
+  - id: "un-cpc-3-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Official CPC 41285 classification identity and distinction from adjacent pipe categories"
+  - id: "iso-3183-2019"
+    type: "standard"
+    reference: "ISO 3183:2019, Petroleum and natural gas industries — Steel pipe for pipeline transportation systems, https://committee.iso.org/cms/live/live/en/sites/isoorg/contents/data/standard/07/66/76676.html?browse=ics"
+    used_for: "Product application boundary; seamless and welded scope; cast-pipe exclusion; specification qualifier"
+  - id: "api-spec-5l-47-announcement-2026"
+    type: "standard"
+    reference: "American Petroleum Institute, API Announces 47th Edition of Foundational Line Pipe Standard, 2 June 2026, https://www.api.org/products-and-services/standards/important-standards-announcements/api-announces-47th-edition-of-foundational-line-pipe-standard-5l"
+    used_for: "Manufacturing, inspection, testing, marking, traceability, HFW quality, and product-qualification requirements"
+  - id: "usitc-welded-line-pipe-2014"
+    type: "official_guidance"
+    reference: "U.S. International Trade Commission, Certain Welded Line Pipe from Korea and Turkey, Investigation Nos. 701-TA-524-525 and 731-TA-1260-1261 (Preliminary), 2014, https://www.govinfo.gov/content/pkg/GOVPUB-ITC1-PURL-gpo54228/pdf/GOVPUB-ITC1-PURL-gpo54228.pdf"
+    used_for: "ERW, HSAW, and LSAW process decomposition; coil-versus-plate feedstock; welding, heat treatment, sizing, cutting, inspection, and hydrostatic testing"
+  - id: "worldsteel-lci-methodology-2017"
+    type: "method_factor"
+    reference: "World Steel Association, Life Cycle Inventory Methodology Report, 2017, https://worldsteel.org/media/publications/lci-report-2017-pdf/?do_download_id=7f96813a-3756-4842-8dbc-38ce201f2914"
+    used_for: "Declared mass unit, boundary transparency, upstream dataset representativeness, allocation, data collection, and prevention of double counting"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:3e58945248d29226832037f234ddeeb9574fc7d18a1f9603564c8126b14b4a46"
+  generated_content_sha256: "sha256:abf1ef84804343c4c9820bf51a5bf3ab87146ec95dfcee07fb181be80b6c8bf2"

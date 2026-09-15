@@ -1,10 +1,1105 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "42912"
-  title: "Table, kitchen or other household articles and parts thereof, of iron, steel, copper or aluminium; cooking or heating apparatus of a kind used for domestic purposes, non-electric, of copper; pot scourers and scouring or polishing pads, gloves and the like, of iron or steel, copper or aluminium; iron or steel wool; hand-operated mechanical appliances, weighing 10 kg or less, used in the preparation, conditioning or serving of food or drink"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.table-kitchen-or-other-household-articles-and-parts-thereof-of-iron-steel-copper-or-alu-44fd82fb"
+  classification_refs: "CPC 3.0: 42912, exact classification context; the canonical PCR identity remains classification-independent"
+  covered_products: "Metal tableware, kitchenware and other household articles and parts; non-electric domestic copper cooking or heating apparatus; metal scourers, scouring or polishing pads, gloves and similar articles; iron or steel wool; hand-operated food or drink appliances of 10 kg or less"
+  excluded_products: "Electric domestic appliances; separately classified cutlery; industrial food-processing machinery; and household goods whose principal material is not iron, steel, copper or aluminium"
+  representative_product: "One formed, mechanically polished stainless-steel household article, inspected and packaged at the factory gate"
+  production_route: "Purchased further-worked flat-rolled stainless steel; stock preparation; cutting, forming and trimming; conditional thermal treatment; surface finishing and aqueous cleaning; inspection and packaging"
+  market_state: "Finished factory-gate article, dry and serviceable, with declared net product mass and packaging supplied separately in the inventory"
+functional_unit:
+  what: "Provide the declared household preparation, serving, cleaning, cooking or heating function of one specified covered metal article"
+  how_much: "1 kg net mass of finished article at the factory gate, excluding packaging"
+  how_well: "Meets the declared alloy, construction, dimensions, surface finish, component configuration and applicable product performance or safety specification"
+  how_long_or_cycle: "Declared design service life or rated cycles for the specific article; service life is disclosed but does not change the factory-gate 1 kg normalization"
+  reference_flow_link: "The reference flow is the net finished product mass required to provide the declared product function; all foreground inputs and outputs are normalized to 1 kg net finished article"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary starts with receipt of purchased, specification-conforming metal stock and other purchased components and ends with the dry, inspected and packaged article at the factory gate. It includes stock handling, cutting, forming, trimming, route-required thermal treatment, mechanical or chemical surface preparation, finishing, cleaning, direct utilities, direct releases, waste collection, inspection and packaging. Upstream production and delivery of purchased metal, chemicals, fuels, electricity and packaging are represented by linked background datasets. Primary metal making is not duplicated in the foreground."
+      source_ids: []
+    - rule_id: system_boundary_rule_2
+      applies_to: "foreground_system_boundary"
+      rule: "Conditional processes are included only when the declared product route uses them. A data package shall not replace a concrete exchange with a generic material, utility, waste or emission collection."
+      source_ids: []
+    - rule_id: boundary_factory_gate
+      applies_to: "foreground system"
+      rule: "Include all factory processes from purchased-stock receipt through inspected and packaged product dispatch; link purchased inputs to upstream datasets and keep distribution, use and end-of-life outside this gate-to-gate foreground boundary."
+      source_ids:
+        - ec-pef-method-2021
+    - rule_id: boundary_route_instantiation
+      applies_to: "product route"
+      rule: "Instantiate only the processes used by the declared product, but preserve separate atomic rows for every material, energy, waste and direct elementary exchange."
+      source_ids:
+        - us-epa-fabricated-metal-sector-notebook-1995
+    - rule_id: boundary_surface_treatment
+      applies_to: "chemical or electrolytic surface treatment"
+      rule: "When a water-based surface-treatment line is used, include pretreatment, core treatment, rinsing, drying, water and energy, bath chemicals, drag-out, wastewater, spent solution, sludge and direct air releases."
+      source_ids:
+        - ec-jrc-stm-bref-2006
+boundary_abstraction:
+  declared_starting_condition: "Purchased metal stock and purchased components meeting the declared alloy, form, finish and supplier specifications at the foreground factory receiving point"
+  starting_condition_role: "foreground gate input with upstream production and inbound delivery represented by linked background datasets"
+  product_classification_scope: "Classification is used to confirm covered product identity only; route, alloy, construction and market state are declared independently"
+  recursive_input_rule: "A purchased input that is itself a finished covered household article is recorded as a separate product input with supplier identity and upstream dataset and is not recursively re-manufactured inside this foreground system"
+  upstream_dataset_requirement: "Link each purchased metal, chemical, energy carrier, component and packaging input to a geography-, technology- and state-compatible upstream dataset; disclose any proxy rather than silently substituting it"
+  disclosure: "Declare product identity, alloy, stock form, route, included and omitted conditional processes, coating and finish, packaging, site geography, reporting period, allocation and every foreground exclusion"
+reference_flow_definition:
+  reference_amount: "1 kg net finished article, excluding corrugated box and LDPE protective film"
+  product_flow_ref:
+    name: "Finished metal household article"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "specific product family and function"
+    - "principal metal and alloy grade"
+    - "net product mass"
+    - "item mass and item count"
+    - "dimensions or capacity"
+    - "manufacturing route"
+    - "surface finish and coating"
+    - "joined components and non-metal components"
+    - "recycled-content claim and evidence"
+    - "factory geography and technology"
+    - "packaging configuration"
+    - "quality or safety specification"
+    - "design service life or rated cycles"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh saleable product after final inspection and before packaging. Exclude all packaging mass and normalize every foreground exchange to 1 kg net finished article."
+  - id: item_to_mass
+    applies_to: "count-based production and packaging records"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert item counts using a measured, product-specific mean item mass and retain sample size, weighing date and dispersion; do not use a nominal catalogue mass without verification."
+  - id: electricity_energy
+    applies_to: "all electricity rows"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered kWh in raw records and convert to MJ using 1 kWh = 3.6 MJ; disclose voltage, grid geography, contractual supply and whether losses are included."
+  - id: gas_volume_basis
+    applies_to: "natural-gas row"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Record meter volume and its temperature, pressure and dry or wet reference conditions; convert only with a documented site or supplier method."
+  - id: water_mass_basis
+    applies_to: "process-water row"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer mass measurement; when a volume meter is used, retain volume and the measured or documented density used for conversion."
+  - id: material_balance
+    applies_to: "metal stock, product, scrap and captured dust"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Reconcile metal-bearing inputs with saleable product, transferred intermediates, scrap, captured dust and measured direct releases for the same reporting period and product allocation."
+process_map:
+  - id: stock_receipt_and_preparation
+    name: "Stock receipt and blank preparation"
+    inclusion: "required"
+    inclusion_condition: "Always for the representative purchased-stock route"
+    role: "Receive, inspect and cut purchased stock into blanks"
+    quantitative_reference: "kg prepared blank transferred to forming"
+  - id: forming_and_trimming
+    name: "Forming and trimming"
+    inclusion: "required"
+    inclusion_condition: "Always for the representative formed-product route"
+    role: "Press-form the blank and trim the product geometry"
+    quantitative_reference: "kg formed body transferred onward"
+  - id: thermal_treatment
+    name: "Thermal treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared alloy and forming route require annealing, stress relief or thermal conditioning"
+    role: "Produce a surface-ready metallurgical state"
+    quantitative_reference: "kg heat-treated body"
+  - id: surface_finishing_and_cleaning
+    name: "Surface finishing and cleaning"
+    inclusion: "required"
+    inclusion_condition: "Always; instantiate only the mechanical and aqueous operations actually used"
+    role: "Produce the declared finish and clean product"
+    quantitative_reference: "kg inspected article before packaging"
+  - id: final_inspection_and_packaging
+    name: "Final inspection and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always; packaging rows apply when the declared corrugated-box and LDPE-film configuration is used"
+    role: "Release the factory-gate reference product"
+    quantitative_reference: "1 kg net finished article"
+process_inventory:
+  - id: stock_receipt_and_preparation
+    label: "Stock receipt and blank preparation"
+    inputs:
+      product:
+        - row_id: stock_stainless_flat_roll
+          role: "Representative stainless-steel stock"
+          name: "Flat-rolled products of stainless steel, further worked"
+          flow_type: "product"
+          flow_ref:
+            uuid: "add37984-82d6-4c91-85e3-9911c0135944"
+          property_unit: "Mass / kg"
+          description: "Purchased stainless-steel flat-rolled stock crosses the factory gate and is weighed against receipt and bill-of-material records."
+          amount:
+            expression: "received mass attributable to accepted blanks and receipt-stage rejects"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished article"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - us-epa-fabricated-metal-sector-notebook-1995
+            ranges: []
+        - row_id: stock_receipt_electricity
+          role: "Receipt and blanking electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Metered electrical energy used for receiving, inspection and blank cutting is assigned to accepted production."
+          amount:
+            expression: "measured electricity attributable to stock receipt and blank preparation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished article"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_blank_output
+          role: "Prepared stainless-steel blank"
+          name: "Prepared stainless-steel blank"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Accepted cut blanks are weighed or calculated from verified piece counts and measured mean blank mass before forming."
+          amount:
+            expression: "measured or count-converted blank mass transferred to forming"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared blank output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_intermediate_mass_transfer
+              source_ids:
+                - us-epa-fabricated-metal-sector-notebook-1995
+            ranges: []
+      waste:
+        - row_id: stock_scrap_output
+          role: "Receipt and blanking steel scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Rejected stock ends and blanking offcuts are kept separate and weighed at the point they leave the process."
+          amount:
+            expression: "measured receipt-reject and blanking-scrap mass sent to the declared destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished article"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_scrap_waste
+              source_ids:
+                - us-epa-fabricated-metal-sector-notebook-1995
+            ranges: []
+      elementary:
+        []
+  - id: forming_and_trimming
+    label: "Forming and trimming"
+    inputs:
+      product:
+        - row_id: prepared_blank_input
+          role: "Prepared stainless-steel blank input"
+          name: "Prepared stainless-steel blank"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The internal blank transfer is recorded to preserve process-level mass balance."
+          amount:
+            expression: "mass transferred from stock preparation"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg formed body output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_intermediate_mass_transfer
+              source_ids:
+                - us-epa-fabricated-metal-sector-notebook-1995
+            ranges: []
+        - row_id: forming_electricity
+          role: "Forming and trimming electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Presses, trimming machines and directly associated extraction equipment are submetered or allocated from a documented machine-time meter group."
+          amount:
+            expression: "measured electricity attributable to forming and trimming"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net finished article"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: forming_cutting_fluid
+          role: "Cutting fluid"
+          name: "Cutting Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "576d250f-4f36-4385-939d-0f03b8f95a10"
+          property_unit: "Mass / kg"
+          description: "Oil-based cutting fluid supplied to trimming equipment is recorded net of recovered and returned fluid."
+          amount:
+            expression: "issued mass minus unchanged return and recovered reusable fluid"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net finished article"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cutting_fluid
+              source_ids:
+                - us-epa-fabricated-metal-sector-notebook-1995
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: formed_body_output
+          role: "Formed stainless-steel body"
+          name: "Formed stainless-steel household-article body"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The formed and trimmed internal body is recorded before any thermal or finishing step."
+          amount:
+            expression: "measured or count-converted mass transferred from forming"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg formed body output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_intermediate_mass_transfer
+              source_ids:
+                - us-epa-fabricated-metal-sector-notebook-1995
+            ranges: []
+      waste:
+        - row_id: forming_scrap_output
+          role: "Forming and trimming steel scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Separated metal offcuts and rejected formed pieces are weighed before recycling or other treatment."
+          amount:
+            expression: "measured forming and trimming scrap sent to the declared destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished article"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_scrap_waste
+              source_ids:
+                - us-epa-fabricated-metal-sector-notebook-1995
+            ranges: []
+        - row_id: waste_cutting_oil_output
+          role: "Waste cutting oil"
+          name: "Waste cutting oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "80d926e3-0f76-4a19-9b1e-ffec9deb1216"
+          property_unit: "Mass / kg"
+          description: "Spent oil-based cutting fluid leaving the site is weighed and linked to its treatment destination."
+          amount:
+            expression: "measured spent cutting-oil mass transferred off site"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net finished article"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_fluid
+              source_ids:
+                - us-epa-fabricated-metal-sector-notebook-1995
+            ranges: []
+      elementary:
+        []
+  - id: thermal_treatment
+    label: "Thermal treatment"
+    inputs:
+      product:
+        - row_id: formed_body_thermal_input
+          role: "Formed body entering thermal treatment"
+          name: "Formed stainless-steel household-article body"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This internal transfer applies only when annealing, stress relief or other thermal conditioning is required."
+          amount:
+            expression: "mass of formed body charged to the thermal-treatment unit"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg heat-treated body output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_intermediate_mass_transfer
+              source_ids:
+                - us-epa-fabricated-metal-sector-notebook-1995
+            ranges: []
+        - row_id: thermal_natural_gas
+          role: "Natural gas for thermal treatment"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Natural gas crossing the foreground boundary is metered at documented reference conditions for the included furnace campaign."
+          amount:
+            expression: "metered natural-gas volume attributable to included thermal treatment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net finished article"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_thermal_fuel
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: heat_treated_body_output
+          role: "Heat-treated stainless-steel body"
+          name: "Heat-treated stainless-steel household-article body"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The conditioned body is weighed or count-converted when it leaves the furnace campaign."
+          amount:
+            expression: "measured or count-converted body mass transferred to finishing"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg heat-treated body output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_intermediate_mass_transfer
+              source_ids:
+                - us-epa-fabricated-metal-sector-notebook-1995
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: thermal_fossil_co2
+          role: "Direct fossil carbon dioxide"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Direct fossil carbon dioxide from on-site natural-gas combustion is measured or calculated from collected fuel and documented facility-specific carbon data; upstream electricity emissions are excluded from this row."
+          amount:
+            expression: "measured direct emission or collected natural gas multiplied by documented facility-specific carbon content and oxidation method"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished article"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_co2
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+  - id: surface_finishing_and_cleaning
+    label: "Surface finishing and cleaning"
+    inputs:
+      product:
+        - row_id: surface_ready_body_input
+          role: "Surface-ready formed body"
+          name: "Surface-ready formed stainless-steel household-article body"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The internal body entering finishing reflects the declared route after forming and any applicable thermal treatment."
+          amount:
+            expression: "mass transferred into the finishing line"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg inspected pre-packaging article output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_intermediate_mass_transfer
+              source_ids:
+                - us-epa-fabricated-metal-sector-notebook-1995
+            ranges: []
+        - row_id: finishing_electricity
+          role: "Finishing electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Electrical energy for polishing, extraction, aqueous cleaning, pumps and drying is recorded for the included finishing operations."
+          amount:
+            expression: "measured electricity attributable to surface finishing and cleaning"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net finished article"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - ec-jrc-stm-bref-2006
+            ranges: []
+        - row_id: finishing_sodium_hydroxide
+          role: "Sodium hydroxide for aqueous cleaning"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Sodium hydroxide entering the declared alkaline cleaning bath is recorded as neat chemical-equivalent mass with solution concentration retained."
+          amount:
+            expression: "purchased or issued neat-equivalent mass consumed by bath make-up and replenishment"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net finished article"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_surface_treatment_inputs
+              source_ids:
+                - ec-jrc-stm-bref-2006
+            ranges: []
+        - row_id: finishing_process_water
+          role: "Process water for cleaning and rinsing"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Process water supplied to cleaning, rinsing and included bath make-up is measured at the finishing-line boundary."
+          amount:
+            expression: "measured process-water mass entering cleaning, rinsing and bath make-up"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished article"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_treatment_inputs
+              source_ids:
+                - ec-jrc-stm-bref-2006
+            ranges: []
+        - row_id: finishing_white_fused_alumina
+          role: "White fused alumina polishing abrasive"
+          name: "White Fused Alumina"
+          flow_type: "product"
+          flow_ref:
+            uuid: "429f2b7f-592a-434c-92e2-43a6b4859300"
+          property_unit: "Mass / kg"
+          description: "White fused alumina issued to mechanical polishing is recorded net of clean recovered abrasive returned to use."
+          amount:
+            expression: "issued mass minus clean reusable abrasive recovered within the reporting period"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net finished article"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_surface_treatment_inputs
+              source_ids:
+                - us-epa-fabricated-metal-sector-notebook-1995
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepack_article_output
+          role: "Inspected article before packaging"
+          name: "Inspected stainless-steel household article before packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Dry articles meeting the declared finish and inspection requirements are weighed before packaging."
+          amount:
+            expression: "measured or count-converted accepted article mass transferred to packaging"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg inspected pre-packaging article output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finished_product
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+      waste:
+        - row_id: alkaline_finishing_wastewater
+          role: "Alkaline metal-finishing wastewater"
+          name: "Alkaline metal-finishing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Combined wastewater from the declared alkaline cleaning and rinse steps is recorded before any off-site transfer or on-site treatment unit outside this process card."
+          amount:
+            expression: "measured wastewater mass leaving the finishing-line boundary, with pH and metal content retained as qualifiers"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished article"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater
+              source_ids:
+                - ec-jrc-stm-bref-2006
+            ranges: []
+        - row_id: grinding_dust_output
+          role: "Captured grinding and polishing dust"
+          name: "Dust from Grinding and Sieving"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "e0f3b3af-7794-4c25-ae58-5e4302b226d2"
+          property_unit: "Mass / kg"
+          description: "Dust collected by filters, local extraction or housekeeping from the declared grinding and polishing operation is weighed as a separate waste."
+          amount:
+            expression: "measured collected dust mass sent to the declared treatment destination"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net finished article"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dust_and_pm
+              source_ids:
+                - ec-jrc-stm-bref-2006
+            ranges: []
+      elementary:
+        - row_id: pm10_air_output
+          role: "Direct PM10 from mechanical finishing"
+          name: "particles (PM10), direct emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Uncaptured particles (PM10) from mechanical finishing are recorded only when measured or calculated for a confirmed receiving-air compartment; the compartment-specific Tiangong UUID remains under review."
+          amount:
+            expression: "source-tested or validated calculated direct PM10 mass leaving the foreground site"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished article"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dust_and_pm
+              source_ids:
+                - ec-jrc-stm-bref-2006
+            ranges: []
+  - id: final_inspection_and_packaging
+    label: "Final inspection and packaging"
+    inputs:
+      product:
+        - row_id: prepack_article_input
+          role: "Inspected article input"
+          name: "Inspected stainless-steel household article before packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The accepted dry article crosses into packaging as an internal product transfer."
+          amount:
+            expression: "mass transferred from finishing to packaging"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished article"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finished_product
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: packaging_electricity
+          role: "Packaging-line electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Electrical energy used for final inspection, labelling, sealing and packaging is recorded separately from upstream production energy."
+          amount:
+            expression: "measured electricity attributable to final inspection and packaging"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished article"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: corrugated_box_input
+          role: "Corrugated board box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Corrugated boxes supplied with the reference product are weighed from packaging bills of material or verified supplier specifications."
+          amount:
+            expression: "packaging bill-of-material mass consumed for saleable product"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished article"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: ldpe_film_input
+          role: "LDPE protective film"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass / kg"
+          description: "Low-density polyethylene film supplied with the reference product is weighed from packaging bills of material or verified supplier specifications."
+          amount:
+            expression: "packaging bill-of-material mass consumed for saleable product"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished article"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Factory-gate reference product"
+          name: "Finished metal household article"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The saleable article is weighed net of packaging and linked to a complete product specification; no exact public Tiangong reference-product UUID was found."
+          amount:
+            expression: "fixed reference output of 1 kg net finished article"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1 kg net finished article at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - un-cpc-3-0-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "shared lines and utilities"
+    rule: "First subdivide by process, product family, batch, meter or machine time so only inputs and outputs directly attributable to the declared product remain."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: allocation_physical_relation
+    applies_to: "inseparable shared operations"
+    rule: "If subdivision is not possible, apply a documented relevant physical relationship: machine time or metered energy for utilities and measured mass for material losses. Demonstrate why the relationship represents causation and disclose the factor."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: allocation_other_relation
+    applies_to: "no defensible physical relationship"
+    rule: "Use another relationship only after documenting why subdivision, system expansion and a relevant physical relationship are infeasible; report a sensitivity check and do not use an undocumented default."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: allocation_scrap_boundary
+    applies_to: "separated scrap and recovered abrasive"
+    rule: "Record gross foreground inputs and outgoing waste or internally recovered material separately. Do not add an avoided-production credit inside this factory-gate inventory unless the downstream method and expanded boundary are explicitly declared."
+    source_ids:
+      - ec-pef-method-2021
+      - ec-jrc-stm-bref-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_receipts
+      process_id: "stock_receipt_and_preparation"
+      flow_role: "stainless-steel stock"
+      record_type: "scale ticket, receiving record and bill of material"
+      raw_fields: "receipt mass; accepted mass; alloy grade; thickness; supplier; recycled content; lot id"
+      collection_method: "reconcile calibrated receiving scale with purchasing and production issue records"
+      unit: "kg"
+      frequency: "each delivery and production lot"
+      temporal_coverage: "representative 12 consecutive months or declared campaign"
+      site_scope: "all receiving points serving included production"
+      aggregation_rule: "sum attributable accepted and rejected mass, then normalize by accepted net product"
+      quality_evidence: "scale calibration, material certificate and reconciliation log"
+    - protocol_id: cp_process_energy
+      process_id: "all_applicable_processes"
+      flow_role: "electricity"
+      record_type: "submeter or meter-group log"
+      raw_fields: "start and end reading; kWh; meter id; process; product lot; operating time"
+      collection_method: "direct submeter preferred; otherwise documented machine-time allocation from a stable meter group"
+      unit: "kWh and MJ"
+      frequency: "each batch or at least monthly"
+      temporal_coverage: "same period as production"
+      site_scope: "all included factory processes"
+      aggregation_rule: "subtract documented non-production loads, convert kWh to MJ and normalize"
+      quality_evidence: "meter calibration and allocation worksheet"
+    - protocol_id: cp_intermediate_mass_transfer
+      process_id: "stock_forming_thermal_and_finishing_processes"
+      flow_role: "internal product transfer"
+      record_type: "scale or verified count record"
+      raw_fields: "gross mass; tare; item count; mean item mass; source process; destination process; lot id"
+      collection_method: "weigh transfer container or convert verified counts using measured mean item mass"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "same period as production"
+      site_scope: "all included transfers"
+      aggregation_rule: "reconcile matched input and output transfers by lot"
+      quality_evidence: "scale calibration, sampling record and transfer reconciliation"
+    - protocol_id: cp_scrap_waste
+      process_id: "stock_and_forming_processes"
+      flow_role: "post-industrial steel scrap"
+      record_type: "scrap-container weight and waste-transfer record"
+      raw_fields: "gross mass; tare; grade; contamination; source process; destination; date"
+      collection_method: "weigh segregated scrap containers before internal recycling or off-site transfer"
+      unit: "kg"
+      frequency: "each container or shipment"
+      temporal_coverage: "same period as production"
+      site_scope: "all included scrap points"
+      aggregation_rule: "sum net scrap by source process and product allocation"
+      quality_evidence: "scale calibration and destination receipt"
+    - protocol_id: cp_cutting_fluid
+      process_id: "forming_and_trimming"
+      flow_role: "cutting fluid and waste cutting oil"
+      record_type: "inventory issue, return, recovery and waste-transfer record"
+      raw_fields: "issued mass; unchanged return; recovered mass; waste mass; formulation; water content; lot id"
+      collection_method: "mass balance purchased or issued fluid, reusable return and off-site waste"
+      unit: "kg"
+      frequency: "each replenishment and waste shipment"
+      temporal_coverage: "same period as production"
+      site_scope: "included trimming equipment"
+      aggregation_rule: "consumed fluid equals issues minus reusable returns, adjusted for stock change"
+      quality_evidence: "stock reconciliation and waste manifest"
+    - protocol_id: cp_thermal_fuel
+      process_id: "thermal_treatment"
+      flow_role: "natural gas"
+      record_type: "calibrated gas-meter and furnace campaign log"
+      raw_fields: "volume; temperature; pressure; dry or wet basis; meter id; campaign; product mass"
+      collection_method: "read dedicated meter or documented shared-meter allocation"
+      unit: "m3"
+      frequency: "each campaign or daily"
+      temporal_coverage: "same period as thermally treated production"
+      site_scope: "included furnace units"
+      aggregation_rule: "aggregate reference-condition volume by product campaign"
+      quality_evidence: "meter calibration and conversion record"
+    - protocol_id: cp_direct_co2
+      process_id: "thermal_treatment"
+      flow_role: "fossil carbon dioxide"
+      record_type: "direct monitor or fuel-carbon calculation record"
+      raw_fields: "measured CO2; fuel volume; carbon content; oxidation factor; reference conditions; campaign"
+      collection_method: "use direct measurement or calculate from collected fuel and documented facility-specific carbon data"
+      unit: "kg"
+      frequency: "each campaign or reporting month"
+      temporal_coverage: "same period as fuel record"
+      site_scope: "included on-site combustion sources"
+      aggregation_rule: "sum direct fossil CO2 and normalize; exclude upstream fuel and electricity emissions"
+      quality_evidence: "monitor calibration or signed calculation sheet and supplier carbon data"
+    - protocol_id: cp_surface_treatment_inputs
+      process_id: "surface_finishing_and_cleaning"
+      flow_role: "water, sodium hydroxide and abrasive"
+      record_type: "line meter, bath log and material issue record"
+      raw_fields: "water; chemical solution mass; concentration; abrasive issue; recovered abrasive; bath id; product lot"
+      collection_method: "meter water and reconcile chemical or abrasive issues, returns and stock change"
+      unit: "kg"
+      frequency: "each shift or batch"
+      temporal_coverage: "same period as finished production"
+      site_scope: "all included finishing operations"
+      aggregation_rule: "calculate neat chemical and net abrasive consumption, then normalize"
+      quality_evidence: "meter calibration, bath analysis and stock reconciliation"
+    - protocol_id: cp_wastewater
+      process_id: "surface_finishing_and_cleaning"
+      flow_role: "alkaline finishing wastewater"
+      record_type: "discharge meter, tank-volume and laboratory record"
+      raw_fields: "wastewater mass or volume; density; pH; metal concentration; treatment; destination; time"
+      collection_method: "meter discharge or use calibrated tank change with density conversion"
+      unit: "kg"
+      frequency: "each discharge or continuously"
+      temporal_coverage: "same period as finishing production"
+      site_scope: "all included finishing drains"
+      aggregation_rule: "aggregate before dilution and avoid double-counting treatment recirculation"
+      quality_evidence: "meter calibration, laboratory report and transfer receipt"
+    - protocol_id: cp_dust_and_pm
+      process_id: "surface_finishing_and_cleaning"
+      flow_role: "captured dust and direct PM10"
+      record_type: "filter weight, container weight, source test or validated calculation"
+      raw_fields: "gross and tare mass; filter change; PM10 result; airflow; run time; release point; compartment"
+      collection_method: "weigh captured dust separately and measure or calculate uncaptured PM10 for the confirmed release point"
+      unit: "kg"
+      frequency: "each filter or container change and each required source test"
+      temporal_coverage: "representative production period"
+      site_scope: "all included finishing extraction points"
+      aggregation_rule: "reconcile captured and released particulate without double-counting"
+      quality_evidence: "scale calibration, source-test report and release-point record"
+    - protocol_id: cp_packaging_materials
+      process_id: "final_inspection_and_packaging"
+      flow_role: "corrugated box and LDPE film"
+      record_type: "packaging bill of material and supplier specification"
+      raw_fields: "component id; unit mass; units issued; return; waste; product units; lot"
+      collection_method: "verify unit mass by weighing and reconcile issues and returns"
+      unit: "kg"
+      frequency: "each packaging lot"
+      temporal_coverage: "same period as finished production"
+      site_scope: "all included packaging lines"
+      aggregation_rule: "net component mass supplied with saleable product divided by net product mass"
+      quality_evidence: "supplier specification, sample weighing and stock reconciliation"
+    - protocol_id: cp_finished_product
+      process_id: "finishing_and_packaging_processes"
+      flow_role: "inspected and reference product"
+      record_type: "final scale, item-count and release record"
+      raw_fields: "net product mass; item count; mean item mass; rejects; specification; packaging tare; lot id"
+      collection_method: "weigh accepted dry product before packaging and reconcile released quantity"
+      unit: "kg"
+      frequency: "each production lot"
+      temporal_coverage: "representative 12 months or declared campaign"
+      site_scope: "all included product lines"
+      aggregation_rule: "sum accepted net mass and set reference output to 1 kg"
+      quality_evidence: "scale calibration, inspection release and count-to-mass record"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all foreground rows"
+      rule: "normalized amount = attributable exchange amount / accepted net finished-product mass"
+      inputs:
+        - "attributable exchange"
+        - "accepted net mass"
+      output: "exchange per 1 kg net finished article"
+      source_ids:
+        - ec-pef-method-2021
+    - id: calc_count_to_mass
+      applies_to: "count-only records"
+      rule: "mass = item count × measured product-specific mean item mass"
+      inputs:
+        - "item count"
+        - "sampled item masses"
+      output: "kg product or packaging"
+      source_ids:
+        - ec-pef-method-2021
+    - id: calc_electricity_mj
+      applies_to: "electricity"
+      rule: "MJ = metered kWh × 3.6"
+      inputs:
+        - "metered kWh"
+      output: "electricity in MJ"
+      source_ids: []
+    - id: calc_cutting_fluid_consumption
+      applies_to: "cutting fluid"
+      rule: "consumed mass = opening stock + purchases or issues - closing stock - unchanged return - clean recovered fluid"
+      inputs:
+        - stock
+        - issue
+        - "return and recovery records"
+      output: "net cutting-fluid consumption"
+      source_ids:
+        - us-epa-fabricated-metal-sector-notebook-1995
+    - id: calc_direct_fossil_co2
+      applies_to: "natural-gas combustion"
+      rule: "use direct measured CO2; otherwise apply the documented facility-specific fuel-carbon and oxidation calculation to collected gas"
+      inputs:
+        - "direct monitor or gas volume"
+        - "carbon content and oxidation method"
+      output: "kg direct fossil CO2"
+      source_ids:
+        - ec-pef-method-2021
+    - id: calc_metal_balance
+      applies_to: "metal-bearing flows"
+      rule: "input metal mass = net product metal + outgoing scrap + captured metal-bearing dust + direct metal release + documented stock change and retained intermediates"
+      inputs:
+        - stock
+        - product
+        - scrap
+        - dust
+        - "release and stock records"
+      output: "mass-balance difference and reconciliation ratio"
+      source_ids:
+        - us-epa-fabricated-metal-sector-notebook-1995
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Retain product drawing or specification, material certificate, measured net mass, finish, component and packaging configuration and service-life claim."
+      evidence: "approved specification, certificate and inspection release"
+    - id: dq_temporal_alignment
+      applies_to: "all foreground data"
+      requirement: "Use one common representative period; disclose campaigns, shutdowns, rework and any extrapolation."
+      evidence: "dated production, meter, stock and waste records"
+    - id: dq_meter_traceability
+      applies_to: "mass, energy, water and gas"
+      requirement: "Identify each meter or scale, calibration status, resolution and allocation boundary."
+      evidence: "current calibration certificate and meter map"
+    - id: dq_completeness
+      applies_to: "process inventory"
+      requirement: "Reconcile purchasing, stock change, production output and waste transfers; explain every missing or estimated exchange."
+      evidence: "signed reconciliation and completeness checklist"
+    - id: dq_route_specificity
+      applies_to: "conditional processes"
+      requirement: "Document whether thermal treatment, chemical finishing, coating, joining and each packaging component applies; do not average absent operations into the product."
+      evidence: "route sheet, batch traveller and bill of materials"
+    - id: dq_background_linkage
+      applies_to: "purchased inputs"
+      requirement: "Use upstream datasets compatible with material state, alloy or formulation, supplier geography, technology and delivery boundary; disclose every proxy."
+      evidence: "dataset metadata and proxy justification"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference product"
+    rule: "Fail the data package if product family, principal metal, alloy, net mass, route, finish, component set, factory geography, packaging or service-life qualifier is missing."
+    source_ids:
+      - un-cpc-3-0-2025
+      - ec-pef-method-2021
+  - rule_id: validate_reference_amount
+    applies_to: "reference flow"
+    rule: "Confirm that the published reference output is exactly 1 kg net finished article and excludes all packaging mass."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: validate_inventory_identity
+    applies_to: "every inventory row"
+    rule: "Require one atomic selected flow with a confirmed UUID or an explicit unresolved identity finding; reject umbrella utilities, materials, wastes or emissions."
+    source_ids: []
+  - rule_id: validate_process_coverage
+    applies_to: "product route"
+    rule: "Match every required process and each applicable conditional process to production records; record a justified not-applicable decision for omitted conditional stages."
+    source_ids:
+      - us-epa-fabricated-metal-sector-notebook-1995
+      - ec-jrc-stm-bref-2006
+  - rule_id: validate_metal_balance
+    applies_to: "metal-bearing inventory"
+    rule: "Investigate and disclose any unreconciled difference among input stock, net product, scrap, captured dust, direct release, stock change and retained intermediate mass."
+    source_ids:
+      - us-epa-fabricated-metal-sector-notebook-1995
+  - rule_id: validate_utility_conversion
+    applies_to: "electricity, gas and water"
+    rule: "Recompute kWh-to-MJ, gas reference-condition and water volume-to-mass conversions from retained raw records."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: validate_waste_destination
+    applies_to: "all waste outputs"
+    rule: "Require measured mass, source process, composition qualifier and treatment or recycling destination for each concrete waste flow."
+    source_ids:
+      - ec-jrc-stm-bref-2006
+  - rule_id: validate_ranges
+    applies_to: "important quantitative flows"
+    rule: "Treat the absence of two independent compatible sources as an unresolved range-evidence need; do not invent an acceptance range or use a single published case as a range."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Candidate foreground manufacturing dataset that may become a secondary_dataset or background_dataset after methodology review, UUID closure and dataset quality review"
+  downstream_use: "Product-specific gate-to-gate process datasets and lifecyclemodel inputs for declared metal household articles"
+  allowed_use: "Modelling the declared factory, product, alloy, route, finish and packaging configuration after all required qualifiers and unresolved identities are addressed"
+  excluded_use: "Unqualified CPC-wide averages; automatic substitution among steel, copper, aluminium and iron products; cradle-to-grave or comparative claims without distribution, use, lifetime and end-of-life modelling"
+  required_metadata: "PCR id; product specification; CPC context; principal metal and alloy; net mass and item count; route and conditional stages; finish and coating; site and period; energy and water supply; allocation; packaging; UUID and proxy status"
+  required_quality_disclosure: "Measurement coverage and calibration; count-to-mass sampling; metal balance; meter allocation; data gaps; estimates; background-dataset compatibility; waste destinations; direct-release method; unresolved UUIDs and range evidence needs"
+  update_trigger: "Material change in product design, alloy, supplier, forming or finishing technology, thermal route, packaging, energy or water supply, allocation, regulation, foreground period, or Tiangong flow identity"
+data_sources:
+  - id: "un-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, official CSV, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv, retrieved 2026-09-05"
+    used_for: "Official CPC 42912 classification identity and listed product scope"
+  - id: "us-epa-fabricated-metal-sector-notebook-1995"
+    type: "official_guidance"
+    reference: "U.S. EPA, Profile of the Fabricated Metal Products Industry, EPA/310-R-95-007, September 1995, https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=50000DGC.TXT, retrieved 2026-09-05"
+    used_for: "Metal shaping, surface preparation, finishing, material inputs, wastes and route decomposition"
+  - id: "ec-jrc-stm-bref-2006"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Reference Document on Best Available Techniques for the Surface Treatment of Metals and Plastics, August 2006, https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/stm_bref_0806.pdf, retrieved 2026-09-05"
+    used_for: "Water-based surface-treatment process boundary, utilities, chemicals, rinsing, wastewater, sludge, dust and direct releases"
+  - id: "ec-pef-method-2021"
+    type: "standard"
+    reference: "Commission Recommendation (EU) 2021/2279, Annex I Product Environmental Footprint Method, consolidated 30 December 2021, https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX%3A02021H2279-20211230, retrieved 2026-09-05"
+    used_for: "Functional unit, reference-flow normalization, system boundary, company-specific data, data quality and allocation hierarchy"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:3d3fd3d1a30f6b7922fa1c75eb1dd6786c529daf3a3bb48b42f7ac79a32f7058"
+  generated_content_sha256: "sha256:836c95ec68d952ab0e98000d703f2fc3222eeaf7ba7a176aaa632657ad3ba028"

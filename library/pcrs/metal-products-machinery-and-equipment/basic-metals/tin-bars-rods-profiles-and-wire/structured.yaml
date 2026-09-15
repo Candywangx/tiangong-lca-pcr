@@ -1,10 +1,234 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41547"
-  title: "Tin bars, rods, profiles and wire"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.tin-bars-rods-profiles-and-wire"
+  classification_refs: "CPC 3.0 41547"
+  covered_products: "Tin and declared tin-alloy bars, rods, solid profiles and wire"
+  excluded_products: "Unwrought tin; sheet, strip, foil, powder, tubes and fabricated articles"
+  representative_product: "Tin rod"
+  production_route: "Declared casting/forming/finishing route"
+  market_state: "Saleable semi-finished solid product at factory gate"
+functional_unit:
+  what: "Conforming saleable covered product"
+  how_much: "1 kg net saleable product"
+  how_well: "Composition, form, dimensions, temper, surface and specification declared"
+  how_long_or_cycle: "Reporting-period production campaign"
+  reference_flow_link: "Net factory-gate mass after internal returns and rejects"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "foreground system"
+      rule: "Include on-site forming and finishing; exclude use and end-of-life."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+boundary_abstraction:
+  declared_starting_condition: "Received refined tin or declared tin-alloy feedstock"
+  starting_condition_role: "Upstream production represented by linked input datasets"
+  product_classification_scope: "Covered solid semi-finished forms"
+  recursive_input_rule: "Record same-category off-site feedstock once; internal scrap does not cross the boundary"
+  upstream_dataset_requirement: "Representative datasets for purchased inputs"
+  disclosure: "Declare route, alloy, internal scrap loop and surface treatment"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Tin Rod"
+    uuid: "e9c72b13-0d60-4d67-a1c9-b0c963ec62cf"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - form
+    - composition
+    - dimensions
+    - temper
+    - surface
+    - route
+    - geography
+    - period
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "mass flows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use a consistent mass basis and normalize net output to 1 kg."
+process_map:
+  - id: tin_semifabrication
+    name: "Tin semi-fabrication"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "foreground production"
+    quantitative_reference: "1 kg net product"
+process_inventory:
+  - id: tin_semifabrication
+    label: "Tin semi-fabrication"
+    inputs:
+      product:
+        - row_id: tin_feedstock
+          role: "Tin feedstock"
+          name: "Tin metal feedstock"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the received mass of the declared feedstock grade crossing the factory boundary."
+          amount:
+            expression: "measured received mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity consumed by included production equipment and allocated auxiliaries."
+          amount:
+            expression: "metered attributable electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Reference product"
+          name: "Tin Rod"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e9c72b13-0d60-4d67-a1c9-b0c963ec62cf"
+          property_unit: "Mass / kg"
+          description: "Record net conforming product mass after internal returns and rejects."
+          amount:
+            expression: "fixed reference amount"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: process_scrap
+          role: "Tin-bearing process scrap"
+          name: "Tin scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "72bbff5c-c26f-4b7b-971e-df634b72ea28"
+          property_unit: "Mass / kg"
+          description: "Record only segregated scrap leaving the foreground boundary; exclude internal returns."
+          amount:
+            expression: "weighed off-site mass; exclude internal returns"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "shared production"
+    rule: "Subdivide first; allocate residual shared burdens by net mass and disclose sensitivity."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass
+      process_id: "tin_semifabrication"
+      flow_role: "material mass"
+      record_type: "scale records"
+      raw_fields: "time; grade; gross; tare; disposition"
+      collection_method: "calibrated scales"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "representative 12 months or disclosed campaign"
+      site_scope: "included lines"
+      aggregation_rule: "sum and normalize"
+      quality_evidence: "calibration and reconciliation"
+    - protocol_id: cp_energy
+      process_id: "tin_semifabrication"
+      flow_role: "electricity"
+      record_type: "meter records"
+      raw_fields: "meter; period; energy"
+      collection_method: "submeter or documented allocation"
+      unit: "kWh or MJ"
+      frequency: "monthly"
+      temporal_coverage: "production period"
+      site_scope: "included equipment"
+      aggregation_rule: "subtract exclusions and normalize"
+      quality_evidence: "invoices and meter checks"
+  calculation_rules:
+    - id: normalize
+      applies_to: "all rows"
+      rule: "allocated quantity divided by net product mass"
+      inputs:
+        - quantity
+        - "net mass"
+      output: "per kg quantity"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_balance
+      applies_to: "metal flows"
+      requirement: "Reconcile feedstock, product, scrap, stock change and internal returns."
+      evidence: "scale records and reconciliation"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "reference flow"
+    rule: "Require 1 kg and all qualifiers."
+    source_ids: []
+  - rule_id: validate_inventory
+    applies_to: "inventory"
+    rule: "Require atomic flows, UUID status, aligned periods and mass balance."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground production dataset"
+  downstream_use: "process and lifecyclemodel construction"
+  allowed_use: "declared covered product and route"
+  excluded_use: "upstream refining, use and end-of-life"
+  required_metadata: "form; composition; dimensions; route; geography; period; allocation"
+  required_quality_disclosure: "metering, mass balance, unresolved UUIDs and gaps"
+  update_trigger: "material boundary, route, alloy, energy or yield change"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "CPC Version 3.0 Structure, 30 June 2025; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv; retrieved 2026-09-04"
+    used_for: "Verified original product identity text"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:563aee1c9e5b6622751547957fefb5bb0f6f3e8542726dcc70c71812fbfce19e"
+  generated_content_sha256: "sha256:d5541a9e966e93df99722209571b1804b4ad2a4947bc01dc3db2725e39351df3"

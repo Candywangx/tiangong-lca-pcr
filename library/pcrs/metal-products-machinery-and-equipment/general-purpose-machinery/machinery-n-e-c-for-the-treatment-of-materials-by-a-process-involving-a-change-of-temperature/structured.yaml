@@ -1,10 +1,642 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43932"
-  title: "Machinery n.e.c. for the treatment of materials by a process involving a change of temperature"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.machinery-n-e-c-for-the-treatment-of-materials-by-a-process-involving-a-change-of-temperature"
+  classification_refs: "CPC 3.0: 43932, exact"
+  covered_products: "Complete non-household machinery whose principal function treats materials by a change of temperature and which is not covered by a more specific machinery category; examples include residual heating, cooking, roasting, sterilising, pasteurising, steaming, drying, evaporating, vaporising, condensing, and cooling equipment."
+  excluded_products: "Separately classified furnaces and ovens; refrigerating/freezing equipment and heat pumps; air conditioners; distillation plant; heat exchangers; gas-liquefaction machinery; non-electric water heaters; domestic appliances; separately supplied parts; and industry-specific or material-specific thermal machinery."
+  representative_product: "A complete, factory-tested, non-household temperature-change treatment machine released unpackaged at the factory gate."
+  production_route: "Purchased metal and functional components; cutting and forming; joining; conditional insulation and aqueous cleaning; assembly; factory acceptance testing; final inspection."
+  market_state: "Complete, factory-tested and shipment-ready machine before external transport packaging and installation; declared thermal function, rated capacity, temperature range, energy carrier, controls, and net dry mass are known."
+functional_unit:
+  what: "Provide the declared treatment of a specified material by a specified temperature-changing operation."
+  how_much: "The declared rated material throughput or batch capacity and operating duty delivered by 1,000 kg net dry mass of complete machinery."
+  how_well: "Meet the declared inlet and outlet temperatures, temperature control tolerance, throughput or batch capacity, product-quality requirement, energy carrier, and applicable acceptance-test criteria."
+  how_long_or_cycle: "The declared reference service life in years and operating hours or cycles; the factory-gate inventory is normalized to the 1,000 kg machinery reference flow and the service profile is mandatory for downstream use-stage comparison."
+  reference_flow_link: "1,000 kg net dry mass of the complete machine required to provide the declared function; item counts are converted using measured net dry mass per accepted machine."
+system_boundary:
+  rules:
+    - rule_id: boundary_01
+      applies_to: "foreground manufacturing"
+      rule: "Include cutting/forming, joining, assembly, onsite cleaning or surface preparation, factory acceptance testing, inspection, and direct wastes and emissions when those operations occur at the reporting site."
+      source_ids:
+        - eu-recommendation-2021-2279-pef
+    - rule_id: boundary_02
+      applies_to: "purchased inputs"
+      rule: "Represent upstream production and delivery of every purchased input with linked datasets; a foreground gate shall not turn purchased components or energy into burden-free inputs."
+      source_ids:
+        - eu-recommendation-2021-2279-pef
+    - rule_id: boundary_03
+      applies_to: "excluded downstream stages"
+      rule: "Keep installation, distribution, use, maintenance, and end-of-life outside the default factory-gate dataset, but disclose the exclusion and add the stages in downstream models when required by the study goal."
+      source_ids:
+        - eu-recommendation-2021-2279-pef
+    - rule_id: boundary_04
+      applies_to: "residual category identity"
+      rule: "Demonstrate that the product's principal function is material treatment by temperature change and that no more specific excluded machinery category applies."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+        - un-cpc-3-0-explanatory-notes-2025
+        - eu-regulation-2025-392
+boundary_abstraction:
+  declared_starting_condition: "Purchased materials, components, utilities, gases, chemicals, and fuels at the manufacturing-site gate, with upstream production and delivery represented by linked datasets."
+  starting_condition_role: "The foreground begins when purchased inputs cross the manufacturing-site gate; their upstream burdens remain required background links."
+  product_classification_scope: "Complete residual non-household temperature-change treatment machinery within the reviewed semantic boundary, independent of the CPC code used as mapping context."
+  recursive_input_rule: "A same-category complete machine purchased for incorporation shall be recorded as a product input with its own upstream dataset and declared mass; do not recursively reproduce its manufacturing inventory inside this foreground process."
+  upstream_dataset_requirement: "Link every purchased product, energy carrier, fuel, chemical, and externally treated component to a technologically, geographically, temporally, and product-state representative upstream dataset."
+  disclosure: "Declare product subtype, included factory operations, purchased-component share, surface-treatment route, joining route, test programme and fuels, abatement, site geography, reporting period, allocation drivers, omitted stages, and all unresolved identities."
+reference_flow_definition:
+  reference_amount: "1,000 kg net dry mass of accepted complete machinery"
+  product_flow_ref:
+    name: "Machinery n.e.c. for treatment of materials by temperature change (Tiangong UUID unresolved)"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "exact temperature-changing function"
+    - "treated material"
+    - "batch or continuous operation"
+    - "rated throughput or batch capacity"
+    - "inlet and outlet temperatures"
+    - "control tolerance"
+    - "heating or cooling technology"
+    - "energy carrier"
+    - "installed working fluid where applicable"
+    - "net dry mass"
+    - "factory-gate configuration"
+    - "reference service life"
+    - "operating hours or cycles"
+    - geography
+    - "production year"
+reference_flows:
+  []
+measurement_rules:
+  - id: measurement_reference_mass
+    applies_to: "reference product and mass-normalized inventory"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use the measured net dry mass of machines that passed final acceptance. Exclude external transport packaging, installation materials, loose service tools, and process material used only for testing. Normalize all foreground exchanges to 1,000 kg accepted machinery."
+  - id: measurement_item_conversion
+    applies_to: "records reported per machine or component"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert item counts with model-specific measured mass per item and retain the count, sampled masses, sampling date, and weighted-average calculation."
+  - id: measurement_electricity
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electricity in its original unit and convert kWh to MJ using 1 kWh = 3.6 MJ; disclose voltage, grid geography, onsite generation, and whether losses are included."
+  - id: measurement_gas_volume
+    applies_to: "gaseous natural gas and industrial oxygen"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report supplier-metered volume at the documented reference temperature and pressure. Do not combine gases, and do not convert volume to mass without documented composition, density, and reference conditions."
+  - id: measurement_water_mass
+    applies_to: "process water and cleaning wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer direct mass records. When converting measured volume, retain volume, temperature, density source, and calculation; do not equate water input with wastewater output without measured losses or a documented balance."
+process_map:
+  - id: machinery_manufacture
+    name: "Fabrication, assembly, cleaning, factory testing, and final inspection"
+    inclusion: "required"
+    inclusion_condition: "Always include; record each conditional exchange only when its operation occurs onsite."
+    role: "Foreground production of accepted complete machinery"
+    quantitative_reference: "1,000 kg net dry mass of accepted complete machinery"
+process_inventory:
+  - id: machinery_manufacture
+    label: "Fabrication, assembly, cleaning, factory testing, and final inspection"
+    inputs:
+      product:
+        - row_id: steel_sheet
+          role: "Steel sheet for fabricated casing, frame, vessel, or duct"
+          name: "Steel sheet (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased steel sheet crossing the site gate. Grade, coating, dimensions, supplier, recycled-content claim, and the component receiving the sheet are mandatory foreground qualifiers."
+          amount:
+            expression: "Net purchased steel-sheet mass issued to this product family, less documented returns to stores, allocated and normalized to the accepted reference product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net dry mass of accepted complete machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_and_component_records
+              source_ids: []
+            ranges: []
+        - row_id: rock_wool
+          role: "Rock-wool thermal insulation"
+          name: "rock wool"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f1a182c-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record installed rock wool only for designs that incorporate this insulation; retain density, thickness, facing, thermal grade, and installed component."
+          amount:
+            expression: "Measured purchased mass installed in accepted machinery, adjusted for documented returned offcuts"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net dry mass of accepted complete machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_and_component_records
+              source_ids: []
+            ranges: []
+        - row_id: electronic_control_unit
+          role: "Electronic control unit"
+          name: "Electronic control unit"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ff5a65c8-7726-48b4-b794-6bacd21ab77e"
+          property_unit: "Mass / kg"
+          description: "Record the complete purchased electronic control unit when fitted; retain model, rated voltage, enclosure configuration, supplier, and measured unit mass."
+          amount:
+            expression: "Accepted installed unit count multiplied by verified model-specific mass, including the supplied enclosure represented by the selected flow"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net dry mass of accepted complete machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_and_component_records
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record separately metered or defensibly allocated electricity for fabrication, assembly, cleaning, testing, and inspection within the foreground process."
+          amount:
+            expression: "Metered electricity for included operations, less documented exported electricity, allocated by causal meter or equipment-hour records and converted to MJ"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net dry mass of accepted complete machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_and_consumable_records
+              source_ids: []
+            ranges: []
+        - row_id: natural_gas_factory_test
+          role: "Natural gas used in factory acceptance testing"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record natural gas only when the accepted product or its thermal system is operated with natural gas during an included factory test. Do not include upstream electricity emissions in this row."
+          amount:
+            expression: "Supplier-metered or calibrated-test-rig volume attributable to accepted units at documented reference conditions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net dry mass of accepted complete machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_factory_test_records
+              source_ids: []
+            ranges: []
+        - row_id: diesel_factory_test
+          role: "Diesel fuel used in factory acceptance testing"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "Record diesel only when an integrated liquid-fuel system or dedicated test setup consumes diesel during the included factory acceptance test."
+          amount:
+            expression: "Weighed or supplier-recorded diesel consumed by included tests, corrected for measured fuel returned to storage"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net dry mass of accepted complete machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_factory_test_records
+              source_ids: []
+            ranges: []
+        - row_id: industrial_oxygen
+          role: "Industrial oxygen for thermal cutting"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume / m3"
+          description: "Record purchased oxygen only when oxygen-assisted cutting occurs onsite for this product. Purity, pressure, reference conditions, and onsite generation shall be declared."
+          amount:
+            expression: "Metered or cylinder-inventory oxygen consumed by product-attributable cutting operations"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net dry mass of accepted complete machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_and_consumable_records
+              source_ids: []
+            ranges: []
+        - row_id: process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water entering onsite aqueous cleaning, rinsing, or hydrostatic testing. Water used only in closed-loop circulation is counted as input when make-up water crosses the foreground boundary."
+          amount:
+            expression: "Metered or batch-recorded make-up water attributable to the accepted reference product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net dry mass of accepted complete machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_and_consumable_records
+              source_ids: []
+            ranges: []
+        - row_id: sodium_hydroxide
+          role: "Sodium hydroxide for alkaline cleaning"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide only when it is dosed to an onsite cleaning bath. Report active sodium-hydroxide mass rather than solution mass and retain solution concentration and supplier state."
+          amount:
+            expression: "Purchased solution mass multiplied by measured or supplier-certified sodium-hydroxide mass fraction, corrected for returned solution"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net dry mass of accepted complete machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_and_consumable_records
+              source_ids: []
+            ranges: []
+        - row_id: carbon_dioxide_shielding_gas
+          role: "Carbon-dioxide shielding gas"
+          name: "Carbon dioxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "27f41c1c-535e-4d2a-bce9-2c7f4de11549"
+          property_unit: "Mass / kg"
+          description: "Record carbon dioxide product consumed as welding shielding gas only when that joining route occurs onsite. Retain grade, pressure, supplier, cylinder balance, and any documented recovered gas."
+          amount:
+            expression: "Supplier mass or cylinder mass loss attributable to product-specific welding operations"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net dry mass of accepted complete machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_and_consumable_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Accepted complete temperature-change treatment machinery"
+          name: "Machinery n.e.c. for treatment of materials by temperature change (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only complete machines that passed final acceptance and conform to the declared residual product boundary. The Tiangong reference-product UUID remains unresolved."
+          amount:
+            expression: "1,000 kg measured net dry mass of accepted complete machinery"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "PCR reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      waste:
+        - row_id: post_industrial_steel_scrap
+          role: "Post-industrial steel fabrication scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Record segregated ferrous offcuts, swarf, and rejected fabricated steel pieces leaving the process as post-industrial steel scrap. Exclude reusable returns to stores."
+          amount:
+            expression: "Weighed outbound post-industrial steel scrap attributable to the product, cross-checked against the steel material balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net dry mass of accepted complete machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: cleaning_wastewater
+          role: "Wastewater from onsite cleaning"
+          name: "Wastewater from cleaning"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f0402393-e82c-47e8-9cd8-a486c97f3e89"
+          property_unit: "Mass / kg"
+          description: "Record wastewater leaving onsite aqueous cleaning or rinsing before external treatment or sewer handover. Retain pH, major contaminants, treatment status, and destination."
+          amount:
+            expression: "Measured wastewater mass attributable to included cleaning operations, excluding separately recovered bath solution"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net dry mass of accepted complete machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_emission_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: carbon_dioxide_fossil_to_air
+          role: "Fossil carbon dioxide to air from factory testing"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil carbon dioxide released onsite from combustion of test fuels. Exclude upstream electricity and fuel-supply emissions."
+          amount:
+            expression: "Measured direct release or fuel-specific calculated fossil carbon dioxide from included factory tests"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net dry mass of accepted complete machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_and_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: particulate_matter_to_air
+          role: "Particulate matter to unspecified air"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass / kg"
+          description: "Record direct particulate matter of unspecified particle size released from included cutting, forming, joining, or testing operations after onsite abatement. Do not include captured dust in this elementary flow."
+          amount:
+            expression: "Site measurement or documented emission calculation for direct uncaptured particulate matter attributable to the product"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net dry mass of accepted complete machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_and_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: nitrogen_oxides_to_air
+          role: "Nitrogen oxides to unspecified air"
+          name: "Nitrogen oxides to air, unspecified (Tiangong UUID unresolved)"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record aggregated nitrogen oxides released directly from included fuel-fired factory tests when a measurement or documented calculation reports the aggregate in the unspecified-air compartment. The Tiangong UUID remains unresolved; do not substitute nitrous oxide, nitrogen monoxide, or a high-stack compartment."
+          amount:
+            expression: "Site measurement or documented fuel- and equipment-specific emission calculation for included factory tests"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net dry mass of accepted complete machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_and_emission_records
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_01
+    applies_to: "dedicated product operations"
+    rule: "Avoid allocation by using dedicated meters, batch records, work orders, and subdivision of independently measurable operations."
+    source_ids:
+      - eu-recommendation-2021-2279-pef
+  - rule_id: allocation_02
+    applies_to: "shared site utilities and operations"
+    rule: "When subdivision is not possible, allocate shared burdens with a documented physical causal driver such as metered energy, cutting time, welding time, test duration, or machine-hours. Use mass only when it reasonably represents causality and disclose a sensitivity check for material shared burdens."
+    source_ids:
+      - eu-recommendation-2021-2279-pef
+  - rule_id: allocation_03
+    applies_to: "scrap and wastewater"
+    rule: "Report scrap and wastewater at the foreground boundary without avoided-burden credits. Model treatment, recycling, recovered material, and any substitution consistently in the downstream system and prevent double counting with upstream recycled-content datasets."
+    source_ids:
+      - eu-recommendation-2021-2279-pef
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_and_component_records
+      process_id: "machinery_manufacture"
+      flow_role: "steel sheet, rock wool, electronic control unit, accepted product"
+      record_type: "purchase and issue records; bill of materials; unit mass; accepted-unit records"
+      raw_fields: "material or component identity; grade/model; supplier; purchased mass; returned mass; installed count; sampled unit mass; accepted product mass"
+      collection_method: "Reconcile procurement, stores issues, engineering bill of materials, and final acceptance weighing by product model."
+      unit: "kg; item(s) as raw count"
+      frequency: "each production lot; monthly reconciliation"
+      temporal_coverage: "Representative reporting period covering normal production and rework"
+      site_scope: "All sites and outsourced steps included in the declared foreground boundary"
+      aggregation_rule: "Sum net issued mass or verified count-times-mass by model; allocate with work orders; normalize to 1,000 kg accepted product."
+      quality_evidence: "supplier documents; calibrated scales; signed work orders; bill-of-material revision; acceptance records"
+    - protocol_id: cp_utility_and_consumable_records
+      process_id: "machinery_manufacture"
+      flow_role: "electricity, oxygen, water, sodium hydroxide, carbon dioxide shielding gas"
+      record_type: "meters; invoices; cylinder balances; batch sheets; chemical certificates"
+      raw_fields: "opening and closing meter or cylinder readings; purchases; returns; concentration; reference temperature and pressure; equipment hours"
+      collection_method: "Prefer submetering; otherwise reconcile site totals and allocate with causal equipment or work-order drivers."
+      unit: "MJ, m3, kg, concentration fraction"
+      frequency: "continuous or per batch, reconciled monthly"
+      temporal_coverage: "Same reporting period as accepted production"
+      site_scope: "Each included manufacturing site"
+      aggregation_rule: "Net use equals opening stock plus purchases minus closing stock, returns, and documented exports; apply concentration and unit conversions before normalization."
+      quality_evidence: "calibration records; invoices; cylinder tickets; bath analyses; operator logs"
+    - protocol_id: cp_factory_test_records
+      process_id: "machinery_manufacture"
+      flow_role: "natural gas and diesel test fuel"
+      record_type: "acceptance-test logs; calibrated meters; tank or cylinder records"
+      raw_fields: "product serial number; test type; start/end readings; fuel returned; reference conditions; test duration; pass/fail result"
+      collection_method: "Link each included test to accepted serial numbers and exclude development tests not attributable to saleable production."
+      unit: "m3 natural gas; kg diesel"
+      frequency: "each test"
+      temporal_coverage: "Same reporting period as accepted production"
+      site_scope: "Every site performing factory acceptance testing"
+      aggregation_rule: "Sum net fuel by accepted product model; separately report failed-test and rework burdens before allocation."
+      quality_evidence: "test procedure; meter calibration; signed test report; fuel reconciliation"
+    - protocol_id: cp_waste_and_emission_records
+      process_id: "machinery_manufacture"
+      flow_role: "steel scrap, cleaning wastewater, direct carbon dioxide, particulate matter, nitrogen oxides"
+      record_type: "weigh tickets; wastewater meters; manifests; stack or workplace measurements; fuel analyses; emission calculations"
+      raw_fields: "waste identity; gross/tare mass; wastewater mass and composition; destination; fuel amount; carbon content; measured concentration; gas flow; operating hours; abatement status"
+      collection_method: "Measure releases and wastes directly where feasible; otherwise use documented site calculations based on collected activity data and applicable factors."
+      unit: "kg"
+      frequency: "each shipment, discharge, or test; aggregated monthly"
+      temporal_coverage: "Same reporting period as accepted production"
+      site_scope: "All emission points and waste handovers in the declared foreground boundary"
+      aggregation_rule: "Sum measured exchanges by identity; calculate direct emissions from collected records without including upstream supply-chain emissions; normalize to reference flow."
+      quality_evidence: "laboratory reports; calibrated instruments; manifests; calculation workbook; reviewer sign-off"
+  calculation_rules:
+    - id: calculation_01
+      applies_to: "all foreground exchanges"
+      rule: "normalized amount = attributable exchange amount / accepted net dry machinery mass × 1,000 kg"
+      inputs:
+        - "attributable exchange amount"
+        - "accepted net dry machinery mass"
+      output: "exchange amount per 1,000 kg reference product"
+      source_ids:
+        - eu-recommendation-2021-2279-pef
+    - id: calculation_02
+      applies_to: "electricity"
+      rule: "electricity (MJ) = metered electricity (kWh) × 3.6"
+      inputs:
+        - "metered kWh"
+      output: "MJ electricity"
+      source_ids: []
+    - id: calculation_03
+      applies_to: "sodium hydroxide"
+      rule: "active sodium hydroxide mass = net solution mass × measured or supplier-certified NaOH mass fraction"
+      inputs:
+        - "solution mass"
+        - "NaOH mass fraction"
+      output: "kg active sodium hydroxide"
+      source_ids: []
+    - id: calculation_04
+      applies_to: "direct fossil carbon dioxide"
+      rule: "Calculate only from collected test-fuel use and a documented supplier, regulatory, or measured fossil-carbon factor; retain factor source, oxidation assumption, and units."
+      inputs:
+        - "natural-gas volume or diesel mass"
+        - "fuel composition or carbon factor"
+        - "oxidation assumption"
+      output: "kg fossil carbon dioxide to air"
+      source_ids: []
+    - id: calculation_05
+      applies_to: "material balance"
+      rule: "Reconcile net purchased material with accepted-product incorporation, scrap, returned stock, and measured losses by material identity; investigate rather than silently allocate unexplained imbalance."
+      inputs:
+        - "net material issued"
+        - "installed material"
+        - scrap
+        - returns
+        - "measured losses"
+      output: "material-balance residual and reconciliation status"
+      source_ids:
+        - eu-recommendation-2021-2279-pef
+  data_quality_requirements:
+    - id: quality_01
+      applies_to: "product identity"
+      requirement: "Retain drawings, specifications, principal thermal function, treated material, classification rationale, product model, and acceptance status proving the product fits this residual category."
+      evidence: "controlled specification; classification review; acceptance certificate"
+    - id: quality_02
+      applies_to: "technological representativeness"
+      requirement: "Record fabrication, joining, insulation, cleaning, control, energy-carrier, and test technologies actually used; do not average incompatible routes without separate activity data and disclosed weighting."
+      evidence: "route-specific work orders; process map; production-weight calculation"
+    - id: quality_03
+      applies_to: "temporal and geographical representativeness"
+      requirement: "Use a representative reporting period and identify every production site, electricity geography, supplier geography, and material data vintage; justify gaps and substitutions."
+      evidence: "reporting-period reconciliation; site list; upstream dataset metadata"
+    - id: quality_04
+      applies_to: "completeness"
+      requirement: "Account for every inventory card as measured, calculated, zero with evidence, not applicable with a stated route reason, or unresolved; do not use an unreported cutoff for hazardous releases or direct emissions."
+      evidence: "signed completeness matrix; meter and purchase reconciliation; unresolved register"
+    - id: quality_05
+      applies_to: "measurement and calculation"
+      requirement: "Retain instrument calibration, source documents, unit conversions, allocation drivers, formulas, emission factors, and independent review of manual calculations."
+      evidence: "calibration certificates; invoices; controlled workbook; reviewer sign-off"
+validation_rules:
+  - rule_id: validation_01
+    applies_to: "category and reference flow"
+    rule: "Confirm the machine is complete, non-household, principally treats material by temperature change, is not in an excluded specific category, and declares every required qualifier before accepting the reference flow."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - un-cpc-3-0-explanatory-notes-2025
+      - eu-regulation-2025-392
+  - rule_id: validation_02
+    applies_to: "process and exchange completeness"
+    rule: "Confirm every included site operation and every atomic exchange card has a status, amount basis, evidence kind, and route explanation; reconcile purchases, meters, wastes, and accepted production."
+    source_ids:
+      - eu-recommendation-2021-2279-pef
+  - rule_id: validation_03
+    applies_to: "mass normalization"
+    rule: "Confirm accepted net dry product mass is positive and all reported amounts are normalized to exactly 1,000 kg without including transport packaging, loose tools, or test material in reference-product mass."
+    source_ids: []
+  - rule_id: validation_04
+    applies_to: "conditional test and cleaning routes"
+    rule: "Natural gas, diesel, process water, sodium hydroxide, cleaning wastewater, and direct combustion emissions shall be mutually consistent with declared onsite operations and test logs; unsupported zeroes or route substitutions fail validation."
+    source_ids: []
+  - rule_id: validation_05
+    applies_to: "direct emissions"
+    rule: "Confirm fossil carbon dioxide excludes upstream energy emissions, captured dust is not reported as an elementary emission, and NOx species and compartment are not replaced by a non-equivalent UUID."
+    source_ids: []
+  - rule_id: validation_06
+    applies_to: "UUID identity"
+    rule: "Recheck UUID, state, English and Chinese baseName, flow type, classification, property, unit group, product state, geography, technology, and generalComment. Keep steel_sheet, reference_product, and nitrogen_oxides_to_air explicitly unresolved until exact state-100 identities are verified."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; may be used as background_dataset only after methodology review and representative upstream links are complete"
+  downstream_use: "Foreground manufacturing process for temperature-change treatment machinery and a building block for cradle-to-gate or full-life-cycle equipment models"
+  allowed_use: "Model-specific factory-gate studies with matching product boundary and qualifiers; aggregation across models only with production-weighted activity data; downstream use-stage modelling when rated function, service life, load profile, energy carrier, working fluid, maintenance, and installation are added separately."
+  excluded_use: "Direct comparison of products with different thermal functions, treated materials, capacities, temperature ranges, control quality, service lives, or factory-gate configurations; use as a generic furnace, refrigerator, heat pump, air conditioner, heat exchanger, distillation plant, water heater, domestic appliance, or separately supplied part dataset."
+  required_metadata: "canonical PCR id; product model and residual-category rationale; function and treated material; capacity and temperature range; technology and energy carrier; net dry mass; factory-gate configuration; service life and duty; site and geography; reporting period; allocation; upstream dataset versions; unresolved identities"
+  required_quality_disclosure: "primary-data coverage; route and site representativeness; meter and scale calibration; purchased-component share; material and energy reconciliation; test programme; direct-emission method; data gaps; substitutions; uncertainty; reviewer and review date"
+  update_trigger: "Change in principal function or classification, product design or material composition, manufacturing or test route, energy carrier, site or supplier geography, allocation method, emission controls, upstream data, exact UUID resolution, or evidence that materially changes results."
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, official CSV: https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (verified 2026-09-06)"
+    used_for: "CPC 43932 identity and hierarchy"
+  - id: "un-cpc-3-0-explanatory-notes-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Explanatory Notes, 30 June 2025: https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (verified 2026-09-06)"
+    used_for: "Placement of CPC 43932 among general-purpose machinery and separation from adjacent subclasses"
+  - id: "eu-regulation-2025-392"
+    type: "official_guidance"
+    reference: "Council Regulation (EU) 2025/392, CN 8419 89 entry: https://eur-lex.europa.eu/eli/reg/2025/392/oj/eng (verified 2026-09-06)"
+    used_for: "Temperature-change treatment examples and exclusions used to operationalize the residual product boundary"
+  - id: "eu-recommendation-2021-2279-pef"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279, Annex I Product Environmental Footprint Method: https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng (verified 2026-09-06)"
+    used_for: "Functional unit and reference flow, system boundary, life-cycle stages, allocation, completeness, and data-quality rules"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:57cf0b5fe5aa4606cf61a045a8739eea76b52bffc3e1c0387f25d1a3bd363292"
+  generated_content_sha256: "sha256:04dd01305b0921f8680559724020926e91b31c0e57537e397f0715fa53b14e7e"

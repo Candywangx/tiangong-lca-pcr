@@ -2,12 +2,13 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.basic-metals.lead-unwrought
 title:
   en-US: "Lead, unwrought"
-  zh-CN: null
-status: scaffold
+  zh-CN: "未锻轧铅"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
+updated_at_utc: "2026-09-04T07:45:00Z"
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +23,91 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "41441"
     title: "Lead, unwrought"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  methodology:
+    authoring_mode: foreground_data_production
+    product_boundary: unwrought_lead_at_producer_gate
+    route_model: mutually_exclusive_primary_or_secondary_lead_production
+    cartesian_expansion_review: "Two facility-level route processes with atomic, route-conditioned exchanges; furnace variants are qualifiers rather than multiplied process inventories."
+  reference_flow_verification:
+    status: verified
+    hybrid_search_receipt_id: a96f3776-95c4-4d31-a33f-54277307b75d
+    product_flow_uuid: 063889a6-fcdf-48f8-a229-992a07bc2b0a
+    public_state_code: 100
+    base_name_en: "Crude lead"
+    base_name_zh: "粗铅"
+    flow_type: product
+    classification: "CPC 41441 Lead, unwrought"
+    flow_property_uuid: 93a60a56-a3c8-11da-a746-0800200b9a66
+    unit_group_uuid: 93a60a57-a4c8-11da-a746-0800200c9a66
+    reference_unit: kg
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: primary_lead_concentrate
+        reason_code: no_exact_candidate
+        explanation: "Hybrid search and state-100 direct reads found lead-zinc ore but no exact lead-concentrate product flow."
+      - row_id: primary_electricity
+        reason_code: property_or_unit_mismatch
+        explanation: "Electricity candidates exposed an inconsistent reported energy property versus the public flow-property UUID support chain; no UUID was promoted."
+      - row_id: primary_lead_smelting_slag
+        reason_code: no_exact_candidate
+        explanation: "Waste candidates were generic slag or other-metal slag and did not preserve lead-smelting composition and treatment state."
+      - row_id: primary_lead_refining_dross
+        reason_code: no_exact_candidate
+        explanation: "Waste candidates were dust or iron-and-steel residues, not lead-refining dross."
+      - row_id: primary_copper_matte
+        reason_code: no_exact_candidate
+        explanation: "Candidates did not exactly denote copper-sulfide matte produced by lead smelting."
+      - row_id: primary_speiss
+        reason_code: no_exact_candidate
+        explanation: "Candidates did not exactly denote arsenic-antimony speiss produced by lead smelting."
+      - row_id: primary_sulfur_dioxide_air
+        reason_code: no_exact_candidate
+        explanation: "Sulfur-dioxide candidates used nonmatching air compartments or water compartments; a follow-up query returned a different chemical."
+      - row_id: primary_particulate_air
+        reason_code: no_exact_candidate
+        explanation: "Candidates represented the PM0.2-PM2.5 fraction, not total particulate matter of unspecified particle size."
+      - row_id: secondary_sodium_carbonate
+        reason_code: classification_mismatch
+        explanation: "Sodium-carbonate baseName candidates were classified in unrelated organic-chemical branches, so no UUID was promoted."
+      - row_id: secondary_electricity
+        reason_code: property_or_unit_mismatch
+        explanation: "Electricity candidates exposed an inconsistent reported energy property versus the public flow-property UUID support chain; no UUID was promoted."
+      - row_id: secondary_lead_smelting_slag
+        reason_code: no_exact_candidate
+        explanation: "Waste candidates were generic slag or other-metal slag and did not preserve secondary-lead-smelting composition and treatment state."
+      - row_id: secondary_lead_refining_dross
+        reason_code: no_exact_candidate
+        explanation: "Waste candidates were dust or iron-and-steel residues, not secondary-lead-refining dross."
+      - row_id: secondary_sulfur_dioxide_air
+        reason_code: no_exact_candidate
+        explanation: "Sulfur-dioxide candidates used nonmatching air compartments or water compartments; a follow-up query returned a different chemical."
+      - row_id: secondary_particulate_air
+        reason_code: no_exact_candidate
+        explanation: "Candidates represented the PM0.2-PM2.5 fraction, not total particulate matter of unspecified particle size."
+    range_evidence_needs:
+      status: open
+      rationale: "No empirical amount range is authored. The verified EPA and EU sources describe different primary and secondary technologies, boundaries, product grades, controls, and reporting bases; they do not provide two independent boundary-compatible observations for a defensible cross-route range. Foreground collection remains mandatory."
+      scopes:
+        - lead-bearing feed and saleable lead yield
+        - coke, fluxes, oxygen, natural gas, electricity, process water, and refining reagents
+        - slag, dross, matte, speiss, and sulfuric acid outputs
+        - direct carbon dioxide, sulfur dioxide, lead, and particulate emissions

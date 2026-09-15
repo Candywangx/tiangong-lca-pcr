@@ -2,12 +2,13 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.sinks-wash-basins-baths-and-other-sanitary-ware-and-parts-thereof-of-iron-steel-copper-0ba60283
 title:
   en-US: "Sinks, wash-basins, baths and other sanitary ware and parts thereof, of iron, steel, copper or aluminium"
-  zh-CN: null
-status: scaffold
+  zh-CN: "铁、钢、铜或铝制的洗涤槽、脸盆、浴具及其他卫生设备及零件"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
+updated_at_utc: "2026-09-04T19:51:02Z"
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +23,67 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "42911"
     title: "Sinks, wash-basins, baths and other sanitary ware and parts thereof, of iron, steel, copper or aluminium"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  semantic_boundary_review:
+    decision: promote_legacy
+    basis: "The canonical boundary is metal sanitary ware and dedicated parts manufactured from iron, steel, copper, or aluminium. Plastic and ceramic sanitary ware are distinct material categories, and no other material PCR path was found for this metal product boundary."
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: non_stainless_steel_sheet
+        reason_code: manual_review_required
+        explanation: "The ranked public candidates did not provide a bilingual-consistent, route-neutral non-stainless steel sheet identity; one candidate's Chinese baseName denotes silver plate and another candidate's bilingual names conflict."
+      - row_id: cast_iron_sanitary_ware_blank
+        reason_code: no_exact_candidate
+        explanation: "The ranked candidates were iron ore, a cast-iron ball, generic casting, steel slab, or ferrosilicon; none exactly identified a cast-iron sanitary-ware casting blank."
+      - row_id: aluminium_oxide_abrasive
+        reason_code: no_exact_candidate
+        explanation: "The ranked candidates did not confirm abrasive grade and polishing-media product state for aluminium oxide."
+      - row_id: bitumen_sound_deadening_pad
+        reason_code: no_exact_candidate
+        explanation: "The ranked candidates were bulk bitumen/asphalt or waterproofing membrane, not a manufactured bitumen sound-deadening pad."
+      - row_id: pet_product_label
+        reason_code: no_exact_candidate
+        explanation: "The ranked candidates identified PET sheet/film or PET fibre, not a converted PET product label."
+      - row_id: cast_iron_scrap
+        reason_code: no_exact_candidate
+        explanation: "The ranked waste candidates were steel scrap identities and did not specifically identify cast-iron scrap."
+    range_evidence_needs:
+      - need_id: range_base_metal_inputs
+        row_ids: [stainless_steel_sheet, non_stainless_steel_sheet, cast_iron_sanitary_ware_blank, copper_sheet, aluminium_sheet]
+        explanation: "Obtain at least two independent, boundary-compatible original sources or reviewed foreground datasets before setting empirical material-input or yield guardrails by declared material and product route."
+      - need_id: range_manufacturing_energy
+        row_ids: [electricity, natural_gas]
+        explanation: "Obtain at least two independent factory-gate datasets with compatible allocation, product mass, and process coverage before authoring energy-intensity ranges."
+      - need_id: range_process_water_and_wastewater
+        row_ids: [process_water, cleaning_wastewater]
+        explanation: "Obtain at least two independent sources with compatible washing boundary and water-recirculation treatment before setting water-use or wastewater ranges."
+      - need_id: range_process_consumables
+        row_ids: [industrial_oxygen, sodium_hydroxide, lubricating_oil, aluminium_oxide_abrasive, bitumen_sound_deadening_pad]
+        explanation: "Collect route-specific foreground records and independent compatible evidence before adding consumable ranges; applicability differs by forming, joining, cleaning, and acoustic-treatment route."
+      - need_id: range_packaging
+        row_ids: [corrugated_board_box, paper_instruction_insert, pet_product_label]
+        explanation: "The verified EPD provides one product case only. A second independent, boundary-compatible original source is required before inferring packaging ranges."
+      - need_id: range_metal_scrap
+        row_ids: [post_industrial_steel_scrap, cast_iron_scrap, copper_scrap, aluminium_scrap]
+        explanation: "Obtain at least two independent, compatible route-level datasets before authoring scrap-yield ranges; until then apply measured mass balance."
+      - need_id: range_direct_fossil_carbon_dioxide
+        row_ids: [carbon_dioxide_fossil]
+        explanation: "A direct-emission range requires compatible fuel composition, combustion technology, oxidation basis, and factory boundary from at least two independent verified sources."

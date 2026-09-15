@@ -1,10 +1,712 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43943"
-  title: "Parts for the goods of subclasses 43922, 43923 and 43933; weighing machine weights; parts of agricultural or horticultural mechanical appliances for projecting, dispersing or spraying liquids or powders"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.parts-for-the-goods-of-subclasses-43922-43923-and-43933-weighing-machine-weights-parts-3e51a445"
+  classification_refs: "CPC 3.0: 43943 (exact classification context; mapping acceptance remains separately governed)"
+  covered_products: "Parts for CPC 43922 weighing machinery; parts for CPC 43923 fire extinguishers, spray guns, blasting and similar projecting machinery; parts for CPC 43933 calendering or other rolling machines except machines for metals or glass; weighing-machine weights; and parts of agricultural or horticultural mechanical appliances for projecting, dispersing or spraying liquids or powders"
+  excluded_products: "Complete machinery or appliances; balances of sensitivity 5 cg or better; parts of metal- or glass-rolling machines; generic non-electrical machinery parts not demonstrably within this boundary; repair services; tooling and capital equipment"
+  representative_product: "One declared saleable machinery part or weighing-machine weight conforming to its drawing, bill of materials, and acceptance specification"
+  production_route: "Route-specific manufacture from declared purchased metal or polymer feedstock, including only the forming, machining, joining, heat-treatment, cleaning, coating, inspection, and packaging operations actually performed"
+  market_state: "Finished, inspected, saleable part at the manufacturing-site gate, with packaging included only when supplied with the product"
+functional_unit:
+  what: "Provide a finished part or weighing-machine weight within the covered boundary and conforming to the declared drawing and acceptance specification"
+  how_much: "1,000 kg net mass of conforming saleable parts, excluding packaging mass"
+  how_well: "Meets the declared part number, material grade or formulation, dimensional tolerances, surface condition, coating specification, inspection plan, and applicable legal or customer requirements"
+  how_long_or_cycle: "One completed manufacturing batch represented over the declared reporting period; no use-life performance is claimed"
+  reference_flow_link: "Net conforming output from component_manufacture; packaging, rejects, and production scrap are separate exchanges"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "foreground system"
+      rule: "Include receipt and internal handling of purchased inputs, all on-site operations needed for conforming parts, on-site utilities and treatment, direct emissions, production waste, inspection, and supplied packaging through the outbound site gate."
+      source_ids:
+        - eu-pef-method-2021
+    - rule_id: boundary_route_disclosure
+      applies_to: "route-specific operations"
+      rule: "Include forming, machining, joining, heat treatment, aqueous or solvent cleaning, coating, and finishing only when performed; record outsourced processing as an upstream product or service dataset."
+      source_ids:
+        - eu-jrc-sf-bref-2024
+        - eu-jrc-stm-bref-2006
+        - eu-jrc-sts-bref-2020
+    - rule_id: boundary_exclusions
+      applies_to: "excluded life-cycle stages"
+      rule: "Exclude capital goods, employee commuting, downstream distribution, installation, maintenance, use, and end-of-life unless the study explicitly expands and reports them separately."
+      source_ids:
+        - eu-pef-method-2021
+boundary_abstraction:
+  declared_starting_condition: "Purchased feedstocks, chemicals, gases, energy, water, and packaging are received at the manufacturing-site gate with supplier product state and upstream dataset declared"
+  starting_condition_role: "Upstream cutoff between supplier production and foreground part manufacture"
+  product_classification_scope: "The foreground output must be demonstrably within the covered semantic boundary; CPC 43943 is classification context rather than canonical identity"
+  recursive_input_rule: "A purchased component within this PCR is one upstream product input with its own supplier dataset; do not recursively reproduce its manufacture inside the same foreground process"
+  upstream_dataset_requirement: "Link each purchased input to a geographically and technologically representative upstream dataset and disclose proxies"
+  disclosure: "Declare site, route, product subtype, family rule, material and recycled content, included and excluded operations, surface treatment, packaging boundary, allocation, reporting period, and upstream proxies"
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Parts for the goods of subclasses 43922, 43923 and 43933, weighing machine weights, parts of agricultural or horticultural mechanical appliances for projecting, dispersing or spraying liquids or powders"
+    uuid: "2e29c602-77c9-4507-a7de-ccac1ff525b8"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "CPC-covered product subtype"
+    - "part number or family rule"
+    - "parent-machine application"
+    - "material grade or polymer formulation"
+    - "net product mass"
+    - "drawing revision"
+    - "manufacturing route"
+    - "heat treatment"
+    - "surface treatment or coating"
+    - "quality specification and inspection status"
+    - "included packaging"
+    - "production site and geography"
+    - technology
+    - "reporting period"
+    - "recycled-content claim basis"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "reference product and mass-normalized exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net conforming product mass after final inspection and before packaging; exclude packaging, rejects, retained samples, work in progress, and reusable transport fixtures."
+  - id: batch_normalization
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Row-specific property"
+      uuid: ""
+    required_unit: "row reference unit per 1,000 kg"
+    rule: "Normalize only records for the same site, route, product family, and reporting period by multiplying the recorded exchange by 1,000 and dividing by net conforming product mass in kg."
+  - id: electricity_energy
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the metered energy basis; convert kWh using 1 kWh = 3.6 MJ, and disclose grid, voltage, geography, losses, and on-site generation."
+  - id: gas_volume_conditions
+    applies_to: "natural gas and industrial oxygen"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "State metering reference temperature and pressure and use one consistent reference condition; do not mix standard, normal, and actual cubic metres without documented conversion."
+  - id: mass_balance
+    applies_to: "material inputs and outputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Reconcile purchased material with conforming product, co-products, scrap, waste, emissions, stock change, and documented measurement loss."
+process_map:
+  - id: component_manufacture
+    name: "Route-specific component manufacture, finishing, inspection, and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always include; disclose actual operations and add one atomic row for every other actual exchange"
+    role: "Foreground production"
+    quantitative_reference: "1,000 kg net conforming saleable part output"
+process_inventory:
+  - id: component_manufacture
+    label: "Route-specific component manufacture, finishing, inspection, and packaging"
+    inputs:
+      product:
+        - row_id: non_alloy_steel_bars
+          role: "Non-alloy steel bar feedstock"
+          name: "Non-alloy steel bars"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b904bee3-489f-4ee7-88b9-2a9a06d62113"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record only when this exact material state appears in the bill of materials; other steel grades or forms require separate rows."
+          amount:
+            expression: "Supplier receipts plus opening stock minus closing stock consumed by the batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net conforming saleable part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_packaging_records
+              source_ids:
+                - eu-jrc-sf-bref-2024
+            ranges: []
+        - row_id: primary_aluminium_alloy_sheet
+          role: "Primary aluminium-alloy sheet feedstock"
+          name: "Primary aluminum alloy sheet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2a9549cc-dc9e-43a7-9379-7a0c0a0e4832"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record only when this exact purchased state is used; do not merge strip, ingot, secondary alloy, or other aluminium forms."
+          amount:
+            expression: "Supplier receipts plus opening stock minus closing stock consumed by the batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net conforming saleable part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_packaging_records
+              source_ids:
+                - eu-jrc-sf-bref-2024
+            ranges: []
+        - row_id: cast_iron_feedstock
+          role: "Cast-iron feedstock"
+          name: "Cast-iron feedstock"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only for routes that purchase cast iron; the UUID is unresolved because the exact-name candidate has a conflicting classification."
+          amount:
+            expression: "Supplier receipts plus opening stock minus closing stock consumed by the batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net conforming saleable part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_packaging_records
+              source_ids:
+                - eu-jrc-sf-bref-2024
+            ranges: []
+        - row_id: polypropylene_granulate
+          role: "Polypropylene granulate"
+          name: "polypropylene granulate (PP)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19f11d-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record only for polypropylene moulding routes; other polymers and recycled formulations require separate rows."
+          amount:
+            expression: "Supplier receipts plus opening stock minus closing stock consumed by the batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net conforming saleable part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ / Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Include all purchased electricity used by production equipment, ventilation, compressed-air generation, process cooling, cleaning, coating, inspection, and packaging."
+          amount:
+            expression: "Dedicated meter reading or documented causal allocation from a reconciled site meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net conforming saleable part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_gas_records
+              source_ids: []
+            ranges: []
+        - row_id: natural_gas
+          role: "Gaseous natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3 / Units of volume 93a60a57-a3c8-12da-a746-0800200c9a66"
+          description: "Include only when natural gas is combusted on site for melting, heating, heat treatment, coating cure, or another declared operation."
+          amount:
+            expression: "Metered volume attributable to the batch at disclosed reference conditions"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net conforming saleable part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_gas_records
+              source_ids:
+                - eu-jrc-sf-bref-2024
+            ranges: []
+        - row_id: industrial_oxygen
+          role: "Industrial oxygen"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3 / Units of volume 93a60a57-a3c8-12da-a746-0800200c9a66"
+          description: "Include only when purchased oxygen is consumed in thermal cutting, melting, or another declared operation."
+          amount:
+            expression: "Supplier or flow-meter volume attributable to the batch with pressure, purity, temperature, and supply boundary disclosed"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net conforming saleable part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_gas_records
+              source_ids:
+                - eu-jrc-sf-bref-2024
+            ranges: []
+        - row_id: carbon_dioxide_shielding_gas
+          role: "Carbon-dioxide shielding gas"
+          name: "Carbon dioxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "27f41c1c-535e-4d2a-bce9-2c7f4de11549"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include only when carbon dioxide is purchased for welding; do not use this row for combustion emissions."
+          amount:
+            expression: "Cylinder inventory balance or mass-flow record attributable to the batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net conforming saleable part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_gas_records
+              source_ids: []
+            ranges: []
+        - row_id: process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include only water consumed or incorporated in machining, cooling, aqueous cleaning, rinsing, or surface treatment; separately disclose recirculation."
+          amount:
+            expression: "Make-up water meter or tank balance, excluding internally recirculated water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net conforming saleable part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_chemical_records
+              source_ids:
+                - eu-jrc-stm-bref-2006
+            ranges: []
+        - row_id: sodium_hydroxide
+          role: "Sodium hydroxide"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include only when consumed in aqueous cleaning or surface treatment; report supplied solution mass and concentration."
+          amount:
+            expression: "Supplier issue record for supplied product attributable to the batch, with concentration retained"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net conforming saleable part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_chemical_records
+              source_ids:
+                - eu-jrc-stm-bref-2006
+            ranges: []
+        - row_id: cutting_fluid
+          role: "Cutting fluid"
+          name: "Cutting Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "576d250f-4f36-4385-939d-0f03b8f95a10"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include fresh cutting fluid added to machining systems; disclose formulation, dilution water, recirculation, and stock change."
+          amount:
+            expression: "Fresh concentrate issued plus opening stock minus closing stock attributable to the batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net conforming saleable part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_chemical_records
+              source_ids:
+                - eu-jrc-sf-bref-2024
+            ranges: []
+        - row_id: powder_coating
+          role: "Powder coating"
+          name: "Powder Coating"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0c581697-0eed-4b86-a070-b94966eb7344"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include only powder coating applied to the declared parts; report fresh input net of documented recovery to stock."
+          amount:
+            expression: "Fresh powder issued plus opening stock minus closing stock and recovered powder returned to stock"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net conforming saleable part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_chemical_records
+              source_ids:
+                - eu-jrc-sts-bref-2020
+            ranges: []
+        - row_id: corrugated_cardboard
+          role: "Corrugated-cardboard packaging"
+          name: "Corrugated cardboard"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bde297e-98df-463f-bcb4-0db52bf6e0b5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include only corrugated cardboard supplied with the saleable product; exclude reusable packaging unless its allocated loss is recorded."
+          amount:
+            expression: "Supplied item count multiplied by verified item mass, or direct packaging issue mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net conforming saleable part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: polyethylene_packaging_film
+          role: "Polyethylene packaging film"
+          name: "Polyethylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only polyethylene film supplied with the product. The UUID is unresolved because the exact-name candidate has a conflicting classification."
+          amount:
+            expression: "Supplied item count or length multiplied by verified unit mass, or direct issue mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net conforming saleable part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_packaging_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Conforming saleable reference product"
+          name: "Parts for the goods of subclasses 43922, 43923 and 43933, weighing machine weights, parts of agricultural or horticultural mechanical appliances for projecting, dispersing or spraying liquids or powders"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2e29c602-77c9-4507-a7de-ccac1ff525b8"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record only inspected saleable parts within the boundary; rejects and rework-in-progress are excluded."
+          amount:
+            expression: "Set to 1,000 kg after normalization from measured net conforming batch mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output_waste_emission_records
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: post_industrial_steel_scrap
+          role: "Post-industrial steel scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include steel offcuts, chips, and rejected steel parts leaving as scrap; separately record other metal and polymer wastes."
+          amount:
+            expression: "Weighed outgoing scrap plus closing scrap stock minus opening scrap stock attributable to the batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net conforming saleable part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_waste_emission_records
+              source_ids:
+                - eu-jrc-sf-bref-2024
+            ranges: []
+        - row_id: cleaning_wastewater
+          role: "Cleaning wastewater"
+          name: "Wastewater from cleaning"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f0402393-e82c-47e8-9cd8-a486c97f3e89"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include only wastewater discharged or sent to treatment from aqueous cleaning or surface treatment; disclose composition, treatment, and destination."
+          amount:
+            expression: "Discharge meter, tank transfer mass, or verified volume-to-mass conversion attributable to the batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net conforming saleable part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_waste_emission_records
+              source_ids:
+                - eu-jrc-stm-bref-2006
+            ranges: []
+      elementary:
+        - row_id: fossil_co2_air_emission
+          role: "Fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include direct fossil carbon dioxide from on-site fuel combustion; exclude upstream electricity emissions and purchased shielding-gas input."
+          amount:
+            expression: "Direct measurement or calculation from metered fossil fuel using a documented carbon-content method"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net conforming saleable part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output_waste_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: pm10_air_emission
+          role: "PM10 to air"
+          name: "particles (PM10), emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include measured or permitted PM10 from grinding, blasting, thermal cutting, or coating only when present. The UUID remains unresolved until the site release compartment is verified. +"
+          amount:
+            expression: "Site-specific measurement or documented calculation from control-device records and a verified emission method"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net conforming saleable part output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_waste_emission_records
+              source_ids:
+                - eu-jrc-sf-bref-2024
+                - eu-jrc-sts-bref-2020
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "shared operations and utilities"
+    rule: "Avoid allocation by collecting product-line or batch-specific records and subdividing shared operations wherever technically feasible."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_physical
+    applies_to: "unavoidable shared inputs, wastes, and emissions"
+    rule: "When subdivision is infeasible, use a documented causal physical driver such as machine hours, metered energy, processed mass, bath loading, or coating area; demonstrate why it represents the exchange and keep one method throughout the period."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_other
+    applies_to: "cases without a defensible physical relationship"
+    rule: "Use another relationship, including economic allocation, only after documenting why subdivision and physical allocation are infeasible; report the factor, period, products, sensitivity, and share. Do not credit scrap or recycling without a separately declared method."
+    source_ids:
+      - eu-pef-method-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_packaging_records
+      process_id: "component_manufacture"
+      flow_role: "material and supplied packaging by row_id"
+      record_type: "invoice, receipt, issue, stock count, bill of materials, item-mass test"
+      raw_fields: "identity, grade or formulation, supplier, quantity, unit, lot, opening and closing stock, batch, packaging count, item mass"
+      collection_method: "Reconcile receipts, issues, returns, and stocks; weigh representative packaging when converting count to mass"
+      unit: "kg"
+      frequency: "each batch; monthly reconciliation"
+      temporal_coverage: "output reporting period"
+      site_scope: "all included lines at the site"
+      aggregation_rule: "Sum batch-attributable consumption by atomic flow and normalize"
+      quality_evidence: "calibrated scale, supplier specification, stock reconciliation, bill-of-material revision"
+    - protocol_id: cp_energy_gas_records
+      process_id: "component_manufacture"
+      flow_role: "electricity and each gas by row_id"
+      record_type: "meter, invoice, cylinder balance, runtime"
+      raw_fields: "meter readings, invoice quantity, unit, reference conditions, purity, cylinder stock, line, batch, allocation driver"
+      collection_method: "Prefer dedicated meters; otherwise allocate a reconciled site total using a causal physical driver"
+      unit: "MJ, m3, or kg by row"
+      frequency: "meter interval or cylinder change; monthly aggregation"
+      temporal_coverage: "output reporting period"
+      site_scope: "included equipment and utilities"
+      aggregation_rule: "Sum net purchases, adjust stock or exports, allocate, and normalize"
+      quality_evidence: "calibration, invoice reconciliation, reference-condition record, allocation worksheet"
+    - protocol_id: cp_water_chemical_records
+      process_id: "component_manufacture"
+      flow_role: "process water and each chemical by row_id"
+      record_type: "meter, tank balance, issue, stock count, formulation"
+      raw_fields: "fresh input, concentration, dilution water, recovered amount, opening and closing stock, batch, line"
+      collection_method: "Record fresh material crossing the boundary and separately track internal recirculation and recovery to stock"
+      unit: "kg"
+      frequency: "each batch; monthly reconciliation"
+      temporal_coverage: "output reporting period"
+      site_scope: "included wet, machining, and coating operations"
+      aggregation_rule: "Net fresh input equals receipts or issues plus opening stock minus closing stock and returns; normalize"
+      quality_evidence: "calibration, concentration certificate, bath log, inventory reconciliation"
+    - protocol_id: cp_output_waste_emission_records
+      process_id: "component_manufacture"
+      flow_role: "product, each waste, and each direct emission by row_id"
+      record_type: "production mass, inspection, waste manifest, meter, stack test, fuel record"
+      raw_fields: "output and reject mass, waste mass, stock change, discharge, contaminant, treatment, fuel carbon data, PM10 result, compartment"
+      collection_method: "Weigh outputs and wastes, meter discharges, and use direct emissions measurement where available"
+      unit: "kg"
+      frequency: "each batch, discharge, or required test"
+      temporal_coverage: "output reporting period"
+      site_scope: "all included release points and destinations"
+      aggregation_rule: "Reconcile stocks, calculate emissions from collected inputs where needed, and normalize"
+      quality_evidence: "calibration, inspection release, waste manifest, laboratory or stack report, calculation worksheet"
+  calculation_rules:
+    - id: calc_normalize_reference_mass
+      applies_to: "every inventory amount"
+      rule: "normalized amount = batch-attributable exchange × 1,000 / net conforming product mass"
+      inputs:
+        - "collected exchange"
+        - "net conforming product mass"
+      output: "row amount per 1,000 kg reference product"
+      source_ids: []
+    - id: calc_electricity_conversion
+      applies_to: "electricity recorded in kWh"
+      rule: "electricity MJ = purchased kWh × 3.6"
+      inputs:
+        - "purchased kWh"
+      output: "purchased MJ"
+      source_ids: []
+    - id: calc_packaging_mass
+      applies_to: "count- or length-based packaging"
+      rule: "packaging mass = verified unit mass × count, or verified linear mass × length"
+      inputs:
+        - "count or length"
+        - "verified mass factor"
+      output: "kg packaging supplied"
+      source_ids: []
+    - id: calc_fossil_co2
+      applies_to: "fossil combustion without direct CO2 measurement"
+      rule: "Use collected fuel, verified carbon content or an approved fuel-specific factor, oxidation basis, and documented unit conversions; identify the method and factor source in the dataset"
+      inputs:
+        - "fuel quantity"
+        - "carbon content or factor"
+        - "oxidation basis"
+      output: "kg fossil CO2"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and every exchange"
+      requirement: "Retain family rule, drawing revision, parent-machine application, material or formulation, supplier or destination, resolved Tiangong identity, and proxy rationale."
+      evidence: "release record, bill of materials, supplier specification, manifest, UUID audit"
+    - id: dq_route
+      applies_to: "boundary and process map"
+      requirement: "Identify every actual operation, outsourced operation, and atomic exchange not prelisted here."
+      evidence: "route sheet, process flow, work instructions, supplier service records"
+    - id: dq_measurement
+      applies_to: "quantities"
+      requirement: "Use calibrated meters and scales where available; document estimation, conversion, allocation, reference conditions, concentration, stock change, and uncertainty."
+      evidence: "calibration, meter log, laboratory result, calculation worksheet"
+    - id: dq_temporal
+      applies_to: "reporting period"
+      requirement: "Use a continuous representative period and disclose shutdowns, startup lots, abnormal rejects, rework, and capacity utilization."
+      evidence: "dated production, meter, stock, inspection, and waste records"
+    - id: dq_completeness
+      applies_to: "inventory"
+      requirement: "Reconcile material and output mass and explain gaps; add each actual material, energy, chemical, gas, waste, wastewater, and elementary emission as a separate row."
+      evidence: "mass-balance worksheet and completeness checklist"
+    - id: dq_ranges
+      applies_to: "important flows"
+      requirement: "Until two independent boundary-compatible original sources support an external range, use foreground collection without a numerical default and flag comparisons for review."
+      evidence: "unresolved range-evidence register and foreground records"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference product"
+    rule: "Fail if output is outside the covered boundary, the reference UUID differs, or required product, material, route, quality, geography, technology, or period qualifiers are missing."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_reference_amount
+    applies_to: "reference flow"
+    rule: "Require exactly 1,000 kg net conforming product after normalization; exclude packaging, rejects, scrap, and work in progress."
+    source_ids: []
+  - rule_id: validate_inventory_atomicity
+    applies_to: "process inventory"
+    rule: "Fail any combined or umbrella Selected flow; require one direction, flow type, property, unit, amount method, and applicability condition per exchange."
+    source_ids: []
+  - rule_id: validate_uuid_semantics
+    applies_to: "UUID-bearing rows"
+    rule: "Require UUID, English and official Chinese names, flow type, classification, property, unit group, and product state to match; unresolved rows remain UUID-empty with documented reasons."
+    source_ids: []
+  - rule_id: validate_energy_gas
+    applies_to: "electricity and gases"
+    rule: "Require electricity conversion and gas reference conditions, purity or composition, supply boundary, geography, and allocation."
+    source_ids: []
+  - rule_id: validate_mass_balance
+    applies_to: "material and output records"
+    rule: "Require a mass balance and explanation for measurement loss, stock change, scrap, waste, emissions, and unreconciled difference."
+    source_ids: []
+  - rule_id: validate_allocation
+    applies_to: "shared processes"
+    rule: "Require allocation hierarchy, driver, factor, period, products, and sensitivity; reject undocumented allocation or double credit for scrap."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: validate_ranges
+    applies_to: "numerical external ranges"
+    rule: "Reject an inferred range unless at least two independent original sources have compatible boundaries, functional unit, and product state and the synthesis explains geographic and technological differences."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset or background_dataset after review and publication"
+  downstream_use: "Foreground process modelling of the declared covered part or weighing-machine weight and compatible lifecycle-model aggregation"
+  allowed_use: "Declared product subtype, material, route, quality, geography, technology, packaging boundary, and period, or a documented representative average of compatible records"
+  excluded_use: "Complete machinery, unrelated parts, different materials or routes without adjustment, use, maintenance, distribution, end-of-life, or materially different geography or technology"
+  required_metadata: "PCR id and version when published; reference UUID; subtype; family rule; parent application; material and recycled content; net mass; drawing and specification; route; site; geography; technology; period; operations; packaging; upstream datasets and proxies; allocation"
+  required_quality_disclosure: "Primary-data share; meter and scale coverage; representativeness; mass balance; allocation shares; missing or estimated exchanges; unresolved UUIDs; emission methods; upstream proxies; uncertainty and review status"
+  update_trigger: "Change in family, material, recycled content, supplier, route, heat or surface treatment, packaging, site, energy, emission control, allocation, upstream dataset, or material shift in yield, scrap, water, energy, or emissions"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-06)"
+    used_for: "Official category identity, parent subclasses, coverage, and exclusions"
+  - id: "eu-jrc-sf-bref-2024"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Smitheries and Foundries Industry BREF official page, https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/smitheries-and-foundries-industry (retrieved 2026-09-06)"
+    used_for: "Conditional forming, machining, finishing, heat treatment, casting, and material-management decomposition"
+  - id: "eu-jrc-stm-bref-2006"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Surface Treatment of Metals and Plastics BREF official page, https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/surface-treatment-metals-and-plastics (retrieved 2026-09-06)"
+    used_for: "Conditional aqueous electrolytic or chemical surface treatment"
+  - id: "eu-jrc-sts-bref-2020"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Surface Treatment Using Organic Solvents BREF official page, https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/surface-treatment-using-organic-solvents-including-wood-and-wood-products-preservation (retrieved 2026-09-06)"
+    used_for: "Conditional coating, painting, cleaning, and degreasing"
+  - id: "eu-pef-method-2021"
+    type: "standard"
+    reference: "Commission Recommendation (EU) 2021/2279, Product Environmental Footprint Method, consolidated 30 December 2021, https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX%3A02021H2279-20211230 (retrieved 2026-09-06)"
+    used_for: "Functional unit, boundary, company-specific data, quality, and multifunctionality hierarchy"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:259b198e1b12cb3ba8f71eed1302a38fb0168bfd47395a79255d72ceb625caf2"
+  generated_content_sha256: "sha256:e131a827bcd3f2aac0468421f27471bbdea77e6f62b3aa573fd3816f0df11398"

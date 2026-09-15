@@ -1,10 +1,767 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "48352"
-  title: "Parts of goods of subclass 48313"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.medical-appliances-precision-and-optical-instruments-watches-and-clocks.parts-of-goods-of-subclass-48313"
+  classification_refs: "CPC 3.0: 48352, Parts of goods of subclass 48313"
+  covered_products: "Separately supplied components whose declared function is in a frame or mounting for spectacles, goggles, or similar eyewear"
+  excluded_products: "Complete frames or mountings; complete spectacles or goggles; optical lenses; cases; repair services; undifferentiated material stock"
+  representative_product: "A conforming finished temple, bridge, rim component, end piece, nose-pad arm, hinge component, or another declared frame/mounting part"
+  production_route: "Forming or machining of specification-controlled polymer or metal stock, with route-specific cleaning, joining, polishing, coating, inspection, and packaging"
+  market_state: "Finished or semi-finished, separately supplied frame/mounting part at the factory gate; net product mass excludes packaging"
+functional_unit:
+  what: "Provide conforming parts that perform the declared structural, connecting, positioning, or wearing function in a frame or mounting for spectacles, goggles, or similar eyewear"
+  how_much: "1 kg net mass of conforming finished parts at the factory gate"
+  how_well: "Meets the declared drawing, dimensions and tolerances, material and grade, surface finish, coating specification when applicable, and inspection acceptance criteria"
+  how_long_or_cycle: "One completed manufacturing lot; service life is not asserted and shall be declared only in a downstream assembled-product study"
+  reference_flow_link: "The output row finished_frame_part is the quantitative reference and equals 1 kg"
+system_boundary:
+  rules:
+    - rule_id: sb_product_scope
+      applies_to: "Product output identity"
+      rule: "The reference output shall be a separately supplied part of a frame or mounting, not a complete frame, complete spectacles or goggles, or an optical lens."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+    - rule_id: sb_gate_to_gate
+      applies_to: "Foreground manufacturing boundary"
+      rule: "Include all on-site forming, machining, joining, cleaning, polishing, surface finishing, inspection, rework, internal material handling, utility use, direct releases, waste generation, and packaging performed for the declared production lot."
+      source_ids: []
+    - rule_id: sb_upstream_links
+      applies_to: "Purchased inputs"
+      rule: "Exclude production of purchased materials, components, chemicals, electricity, water, and packaging from the foreground process and connect them through representative upstream datasets."
+      source_ids: []
+    - rule_id: sb_direct_releases
+      applies_to: "Direct emissions and wastes"
+      rule: "Record direct air emissions, aqueous waste, segregated offcuts, metal scrap, and rejected parts before off-site treatment; do not replace direct exchanges with an upstream electricity emission profile."
+      source_ids: []
+    - rule_id: sb_capital_goods
+      applies_to: "Infrastructure and tooling"
+      rule: "Exclude buildings, durable machinery, dies, moulds, and reusable fixtures unless the study goal explicitly includes them and separately reports the inclusion."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased material stock, purchased components, chemicals, water, electricity, and packaging at the manufacturing-site receiving boundary, each identified by composition or specification and supply state"
+  starting_condition_role: "Foreground entry condition; upstream production and delivery are represented by linked datasets rather than repeated inside the foreground process"
+  product_classification_scope: "Parts of CPC 48313 frames and mountings; complete frames, complete eyewear, lenses, and unrelated generic articles are outside the product output scope"
+  recursive_input_rule: "A purchased part in the same product category that is incorporated into the output shall be recorded as its own concrete product input with supplier identity and an upstream dataset; it shall not be merged with the reference product or recursively re-manufactured in this foreground model"
+  upstream_dataset_requirement: "Link every purchased product input and energy input to a geography-, technology-, composition-, and supply-state-representative upstream dataset; disclose proxies and unmatched material grades"
+  disclosure: "Declare the part type, bill of materials, material grades, purchased-component content, included operations, surface-treatment and coating routes, site utilities, air and wastewater controls, scrap destinations, packaging, geography, technology, lot period, and any shared-facility allocation"
+reference_flow_definition:
+  reference_amount: "1 kg net mass"
+  product_flow_ref:
+    name: "Parts of frames and mountings for spectacles or goggles"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "part type and frame function"
+    - "material family"
+    - "composition and grade"
+    - "finished or semi-finished state"
+    - "drawing or specification identifier"
+    - "dimensions and tolerances"
+    - "surface finish and coating"
+    - "joining route"
+    - "net mass and mass-determination method"
+    - "manufacturing geography and technology"
+    - "lot and time period"
+    - "packaging inclusion status"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "finished_frame_part"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine the net mass of accepted finished parts after all included finishing steps and before packaging; exclude boxes, separators, pallets, fixtures, and rejected parts."
+  - id: count_to_mass
+    applies_to: "Product and packaging records reported by item count"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert counts using a contemporaneous, documented average mass from a representative weighed sample for the same part or packaging specification; retain counts, sample size, weighing result, and conversion."
+  - id: electricity_energy
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered kWh and convert to MJ using exactly 3.6 MJ per kWh; disclose the meter boundary and any allocation from a shared meter."
+  - id: water_mass
+    applies_to: "process_water and finishing_wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer direct mass records; when volume is measured, convert with measured density at the recorded condition or a documented water-density assumption and retain the original volume."
+  - id: mass_normalization
+    applies_to: "Every mass-based inventory row"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg per kg reference flow"
+    rule: "Normalize the lot quantity to 1 kg of accepted finished_frame_part; do not include the mass of rejects or packaging in the denominator."
+process_map:
+  - id: frame_part_manufacturing
+    name: "Frame or mounting part manufacture"
+    inclusion: "required"
+    inclusion_condition: "Always include operations performed from received stock through an unpacked conforming part; route-specific flow cards apply only when their named material or operation is used"
+    role: "Foreground forming, machining, cleaning, joining, polishing, and finishing"
+    quantitative_reference: "kg unpacked conforming part transferred to inspection and packaging"
+  - id: inspection_packaging
+    name: "Final inspection and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always include final acceptance, recorded rework disposition, and packaging at the reporting site"
+    role: "Foreground product release and factory-gate packaging"
+    quantitative_reference: "1 kg accepted finished part output"
+process_inventory:
+  - id: frame_part_manufacturing
+    label: "Frame or mounting part manufacture"
+    inputs:
+      product:
+        - row_id: cellulose_acetate_sheet
+          role: "Cellulose acetate sheet stock"
+          name: "Cellulose acetate sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this exchange only for a route that cuts or machines cellulose acetate sheet into the declared frame or mounting part. Material composition, plasticizer system, colour, thickness, supplier, and recycled content shall be retained."
+          amount:
+            expression: "Net issued mass minus verified returns of unchanged sheet stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished_frame_part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_stock
+              source_ids: []
+            ranges: []
+        - row_id: stainless_steel_wire
+          role: "Stainless-steel wire stock"
+          name: "Stainless-steel wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this exchange only when the declared part is formed or machined from stainless-steel wire. Retain alloy grade, diameter, temper, supplier, and recycled-content claim; do not substitute non-alloy or low-alloy steel wire."
+          amount:
+            expression: "Net issued mass minus verified returns of unchanged wire stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished_frame_part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_stock
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity delivered across the manufacturing meter boundary for forming, machining, joining, cleaning, polishing, finishing, ventilation, and attributable support equipment. Upstream electricity emissions are not direct elementary outputs of this process."
+          amount:
+            expression: "Metered electricity attributable to the production lot, converted according to electricity_energy"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished_frame_part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_electricity
+              source_ids: []
+            ranges: []
+        - row_id: process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water only when it crosses the manufacturing boundary for cleaning, rinsing, cooling, polishing, or bath make-up. Closed-loop recirculation is not repeatedly counted; only make-up water crosses the boundary."
+          amount:
+            expression: "Measured make-up water attributable to the production lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished_frame_part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water
+              source_ids: []
+            ranges: []
+        - row_id: sodium_hydroxide
+          role: "Sodium hydroxide for alkaline cleaning"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide only when it is introduced to an alkaline cleaning or surface-treatment bath used for the declared part. Retain product concentration and calculate dry sodium-hydroxide mass from solution mass and concentration."
+          amount:
+            expression: "Dry sodium-hydroxide mass in bath make-up and replenishment attributable to the lot"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished_frame_part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bath_chemicals
+              source_ids: []
+            ranges: []
+        - row_id: acrylic_varnish
+          role: "Acrylic varnish coating"
+          name: "Acrylic varnish"
+          flow_type: "product"
+          flow_ref:
+            uuid: "56a0ef1c-80ef-4e0c-b690-c8aefb4c7e8e"
+          property_unit: "Mass / kg"
+          description: "Record acrylic varnish only for parts coated with that specific product family. Retain formulation, non-volatile fraction, application and curing route, colour when relevant, supplier, and returned or recovered varnish."
+          amount:
+            expression: "Net varnish issued to the coating operation after verified returns"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished_frame_part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_material
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: unpacked_frame_part_output
+          role: "Unpacked conforming frame or mounting part"
+          name: "Unpacked conforming frame or mounting part"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the net mass of conforming parts transferred from manufacturing to final inspection and packaging. This is an internal foreground transfer and shall equal the corresponding input to inspection_packaging after any documented transfer loss."
+          amount:
+            expression: "Measured net mass transferred to final inspection and packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished_frame_part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_production_transfer
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: cellulose_acetate_offcuts
+          role: "Cellulose acetate offcuts"
+          name: "Cellulose acetate offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record clean or contaminated cellulose acetate offcuts separately when the cellulose acetate route is used. Do not combine them with metal scrap, rejects, wastewater, or packaging waste."
+          amount:
+            expression: "Measured offcut mass leaving the foreground manufacturing process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished_frame_part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_measurements
+              source_ids: []
+            ranges: []
+        - row_id: stainless_steel_scrap
+          role: "Stainless-steel manufacturing scrap"
+          name: "Stainless-steel manufacturing scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record grade-segregated stainless-steel scrap when the stainless-steel route is used. Retain the alloy grade, contamination state, internal reuse quantity, and destination; do not mix this row with other metal scrap."
+          amount:
+            expression: "Measured stainless-steel scrap leaving the foreground process after deducting verified internal reuse"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished_frame_part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_measurements
+              source_ids: []
+            ranges: []
+        - row_id: finishing_wastewater
+          role: "Metal-finishing wastewater with suspended solids"
+          name: "Metal-finishing wastewater with suspended solids"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this aqueous waste only when cleaning, rinsing, polishing, or metal finishing creates a wastewater stream that crosses the site boundary or enters on-site treatment. Retain water mass, suspended-solids concentration, dissolved-metal data when applicable, treatment route, and discharge or transfer point."
+          amount:
+            expression: "Measured wastewater mass transferred to on-site or off-site treatment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished_frame_part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: nmvoc_to_air
+          role: "Non-methane volatile organic compounds to air"
+          name: "non-methane volatile organic compounds"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-a302-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct NMVOC released from acrylic-varnish application and curing only when that route is used. Use site measurements or the documented solvent mass-balance calculation; exclude upstream electricity and coating-production emissions."
+          amount:
+            expression: "Direct NMVOC mass released to air, calculated from collected site measurements or coating records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished_frame_part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids: []
+            ranges: []
+        - row_id: pm25_to_air
+          role: "PM2.5 to air"
+          name: "particles (PM2.5)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9293-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct PM2.5 released from cutting, machining, or polishing only when those operations generate a measured or calculated release after abatement. Retain material composition, release point, control equipment, and measurement basis."
+          amount:
+            expression: "Direct PM2.5 mass released to air after abatement, calculated from collected measurements"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished_frame_part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids: []
+            ranges: []
+  - id: inspection_packaging
+    label: "Final inspection and packaging"
+    inputs:
+      product:
+        - row_id: unpacked_frame_part_input
+          role: "Unpacked conforming frame or mounting part"
+          name: "Unpacked conforming frame or mounting part"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the net mass received from frame_part_manufacturing. This internal transfer shall match unpacked_frame_part_output after any separately documented transfer loss."
+          amount:
+            expression: "Measured net mass entering final inspection and packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished_frame_part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_production_transfer
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_board_boxes
+          role: "Corrugated board boxes"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record corrugated board boxes that leave the factory with the reference product. Retain box grade, recycled content, dimensions, supplier, number of reuses if applicable, and measured or sampled mass."
+          amount:
+            expression: "Measured or count-converted mass of corrugated board boxes shipped with the lot"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished_frame_part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_frame_part
+          role: "Finished frame or mounting part"
+          name: "Parts of frames and mountings for spectacles or goggles"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This is the reference product leaving the factory gate after final acceptance. The product flow UUID remains unresolved because the audited public candidates represent complete frames or complete spectacles rather than component parts."
+          amount:
+            expression: "Exactly 1 kg net mass of accepted finished parts for the normalized dataset"
+            value_mode: "calculated_value"
+            specificity: "generic"
+            basis:
+              text: "1 kg accepted finished frame or mounting part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finished_product
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: rejected_frame_part
+          role: "Rejected frame or mounting part"
+          name: "Rejected frame or mounting part"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record parts rejected at final inspection that leave the foreground process for recycling, treatment, or disposal. Reworked parts returned to manufacturing are internal transfers and are not counted again as waste unless finally rejected."
+          amount:
+            expression: "Measured net mass of finally rejected parts leaving the foreground process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished_frame_part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rejects
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "Shared and multi-output operations"
+    rule: "Avoid allocation by separately metering product-specific forming, finishing, inspection, rework, waste, and packaging operations whenever practicable."
+    source_ids: []
+  - rule_id: allocation_causal
+    applies_to: "Unavoidable shared utility or process records"
+    rule: "Use a documented physical driver that reflects causality, in this order when applicable: machine time and rated or measured demand, treated surface area, bath throughput, inspected count with verified part mass, then net accepted product mass."
+    source_ids: []
+  - rule_id: allocation_scrap
+    applies_to: "Offcuts and metal scrap"
+    rule: "Report scrap as a waste output at the point it leaves the foreground boundary. Do not subtract revenue or an avoided primary-material credit inside this gate-to-gate dataset; any recycling substitution belongs to the consistent downstream system model."
+    source_ids: []
+  - rule_id: allocation_rework
+    applies_to: "Rework loops"
+    rule: "Assign measured rework inputs and wastes to the lot that generated the nonconformity; do not count internally reworked mass as a second product output."
+    source_ids: []
+  - rule_id: allocation_documentation
+    applies_to: "Every allocated row"
+    rule: "Retain the shared total, allocation population, driver values, formula, resulting factor, and reconciliation to the original record."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_stock
+      process_id: "frame_part_manufacturing"
+      flow_role: "cellulose_acetate_sheet; stainless_steel_wire"
+      record_type: "purchase, issue, return, and stock records"
+      raw_fields: "material identity; composition or grade; supplier; lot; opening stock; receipts; issues; unchanged returns; closing stock; mass"
+      collection_method: "Reconcile lot-specific issues and returns to stock movement and production orders"
+      unit: "kg"
+      frequency: "Each issue and lot close"
+      temporal_coverage: "Complete reporting lot and reconciliation period"
+      site_scope: "All production lines making the declared part"
+      aggregation_rule: "Net consumed mass = issues minus unchanged returns, reconciled to stock; normalize by accepted product mass"
+      quality_evidence: "invoices; material certificates; calibrated scale records; signed stock reconciliation"
+    - protocol_id: cp_electricity
+      process_id: "frame_part_manufacturing"
+      flow_role: "electricity"
+      record_type: "electricity meter and production-hour records"
+      raw_fields: "meter id; opening and closing reading; kWh; time; production order; shared loads; allocation driver"
+      collection_method: "Read dedicated meters or allocate a reconciled shared meter with the declared causal driver"
+      unit: "kWh and MJ"
+      frequency: "At least each shift and lot close"
+      temporal_coverage: "Complete lot plus shared-meter reconciliation period"
+      site_scope: "Included manufacturing operations and attributable support equipment"
+      aggregation_rule: "Subtract documented non-production loads, allocate shared use, convert kWh to MJ, normalize by accepted mass"
+      quality_evidence: "meter calibration; bills; reading logs; allocation worksheet"
+    - protocol_id: cp_water
+      process_id: "frame_part_manufacturing"
+      flow_role: "process_water"
+      record_type: "water meter, tank, or batch-make-up records"
+      raw_fields: "meter or vessel id; volume or mass; density basis; operation; lot; recirculation; make-up quantity"
+      collection_method: "Measure only make-up water crossing the boundary; reconcile to bath and rinse records"
+      unit: "kg or m3"
+      frequency: "Each batch or daily, plus lot close"
+      temporal_coverage: "Complete reporting lot"
+      site_scope: "Included cleaning, rinsing, cooling, polishing, and bath make-up"
+      aggregation_rule: "Convert volume to mass when needed, allocate shared use, normalize by accepted mass"
+      quality_evidence: "meter or vessel calibration; batch sheets; density record; reconciliation"
+    - protocol_id: cp_bath_chemicals
+      process_id: "frame_part_manufacturing"
+      flow_role: "sodium_hydroxide"
+      record_type: "bath make-up, analysis, replenishment, issue, and return records"
+      raw_fields: "product identity; solution mass; concentration; bath id; make-up; replenishment; return; lot"
+      collection_method: "Reconcile issued solution to bath records and calculate dry chemical mass"
+      unit: "kg solution and mass fraction"
+      frequency: "Every make-up and replenishment"
+      temporal_coverage: "Complete bath campaigns overlapping the reporting lot"
+      site_scope: "Baths used for the declared part"
+      aggregation_rule: "Dry NaOH mass = net solution mass multiplied by measured or supplier concentration; allocate by bath throughput when shared"
+      quality_evidence: "supplier certificate; concentration test; calibrated scale; bath log"
+    - protocol_id: cp_coating_material
+      process_id: "frame_part_manufacturing"
+      flow_role: "acrylic_varnish"
+      record_type: "coating issue, return, formulation, and application records"
+      raw_fields: "product identity; batch; issued mass; returned mass; non-volatile fraction; application route; coated part lot"
+      collection_method: "Weigh issued and returned varnish and reconcile to coating operation"
+      unit: "kg"
+      frequency: "Each coating batch"
+      temporal_coverage: "Complete coating batches for the reporting lot"
+      site_scope: "Coating lines used for the declared part"
+      aggregation_rule: "Net varnish input = issued minus verified unchanged return; normalize by accepted mass"
+      quality_evidence: "supplier specification; scale calibration; batch sheet; issue-return reconciliation"
+    - protocol_id: cp_production_transfer
+      process_id: "frame_part_manufacturing_inspection_packaging"
+      flow_role: "unpacked_frame_part_output; unpacked_frame_part_input"
+      record_type: "production-order transfer records"
+      raw_fields: "part id; lot; accepted status at transfer; count; sampled average mass or direct mass; sending and receiving timestamps"
+      collection_method: "Weigh the transfer directly or use count-to-mass conversion under count_to_mass; reconcile both processes"
+      unit: "kg"
+      frequency: "Each transfer"
+      temporal_coverage: "Complete reporting lot"
+      site_scope: "Manufacturing and inspection/packaging boundary"
+      aggregation_rule: "Sum transferred net mass and reconcile sending and receiving records"
+      quality_evidence: "calibrated scale; sample record; signed transfer record; discrepancy investigation"
+    - protocol_id: cp_waste_measurements
+      process_id: "frame_part_manufacturing"
+      flow_role: "cellulose_acetate_offcuts; stainless_steel_scrap"
+      record_type: "segregated waste container and transfer records"
+      raw_fields: "waste identity; material or grade; contamination; container tare and gross mass; internal reuse; destination; lot"
+      collection_method: "Weigh each segregated stream before it leaves the foreground process"
+      unit: "kg"
+      frequency: "Each container transfer"
+      temporal_coverage: "Complete reporting lot"
+      site_scope: "All included manufacturing operations"
+      aggregation_rule: "Sum net waste mass by atomic stream after deducting verified internal reuse; normalize by accepted mass"
+      quality_evidence: "scale calibration; photos or labels; transfer notes; recycler receipt"
+    - protocol_id: cp_wastewater
+      process_id: "frame_part_manufacturing"
+      flow_role: "finishing_wastewater"
+      record_type: "tank, discharge, and transfer records"
+      raw_fields: "source operation; volume or mass; density; suspended solids; dissolved metals when applicable; treatment route; destination; date; lot"
+      collection_method: "Measure wastewater crossing to on-site treatment, sewer, or off-site transfer without double counting recirculation"
+      unit: "kg and concentration units"
+      frequency: "Each discharge or transfer"
+      temporal_coverage: "Complete reporting lot and overlapping bath campaign"
+      site_scope: "Included wet operations"
+      aggregation_rule: "Convert to mass, allocate shared tanks by documented throughput, normalize by accepted mass"
+      quality_evidence: "meter or tank calibration; laboratory results; manifest or discharge record; mass-balance reconciliation"
+    - protocol_id: cp_air_emissions
+      process_id: "frame_part_manufacturing"
+      flow_role: "nmvoc_to_air; pm25_to_air"
+      record_type: "stack or workplace exhaust tests and operation records, or documented material balance"
+      raw_fields: "pollutant; concentration; gas flow; duration; coating input and solvent fraction; capture and abatement efficiency; operating hours; lot"
+      collection_method: "Prefer representative measured concentration and gas flow; use a documented coating or particulate mass balance only when measurement is unavailable"
+      unit: "kg pollutant"
+      frequency: "Each representative test and every lot calculation"
+      temporal_coverage: "Tests representative of the reporting technology and full lot operating hours"
+      site_scope: "All release points attributable to the declared part"
+      aggregation_rule: "Calculate pollutant mass by calc_air_emissions, reconcile controls and bypasses, normalize by accepted mass"
+      quality_evidence: "laboratory report; instrument calibration; operating log; control-equipment records; calculation worksheet"
+    - protocol_id: cp_packaging
+      process_id: "inspection_packaging"
+      flow_role: "corrugated_board_boxes"
+      record_type: "packaging issue and shipment records"
+      raw_fields: "box specification; supplier; count; sampled or direct mass; reused count; lot"
+      collection_method: "Weigh boxes or apply count_to_mass for the same box specification"
+      unit: "kg"
+      frequency: "Each packaging lot"
+      temporal_coverage: "Complete reporting lot"
+      site_scope: "Final packaging operation"
+      aggregation_rule: "Sum boxes shipped with the product, adjust documented reuse allocation, normalize by accepted mass"
+      quality_evidence: "purchase record; box specification; calibrated scale; sample worksheet"
+    - protocol_id: cp_finished_product
+      process_id: "inspection_packaging"
+      flow_role: "finished_frame_part"
+      record_type: "final inspection and shipping release records"
+      raw_fields: "part id; lot; accepted count; net mass; specification; packaging tare; release status"
+      collection_method: "Weigh accepted parts before packaging or use validated count-to-mass conversion"
+      unit: "kg"
+      frequency: "Each released lot"
+      temporal_coverage: "Complete reporting lot"
+      site_scope: "Final acceptance boundary"
+      aggregation_rule: "Sum accepted net product mass; set normalized reference output to exactly 1 kg"
+      quality_evidence: "calibrated scale; acceptance record; sample worksheet; shipping release"
+    - protocol_id: cp_rejects
+      process_id: "inspection_packaging"
+      flow_role: "rejected_frame_part"
+      record_type: "inspection disposition and waste transfer records"
+      raw_fields: "part id; lot; reject reason; count; net mass; rework status; destination"
+      collection_method: "Weigh finally rejected parts and reconcile reworked quantities to production records"
+      unit: "kg"
+      frequency: "Each disposition and lot close"
+      temporal_coverage: "Complete reporting lot"
+      site_scope: "Final inspection and any linked rework area"
+      aggregation_rule: "Sum final reject mass only; exclude successful rework; normalize by accepted mass"
+      quality_evidence: "inspection record; scale calibration; rework reconciliation; transfer note"
+  calculation_rules:
+    - id: calc_normalize_mass
+      applies_to: "Every lot-level inventory amount"
+      rule: "normalized amount = attributable lot amount / accepted net mass of finished_frame_part"
+      inputs:
+        - "attributable lot amount"
+        - "accepted net product mass"
+      output: "kg, MJ, or pollutant kg per 1 kg reference flow"
+      source_ids: []
+    - id: calc_electricity_mj
+      applies_to: "electricity"
+      rule: "electricity MJ = metered electricity kWh × 3.6; then apply the documented shared-meter allocation before normalization"
+      inputs:
+        - kWh
+        - "allocation driver and factor"
+        - "accepted net product mass"
+      output: "MJ per 1 kg reference flow"
+      source_ids: []
+    - id: calc_water_mass
+      applies_to: "process_water; finishing_wastewater"
+      rule: "water-stream mass = measured volume × documented density when direct mass is unavailable"
+      inputs:
+        - "measured volume"
+        - "density and condition"
+      output: "kg per 1 kg reference flow"
+      source_ids: []
+    - id: calc_dry_naoh
+      applies_to: "sodium_hydroxide"
+      rule: "dry NaOH mass = net solution mass × measured or supplier mass fraction of NaOH"
+      inputs:
+        - "issued solution mass"
+        - "unchanged return"
+        - "NaOH mass fraction"
+      output: "kg dry NaOH per 1 kg reference flow"
+      source_ids: []
+    - id: calc_air_emissions
+      applies_to: "nmvoc_to_air; pm25_to_air"
+      rule: "For measurement, released mass = concentration × actual exhaust volume over the operating period. For an accepted material balance, released mass = relevant material input minus mass retained in product, collected as waste, recovered, or destroyed, with every term measured or documented."
+      inputs:
+        - concentration
+        - "gas flow"
+        - duration
+        - "material input"
+        - retained
+        - recovered
+        - waste
+        - "and destroyed fractions"
+        - "accepted net product mass"
+      output: "kg pollutant per 1 kg reference flow"
+      source_ids: []
+    - id: calc_mass_reconciliation
+      applies_to: "Manufacturing lot"
+      rule: "material inputs = accepted and rejected product mass + separately measured waste and direct mass releases + documented stock change, within the declared measurement uncertainty"
+      inputs:
+        - "atomic material inputs"
+        - products
+        - wastes
+        - "mass emissions"
+        - "stock change"
+        - uncertainty
+      output: "reconciled mass-balance statement and unexplained difference"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product"
+      requirement: "Identify the part's frame/mounting function and demonstrate that it is not a complete frame, complete eyewear item, or lens."
+      evidence: "drawing or specification; bill of materials; product photograph or catalogue; final inspection record"
+    - id: dq_route_materials
+      applies_to: "Bill of materials"
+      requirement: "Represent every material and purchased component crossing the boundary as its own atomic exchange. Add a concrete row for any route material not represented above; never map it to an umbrella material row."
+      evidence: "reconciled bill of materials; purchase and issue records; supplier certificates"
+    - id: dq_temporal
+      applies_to: "All foreground rows"
+      requirement: "Use records covering the same reporting lot or a documented representative period; disclose substitutions, shutdowns, start-up losses, rework campaigns, and shared-facility periods."
+      evidence: "lot genealogy; dated records; representativeness statement"
+    - id: dq_completeness
+      applies_to: "Mass and energy inventory"
+      requirement: "Reconcile material mass, accepted output, rejects, wastes, direct mass releases, electricity, and water against source records; investigate unexplained differences beyond declared instrument and sampling uncertainty."
+      evidence: "reconciliation worksheet; uncertainty statement; corrective-action record"
+    - id: dq_emission_identity
+      applies_to: "Direct air emissions"
+      requirement: "Preserve pollutant identity, receiving compartment, particle size for PM2.5, release point, measurement method, control status, and test representativeness."
+      evidence: "test report; calibration; stack or exhaust map; operating log"
+    - id: dq_allocation
+      applies_to: "Shared records"
+      requirement: "Use the allocation hierarchy in section 7 and retain the original total and driver population so a reviewer can reproduce every factor."
+      evidence: "meter total; driver records; formula; reconciliation"
+    - id: dq_uuid_status
+      applies_to: "UUID-bearing and unresolved rows"
+      requirement: "Use only audited state-100 Tiangong UUIDs with matching semantics, flow type, property, and unit. Keep the reference product and other unresolved identities UUID-empty until an exact public record is verified."
+      evidence: "UUID audit record; unresolved-item register"
+validation_rules:
+  - rule_id: validation_reference
+    applies_to: "Reference flow"
+    rule: "Confirm finished_frame_part is exactly 1 kg net accepted part mass and excludes packaging, rejects, and complete frames or eyewear."
+    source_ids: []
+  - rule_id: validation_qualifiers
+    applies_to: "Dataset metadata"
+    rule: "Reject a data package that omits any required qualifier listed in section 3."
+    source_ids: []
+  - rule_id: validation_atomicity
+    applies_to: "Process inventory"
+    rule: "Confirm every exchange is one concrete product, waste, or elementary flow; reject umbrella materials, combined utilities, combined wastes, and unspecified emissions."
+    source_ids: []
+  - rule_id: validation_conditions
+    applies_to: "Conditional routes"
+    rule: "Confirm each conditional material, chemical, waste, and emission row is present when its named route occurs and absent or explicitly not applicable when that route demonstrably does not occur."
+    source_ids: []
+  - rule_id: validation_internal_transfer
+    applies_to: "unpacked_frame_part_output; unpacked_frame_part_input"
+    rule: "Reconcile the two internal-transfer amounts and explain any measured loss without counting the transfer as an external product input or output."
+    source_ids: []
+  - rule_id: validation_mass_balance
+    applies_to: "Manufacturing lot"
+    rule: "Recalculate calc_mass_reconciliation; report the unexplained difference and declared measurement uncertainty rather than forcing the balance."
+    source_ids: []
+  - rule_id: validation_emissions
+    applies_to: "nmvoc_to_air; pm25_to_air"
+    rule: "Confirm direct emissions are based on representative foreground measurements or a complete documented material balance and are not copied from upstream energy datasets."
+    source_ids: []
+  - rule_id: validation_allocation
+    applies_to: "Shared process records"
+    rule: "Reproduce each allocation from the original total, driver population, formula, and factor and confirm that allocated amounts sum to the original total."
+    source_ids: []
+  - rule_id: validation_sources
+    applies_to: "Classification and external evidence"
+    rule: "Confirm the cited official classification locator resolves to the declared CPC identities; treat all quantitative ranges as unresolved until the two-independent-source rule is met."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+published_dataset_profile:
+  dataset_role: "Gate-to-gate foreground production dataset suitable for release as a secondary_dataset or background_dataset after review"
+  downstream_use: "Assembly models for spectacles, goggles, and similar eyewear; frame or mounting production models; supply-chain and product-footprint studies needing separately supplied component manufacture"
+  allowed_use: "Use for the declared part type, material grade, geometry, finish, technology, geography, and factory-gate boundary, or for an explicitly justified representative match"
+  excluded_use: "Complete frames, complete spectacles or goggles, lenses, retail cases, repair services, dissimilar material routes without added atomic exchanges, or use-phase and end-of-life claims not modelled here"
+  required_metadata: "Canonical PCR id; product and part identifiers; frame function; material composition and grade; drawing/specification; dimensions and tolerances; finish/coating; joining route; net-mass method; bill of materials; site and geography; technology; time and lot; upstream dataset matches; allocation; waste destinations; air and wastewater controls; packaging status; unresolved UUIDs"
+  required_quality_disclosure: "Primary-record coverage; meter and scale calibration; count-to-mass sampling; mass reconciliation and uncertainty; shared-resource allocation; emission measurement or mass-balance method; data gaps; proxies; route conditions; representativeness; review status"
+  update_trigger: "Change in part function, material family or grade, geometry, forming or joining technology, surface treatment or coating, abatement, site or grid geography, packaging, allocation driver, upstream dataset match, exact Tiangong flow identity, or evidence sufficient to establish a reviewed range"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Ver. 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-07)"
+    used_for: "Official English identity for CPC 48313 and CPC 48352 and the parent-product/parts relationship"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:8a7785f062e267efc4d3ec64d4173a06fcd3b2cbf64bd059d88257114984dcc1"
+  generated_content_sha256: "sha256:5101b331d170cd97f48e3d21a82c965affaebe5ee07cec50d9fc28f784de44d8"

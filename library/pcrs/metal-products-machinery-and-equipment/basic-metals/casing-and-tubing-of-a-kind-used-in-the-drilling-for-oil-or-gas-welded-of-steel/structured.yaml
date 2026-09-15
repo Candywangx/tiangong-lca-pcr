@@ -1,10 +1,967 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41286"
-  title: "Casing and tubing, of a kind used in the drilling for oil or gas, welded, of steel"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.casing-and-tubing-of-a-kind-used-in-the-drilling-for-oil-or-gas-welded-of-steel"
+  classification_refs: "CPC 3.0: 41286, exact classification context"
+  covered_products: "Welded steel casing and welded steel tubing intended for oil or gas wells; plain-end, threaded, or threaded-and-coupled delivery states when declared"
+  excluded_products: "Seamless casing or tubing; drill pipe; line pipe; general-purpose welded tube; pup joints and coupling stock sold as separate reference products; non-steel tubulars"
+  representative_product: "Electric-resistance-welded steel casing or tubing meeting the declared grade, dimensional, connection, testing, and delivery requirements"
+  production_route: "Hot-rolled steel coil or skelp slitting and edge preparation; roll forming; electric-resistance or high-frequency longitudinal seam welding; bead removal; seam heat treatment; sizing and cutting; conditional full-body heat treatment; straightening, end finishing, testing, marking, coating, and shipment preparation"
+  market_state: "Conforming finished pipe at the manufacturing factory gate; net product mass includes an attached coupling when supplied and excludes removable shipment packaging"
+functional_unit:
+  what: "Welded steel casing or tubing that provides the declared wellbore structural or flow-conduit function"
+  how_much: "1,000 kg net mass of conforming factory-gate product"
+  how_well: "Meets the declared steel grade, dimensions, delivery condition, connection/end finish, coupling state, coating, inspection, and hydrostatic-test requirements"
+  how_long_or_cycle: "One delivered production lot at the factory gate; in-well service life is not represented"
+  reference_flow_link: "ref_welded_casing_tubing"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "foreground_system"
+      rule: "Include operations from receipt of hot-rolled steel coil or skelp through ERW/HFW forming and welding, required heat treatment, finishing, inspection, testing, marking, declared coating, and shipment preparation to the factory gate."
+      source_ids:
+        - cbsa-octg3-2021
+        - jfe-speciality-pipe-tube
+    - rule_id: boundary_upstream_inputs
+      applies_to: "purchased_materials_and_energy"
+      rule: "Link every purchased material, electricity, fuel, water, treatment service, and packaging input to an upstream dataset matched to its declared geography, technology, and product state. Steelmaking is upstream of the coil input and shall not be recreated inside the pipe-mill foreground process unless physically integrated and separately measured."
+      source_ids:
+        - eu-2022-2110-fmp-bat
+    - rule_id: boundary_conditional_operations
+      applies_to: "heat_treatment_connections_coating_packaging"
+      rule: "Include full-body heat treatment, upsetting, threading, coupling, protective varnish, and shipment-protection exchanges only when the declared grade, connection, order, or shipment state requires the individual operation or material."
+      source_ids:
+        - api-5ct-11
+        - cbsa-octg3-2021
+        - jfe-speciality-pipe-tube
+    - rule_id: boundary_internal_transfers
+      applies_to: "intermediate_pipe_states"
+      rule: "Do not create product exchanges for green pipe or other intermediate pipe states transferred wholly inside the same foreground system. If an intermediate is purchased from or sold to another facility, model the actual product transfer as a separate dataset and disclose the split."
+      source_ids:
+        - cbsa-octg3-2021
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "downstream_life_cycle"
+      rule: "Exclude outbound distribution after the manufacturing factory gate, well construction, in-well use, maintenance, workover, and end-of-life."
+      source_ids:
+        - un-cpc-3-0-2025
+boundary_abstraction:
+  declared_starting_condition: "Hot-rolled steel coil or skelp received at the welded-pipe manufacturing site, with grade, width, thickness, supplier, production route, and upstream dataset declared"
+  starting_condition_role: "Purchased principal steel feedstock entering the foreground ERW/HFW pipe-manufacturing system"
+  product_classification_scope: "Welded steel casing and tubing for oil or gas wells; not seamless OCTG, line pipe, drill pipe, or generic welded tube"
+  recursive_input_rule: "Purchased finished casing or tubing in this same category is recorded as a separate upstream product dataset and its mass is disclosed; it is not relabelled as hot-rolled coil. Same-site rework that never leaves the foreground boundary is an internal transfer and is not counted as a new input."
+  upstream_dataset_requirement: "Supplier-specific coil data are preferred; otherwise use a dataset matched to steel grade family, steelmaking route, rolling technology, geography, and reference year. All other purchased inputs require product-state and geography matching."
+  disclosure: "Declare coil source and grade; ERW/HFW technology; site integration; heat-treatment route; connection and coupling state; coating; testing; packaging; scrap destination; water recirculation; wastewater treatment; energy supply; allocation; and any excluded operation"
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Casing and tubing, of a kind used in the drilling for oil or gas, welded, of steel"
+    uuid: "978eed2c-cf59-47ff-a661-c7b865b56140"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "casing or tubing"
+    - "steel grade and material specification"
+    - "outside diameter"
+    - "wall thickness"
+    - "ordered length range"
+    - "ERW/HFW welding technology"
+    - "heat-treatment delivery condition"
+    - "plain-end or connection type"
+    - "coupling included or excluded from product mass"
+    - "coating and marking state"
+    - "hydrostatic and non-destructive test regime"
+    - "manufacturing site and country"
+    - "production reference period"
+    - "governing standard and edition"
+    - "shipment-packaging scope"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product and all mass-normalized exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize to 1,000 kg net mass of conforming pipe. Include an attached coupling only when it is part of the declared delivered product; exclude pallets, dunnage, straps, and removable protectors from reference mass and report them as separate inputs."
+  - id: weighing_basis
+    applies_to: "Coil, product, scrap, chemicals, and wastes"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer calibrated scale records. When invoice mass or theoretical linear mass is used, disclose the method, dimensional inputs, density convention, and reconciliation to shipped net mass."
+  - id: electricity_energy
+    applies_to: "Purchased alternating-current electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electricity by process where available. Convert kWh to MJ using 1 kWh = 3.6 MJ and retain the original meter unit and conversion record."
+  - id: gas_volume_conditions
+    applies_to: "Gaseous natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "State temperature, pressure, and whether the meter reports standard or actual volume. Do not combine natural gas with other fuels."
+  - id: water_mass_conversion
+    applies_to: "Process and test water"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record make-up water crossing the foreground boundary. If a volume meter is used, retain volume and density/reference-condition information used for conversion; do not count recirculated water repeatedly."
+process_map:
+  - id: erw_forming_welding
+    name: "Coil preparation, roll forming, ERW/HFW welding, bead removal, seam heat treatment, sizing, and cutting"
+    inclusion: "required"
+    inclusion_condition: "Always included for the covered welded product"
+    role: "Foreground pipe formation"
+    quantitative_reference: "Per 1,000 kg conforming factory-gate product"
+  - id: grade_heat_treatment
+    name: "Full-body grade heat treatment and quenching"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared grade or delivery condition requires normalizing, quenching and tempering, or another separately metered full-body treatment"
+    role: "Foreground metallurgical conditioning"
+    quantitative_reference: "Per 1,000 kg conforming product receiving the treatment"
+  - id: finishing_testing
+    name: "Straightening, facing, conditional threading/coupling, inspection, hydrostatic testing, marking, and conditional coating"
+    inclusion: "required"
+    inclusion_condition: "Always include finishing and test operations; apply conditional material rows only when used"
+    role: "Foreground finishing and quality assurance"
+    quantitative_reference: "Per 1,000 kg conforming factory-gate product"
+  - id: shipment_preparation
+    name: "Bundling and removable shipment protection"
+    inclusion: "conditional"
+    inclusion_condition: "Include each listed material only when it is supplied with the factory-gate product"
+    role: "Foreground shipment preparation"
+    quantitative_reference: "Per 1,000 kg conforming factory-gate product; packaging excluded from reference mass"
+process_inventory:
+  - id: erw_forming_welding
+    label: "Coil preparation, roll forming, ERW/HFW welding, bead removal, seam heat treatment, sizing, and cutting"
+    inputs:
+      product:
+        - row_id: erw_hot_rolled_coil
+          role: "Principal hot-rolled coil feedstock"
+          name: "steel hot rolled coil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f1a1835-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record flat-rolled hot-rolled steel coil or skelp received for the covered pipe, including grade, width, thickness, supplier, and upstream steel dataset."
+          amount:
+            expression: "measured mass of coil or skelp consumed, adjusted for stock change and returned material"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_erw_production_records
+              source_ids:
+                - cbsa-octg3-2021
+                - jfe-speciality-pipe-tube
+            ranges: []
+        - row_id: erw_electricity
+          role: "Forming and welding electricity"
+          name: "alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bfc48b1-c262-4156-a817-b2c8a1b21598"
+          property_unit: "Net calorific value / MJ"
+          description: "Record alternating-current electricity metered or allocated to coil handling, edge preparation, roll forming, welding, bead removal, seam annealing, sizing, cutting, and associated extraction."
+          amount:
+            expression: "process-metered electricity, or documented allocation from a site meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_erw_production_records
+              source_ids:
+                - jfe-speciality-pipe-tube
+                - eu-2022-2110-fmp-bat
+            ranges: []
+        - row_id: erw_process_water
+          role: "Forming and cooling make-up water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record make-up process water crossing the boundary for weld cooling and other direct pipe-forming uses; exclude water recirculated inside the system."
+          amount:
+            expression: "measured make-up water supplied to the process circuit"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_erw_production_records
+              source_ids:
+                - jfe-speciality-pipe-tube
+                - eu-2022-2110-fmp-bat
+            ranges: []
+        - row_id: erw_cutting_fluid
+          role: "Cutting fluid for edge preparation and cutting"
+          name: "Cutting Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "576d250f-4f36-4385-939d-0f03b8f95a10"
+          property_unit: "Mass / kg"
+          description: "Record fresh cutting fluid added for edge milling and cut-off operations; state formulation, supplied concentration, and whether the circuit is recirculated."
+          amount:
+            expression: "fresh cutting-fluid make-up crossing the foreground boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_erw_production_records
+              source_ids:
+                - jfe-speciality-pipe-tube
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: erw_steel_scrap
+          role: "Edge trim, weld bead, and crop steel scrap"
+          name: "Steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "b973529f-a945-4cb9-9600-ecbcc745a4c6"
+          property_unit: "Mass / kg"
+          description: "Record segregated ferrous scrap leaving the foreground system from slitting, edge preparation, bead cutting, sizing, and cut-off."
+          amount:
+            expression: "measured outgoing scrap mass, net of internal same-site remelt or rework that stays inside the boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_erw_production_records
+              source_ids:
+                - jfe-speciality-pipe-tube
+            ranges: []
+      elementary:
+        []
+  - id: grade_heat_treatment
+    label: "Full-body grade heat treatment and quenching"
+    inputs:
+      product:
+        - row_id: ht_natural_gas
+          role: "Furnace natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Include only for a separately identified natural-gas-fired grade heat-treatment route; do not combine it with other fuels."
+          amount:
+            expression: "metered natural-gas volume consumed by the applicable heat-treatment furnaces"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg conforming product receiving full-body heat treatment"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_records
+              source_ids:
+                - cbsa-octg3-2021
+                - eu-2022-2110-fmp-bat
+            ranges: []
+        - row_id: ht_electricity
+          role: "Heat-treatment electricity"
+          name: "alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bfc48b1-c262-4156-a817-b2c8a1b21598"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for furnace drives, induction equipment when used, quench circulation, pumps, cooling, and extraction within the conditional heat-treatment process."
+          amount:
+            expression: "process-metered electricity, or documented allocation from a site meter"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg conforming product receiving full-body heat treatment"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_records
+              source_ids:
+                - cbsa-octg3-2021
+                - eu-2022-2110-fmp-bat
+            ranges: []
+        - row_id: ht_quench_water
+          role: "Quench make-up water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record only water crossing the boundary as make-up to the quench and cooling circuit; retain blowdown separately if it leaves as waste. When a purchased quench medium other than water is used, add each actual chemically specific medium as a separate foreground input with its supplied state, concentration, and mass; do not relabel it as process water."
+          amount:
+            expression: "measured quench-circuit make-up water"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg conforming product receiving water quenching"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_records
+              source_ids:
+                - eu-2022-2110-fmp-bat
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: ht_mill_scale
+          role: "Iron-oxide mill scale"
+          name: "Mill scale"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "aad763e2-78ab-4fcb-8a3b-8d8525c9e6ca"
+          property_unit: "Mass / kg"
+          description: "Record solid iron-oxide scale removed from pipe after full-body heat treatment when it leaves the foreground system."
+          amount:
+            expression: "measured outgoing dry or as-received scale mass, with moisture basis declared"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg conforming product receiving full-body heat treatment"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_records
+              source_ids:
+                - eu-2022-2110-fmp-bat
+            ranges: []
+      elementary:
+        - row_id: ht_carbon_dioxide_fossil
+          role: "Fossil carbon dioxide from furnace fuel"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil carbon dioxide from fuel combustion in the heat-treatment process. Upstream electricity emissions are excluded from this direct row."
+          amount:
+            expression: "measured stack mass or calculated fossil-fuel carbon balance under calc_direct_combustion_emissions"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg conforming product receiving fuel-fired full-body heat treatment"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_heat_emission_records
+              source_ids:
+                - eu-2022-2110-fmp-bat
+            ranges: []
+        - row_id: ht_nitrogen_oxides
+          role: "Nitrogen oxides from heat-treatment furnace"
+          name: "Nitrogen oxides"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "191b44d4-90c9-465a-8802-93a651b4fd52"
+          property_unit: "Mass / kg"
+          description: "Record direct stack nitrogen oxides from the heat-treatment furnace on the measurement convention used by the facility; state whether results are expressed as NO2 equivalent."
+          amount:
+            expression: "measured stack mass or calculation from monitored concentration and dry-normal gas flow"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg conforming product receiving fuel-fired full-body heat treatment"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_heat_emission_records
+              source_ids:
+                - eu-2022-2110-fmp-bat
+            ranges: []
+        - row_id: ht_carbon_monoxide
+          role: "Carbon monoxide from heat-treatment furnace"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct stack carbon monoxide from the heat-treatment furnace as a separate elementary exchange."
+          amount:
+            expression: "measured stack mass or calculation from monitored concentration and dry-normal gas flow"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg conforming product receiving fuel-fired full-body heat treatment"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_heat_emission_records
+              source_ids:
+                - eu-2022-2110-fmp-bat
+            ranges: []
+  - id: finishing_testing
+    label: "Straightening, facing, conditional threading/coupling, inspection, hydrostatic testing, marking, and conditional coating"
+    inputs:
+      product:
+        - row_id: fin_electricity
+          role: "Finishing and testing electricity"
+          name: "alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bfc48b1-c262-4156-a817-b2c8a1b21598"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for straightening, facing, threading, non-destructive testing, hydrostatic testing, handling, marking, coating equipment, and local extraction."
+          amount:
+            expression: "process-metered electricity, or documented allocation from a site meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - jfe-speciality-pipe-tube
+                - cbsa-octg3-2021
+            ranges: []
+        - row_id: fin_process_water
+          role: "Hydrostatic-test and finishing water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record make-up process water used for hydrostatic testing and direct finishing operations; exclude recirculation within the test circuit."
+          amount:
+            expression: "measured make-up water crossing the process boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - jfe-speciality-pipe-tube
+            ranges: []
+        - row_id: fin_cutting_fluid
+          role: "Cutting fluid for facing and threading"
+          name: "Cutting Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "576d250f-4f36-4385-939d-0f03b8f95a10"
+          property_unit: "Mass / kg"
+          description: "Record fresh cutting fluid added for end facing, beveling, or threading; include only operations performed inside the foreground boundary."
+          amount:
+            expression: "fresh cutting-fluid make-up crossing the foreground boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - cbsa-octg3-2021
+            ranges: []
+        - row_id: fin_steel_coupling
+          role: "Steel casing or tubing coupling"
+          name: "Steel casing or tubing coupling"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when a separately manufactured steel coupling is attached to and sold with the reference product; exclude coupling stock sold as a separate reference product."
+          amount:
+            expression: "measured mass of purchased couplings attached to shipped product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg conforming factory-gate product, with coupling inclusion in reference mass declared"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - api-5ct-11
+                - cbsa-octg3-2021
+            ranges: []
+        - row_id: fin_protective_varnish
+          role: "Mill-applied protective varnish"
+          name: "Mill-applied protective varnish for steel pipe"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when a liquid protective varnish is physically applied before shipment. Declare the actual resin, carrier, solids content, and curing system; a different coating material requires its own chemically specific foreground exchange."
+          amount:
+            expression: "coating issued to the line minus documented recoverable return, normalized to conforming coated product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg conforming product receiving this coating"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - jfe-speciality-pipe-tube
+            ranges: []
+        - row_id: fin_marking_ink
+          role: "Industrial marking ink"
+          name: "Industrial steel-product marking ink"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only ink physically applied for permanent product marking; declare its formulation and supplied state, and do not combine it with protective varnish."
+          amount:
+            expression: "measured ink issued to marking equipment minus recoverable return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg marked conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - jfe-speciality-pipe-tube
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: ref_welded_casing_tubing
+          role: "Conforming welded casing or tubing"
+          name: "Casing and tubing, of a kind used in the drilling for oil or gas, welded, of steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "978eed2c-cf59-47ff-a661-c7b865b56140"
+          property_unit: "Mass / kg"
+          description: "This is the reference product at the manufacturing factory gate, after all declared finishing, inspection, testing, marking, coating, and coupling operations."
+          amount:
+            expression: "1,000 kg net conforming product mass"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "PCR reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - un-cpc-3-0-2025
+                - api-5ct-11
+            ranges: []
+      waste:
+        - row_id: fin_steel_scrap
+          role: "Off-specification pipe and finishing steel scrap"
+          name: "Steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "b973529f-a945-4cb9-9600-ecbcc745a4c6"
+          property_unit: "Mass / kg"
+          description: "Record off-specification pipe, facing cuttings, and thread-cutting steel scrap that leaves the foreground system as ferrous scrap."
+          amount:
+            expression: "measured outgoing ferrous scrap mass from finishing and rejection"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - jfe-speciality-pipe-tube
+            ranges: []
+        - row_id: fin_spent_cutting_fluid
+          role: "Spent cutting fluid"
+          name: "Spent coolant"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "62b6a738-fb6a-4570-a95a-9255ec0dcb2b"
+          property_unit: "Mass / kg"
+          description: "Record spent cutting fluid removed from facing or threading circuits and sent outside the foreground system; do not combine it with aqueous test water."
+          amount:
+            expression: "measured mass removed for external recovery or treatment, with water content declared"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-2022-2110-fmp-bat
+            ranges: []
+        - row_id: fin_spent_hydrotest_water
+          role: "Spent hydrostatic-test water"
+          name: "Spent hydrostatic-test water from steel-pipe testing"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record aqueous hydrostatic-test water discharged or sent to external treatment after its final use; do not count water recirculated inside the test circuit."
+          amount:
+            expression: "measured discharge mass leaving the foreground system, with oil and solids condition declared"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-2022-2110-fmp-bat
+            ranges: []
+      elementary:
+        []
+  - id: shipment_preparation
+    label: "Bundling and removable shipment protection"
+    inputs:
+      product:
+        - row_id: ship_steel_strapping
+          role: "Steel packaging strap"
+          name: "Steel baling band"
+          flow_type: "product"
+          flow_ref:
+            uuid: "56fe4f71-b594-4b55-8553-c87f2516737d"
+          property_unit: "Mass / kg"
+          description: "Include only steel strap that leaves the factory gate around a product bundle."
+          amount:
+            expression: "measured mass of steel strap supplied with shipped bundles"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg conforming factory-gate product; excluded from reference-product net mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_shipment_records
+              source_ids:
+                - cbsa-octg3-2021
+            ranges: []
+        - row_id: ship_polypropylene_thread_protector
+          role: "Polypropylene thread protector"
+          name: "Polypropylene casing or tubing thread protector"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only a polypropylene protector fitted to a threaded pipe end or coupling for shipment; record protectors of another polymer as separate material-specific exchanges."
+          amount:
+            expression: "measured or item-count-derived mass of polypropylene protectors supplied with product"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg threaded conforming product; excluded from reference-product net mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_shipment_records
+              source_ids:
+                - api-5ct-11
+                - cbsa-octg3-2021
+            ranges: []
+        - row_id: ship_softwood_dunnage
+          role: "Kiln-dried softwood dunnage"
+          name: "Kiln-dried softwood shipping dunnage"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only kiln-dried softwood blocks, runners, or spacers that accompany the product beyond the factory gate; reusable internal supports are excluded."
+          amount:
+            expression: "measured or item-count-derived dry mass of dunnage supplied with product"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg conforming factory-gate product; excluded from reference-product net mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_shipment_records
+              source_ids:
+                - cbsa-octg3-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "shared_processes"
+    rule: "Avoid allocation by process metering and subdivision of forming/welding, grade heat treatment, finishing/testing, and shipment preparation wherever records allow."
+    source_ids:
+      - eu-2022-2110-fmp-bat
+  - rule_id: allocation_shared_energy
+    applies_to: "shared_energy_and_utilities"
+    rule: "For unavoidable shared meters, allocate by a documented causal driver such as machine time, furnace charge mass, test time, or treated product mass. Use mass allocation only when no more causal driver exists and disclose the affected exchanges and fraction."
+    source_ids:
+      - eu-2022-2110-fmp-bat
+  - rule_id: allocation_steel_scrap
+    applies_to: "ferrous_scrap_outputs"
+    rule: "Report steel scrap as a waste output at the measured mass. Do not subtract an avoided-primary-steel credit inside the foreground inventory; any recycling model, substitution credit, or end-of-life allocation is an external scenario and shall be disclosed separately."
+    source_ids:
+      - eu-2022-2110-fmp-bat
+  - rule_id: allocation_offspec_rework
+    applies_to: "internal_rework"
+    rule: "Material returned to an operation without leaving the foreground system is an internal transfer. Count only net purchased inputs, net conforming product, and wastes or products that cross the boundary."
+    source_ids:
+      - cbsa-octg3-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_erw_production_records
+      process_id: "erw_forming_welding"
+      flow_role: "coil, electricity, water, cutting fluid, and steel scrap"
+      record_type: "scale, meter, stock, purchase, and waste-dispatch records"
+      raw_fields: "lot id; coil mass and grade; opening/closing stock; electricity; make-up water; cutting-fluid additions; scrap mass; conforming output mass"
+      collection_method: "calibrated scales and submeters; otherwise documented reconciliation to site meters and inventory records"
+      unit: "kg; MJ"
+      frequency: "per production lot with monthly reconciliation"
+      temporal_coverage: "at least 12 consecutive representative months, or the complete shorter campaign with justification"
+      site_scope: "all equipment and support loads inside the declared forming/welding boundary"
+      aggregation_rule: "sum net boundary-crossing quantities and normalize under calc_reference_normalization"
+      quality_evidence: "calibration, invoices, meter exports, stock reconciliation, and scrap dispatch tickets"
+    - protocol_id: cp_heat_treatment_records
+      process_id: "grade_heat_treatment"
+      flow_role: "natural gas, electricity, quench water, quenchant, and scale"
+      record_type: "meter, batch, chemical-addition, and waste records"
+      raw_fields: "heat-treatment lot; grade; route; treated mass; fuel volume and conditions; electricity; water; quenchant additions; scale mass and moisture"
+      collection_method: "dedicated meters and batch logs; documented allocation only when dedicated meters are unavailable"
+      unit: "kg; m3; MJ"
+      frequency: "per furnace batch with monthly reconciliation"
+      temporal_coverage: "same reference period as product data"
+      site_scope: "every included furnace and quench circuit"
+      aggregation_rule: "aggregate only treated lots and normalize to treated conforming output"
+      quality_evidence: "meter calibration, furnace logs, material issues, and waste tickets"
+    - protocol_id: cp_heat_emission_records
+      process_id: "grade_heat_treatment"
+      flow_role: "direct fossil CO2, nitrogen oxides, and carbon monoxide"
+      record_type: "stack test, continuous monitor, fuel analysis, and gas-flow records"
+      raw_fields: "source id; operating hours; concentration; reference oxygen; dry/wet basis; temperature; pressure; gas flow; fuel carbon; treated mass"
+      collection_method: "direct monitored mass preferred; otherwise calculate from monitored concentration and normalized gas flow or a documented fuel carbon balance"
+      unit: "kg; mg/Nm3; Nm3; kg C"
+      frequency: "each monitoring event with period integration"
+      temporal_coverage: "same reference period as heat-treatment activity"
+      site_scope: "all included fuel-fired heat-treatment stacks"
+      aggregation_rule: "integrate mass over included operation and normalize to treated conforming output"
+      quality_evidence: "analyzer calibration, sampling report, laboratory certificate, and calculation workbook"
+    - protocol_id: cp_finishing_records
+      process_id: "finishing_testing"
+      flow_role: "electricity, test water, cutting fluid, coupling, lacquer, ink, product, and wastes"
+      record_type: "meter, scale, purchase, issue, inspection, and waste records"
+      raw_fields: "lot id; product kind; grade; dimensions; connection; coupling mass; coating; test status; input issues; water make-up/discharge; scrap and spent-fluid mass; conforming net mass"
+      collection_method: "calibrated scales/meters and production/quality records"
+      unit: "kg; MJ"
+      frequency: "per lot with monthly reconciliation"
+      temporal_coverage: "same reference period as forming/welding data"
+      site_scope: "all finishing and test operations in scope, including outsourced operations attributed to the product"
+      aggregation_rule: "sum by declared product family and normalize to conforming factory-gate net mass"
+      quality_evidence: "calibration, inspection and hydrotest records, material certificates, purchase/issue records, and waste tickets"
+    - protocol_id: cp_shipment_records
+      process_id: "shipment_preparation"
+      flow_role: "steel strap, polypropylene protectors, and softwood dunnage"
+      record_type: "issue, bill-of-material, item-count, and shipment records"
+      raw_fields: "shipment id; product net mass; material type; item count; unit mass; issued mass; returned mass"
+      collection_method: "weigh representative items and reconcile issued quantities to shipment records"
+      unit: "kg; item"
+      frequency: "per shipment with monthly reconciliation"
+      temporal_coverage: "same reference period as product data"
+      site_scope: "packaging supplied beyond the factory gate only"
+      aggregation_rule: "calculate net supplied mass and normalize to product net mass"
+      quality_evidence: "weighing record, material specification, bill of materials, and shipment record"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all non-reference inventory rows"
+      rule: "normalized amount = 1,000 × period boundary-crossing amount / period conforming reference-product net mass"
+      inputs:
+        - "period flow amount"
+        - "period conforming net product mass"
+      output: "flow amount per 1,000 kg reference product"
+      source_ids:
+        - eu-2022-2110-fmp-bat
+    - id: calc_electricity_conversion
+      applies_to: "electricity records"
+      rule: "electricity MJ = metered kWh × 3.6; retain original kWh and meter period"
+      inputs:
+        - "metered kWh"
+      output: "electricity in MJ"
+      source_ids: []
+    - id: calc_direct_combustion_emissions
+      applies_to: "heat-treatment fossil CO2, nitrogen oxides, and carbon monoxide"
+      rule: "Prefer directly integrated monitored mass. Otherwise concentration-based mass = dry-normal concentration × dry-normal gas volume with unit conversion; fossil CO2 may alternatively use a documented fuel-carbon balance corrected for non-CO2 carbon."
+      inputs:
+        - concentration
+        - "gas flow"
+        - time
+        - "reference conditions"
+        - "fuel carbon where applicable"
+        - "treated output mass"
+      output: "kg pollutant per 1,000 kg treated conforming product"
+      source_ids:
+        - eu-2022-2110-fmp-bat
+    - id: calc_shipment_component_mass
+      applies_to: "thread protectors and softwood dunnage"
+      rule: "supplied mass = item count × verified mean unit mass; reweigh when component design or material changes"
+      inputs:
+        - "item count"
+        - "sampled unit mass"
+        - "returned items"
+      output: "kg supplied material per 1,000 kg reference product"
+      source_ids:
+        - api-5ct-11
+    - id: calc_mass_reconciliation
+      applies_to: "principal steel and ferrous outputs"
+      rule: "Reconcile opening stock + purchased coil + other included steel components with closing stock + conforming product steel mass + exported steel scrap + documented inventory change. Explain unresolved imbalance without forcing closure."
+      inputs:
+        - "coil and coupling inputs"
+        - "stock changes"
+        - "conforming product"
+        - "steel scrap"
+        - "internal transfers"
+      output: "documented steel mass-balance residual"
+      source_ids:
+        - cbsa-octg3-2021
+        - jfe-speciality-pipe-tube
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Retain product kind, grade, dimensions, welded technology, heat treatment, connection, coupling, coating, marking, test status, governing specification edition, and net-mass convention for every included product family."
+      evidence: "Product specification, mill test certificate, order, and inspection record; api-5ct-11"
+    - id: dq_technology_scope
+      applies_to: "process boundary"
+      requirement: "Identify which operations are onsite, outsourced, or absent and whether data represent ERW or HFW equipment, seam annealing, full-body heat treatment, threading, coupling, coating, and bundling."
+      evidence: "Process flow diagram, equipment list, supplier record, and cbsa-octg3-2021/jfe-speciality-pipe-tube comparison"
+    - id: dq_temporal_representativeness
+      applies_to: "all foreground records"
+      requirement: "Use a common representative period of at least 12 consecutive months where production is continuous; justify a shorter complete campaign and disclose shutdowns, trials, and abnormal lots."
+      evidence: "Dated meter, production, purchase, stock, and waste records"
+    - id: dq_completeness
+      applies_to: "all boundary exchanges"
+      requirement: "Reconcile principal material, energy, water, fuel, chemicals, packaging, wastes, and direct monitored emissions against the process-flow and environmental-stream inventories; do not hide an exchange inside a plural utility or waste row."
+      evidence: "Reconciliation workbook and process-chemical/wastewater/waste-gas inventory following eu-2022-2110-fmp-bat"
+    - id: dq_meter_and_scale_quality
+      applies_to: "measured amounts"
+      requirement: "Record instrument id, calibration status, resolution, coverage, missing-data treatment, and allocation method for every material meter or scale."
+      evidence: "Calibration certificates, meter exports, scale tickets, and gap log"
+    - id: dq_upstream_matching
+      applies_to: "upstream datasets"
+      requirement: "Match coil to grade family, steelmaking/rolling route, geography, and year; match electricity, gas, water, chemicals, treatment, and packaging to supply geography and product state."
+      evidence: "Supplier primary data or documented dataset-selection matrix"
+    - id: dq_uuid_traceability
+      applies_to: "TianGong identities"
+      requirement: "Use only directly verified public state-100 UUIDs. Keep UUID-empty rows explicit until an exact identity is verified; never substitute a proxy."
+      evidence: "Finalized hybrid-search receipts and manifest unresolved register"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "reference_product"
+    rule: "Confirm exactly 1,000 kg net conforming product, the CPC 41286 TianGong reference UUID, and every required qualifier. Verify coupling inclusion and packaging exclusion from reference mass."
+    source_ids:
+      - un-cpc-3-0-2025
+      - api-5ct-11
+  - rule_id: validate_welded_route
+    applies_to: "product_and_process_identity"
+    rule: "Reject datasets for seamless casing/tubing, line pipe, drill pipe, general welded tube, or a route that does not form and longitudinally weld flat-rolled steel feedstock."
+    source_ids:
+      - un-cpc-3-0-2025
+      - cbsa-octg3-2021
+      - jfe-speciality-pipe-tube
+  - rule_id: validate_process_completeness
+    applies_to: "foreground_inventory"
+    rule: "Check the declared process flow against coil preparation, forming/welding, conditional heat treatment, finishing/testing, conditional coating/coupling, and shipment preparation; explain every absent conditional stage."
+    source_ids:
+      - cbsa-octg3-2021
+      - jfe-speciality-pipe-tube
+  - rule_id: validate_atomic_exchanges
+    applies_to: "inventory_rows"
+    rule: "Confirm every inventory row is one physical, chemical, waste, or energy exchange and that electricity, natural gas, water, cutting fluid, coating, packaging components, wastes, and each direct emission remain separate."
+    source_ids:
+      - eu-2022-2110-fmp-bat
+  - rule_id: validate_mass_balance
+    applies_to: "steel_mass_reconciliation"
+    rule: "Review the steel mass-balance residual and supporting stock changes. Do not force the balance by changing the fixed reference flow or silently netting scrap credits."
+    source_ids:
+      - cbsa-octg3-2021
+      - jfe-speciality-pipe-tube
+  - rule_id: validate_water_and_energy
+    applies_to: "meters_and_recirculation"
+    rule: "Confirm electricity is converted consistently, natural-gas reference conditions are declared, make-up water is not confused with recirculated water, and water discharge is not double counted."
+    source_ids:
+      - eu-2022-2110-fmp-bat
+  - rule_id: validate_uuid_and_language
+    applies_to: "bilingual_identity"
+    rule: "Confirm every UUID-bearing Chinese flow display uses the exact TianGong Chinese baseName and every UUID-empty row appears in manifest review metadata."
+    source_ids: []
+  - rule_id: validate_range_evidence
+    applies_to: "quantitative_ranges"
+    rule: "Reject an externally inferred range unless at least two independent original sources have compatible factory-gate boundary, functional unit, and product state and the synthesis explains geographic and technological differences."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Factory-gate secondary dataset for welded steel oil/gas well casing or tubing production"
+  downstream_use: "secondary_dataset; may serve as a background_dataset only for a matching declared product, route, geography, grade/delivery condition, and time period"
+  allowed_use: "Foreground data-package construction; product and process LCI; cradle-to-gate or broader life-cycle models when the reference product and boundary are matched"
+  excluded_use: "Seamless OCTG, line pipe, drill pipe, generic welded tube, unqualified global average, installed well service, or automatic substitution across different grade, connection, heat-treatment, coating, or packaging states"
+  required_metadata: "All reference-flow qualifiers; site and country; reference year; coil steel route and supplier geography; ERW/HFW technology; included operations; grade heat treatment; connection/coupling; coating; test regime; packaging; water recirculation; emissions method; allocation; upstream datasets; UUID status"
+  required_quality_disclosure: "Primary-data share and period; metering and calibration; allocation fractions; steel mass-balance residual; missing records; outsourced operations; representativeness limits; unresolved UUIDs; unresolved range evidence; exclusions and deviations"
+  update_trigger: "Change in principal steel route or supplier geography; ERW/HFW line technology; furnace fuel or heat-treatment route; product grade mix; connection/coating/packaging state; water or emission controls; allocation; reference year; governing standard edition; or any change exceeding the study's significance threshold"
+data_sources:
+  - id: "un-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division. CPC Version 3.0 Structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-04)."
+    used_for: "Exact CPC 41286 classification identity and exclusions from adjacent product categories"
+  - id: "api-5ct-11"
+    type: "standard"
+    reference: "American Petroleum Institute. API Specification 5CT, Casing and Tubing, 11th edition, official publication announcement. https://www.api.org/products-and-services/standards/important-standards-announcements/spec5ct-tradepress (verified 2026-09-04)."
+    used_for: "Product qualification metadata, end finish, automated inspection, and thread-protector context"
+  - id: "cbsa-octg3-2021"
+    type: "official_guidance"
+    reference: "Canada Border Services Agency. Oil country tubular goods 3, 2021 investigations - Statement of Reasons - Initiation of an investigation, Production process. https://www.cbsa-asfc.gc.ca/sima-lmsi/i-e/octg32021/octg32021-in-eng.html (verified 2026-09-04)."
+    used_for: "Original-text ERW OCTG route: slitting hot-rolled coil, roll forming, resistance welding, cutting, conditional heat treatment, finishing, threading, coupling, testing, coating, marking, and bundling"
+  - id: "jfe-speciality-pipe-tube"
+    type: "handbook"
+    reference: "JFE Steel Corporation. Speciality Pipe and Tube, ERW Pipe Process Equipment and Manufacturing Flowchart. https://www.jfe-steel.co.jp/en/products/pipes/catalog/e1e-011.pdf (retrieved and visually verified 2026-09-04)."
+    used_for: "ERW process decomposition, seam welding, bead removal, post-annealing, cooling, sizing, cutting, hydrostatic and ultrasonic testing, threading, inspection, marking, mill-standard varnish coating, and shipping"
+  - id: "eu-2022-2110-fmp-bat"
+    type: "official_guidance"
+    reference: "European Commission. Commission Implementing Decision (EU) 2022/2110 establishing BAT conclusions for the ferrous metals processing industry. https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022D2110 (verified 2026-09-04)."
+    used_for: "Process-chemical, wastewater, waste-gas, water, energy, material-efficiency, and emissions monitoring and data-quality rules; not used as an ERW OCTG numeric range"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:60ba1746aba787c98f8ed04b027281055ad8a53c1b003e4e70383a6d40a974d6"
+  generated_content_sha256: "sha256:0203168bfb52878c0a85d4885531a84fb718cab0cf29788beb85b31397f2fef1"

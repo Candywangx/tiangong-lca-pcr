@@ -2,12 +2,13 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.electrical-machinery-and-apparatus.parts-of-primary-cells-primary-batteries-and-electric-accumulators-including-separators
 title:
   en-US: "Parts of primary cells, primary batteries and electric accumulators (including separators)"
-  zh-CN: null
-status: scaffold
+  zh-CN: "原电池、原电池组和蓄电池的零件（包括隔膜）"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
+updated_at_utc: "2026-09-04T15:02:37Z"
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +23,97 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "46430"
     title: "Parts of primary cells, primary batteries and electric accumulators (including separators)"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  semantic_boundary:
+    decision: promote_legacy
+    basis: "A distinct methodology is needed for separately supplied, ready-for-assembly battery parts because their foreground conversion processes differ from complete battery manufacture and from upstream active-material production."
+    existing_material_pcr_review: "The material electric-accumulators PCR covers complete accumulators, not the separately marketed parts boundary; the related primary-cell record remains an empty scaffold."
+    reference_product_constraint: "The confirmed Battery Separator reference flow is valid only for separator datasets. Non-separator part outputs must not reuse that UUID and remain unresolved until an exact public product flow is approved."
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  inventory_audit:
+    card_count: 42
+    verified_uuid_rows: 25
+    unresolved_uuid_rows: 17
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: separator_polypropylene
+        reason_code: classification_mismatch
+        explanation: "Ranked polypropylene candidates conflicted with their public classification or represented fabricated diaphragms, recycled granules, or yarn rather than separator-grade resin in primary form."
+      - row_id: separator_liquid_paraffin
+        reason_code: no_exact_candidate
+        explanation: "The ranked results were wax, generic mineral oil, insulation oil, or petroleum coke; none exactly denoted liquid-paraffin process oil."
+      - row_id: separator_pe_offcut_waste
+        reason_code: no_exact_candidate
+        explanation: "No ranked state-100 waste flow exactly denoted polyethylene battery-separator offcuts."
+      - row_id: separator_pp_offcut_waste
+        reason_code: no_exact_candidate
+        explanation: "No ranked state-100 waste flow exactly denoted polypropylene battery-separator offcuts."
+      - row_id: electrode_graphite_powder
+        reason_code: product_state_mismatch
+        explanation: "Ranked graphite candidates were fabricated anodes or aluminium-electrolysis carbon products, not graphite powder active material."
+      - row_id: electrode_carbon_black
+        reason_code: classification_mismatch
+        explanation: "Exact-looking carbon-black names conflicted with their public classifications or were duplicate identities without sufficient disambiguation."
+      - row_id: electrode_cathode_product
+        reason_code: classification_mismatch
+        explanation: "The closest Battery Cathode candidate was classified as a doped chemical and did not clarify whether it was active-material powder or a ready-for-assembly electrode."
+      - row_id: electrode_nmc_cathode_offcut_waste
+        reason_code: no_exact_candidate
+        explanation: "The only ranked waste result was electrolyte scrap, not a coated NMC cathode offcut containing aluminium current collector and active layer."
+      - row_id: electrode_graphite_anode_offcut_waste
+        reason_code: no_exact_candidate
+        explanation: "The only ranked waste result was electrolyte scrap, not a coated graphite anode offcut containing copper current collector and active layer."
+      - row_id: lead_oxide
+        reason_code: no_exact_candidate
+        explanation: "Ranked state-100 metal-oxide candidates did not include lead oxide."
+      - row_id: lead_barium_sulfate
+        reason_code: product_state_mismatch
+        explanation: "The closest result was natural barite and did not establish refined barium-sulfate expander product state or purity."
+      - row_id: lead_carbon_black
+        reason_code: classification_mismatch
+        explanation: "Exact-looking carbon-black names conflicted with their public classifications or were duplicate identities without sufficient disambiguation."
+      - row_id: lead_grid_product
+        reason_code: product_state_mismatch
+        explanation: "Ranked results were lead alloys rather than a cast or stamped ready-for-assembly battery grid."
+      - row_id: lead_plate_product
+        reason_code: no_exact_candidate
+        explanation: "Ranked results were complete batteries, a ternary electrode, or an ambiguously classified anode plate rather than a lead-acid battery plate."
+      - row_id: lead_grid_scrap_waste
+        reason_code: no_exact_candidate
+        explanation: "The only ranked waste result was electrolyte scrap, not lead-antimony battery-grid scrap."
+      - row_id: lead_plate_scrap_waste
+        reason_code: no_exact_candidate
+        explanation: "The only ranked waste result was electrolyte scrap, not pasted lead-acid battery-plate scrap."
+      - row_id: lead_sulfuric_acid_mist
+        reason_code: no_exact_candidate
+        explanation: "All ranked elementary-flow results were carboxin in air or water compartments, not sulfuric acid mist."
+    range_evidence_needs:
+      - range_id: separator_route_amount_ranges
+        row_ids: [separator_polyethylene, separator_polypropylene, separator_liquid_paraffin, separator_aluminium_oxide, separator_electricity, separator_process_water, separator_natural_gas, separator_pe_offcut_waste, separator_pp_offcut_waste, separator_carbon_dioxide]
+        reason_code: insufficient_independent_sources
+        explanation: "Original literature verifies the dry and wet separator process routes but does not provide two mutually independent, boundary-compatible amount datasets normalized to 1 kg of released separator. Foreground collection is required and no external range is asserted."
+      - range_id: lithium_ion_electrode_route_amount_ranges
+        row_ids: [electrode_nickel_rich_nmc, electrode_graphite_powder, electrode_carbon_black, electrode_pvdf, electrode_nmp, electrode_aluminium_foil, electrode_copper_foil, electrode_electricity, electrode_process_water, electrode_natural_gas, electrode_nmc_cathode_offcut_waste, electrode_graphite_anode_offcut_waste, electrode_nmp_to_air, electrode_carbon_dioxide]
+        reason_code: insufficient_independent_sources
+        explanation: "Verified electrode-manufacturing evidence supports process decomposition but not two mutually independent, product-state and system-boundary compatible ranges per 1 kg of released electrode. Foreground collection is required and no external range is asserted."
+      - range_id: lead_acid_part_route_amount_ranges
+        row_ids: [lead_antimony_alloy, lead_oxide, lead_sulfuric_acid, lead_barium_sulfate, lead_carbon_black, lead_process_water, lead_electricity, lead_natural_gas, lead_grid_scrap_waste, lead_plate_scrap_waste, lead_to_air, lead_sulfuric_acid_mist, lead_carbon_dioxide]
+        reason_code: insufficient_independent_sources
+        explanation: "AP-42 verifies lead-acid part processes and emissions, but a single publication cannot support an externally inferred range and its battery-count basis is not compatible with the 1 kg part reference flow. Foreground collection is required and no external range is asserted."

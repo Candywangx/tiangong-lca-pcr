@@ -1,10 +1,639 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "48285"
-  title: "Parts and accessories for the goods of subclass 48262"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.medical-appliances-precision-and-optical-instruments-watches-and-clocks.parts-and-accessories-for-the-goods-of-subclass-48262"
+  classification_refs: "CPC 3.0:48285, exact mapping context; mapping acceptance remains governed outside this PCR"
+  covered_products: "Separately supplied grips, fixtures, platens, force-application accessories, load-sensing assemblies, extensometer systems, and dedicated electronic modules for mechanical-properties testing machines"
+  excluded_products: "Complete CPC 48262 testing machines; general-purpose fasteners and electronics; unrelated measuring-instrument parts; test specimens; calibration, installation, use, maintenance, and end-of-life services"
+  representative_product: "One specified separately supplied mechanical-properties testing-machine part or accessory"
+  production_route: "Purchased material and component preparation; conditional machining, forming, finishing, and cleaning; assembly; calibration or verification where applicable; inspection; packaging"
+  market_state: "Finished, inspected, separately supplied product at the manufacturer gate, with declared packaging and calibration or conformity documentation where applicable"
+functional_unit:
+  what: "Provide the declared mechanical interface, force application, force sensing, deformation measurement, specimen gripping, or dedicated control function for a compatible mechanical-properties testing machine"
+  how_much: "1 kg net mass of one specified separately supplied part or accessory, excluding packaging"
+  how_well: "Meets the declared drawing or part number, compatible-machine interface, performance specification, and calibration or verification class where applicable"
+  how_long_or_cycle: "Product delivered at the manufacturer gate; no service life or test-cycle count is assumed for this cradle-to-gate mass reference"
+  reference_flow_link: "1 kg net mass of the conforming declared product configuration"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary begins with purchased materials and components at the reporting manufacturer's gate and ends with the inspected, conforming, packaged product at that gate. It includes attributable preparation, machining or forming, finishing and cleaning, assembly, calibration or verification, inspection, rework, internal material movements, and packaging. Upstream production and delivery of every purchased input are represented by compatible upstream datasets rather than recreated as foreground operations."
+      source_ids: []
+    - rule_id: boundary_category_scope
+      applies_to: "product identity"
+      rule: "Include only a separately supplied part or accessory for a CPC 48262 mechanical-properties testing machine; reject a complete testing machine or a part for another instrument category."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+        - un-cpc-3-0-explanatory-notes-2025
+    - rule_id: boundary_foreground_operations
+      applies_to: "foreground processes"
+      rule: "Include all attributable on-site and outsourced preparation, fabrication, finishing, cleaning, assembly, calibration or verification, inspection, rework, and packaging needed to deliver the conforming reference product."
+      source_ids: []
+    - rule_id: boundary_upstream_and_waste
+      applies_to: "purchased inputs and treatment"
+      rule: "Link every purchased input and exported waste to an upstream supply or treatment dataset consistent with its declared state, geography, technology, and destination; do not treat upstream emissions as direct foreground exchanges."
+      source_ids: []
+    - rule_id: boundary_use_and_end_of_life
+      applies_to: "downstream stages"
+      rule: "Exclude installation, use, maintenance, replacement, and end-of-life from the default cradle-to-gate result and disclose any study-specific expansion separately."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased materials and components received at the reporting manufacturer gate, with supplier, product form, quantity, recycled-content claim where relevant, and inbound geography declared"
+  starting_condition_role: "Cradle-to-gate foreground collection starts at receipt; upstream burdens remain linked through supplier-specific or representative datasets"
+  product_classification_scope: "Separately supplied parts and accessories specifically or principally for CPC 48262 mechanical-properties testing machines; complete machines remain outside the reference product"
+  recursive_input_rule: "A separately purchased input that itself meets this PCR boundary is recorded as one upstream product exchange with its own compliant dataset; do not recursively reproduce its manufacturing inventory inside the receiving process"
+  upstream_dataset_requirement: "Use geographically and technologically representative datasets for each purchased material, component, electricity supply, water supply, and waste treatment route; disclose proxies and data gaps"
+  disclosure: "Declare product configuration, BOM coverage, manufacturing and finishing routes, outsourced operations, calibration or verification status, rework, packaging, allocation, cut-offs, geography, and reference period"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Parts and accessories for machines for testing mechanical properties of materials"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "part or accessory type"
+    - "manufacturer part number or drawing revision"
+    - "compatible testing-machine model"
+    - function
+    - "material and component composition"
+    - "manufacturing route"
+    - "calibration or verification status and class where applicable"
+    - "software or firmware state where applicable"
+    - "net mass"
+    - "packaging state"
+    - "production geography"
+    - "reference year"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure conforming product mass without packaging. Normalize every inventory amount to exactly 1 kg net reference product."
+  - id: material_mass_basis
+    applies_to: "material, component, waste, and wastewater rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record measured or reconciled mass. When purchase records use item counts or area, retain the measured conversion factor, dimensions, and moisture or coating basis used to obtain kg."
+  - id: electricity_energy_basis
+    applies_to: "electricity rows"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve meter readings and convert kWh to MJ using 1 kWh = 3.6 MJ; allocate only documented shared-meter consumption."
+  - id: water_mass_conversion
+    applies_to: "process water and wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer measured mass. If volume is metered, document temperature, density assumption or measured density, and the conversion to kg."
+process_map:
+  - id: fabrication
+    name: "Material preparation, fabrication, finishing, and cleaning"
+    inclusion: "conditional"
+    inclusion_condition: "Include each operation actually performed by the reporting manufacturer or an attributable toll processor; omit only when the product is received fully fabricated"
+    role: "Foreground fabrication"
+    quantitative_reference: "1 kg net conforming product output after yield and rework reconciliation"
+  - id: assembly_calibration
+    name: "Assembly, calibration or verification, and final inspection"
+    inclusion: "required"
+    inclusion_condition: "Always include final product release activities; calibration or verification applies only when required by the product function or declared specification"
+    role: "Foreground assembly and release"
+    quantitative_reference: "1 kg net conforming product released to packaging"
+  - id: packaging
+    name: "Sales packaging"
+    inclusion: "required"
+    inclusion_condition: "Include the actual packaging configuration; individual packaging material rows apply only when that material is used"
+    role: "Foreground packaging"
+    quantitative_reference: "Packaging attributable to 1 kg net reference product"
+process_inventory:
+  - id: fabrication
+    label: "Material preparation, fabrication, finishing, and cleaning"
+    inputs:
+      product:
+        - row_id: stainless_steel
+          role: "Stainless-steel input"
+          name: "Stainless steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "84c2403f-5062-5d68-8276-838384d32b89"
+          property_unit: "Mass / kg"
+          description: "Record purchased stainless steel only when it enters a fabricated product configuration."
+          amount:
+            expression: "measured received mass consumed, corrected for stock change and returned offcuts"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_materials
+              source_ids: []
+            ranges: []
+        - row_id: carbon_steel_bar
+          role: "Cold-worked carbon-steel bar input"
+          name: "Carbon Steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b3b18433-8fd1-4298-98f5-8af11eb64762"
+          property_unit: "Mass / kg"
+          description: "Record cold-worked carbon-steel bar only for product configurations made from that form."
+          amount:
+            expression: "measured received bar mass consumed, corrected for stock change and returned offcuts"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_materials
+              source_ids: []
+            ranges: []
+        - row_id: aluminium_alloy_sheet
+          role: "Primary aluminium-alloy sheet input"
+          name: "Primary aluminum alloy sheet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2a9549cc-dc9e-43a7-9379-7a0c0a0e4832"
+          property_unit: "Mass / kg"
+          description: "Record primary aluminium-alloy sheet only for product configurations fabricated from sheet."
+          amount:
+            expression: "measured received sheet mass consumed, corrected for stock change and returned offcuts"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_materials
+              source_ids: []
+            ranges: []
+        - row_id: cutting_fluid
+          role: "Cutting-fluid input"
+          name: "Cutting Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "576d250f-4f36-4385-939d-0f03b8f95a10"
+          property_unit: "Mass / kg"
+          description: "Record cutting fluid only when machining uses it; separately record concentrate or ready-to-use product consistently with purchase state and make-up practice."
+          amount:
+            expression: "purchased make-up mass consumed, corrected for opening and closing inventory and recovered fluid"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_utilities
+              source_ids: []
+            ranges: []
+        - row_id: fabrication_electricity
+          role: "Fabrication electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity attributable to machining, forming, finishing, cleaning, extraction, and supporting equipment within the fabrication boundary."
+          amount:
+            expression: "submetered use or documented allocation of facility-meter use to the fabrication batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_utilities
+              source_ids: []
+            ranges: []
+        - row_id: process_water
+          role: "Process-water input"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record water entering cleaning, rinsing, coolant make-up, or other included fabrication operations."
+          amount:
+            expression: "metered or batch-record water input converted to mass when necessary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_utilities
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: mixed_metal_scrap
+          role: "Mixed machining-metal scrap"
+          name: "Mixed metal scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "cc3ee2b1-7c5b-44a0-aa6a-559f1bc3ce36"
+          property_unit: "Mass / kg"
+          description: "Record mixed metal offcuts, chips, and rejected metal pieces crossing the foreground boundary as one mixed waste only when they are not separately sorted by alloy."
+          amount:
+            expression: "measured dispatched scrap mass attributed to the represented product, reconciled with stock and documented recycling or disposal destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_wastes
+              source_ids: []
+            ranges: []
+        - row_id: fabrication_wastewater
+          role: "Fabrication wastewater"
+          name: "Wastewater"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "d2d44ce1-c0f4-461d-9413-f4b33e0d200f"
+          property_unit: "Mass / kg"
+          description: "Record aqueous wastewater leaving metalworking or cleaning operations; declare composition, treatment state, and destination."
+          amount:
+            expression: "measured discharge mass or metered volume converted to mass, excluding internally recirculated water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_wastes
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: assembly_calibration
+    label: "Assembly, calibration or verification, and final inspection"
+    inputs:
+      product:
+        - row_id: pcb_assembly
+          role: "Electronic-components and PCB-assembly input"
+          name: "Electronic components and PCB assemblies"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1e37f859-cb9b-47ff-8b0b-5b47d65fa236"
+          property_unit: "Mass / kg"
+          description: "Record an electronic-components and PCB assembly only when it is incorporated into the declared part or accessory."
+          amount:
+            expression: "measured installed mass plus attributable assembly rejects, reconciled to the product BOM"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_records
+              source_ids: []
+            ranges: []
+        - row_id: assembly_test_electricity
+          role: "Assembly and test electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity attributable to assembly equipment, calibration or verification rigs, inspection, and rework."
+          amount:
+            expression: "submetered use or documented allocation of facility-meter use to the released batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: packaging
+    label: "Sales packaging"
+    inputs:
+      product:
+        - row_id: corrugated_cardboard
+          role: "Corrugated-cardboard packaging"
+          name: "Corrugated cardboard"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bde297e-98df-463f-bcb4-0db52bf6e0b5"
+          property_unit: "Mass / kg"
+          description: "Record corrugated cardboard incorporated into the product's sales packaging."
+          amount:
+            expression: "measured packaging mass issued to conforming products, including attributable converting loss"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: polyethylene_film
+          role: "Polyethylene-film packaging"
+          name: "Polyethylene film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record polyethylene protective film only when it is used in the declared sales packaging; its Tiangong UUID remains unresolved."
+          amount:
+            expression: "measured film mass issued to conforming products, including attributable converting loss"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Released reference product"
+          name: "Parts and accessories for machines for testing mechanical properties of materials"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the net mass of the inspected and conforming separately supplied part or accessory; packaging is excluded from this mass."
+          amount:
+            expression: "exactly 1 kg after normalization from measured released net product mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_release
+              source_ids:
+                - un-cpc-3-0-structure-2025
+                - un-cpc-3-0-explanatory-notes-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "shared fabrication, assembly, calibration, inspection, and packaging"
+    rule: "Avoid allocation by product-specific metering, batch records, BOM issue records, machine time, or physically separated process steps wherever practicable."
+    source_ids: []
+  - rule_id: allocation_causal_driver
+    applies_to: "remaining shared inputs and wastes"
+    rule: "When subdivision is not practicable, allocate using a documented causal physical driver appropriate to the exchange, such as machine time for equipment electricity, measured mass throughput for material handling, or verified batch count for a batch-specific operation."
+    source_ids: []
+  - rule_id: allocation_scrap_treatment
+    applies_to: "mixed metal scrap"
+    rule: "Record scrap as a waste output with its actual destination. Do not credit avoided primary metal production inside the foreground inventory unless the selected study method explicitly requires and transparently reports substitution outside the attributional result."
+    source_ids: []
+  - rule_id: allocation_rework_and_rejects
+    applies_to: "rework and rejected parts"
+    rule: "Attribute rework inputs and rejected-part wastes to the represented conforming production during the reference period; disclose any exceptional campaign excluded from the representative result."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_fabrication_materials
+      process_id: "fabrication"
+      flow_role: "stainless steel, cold-worked carbon-steel bar, and primary aluminium-alloy sheet"
+      record_type: "purchase, stock, issue, return, and BOM records"
+      raw_fields: "material identity; grade; form; supplier; opening stock; receipts; closing stock; returned offcuts; batch output"
+      collection_method: "reconcile material consumption by product configuration and production batch"
+      unit: "kg"
+      frequency: "each batch, aggregated monthly"
+      temporal_coverage: "representative period covering normal product and operating variation, or a complete documented campaign"
+      site_scope: "reporting site and attributable toll processors"
+      aggregation_rule: "consumed mass = opening stock + receipts - closing stock - documented returns; normalize to released net product mass"
+      quality_evidence: "invoices; weigh tickets; stock ledger; BOM revision; batch traveler"
+    - protocol_id: cp_fabrication_utilities
+      process_id: "fabrication"
+      flow_role: "cutting fluid, electricity, and process water"
+      record_type: "chemical issue, tank inventory, meter, and production records"
+      raw_fields: "product formulation; concentration; opening and closing stock; purchases; recovered fluid; electricity meter; water meter; operating hours; batch output"
+      collection_method: "use dedicated meters where available; otherwise document allocation from measured totals"
+      unit: "kg and MJ"
+      frequency: "each batch or monthly"
+      temporal_coverage: "same reference period as product output"
+      site_scope: "reporting site and attributable fabrication route"
+      aggregation_rule: "subtract recovered or closing stock; convert electricity and water under section 4; normalize to released net product mass"
+      quality_evidence: "calibrated meter records; invoices; tank logs; operating log; allocation worksheet"
+    - protocol_id: cp_fabrication_wastes
+      process_id: "fabrication"
+      flow_role: "mixed metal scrap and fabrication wastewater"
+      record_type: "waste transfer, weighbridge, wastewater meter, and treatment records"
+      raw_fields: "waste identity; mass or volume; composition; treatment state; destination; date; represented production"
+      collection_method: "reconcile dispatched waste, internal recovery, and stock change"
+      unit: "kg"
+      frequency: "each dispatch, aggregated monthly"
+      temporal_coverage: "same reference period as product output"
+      site_scope: "reporting site and attributable toll processors"
+      aggregation_rule: "exported waste = opening waste stock + generated waste - closing waste stock - internal reuse; normalize to released net product mass"
+      quality_evidence: "manifests; weighbridge tickets; meter calibration; laboratory analysis; treatment receipt"
+    - protocol_id: cp_assembly_records
+      process_id: "assembly_calibration"
+      flow_role: "PCB assembly and assembly/test electricity"
+      record_type: "BOM issue, reject, submeter, calibration, and inspection records"
+      raw_fields: "PCB identity and revision; installed mass; rejects; meter reading; batch; machine time; calibration or verification result; released mass"
+      collection_method: "reconcile installed components and allocate measured energy to released conforming output"
+      unit: "kg and MJ"
+      frequency: "each batch"
+      temporal_coverage: "same reference period as product output"
+      site_scope: "reporting assembly and test site"
+      aggregation_rule: "installed input plus attributable rejects; energy by submeter or documented causal driver; normalize to released net product mass"
+      quality_evidence: "BOM; issue record; reject log; meter record; calibration certificate; inspection release"
+    - protocol_id: cp_packaging_records
+      process_id: "packaging"
+      flow_role: "corrugated cardboard and polyethylene film"
+      record_type: "packaging specification, issue, purchase, and loss records"
+      raw_fields: "material identity; specification; issued mass; returned mass; converting loss; packaged net product mass"
+      collection_method: "weigh representative packaging configurations and reconcile issues to packaged output"
+      unit: "kg"
+      frequency: "each packaging configuration and monthly reconciliation"
+      temporal_coverage: "same reference period as product output"
+      site_scope: "reporting packaging site"
+      aggregation_rule: "net packaging issued plus attributable loss divided by net reference product mass"
+      quality_evidence: "packaging drawing; scale calibration; issue ledger; supplier declaration"
+    - protocol_id: cp_product_release
+      process_id: "packaging"
+      flow_role: "conforming reference product"
+      record_type: "final weighing, inspection, and release records"
+      raw_fields: "product type; part number; drawing revision; compatible machine; function; serial or lot; net mass; performance class; calibration status; release disposition"
+      collection_method: "weigh product without packaging and retain final conformity evidence"
+      unit: "kg"
+      frequency: "each released lot or item"
+      temporal_coverage: "same reference period as all input records"
+      site_scope: "reporting manufacturer"
+      aggregation_rule: "sum released conforming net mass and normalize the linked inventory to exactly 1 kg"
+      quality_evidence: "calibrated scale record; inspection report; calibration or verification certificate where applicable; release authorization"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "normalized amount = attributable exchange amount / released conforming net product mass"
+      inputs:
+        - "exchange amount"
+        - "released conforming net product mass"
+      output: "exchange per 1 kg reference product"
+      source_ids: []
+    - id: calc_electricity_conversion
+      applies_to: "electricity rows"
+      rule: "electricity (MJ) = measured electricity (kWh) x 3.6"
+      inputs:
+        - "electricity meter reading in kWh"
+      output: "electricity in MJ"
+      source_ids: []
+    - id: calc_material_reconciliation
+      applies_to: "purchased materials and components"
+      rule: "consumed mass = opening stock + receipts - closing stock - documented returns or transfers out"
+      inputs:
+        - "stock and transaction records by material identity"
+      output: "consumed material mass"
+      source_ids: []
+    - id: calc_waste_reconciliation
+      applies_to: "scrap and wastewater"
+      rule: "exported waste = opening waste stock + generated or collected waste - closing waste stock - documented internal reuse"
+      inputs:
+        - "waste stock"
+        - dispatch
+        - meter
+        - "and reuse records"
+      output: "exported waste mass"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Retain part number or drawing revision, function, compatible machine, product configuration, net mass, and release status."
+      evidence: "BOM, drawing, product specification, calibrated scale record, inspection release"
+    - id: dq_temporal_alignment
+      applies_to: "all foreground exchanges"
+      requirement: "Inputs, outputs, stock corrections, rejects, rework, and released product shall cover the same representative period; justify how the chosen period captures normal product and operating variation."
+      evidence: "dated ledgers, meter records, production report, campaign rationale"
+    - id: dq_bom_completeness
+      applies_to: "purchased materials and components"
+      requirement: "Reconcile all purchased input mass to named atomic flows or explicitly document every residual mass by concrete substance or component and resolve its UUID before publication."
+      evidence: "mass-based BOM reconciliation and unresolved-flow log"
+    - id: dq_meter_quality
+      applies_to: "electricity, water, wastewater, and product mass"
+      requirement: "Document meter or scale identity, calibration status, reading interval, missing-data treatment, and allocation method."
+      evidence: "calibration record, meter log, estimation worksheet"
+    - id: dq_calibration_traceability
+      applies_to: "force-application, force-measuring, and extensometer accessories"
+      requirement: "Where the product claim depends on calibration or verification, retain the applicable procedure, equipment identity, result, uncertainty or class, and certificate traceability."
+      evidence: "calibration or verification record; iso-7500-1-2018; iso-9513-2012"
+    - id: dq_upstream_representativeness
+      applies_to: "linked upstream datasets"
+      requirement: "Match material state, geography, technology, recycled content, electricity mix, water supply, and waste destination; disclose every proxy."
+      evidence: "dataset metadata and proxy justification"
+validation_rules:
+  - rule_id: validate_category_scope
+    applies_to: "product identity"
+    rule: "The output shall be a separately supplied part or accessory specifically or principally for a CPC 48262 mechanical-properties testing machine; a complete machine or unrelated instrument part fails category conformance."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - un-cpc-3-0-explanatory-notes-2025
+  - rule_id: validate_reference_flow
+    applies_to: "functional unit and reference flow"
+    rule: "Confirm exactly 1 kg net conforming product without packaging and all required qualifiers, including product function, interface, configuration, manufacturing route, and calibration status where applicable."
+    source_ids: []
+  - rule_id: validate_inventory_atomicity
+    applies_to: "process inventory"
+    rule: "Every exchange shall be a concrete atomic flow with one direction, one flow type, one property, one unit, and one applicability condition; no utility, material, packaging, waste, or emission umbrella row is allowed."
+    source_ids: []
+  - rule_id: validate_inventory_reconciliation
+    applies_to: "inputs, outputs, rework, and stock"
+    rule: "Reconcile purchase, stock, BOM, meter, reject, rework, waste, and release records over the same period; investigate and disclose every unexplained material-balance gap."
+    source_ids: []
+  - rule_id: validate_uuid_status
+    applies_to: "Tiangong references"
+    rule: "Use only directly audited public state_code=100 UUIDs with matching semantics, classification, product state, flow type, property, and unit group. Keep the reference-product and polyethylene-film UUID fields unresolved until exact candidates are audited."
+    source_ids: []
+  - rule_id: validate_calibration_claim
+    applies_to: "calibrated or verified accessories"
+    rule: "A force-application accessory, force-measuring assembly, or extensometer carrying a calibration or performance claim shall retain applicable inspection, calibration or verification evidence and shall identify the static or dynamic application boundary."
+    source_ids:
+      - iso-7500-1-2018
+      - iso-9513-2012
+  - rule_id: validate_boundary_and_allocation
+    applies_to: "dataset model"
+    rule: "Confirm all foreground and outsourced operations, upstream links, waste destinations, exclusions, cut-offs, proxies, and shared-process allocation drivers are disclosed and consistently applied."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset or background_dataset after methodology and UUID review; this candidate PCR does not itself publish a dataset"
+  downstream_use: "Cradle-to-gate process datasets and lifecyclemodel components for a declared separately supplied mechanical-properties testing-machine part or accessory"
+  allowed_use: "Product-footprint and equipment-system studies when the product function, compatible-machine interface, material composition, manufacturing route, calibration status, geography, time, and packaging are representative"
+  excluded_use: "Comparison across different accessory functions or performance classes; complete-machine datasets; unqualified global averages; use-phase or end-of-life claims without added scenario data"
+  required_metadata: "canonical PCR id; product type; part number or drawing revision; compatible machine; function; net mass; BOM coverage; manufacturing and finishing routes; calibration or verification status; geography; reference period; packaging; allocation; cut-offs; data sources; UUID resolution status"
+  required_quality_disclosure: "temporal and geographic representativeness; primary-data share; meter and scale quality; BOM mass coverage; material-balance result; outsourced operations; proxies; uncertainty; unresolved UUIDs or range-evidence needs"
+  update_trigger: "material design or supplier change; manufacturing-route or site change; calibration-standard revision affecting claims; electricity or waste-treatment change; more representative foreground data; resolution of the reference-product or polyethylene-film UUID; new independent range evidence"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *CPC Version 3.0 Structure*, updated 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-07)"
+    used_for: "Official product classification identity and hierarchy for CPC 48262 and 48285"
+  - id: "un-cpc-3-0-explanatory-notes-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *CPC Version 3.0 Explanatory Notes*, updated 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-09-07)"
+    used_for: "Original-text verification of the distinct complete-machine and separately supplied parts-and-accessories boundaries"
+  - id: "iso-7500-1-2018"
+    type: "standard"
+    reference: "ISO 7500-1:2018, *Metallic materials - Calibration and verification of static uniaxial testing machines - Part 1: Tension/compression testing machines - Calibration and verification of the force-measuring system*, official ISO abstract and status page, https://committee.iso.org/standard/72572.html?browse=tc (retrieved 2026-09-07)"
+    used_for: "General inspection including force-application accessories, force-measuring-system calibration, performance-class verification, and static-application limitation"
+  - id: "iso-9513-2012"
+    type: "standard"
+    reference: "ISO 9513:2012, *Metallic materials - Calibration of extensometer systems used in uniaxial testing*, official ISO abstract and status page, https://committee.iso.org/standard/41619.html?browse=tc (retrieved 2026-09-07)"
+    used_for: "Extensometer-system identity and static calibration scope for contacting and non-contacting systems"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:40304a011de2aeb6959ad9cec9196cdc5492619532dc600a978f574433f30a5d"
+  generated_content_sha256: "sha256:7e1c603795274822db6cb017dbb0ec0d1386867882b00d5463b8c8be714b4d96"

@@ -1,10 +1,607 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41272"
-  title: "Bars and rods of silico-manganese steel"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.bars-and-rods-of-silico-manganese-steel"
+  classification_refs: "CPC 3.0: 41272, exact semantic reference"
+  covered_products: "Solid, straight or cut-length bars and rods whose declared steel grade is silico-manganese steel; hot-formed products and declared subsequent finishing remain covered"
+  excluded_products: "Irregularly wound wire rod; wire; hollow drill bars or rods; high-speed steel; stainless steel; other alloy-steel grades without verified silico-manganese composition; tubes, sections, flat products, fabricated articles and coated downstream products"
+  representative_product: "Inspected silico-manganese-steel bar or rod in the declared grade, section, dimensions, surface and delivery condition"
+  production_route: "Rolling or other declared bar/rod forming from reheated silico-manganese-steel billet or bloom, followed by route-specific cooling, straightening, cutting, heat treatment, cold finishing and surface conditioning"
+  market_state: "Solid bar or rod ready for dispatch at the mill gate; net steel mass excludes transport packaging"
+functional_unit:
+  what: "Production of specification-conforming silico-manganese-steel bars or rods at the mill gate"
+  how_much: "1,000 kg net saleable product"
+  how_well: "Conforms to the declared silico-manganese steel grade, composition, mechanical properties, dimensions, tolerances, surface condition and delivery specification"
+  how_long_or_cycle: "One reporting-period production aggregate, traceable to heats, lots or campaigns and normalized to 1,000 kg saleable output"
+  reference_flow_link: "The functional unit is realized by the single reference product flow below; no packaging or upstream semi-finished steel is part of the reference amount"
+system_boundary:
+  rules:
+    - rule_id: boundary_start
+      applies_to: "Foreground conversion"
+      rule: "Begin at receipt of reheated, grade-identified billet or bloom and end at mill-gate release of conforming bars or rods; represent earlier steelmaking and reheating with linked upstream datasets."
+      source_ids:
+        - worldsteel-lci-methodology-2017
+    - rule_id: boundary_route_disclosure
+      applies_to: "Route-dependent operations"
+      rule: "Include every on-site rolling, forming, cooling, straightening, cutting, heat-treatment, cold-finishing, conditioning, emission-control and wastewater-treatment operation used for the declared product; explicitly mark absent operations."
+      source_ids:
+        - eu-ferrous-metals-bat-2022
+    - rule_id: boundary_direct_exchanges
+      applies_to: "Direct releases and recovered residues"
+      rule: "Record each direct emission, wastewater stream, scrap stream and mill-scale stream as an individual exchange at the point it crosses the foreground boundary; do not hide internal recycling or net unlike streams together."
+      source_ids:
+        - eu-ferrous-metals-bat-2022
+boundary_abstraction:
+  declared_starting_condition: "Reheated silico-manganese-steel billet or bloom, identified by grade, heat or lot, mass, dimensions, temperature state, supplier and upstream dataset"
+  starting_condition_role: "Upstream product input at the rolling/forming-line gate"
+  product_classification_scope: "Solid bars and rods of silico-manganese steel; irregularly wound wire rod, wire, hollow drill products and other alloy grades are outside the category"
+  recursive_input_rule: "A purchased input already meeting this PCR's bar-or-rod product identity is recorded as an upstream product input with its supplier dataset and is not recursively remodelled as foreground production"
+  upstream_dataset_requirement: "Link grade- and geography-representative datasets for alloy-steel billet or bloom production and feedstock reheating; disclose technology, recycled-content accounting, allocation method and any gap between supplier and foreground gates"
+  disclosure: "Declare forming and finishing routes, included equipment, cold-finishing or heat-treatment steps, site and period, upstream dataset links, internal recirculation, exported energy, water reuse, scrap/scale recovery, wastewater treatment, packaging exclusion and any process excluded from the foreground boundary"
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Bars and rods of silico-manganese steel"
+    uuid: "41d463a0-f0b7-42cd-a183-f69f39a31b01"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "silico-manganese steel grade and governing specification"
+    - "heat or lot identity"
+    - "bar or rod form"
+    - "solid cross-section and nominal dimensions"
+    - "forming route"
+    - "any cold finishing"
+    - "heat treatment or surface conditioning"
+    - "mechanical properties and tolerances"
+    - "surface and delivery condition"
+    - "site and geography"
+    - "reporting period"
+    - "upstream billet-or-bloom and reheating datasets"
+    - "electricity voltage and supply geography"
+    - "gas and oxygen reference conditions"
+    - "water recirculation boundary"
+    - "scrap and scale destination"
+    - "net product mass"
+    - "packaging exclusion"
+    - "mill-gate boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product and all steel-bearing inputs and outputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use net dry steel mass at the declared weighing point. Exclude packaging from the 1,000 kg reference amount and report scale, crop scrap and rejects separately."
+  - id: energy_basis
+    applies_to: "Purchased electricity and fuel energy"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Preserve the meter unit and conversion factor. Convert kWh to MJ with 1 kWh = 3.6 MJ; do not mix fuel volume and energy without a documented reference condition and heating value."
+  - id: gas_reference_conditions
+    applies_to: "Natural gas and industrial oxygen"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Record the temperature, pressure, dry/wet basis and meter correction used for each gas volume; do not compare or aggregate volumes at different reference conditions."
+  - id: period_normalization
+    applies_to: "All variable inventory exchanges"
+    required_property_ref:
+      name: "Row-specific property"
+      uuid: ""
+    required_unit: "Row-specific unit"
+    rule: "Aggregate records over the same representative period, then normalize each exchange to 1,000 kg conforming reference product. Keep non-conforming output and downtime records in the reconciliation."
+process_map:
+  - id: bar_rod_conversion
+    name: "Bar and rod rolling, finishing and dispatch"
+    inclusion: "required"
+    inclusion_condition: "Always; route-specific unit operations and their atomic exchanges are marked applicable or not applicable from production records"
+    role: "Foreground conversion of reheated silico-manganese-steel billet or bloom to saleable bar or rod"
+    quantitative_reference: "1,000 kg conforming net product"
+process_inventory:
+  - id: bar_rod_conversion
+    label: "Bar and rod rolling, finishing and dispatch"
+    inputs:
+      product:
+        - row_id: received_reheated_billet
+          role: "Reheated silico-manganese-steel billet or bloom"
+          name: "Reheated billet or bloom for rolling, silico-manganese steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6a4763f3-b854-41b4-9780-6e06eedeb322"
+          property_unit: "Mass / kg"
+          description: "Record grade-matched reheated semi-finished steel entering the forming line. Reconcile received mass, return material and stock change to the same reporting period."
+          amount:
+            expression: "Measured net mass entering the foreground forming line"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg conforming silico-manganese-steel bars or rods"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - worldsteel-lci-methodology-2017
+            ranges: []
+        - row_id: purchased_electricity
+          role: "Purchased electricity"
+          name: "Medium-voltage electricity"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record delivered medium-voltage electrical energy consumed by rolling, drives, cooling, cutting, finishing, controls and allocated auxiliaries. The exact Tiangong UUID remains unresolved; declare voltage, grid geography, supplier and metering boundary."
+          amount:
+            expression: "Metered purchased electricity less separately metered exports, converted without changing the recorded supply attributes"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming silico-manganese-steel bars or rods"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_gases
+              source_ids:
+                - eu-ferrous-metals-bat-2022
+            ranges: []
+        - row_id: natural_gas
+          role: "Gaseous natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Include natural gas only when it crosses the boundary for post-heating, heat treatment, direct-fired conditioning or another declared on-site operation. Do not include upstream electricity-generation fuel."
+          amount:
+            expression: "Metered gas volume at the declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg conforming product for routes using natural gas"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_gases
+              source_ids:
+                - eu-ferrous-metals-bat-2022
+            ranges: []
+        - row_id: industrial_oxygen
+          role: "Industrial oxygen"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume / m3"
+          description: "Include purchased or boundary-crossing industrial oxygen only for declared oxy-fuel heating, oxygen-assisted scarfing or another measured route operation. Exclude oxygen already embodied in an upstream dataset."
+          amount:
+            expression: "Metered oxygen volume at the declared purity and reference conditions"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg conforming product for routes using industrial oxygen"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_gases
+              source_ids:
+                - eu-ferrous-metals-bat-2022
+            ranges: []
+        - row_id: process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record make-up process water entering wet descaling, roll cooling, product cooling, quenching, cleaning or emission control. Measure make-up separately from recirculated internal water."
+          amount:
+            expression: "Metered make-up water crossing the foreground boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming silico-manganese-steel bars or rods"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_balance
+              source_ids:
+                - eu-ferrous-metals-bat-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Conforming silico-manganese-steel bars or rods"
+          name: "Bars and rods of silico-manganese steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "41d463a0-f0b7-42cd-a183-f69f39a31b01"
+          property_unit: "Mass / kg"
+          description: "Record net saleable output passing the declared specification and inspection criteria. Packaging is excluded from this mass."
+          amount:
+            expression: "Fixed reference output after period normalization"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg net conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finished_product
+              source_ids:
+                - unsd-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: post_industrial_steel_scrap
+          role: "Post-industrial steel scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Record crop ends, cobbles, test pieces and rejected steel leaving the product system as post-industrial scrap. Keep internally recirculated steel visible in the mass balance and disclose its treatment separately."
+          amount:
+            expression: "Weighed scrap crossing the foreground boundary, net of documented stock change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming silico-manganese-steel bars or rods"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues_and_wastewater
+              source_ids:
+                - eu-ferrous-metals-bat-2022
+                - worldsteel-lci-methodology-2017
+            ranges: []
+        - row_id: mill_scale
+          role: "Rolling mill scale"
+          name: "Mill scale"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "763bdad1-b443-428a-89b6-371a6807fc6c"
+          property_unit: "Mass / kg"
+          description: "Record iron-oxide scale removed from the product or recovered from water treatment. Declare oil content, collection point and reuse or disposal destination."
+          amount:
+            expression: "Weighed recovered scale crossing the foreground boundary, corrected for declared moisture only when the correction is documented"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming silico-manganese-steel bars or rods"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues_and_wastewater
+              source_ids:
+                - eu-ferrous-metals-bat-2022
+            ranges: []
+        - row_id: rolling_wastewater
+          role: "Treated steel-rolling wastewater"
+          name: "Treated steel-rolling wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include treated wastewater only when it leaves the foreground boundary. Keep process-water recirculation internal and declare treatment level, destination and monitored characteristics; the exact Tiangong UUID remains unresolved."
+          amount:
+            expression: "Metered wastewater discharged across the foreground boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming silico-manganese-steel bars or rods"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residues_and_wastewater
+              source_ids:
+                - eu-ferrous-metals-bat-2022
+            ranges: []
+      elementary:
+        - row_id: fossil_co2_to_air
+          role: "Fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil carbon dioxide from on-site natural-gas combustion used within this foreground process. Exclude emissions already represented in purchased electricity or upstream datasets."
+          amount:
+            expression: "Measured direct stack mass or a disclosed site calculation from metered fuel and verified carbon data"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg conforming product for routes using fossil fuel on site"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_air_emissions
+              source_ids:
+                - eu-ferrous-metals-bat-2022
+            ranges: []
+        - row_id: particulate_matter_to_air
+          role: "Particulate matter to air, particle size unspecified"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass / kg"
+          description: "Record total direct particulate matter of unspecified size emitted from in-scope mechanical processing, scarfing, descaling, rolling or finishing after installed controls. Do not double count a separately reported size fraction."
+          amount:
+            expression: "Source-resolved measured or mass-flow-calculated direct emission after controls"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming silico-manganese-steel bars or rods"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_air_emissions
+              source_ids:
+                - eu-ferrous-metals-bat-2022
+            ranges: []
+        - row_id: nox_to_air
+          role: "Nitrogen oxides to air"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include nitrogen oxides from in-scope natural-gas combustion or other declared combustion only when emitted directly by the foreground process. The exact Tiangong UUID remains unresolved; state whether measurements and factors are reported as NO2-equivalent."
+          amount:
+            expression: "Source-resolved measured emission or disclosed calculation from monitored concentration and gas flow"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg conforming product for routes with in-scope combustion"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_air_emissions
+              source_ids:
+                - eu-ferrous-metals-bat-2022
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "Multi-product mill records"
+    rule: "Prefer direct metering, heat/lot tracing and subdivision. Assign grade-specific billet, energy, gases, water, residues and emissions to the declared silico-manganese-steel product before any allocation."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: allocation_remaining_shared
+    applies_to: "Shared utilities and auxiliaries"
+    rule: "If subdivision is not practicable, allocate a shared exchange by the physical driver that causes it, such as metered operating time, processed mass or equipment energy; document the driver and test material alternatives. Do not default to revenue."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: allocation_scrap_scale
+    applies_to: "Scrap, mill scale and other recovered residues"
+    rule: "Report gross residue mass and destination. Do not subtract an avoided-production credit inside this gate-to-gate inventory; any recycling extension or system-expansion credit must be reported separately with its method and assumptions."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+      - eu-ferrous-metals-bat-2022
+  - rule_id: allocation_internal_recycling
+    applies_to: "Internally returned steel and scale"
+    rule: "Keep internal returns visible in the process mass balance but do not count an internal transfer as a second boundary output or an external scrap input."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass_balance
+      process_id: "bar_rod_conversion"
+      flow_role: "reheated billet input and steel mass reconciliation"
+      record_type: "weighbridge, scale, heat and stock records"
+      raw_fields: "heat_or_lot_id; grade; input_mass; return_mass; stock_open; stock_close; timestamp; meter_id"
+      collection_method: "reconcile calibrated scales to heat/lot and reporting-period stock movement"
+      unit: "kg"
+      frequency: "each receipt or heat; monthly close"
+      temporal_coverage: "full representative reporting period"
+      site_scope: "all lines producing declared product"
+      aggregation_rule: "sum grade-specific boundary input and reconcile stock change before normalization"
+      quality_evidence: "calibration certificates; heat genealogy; stock reconciliation; exception log"
+    - protocol_id: cp_energy_and_gases
+      process_id: "bar_rod_conversion"
+      flow_role: "electricity, natural gas and industrial oxygen"
+      record_type: "utility meters, invoices and equipment sub-meters"
+      raw_fields: "carrier; meter_id; opening; closing; export; unit; voltage; supplier; geography; temperature; pressure; heating_value; purity; operating_route"
+      collection_method: "read boundary and sub-meters and reconcile to invoices; separate route and non-production loads"
+      unit: "MJ, kWh, m3"
+      frequency: "shift or daily meter; monthly invoice close"
+      temporal_coverage: "same period as product mass"
+      site_scope: "all in-scope equipment and allocated auxiliaries"
+      aggregation_rule: "aggregate by carrier and route, deduct separately metered exports only, then normalize"
+      quality_evidence: "meter calibration; invoices; conversion sheet; outage and allocation log"
+    - protocol_id: cp_water_balance
+      process_id: "bar_rod_conversion"
+      flow_role: "process-water make-up and internal recirculation"
+      record_type: "inlet meters and water-balance records"
+      raw_fields: "inlet_mass_or_volume; source; recirculated_volume; blowdown; leak; meter_id; timestamp"
+      collection_method: "meter boundary make-up and reconcile closed or semi-closed circuits"
+      unit: "kg or m3"
+      frequency: "daily or shift; monthly balance"
+      temporal_coverage: "same period as product mass"
+      site_scope: "all in-scope water circuits"
+      aggregation_rule: "count only boundary-crossing make-up as input; retain recirculation as a disclosed internal metric"
+      quality_evidence: "meter calibration; annual water audit; balance closure; maintenance log"
+    - protocol_id: cp_finished_product
+      process_id: "bar_rod_conversion"
+      flow_role: "conforming reference product"
+      record_type: "certified product scale, inspection and dispatch records"
+      raw_fields: "heat_or_lot_id; grade; product_form; dimensions; net_mass; disposition; inspection_status; timestamp"
+      collection_method: "sum only specification-conforming net product mass; exclude packaging and rejected output"
+      unit: "kg"
+      frequency: "each lot or dispatch; monthly close"
+      temporal_coverage: "full representative reporting period"
+      site_scope: "all in-scope lines"
+      aggregation_rule: "aggregate conforming mass by declared product and normalize inventory to 1,000 kg"
+      quality_evidence: "calibration; inspection certificate; dispatch record; rejection log"
+    - protocol_id: cp_residues_and_wastewater
+      process_id: "bar_rod_conversion"
+      flow_role: "scrap, mill scale and wastewater"
+      record_type: "waste scales, transfer notes, treatment logs and outlet meters"
+      raw_fields: "stream_id; material_or_water_identity; gross_mass; tare; moisture; oil_content; treatment; destination; outlet_reading; timestamp"
+      collection_method: "weigh each solid stream and meter each liquid discharge separately; reconcile storage change"
+      unit: "kg"
+      frequency: "each transfer or continuous meter; monthly close"
+      temporal_coverage: "same period as product mass"
+      site_scope: "all residue stores and wastewater outlets serving in-scope operations"
+      aggregation_rule: "aggregate without netting unlike streams; separate internal return, external recovery and disposal"
+      quality_evidence: "calibrated scale/meter; transfer manifest; laboratory result; treatment and stock log"
+    - protocol_id: cp_direct_air_emissions
+      process_id: "bar_rod_conversion"
+      flow_role: "fossil CO2, particulate matter and nitrogen oxides"
+      record_type: "continuous monitor, stack test, fuel meter and operating log"
+      raw_fields: "source_id; pollutant; concentration; gas_flow; duration; measured_mass; fuel_use; factor; factor_basis; control_status; timestamp"
+      collection_method: "calculate source-specific mass from validated monitors or a documented fuel/emission calculation; exclude upstream emissions"
+      unit: "kg"
+      frequency: "continuous where available or representative campaign; monthly aggregation"
+      temporal_coverage: "captures normal and documented abnormal operation in the reporting period"
+      site_scope: "every in-scope direct emission source"
+      aggregation_rule: "sum pollutant mass by source, avoid overlap between total particulate and size fractions, then normalize"
+      quality_evidence: "monitor QA/QC; accredited stack test; fuel analysis; factor provenance; control downtime log"
+  calculation_rules:
+    - id: calc_period_normalization
+      applies_to: "Every variable inventory row"
+      rule: "normalized amount = reporting-period boundary exchange / reporting-period conforming net product mass × 1,000 kg"
+      inputs:
+        - "reconciled row total"
+        - "conforming net product mass"
+      output: "row amount per 1,000 kg reference product"
+      source_ids: []
+    - id: calc_steel_mass_balance
+      applies_to: "Steel-bearing flows"
+      rule: "mass-balance difference = reheated billet input - conforming product - external scrap - recovered mill scale - other separately measured steel-bearing outputs - stock change; investigate rather than force the balance to zero"
+      inputs:
+        - "mass records from cp_material_mass_balance"
+        - cp_finished_product
+        - "and cp_residues_and_wastewater"
+      output: "disclosed reconciliation difference and percentage of billet input"
+      source_ids:
+        - eu-ferrous-metals-bat-2022
+    - id: calc_energy_conversion
+      applies_to: "Purchased electricity"
+      rule: "MJ = metered kWh × 3.6; retain original kWh and voltage/supply metadata"
+      inputs:
+        - "metered kWh"
+      output: "purchased electricity in MJ"
+      source_ids: []
+    - id: calc_stack_mass
+      applies_to: "Particulate matter and nitrogen oxides"
+      rule: "source mass = validated concentration × standardized dry gas flow × operating duration, with unit, oxygen and moisture corrections documented; sum only non-overlapping pollutant definitions"
+      inputs:
+        - "monitor or test data"
+        - "gas flow"
+        - duration
+        - "correction basis"
+      output: "direct pollutant mass by source"
+      source_ids:
+        - eu-ferrous-metals-bat-2022
+    - id: calc_fossil_co2
+      applies_to: "Fossil carbon dioxide"
+      rule: "Prefer measured source mass; otherwise calculate from metered fossil fuel and a site-verified carbon or emission factor and disclose oxidation, heating-value and reference-condition bases"
+      inputs:
+        - "fuel record"
+        - "verified factor or carbon data"
+      output: "direct fossil CO2 mass"
+      source_ids:
+        - eu-ferrous-metals-bat-2022
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product and billet input"
+      requirement: "Preserve grade, heat/lot genealogy, form, dimensions, surface and delivery condition from feedstock receipt through finished inspection."
+      evidence: "supplier certificate; heat record; inspection certificate"
+    - id: dq_representativeness
+      applies_to: "All foreground records"
+      requirement: "Use one common representative period and all in-scope production lines; disclose shutdowns, abnormal operation, outsourced finishing and any excluded campaign."
+      evidence: "production calendar; line list; exception log"
+    - id: dq_meter_control
+      applies_to: "Mass, energy, gas and water"
+      requirement: "Use calibrated meters or documented invoice reconciliation and retain original readings, units, reference conditions and conversion factors."
+      evidence: "calibration certificate; invoice; meter extract; conversion sheet"
+    - id: dq_completeness
+      applies_to: "Materials, waste, water and direct emissions"
+      requirement: "Reconcile process flow sheets with inventories of chemicals, wastewater and waste-gas streams; add each material direct exchange as an atomic row."
+      evidence: "process flow sheet; chemical inventory; wastewater map; emission-source register"
+    - id: dq_upstream_links
+      applies_to: "Billet/bloom and reheating datasets"
+      requirement: "Use supplier- and geography-representative upstream datasets and disclose technology, recycled-content and allocation gaps."
+      evidence: "supplier dataset metadata; gap assessment"
+    - id: dq_unresolved_identity
+      applies_to: "Electricity, wastewater and NOx rows"
+      requirement: "Keep the human-readable atomic flow and foreground measurement, but do not assign a Tiangong UUID until an exact state-100 identity with matching property and unit is confirmed."
+      evidence: "unresolved manifest entry; future finalized search receipt"
+validation_rules:
+  - rule_id: validation_identity
+    applies_to: "Product category"
+    rule: "Reject a dataset that does not establish silico-manganese steel grade and solid bar-or-rod form, or that represents irregularly wound wire rod, wire, hollow drill product or another alloy family."
+    source_ids:
+      - unsd-cpc-3-0-structure-2025
+      - china-serbia-tariff-2024
+  - rule_id: validation_reference_flow
+    applies_to: "Functional unit"
+    rule: "Require exactly 1,000 kg net conforming reference product, with packaging excluded and all required qualifiers declared."
+    source_ids: []
+  - rule_id: validation_boundary
+    applies_to: "Starting and ending gates"
+    rule: "Require a grade-identified reheated billet-or-bloom input, explicit upstream billet and reheating datasets, and disclosure of every included forming and finishing operation."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: validation_atomic_inventory
+    applies_to: "Inventory rows"
+    rule: "Reject combined carriers, utilities, waste collections or emission groups. Each boundary exchange must have one physical or chemical identity, direction, flow type, property, unit, amount rule and applicability condition."
+    source_ids:
+      - eu-ferrous-metals-bat-2022
+  - rule_id: validation_mass_balance
+    applies_to: "Steel-bearing flows"
+    rule: "Require reported conforming product, scrap, mill scale, other steel-bearing outputs and stock change to reconcile with billet input; investigate and disclose the residual."
+    source_ids:
+      - eu-ferrous-metals-bat-2022
+  - rule_id: validation_no_double_count
+    applies_to: "Energy, water, residues and emissions"
+    rule: "Reject upstream emissions reported again as direct emissions, recirculated water counted as make-up, internal scrap counted as a boundary output, or particulate totals overlapping reported size fractions."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+      - eu-ferrous-metals-bat-2022
+  - rule_id: validation_data_period
+    applies_to: "Foreground records"
+    rule: "Require the same representative period and site scope for numerator exchanges and conforming product denominator, with abnormal-operation treatment disclosed."
+    source_ids:
+      - eu-ferrous-metals-bat-2022
+published_dataset_profile:
+  dataset_role: "secondary_dataset and background_dataset after review and publication"
+  downstream_use: "Foreground packages for product LCIs and downstream process or lifecyclemodel construction requiring mill-gate silico-manganese-steel bar or rod supply"
+  allowed_use: "Grade-, route-, geography-, technology- and period-compatible modelling when the user preserves the declared starting condition, upstream links and allocation method"
+  excluded_use: "Irregularly wound wire rod, wire, high-speed steel, hollow drill bars, generic alloy steel without verified grade, fabricated products, cradle-to-gate claims without upstream links, or public comparative assertions without harmonized functional equivalence and review"
+  required_metadata: "PCR id and version; product UUID; grade/specification; heat/lot coverage; dimensions and delivery condition; forming and finishing route; site/geography; period; upstream billet and reheating datasets; voltage/supply mix; gas reference conditions; water boundary; allocation; scrap/scale/wastewater destinations; direct-emission methods; unresolved UUIDs"
+  required_quality_disclosure: "Data coverage and exclusions; meter and laboratory QA/QC; mass-balance residual; representativeness; supplier-data gaps; allocation sensitivity; abnormal-operation treatment; exact-versus-unresolved flow identities"
+  update_trigger: "Change in grade family, starting feed state, forming or finishing route, equipment, site, energy supply, water system, emission controls, allocation method, upstream datasets, or a material shift in mass/energy balance; confirmation of any unresolved UUID"
+data_sources:
+  - id: "unsd-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, code 41272. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-04)"
+    used_for: "Official classification identity and reference-product category"
+  - id: "china-serbia-tariff-2024"
+    type: "official_guidance"
+    reference: "Ministry of Finance of the People's Republic of China, 2024 China-Serbia preferential tariff schedule, tariff lines 72272000 and 72282000. https://m.mof.gov.cn/zcfb/202406/P020240625320768010766.pdf (retrieved 2026-09-04)"
+    used_for: "Professional Chinese product terminology and distinction from irregularly wound silico-manganese wire rod"
+  - id: "eu-ferrous-metals-bat-2022"
+    type: "standard"
+    reference: "European Commission, Commission Implementing Decision (EU) 2022/2110 establishing BAT conclusions for the ferrous metals processing industry. https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022D2110 (retrieved 2026-09-04)"
+    used_for: "Hot-rolling process decomposition; energy, water, chemical, wastewater, residue and direct-emission monitoring requirements; no BAT level is used as an empirical PCR range"
+  - id: "worldsteel-lci-methodology-2017"
+    type: "method_factor"
+    reference: "World Steel Association, Life Cycle Inventory Methodology Report, 2017. https://worldsteel.org/media/publications/lci-report-2017-pdf/?do_download_id=7f96813a-3756-4842-8dbc-38ce201f2914 (retrieved 2026-09-04)"
+    used_for: "Steel-product factory-gate boundary, long-product applicability, technology/geography disclosure, allocation and scrap-accounting principles"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:0b61a12dd30507b28a0e35e0d1e70e4390cd7ad6875ffd960bba286de57a10ee"
+  generated_content_sha256: "sha256:e57bae54e102e635d33370caed082a2461dc42649bd20a4454678b0f193a088d"

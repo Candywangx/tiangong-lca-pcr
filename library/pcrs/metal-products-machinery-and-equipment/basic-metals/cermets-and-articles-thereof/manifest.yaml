@@ -2,10 +2,11 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.basic-metals.cermets-and-articles-thereof
 title:
   en-US: "Cermets and articles thereof"
-  zh-CN: null
-status: scaffold
+  zh-CN: "金属陶瓷及其制品"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
+updated_at_utc: "2026-09-04T12:50:00Z"
 domains:
   - "metal-products-machinery-and-equipment"
 modules:
@@ -22,16 +23,89 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "41605"
     title: "Cermets and articles thereof"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  reference_flow_identity:
+    status: unresolved
+    unresolved_support_fields:
+      - reference_product_flow_uuid
+  unresolved_flow_identities:
+    - row_id: cermet_reference_product
+      reason: "No exact public state-100 Tiangong product flow represents a sintered unmounted cermet blank within the CPC 41605 boundary."
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: titanium_carbonitride_powder
+        reason_code: no_exact_candidate
+        explanation: "The bounded product-flow search returned tantalum powder, titanium concentrate, tungsten carbide powder, and tungsten powder; none is titanium carbonitride powder."
+      - row_id: nickel_powder
+        reason_code: no_exact_candidate
+        explanation: "The bounded product-flow search returned nickel concentrate and unrelated metal products, but no nickel powder flow."
+      - row_id: nitrogen_gas
+        reason_code: product_state_mismatch
+        explanation: "The exact nitrogen candidates were liquid nitrogen; gaseous industrial nitrogen at the foreground inlet was not confirmed."
+      - row_id: cermet_reference_product
+        reason_code: no_exact_candidate
+        explanation: "Two reference-product searches found unrelated materials/equipment and narrower CPC 42922 WC-Co tool parts, but no exact CPC 41605 sintered unmounted cermet blank."
+      - row_id: off_spec_cermet_powder
+        reason_code: no_exact_candidate
+        explanation: "No waste flow with the powder-blend state and declared cermet composition was found; mixed-metal-scrap candidates were rejected as chemically broader."
+      - row_id: sintered_cermet_reject
+        reason_code: no_exact_candidate
+        explanation: "No waste flow representing a composition-declared sintered cermet reject was found; mixed-metal-scrap candidates were not exact."
+      - row_id: cermet_grinding_sludge
+        reason_code: product_state_mismatch
+        explanation: "The nearest grinding-waste candidate was dry dust from grinding and sieving; it did not match wet cermet grinding sludge."
+      - row_id: heptane_air
+        reason_code: semantic_mismatch
+        explanation: "All elementary candidates were 2,6,6-trimethylbicyclo[3.1.1]heptane in various compartments, not n-heptane emitted to air."
+      - row_id: paraffin_air
+        reason_code: classification_mismatch
+        explanation: "The only candidate was a broad paraffins flow to indoor air, not paraffin-wax vapour released to external process air."
+    range_evidence_needs:
+      - need_id: major_material_and_yield_ranges
+        row_ids:
+          - tungsten_carbide_powder
+          - titanium_carbonitride_powder
+          - cobalt_powder
+          - nickel_powder
+          - cermet_reference_product
+        explanation: "One verified WC-Co publication gives scenario values, but no second independent source with compatible gate-to-gate boundary, product state, and one-kilogram reference basis was verified; foreground formulation and yield collection remains mandatory."
+      - need_id: energy_water_and_process_gas_ranges
+        row_ids:
+          - electricity
+          - natural_gas
+          - process_water
+          - nitrogen_gas
+        explanation: "Verified evidence is technology- and geography-specific and does not meet the two-independent-source rule for an externally inferred range; collect metered foreground values."
+      - need_id: binder_and_solvent_ranges
+        row_ids:
+          - paraffin_wax
+          - heptane
+          - heptane_air
+          - paraffin_air
+        explanation: "Only one boundary-compatible WC-Co LCI publication was verified; formulation and recovery rates must be collected rather than generalized into a range."
+      - need_id: waste_and_direct_emission_ranges
+        row_ids:
+          - off_spec_cermet_powder
+          - sintered_cermet_reject
+          - cermet_grinding_sludge
+          - particulate_matter_air
+          - fossil_co2_air
+        explanation: "No two independent sources with compatible cermet composition, abatement boundary, product state, and functional unit were verified; site mass balance and monitored emissions remain required."

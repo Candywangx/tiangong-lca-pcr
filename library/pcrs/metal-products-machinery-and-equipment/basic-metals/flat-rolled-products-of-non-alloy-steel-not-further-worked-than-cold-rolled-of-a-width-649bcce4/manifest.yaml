@@ -2,12 +2,12 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.basic-metals.flat-rolled-products-of-non-alloy-steel-not-further-worked-than-cold-rolled-of-a-width-649bcce4
 title:
   en-US: "Flat-rolled products of non-alloy steel, not further worked than cold-rolled, of a width of 600 mm or more"
-  zh-CN: null
-status: scaffold
+  zh-CN: "宽度为600毫米及以上、除冷轧外未经进一步加工的非合金钢平板轧材"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +22,47 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "41221"
     title: "Flat-rolled products of non-alloy steel, not further worked than cold-rolled, of a width of 600 mm or more"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  semantic_boundary_review:
+    outcome: promote_legacy
+    explanation: "No material PCR has the same non-alloy-steel, width-at-least-600-mm, cold-rolled, uncoated terminal product boundary; adjacent identities differ by width, alloy family, hot-rolled state, or further working."
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  reference_flow_identity:
+    status: unresolved
+    unresolved_support_fields:
+      - reference_product_flow_uuid
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: steelmaking_electricity
+        reason_code: semantic_mismatch
+        explanation: "Authenticated hybrid search and direct state_code=100 reads were performed under finalized receipt 1c9b5671-264c-48ed-bada-c442377ee891 before rejecting generic AC UUIDs 455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca and 8bfc48b1-c262-4156-a817-b2c8a1b21598 for lacking the site-specific steelworks supply, voltage, geography, provider, technology, delivery boundary, and line-loss qualifiers. Electricity services were classification mismatches and unrelated material was also rejected."
+      - row_id: hot_strip_electricity
+        reason_code: semantic_mismatch
+        explanation: "Authenticated hybrid search and a direct state_code=100 read were performed under finalized receipt 95f643d2-7e0a-4a3e-89b3-9246060545e9 before rejecting generic AC UUID 8bfc48b1-c262-4156-a817-b2c8a1b21598 for lacking the site-specific hot-strip-mill supply, voltage, geography, provider, technology, delivery boundary, and line-loss qualifiers. Service and material candidates were classification mismatches."
+      - row_id: cold_rolling_electricity
+        reason_code: semantic_mismatch
+        explanation: "Authenticated hybrid search and direct state_code=100 reads were performed under finalized receipt c877d170-7381-4498-8791-aed0492f06ed before rejecting generic AC UUIDs 455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca, 3d76981f-964a-4865-b588-0e067a2a1163, 4d0361a3-56cc-45f9-aa42-bb9103285bf9, and 50657322-939c-4829-a87b-47c093bfa6a7 for lacking the site-specific cold-rolling-line supply, voltage, geography, provider, technology, delivery boundary, and line-loss qualifiers. The voltage-transformation service was a classification mismatch."
+      - row_id: cold_rolled_product
+        reason_code: no_exact_candidate
+        explanation: "Authenticated hybrid-search receipt e4e32579-10dc-4611-bcdd-3a8565865f7f was finalized after direct state_code=100 reads of all five ranked candidates. None matched uncoated non-alloy steel, cold-rolled terminal state, and width of 600 mm or more; this reference-product output row therefore remains explicitly unresolved."
+    range_evidence_needs:
+      - {range_id: rng_steelmaking, row_ids: [sinter_ignition_natural_gas, industrial_oxygen, steelmaking_electricity, fossil_carbon_dioxide], reason_code: insufficient_independent_sources, explanation: "No two independent original-text sources with compatible route, boundary and reference basis support inferred amounts."}
+      - {range_id: rng_hot_strip, row_ids: [hot_strip_electricity, hot_rolled_coil], reason_code: insufficient_independent_sources, explanation: "Verified sources establish process inclusion but not two compatible independent inventory ranges."}
+      - {range_id: rng_cold_rolling, row_ids: [pickling_feed_coil, cold_rolling_electricity, cold_rolled_product], reason_code: insufficient_independent_sources, explanation: "The reference amount is an identity rather than an empirical range; route-specific amounts require foreground or compatible multi-source evidence."}

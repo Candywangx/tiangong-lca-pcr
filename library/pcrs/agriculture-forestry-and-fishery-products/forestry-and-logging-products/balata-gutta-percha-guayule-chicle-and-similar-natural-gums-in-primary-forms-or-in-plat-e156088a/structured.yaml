@@ -1,10 +1,961 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "03211"
-  title: "Balata, gutta-percha, guayule, chicle and similar natural gums in primary forms or in plates, sheets or strip"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.agriculture-forestry-and-fishery-products.forestry-and-logging-products.balata-gutta-percha-guayule-chicle-and-similar-natural-gums-in-primary-forms-or-in-plat-e156088a"
+  classification_refs: "CPC 3.0:03211 exact - Balata, gutta-percha, guayule, chicle and similar natural gums in primary forms or in plates, sheets or strip"
+  covered_products: "Balata; gutta-percha; guayule natural gum, resin, or rubber fraction sold as primary gum material; chicle; similar natural plant gums sold in primary forms, blocks, plates, sheets, or strip"
+  excluded_products: "Natural rubber from Hevea when classified as CPC 01950; synthetic rubber and factice; vulcanized or compounded rubber goods; formulated chewing gum base; dental gutta-percha points or devices; adhesives, coatings, and finished articles"
+  representative_product: "1 kg saleable dry-basis natural gum primary material at producer gate"
+  production_route: "Tapping, leaf/shrub harvest, or raw lot receipt; concentration/coagulation or extraction; impurity removal; drying, pressing, block forming, sheet forming, or strip cutting; packaging for dispatch"
+  market_state: "Unvulcanized primary material, usually baled, blocked, sheeted, plated, stripped, or otherwise simply prepared for industrial conversion"
+functional_unit:
+  what: "Saleable balata, gutta-percha, guayule, chicle, or similar natural gum primary material"
+  how_much: "1 kg net product mass"
+  how_well: "Product meets the declared commercial grade, product form, moisture or dry matter basis, and impurity specification"
+  how_long_or_cycle: "One foreground production batch, tapping campaign, extraction campaign, or annualized campaign normalized to the reference amount"
+  reference_flow_link: "Reference product output of the final primary gum production process"
+system_boundary:
+  rules:
+    - rule_id: boundary_declared_source_or_raw_lot
+      applies_to: "all foreground data packages"
+      rule: "Begin foreground modelling at the declared source stand or raw gum lot, use upstream datasets for each purchased input crossing the boundary, and do not recursively reopen this PCR for a purchased CPC 03211 gum input."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "declared_source_stand_or_raw_gum_lot"
+  starting_condition_role: "Boundary anchor for the first foreground collection or raw material receipt record."
+  product_classification_scope: "CPC 3.0:03211 natural gums and similar plant gum primary forms only."
+  recursive_input_rule: "If an input is itself CPC 03211 primary natural gum, model it as a purchased raw gum input with an upstream dataset; do not recursively reopen this PCR inside the same foreground process."
+  upstream_dataset_requirement: "Use an upstream dataset for purchased latex, crude gum, harvested leaf, shrub biomass, solvent, packaging, electricity, fuel, water, or transport services that cross into the foreground boundary."
+  disclosure: "Disclose source species or supplier source category, source system, harvesting or tapping route, purchased raw lot share, product form, moisture basis, purification state, co-product treatment, and any excluded establishment, land management, or long-distance transport activities."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Balata, gutta-percha, guayule, chicle and similar natural gums in primary forms or in plates, sheets or strip"
+    uuid: "907d7b5c-ed6f-43a2-82f8-e1f91e30a37b"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "gum type"
+    - "botanical or supplier source category"
+    - "source system"
+    - "product form"
+    - "moisture or dry matter basis"
+    - "resin separation or purification state"
+    - "production route"
+    - "geographic origin"
+    - "allocation method for co-products"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product and saleable co-products"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report the reference flow as net saleable product mass excluding reusable pallets, drums, or returnable containers."
+  - id: dry_matter_basis
+    applies_to: "Gum, latex, leaf, shrub biomass, residue, and product outputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg dry matter and kg as received"
+    rule: "Record moisture or total solids whenever a wet input, latex, coagulum, or dried product is converted to the 1 kg reference product."
+  - id: product_form_reporting
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Declare whether the reference product is block, plate, sheet, strip, crumb, resin fraction, rubber fraction, or another primary form."
+  - id: energy_unit_consistency
+    applies_to: "Electricity, steam, fuel, and process heat"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Convert plant energy meters, fuel invoices, and boiler records to kWh or MJ and state whether values are final energy, fuel lower heating value, or delivered heat."
+  - id: route_specific_yield_check
+    applies_to: "Tapping, leaf extraction, and guayule extraction processes"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Compare foreground yields against route-specific evidence or documented campaign records; large deviations require source species, moisture basis, and loss disclosure."
+process_map:
+  - id: source_harvest_or_raw_lot_receipt
+    name: "Source harvest, tapping, or raw lot receipt"
+    inclusion: "required"
+    inclusion_condition: "Include for all datasets; use raw lot receipt when the producer buys crude gum, latex, leaves, or shrub biomass."
+    role: "Establishes source identity and incoming material amount."
+    quantitative_reference: "kg incoming raw material and kg dry matter per 1 kg reference product"
+  - id: primary_concentration_or_extraction
+    name: "Primary concentration, coagulation, boiling, or extraction"
+    inclusion: "required"
+    inclusion_condition: "Include the route used for chicle boiling, balata/gutta softening, guayule aqueous or solvent extraction, or comparable natural gum recovery."
+    role: "Converts raw latex, crude gum, leaves, or shrub biomass into concentrated or separated gum."
+    quantitative_reference: "kg intermediate gum per 1 kg reference product"
+  - id: purification_forming_and_drying
+    name: "Purification, drying, pressing, and forming"
+    inclusion: "required"
+    inclusion_condition: "Include when the product is dried, pressed, blocked, sheeted, plated, stripped, or purified before sale."
+    role: "Produces the declared primary product form."
+    quantitative_reference: "kg saleable product per 1 kg reference product"
+  - id: packaging_storage_and_dispatch
+    name: "Packaging, storage, and dispatch preparation"
+    inclusion: "required"
+    inclusion_condition: "Include packaging and on-site storage needed to deliver the product at producer gate."
+    role: "Records packaging, storage losses, and product dispatch state."
+    quantitative_reference: "kg packaged saleable product per 1 kg reference product"
+process_inventory:
+  - id: source_harvest_or_raw_lot_receipt
+    label: "Source harvest, tapping, or raw lot receipt"
+    inputs:
+      product:
+        - row_id: source_material_input
+          role: "Source stand, tree, shrub, latex, leaf, or raw gum lot"
+          name: "Natural gum source material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The incoming material is recorded according to the declared route. It may be tapped latex, crude gum, harvested leaves, guayule shrub biomass, or a purchased raw gum lot."
+          amount:
+            expression: "measured incoming mass and dry matter or total solids content"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_source_material_records
+              source_ids:
+                - fao-nwfp-6-chicle
+                - fao-nwfp-6-balata
+                - fao-nwfp-6-gutta-percha
+                - dehghanizadeh-2021-guayule-resin
+            ranges:
+              - role: qa_guardrail
+                lower: "1.0"
+                upper: "100"
+                unit: "kg dry matter"
+                basis: "per 1 kg saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: field_collection_energy
+          role: "Field fuel and collection energy"
+          name: "Field collection energy"
+          flow_type: "product"
+          property_unit: "Energy / MJ or kWh"
+          description: "Fuel, electricity, or animal/mechanical collection services are included when directly used for tapping, shrub harvest, leaf collection, in-field chopping, or raw lot receiving."
+          amount:
+            expression: "fuel or electricity measured from meters, invoices, logbooks, or equipment-hour calculations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "MJ"
+                basis: "per 1 kg saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: rejected_source_biomass
+          role: "Uncollected or rejected source biomass"
+          name: "Biogenic plant residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg dry matter"
+          description: "Rejected bark, leaves, twigs, shrub material, or contaminated raw gum is recorded when it leaves the foreground system as waste or is returned to the source area."
+          amount:
+            expression: "measured or calculated rejected biomass after source collection"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "50"
+                unit: "kg dry matter"
+                basis: "per 1 kg saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: source_area_occupation
+          role: "Source-area land occupation disclosure"
+          name: "Land occupation, forestry or perennial shrub production"
+          flow_type: "elementary"
+          property_unit: "Area-time / m2a"
+          description: "Land occupation is reported when the foreground dataset represents plantation or managed source-area operation rather than only purchased raw lot receipt."
+          amount:
+            expression: "annualized productive source area allocated to harvested source material"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_source_area_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1000"
+                unit: "m2a"
+                basis: "per 1 kg saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+    outputs:
+      product:
+        - row_id: raw_material_to_processing
+          role: "Raw gum, latex, leaves, or shrub biomass for processing"
+          name: "Raw natural gum material"
+          flow_type: "product"
+          property_unit: "Mass / kg as received and kg dry matter"
+          description: "The measured collected or received material is transferred to the primary concentration or extraction process."
+          amount:
+            expression: "measured transferred mass after source collection or receipt"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per source collection or receipt process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_source_material_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1.0"
+                upper: "100"
+                unit: "kg dry matter"
+                basis: "per 1 kg saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+  - id: primary_concentration_or_extraction
+    label: "Primary concentration, coagulation, boiling, or extraction"
+    inputs:
+      product:
+        - row_id: raw_material_charged
+          role: "Raw material charged to recovery"
+          name: "Raw natural gum material"
+          flow_type: "product"
+          property_unit: "Mass / kg dry matter"
+          description: "Raw latex, crude gum, leaves, shrub biomass, or purchased raw gum is charged to the recovery route."
+          amount:
+            expression: "measured raw material charged to the concentration, boiling, coagulation, or extraction equipment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_source_material_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1.0"
+                upper: "100"
+                unit: "kg dry matter"
+                basis: "per 1 kg saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: process_water_input
+          role: "Process water"
+          name: "Process water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ec205030-248c-496f-9cf2-06d9d26dc6ff"
+          property_unit: "Mass / kg"
+          description: "Process water is included when used for boiling, hot-water softening, washing, aqueous extraction, slurry handling, or cooling that crosses the foreground boundary."
+          amount:
+            expression: "measured make-up water consumption net of internal recirculation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "kg"
+                basis: "per 1 kg saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: separation_aid_input
+          role: "Solvent, coagulant, or separation aid"
+          name: "Solvent, coagulant, or process aid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Solvents, acids, salts, alkalis, filter aids, or other separation aids are included only when used in the declared route."
+          amount:
+            expression: "measured purchased or consumed quantity by material name and concentration"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_auxiliary_material_records
+              source_ids:
+                - dehghanizadeh-2021-guayule-resin
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg"
+                basis: "per 1 kg saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: recovery_energy_input
+          role: "Process heat and electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2eb3b2fd-6511-4a22-9018-768024a5b5a6"
+          property_unit: "Energy / kWh or MJ"
+          description: "Energy for boiling, extraction, agitation, centrifugation, evaporation, solvent recovery, and pumps is included in the recovery process."
+          amount:
+            expression: "measured energy use or calculated equipment energy allocated to the recovery campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - dehghanizadeh-2021-guayule-resin
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "100"
+                unit: "MJ"
+                basis: "per 1 kg saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: gum_intermediate_output
+          role: "Concentrated or separated gum intermediate"
+          name: "Natural gum intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg dry matter"
+          description: "The intermediate gum, coagulum, rubber fraction, resin fraction, or crude gutta fraction is recorded before final drying and forming."
+          amount:
+            expression: "measured intermediate output, including moisture or solids basis"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per recovery process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_quality_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1.0"
+                upper: "10"
+                unit: "kg dry matter"
+                basis: "per 1 kg saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: recovery_wastewater
+          role: "Wastewater from washing or boiling"
+          name: "Process wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3 or Mass / kg"
+          description: "Wastewater is recorded when water leaves the recovery process for treatment, discharge, or off-site disposal."
+          amount:
+            expression: "measured discharge or water-balance residual after recirculation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "kg"
+                basis: "per 1 kg saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: recovery_solid_residue
+          role: "Bagasse, spent leaves, resinous residue, or extraction solids"
+          name: "Biogenic extraction residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg dry matter"
+          description: "Solid residues from leaf extraction, shrub extraction, filtering, or crude gum cleaning are recorded by dry matter and disposal or beneficial-use route."
+          amount:
+            expression: "measured residue generation and fate"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids:
+                - dehghanizadeh-2021-guayule-resin
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "kg dry matter"
+                basis: "per 1 kg saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: evaporated_water
+          role: "Evaporated water from concentration"
+          name: "Water vapour to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Water evaporated during boiling, concentration, or drying is reported as a water-balance output when material."
+          amount:
+            expression: "calculated from water balance and moisture measurements"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_quality_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "kg"
+                basis: "per 1 kg saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: purification_forming_and_drying
+    label: "Purification, drying, pressing, and forming"
+    inputs:
+      product:
+        - row_id: gum_intermediate_input
+          role: "Gum intermediate for final forming"
+          name: "Natural gum intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg dry matter"
+          description: "The intermediate gum material is fed to final drying, purification, pressing, block forming, sheet forming, or strip cutting."
+          amount:
+            expression: "measured intermediate input to final finishing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_quality_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1.0"
+                upper: "10"
+                unit: "kg dry matter"
+                basis: "per 1 kg saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: finishing_energy_input
+          role: "Finishing energy"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2eb3b2fd-6511-4a22-9018-768024a5b5a6"
+          property_unit: "Energy / kWh or MJ"
+          description: "Energy for drying, pressing, rolling, cutting, cooling, and ventilation is included."
+          amount:
+            expression: "measured energy use for final finishing or allocated equipment energy"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "50"
+                unit: "MJ"
+                basis: "per 1 kg saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: saleable_primary_gum_product
+          role: "Saleable primary natural gum product"
+          name: "Balata, gutta-percha, guayule, chicle and similar natural gums in primary forms or in plates, sheets or strip"
+          flow_type: "product"
+          flow_ref:
+            uuid: "907d7b5c-ed6f-43a2-82f8-e1f91e30a37b"
+          property_unit: "Mass / kg"
+          description: "The reference product is the saleable primary natural gum in the declared form and quality state."
+          amount:
+            expression: "1 kg reference product at declared moisture or dry matter basis"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_product_quality_records
+              source_ids: []
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg"
+                basis: "reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - iso-14044-2006
+      waste:
+        - row_id: off_grade_gum_waste
+          role: "Off-grade gum and trimming waste"
+          name: "Off-grade natural gum waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Off-grade gum, trimmings, fines, contaminated gum, or rejected sheets are recorded by fate."
+          amount:
+            expression: "measured rejected product and declared recycling, rework, energy recovery, or disposal route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg"
+                basis: "per 1 kg saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: packaging_storage_and_dispatch
+    label: "Packaging, storage, and dispatch preparation"
+    inputs:
+      product:
+        - row_id: primary_packaging_input
+          role: "Primary packaging material"
+          name: "Packaging material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Packaging is included when bags, liners, cartons, drums, straps, labels, or non-returnable pallets are supplied with the saleable product."
+          amount:
+            expression: "measured packaging issued to the product lot, excluding reusable packaging when separately tracked"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg"
+                basis: "per 1 kg saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: storage_handling_energy
+          role: "Storage and handling energy"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2eb3b2fd-6511-4a22-9018-768024a5b5a6"
+          property_unit: "Energy / kWh or MJ"
+          description: "Energy for warehouses, drying rooms, ventilation, forklifts, conveyors, and handling equipment is included when used before producer-gate dispatch."
+          amount:
+            expression: "measured or allocated storage and handling energy"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "MJ"
+                basis: "per 1 kg saleable reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packaged_product_at_gate
+          role: "Packaged product at producer gate"
+          name: "Balata, gutta-percha, guayule, chicle and similar natural gums in primary forms or in plates, sheets or strip"
+          flow_type: "product"
+          flow_ref:
+            uuid: "907d7b5c-ed6f-43a2-82f8-e1f91e30a37b"
+          property_unit: "Mass / kg"
+          description: "The packaged saleable primary gum product is ready for dispatch at the producer gate."
+          amount:
+            expression: "net product mass equals the reference product; packaging mass is not part of the reference amount"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_product_quality_records
+              source_ids: []
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg"
+                basis: "reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - iso-14044-2006
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "foreground_burden_allocation"
+    rule: "If the foreground process produces only the declared primary gum product and internal residues are discarded, no allocation is required. If guayule rubber, guayule resin, bagasse, purified gutta fraction, resinous fraction, fuel residue, or another co-product leaves the system with economic value, allocate shared collection, extraction, and finishing burdens by dry mass as the default physical allocation. Use economic allocation only when the co-products have materially different functions and sale prices are documented for the same campaign. Internal rework is not a co-product; record it as a loop or yield loss. Residues used internally for process heat displace purchased energy only when measured and disclosed."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_source_material_records
+      process_id: "source_harvest_or_raw_lot_receipt"
+      flow_role: "source material input and raw material transfer"
+      record_type: "harvest, tapping, receiving, or purchase record"
+      raw_fields: "species_or_source_category; source_system; lot_id; as_received_mass; moisture_or_solids; source_location; harvest_or_receipt_date"
+      collection_method: "weighbridge, batch sheet, receiving note, tapping log, or harvest record"
+      unit: "kg and percent moisture or solids"
+      frequency: "each lot or campaign"
+      temporal_coverage: "representative production year or declared campaign"
+      site_scope: "source area, supplier lot, or receiving site"
+      aggregation_rule: "sum lots and convert to dry matter where required"
+      quality_evidence: "calibrated scale records, supplier certificates, moisture tests, and lot traceability"
+    - protocol_id: cp_source_area_records
+      process_id: "source_harvest_or_raw_lot_receipt"
+      flow_role: "source area occupation"
+      record_type: "land management or source-area record"
+      raw_fields: "productive_area; source_system; harvestable_area_share; campaign_duration; yield_to_processing"
+      collection_method: "land register, plantation block record, concession record, or supplier declaration"
+      unit: "ha, m2a, kg dry matter"
+      frequency: "annual or campaign"
+      temporal_coverage: "representative production year"
+      site_scope: "source stand, plantation block, or declared supplier source"
+      aggregation_rule: "allocate source area to harvested dry matter or purchased raw lot"
+      quality_evidence: "source map, land record, management plan, or supplier statement"
+    - protocol_id: cp_energy_records
+      process_id: "all_processes"
+      flow_role: "fuel, electricity, steam, and process heat"
+      record_type: "meter, invoice, boiler log, fuel issue, or equipment-hour record"
+      raw_fields: "energy_carrier; quantity; unit; meter_scope; allocation_basis; process_id; date"
+      collection_method: "meter reading, invoice reconciliation, or equipment-hour calculation"
+      unit: "kWh, MJ, kg fuel, L fuel"
+      frequency: "monthly or campaign"
+      temporal_coverage: "representative production year or campaign"
+      site_scope: "plant, field crew, extraction line, finishing line, or storage area"
+      aggregation_rule: "allocate shared energy by metered sub-process first, then runtime, mass throughput, or dry product output"
+      quality_evidence: "meter calibration, invoice, fuel log, and allocation worksheet"
+    - protocol_id: cp_water_records
+      process_id: "primary_concentration_or_extraction"
+      flow_role: "process water and wastewater"
+      record_type: "water meter, batch water sheet, or wastewater record"
+      raw_fields: "make_up_water; recycled_water; discharge_volume; treatment_route; process_id; date"
+      collection_method: "meter reading or water balance"
+      unit: "kg or m3"
+      frequency: "batch, monthly, or campaign"
+      temporal_coverage: "representative production year or campaign"
+      site_scope: "extraction, boiling, washing, cooling, and effluent treatment systems"
+      aggregation_rule: "net make-up water plus discharge water balance per reference product"
+      quality_evidence: "meter records, wastewater manifest, treatment logs, and water-balance reconciliation"
+    - protocol_id: cp_auxiliary_material_records
+      process_id: "primary_concentration_or_extraction"
+      flow_role: "solvent, coagulant, and process aid"
+      record_type: "purchase, issue, or batch recipe record"
+      raw_fields: "material_name; concentration_or_grade; quantity_issued; recovered_quantity; loss_quantity; supplier; process_id"
+      collection_method: "inventory issue, recipe sheet, or solvent recovery log"
+      unit: "kg"
+      frequency: "each batch or campaign"
+      temporal_coverage: "representative production year or campaign"
+      site_scope: "extraction or purification line"
+      aggregation_rule: "net consumed material equals issued minus recovered/reused stock"
+      quality_evidence: "purchase record, SDS, batch sheet, and recovery log"
+    - protocol_id: cp_product_quality_records
+      process_id: "primary_concentration_or_extraction_purification_forming_and_drying_packaging_storage_and_dispatch"
+      flow_role: "intermediate and final product quality"
+      record_type: "production, laboratory, and finished-goods record"
+      raw_fields: "product_form; gum_type; moisture_or_solids; impurity_content; net_product_mass; off_grade_mass; lot_id"
+      collection_method: "batch sheet, lab test, finished-goods record"
+      unit: "kg, percent moisture or solids"
+      frequency: "each lot"
+      temporal_coverage: "representative production year or campaign"
+      site_scope: "production line and finished-goods warehouse"
+      aggregation_rule: "sum conforming net product and normalize all flows to 1 kg reference product"
+      quality_evidence: "lab report, certificate of analysis, scale record, and finished-goods ledger"
+    - protocol_id: cp_residue_records
+      process_id: "all_processes"
+      flow_role: "rejected biomass, bagasse, spent leaves, wastewater sludge, off-grade gum, and packaging waste"
+      record_type: "waste, residue, or by-product record"
+      raw_fields: "residue_type; quantity; moisture_or_solids; fate; sale_or_disposal_route; internal_reuse_flag"
+      collection_method: "waste manifest, residue collection record, by-product sales note, or internal reuse log"
+      unit: "kg and percent moisture or solids"
+      frequency: "batch, monthly, or campaign"
+      temporal_coverage: "representative production year or campaign"
+      site_scope: "field, extraction, finishing, storage, and waste handling areas"
+      aggregation_rule: "sum by fate; convert to dry matter where relevant; link valuable co-products to allocation rule"
+      quality_evidence: "waste manifest, by-product invoice, disposal ticket, and internal reuse record"
+    - protocol_id: cp_packaging_records
+      process_id: "packaging_storage_and_dispatch"
+      flow_role: "primary packaging input"
+      record_type: "packaging issue or bill of materials record"
+      raw_fields: "packaging_material; unit_mass; units_used; reusable_flag; supplier; product_lot"
+      collection_method: "packaging BOM, warehouse issue, or supplier record"
+      unit: "kg"
+      frequency: "lot or monthly"
+      temporal_coverage: "representative production year or campaign"
+      site_scope: "packaging area and finished-goods warehouse"
+      aggregation_rule: "sum non-returnable packaging per net product mass"
+      quality_evidence: "packaging BOM, supplier specification, and stock issue record"
+  calculation_rules:
+    - id: normalize_to_reference_product
+      applies_to: "all inventory rows"
+      rule: "row amount per kg reference product = campaign row amount / conforming net saleable product mass"
+      inputs:
+        - "row amount"
+        - "conforming product mass from cp_product_quality_records"
+      output: "normalized inventory amount per 1 kg reference product"
+      source_ids: []
+    - id: convert_to_dry_matter
+      applies_to: "source material, residues, and intermediate products"
+      rule: "dry matter mass = as-received mass * (1 - moisture fraction) or as-received mass * solids fraction"
+      inputs:
+        - as_received_mass
+        - moisture_or_solids
+      output: "kg dry matter"
+      source_ids: []
+    - id: water_balance_check
+      applies_to: "process water and wastewater"
+      rule: "wastewater or evaporated water is reconciled from make-up water, recycled water, product moisture change, and measured discharge"
+      inputs:
+        - make_up_water
+        - recycled_water
+        - "product moisture"
+        - discharge_volume
+      output: "water balance and unreconciled loss"
+      source_ids: []
+    - id: co_product_allocation
+      applies_to: "processes with saleable co-products"
+      rule: "allocate shared burdens by dry mass unless documented campaign prices justify economic allocation"
+      inputs:
+        - "shared process burdens"
+        - "dry mass of saleable co-products"
+        - "prices when used"
+      output: "allocation factors by co-product"
+      source_ids:
+        - iso-14044-2006
+    - id: guayule_fraction_check
+      applies_to: "guayule routes"
+      rule: "compare declared resin/rubber fraction yields with cited guayule resin and rubber extraction literature; deviations require explanation"
+      inputs:
+        - "dry shrub input"
+        - "resin fraction"
+        - "rubber fraction"
+        - bagasse
+      output: "QA flag or accepted route-specific yield"
+      source_ids:
+        - dehghanizadeh-2021-guayule-resin
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Declare gum type, botanical or supplier source category, product form, purification state, and moisture or dry matter basis."
+      evidence: "finished-goods record, certificate of analysis, supplier declaration, or product specification"
+    - id: dq_source_traceability
+      applies_to: "source material"
+      requirement: "Trace source material to source stand, plantation block, supplier lot, or purchased raw gum lot."
+      evidence: "harvest log, tapping record, supplier certificate, receiving note, or concession/management record"
+    - id: dq_mass_balance
+      applies_to: "source material, intermediate, final product, and residues"
+      requirement: "The dry-matter mass balance from source input to final product, co-products, residues, and losses must be reconcilable for each campaign."
+      evidence: "batch sheets, lab moisture tests, product ledger, and residue records"
+    - id: dq_energy_water_boundary
+      applies_to: "energy and water"
+      requirement: "Energy and water records must distinguish field collection, recovery/extraction, finishing, and storage where material; allocation assumptions must be documented."
+      evidence: "meters, invoices, boiler logs, water balance, and allocation worksheet"
+    - id: dq_co_product_allocation
+      applies_to: "co-products and residues"
+      requirement: "Co-product allocation must use dry mass by default or documented economic allocation with same-campaign prices."
+      evidence: "co-product mass records, by-product sales invoices, and allocation calculation"
+    - id: dq_temporal_representativeness
+      applies_to: "foreground dataset"
+      requirement: "Use at least one representative annual cycle or a declared production campaign; seasonal tapping or harvest campaigns must be identified."
+      evidence: "production calendar, campaign records, and data coverage statement"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "foreground_dataset_conformance"
+    rule: "The dataset is invalid if it omits the required product qualifiers, especially gum type, product form, moisture basis, source system, and production route."
+    source_ids: []
+  - rule_id: validation_rule_2
+    applies_to: "foreground_dataset_conformance"
+    rule: "The reference flow must be 1 kg net saleable product mass. Packaging and reusable containers are not part of the reference product mass."
+    source_ids: []
+  - rule_id: validation_rule_3
+    applies_to: "foreground_dataset_conformance"
+    rule: "The dry-matter mass balance must reconcile source material, product, co-products, residues, and moisture losses. Unreconciled dry-matter loss above 5 percent of source dry matter requires explanation."
+    source_ids: []
+  - rule_id: validation_rule_4
+    applies_to: "foreground_dataset_conformance"
+    rule: "Purchased raw gum, latex, leaves, shrub biomass, solvents, process aids, packaging, electricity, fuels, and transport services must be linked to upstream datasets when they cross the foreground boundary."
+    source_ids: []
+  - rule_id: validation_rule_5
+    applies_to: "foreground_dataset_conformance"
+    rule: "Chicle routes must disclose tapping interval assumptions and whether tree damage or stand management activities are included."
+    source_ids: []
+  - rule_id: validation_rule_6
+    applies_to: "foreground_dataset_conformance"
+    rule: "Gutta-percha routes must disclose whether material comes from tapping, leaves, prunings, crude blocks, or purchased raw material."
+    source_ids: []
+  - rule_id: validation_rule_7
+    applies_to: "foreground_dataset_conformance"
+    rule: "Guayule routes must disclose aqueous or solvent extraction, resin/rubber separation state, bagasse treatment, and solvent recovery where applicable."
+    source_ids: []
+  - rule_id: validation_rule_8
+    applies_to: "foreground_dataset_conformance"
+    rule: "Balata routes must disclose whether downstream gutta/resin separation is included or excluded."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "unit_process"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Modelling producer-gate primary natural gum materials in foreground product systems when the declared gum type, form, source system, route, and moisture basis match."
+  excluded_use: "Finished chewing gum, vulcanized rubber products, synthetic rubber, dental devices, formulated adhesives or coatings, and natural rubber CPC 01950 unless separately mapped."
+  required_metadata: "gum type; botanical or supplier source category; CPC reference; product form; moisture or dry matter basis; source system; production route; location; time period; allocation method; co-product treatment; upstream dataset links"
+  required_quality_disclosure: "source traceability level, dry-matter mass balance closure, energy and water allocation basis, solvent recovery treatment, residue fate, co-product allocation, and unresolved UUID or unit support gaps"
+  update_trigger: "Update when reviewed Tiangong UUIDs, source-specific yield evidence, solvent/extraction technology evidence, CPC mapping, or forestry/non-wood forest product review changes the rule."
+data_sources:
+  - id: "un-cpc-3-0"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, code 03211"
+    used_for: "Product category identity and classification reference"
+  - id: "fao-nwfp-6-chicle"
+    type: "handbook"
+    reference: "FAO Non-Wood Forest Products 6, Chicle profile, Pl@ntUse mirror, https://plantuse.plantnet.org/en/Chicle_%28FAO%2C_NWFP_6%29"
+    used_for: "Chicle source identity, tapping/collection route, boiling and block-forming process evidence"
+  - id: "fao-nwfp-6-balata"
+    type: "handbook"
+    reference: "FAO Non-Wood Forest Products 6, Balata profile, Pl@ntUse mirror, https://plantuse.plantnet.org/en/Balata_%28FAO%2C_NWFP_6%29"
+    used_for: "Balata source identity, tapping yield context, and downstream separation boundary"
+  - id: "fao-nwfp-6-gutta-percha"
+    type: "handbook"
+    reference: "FAO Non-Wood Forest Products 6, Gutta-percha profile, Pl@ntUse mirror, https://plantuse.plantnet.org/en/Gutta_percha_%28FAO%2C_NWFP_6%29"
+    used_for: "Gutta-percha source routes, leaf/pruning harvest, hot-water softening, storage, and purification context"
+  - id: "dehghanizadeh-2021-guayule-resin"
+    type: "literature"
+    reference: "Dehghanizadeh et al. 2021, \"Guayule (Parthenium argentatum) resin: A review of chemistry, extraction techniques, and applications\", Industrial Crops and Products 165, 113410, https://doi.org/10.1016/j.indcrop.2021.113410"
+    used_for: "Guayule extraction routes, rubber/resin/bagasse co-products, and route-specific yield QA"
+  - id: "szczepanowska-akhmedov-2023-polyisoprenes"
+    type: "literature"
+    reference: "Szczepanowska and Akhmedov 2023, \"Gutta percha, natural rubber and balata-chemical characterization of polyisoprenes in the context of cultural heritage\", Heritage Science 11, 125, https://doi.org/10.1186/s40494-023-00954-z"
+    used_for: "Material identity and distinction among gutta-percha, balata, and natural rubber polyisoprenes"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management - Life cycle assessment - Requirements and guidelines"
+    used_for: "Allocation hierarchy, data quality, and LCA reporting basis"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:60a87a5c45d87644c3822ae2bbf980fd731aa3db31b00d5485781103cfd99562"
+  generated_content_sha256: "sha256:64041da53ac47e74d4fcf8116650dabdf2f158defa98ba730a2cd22bb1607b77"

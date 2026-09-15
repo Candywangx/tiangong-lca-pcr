@@ -1,10 +1,594 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "42946"
-  title: "Barbed wire of iron or steel; twisted hoop or single flat wire, and loosely twisted double wire, of a kind used for fencing, of iron or steel"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.barbed-wire-of-iron-or-steel-twisted-hoop-or-single-flat-wire-and-loosely-twisted-doubl-e3371c78"
+  classification_refs: "CPC 3.0: 42946 (exact classification context)"
+  covered_products: "Iron or steel barbed wire; twisted hoop or single flat wire and loosely twisted double wire made for fencing; uncoated or zinc-coated saleable coils"
+  excluded_products: "Baling wire; wire mesh, cloth, grill and netting; fence posts and gates; stranded cable; insulated electrical wire; non-ferrous or plastic fencing wire"
+  representative_product: "Two-strand low-carbon steel barbed fencing wire supplied as a factory-gate coil; coating state is declared and does not define a separate PCR identity"
+  production_route: "Received steel wire is formed, twisted, barbed and wound; continuous hot-dip galvanising is included only when performed inside the foreground boundary"
+  market_state: "Dry, saleable factory-gate coil, with net product mass separated from packaging mass"
+functional_unit:
+  what: "Provide iron or steel wire configured as a barbed or specified twisted fencing barrier component"
+  how_much: "1,000 kg net barbed-wire product"
+  how_well: "Meets the declared wire construction, steel grade, diameter, tensile or strength class, barb geometry and spacing, coating specification, and applicable purchaser specification"
+  how_long_or_cycle: "One production reporting period covering at least 12 consecutive months or a documented representative campaign when annual data are unavailable"
+  reference_flow_link: "barbed_wire_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "foreground product system"
+      rule: "Include all on-site operations from receipt of steel wire through forming, twisting, barb application, winding, conditional coating, inspection, and sale-unit strapping; stop at the factory gate."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+        - eu-jrc-fmp-bref-2022
+    - rule_id: boundary_coating_route
+      applies_to: "coated products"
+      rule: "Include continuous hot-dip galvanising only when it occurs on-site; when pre-coated wire is purchased, place coating upstream and prohibit double counting."
+      source_ids:
+        - eu-jrc-fmp-bref-2022
+    - rule_id: boundary_exclusions
+      applies_to: "downstream life cycle"
+      rule: "Exclude fence posts, mesh, gates, installation, use, maintenance, downstream transport, and end-of-life unless a study explicitly adds them outside this factory-gate dataset."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+boundary_abstraction:
+  declared_starting_condition: "Steel wire coils received at the reporting site with steel grade, wire diameter, coating state, supplier, and delivered mass documented"
+  starting_condition_role: "Foreground gate input whose upstream dataset carries steelmaking, rolling, drawing, and any coating completed before receipt"
+  product_classification_scope: "The specific iron-or-steel barbed and twisted fencing-wire forms defined by CPC 42946; nearby mesh, cable, baling-wire, post, and gate products are outside scope"
+  recursive_input_rule: "Externally sourced barbed wire used as rework or feed is recorded as a separately disclosed secondary product input with its own upstream dataset; do not recurse into this PCR or merge it with the steel-wire row"
+  upstream_dataset_requirement: "Use a supplier-specific or representative steel-wire dataset consistent with declared grade, diameter, coating state, geography, technology, and delivery boundary; purchased coated wire must already include its coating burdens"
+  disclosure: "Declare forming route, number and form of strands, barb geometry and spacing, coating route and sequence, in-house versus purchased coating, product yield, scrap destination, packaging, site geography, technology, and reporting period"
+reference_flow_definition:
+  reference_amount: "1,000 kg net product"
+  product_flow_ref:
+    name: "Barbed wire of iron or steel"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "wire construction"
+    - "iron or steel grade and carbon class"
+    - "line-wire and barb-wire diameters"
+    - "tensile or strength class"
+    - "barb geometry and spacing"
+    - "coating material and coating mass or thickness"
+    - "coating sequence and whether coating is purchased or in-house"
+    - "coil mass"
+    - "packaging components"
+    - "production geography"
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "reference product and mass-normalized material rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure dry saleable barbed wire net of pallets and strapping; normalize all inventory rows to 1,000 kg net product."
+  - id: electricity_energy
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electricity by source and voltage; convert kWh to MJ using 1 kWh = 3.6 MJ and do not include upstream electricity emissions as direct foreground emissions."
+  - id: gas_reference_conditions
+    applies_to: "natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "State billing or standard temperature and pressure and convert measured volume to the declared reference conditions before normalization."
+  - id: water_mass_conversion
+    applies_to: "process water"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer mass measurement; when water is metered by volume, retain the volume record and use a documented density at the metering conditions to calculate mass."
+  - id: chemical_solution_basis
+    applies_to: "hydrochloric acid and flux chemicals"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report delivered solution or product mass and separately declare concentration and recycled content; do not mix active-substance mass with solution mass."
+process_map:
+  - id: barbed_wire_manufacturing
+    name: "Barbed-wire forming, conditional galvanising, winding and dispatch preparation"
+    inclusion: "required"
+    inclusion_condition: "Always include forming, twisting/barbing and winding; instantiate coating and strapping rows only when their declared conditions apply"
+    role: "foreground production"
+    quantitative_reference: "1,000 kg net saleable barbed wire at factory gate"
+process_inventory:
+  - id: barbed_wire_manufacturing
+    label: "Barbed-wire forming, conditional galvanising, winding and dispatch preparation"
+    inputs:
+      product:
+        - row_id: steel_wire
+          role: "Received steel wire"
+          name: "Steel Wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "62bb3717-f62c-43e0-baca-46a1e6f847c4"
+          property_unit: "Mass / kg"
+          description: "Steel wire crosses the foreground gate as the metal feed for line strands and barbs. Pool line-wire and barb-wire mass only when they share the same TianGong identity, grade and coating state; otherwise instantiate the row separately in the dataset."
+          amount:
+            expression: "Net steel-wire mass issued to the production route, reconciled from receipt, inventory and return records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net barbed-wire product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_balance
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity metered or defensibly allocated to forming, twisting, winding, ventilation, and in-house galvanising auxiliaries. Keep upstream generation emissions in the electricity supply dataset."
+          amount:
+            expression: "Metered purchased electricity converted to MJ and allocated to the declared product route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net barbed-wire product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_water
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Include process water crossing the site boundary for galvanising rinses, bath makeup and cooling only when these operations are inside the foreground route. Exclude closed-loop recirculation from gross input but record makeup and purge."
+          amount:
+            expression: "Metered process-water makeup attributable to the declared production route"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net barbed-wire product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_water
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: hydrochloric_acid
+          role: "Hydrochloric acid for in-house pickling"
+          name: "Hydrochloric Acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "964d524a-87f5-4b63-a856-2e31a8f21b67"
+          property_unit: "Mass / kg"
+          description: "Include hydrochloric acid only when an in-house continuous galvanising line pickles wire. Declare delivered concentration and subtract returned or recovered solution without converting solution mass to pure HCl mass."
+          amount:
+            expression: "Net delivered hydrochloric-acid solution consumed by the applicable pickling step"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net barbed-wire product requiring in-house galvanising"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_balance
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: zinc_metal
+          role: "Zinc metal for in-house galvanising"
+          name: "Zinc metal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include metallic zinc added to the molten bath only for in-house zinc coating. Record alloy grade and distinguish gross additions from recovered zinc returned to the bath."
+          amount:
+            expression: "Net zinc-metal additions attributable to the declared coated product"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net barbed-wire product requiring in-house galvanising"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_balance
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: zinc_chloride
+          role: "Zinc chloride for the flux bath"
+          name: "Zinc chloride"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e5d10a05-c796-4974-9871-fad1bfb5ddb8"
+          property_unit: "Mass / kg"
+          description: "Include zinc chloride only when it is added to the in-house aqueous galvanising flux bath. Record product purity and net additions rather than the circulating bath inventory."
+          amount:
+            expression: "Net zinc-chloride product added to the applicable flux bath"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net barbed-wire product requiring in-house galvanising"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_balance
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: ammonium_chloride
+          role: "Ammonium chloride for the flux bath"
+          name: "Ammonium Chloride"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0d0e3c27-1f93-4dc1-80d0-392a3226cd4f"
+          property_unit: "Mass / kg"
+          description: "Include ammonium chloride only when it is added to the in-house zinc-chloride/ammonium-chloride flux bath. Record product purity and net additions separately from zinc chloride."
+          amount:
+            expression: "Net ammonium-chloride product added to the applicable flux bath"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net barbed-wire product requiring in-house galvanising"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_balance
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: natural_gas
+          role: "Natural gas for the zinc bath"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Include gaseous natural gas only when it directly heats the in-house zinc bath or associated dryer. State volume reference conditions and exclude gas used by unrelated site operations."
+          amount:
+            expression: "Metered or sub-meter-allocated natural gas consumed by applicable galvanising equipment"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net barbed-wire product requiring in-house galvanising"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_water
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: steel_strapping
+          role: "Steel strapping"
+          name: "Steel baling band"
+          flow_type: "product"
+          flow_ref:
+            uuid: "56fe4f71-b594-4b55-8553-c87f2516737d"
+          property_unit: "Mass / kg"
+          description: "Include steel strapping only when it leaves the factory with the saleable coil. Do not include reusable handling straps or pallets in the net reference-product mass."
+          amount:
+            expression: "Issued mass of non-returnable steel strapping shipped with the reference product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net barbed-wire product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_balance
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: barbed_wire_product
+          role: "Net saleable barbed wire"
+          name: "Barbed wire of iron or steel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This is the reference product leaving the foreground system. Measure only conforming dry product and declare construction, dimensions, strength class, coating and coil mass."
+          amount:
+            expression: "Measured net mass of conforming saleable barbed-wire coils"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg net barbed-wire product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_and_waste
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: steel_wire_scrap
+          role: "Steel wire scrap"
+          name: "Waste steel wire"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "89e89b90-d82e-4631-b2ab-cd3c5986ca0e"
+          property_unit: "Mass / kg"
+          description: "Record offcuts, start-up wire, rejected barb sections and other steel-wire scrap leaving the foreground route. Retain destination and recovery status without subtracting scrap from gross steel-wire input."
+          amount:
+            expression: "Measured mass of steel-wire scrap leaving the foreground system"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net barbed-wire product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_and_waste
+              source_ids: []
+            ranges: []
+        - row_id: zinc_dross
+          role: "Zinc dross"
+          name: "Zinc dross"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include zinc dross removed from the coating bath only for in-house galvanising. Record recycled quantities as a waste output with destination; do not credit recycling inside this factory-gate inventory."
+          amount:
+            expression: "Measured zinc-dross mass removed from the applicable bath and leaving the foreground system"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net barbed-wire product requiring in-house galvanising"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_and_waste
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: acidic_rinse_wastewater
+          role: "Acidic iron-bearing rinse wastewater"
+          name: "Acidic iron-bearing rinse wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include the acidic aqueous waste stream discharged to on-site or off-site treatment from in-house pickling and rinsing. Report it before treatment and do not combine it with unrelated sanitary or cooling-water discharges."
+          amount:
+            expression: "Metered or tank-mass-balanced wastewater sent from applicable pickling and rinsing to treatment"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net barbed-wire product requiring in-house galvanising"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_and_waste
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      elementary:
+        - row_id: carbon_dioxide_fossil
+          role: "Fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record only direct fossil carbon dioxide from natural-gas combustion in foreground galvanising equipment. Exclude upstream electricity and fuel-supply emissions."
+          amount:
+            expression: "Facility-recorded direct fossil carbon-dioxide emission attributable to applicable foreground natural-gas combustion"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net barbed-wire product requiring in-house galvanising"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air_emissions
+              source_ids: []
+            ranges: []
+        - row_id: hydrogen_chloride_to_air
+          role: "Hydrogen chloride to air"
+          name: "hydrogen chloride"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aab0-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Include hydrogen chloride emitted from in-house hydrochloric-acid pickling after the declared abatement system. Use stack measurement or a documented site mass balance and do not combine it with other acid gases."
+          amount:
+            expression: "Measured or facility-recorded post-abatement hydrogen-chloride emission from applicable pickling"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net barbed-wire product requiring in-house hydrochloric-acid pickling"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "shared site operations"
+    rule: "Prefer subdivision, sub-metering, production orders, and material issues that assign forming and galvanising exchanges directly to the declared product route."
+    source_ids: []
+  - rule_id: allocation_shared_operations
+    applies_to: "remaining shared exchanges"
+    rule: "When subdivision is not feasible, allocate shared exchanges by net mass of conforming wire products only after documenting why mass reflects the physical relationship; disclose the allocation fraction and sensitivity."
+    source_ids: []
+  - rule_id: allocation_scrap_and_dross
+    applies_to: "steel-wire scrap and zinc dross"
+    rule: "Report each residue at measured mass and destination without subtracting it from gross inputs or applying an avoided-burden credit inside this factory-gate dataset."
+    source_ids:
+      - eu-jrc-fmp-bref-2022
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_balance
+      process_id: "barbed_wire_manufacturing"
+      flow_role: "steel wire, acids, zinc, flux salts and steel strapping inputs"
+      record_type: "purchase, goods receipt, issue, return and stock records"
+      raw_fields: "material identity; supplier; batch; delivered state; concentration or grade; opening stock; receipts; issues; returns; closing stock; mass; applicable route"
+      collection_method: "Reconcile net consumption as opening stock plus receipts minus returns and closing stock; link issues to production orders"
+      unit: "kg"
+      frequency: "monthly with annual reconciliation"
+      temporal_coverage: "at least 12 consecutive months or documented representative campaign"
+      site_scope: "all lines and stores serving the declared product at the reporting site"
+      aggregation_rule: "Sum route-attributable net consumption and normalize to net conforming product mass"
+      quality_evidence: "calibrated scales; inventory reconciliation; supplier certificates; batch and production-order linkage"
+    - protocol_id: cp_energy_and_water
+      process_id: "barbed_wire_manufacturing"
+      flow_role: "electricity, natural gas and process water"
+      record_type: "utility meter, sub-meter and invoice records"
+      raw_fields: "meter id; opening and closing readings; unit; reference conditions for gas; allocation driver; downtime; product route; output mass"
+      collection_method: "Prefer dedicated meters; otherwise reconcile site totals and allocate only documented route consumption"
+      unit: "MJ, m3, kg"
+      frequency: "monthly"
+      temporal_coverage: "at least 12 consecutive months or documented representative campaign"
+      site_scope: "equipment and utilities inside the declared foreground boundary"
+      aggregation_rule: "Convert units under Section 4, sum eligible consumption, and normalize to net conforming product mass"
+      quality_evidence: "meter calibration; invoices; site reconciliation; allocation worksheet"
+    - protocol_id: cp_product_and_waste
+      process_id: "barbed_wire_manufacturing"
+      flow_role: "reference product, steel-wire scrap, zinc dross and acidic rinse wastewater"
+      record_type: "production, scale, weighbridge, tank and waste-transfer records"
+      raw_fields: "product code; construction; coating state; gross mass; tare; net mass; reject mass; waste identity; destination; recovery status; wastewater volume or mass; density"
+      collection_method: "Weigh products and solid residues; meter or tank-balance wastewater before treatment; reconcile output and reject records"
+      unit: "kg"
+      frequency: "per batch or shipment, aggregated monthly"
+      temporal_coverage: "same period as inputs"
+      site_scope: "all forming, galvanising and dispatch operations in scope"
+      aggregation_rule: "Sum each atomic output separately and normalize to 1,000 kg net conforming product"
+      quality_evidence: "calibrated scales; tare records; waste manifests; tank calibration; production reconciliation"
+    - protocol_id: cp_air_emissions
+      process_id: "barbed_wire_manufacturing"
+      flow_role: "direct fossil carbon dioxide and hydrogen chloride"
+      record_type: "emissions inventory, fuel record and stack-test record"
+      raw_fields: "emission identity; source equipment; measurement period; measured concentration and flow where applicable; reported mass; abatement status; allocation basis"
+      collection_method: "Use facility-verified direct-emission records; for HCl prefer representative post-abatement stack measurement linked to operating hours"
+      unit: "kg"
+      frequency: "per test and monthly or annual emissions reconciliation"
+      temporal_coverage: "representative tests plus the same production period as the inventory"
+      site_scope: "only foreground combustion and pickling emission points"
+      aggregation_rule: "Sum direct emissions attributable to the route and normalize to net conforming product mass"
+      quality_evidence: "stack-test report; instrument calibration; fuel and operating-hour reconciliation; emissions approval record"
+  calculation_rules:
+    - id: calc_net_material_consumption
+      applies_to: "product and packaging inputs"
+      rule: "opening stock + receipts - returns - closing stock; assign only documented production-order issues"
+      inputs:
+        - stock
+        - receipt
+        - "return and issue records"
+      output: "net kg of each atomic material input per reporting period"
+      source_ids: []
+    - id: calc_reference_normalization
+      applies_to: "every inventory row"
+      rule: "row reporting-period amount / net conforming product mass × 1,000 kg"
+      inputs:
+        - "reconciled row amount"
+        - "net conforming barbed-wire output"
+      output: "row amount per 1,000 kg reference product"
+      source_ids: []
+    - id: calc_route_exclusion
+      applies_to: "conditional coating and packaging rows"
+      rule: "set the row to not applicable only when route records demonstrate the operation or shipped component is absent; do not enter an arbitrary zero"
+      inputs:
+        - "route declaration"
+        - "coating sequence"
+        - "purchase specification"
+        - "packaging bill of materials"
+      output: "documented applicability status for each conditional row"
+      source_ids:
+        - eu-jrc-fmp-bref-2022
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Match production records to declared construction, material, diameters, barb geometry, strength class, coating and coil mass; segregate nonconforming products."
+      evidence: "product specification; inspection record; production order; supplier or customer certificate"
+    - id: dq_completeness
+      applies_to: "all inventory rows"
+      requirement: "Cover at least 95% of production days in the reporting period and reconcile omitted days, stock changes, rework and abnormal operations."
+      evidence: "coverage calculation; exception log; inventory reconciliation"
+    - id: dq_route_consistency
+      applies_to: "coating-related rows"
+      requirement: "Demonstrate whether coating was purchased upstream or performed in-house and apply all applicable acid, flux, zinc, water, fuel, residue and emission rows consistently."
+      evidence: "route diagram; purchase specification; bath log; meter and waste records"
+    - id: dq_measurement
+      applies_to: "meters and scales"
+      requirement: "Use calibrated or verified instruments and document any allocation from shared meters, including sensitivity for material shared loads."
+      evidence: "calibration certificates; meter map; allocation worksheet"
+    - id: dq_temporal_geographic
+      applies_to: "published dataset"
+      requirement: "Report site geography, technology, data year, capacity utilisation and representativeness; do not combine sites without retaining site-level records and weighting."
+      evidence: "site metadata; annual production report; site-level aggregation file"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "Reject a data package that lacks any required qualifier or mixes barbed wire with baling wire, mesh, posts, gates, cable, or non-metal fencing products."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_mass_reconciliation
+    applies_to: "steel and zinc material balance"
+    rule: "Confirm that issued steel and zinc are reconciled against conforming product, stock change, scrap, dross and documented process losses; investigate unexplained imbalance."
+    source_ids: []
+  - rule_id: validate_coating_consistency
+    applies_to: "coated product route"
+    rule: "Require one declared coating sequence and verify that pre-coated purchased wire does not also receive upstream coating burdens in the foreground galvanising rows."
+    source_ids:
+      - eu-jrc-fmp-bref-2022
+  - rule_id: validate_direct_emissions
+    applies_to: "elementary outputs"
+    rule: "Confirm direct fossil carbon dioxide includes foreground combustion only and hydrogen chloride is specific to applicable post-abatement pickling emissions."
+    source_ids:
+      - eu-jrc-fmp-bref-2022
+  - rule_id: validate_inventory_completeness
+    applies_to: "reporting period"
+    rule: "Reconcile product output, materials, utilities, wastes and direct emissions to the same site, route and time period; disclose exclusions and data gaps."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset"
+  downstream_use: "Factory-gate background input for process and lifecyclemodel models that consume a declared barbed-wire coil"
+  allowed_use: "Studies requiring iron or steel barbed or specified twisted fencing wire when construction, grade, dimensions, strength, coating, geography, technology and time period are compatible"
+  excluded_use: "Baling wire, wire mesh or netting, fence posts or gates, stranded cable, insulated wire, non-ferrous or plastic fencing products, installed fence systems, or cradle-to-grave claims without additional life-cycle stages"
+  required_metadata: "canonical PCR id; product construction; steel grade; line-wire and barb-wire diameters; strength class; barb geometry and spacing; coating material and mass or thickness; coating sequence; net coil mass; packaging; site geography; technology; reporting period; upstream steel-wire dataset"
+  required_quality_disclosure: "foreground coverage; meter and scale quality; route applicability; allocation fractions; material and product reconciliation; direct-emission method; unresolved data and UUID identities; representativeness limitations"
+  update_trigger: "Change in steel grade or wire construction, forming technology, coating material or sequence, energy source, abatement, packaging, site geography, allocation method, or data older than five years"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, CPC 42946. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-05)"
+    used_for: "Official product identity, classification boundary, covered fencing-wire forms and exclusions from adjacent product categories"
+  - id: "un-cpc-v1-1-zh-2008"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 1.1, Chinese edition, Series M No. 77/Ver.1.1, entry 42946. https://unstats.un.org/unsd/publication/SeriesM/M_77ver1_1c.pdf (retrieved 2026-09-05)"
+    used_for: "Verified professional Chinese terminology for the unchanged barbed- and twisted-fencing-wire product identity"
+  - id: "eu-jrc-fmp-bref-2022"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Ferrous Metals Processing Industry, EUR 31321 EN, JRC131649, 2022. DOI: 10.2760/196475; https://publications.jrc.ec.europa.eu/repository/handle/JRC131649 (retrieved 2026-09-05)"
+    used_for: "Wire-to-finished-product boundary, wire drawing context, continuous wire galvanising sequence, hydrochloric-acid pickling, zinc-chloride/ammonium-chloride flux, zinc bath heating, water use, hydrogen-chloride control, wastewater and zinc-dross process decomposition"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:7b683a8957d4ccae5e80fc89ed468a3f28f86bd666bbe3cdbe45c91842aea17e"
+  generated_content_sha256: "sha256:942e776ba14f21a3838d759f57af11885766b246e4c7770dfd17480278787025"

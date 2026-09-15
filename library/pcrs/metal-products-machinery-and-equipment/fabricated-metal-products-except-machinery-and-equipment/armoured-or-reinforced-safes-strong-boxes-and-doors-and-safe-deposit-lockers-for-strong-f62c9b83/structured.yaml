@@ -1,10 +1,884 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "42993"
-  title: "Armoured or reinforced safes, strong-boxes and doors and safe deposit lockers for strong-rooms, cash or deed boxes and the like, of base metal"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.armoured-or-reinforced-safes-strong-boxes-and-doors-and-safe-deposit-lockers-for-strong-f62c9b83"
+  classification_refs: "CPC 3.0: 42993"
+  covered_products: "Finished base-metal armoured or reinforced safes, strong-boxes, strong-room doors, safe-deposit lockers, cash boxes, deed boxes, and like secure-storage products"
+  excluded_products: "Ordinary non-reinforced cabinets; stand-alone locks and alarms; on-site strong-room construction; upstream materials and purchased components"
+  representative_product: "One declared finished secure-storage product whose base-metal body or door and reinforcing barrier satisfy the producer's stated protection specification"
+  production_route: "Sheet-metal cutting and forming, body and door welding, barrier and lock assembly, applicable surface finishing, packaging, and factory release"
+  market_state: "Finished product at the manufacturing-site gate, excluding external transport packaging from the net product mass"
+functional_unit:
+  what: "Provision of a finished armoured or reinforced secure-storage product at the manufacturing-site gate"
+  how_much: "1000 kg net finished product, excluding external transport packaging"
+  how_well: "The declared product type, security or fire-performance designation where applicable, lock configuration, principal barrier construction, and factory acceptance status are stated"
+  how_long_or_cycle: "One manufactured and released product; service life is disclosed separately and is not embedded in the reference amount"
+  reference_flow_link: "finished_secure_storage_product"
+system_boundary:
+  rules:
+    - rule_id: sb_start
+      applies_to: "foreground system"
+      rule: "The boundary starts with purchased materials, components, energy, water, and packaging delivered to the manufacturing site and includes their linked upstream datasets."
+      source_ids:
+        - epd-international-godrej-high-security-safes-2025
+    - rule_id: sb_manufacture
+      applies_to: "foreground system"
+      rule: "Include sheet-metal preparation and forming, body and door welding, barrier filling or installation, lock and hardware assembly, surface pretreatment and coating when used, curing, packaging, final inspection, rework, and factory release."
+      source_ids:
+        - epd-international-godrej-high-security-safes-2025
+        - us-epa-ap42-electric-arc-welding-1995
+    - rule_id: sb_exchanges
+      applies_to: "all included processes"
+      rule: "Include all known material, component, water, energy, packaging, waste, and direct elementary exchanges; no blanket percentage cut-off is permitted. Any unavailable exchange shall be identified and its omission justified."
+      source_ids:
+        - epd-international-godrej-high-security-safes-2025
+    - rule_id: sb_waste
+      applies_to: "generated wastes"
+      rule: "Include on-site handling and treatment preparation and link each waste output to the downstream treatment or recycling scenario selected by the study; do not credit avoided production inside the foreground without an explicitly declared modelling rule."
+      source_ids:
+        - epd-international-godrej-high-security-safes-2025
+    - rule_id: sb_exclusions
+      applies_to: "foreground system"
+      rule: "Exclude capital equipment, factory buildings, employee travel, and downstream distribution, installation, use, maintenance, and end of life unless the study goal explicitly adds them as separately disclosed processes."
+      source_ids:
+        - epd-international-godrej-high-security-safes-2025
+boundary_abstraction:
+  declared_starting_condition: "Purchased materials, components, utilities, and packaging as received at the manufacturing site"
+  starting_condition_role: "foreground_start"
+  product_classification_scope: "CPC 3.0 code 42993 complete finished secure-storage products"
+  recursive_input_rule: "A purchased semi-finished safe body, door, locker module, or other same-category product shall be modelled as a separate upstream product input and shall not be silently substituted for its constituent materials."
+  upstream_dataset_requirement: "Each purchased input requires a geographically and technologically representative upstream dataset or an explicitly justified proxy."
+  disclosure: "Disclose product type, protection designation, manufacturing geography, data period, route coverage, purchased subassemblies, allocation, exclusions, and downstream waste scenarios."
+reference_flow_definition:
+  reference_amount: "1000 kg"
+  product_flow_ref:
+    name: "Armoured or reinforced safes, strong-boxes and doors and safe deposit lockers for strong-rooms, cash or deed boxes and the like, of base metal"
+    uuid: "35affc80-58a8-406b-9e08-574796726703"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product type"
+    - "model or product family"
+    - "security or fire-performance designation where applicable"
+    - "lock configuration"
+    - "principal barrier construction"
+    - "manufacturing geography"
+    - "data period"
+    - "net product mass basis"
+    - "packaging exclusion"
+    - "factory-gate boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: mr_reference_product_mass
+    applies_to: "finished_secure_storage_product"
+    required_property_ref:
+      name: "Mass ()"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine calibrated net finished-product mass after final assembly and before external transport packaging; normalize the released product total to 1000 kg."
+  - id: mr_material_and_waste_mass
+    applies_to: "all material inputs and solid or liquid waste outputs"
+    required_property_ref:
+      name: "Mass ()"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use receiving, batch, issue, return, and waste records reconciled to stock change; report wet or dry basis and composition when it changes interpretation."
+  - id: mr_electricity
+    applies_to: "purchased and on-site electricity"
+    required_property_ref:
+      name: "Net calorific value ()"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Record metered delivered electricity by process; if the meter reports kWh, retain the original reading and convert with 1 kWh = 3.6 MJ."
+  - id: mr_process_water
+    applies_to: "process_water"
+    required_property_ref:
+      name: "Mass ()"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use a mass reading or convert a metered volume with documented density and temperature assumptions; do not merge process water with wastewater."
+  - id: mr_particulate
+    applies_to: "welding_particulate"
+    required_property_ref:
+      name: "Mass ()"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer source testing or capture-system mass balance; where an emission factor is necessary, match the actual welding process and consumable and disclose the factor source and controls."
+process_map:
+  - id: body_fabrication_and_welding
+    name: "Body fabrication and welding"
+    inclusion: "required"
+    inclusion_condition: "Include cutting, forming, fitting, welding, and associated scrap and direct fume for every product."
+    role: "Converts steel stock into the principal body and door shell."
+    quantitative_reference: "fabricated body and door mass transferred to assembly"
+  - id: barrier_and_lock_assembly
+    name: "Barrier and lock assembly"
+    inclusion: "required"
+    inclusion_condition: "Include the actual reinforcement, barrier filling or installation, lock fitting, hardware integration, and assembly energy."
+    role: "Produces the complete protective assembly."
+    quantitative_reference: "assembled secure-storage product mass transferred to finishing or release"
+  - id: surface_finishing
+    name: "Surface finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Include when aqueous pretreatment, powder coating, another coating, or curing occurs at the reporting site; record unused route rows as zero or not applicable."
+    role: "Provides the declared surface protection and appearance."
+    quantitative_reference: "surface-finished product mass"
+  - id: packaging_and_final_release
+    name: "Packaging and final release"
+    inclusion: "required"
+    inclusion_condition: "Include actual factory packaging, final inspection, accepted output, and documented rework before shipment."
+    role: "Releases the reference product at the factory gate."
+    quantitative_reference: "finished_secure_storage_product"
+process_inventory:
+  - id: body_fabrication_and_welding
+    label: "Body fabrication and welding"
+    inputs:
+      product:
+        - row_id: steel_sheet
+          role: "Uncoated carbon-steel sheet"
+          name: "Uncoated carbon-steel sheet"
+          flow_type: "product"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); Units of mass (93a60a57-a4c8-11da-a746-0800200c9a66); kg"
+          description: "Specific sheet stock crosses the site boundary for cutting, forming, and welding into the body and door. Determine consumption from issued mass less traceable returns, reconciled with stock change."
+          amount:
+            expression: "Measure net sheet consumption and normalize with calc_mass_normalization."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1000 kg finished secure-storage product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_body_materials
+              source_ids:
+                - epd-international-godrej-high-security-safes-2025
+            ranges: []
+        - row_id: solid_welding_wire
+          role: "Solid welding wire"
+          name: "Solid welding wire"
+          flow_type: "product"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); Units of mass (93a60a57-a4c8-11da-a746-0800200c9a66); kg"
+          description: "Solid consumable electrode crosses the process boundary only when gas metal arc welding or another documented solid-wire route is used. Determine net wire consumption from spool issues, returns, and stock change."
+          amount:
+            expression: "Record measured consumption for the applicable welding route; otherwise record zero or not applicable."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "1000 kg finished secure-storage product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_body_materials
+              source_ids:
+                - us-epa-ap42-electric-arc-welding-1995
+            ranges: []
+        - row_id: flux_cored_wire
+          role: "Flux-cored wire"
+          name: "Flux Cored Wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1b74a576-06e0-4764-97ce-11a73f8a4752"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); Units of mass (93a60a57-a4c8-11da-a746-0800200c9a66); kg"
+          description: "Flux-cored consumable wire crosses the process boundary when the FCAW route is used. Determine net wire consumption from spool issues, returns, and stock change."
+          amount:
+            expression: "Record measured consumption for FCAW; otherwise record zero or not applicable."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "1000 kg finished secure-storage product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_body_materials
+              source_ids:
+                - us-epa-ap42-electric-arc-welding-1995
+            ranges: []
+        - row_id: electricity_fabrication
+          role: "Fabrication electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value (93a60a56-a3c8-11da-a746-0800200b9a66); Units of energy (93a60a57-a3c8-11da-a746-0800200c9a66); MJ"
+          description: "Electricity crosses the process boundary to operate cutting, forming, extraction, and welding equipment. Use submetered energy or a documented machine-load allocation when a dedicated meter is unavailable."
+          amount:
+            expression: "Record delivered electricity and normalize with calc_energy_normalization."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1000 kg finished secure-storage product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_electricity
+              source_ids:
+                - epd-international-godrej-high-security-safes-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_scrap
+          role: "Steel scrap"
+          name: "Scrap steel"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c3fc5605-baa3-4b25-9934-ecf7fcbc72da"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); Units of mass (93a60a57-a4c8-11da-a746-0800200c9a66); kg"
+          description: "Offcuts and rejected steel parts leave fabrication as a separately measured waste flow. Record gross collected scrap less any verified internal remelt or direct reuse that never leaves the same process system."
+          amount:
+            expression: "Measure dispatched scrap by scale ticket and normalize with calc_mass_normalization."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1000 kg finished secure-storage product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_waste
+              source_ids:
+                - epd-international-godrej-high-security-safes-2025
+            ranges: []
+      elementary:
+        - row_id: welding_particulate
+          role: "Welding particulate"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); Units of mass (93a60a57-a4c8-11da-a746-0800200c9a66); kg"
+          description: "Airborne particulate generated by welding crosses the process boundary after accounting for capture and exhaust controls. Keep the audited particle-size-unspecified identity unless measurement establishes a different exact elementary-flow identity."
+          amount:
+            expression: "Use measured released mass or a documented process- and consumable-specific calculation under calc_welding_particulate."
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "1000 kg finished secure-storage product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_welding_emissions
+              source_ids:
+                - us-epa-ap42-electric-arc-welding-1995
+            ranges: []
+  - id: barrier_and_lock_assembly
+    label: "Barrier and lock assembly"
+    inputs:
+      product:
+        - row_id: cementitious_barrier
+          role: "Cementitious security-barrier compound"
+          name: "Cementitious security-barrier compound"
+          flow_type: "product"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); Units of mass (93a60a57-a4c8-11da-a746-0800200c9a66); kg"
+          description: "The formulated cementitious compound crosses the assembly boundary for filling or installing the reinforcing barrier. Measure the complete supplied mixture as one product exchange and disclose its formulation basis without splitting it into unverified constituents."
+          amount:
+            expression: "Reconcile batch input, returned material, and residual waste, then normalize with calc_mass_normalization."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1000 kg finished secure-storage product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_materials
+              source_ids:
+                - epd-international-godrej-high-security-safes-2025
+            ranges: []
+        - row_id: lock_assembly
+          role: "Lock assembly"
+          name: "Secure-storage lock assembly"
+          flow_type: "product"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); Units of mass (93a60a57-a4c8-11da-a746-0800200c9a66); kg"
+          description: "The complete declared lock assembly crosses the site boundary for installation in the door or box. Record the purchased assembly mass and disclose mechanical, electronic, or combined configuration."
+          amount:
+            expression: "Sum accepted lock assemblies installed in released products and normalize their mass with calc_mass_normalization."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1000 kg finished secure-storage product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_materials
+              source_ids:
+                - epd-international-godrej-high-security-safes-2025
+            ranges: []
+        - row_id: electricity_assembly
+          role: "Assembly electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value (93a60a56-a3c8-11da-a746-0800200b9a66); Units of energy (93a60a57-a3c8-11da-a746-0800200c9a66); MJ"
+          description: "Electricity crosses the process boundary for mixing, filling, curing support, fitting, and lock or hardware assembly. Use a dedicated meter or a documented equipment-time allocation."
+          amount:
+            expression: "Record delivered electricity and normalize with calc_energy_normalization."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1000 kg finished secure-storage product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_electricity
+              source_ids:
+                - epd-international-godrej-high-security-safes-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: barrier_compound_waste
+          role: "Barrier-compound waste"
+          name: "Cementitious security-barrier compound waste"
+          flow_type: "waste"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); Units of mass (93a60a57-a4c8-11da-a746-0800200c9a66); kg"
+          description: "Off-spec, spilled, or residual cementitious barrier compound leaves assembly as a separately quantified waste. Report wet or cured state and the downstream treatment route."
+          amount:
+            expression: "Measure collected waste by batch or container mass and normalize with calc_mass_normalization."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1000 kg finished secure-storage product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_waste
+              source_ids:
+                - epd-international-godrej-high-security-safes-2025
+            ranges: []
+      elementary:
+        []
+  - id: surface_finishing
+    label: "Surface finishing"
+    inputs:
+      product:
+        - row_id: powder_coating
+          role: "Powder coating"
+          name: "Powder Coating"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0c581697-0eed-4b86-a070-b94966eb7344"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); Units of mass (93a60a57-a4c8-11da-a746-0800200c9a66); kg"
+          description: "Powder coating crosses the process boundary when the product uses an on-site powder-coating route. Determine net consumption from issued powder, recoverable recirculation, stock change, and separately collected waste."
+          amount:
+            expression: "Record net fresh powder consumed; otherwise record zero or not applicable for a non-powder route."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "1000 kg finished secure-storage product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_materials
+              source_ids:
+                - epd-international-godrej-high-security-safes-2025
+            ranges: []
+        - row_id: process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); Units of mass (93a60a57-a4c8-11da-a746-0800200c9a66); kg"
+          description: "Process water crosses the boundary when aqueous cleaning or pretreatment is performed on site. Record make-up water separately from recirculated internal water."
+          amount:
+            expression: "Record net make-up water for the applicable route; otherwise record zero or not applicable."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1000 kg finished secure-storage product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_utilities
+              source_ids:
+                - epd-international-godrej-high-security-safes-2025
+            ranges: []
+        - row_id: electricity_finishing
+          role: "Finishing electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value (93a60a56-a3c8-11da-a746-0800200b9a66); Units of energy (93a60a57-a3c8-11da-a746-0800200c9a66); MJ"
+          description: "Electricity crosses the process boundary for pretreatment equipment, booths, extraction, recovery, and curing. Submeter the route or allocate a shared meter by documented equipment operating time and load."
+          amount:
+            expression: "Record delivered electricity for the applicable finishing route and normalize with calc_energy_normalization."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "1000 kg finished secure-storage product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_utilities
+              source_ids:
+                - epd-international-godrej-high-security-safes-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: powder_coating_waste
+          role: "Powder-coating waste"
+          name: "Powder coating waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "9aa53a82-5462-400e-9096-efab7718201f"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); Units of mass (93a60a57-a4c8-11da-a746-0800200c9a66); kg"
+          description: "Spent or unrecoverable coating powder leaves finishing as a discrete waste flow. Exclude internally recovered powder that remains within the same process loop."
+          amount:
+            expression: "Measure dispatched or treated waste mass and normalize with calc_mass_normalization."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "1000 kg finished secure-storage product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_wastes
+              source_ids:
+                - epd-international-godrej-high-security-safes-2025
+            ranges: []
+        - row_id: surface_treatment_wastewater
+          role: "Surface-treatment wastewater"
+          name: "Aqueous surface-treatment wastewater"
+          flow_type: "waste"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); Units of mass (93a60a57-a4c8-11da-a746-0800200c9a66); kg"
+          description: "Wastewater discharged from aqueous cleaning or pretreatment leaves finishing as a distinct liquid waste flow. Record discharge mass and disclose whether on-site treatment occurs before the measured boundary point."
+          amount:
+            expression: "Measure discharged wastewater for the applicable route and normalize with calc_mass_normalization; otherwise record zero or not applicable."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "1000 kg finished secure-storage product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_wastes
+              source_ids:
+                - epd-international-godrej-high-security-safes-2025
+            ranges: []
+      elementary:
+        []
+  - id: packaging_and_final_release
+    label: "Packaging and final release"
+    inputs:
+      product:
+        - row_id: corrugated_cardboard
+          role: "Corrugated cardboard"
+          name: "Corrugated cardboard"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bde297e-98df-463f-bcb4-0db52bf6e0b5"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); Units of mass (93a60a57-a4c8-11da-a746-0800200c9a66); kg"
+          description: "Corrugated cardboard crosses the process boundary as product-specific transport packaging. Determine the mass installed on released products, excluding returned or unused stock."
+          amount:
+            expression: "Measure packaging mass and normalize with calc_mass_normalization."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1000 kg finished secure-storage product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - epd-international-godrej-high-security-safes-2025
+            ranges: []
+        - row_id: pine_pallet
+          role: "Pine-wood pallet"
+          name: "Pine-wood pallet"
+          flow_type: "product"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); Units of mass (93a60a57-a4c8-11da-a746-0800200c9a66); kg"
+          description: "A pine-wood pallet crosses the process boundary when it is shipped with the product. Record the dry or as-received pallet mass and any reuse assumption separately."
+          amount:
+            expression: "Measure pallet mass shipped with released products and normalize with calc_mass_normalization; otherwise record zero or not applicable."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1000 kg finished secure-storage product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - epd-international-godrej-high-security-safes-2025
+            ranges: []
+        - row_id: plastic_film
+          role: "Plastic film"
+          name: "Plastic Film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8c3dd40c-a22b-48b5-bdec-7da4d3282bfa"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); Units of mass (93a60a57-a4c8-11da-a746-0800200c9a66); kg"
+          description: "Plastic film crosses the process boundary as wrapping or protective packaging when used. Determine installed film mass from issue and product-pack records."
+          amount:
+            expression: "Measure film mass shipped with released products and normalize with calc_mass_normalization; otherwise record zero or not applicable."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1000 kg finished secure-storage product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_materials
+              source_ids:
+                - epd-international-godrej-high-security-safes-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_secure_storage_product
+          role: "Finished secure-storage product"
+          name: "Armoured or reinforced safes, strong-boxes and doors and safe deposit lockers for strong-rooms, cash or deed boxes and the like, of base metal"
+          flow_type: "product"
+          flow_ref:
+            uuid: "35affc80-58a8-406b-9e08-574796726703"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66); Units of mass (93a60a57-a4c8-11da-a746-0800200c9a66); kg"
+          description: "The accepted complete safe, strong-box, strong-room door, locker, cash box, deed box, or like product leaves final release as the quantitative reference. Record net finished mass before external transport packaging."
+          amount:
+            expression: "Set the normalized output to exactly 1000 kg after reconciling measured accepted production."
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "Reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_finished_product
+              source_ids:
+                - unsd-cpc-3-0-structure-2025
+                - epd-international-godrej-high-security-safes-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: al_avoid
+    applies_to: "all shared processes"
+    rule: "Avoid allocation through process subdivision, dedicated meters, batch records, and direct assignment to the declared product family wherever practicable."
+    source_ids: []
+  - rule_id: al_mass_balance
+    applies_to: "steel, barrier compound, coating, water, and packaging"
+    rule: "Reconcile inputs, accepted product, internal returns, stock change, and measured waste before allocation; internal recycling shall not be counted as both a fresh input reduction and a credited output."
+    source_ids: []
+  - rule_id: al_shared_energy
+    applies_to: "shared electricity"
+    rule: "Allocate only the residual shared amount using a causal physical driver such as measured machine operating time multiplied by rated or measured load; document the driver and sensitivity."
+    source_ids: []
+  - rule_id: al_multi_product
+    applies_to: "unavoidable multi-product production"
+    rule: "If subdivision and causal assignment are infeasible, use mass allocation only when mass demonstrably represents resource use; otherwise select and justify another physical relationship and report an unallocated sensitivity case."
+    source_ids:
+      - epd-international-godrej-high-security-safes-2025
+  - rule_id: al_scrap
+    applies_to: "recyclable steel scrap and other wastes"
+    rule: "Report the waste at the factory boundary and connect the chosen downstream treatment dataset; do not apply an avoided-production credit inside the foreground unless required by the declared study method and shown separately."
+    source_ids:
+      - epd-international-godrej-high-security-safes-2025
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_body_materials
+      process_id: "body_fabrication_and_welding"
+      flow_role: "steel sheet and route-specific welding wire inputs"
+      record_type: "receiving and stock record"
+      raw_fields: "item identity; lot; opening stock; receipts; issues; returns; closing stock; mass"
+      collection_method: "reconcile enterprise records to physical stock"
+      unit: "kg"
+      frequency: "each lot and monthly close"
+      temporal_coverage: "at least 12 consecutive representative months"
+      site_scope: "all fabrication lines serving the declared product"
+      aggregation_rule: "sum net consumption by exact material identity and welding route"
+      quality_evidence: "purchase records; calibrated scales; stock reconciliation"
+    - protocol_id: cp_fabrication_electricity
+      process_id: "body_fabrication_and_welding"
+      flow_role: "electricity_fabrication"
+      record_type: "meter and equipment log"
+      raw_fields: "meter start; meter end; equipment; operating time; load; losses"
+      collection_method: "dedicated submeter or documented load-time allocation"
+      unit: "kWh and MJ"
+      frequency: "continuous or each shift"
+      temporal_coverage: "same representative period as production"
+      site_scope: "all included fabrication equipment"
+      aggregation_rule: "sum delivered energy and convert retained kWh readings to MJ"
+      quality_evidence: "meter calibration; allocation worksheet"
+    - protocol_id: cp_fabrication_waste
+      process_id: "body_fabrication_and_welding"
+      flow_role: "steel_scrap"
+      record_type: "waste dispatch record"
+      raw_fields: "waste identity; container tare; gross mass; destination; date"
+      collection_method: "calibrated scale and dispatch ticket"
+      unit: "kg"
+      frequency: "each dispatch"
+      temporal_coverage: "same representative period as production"
+      site_scope: "fabrication waste collection points"
+      aggregation_rule: "sum net dispatched mass by destination"
+      quality_evidence: "scale calibration; tickets; recycler receipt"
+    - protocol_id: cp_welding_emissions
+      process_id: "body_fabrication_and_welding"
+      flow_role: "welding_particulate"
+      record_type: "emission test or operating record"
+      raw_fields: "process; consumable; mass consumed; capture efficiency; exhaust measurement; factor reference"
+      collection_method: "source test or process-specific calculation"
+      unit: "kg"
+      frequency: "each test and monthly activity"
+      temporal_coverage: "representative operating conditions and annualized data period"
+      site_scope: "every welding route in scope"
+      aggregation_rule: "calculate released mass after documented controls and sum by route"
+      quality_evidence: "test report; factor edition; control inspection"
+    - protocol_id: cp_assembly_materials
+      process_id: "barrier_and_lock_assembly"
+      flow_role: "cementitious_barrier and lock_assembly"
+      record_type: "batch and component issue record"
+      raw_fields: "identity; formulation or model; batch; receipts; issues; returns; stock change; mass"
+      collection_method: "batch reconciliation and installed-component count or mass"
+      unit: "kg"
+      frequency: "each batch or production order"
+      temporal_coverage: "at least 12 consecutive representative months"
+      site_scope: "all assembly lines serving the declared product"
+      aggregation_rule: "sum net installed or consumed mass by exact component"
+      quality_evidence: "batch sheet; bill of materials; scale records"
+    - protocol_id: cp_assembly_electricity
+      process_id: "barrier_and_lock_assembly"
+      flow_role: "electricity_assembly"
+      record_type: "meter and equipment log"
+      raw_fields: "meter readings; equipment; operating time; load"
+      collection_method: "submeter or documented load-time allocation"
+      unit: "kWh and MJ"
+      frequency: "continuous or each shift"
+      temporal_coverage: "same representative period as production"
+      site_scope: "all included assembly equipment"
+      aggregation_rule: "sum delivered energy by product family"
+      quality_evidence: "meter calibration; allocation worksheet"
+    - protocol_id: cp_assembly_waste
+      process_id: "barrier_and_lock_assembly"
+      flow_role: "barrier_compound_waste"
+      record_type: "batch residual and waste record"
+      raw_fields: "state; batch; container tare; gross mass; destination"
+      collection_method: "batch reconciliation and calibrated weighing"
+      unit: "kg"
+      frequency: "each batch or dispatch"
+      temporal_coverage: "same representative period as production"
+      site_scope: "all barrier preparation and filling points"
+      aggregation_rule: "sum net waste mass by state and destination"
+      quality_evidence: "scale record; waste manifest"
+    - protocol_id: cp_finishing_materials
+      process_id: "surface_finishing"
+      flow_role: "powder_coating"
+      record_type: "coating issue and recovery record"
+      raw_fields: "coating identity; batch; fresh issue; recovered return; stock change; waste"
+      collection_method: "booth-level material balance"
+      unit: "kg"
+      frequency: "each batch and monthly close"
+      temporal_coverage: "same representative period as production"
+      site_scope: "each finishing route used"
+      aggregation_rule: "fresh issue plus opening stock minus return and closing stock"
+      quality_evidence: "batch sheet; inventory record; scale calibration"
+    - protocol_id: cp_finishing_utilities
+      process_id: "surface_finishing"
+      flow_role: "process_water and electricity_finishing"
+      record_type: "utility meter"
+      raw_fields: "meter start; meter end; route; operating time; density assumption if needed"
+      collection_method: "dedicated meter or documented route allocation"
+      unit: "kg; kWh; MJ"
+      frequency: "continuous or each shift"
+      temporal_coverage: "same representative period as production"
+      site_scope: "all included pretreatment, booth, recovery, and curing equipment"
+      aggregation_rule: "sum by route and convert units under Section 4"
+      quality_evidence: "meter calibration; allocation and conversion worksheet"
+    - protocol_id: cp_finishing_wastes
+      process_id: "surface_finishing"
+      flow_role: "powder_coating_waste and surface_treatment_wastewater"
+      record_type: "waste and discharge record"
+      raw_fields: "identity; state; volume or mass; density; treatment point; destination"
+      collection_method: "calibrated weighing or flow metering at the declared boundary"
+      unit: "kg"
+      frequency: "each dispatch or continuous discharge"
+      temporal_coverage: "same representative period as production"
+      site_scope: "every included finishing route"
+      aggregation_rule: "sum separately by exact waste identity and treatment route"
+      quality_evidence: "waste manifest; meter calibration; treatment log"
+    - protocol_id: cp_packaging_materials
+      process_id: "packaging_and_final_release"
+      flow_role: "corrugated cardboard, pine pallet, and plastic film"
+      record_type: "packaging issue and pack record"
+      raw_fields: "material identity; supplier; units; unit mass; issues; returns; shipped quantity"
+      collection_method: "weigh representative items and reconcile issues to released products"
+      unit: "kg"
+      frequency: "each packaging design and monthly close"
+      temporal_coverage: "same representative period as production"
+      site_scope: "all packaging stations for the declared product"
+      aggregation_rule: "sum installed mass separately for each packaging material"
+      quality_evidence: "pack specification; scale records; stock reconciliation"
+    - protocol_id: cp_finished_product
+      process_id: "packaging_and_final_release"
+      flow_role: "finished_secure_storage_product"
+      record_type: "final inspection and production record"
+      raw_fields: "product type; model; protection designation; lock configuration; accepted count; net mass; rejected count"
+      collection_method: "calibrated weighing and acceptance record"
+      unit: "kg"
+      frequency: "each product or statistically justified homogeneous batch"
+      temporal_coverage: "same representative period as all inputs"
+      site_scope: "all release points for the declared product"
+      aggregation_rule: "sum accepted net mass before packaging; normalize to 1000 kg"
+      quality_evidence: "scale calibration; inspection release; production ledger"
+  calculation_rules:
+    - id: calc_mass_normalization
+      applies_to: "material inputs and mass outputs"
+      rule: "normalized amount = period exchange mass / period accepted net product mass × 1000 kg"
+      inputs:
+        - "exchange mass"
+        - "accepted net product mass"
+      output: "kg per 1000 kg finished product"
+      source_ids: []
+    - id: calc_energy_normalization
+      applies_to: "electricity inputs"
+      rule: "convert retained kWh reading to MJ with 3.6 MJ per kWh, then normalized energy = period MJ / period accepted net product mass × 1000 kg"
+      inputs:
+        - "meter reading"
+        - "accepted net product mass"
+      output: "MJ per 1000 kg finished product"
+      source_ids: []
+    - id: calc_welding_particulate
+      applies_to: "welding_particulate"
+      rule: "released particulate = measured exhaust mass, or consumable/activity amount × matched particulate factor × (1 − verified capture fraction); do not use a factor for a different welding process or electrode"
+      inputs:
+        - "source test or activity"
+        - "matched factor"
+        - "control performance"
+      output: "kg particulate per 1000 kg finished product"
+      source_ids:
+        - us-epa-ap42-electric-arc-welding-1995
+    - id: calc_mass_balance
+      applies_to: "steel, barrier compound, coating, water, and packaging"
+      rule: "input + opening stock = product incorporation + output waste + internal return + closing stock + documented discrepancy; investigate material discrepancies before normalization"
+      inputs:
+        - input
+        - stock
+        - "incorporated mass"
+        - returns
+        - wastes
+      output: "reconciled mass balance and discrepancy"
+      source_ids: []
+  data_quality_requirements:
+    - id: dqr_identity
+      applies_to: "every exchange"
+      requirement: "Preserve exact material, component, waste, and elementary-flow identity; do not aggregate atomic rows into utilities, energy carriers, materials, residues, or emissions groups."
+      evidence: "purchase specification; process record; waste code; flow audit"
+    - id: dqr_time
+      applies_to: "foreground data"
+      requirement: "Use at least 12 consecutive representative months or justify a shorter campaign for non-continuous production and disclose seasonality, start-up, and abnormal-operation treatment."
+      evidence: "dated raw records; production calendar; exclusion log"
+    - id: dqr_geography
+      applies_to: "upstream data"
+      requirement: "Match the manufacturing and supply geography and disclose any geographic proxy."
+      evidence: "supplier location; dataset geography; proxy justification"
+    - id: dqr_technology
+      applies_to: "processes and upstream data"
+      requirement: "Match the actual steel form, welding process and consumable, barrier formulation, lock type, finishing route, controls, and packaging design."
+      evidence: "bill of materials; routing; equipment and control records"
+    - id: dqr_completeness
+      applies_to: "foreground inventory"
+      requirement: "Reconcile all listed rows, report route-inapplicable rows as zero or not applicable, and document every omitted known exchange; absence of an exact UUID does not permit omission."
+      evidence: "signed inventory checklist; mass and energy balances; omission register"
+    - id: dqr_uncertainty
+      applies_to: "measured and calculated values"
+      requirement: "Record meter or scale uncertainty, sampling coverage, allocation uncertainty, conversion assumptions, and emission-factor uncertainty where used."
+      evidence: "calibration certificates; sampling plan; calculation workbook"
+    - id: dqr_consistency
+      applies_to: "bilingual and structured records"
+      requirement: "Keep English and Chinese row ids, UUIDs, process ids, units, route conditions, and rules aligned with the generated structured projection."
+      evidence: "bilingual comparison; clean second sync; schema validation"
+validation_rules:
+  - rule_id: val_reference
+    applies_to: "reference flow"
+    rule: "Confirm exactly one quantitative-reference output named finished_secure_storage_product, equal to 1000 kg net finished product, with the audited product UUID and mass references."
+    source_ids:
+      - unsd-cpc-3-0-structure-2025
+  - rule_id: val_identity
+    applies_to: "product category"
+    rule: "Confirm CPC 3.0 code 42993 and the declared product type are within the covered boundary and that exclusions are not represented as the reference product."
+    source_ids:
+      - unsd-cpc-3-0-structure-2025
+  - rule_id: val_inventory
+    applies_to: "process inventory"
+    rule: "Confirm all 19 atomic inventory rows are present exactly once, each has one direction and flow type, and every UUID-empty row is listed in manifest unresolved review metadata."
+    source_ids: []
+  - rule_id: val_routes
+    applies_to: "conditional processes and rows"
+    rule: "Confirm route applicability is declared and every inapplicable welding, finishing, water, wastewater, coating, or packaging row is explicitly zero or not applicable rather than omitted."
+    source_ids:
+      - us-epa-ap42-electric-arc-welding-1995
+      - epd-international-godrej-high-security-safes-2025
+  - rule_id: val_balance
+    applies_to: "mass and energy records"
+    rule: "Confirm the finished-product denominator, material balances, waste destinations, retained electricity readings, unit conversions, and shared-meter allocation worksheets reconcile for the same reporting period."
+    source_ids: []
+  - rule_id: val_welding
+    applies_to: "welding particulate"
+    rule: "Confirm the particulate calculation matches the documented welding process, consumable, control performance, and audited particle-size-unspecified flow identity."
+    source_ids:
+      - us-epa-ap42-electric-arc-welding-1995
+  - rule_id: val_sources
+    applies_to: "evidence"
+    rule: "Confirm every cited source is an original verified document and that no numeric external range is asserted from the single product-specific EPD."
+    source_ids:
+      - epd-international-godrej-high-security-safes-2025
+      - us-epa-ap42-electric-arc-welding-1995
+  - rule_id: val_projection
+    applies_to: "bilingual structured package"
+    rule: "Confirm English and Chinese semantic alignment, exact Tiangong Chinese base names for UUID-bearing rows, valid manifest and structured schemas, current fingerprints, and a clean second structured sync."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Product-specific or representative foreground manufacturing data package for CPC 42993 secure-storage products"
+  downstream_use: "Construction of process and lifecycle-model datasets with separately selected upstream and downstream scenarios"
+  allowed_use: "Factory-gate comparison only when product type, performance designation, lock configuration, principal construction, geography, data period, allocation, and completeness are equivalent"
+  excluded_use: "Direct comparison of unlike safe, door, locker, cash-box, or deed-box configurations; use-phase or end-of-life claims without added scenario modelling; claims that unresolved UUIDs are verified identities"
+  required_metadata: "product type; model family; security or fire designation; lock configuration; principal construction; net mass; geography; technology; data period; route conditions; allocation; exclusions; source and UUID audit references"
+  required_quality_disclosure: "measurement coverage; mass and energy balance; meter and scale uncertainty; upstream proxies; emission-factor use; omitted exchanges; unresolved UUIDs; absence of external quantity ranges"
+  update_trigger: "Change in product construction, protection designation, lock system, welding route, barrier formulation, coating route, energy supply, packaging design, site geography, allocation, or source evidence"
+data_sources:
+  - id: "unsd-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Official CPC 42993 product identity and classification boundary"
+  - id: "epd-international-godrej-high-security-safes-2025"
+    type: "dataset"
+    reference: "Godrej & Boyce Manufacturing Company Limited, High Security Safes, EPD-IES-0024476, 2025, https://api.prod.environdec.com/api/v1/EPDLibrary/Files/EPDs/d6af31c9-e7e3-48f0-e9e4-08ddacd8e900/Documents"
+    used_for: "Original product-specific evidence for construction, manufacturing stages, utilities, wastes, packaging, declared mass basis, and factory-gate process decomposition; not used to assert an external quantity range"
+  - id: "us-epa-ap42-electric-arc-welding-1995"
+    type: "official_guidance"
+    reference: "United States Environmental Protection Agency, AP-42 Section 12.19 Electric Arc Welding, January 1995, https://www.epa.gov/sites/production/files/2020-11/documents/c12s19.pdf"
+    used_for: "Original official evidence for solid-wire and flux-cored welding routes, particulate generation, and route-matched measurement or calculation"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b1b4c44df7587cde0037a026f0be0beed18f4ef557dcce2ddbc788a5b7d79be4"
+  generated_content_sha256: "sha256:6e1f445f2bd639eb621304e506555411f716e172a8fabf710691ed84c11ad966"

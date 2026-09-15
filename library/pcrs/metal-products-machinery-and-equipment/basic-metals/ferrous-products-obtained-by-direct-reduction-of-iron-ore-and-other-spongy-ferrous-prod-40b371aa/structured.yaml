@@ -1,10 +1,1192 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41116"
-  title: "Ferrous products obtained by direct reduction of iron ore and other spongy ferrous products, in lumps, pellets or similar forms; iron having a minimum purity by weight of 99.94%, in lumps, pellets or similar forms"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.ferrous-products-obtained-by-direct-reduction-of-iron-ore-and-other-spongy-ferrous-prod-40b371aa"
+  classification_refs: "CPC 3.0: 41116 (exact classification context)"
+  covered_products: "DRI pellets; DRI lumps; other sponge-iron primary forms; HBI; iron with purity by mass of at least 99.94% in lump, pellet, or similar primary form"
+  excluded_products: "iron or steel granules and powders; pig iron; spiegeleisen; scrap; crude steel; cast, rolled, forged, or fabricated steel products; downstream steel made from DRI or high-purity iron"
+  representative_product: "direct-reduced iron pellets, at producing-works gate"
+  production_route: "declared gas-based, coal-based, hydrogen-based, electrolytic, or direct-reduction/melting-separation/refining route; mixed routes reported separately or production-mass weighted"
+  market_state: "unwrought dry bulk ferrous intermediate, cold or hot as declared, in a declared lump, pellet, briquette, or similar primary form"
+functional_unit:
+  what: "provision of an unwrought ferrous intermediate meeting the declared DRI, sponge-iron, HBI, or high-purity-iron specification"
+  how_much: "1,000 kg net dry product mass"
+  how_well: "declared product family and form; total iron; metallic iron or metallization; iron purity where applicable; carbon; gangue; moisture; size distribution; delivery temperature"
+  how_long_or_cycle: "one production reporting period ending when the product is ready for dispatch at the producing-works gate"
+  reference_flow_link: "dr_dri_pellets"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "foreground production chain"
+      rule: "Include every on-site unit operation from receipt of the declared starting materials through reduction or purification, product forming, pollution control, internal transport, wastewater treatment, and release of the dispatch-ready product."
+      source_ids:
+        - worldsteel-lci-methodology-2017
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased inputs"
+      rule: "Link upstream production and inbound transport for iron-bearing feed, reductants, electricity, fuels, oxygen, water, and refining materials; do not duplicate their upstream burdens in foreground exchanges."
+      source_ids:
+        - worldsteel-lci-methodology-2017
+    - rule_id: boundary_route_separation
+      applies_to: "technology and product routes"
+      rule: "Keep gas-based, coal-based, hydrogen-based, electrolytic, and melting-separation/refining routes separate unless a production-mass-weighted average and its calculation are disclosed."
+      source_ids:
+        - iea-iron-steel-roadmap-2020
+        - worldsteel-lci-methodology-2017
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "product gate"
+      rule: "Exclude downstream steelmaking, alloying, casting, rolling, fabrication, use, and end-of-life from this product dataset."
+      source_ids:
+        - unsd-cpc-30-2025
+        - doe-green-hydrogen-iron-2018
+boundary_abstraction:
+  declared_starting_condition: "measured receipt at the producing works of iron-ore pellet, iron-ore lump, magnetite concentrate, DRI precursor, or purified ferrous electrolyte, together with each purchased reductant, energy carrier, water, oxygen, and refining material"
+  starting_condition_role: "gate-to-gate foreground start; upstream burdens are linked through supplier-specific or representative datasets"
+  product_classification_scope: "one declared DRI, sponge-iron, HBI, or at-least-99.94%-pure iron product in a declared primary form"
+  recursive_input_rule: "an externally supplied DRI or other product covered by this PCR is an input product flow with its own upstream dataset and is not recursively recreated inside the receiving process"
+  upstream_dataset_requirement: "supplier-specific datasets are preferred for iron-bearing feed, reductants, electricity, oxygen, water, and refining materials; otherwise use geographically and technologically representative secondary datasets and disclose substitutions"
+  disclosure: "declare route, included unit processes, feed form, reductant, on-site gas generation, CCUS, internal gas recycling, briquetting, purification route, product form and quality, delivery state, site, geography, reporting period, upstream dataset choices, and exclusions"
+reference_flow_definition:
+  reference_amount: "1,000 kg net dry mass"
+  product_flow_ref:
+    name: "Direct-reduced iron pellets"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - product_family
+    - physical_form
+    - production_route
+    - total_iron_mass_fraction
+    - metallic_iron_or_metallization
+    - iron_purity_mass_fraction_if_applicable
+    - carbon_mass_fraction
+    - gangue_mass_fraction
+    - moisture_mass_fraction
+    - size_distribution
+    - cold_or_hot_delivery_state
+    - delivery_temperature_if_hot
+    - site
+    - geography
+    - reporting_period
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_dry_mass
+    applies_to: "reference product and all mass-normalized exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Normalize to 1,000 kg net dry reference product. Record gross mass and measured moisture separately and do not count free water as product mass."
+  - id: gas_mass_conversion
+    applies_to: "natural gas, hydrogen, oxygen, and measured off-gas inputs or outputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Preserve the original standard volume, reference temperature, reference pressure, composition, and density factor, then convert to mass for the normalized inventory."
+  - id: energy_preservation
+    applies_to: "electricity and fuels"
+    required_property_ref:
+      name: "Energy or fuel mass"
+      uuid: ""
+    required_unit: "kWh, MJ, or kg"
+    rule: "Preserve metered electricity in kWh and each fuel in its measured unit; disclose net/gross calorific basis for any energy conversion and never aggregate unlike carriers before normalization."
+  - id: product_quality_basis
+    applies_to: "DRI, HBI, sponge iron, and high-purity iron"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "kg/kg or % by mass"
+    rule: "Report each quality result on its laboratory basis and disclose whether metallic iron, total iron, metallization, purity, carbon, gangue, and moisture are wet- or dry-basis measurements."
+process_map:
+  - id: direct_reduction
+    name: "Direct reduction and product cooling"
+    inclusion: "conditional"
+    inclusion_condition: "Include when producing DRI or sponge iron, or when DRI is an on-site precursor to high-purity iron."
+    role: "reduction of iron oxide without melting, plus cooling and gas/water treatment"
+    quantitative_reference: "1,000 kg dry DRI or sponge-iron output"
+  - id: hot_briquetting
+    name: "Hot briquetting and cooling"
+    inclusion: "conditional"
+    inclusion_condition: "Include when hot DRI is compacted into HBI or an equivalent briquetted primary form."
+    role: "densification and dispatch conditioning"
+    quantitative_reference: "1,000 kg dry HBI output"
+  - id: purity_refining
+    name: "High-purity iron production and forming"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the reference product is iron of at least 99.94% purity; select only rows applicable to the declared electrolytic or metallurgical purification route."
+    role: "purification, separation/refining, and forming into lump or pellet form"
+    quantitative_reference: "1,000 kg dry high-purity iron output"
+process_inventory:
+  - id: direct_reduction
+    label: "Direct reduction and product cooling"
+    inputs:
+      product:
+        - row_id: dr_iron_ore_pellets
+          role: "Direct-reduction-grade iron ore pellets"
+          name: "Direct-reduction-grade iron ore pellets"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased or transferred oxide pellets entering a shaft, rotary-kiln, or other direct-reduction reactor; use only when pellet feed is used."
+          amount:
+            expression: "measured dry pellet feed crossing the process boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry direct-reduced product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dr_materials
+              source_ids:
+                - doe-green-hydrogen-iron-2018
+            ranges: []
+        - row_id: dr_iron_ore_lump
+          role: "Direct-reduction-grade iron ore lump"
+          name: "lump ore"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ed38ce9-37f3-4957-89d2-153b63e127dd"
+          property_unit: "Mass / kg"
+          description: "Record sized lump ore entering the reduction reactor; use only when lump feed is used and keep it separate from pellets."
+          amount:
+            expression: "measured dry lump-ore feed crossing the process boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry direct-reduced product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dr_materials
+              source_ids:
+                - unsd-cpc-30-2025
+            ranges: []
+        - row_id: dr_natural_gas
+          role: "Natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record natural gas purchased for reducing-gas generation or direct process fuel; use only for a gas-consuming route."
+          amount:
+            expression: "metered natural gas attributed to the direct-reduction process"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg dry direct-reduced product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dr_energy
+              source_ids:
+                - doe-green-hydrogen-iron-2018
+                - iea-iron-steel-roadmap-2020
+            ranges: []
+        - row_id: dr_hydrogen
+          role: "Hydrogen"
+          name: "Hydrogen"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record externally supplied or separately metered on-site hydrogen entering the reduction loop; use only for hydrogen-containing routes and do not count internally recycled hydrogen twice."
+          amount:
+            expression: "measured net hydrogen make-up crossing the direct-reduction boundary"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg dry direct-reduced product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dr_energy
+              source_ids:
+                - doe-green-hydrogen-iron-2018
+                - iea-iron-steel-roadmap-2020
+            ranges: []
+        - row_id: dr_non_coking_coal
+          role: "Non-coking coal"
+          name: "Non-coking coal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record non-coking coal fed as reductant or process fuel; use only for a coal-based direct-reduction route."
+          amount:
+            expression: "measured dry coal feed attributed to direct reduction"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg dry direct-reduced product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dr_energy
+              source_ids:
+                - iea-iron-steel-roadmap-2020
+            ranges: []
+        - row_id: dr_oxygen
+          role: "Oxygen"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume / m3"
+          description: "Record purchased oxygen entering reforming, partial oxidation, heating, or other direct-reduction operations; use only when it crosses the site boundary."
+          amount:
+            expression: "measured oxygen delivered to the direct-reduction process"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg dry direct-reduced product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dr_materials
+              source_ids:
+                - worldsteel-lci-methodology-2017
+            ranges: []
+        - row_id: dr_electricity
+          role: "Electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity for ore handling, gas compression, reactor auxiliaries, cooling, screening, dedusting, and treatment within this process boundary."
+          amount:
+            expression: "metered or submeter-allocated electricity consumed by direct reduction and product cooling"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry direct-reduced product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dr_energy
+              source_ids:
+                - worldsteel-lci-methodology-2017
+            ranges: []
+        - row_id: dr_process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record make-up water entering gas scrubbing, cooling, dust control, or other direct-reduction operations; do not include internally recycled water."
+          amount:
+            expression: "measured net make-up water crossing the direct-reduction boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry direct-reduced product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dr_water
+              source_ids:
+                - doe-green-hydrogen-iron-2018
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dr_dri_pellets
+          role: "Direct-reduced iron pellets"
+          name: "Direct-reduced iron pellets"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record saleable DRI retaining pellet form; this is the representative reference-product row and applies only when pellets are the declared product."
+          amount:
+            expression: "measured net dry mass of conforming pellet product ready for dispatch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg dry reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dr_products
+              source_ids:
+                - unsd-cpc-30-2025
+                - doe-green-hydrogen-iron-2018
+            ranges: []
+        - row_id: dr_dri_lumps
+          role: "Direct-reduced iron lumps"
+          name: "Direct-reduced iron lumps"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record saleable DRI or sponge iron in lump form; use only when lump is the declared product."
+          amount:
+            expression: "measured net dry mass of conforming lump product ready for dispatch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg dry reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dr_products
+              source_ids:
+                - unsd-cpc-30-2025
+                - doe-green-hydrogen-iron-2018
+            ranges: []
+      waste:
+        - row_id: dr_wastewater
+          role: "Direct-reduction wastewater"
+          name: "Direct-reduction wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record net wastewater transferred from reduction-gas scrubbing, cooling, or other direct-reduction operations to treatment or discharge."
+          amount:
+            expression: "measured net wastewater leaving the process before downstream treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry direct-reduced product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dr_wastes
+              source_ids:
+                - worldsteel-lci-methodology-2017
+            ranges: []
+        - row_id: dr_dri_fines
+          role: "Direct-reduced iron fines for disposal"
+          name: "Direct-reduced iron fines for disposal"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record off-specification DRI fines sent to disposal; recovered fines returned to production remain internal and are disclosed separately."
+          amount:
+            expression: "measured dry mass of DRI fines leaving as waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry direct-reduced product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dr_wastes
+              source_ids:
+                - worldsteel-lci-methodology-2017
+            ranges: []
+      elementary:
+        - row_id: dr_carbon_dioxide
+          role: "Carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record measured or balanced direct carbon dioxide released from reduction, reforming, combustion, venting, and flaring after subtracting captured carbon dioxide."
+          amount:
+            expression: "monitored direct release plus validated balance estimates, net of captured carbon dioxide"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg dry direct-reduced product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_dr_air
+              source_ids:
+                - worldsteel-lci-methodology-2017
+            ranges: []
+        - row_id: dr_carbon_monoxide
+          role: "Carbon monoxide to air"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct carbon monoxide released after control from the direct-reduction process."
+          amount:
+            expression: "monitored or mass-balance-derived carbon monoxide released to air"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg dry direct-reduced product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_dr_air
+              source_ids:
+                - worldsteel-lci-methodology-2017
+            ranges: []
+        - row_id: dr_particulate_matter
+          role: "Particulate matter to air"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass / kg"
+          description: "Record total particulate matter released after control from ore handling, reduction, cooling, screening, and dust collection."
+          amount:
+            expression: "monitored stack release plus documented fugitive estimate"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry direct-reduced product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_dr_air
+              source_ids:
+                - worldsteel-lci-methodology-2017
+            ranges: []
+  - id: hot_briquetting
+    label: "Hot briquetting and cooling"
+    inputs:
+      product:
+        - row_id: hb_hot_dri
+          role: "Hot direct-reduced iron"
+          name: "Hot direct-reduced iron"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record hot DRI transferred into the briquetting press; apply only when HBI is produced and avoid duplicating the upstream DRI burden."
+          amount:
+            expression: "measured dry hot DRI feed to briquetting"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry HBI output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hb_materials
+              source_ids:
+                - midrex-forms-of-dri
+            ranges: []
+        - row_id: hb_electricity
+          role: "Electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity consumed by briquetting, conveying, cooling, screening, and dedusting equipment."
+          amount:
+            expression: "metered or submeter-allocated electricity consumed by hot briquetting and cooling"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry HBI output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hb_energy_water
+              source_ids:
+                - worldsteel-lci-methodology-2017
+            ranges: []
+        - row_id: hb_cooling_water
+          role: "Cooling water"
+          name: "Cooling water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "df413bba-3c03-412b-a80a-c6082b6b9b33"
+          property_unit: "Mass / kg"
+          description: "Record net make-up water used to cool HBI; do not count recirculated water as a new input."
+          amount:
+            expression: "measured net cooling-water make-up crossing the process boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry HBI output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hb_energy_water
+              source_ids:
+                - worldsteel-lci-methodology-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: hb_hbi
+          role: "Hot-briquetted iron"
+          name: "Hot-briquetted iron"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record conforming HBI ready for dispatch; use only when briquette is the declared product form."
+          amount:
+            expression: "measured net dry mass of conforming HBI ready for dispatch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg dry reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hb_products_wastes
+              source_ids:
+                - midrex-forms-of-dri
+                - unsd-cpc-30-2025
+            ranges: []
+      waste:
+        - row_id: hb_dri_fines
+          role: "Briquetting DRI fines for disposal"
+          name: "Briquetting DRI fines for disposal"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record DRI or HBI fines sent to disposal after briquetting and screening."
+          amount:
+            expression: "measured dry mass of fines leaving the briquetting process as waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry HBI output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hb_products_wastes
+              source_ids:
+                - worldsteel-lci-methodology-2017
+            ranges: []
+      elementary:
+        - row_id: hb_particulate_matter
+          role: "Particulate matter to air"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass / kg"
+          description: "Record particulate matter released after control from hot briquetting, conveying, cooling, and screening."
+          amount:
+            expression: "monitored stack release plus documented fugitive estimate"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry HBI output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_hb_air
+              source_ids:
+                - worldsteel-lci-methodology-2017
+            ranges: []
+  - id: purity_refining
+    label: "High-purity iron production and forming"
+    inputs:
+      product:
+        - row_id: pr_dri_precursor
+          role: "Direct-reduced iron precursor"
+          name: "Direct-reduced iron precursor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record DRI entering melting separation and slag refining; use only for the declared direct-reduction/refining route."
+          amount:
+            expression: "measured dry DRI feed entering melting separation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg dry high-purity iron output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pr_materials
+              source_ids:
+                - li-high-purity-iron-2020
+            ranges: []
+        - row_id: pr_iron_chloride_solution
+          role: "Iron(II) chloride solution"
+          name: "Iron(II) chloride solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purified iron(II) chloride electrolyte entering electrolytic iron production; use only when this electrolyte is used."
+          amount:
+            expression: "measured net fresh iron(II) chloride solution make-up"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg dry high-purity iron output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pr_materials
+              source_ids:
+                - zhang-electrolytic-iron-2025
+            ranges: []
+        - row_id: pr_iron_sulfate_solution
+          role: "Iron(II) sulfate solution"
+          name: "Iron(II) sulfate solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purified iron(II) sulfate electrolyte entering electrolytic iron production; use only when this electrolyte is used."
+          amount:
+            expression: "measured net fresh iron(II) sulfate solution make-up"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg dry high-purity iron output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pr_materials
+              source_ids:
+                - zhang-electrolytic-iron-2025
+            ranges: []
+        - row_id: pr_high_basicity_slag
+          role: "High-basicity calcium oxide-aluminium oxide refining slag"
+          name: "High-basicity calcium oxide-aluminium oxide refining slag"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record prepared high-basicity refining slag entering deoxidation/refining; use only for the declared slag-refining route and disclose its composition."
+          amount:
+            expression: "measured dry refining-slag charge"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg dry high-purity iron output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pr_materials
+              source_ids:
+                - li-high-purity-iron-2020
+            ranges: []
+        - row_id: pr_electricity
+          role: "Electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity for electrolysis, melting, refining, vacuum treatment, forming, cooling, and pollution control within the declared route."
+          amount:
+            expression: "metered or submeter-allocated electricity consumed by high-purity iron production and forming"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg dry high-purity iron output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pr_energy_water
+              source_ids:
+                - li-high-purity-iron-2020
+                - zhang-electrolytic-iron-2025
+                - worldsteel-lci-methodology-2017
+            ranges: []
+        - row_id: pr_process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record net make-up water used in electrolyte preparation, washing, cooling, or pollution control for the declared high-purity route."
+          amount:
+            expression: "measured net make-up water crossing the high-purity process boundary"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg dry high-purity iron output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pr_energy_water
+              source_ids:
+                - li-high-purity-iron-2020
+                - zhang-electrolytic-iron-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: pr_high_purity_iron_lump
+          role: "High-purity iron lumps"
+          name: "High-purity iron lumps, minimum 99.94% iron by mass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record conforming iron of at least 99.94% purity by mass in lump form; use only when lump is the declared product."
+          amount:
+            expression: "measured net dry mass of conforming high-purity iron lumps ready for dispatch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg dry reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pr_products
+              source_ids:
+                - unsd-cpc-30-2025
+                - china-mof-tariff-2019
+                - li-high-purity-iron-2020
+                - zhang-electrolytic-iron-2025
+            ranges: []
+        - row_id: pr_high_purity_iron_pellet
+          role: "High-purity iron pellets"
+          name: "High-purity iron pellets, minimum 99.94% iron by mass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record conforming iron of at least 99.94% purity by mass in pellet form; use only when pellet is the declared product."
+          amount:
+            expression: "measured net dry mass of conforming high-purity iron pellets ready for dispatch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg dry reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pr_products
+              source_ids:
+                - unsd-cpc-30-2025
+                - china-mof-tariff-2019
+                - li-high-purity-iron-2020
+                - zhang-electrolytic-iron-2025
+            ranges: []
+      waste:
+        - row_id: pr_spent_electrolyte
+          role: "Spent ferrous electrolyte"
+          name: "Spent ferrous electrolyte"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent iron-bearing electrolyte transferred to recovery or treatment; use only for an electrolytic route."
+          amount:
+            expression: "measured net spent electrolyte leaving high-purity iron production"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg dry high-purity iron output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pr_wastes
+              source_ids:
+                - zhang-electrolytic-iron-2025
+            ranges: []
+        - row_id: pr_refining_slag
+          role: "Spent high-basicity refining slag"
+          name: "Spent high-basicity refining slag"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent refining slag transferred to recovery or disposal; use only for a melting-separation/slag-refining route."
+          amount:
+            expression: "measured dry spent refining slag leaving the process"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg dry high-purity iron output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pr_wastes
+              source_ids:
+                - li-high-purity-iron-2020
+            ranges: []
+      elementary:
+        - row_id: pr_particulate_matter
+          role: "Particulate matter to air"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass / kg"
+          description: "Record particulate matter released after control from material handling, melting, refining, and product forming."
+          amount:
+            expression: "monitored stack release plus documented fugitive estimate"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg dry high-purity iron output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pr_air
+              source_ids:
+                - worldsteel-lci-methodology-2017
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "route unit operations and separately metered products"
+    rule: "Avoid allocation by subdividing reduction, briquetting, purification, gas generation, wastewater treatment, and recovery operations wherever their inputs and outputs are independently measured."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: allocation_internal_recycling
+    applies_to: "recycled top gas, water, DRI fines, slag, and electrolyte"
+    rule: "Treat internal recycling as an internal loop: count only net make-up inputs and net releases across the foreground boundary and do not create a credit for internal circulation."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: allocation_exported_coproduct
+    applies_to: "exported process gas, captured carbon dioxide, recovered fines, slag, or other marketable co-product"
+    rule: "Use system expansion only when the substituted product, equivalent function, market, and avoided production dataset are documented; report the substitution credit separately. Otherwise report an unallocated inventory and an explicit sensitivity case."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: allocation_multiple_products
+    applies_to: "simultaneous saleable DRI, HBI, or high-purity iron outputs"
+    rule: "Prefer separate campaigns or measured process subdivision. If inseparable, allocate residual shared burdens by dry product mass and disclose product-specific sensitivity to an economic allocation."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_dr_materials
+      process_id: "direct_reduction"
+      flow_role: "iron-bearing feed, oxygen, and reductant materials"
+      record_type: "weighbridge, feeder, inventory, and supplier records"
+      raw_fields: "timestamp; material_id; wet_mass; moisture; composition; standard_volume_if_gas; temperature; pressure"
+      collection_method: "reconcile calibrated meters and stock changes by campaign"
+      unit: "kg; Nm3 where originally metered"
+      frequency: "batch and monthly"
+      temporal_coverage: "representative 12 months; shorter period justified"
+      site_scope: "all direct-reduction units and shared supply systems"
+      aggregation_rule: "dry mass or gas mass allocated from direct meters; shared meters allocated by documented operating driver"
+      quality_evidence: "calibration, supplier certificate, stock reconciliation, composition and moisture test"
+    - protocol_id: cp_dr_energy
+      process_id: "direct_reduction"
+      flow_role: "natural gas, hydrogen, coal, and electricity"
+      record_type: "custody meter, submeter, fuel issue, and stock records"
+      raw_fields: "timestamp; carrier; quantity; unit; calorific_basis; gas_composition; meter_id; process_id"
+      collection_method: "reconcile purchases, generation, exports, and stock changes"
+      unit: "kWh; MJ; kg; Nm3"
+      frequency: "continuous or batch; monthly reconciliation"
+      temporal_coverage: "representative 12 months"
+      site_scope: "direct-reduction reactor, reformer, compressors, cooling, screening, and controls"
+      aggregation_rule: "net imported carrier per reporting period, with internal gas recycling excluded"
+      quality_evidence: "meter calibration, invoices, gas analysis, stock reconciliation"
+    - protocol_id: cp_dr_water
+      process_id: "direct_reduction"
+      flow_role: "process-water make-up"
+      record_type: "water meter and balance records"
+      raw_fields: "timestamp; source; make_up_volume; density; recycled_volume; discharge_volume"
+      collection_method: "meter net make-up and reconcile circuit balance"
+      unit: "kg; m3"
+      frequency: "continuous; monthly reconciliation"
+      temporal_coverage: "representative 12 months"
+      site_scope: "gas scrubbing, cooling, dedusting, and direct-reduction treatment"
+      aggregation_rule: "net make-up mass per reporting period"
+      quality_evidence: "meter calibration and water-balance closure"
+    - protocol_id: cp_dr_products
+      process_id: "direct_reduction"
+      flow_role: "DRI pellet and lump outputs"
+      record_type: "certified scale, dispatch, and laboratory records"
+      raw_fields: "batch_id; gross_mass; moisture; form; total_iron; metallic_iron; metallization; carbon; gangue; size; temperature"
+      collection_method: "sum conforming dispatch mass and convert to dry mass"
+      unit: "kg"
+      frequency: "batch"
+      temporal_coverage: "representative 12 months"
+      site_scope: "all product discharge and dispatch points"
+      aggregation_rule: "separate product forms and off-specification material before normalization"
+      quality_evidence: "scale calibration, certificate of analysis, moisture and size test"
+    - protocol_id: cp_dr_wastes
+      process_id: "direct_reduction"
+      flow_role: "wastewater and disposed DRI fines"
+      record_type: "transfer meter, scale, manifest, and treatment records"
+      raw_fields: "timestamp; waste_id; mass_or_volume; solids; moisture; destination; recovery_status"
+      collection_method: "reconcile transfers with internal returns and treatment receipts"
+      unit: "kg; m3"
+      frequency: "batch or continuous; monthly"
+      temporal_coverage: "representative 12 months"
+      site_scope: "all direct-reduction waste exits"
+      aggregation_rule: "net external waste transfer by atomic waste flow"
+      quality_evidence: "calibrated meter or scale, waste manifest, treatment receipt"
+    - protocol_id: cp_dr_air
+      process_id: "direct_reduction"
+      flow_role: "carbon dioxide, carbon monoxide, and particulate matter"
+      record_type: "continuous emissions monitor, stack test, fuel/gas composition, flare, capture, and production records"
+      raw_fields: "source_id; pollutant; concentration; flow_rate; duration; fuel_carbon; vented_gas; captured_co2"
+      collection_method: "integrate monitors; fill approved gaps with documented mass balance"
+      unit: "kg; mg/Nm3; Nm3"
+      frequency: "continuous and required stack-test interval"
+      temporal_coverage: "representative 12 months including normal maintenance"
+      site_scope: "all stacks, vents, flares, and quantified fugitives"
+      aggregation_rule: "sum releases by pollutant; subtract verified capture; normalize by dry output"
+      quality_evidence: "monitor calibration, stack-test report, carbon and gas balance"
+    - protocol_id: cp_hb_materials
+      process_id: "hot_briquetting"
+      flow_role: "hot DRI feed"
+      record_type: "transfer scale and temperature records"
+      raw_fields: "timestamp; wet_mass; moisture; temperature; transfer_origin"
+      collection_method: "reconcile hot DRI transfer with briquette output and fines"
+      unit: "kg"
+      frequency: "batch or continuous"
+      temporal_coverage: "representative 12 months"
+      site_scope: "all HBI lines"
+      aggregation_rule: "dry feed mass by line and campaign"
+      quality_evidence: "scale calibration, moisture and temperature records"
+    - protocol_id: cp_hb_energy_water
+      process_id: "hot_briquetting"
+      flow_role: "electricity and cooling-water make-up"
+      record_type: "submeter and water-meter records"
+      raw_fields: "timestamp; electricity; make_up_water; recycled_water; meter_id"
+      collection_method: "meter line consumption and reconcile shared services"
+      unit: "kWh; kg; m3"
+      frequency: "continuous; monthly"
+      temporal_coverage: "representative 12 months"
+      site_scope: "pressing, conveying, cooling, screening, and controls"
+      aggregation_rule: "net electricity and water make-up by line"
+      quality_evidence: "meter calibration and utility balance"
+    - protocol_id: cp_hb_products_wastes
+      process_id: "hot_briquetting"
+      flow_role: "HBI output and disposed fines"
+      record_type: "certified scale, dispatch, laboratory, and waste records"
+      raw_fields: "batch_id; product_mass; moisture; density; size; fines_mass; destination"
+      collection_method: "separate conforming HBI, internally returned fines, and external waste"
+      unit: "kg"
+      frequency: "batch"
+      temporal_coverage: "representative 12 months"
+      site_scope: "all HBI lines and dispatch points"
+      aggregation_rule: "dry net output and external waste by campaign"
+      quality_evidence: "scale calibration, product certificate, waste manifest"
+    - protocol_id: cp_hb_air
+      process_id: "hot_briquetting"
+      flow_role: "particulate matter"
+      record_type: "stack test, dust-collector, operating-hour, and production records"
+      raw_fields: "source_id; concentration; flow_rate; duration; collector_status"
+      collection_method: "integrate measured releases and document fugitive estimate"
+      unit: "kg; mg/Nm3"
+      frequency: "stack-test interval; monthly estimate"
+      temporal_coverage: "representative 12 months"
+      site_scope: "briquetting, cooling, screening, and transfer points"
+      aggregation_rule: "sum controlled and quantified fugitive releases"
+      quality_evidence: "stack-test report and dust-collector maintenance record"
+    - protocol_id: cp_pr_materials
+      process_id: "purity_refining"
+      flow_role: "DRI precursor, electrolytes, and refining slag"
+      record_type: "batch scale, tank level, composition, and inventory records"
+      raw_fields: "batch_id; material_id; mass; concentration; composition; stock_change; route"
+      collection_method: "reconcile fresh input, recovered internal material, and stock change"
+      unit: "kg"
+      frequency: "batch and monthly"
+      temporal_coverage: "representative production campaign or 12 months"
+      site_scope: "all purification, melting, and refining units"
+      aggregation_rule: "net fresh material input by atomic material and route"
+      quality_evidence: "scale/tank calibration, assay, batch sheet, stock reconciliation"
+    - protocol_id: cp_pr_energy_water
+      process_id: "purity_refining"
+      flow_role: "electricity and process-water make-up"
+      record_type: "submeter and water-meter records"
+      raw_fields: "timestamp; unit_operation; electricity; make_up_water; recycled_water"
+      collection_method: "meter route unit operations and reconcile shared services"
+      unit: "kWh; kg; m3"
+      frequency: "continuous or batch; monthly"
+      temporal_coverage: "representative production campaign or 12 months"
+      site_scope: "electrolysis, melting, refining, forming, cooling, and controls"
+      aggregation_rule: "net electricity and water make-up by declared route"
+      quality_evidence: "meter calibration and utility balance"
+    - protocol_id: cp_pr_products
+      process_id: "purity_refining"
+      flow_role: "high-purity iron output"
+      record_type: "certified scale, assay, dispatch, and form records"
+      raw_fields: "batch_id; mass; moisture; iron_purity; impurity_panel; form; size; temperature"
+      collection_method: "sum conforming product separately by form and purity grade"
+      unit: "kg"
+      frequency: "batch"
+      temporal_coverage: "all campaigns in reporting period"
+      site_scope: "all final forming and dispatch points"
+      aggregation_rule: "dry net conforming output by product form"
+      quality_evidence: "scale calibration, certificate of analysis, impurity detection limits"
+    - protocol_id: cp_pr_wastes
+      process_id: "purity_refining"
+      flow_role: "spent electrolyte and spent refining slag"
+      record_type: "tank transfer, scale, waste manifest, and recovery records"
+      raw_fields: "batch_id; waste_id; mass; concentration; moisture; destination; recovery_status"
+      collection_method: "measure net external transfer after internal recovery"
+      unit: "kg"
+      frequency: "batch and monthly"
+      temporal_coverage: "all campaigns in reporting period"
+      site_scope: "all purification and refining waste exits"
+      aggregation_rule: "aggregate each atomic waste separately by route"
+      quality_evidence: "meter/scale calibration, assay, waste manifest, treatment receipt"
+    - protocol_id: cp_pr_air
+      process_id: "purity_refining"
+      flow_role: "particulate matter"
+      record_type: "stack test, dust-collector, operating-hour, and production records"
+      raw_fields: "source_id; concentration; flow_rate; duration; collector_status"
+      collection_method: "integrate measured releases and document fugitive estimate"
+      unit: "kg; mg/Nm3"
+      frequency: "stack-test interval; monthly estimate"
+      temporal_coverage: "all campaigns in reporting period"
+      site_scope: "melting, refining, forming, and material handling"
+      aggregation_rule: "sum controlled and quantified fugitive releases"
+      quality_evidence: "stack-test report and dust-collector maintenance record"
+  calculation_rules:
+    - id: calc_dry_mass_normalization
+      applies_to: "mass inputs and outputs"
+      rule: "normalized amount = net measured dry amount / net dry reference-product mass × 1,000 kg"
+      inputs:
+        - "gross mass"
+        - moisture
+        - "stock change"
+        - "internal return"
+        - "dry reference-product mass"
+      output: "kg per 1,000 kg dry reference product"
+      source_ids:
+        - worldsteel-lci-methodology-2017
+    - id: calc_energy_normalization
+      applies_to: "electricity and fuel"
+      rule: "normalized amount = net carrier consumed / net dry reference-product mass × 1,000 kg; preserve carrier-specific units and conversion basis"
+      inputs:
+        - "meter readings"
+        - imports
+        - exports
+        - "stock change"
+        - "calorific basis"
+        - "dry reference-product mass"
+      output: "kWh, MJ, or kg per 1,000 kg dry reference product"
+      source_ids:
+        - worldsteel-lci-methodology-2017
+    - id: calc_gas_mass
+      applies_to: "natural gas, hydrogen, oxygen, and measured gases"
+      rule: "gas mass = corrected standard volume × verified density from measured composition and declared reference conditions"
+      inputs:
+        - volume
+        - temperature
+        - pressure
+        - composition
+        - "reference conditions"
+        - density
+      output: "kg gas"
+      source_ids:
+        - doe-green-hydrogen-iron-2018
+    - id: calc_route_weighting
+      applies_to: "multi-site or multi-route dataset"
+      rule: "weighted exchange = sum(route exchange × conforming dry route output) / sum(conforming dry output); retain separate route results in supporting data"
+      inputs:
+        - "route-specific normalized exchange"
+        - "dry product output"
+        - "product form and quality"
+      output: "production-mass-weighted exchange"
+      source_ids:
+        - worldsteel-lci-methodology-2017
+    - id: calc_direct_air_release
+      applies_to: "direct air emissions"
+      rule: "release = integrated monitored release + justified gap estimate + vent and flare release - verified capture; do not subtract biogenic or upstream credits here"
+      inputs:
+        - concentration
+        - "gas flow"
+        - time
+        - composition
+        - "vent/flare records"
+        - "capture records"
+      output: "kg pollutant per reporting period and per 1,000 kg product"
+      source_ids:
+        - worldsteel-lci-methodology-2017
+    - id: calc_balance_checks
+      applies_to: "process validation"
+      rule: "close total mass, iron, and carbon balances for each applicable process; report residuals and explain material deviations"
+      inputs:
+        - "all measured inputs"
+        - outputs
+        - "stock changes"
+        - "recycled flows"
+        - "iron assays"
+        - "carbon assays"
+      output: "mass-, iron-, and carbon-balance residuals"
+      source_ids:
+        - worldsteel-lci-methodology-2017
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product"
+      requirement: "Product family, form, route, purity/metallization, carbon, gangue, moisture, size, and hot/cold delivery state shall identify one saleable product."
+      evidence: "dispatch specification and certificate of analysis"
+    - id: dq_technology
+      applies_to: "route inventory"
+      requirement: "Unit operations, reductant, gas generation, internal recycling, CCUS, briquetting, purification, and treatment shall match the declared route; mixed routes shall remain traceable."
+      evidence: "process-flow diagram, meter map, and route ledger"
+    - id: dq_temporal
+      applies_to: "foreground records"
+      requirement: "Prefer 12 consecutive representative months. A shorter period shall cover the full operating pattern and be justified."
+      evidence: "dated production, utility, maintenance, and laboratory records"
+    - id: dq_geography
+      applies_to: "upstream links"
+      requirement: "Electricity and other material datasets shall represent the actual supplier or production region and technology where material."
+      evidence: "supplier identity, grid contract, and dataset metadata"
+    - id: dq_completeness
+      applies_to: "all processes"
+      requirement: "Include all energetic inputs and all known material, waste, water, and emission flows; document exclusions and their mass, energy, and environmental relevance."
+      evidence: "completeness checklist, meter reconciliation, and exclusion register"
+    - id: dq_measurement
+      applies_to: "measured and calculated values"
+      requirement: "Retain calibration status, raw units, conversions, allocation keys, uncertainty, detection limits, and data-gap treatment so results are reproducible."
+      evidence: "calibration certificates, calculation workbook, QA review"
+validation_rules:
+  - rule_id: validation_reference_flow
+    applies_to: "reference product"
+    rule: "Confirm that the normalized output equals 1,000 kg net dry mass and that all required qualifiers are present and mutually consistent."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: validation_route_rows
+    applies_to: "process inventory"
+    rule: "Confirm that every included row belongs to the declared route, every applicable atomic exchange is present, and non-applicable alternative rows are absent rather than zero-filled."
+    source_ids:
+      - iea-iron-steel-roadmap-2020
+      - li-high-purity-iron-2020
+  - rule_id: validation_balances
+    applies_to: "direct reduction, briquetting, and purity refining"
+    rule: "Perform total mass and iron balances for every included process and a carbon balance for carbon-bearing routes; investigate and disclose residuals."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: validation_no_double_counting
+    applies_to: "internal loops and upstream data"
+    rule: "Verify that recycled top gas, water, DRI fines, slag, and electrolyte are not counted as both internal circulation and purchased inputs, and that upstream burdens appear once."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: validation_emissions
+    applies_to: "releases and capture"
+    rule: "Reconcile monitored emissions with fuel, gas, carbon, vent, flare, pollution-control, and capture records and report below-detection-limit treatment."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: validation_purity
+    applies_to: "high-purity iron product"
+    rule: "Verify iron purity by mass is at least 99.94% using a documented analytical method and impurity panel; a DRI metallization result is not a substitute for iron-purity conformance."
+    source_ids:
+      - unsd-cpc-30-2025
+      - china-mof-tariff-2019
+      - li-high-purity-iron-2020
+published_dataset_profile:
+  dataset_role: "secondary_dataset or background_dataset derived from verified foreground production records"
+  downstream_use: "upstream iron-bearing intermediate for steelmaking, alloy production, foundry, or other declared product systems; lifecyclemodel projection with route-specific upstream links"
+  allowed_use: "modelling the declared product family, form, route, quality, site/geography, technology, and reporting period at the producing-works gate"
+  excluded_use: "representing downstream crude or finished steel; substituting DRI for high-purity iron or one route for another without documented equivalence; public comparative assertions without a study-specific functional unit and review"
+  required_metadata: "PCR id and version; product family and form; route and unit operations; total iron; metallic iron/metallization or iron purity; carbon; gangue; moisture; size; delivery state/temperature; site; geography; reporting period; allocation; cut-offs; upstream datasets; data quality and uncertainty"
+  required_quality_disclosure: "foreground/secondary split; meter and assay coverage; missing-data treatment; mass/iron/carbon balance residuals; route weighting; allocation and substitution choices; exclusions; unresolved UUIDs and range-evidence status"
+  update_trigger: "material change in feed, reductant, electricity, purification route, CCUS, gas recycling, briquetting, product form or quality, allocation, site mix, upstream datasets, or reporting data older than the programme's accepted representativeness period"
+data_sources:
+  - id: "unsd-cpc-30-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-02)"
+    used_for: "official product identity, forms, and 99.94% purity threshold"
+  - id: "china-mof-tariff-2019"
+    type: "official_guidance"
+    reference: "Ministry of Finance of the People's Republic of China, 2019 tariff implementation plan, lines 72031000 and 72039000, https://m.mof.gov.cn/czxw/201812/P020181226472875236412.pdf (retrieved 2026-09-02)"
+    used_for: "verified professional Chinese terminology for directly reduced iron products, sponge iron, and the 99.94% purity threshold"
+  - id: "doe-green-hydrogen-iron-2018"
+    type: "official_guidance"
+    reference: "Ed Green, The Use of Hydrogen in the Iron and Steel Industry, U.S. Department of Energy H2@Scale Workshop, 1 August 2018, https://www.energy.gov/sites/default/files/2018/08/f54/fcto-h2-scale-kickoff-2018-19-green.pdf (retrieved 2026-09-02)"
+    used_for: "DRI definition, reduction without melting, hydrogen and carbon-monoxide reduction chemistry, and the natural-gas DRI route"
+  - id: "iea-iron-steel-roadmap-2020"
+    type: "official_guidance"
+    reference: "International Energy Agency, Iron and Steel Technology Roadmap, 2020, https://www.iea.org/reports/iron-and-steel-technology-roadmap (retrieved 2026-09-02)"
+    used_for: "separation of gas-, coal-, blended-hydrogen-, and 100% hydrogen-based DRI technology routes"
+  - id: "worldsteel-lci-methodology-2017"
+    type: "handbook"
+    reference: "World Steel Association, Life Cycle Inventory Methodology Report for Steel Products, 2017, ISBN 978-2-930069-89-0, https://worldsteel.org/media/publications/lci-report-2017-pdf/?do_download_id=7f96813a-3756-4842-8dbc-38ce201f2914 (retrieved 2026-09-02)"
+    used_for: "declared mass unit, gate-to-gate and upstream boundaries, technology/geographic/temporal coverage, data collection, emissions, completeness, validation balances, and co-product handling"
+  - id: "midrex-forms-of-dri"
+    type: "extension_guidance"
+    reference: "Midrex Technologies, Inc., Forms of DRI, https://www.midrex.com/direct-reduced-iron/forms-of-dri/ (retrieved 2026-09-03)"
+    used_for: "CDRI, HDRI, and HBI market forms; hot DRI transfer; binder-free hot briquetting and dispatch state"
+  - id: "li-high-purity-iron-2020"
+    type: "literature"
+    reference: "Li, B.; Sun, G.; Li, S.; Guo, H.; Guo, J. The Preparation of High-Purity Iron (99.987%) Employing a Process of Direct Reduction-Melting Separation-Slag Refining. Materials 13(8), 1839 (2020). https://doi.org/10.3390/ma13081839"
+    used_for: "high-purity-iron route alternatives and verified direct-reduction, melting-separation, slag-refining, and electrolytic process decomposition"
+  - id: "zhang-electrolytic-iron-2025"
+    type: "literature"
+    reference: "Zhang, D.; Liu, T.; Xie, G.; Wang, B.; Cao, X.; Bai, J.; Zhong, M.; Dong, H. The Effect of Electrolytic Temperature on the Purity of Electrolytic Pure Iron. Metals 15(9), 1055 (2025). https://doi.org/10.3390/met15091055"
+    used_for: "ferrous-chloride and ferrous-sulfate electrolyte route evidence, electricity-driven electrodeposition, and high-purity-iron quality control"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:27dca4198df550d1b5d3a0c2fe4e76d88361a724232056b235cfe7705dcb5a33"
+  generated_content_sha256: "sha256:8b83a69ff6c2d6a257e7cfe9d3b8e9517935076bfbbf7035ab1bc9bcca162f2d"

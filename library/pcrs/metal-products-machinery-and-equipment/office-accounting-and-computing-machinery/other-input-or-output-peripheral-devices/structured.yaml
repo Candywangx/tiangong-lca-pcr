@@ -1,10 +1,362 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "45269"
-  title: "Other input or output peripheral devices"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.office-accounting-and-computing-machinery.other-input-or-output-peripheral-devices"
+  classification_refs: "CPC 3.0: 45269"
+  covered_products: "Computer-connected badge and card readers, paper-tape readers, magnetic-ink recognition and optical reading devices"
+  excluded_products: "Keyboards, mice, joysticks; image scanners; printers and multifunction printers; monitors and projectors; fixed or removable storage drives and flash-card readers; smart cards themselves; autonomous payment terminals"
+  representative_product: "USB contact smart-card reader, model-specific configuration"
+  production_route: "Purchased functional reader board and formed components; assembly, test and packing"
+  market_state: "New, complete, tested device at factory gate; packaging separately inventoried"
+functional_unit:
+  what: "Provide a declared computer reading interface"
+  how_much: "1 kg of accepted complete devices of one model; report corresponding device count"
+  how_well: "Pass declared protocol, interface, read/write and acceptance tests; record failure criteria"
+  how_long_or_cycle: "One manufacturing reporting period; no use-life claim. A service comparison needs independently declared duty cycle and lifetime"
+  reference_flow_link: "reference_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_completeness
+      applies_to: "foreground"
+      rule: "Include acceptance rejects, rework, attributable energy and packing. Reconcile the actual bill of materials; add a separate atomic row for every actual solder, adhesive, screw, separate head, bag, waste or direct emission absent from this core list. Absence requires records, not a zero default."
+      source_ids: []
+    - rule_id: boundary_lifecycle
+      applies_to: "dataset"
+      rule: "Distribution, customer use and end-of-life are outside this manufacturing package. Do not call it a complete product life-cycle result; downstream full-life-cycle models must add these stages."
+      source_ids:
+        - ghg-product-standard-page
+boundary_abstraction:
+  declared_starting_condition: "Purchased, functional populated reader boards and formed components received at assembly site"
+  starting_condition_role: "foreground_input"
+  product_classification_scope: "Reader peripherals within the semantic exclusions in section 2"
+  recursive_input_rule: "Purchased same-category modules remain measured inputs linked once to upstream datasets; do not recursively reproduce their manufacture"
+  upstream_dataset_requirement: "Link each purchased component to a compatible cradle-to-delivery dataset, with electronics, sensing element, moulding and transport covered or disclosed as gaps"
+  disclosure: "Declare suppliers, geography, technology, exclusions and whether only gate-to-gate results are reported"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Other input or output peripheral devices"
+    uuid: "25b5cd7d-87b6-4790-8626-ce835d1edcad"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - model
+    - "reading principle"
+    - "supported media and protocols"
+    - "host interface"
+    - "power supply"
+    - "cable inclusion"
+    - "unit net mass"
+    - "accepted count"
+    - "site and period"
+    - "purchased-module boundary"
+    - "test criteria"
+    - "packaging configuration"
+reference_flows:
+  []
+measurement_rules:
+  - id: mass_basis
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh complete devices including supplied cable; exclude carton. Derive accepted mass from count times measured model-specific unit mass. Never equate kg with device count."
+  - id: energy_conversion
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Retain meter readings and apply 1 kWh = 3.6 MJ once. USB test power must include attributable host losses."
+process_map:
+  - id: assembly_test
+    name: "Final assembly and acceptance test"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground production"
+    quantitative_reference: "1 kg accepted devices"
+  - id: packing
+    name: "Delivery packing"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "conditioning"
+    quantitative_reference: "Same 1 kg accepted devices; no second product output"
+process_inventory:
+  - id: assembly_test
+    label: "Final assembly and acceptance test"
+    inputs:
+      product:
+        - row_id: reader_board
+          role: "Populated reader circuit board assembly"
+          name: "Populated reader circuit board assembly"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Required; includes the fitted reading interface. Declare board model, contact or sensing technology and supplied components. Split a separately purchased reading head into its own exchange."
+          amount:
+            expression: "Measured period quantity divided by accepted device net mass; reference output normalizes to 1 kg"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted complete devices"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly_test
+              source_ids: []
+            ranges: []
+        - row_id: abs_housing
+          role: "Moulded ABS reader enclosure"
+          name: "Moulded ABS reader enclosure"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "inclusion_condition: fitted ABS enclosure. Record finished moulded part mass, resin grade and recycled fraction; do not substitute resin granulate."
+          amount:
+            expression: "Measured period quantity divided by accepted device net mass; reference output normalizes to 1 kg"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted complete devices"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly_test
+              source_ids: []
+            ranges: []
+        - row_id: usb_cable
+          role: "USB cable with connectors"
+          name: "USB cable with connectors"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "inclusion_condition: USB cable is supplied with the device. Record complete cable mass, length and connector types, including a permanently attached cable."
+          amount:
+            expression: "Measured period quantity divided by accepted device net mass; reference output normalizes to 1 kg"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted complete devices"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly_test
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Include assembly, firmware loading, functional testing, rework and attributable facility electricity; measure host test equipment consumption without assigning it to customer use."
+          amount:
+            expression: "Measured period quantity divided by accepted device net mass; reference output normalizes to 1 kg"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted complete devices"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly_test
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Other input or output peripheral devices"
+          name: "Other input or output peripheral devices"
+          flow_type: "product"
+          flow_ref:
+            uuid: "25b5cd7d-87b6-4790-8626-ce835d1edcad"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record accepted complete devices by one model and configuration. Exclude packaging mass. The same accepted output denominator is used for packing."
+          amount:
+            expression: "Measured period quantity divided by accepted device net mass; reference output normalizes to 1 kg"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted complete devices"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly_test
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: rejected_reader
+          role: "Discarded reader electronic assembly"
+          name: "Discarded reader electronic assembly"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "inclusion_condition: unrecoverable reader assemblies leave the site for treatment. Record actual composition, hazardous status, destination and treatment; internally reworked units are not discarded output."
+          amount:
+            expression: "Measured period quantity divided by accepted device net mass; reference output normalizes to 1 kg"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted complete devices"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly_test
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: packing
+    label: "Delivery packing"
+    inputs:
+      product:
+        - row_id: carton
+          role: "corrugated board boxes"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "inclusion_condition: corrugated box is used for delivery. Weigh box mass allocated to accepted devices; disclose recycled content and delivered package configuration."
+          amount:
+            expression: "Measured period quantity divided by accepted device net mass; reference output normalizes to 1 kg"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted complete devices"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packing
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_records
+    applies_to: "shared_operations"
+    rule: "Use dedicated component issues and meters first. For shared test equipment allocate measured electricity by metered power times occupied test duration; for common packing allocate by actual boxes used. Document causal drivers and reconcile allocated totals to measured totals under cp_assembly_test and cp_packing."
+    source_ids: []
+  - rule_id: reject_burden
+    applies_to: "waste"
+    rule: "Assign reject and rework burdens to accepted output. Do not count reworked devices twice or automatically credit avoided virgin production for waste leaving the gate; disclose the downstream recycling convention."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_assembly_test
+      process_id: "assembly_test"
+      flow_role: "components; electricity; accepted and rejected devices"
+      record_type: "production records"
+      raw_fields: "model; batch; component issue and return mass; opening and closing stock; accepted count; net unit mass; reject mass; kWh; test duration; power; rework; treatment destination"
+      collection_method: "weigh and reconcile stock; meter electricity including test hosts; retain acceptance and waste transfer records"
+      unit: "kg; count; kWh; h"
+      frequency: "each batch and meter interval"
+      temporal_coverage: "declared continuous representative reporting period"
+      site_scope: "one site and model"
+      aggregation_rule: "sum net issues and measured energy; divide by accepted net mass; avoid rework double count"
+      quality_evidence: "calibration; BOM; stock reconciliation; supplier composition; test log"
+    - protocol_id: cp_packing
+      process_id: "packing"
+      flow_role: "box consumption"
+      record_type: "packing record"
+      raw_fields: "box mass; counts issued and returned; accepted device mass; configuration"
+      collection_method: "weigh representative boxes and reconcile issues with delivery records"
+      unit: "kg; count"
+      frequency: "each shipment"
+      temporal_coverage: "same reporting period as assembly"
+      site_scope: "same site and model"
+      aggregation_rule: "net box mass divided by accepted device mass"
+      quality_evidence: "scale calibration and packing BOM"
+  calculation_rules:
+    - id: normalize
+      applies_to: "inventory"
+      rule: "M = accepted count × measured unit net mass; q_i = period net quantity_i / M; reconcile opening stock + receipts - closing stock - returns"
+      inputs:
+        - cp_assembly_test
+        - cp_packing
+      output: "exchange per kg device"
+      source_ids: []
+    - id: energy
+      applies_to: "electricity"
+      rule: "MJ = kWh × 3.6"
+      inputs:
+        - cp_assembly_test
+      output: "MJ/kg"
+      source_ids: []
+  data_quality_requirements:
+    - id: traceability
+      applies_to: "all_rows"
+      requirement: "Link quantities to dated records, model and site; retain uncertainty and missing-data disclosure. Do not use manufacturer specifications as production consumption."
+      evidence: "cp_assembly_test; cp_packing"
+    - id: technology
+      applies_to: "reference_product"
+      requirement: "Record reader protocol, supplied interface and acceptance tests; do not pool contact, magnetic and optical devices without explicit weighting."
+      evidence: "acs-acr39u-product"
+    - id: complete_bom
+      applies_to: "components"
+      requirement: "Reconcile component mass, accepted product, rejects and inventory change. Every mismatch requires investigation with measurement uncertainty, not a preset tolerance."
+      evidence: "supplier BOM and batch ledger"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference_product"
+    rule: "Require all reference qualifiers and positive accepted mass. Exclude storage-media readers and manual input devices."
+    source_ids:
+      - un-cpc-2-1-reader-notes
+  - rule_id: validate_inventory
+    applies_to: "all_rows"
+    rule: "Require atomic exchanges, compatible units, period alignment and upstream boundary links. Missing UUIDs remain explicit identity gaps; missing quantities are not zeros. No generic external range is authorized."
+    source_ids: []
+  - rule_id: validate_comparison
+    applies_to: "dataset"
+    rule: "A mass-normalized manufacturing result cannot establish service equivalence. Compare only after aligning reading function, performance, duty cycle, lifetime and full system boundary."
+    source_ids:
+      - ghg-product-standard-page
+published_dataset_profile:
+  dataset_role: "unit_process"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Model-specific manufacturing contribution with explicit upstream datasets"
+  excluded_use: "Unqualified comparisons; full-life-cycle claims from gate-to-gate data; substitution for storage drives or smart cards"
+  required_metadata: "model; site; period; net mass; unit count; sensing technology; BOM boundary; supplier geography; allocation"
+  required_quality_disclosure: "coverage; uncertainty; missing UUIDs and quantities; omitted stages; range evidence gaps"
+  update_trigger: "BOM, interface, supplier, test regime, energy mix or manufacturing-boundary change"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "UNSD CPC 3.0 structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Current category label and adjacent category exclusions; retrieved 2026-09-09"
+  - id: "un-cpc-2-1-reader-notes"
+    type: "official_guidance"
+    reference: "UNSD CPC 2.1, 45269. https://unstats.un.org/unsd/classifications/Econ/Detail/EN/1074/45269"
+    used_for: "Original explanatory note, reader scope and storage/manual-input exclusions; retrieved 2026-09-09"
+  - id: "acs-acr39u-product"
+    type: "handbook"
+    reference: "ACS ACR39U-U1 Smart Card Reader, Technical Specifications V1.04, sections 1, 2 and 5 (manufacturer document hosted by CardLogix). https://www.cardlogix.com/wp-content/uploads/ACS-ACR39U-U1-Smart-Card-Reader-Technical-Specifications.pdf"
+    used_for: "Representative computer-connected reader, interface, power and cable qualifiers only; retrieved 2026-09-09"
+  - id: "ghg-product-standard-page"
+    type: "official_guidance"
+    reference: "GHG Protocol Product Standard overview and comparison FAQ. https://ghgprotocol.org/product-standard"
+    used_for: "Full-life-cycle stage distinction and limits of product comparison; retrieved 2026-09-09"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:3c27095a50a4cf4cffd42d1833878ff4e3b183fb06e476126e3457aec06bb467"
+  generated_content_sha256: "sha256:543a484e80404053e47fd3cbc87ac4e10304f158eef7f91f59b068c08cfb95d9"

@@ -1,10 +1,682 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "47910"
-  title: "Cards with a magnetic stripe"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.radio-television-and-communication-equipment-and-apparatus.cards-with-a-magnetic-stripe"
+  classification_refs: "CPC 3.0: 47910, Cards with a magnetic stripe (exact)"
+  covered_products: "Finished blank, printed, encoded, embossed, or personalized physical cards whose data-recording feature is a magnetic stripe, when supplied without an integrated-circuit smart-card identity"
+  excluded_products: "Smart cards; cards classified and marketed as integrated-circuit cards; other magnetic media; card readers; software; shipment packaging"
+  representative_product: "Finished, conforming rigid PVC magnetic-stripe card, unpackaged at the factory gate"
+  production_route: "Purchased card-grade PVC sheet and magnetic-stripe film; screen and offset printing with separately collected ink and gloss oil; stripe-film pre-lamination; sheet assembly and lamination; card punching; finishing; inspection; conditional pre-gate hot printing, encoding, embossing, or personalization (watchdata-cn103699921a)"
+  market_state: "Finished and quality-accepted physical cards at the manufacturing gate, with substrate, dimensions, stripe specification, encoding/personalization state, and packaging exclusion declared"
+functional_unit:
+  what: "Supply of finished physical cards capable of magnetic-stripe data recording or reading"
+  how_much: "1 kg of conforming finished cards"
+  how_well: "Meets the declared customer specification or applicable card standard for dimensions, substrate, magnetic-stripe characteristics, and any encoded or personalized state"
+  how_long_or_cycle: "One production lot through factory-gate acceptance; post-gate service life is outside the reference function"
+  reference_flow_link: "The finished magnetic-stripe-card output row finished_magnetic_stripe_cards"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_operations
+      applies_to: "foreground manufacturing"
+      rule: "Include the actual printing and curing operations, stripe application, lamination, card punching or cutting, finishing, inspection, internal scrap handling, and only those hot-printing, encoding, embossing, or personalization operations completed before the declared factory gate."
+      source_ids:
+        - watchdata-cn103699921a
+        - md-comar-26-11-19-18
+    - rule_id: boundary_printing_route
+      applies_to: "printing, curing and cleanup"
+      rule: "For the representative screen-and-offset route, separately collect printing ink, each gloss-oil formulation, isopropanol used in fountain solution or cleanup, process water used in cleanup, waste ink, spent isopropanol solution, cleaning wastewater and direct isopropanol release. Mark solvent rows not applicable only for a documented solvent-free route; mark cleanup inputs and wastes not applicable only when records demonstrate that no onsite cleanup occurred. If another named solvent is used, add its specific product, waste and elementary-flow rows instead of a generic VOC row."
+      source_ids:
+        - watchdata-cn103699921a
+        - md-comar-26-11-19-18
+    - rule_id: boundary_thermal_route
+      applies_to: "drying, curing and lamination heat"
+      rule: "Record gaseous natural gas and direct fossil carbon dioxide only when onsite natural-gas combustion supplies thermal energy. Mark both rows not applicable for fully electric or externally supplied heat; when another onsite fuel is used, replace them with the exact fuel and measured or calculated direct species rather than a generic fuel or emissions row."
+      source_ids:
+        - md-comar-26-11-19-18
+    - rule_id: boundary_upstream_inputs
+      applies_to: "purchased product and energy inputs"
+      rule: "Link every purchased atomic input to a compatible upstream dataset; do not include upstream emissions again as direct foreground elementary flows."
+      source_ids: []
+    - rule_id: boundary_product_identity
+      applies_to: "category inclusion and exclusions"
+      rule: "Keep CPC 47910 magnetic-stripe cards distinct from smart cards and other magnetic media; disclose any combined magnetic-stripe/integrated-circuit feature for classification review."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+    - rule_id: boundary_packaging
+      applies_to: "shipment packaging"
+      rule: "Exclude shipment packaging from this unpackaged factory-gate reference product. If packaging is brought into a study boundary, add each packaging material as a separate atomic flow and report it outside the reference-product mass."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased card-grade PVC sheet, magnetic-stripe foil, printing ink, route-specific gloss oil, purchased electricity, and any actually used isopropanol, process water or gaseous natural gas delivered to the manufacturing site"
+  starting_condition_role: "Upstream production is represented by supplier-specific or compatible background datasets; foreground collection begins when these inputs cross the site boundary"
+  product_classification_scope: "Physical cards covered by CPC 3.0 subclass 47910, not CPC 47920 smart cards or CPC 47530 other unrecorded magnetic media"
+  recursive_input_rule: "When an already formed magnetic-stripe card is purchased for site personalization, record it as the same-category product input, model only the added foreground operations, and do not recreate burdens already embodied in the upstream card dataset"
+  upstream_dataset_requirement: "Use geographically, technologically, temporally, and materially representative datasets for each purchased input; disclose proxies and recycled-content assumptions"
+  disclosure: "Declare substrate, stripe specification, printing/curing route, personalization state, production geography, reference period, rejected-product handling, and the exact factory-gate and packaging exclusions"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Cards with a magnetic stripe"
+    uuid: "adb750d0-17eb-447e-8b33-2b60040d4022"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "substrate material and grade"
+    - "finished-card dimensions and mean mass"
+    - "magnetic-stripe coercivity or declared stripe specification"
+    - blank
+    - encoded
+    - embossed
+    - "or personalized state"
+    - "printing and curing technology"
+    - "recycled content"
+    - "production geography"
+    - "reference period"
+    - "unpackaged factory-gate boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product and mass-based material rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all foreground exchanges to 1 kg of conforming finished magnetic-stripe cards at the declared factory gate."
+  - id: count_to_mass
+    applies_to: "card counts reported by production systems"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert card counts to mass using a lot-representative measured mean finished-card mass; retain sample size, scale resolution, sampling date, and rejected-card exclusion."
+  - id: electricity_energy
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve meter readings in their original unit; when converting kWh to the TianGong reference unit, use 1 kWh = 3.6 MJ and document the conversion."
+  - id: mass_balance_check
+    applies_to: "non-fuel process materials and all corresponding material outputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Reconcile every non-fuel material input with conforming card mass, each external solid or liquid waste, each direct named material emission, recovered material, and work-in-progress or stock change over the same accounting period; do not compare PVC alone with the full multi-material card output."
+process_map:
+  - id: card_manufacturing
+    name: "Magnetic-stripe card manufacture and finishing"
+    inclusion: "required"
+    inclusion_condition: "Always included; encode, emboss, or personalize only when completed by the reporting manufacturer before the gate"
+    role: "Foreground conversion, finishing, inspection, and scrap accounting"
+    quantitative_reference: "1 kg conforming finished magnetic-stripe cards"
+process_inventory:
+  - id: card_manufacturing
+    label: "Magnetic-stripe card manufacture and finishing"
+    inputs:
+      product:
+        - row_id: pvc_card_sheet
+          role: "Rigid PVC card-substrate sheet"
+          name: "Polyvinyl chloride"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50dd353a-b424-4589-adf0-71831c77c324"
+          property_unit: "Mass / kg"
+          description: "Record the mass of purchased rigid PVC sheet consumed in conforming cards, measured offcuts, setup losses, and rejects during the reference period. This representative-route row is not a proxy for another substrate."
+          amount:
+            expression: "measured net mass issued to card manufacturing, reconciled to inventory change and returned material"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished magnetic-stripe cards"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_inputs
+              source_ids: []
+            ranges: []
+        - row_id: magnetic_stripe_foil
+          role: "Magnetic-stripe foil"
+          name: "Magnetic-stripe foil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of the supplied magnetic-recording stripe foil or laminate actually consumed, including application setup loss. No exact public state-100 TianGong product flow was confirmed, so the UUID remains unresolved."
+          amount:
+            expression: "measured net foil mass issued to stripe application, reconciled to unused returned roll and separately measured waste"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished magnetic-stripe cards"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_inputs
+              source_ids: []
+            ranges: []
+        - row_id: printing_ink
+          role: "Printing ink"
+          name: "Ink"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7627af63-d2c2-4245-906f-023847c7739f"
+          property_unit: "Mass / kg"
+          description: "Record the mass of printing ink consumed for the reported product. The evidenced representative route uses screen and offset printing; formulation, colour system, print technology, solvent content and curing route must be declared."
+          amount:
+            expression: "measured ink issued minus recoverable returned ink over the accounting period"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished magnetic-stripe cards"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_printing_materials_and_releases
+              source_ids:
+                - watchdata-cn103699921a
+                - md-comar-26-11-19-18
+            ranges: []
+        - row_id: thermo_print_gloss_oil
+          role: "Thermo-print-compatible gloss oil"
+          name: "Thermo-print-compatible gloss oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the thermo-print-compatible gloss-oil formulation applied by screen printing in the representative route. This row does not include the separate protective offset-applied gloss oil, generic paint, or an assumed water-based formulation; no exact public state-100 TianGong product flow was confirmed."
+          amount:
+            expression: "measured mass issued to screen printing minus unused returned formulation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished magnetic-stripe cards"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_printing_materials_and_releases
+              source_ids:
+                - watchdata-cn103699921a
+                - md-comar-26-11-19-18
+            ranges: []
+        - row_id: protective_gloss_oil
+          role: "Protective offset-applied gloss oil"
+          name: "Protective offset-applied gloss oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the protective gloss-oil formulation applied by offset printing in the representative route. This row does not include the separate screen-applied thermo-print-compatible gloss oil, generic paint, or an assumed water-based formulation; no exact public state-100 TianGong product flow was confirmed."
+          amount:
+            expression: "measured mass issued to offset printing minus unused returned formulation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished magnetic-stripe cards"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_printing_materials_and_releases
+              source_ids:
+                - watchdata-cn103699921a
+                - md-comar-26-11-19-18
+            ranges: []
+        - row_id: isopropanol
+          role: "Isopropanol"
+          name: "Isopropanol"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a4a75541-e156-4e30-947c-ba067a682afd"
+          property_unit: "Mass / kg"
+          description: "Record isopropanol used in lithographic fountain solution or printing-equipment cleanup. This conditional row is not applicable only when supplier formulations, issue records and operating records demonstrate a solvent-free route with no isopropanol use."
+          amount:
+            expression: "measured net isopropanol issued, including the isopropanol fraction of prepared fountain solution, reconciled to returned stock, recovered solvent, spent solution and direct release"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished magnetic-stripe cards"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_printing_materials_and_releases
+              source_ids:
+                - md-comar-26-11-19-18
+            ranges: []
+        - row_id: process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water used in fountain solution or water-based printing-equipment cleanup. Mark this row not applicable only when the documented route uses no process water for these operations; do not include unrelated sanitary water."
+          amount:
+            expression: "measured or batch-recipe mass of process water entering fountain solution and printing cleanup, excluding returned or internally recirculated water until it leaves the process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished magnetic-stripe cards"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_printing_materials_and_releases
+              source_ids:
+                - md-comar-26-11-19-18
+            ranges: []
+        - row_id: natural_gas
+          role: "Gaseous natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record natural gas only when it is combusted onsite to supply drying, curing or lamination heat. Mark this row not applicable for a fully electric route or externally supplied heat, and add a different exact fuel row if another onsite fuel is used."
+          amount:
+            expression: "metered or invoice-reconciled volume attributable to the reporting process at declared temperature and pressure reference conditions"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished magnetic-stripe cards"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_thermal_fuel_and_emissions
+              source_ids:
+                - md-comar-26-11-19-18
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered purchased electricity consumed by printing, curing, stripe application, lamination, cutting, finishing, inspection, and declared pre-gate personalization. Allocate shared meters only according to the allocation rules below."
+          amount:
+            expression: "metered electricity attributable to the reporting process, converted to MJ when necessary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished magnetic-stripe cards"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_magnetic_stripe_cards
+          role: "Conforming finished magnetic-stripe cards"
+          name: "Cards with a magnetic stripe"
+          flow_type: "product"
+          flow_ref:
+            uuid: "adb750d0-17eb-447e-8b33-2b60040d4022"
+          property_unit: "Mass / kg"
+          description: "Record only cards that passed the declared acceptance criteria at the factory gate. The output mass establishes the normalization denominator and excludes shipment packaging."
+          amount:
+            expression: "measured mass of quality-accepted finished cards in the reporting lot or period"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg conforming finished magnetic-stripe cards"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_and_scrap
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: pvc_card_scrap
+          role: "PVC card offcuts and rejected PVC cards"
+          name: "PVC"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "cacd273c-d5c5-4f38-91c2-660d8a86498b"
+          property_unit: "Mass / kg"
+          description: "Record solid PVC offcuts and rejected PVC cards that leave the process for treatment. Keep material returned internally to the same process out of this waste output and disclose stripe or ink contamination and the treatment route."
+          amount:
+            expression: "measured mass transferred out of the process as PVC card scrap, excluding internally reused material"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished magnetic-stripe cards"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_and_scrap
+              source_ids: []
+            ranges: []
+        - row_id: waste_ink
+          role: "Waste ink"
+          name: "Waste ink"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "28055998-65ea-4b15-b3cf-7b049ffc6553"
+          property_unit: "Mass / kg"
+          description: "Record unused ink, ink-bearing press residue and separately collected ink cleanup residue that leave the foreground process as waste. Do not include returned reusable ink, and do not also report the same solvent mass in spent solution or wastewater."
+          amount:
+            expression: "measured mass of separately collected waste ink transferred out of the process, net of reusable ink returned to production"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished magnetic-stripe cards"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_printing_materials_and_releases
+              source_ids:
+                - md-comar-26-11-19-18
+            ranges: []
+        - row_id: spent_isopropanol_cleaning_solution
+          role: "Spent isopropanol printing-cleaning solution"
+          name: "Spent isopropanol printing-cleaning solution"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent isopropanol-containing fountain or cleanup solution transferred for treatment or recovery. No exact public state-100 TianGong waste flow was confirmed. Mark this row not applicable when no isopropanol solution leaves the process; retain concentration or composition evidence so its isopropanol fraction can be reconciled."
+          amount:
+            expression: "measured mass transferred out of the process, with isopropanol fraction determined from formulation, analysis or a documented solvent balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished magnetic-stripe cards"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_printing_materials_and_releases
+              source_ids:
+                - md-comar-26-11-19-18
+            ranges: []
+        - row_id: printing_cleaning_wastewater
+          role: "Printing-equipment cleaning wastewater"
+          name: "Wastewater from cleaning"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f0402393-e82c-47e8-9cd8-a486c97f3e89"
+          property_unit: "Mass / kg"
+          description: "Record water-based washwater from card-printing equipment that leaves the process for the actual documented treatment or discharge route. Mark this row not applicable for a documented no-water-cleanup route; do not use it for sanitary wastewater or printing-plate processing."
+          amount:
+            expression: "measured mass of printing-equipment cleaning wastewater transferred out of the process, including separately documented ink and isopropanol fractions and excluding internal recirculation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished magnetic-stripe cards"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_printing_materials_and_releases
+              source_ids:
+                - md-comar-26-11-19-18
+            ranges: []
+      elementary:
+        - row_id: isopropanol_to_air
+          role: "Isopropanol to air, unspecified"
+          name: "isopropanol"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a843-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record the isopropanol mass released directly to air from fountain solution, printing, flash-off, drying and cleanup after subtracting recovered, destroyed, retained and waste-bound isopropanol. Mark this row not applicable only when the actual route uses no isopropanol; zero release with isopropanol use requires documented complete capture or destruction."
+          amount:
+            expression: "direct measurement or an isopropanol mass balance using input, recovered solvent, spent-solution content, wastewater content, retained mass and documented control destruction; never use total VOC as an isopropanol proxy"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished magnetic-stripe cards"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_printing_materials_and_releases
+              source_ids:
+                - md-comar-26-11-19-18
+            ranges: []
+        - row_id: fossil_co2_from_natural_gas
+          role: "Fossil carbon dioxide from onsite natural-gas combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil carbon dioxide only when natural gas is combusted onsite for drying, curing or lamination heat. Exclude upstream natural-gas supply emissions and electricity-generation emissions; mark this row and natural_gas not applicable together when no onsite natural-gas combustion occurs."
+          amount:
+            expression: "measured stack release or fuel-based carbon balance using attributable natural-gas quantity, supplier carbon content and documented oxidation; reconcile any captured carbon separately"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished magnetic-stripe cards"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_thermal_fuel_and_emissions
+              source_ids:
+                - md-comar-26-11-19-18
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "shared operations and meters"
+    rule: "Avoid allocation by subdividing separately metered lines, products, production orders, or time periods wherever technically feasible."
+    source_ids: []
+  - rule_id: allocation_shared_electricity
+    applies_to: "shared electricity"
+    rule: "When subdivision is not feasible, allocate shared electricity using measured machine operating time multiplied by rated or measured load; use finished-product mass only when the reporting products use materially comparable operations, and disclose the method."
+    source_ids: []
+  - rule_id: allocation_scrap
+    applies_to: "PVC card scrap"
+    rule: "Assign no avoided-burden credit inside the foreground process. Report scrap mass and treatment route separately; any recycling substitution or downstream credit belongs to the declared downstream model."
+    source_ids: []
+  - rule_id: allocation_co_products
+    applies_to: "saleable co-products"
+    rule: "If a separately saleable co-product occurs, first subdivide its process. If subdivision is impossible, use a documented physical causal relationship; use economic allocation only when no defensible physical relationship exists and disclose price period and sensitivity."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_inputs
+      process_id: "card_manufacturing"
+      flow_role: "PVC sheet and magnetic-stripe foil inputs"
+      record_type: "weigh tickets, issue/return records, invoices, and inventory records"
+      raw_fields: "material identity; supplier; lot; gross issued mass; returned mass; opening and closing inventory; date; product order"
+      collection_method: "reconcile issued, returned, and inventory-change records by concrete material"
+      unit: "kg"
+      frequency: "each issue/return, aggregated monthly or by production lot"
+      temporal_coverage: "representative continuous production period, normally at least 12 months or the complete shorter campaign"
+      site_scope: "all lines and storage locations serving the declared product"
+      aggregation_rule: "sum net consumed mass by material; normalize each material separately to conforming output mass"
+      quality_evidence: "calibrated scale records; inventory reconciliation; supplier specification; exception log"
+    - protocol_id: cp_printing_materials_and_releases
+      process_id: "card_manufacturing"
+      flow_role: "printing ink, gloss oil, isopropanol, process water, waste ink, spent isopropanol solution, cleaning wastewater and isopropanol to air"
+      record_type: "issue/return and batch records; supplier formulation or SDS; cleanup log; waste-transfer weights; wastewater meter or batch volume with density; air test or solvent-balance worksheet"
+      raw_fields: "material and formulation identity; gross issue and return; isopropanol fraction; water input; cleanup event; waste-stream mass and composition; recovered solvent; control capture and destruction; release point; date; product order"
+      collection_method: "reconcile each named input and output separately; derive isopropanol release only after subtracting measured recovery, waste-bound mass, retained mass and documented destruction"
+      unit: "kg"
+      frequency: "each batch and cleanup event, aggregated monthly or by production lot"
+      temporal_coverage: "same period as product, substrate and energy records"
+      site_scope: "every screen, offset, coating, drying and cleanup operation serving the declared product"
+      aggregation_rule: "sum each atomic exchange without double counting mixed-waste constituents; normalize to conforming output mass"
+      quality_evidence: "supplier formulation or SDS; calibrated issue and waste weights; cleanup log; waste manifest; wastewater record; control-device and solvent-balance evidence"
+    - protocol_id: cp_electricity
+      process_id: "card_manufacturing"
+      flow_role: "purchased electricity"
+      record_type: "utility meter, submeter, and machine-run records"
+      raw_fields: "meter identifier; opening and closing reading; unit; timestamp; machine run time; product order; allocation driver"
+      collection_method: "use dedicated submeters where available; otherwise apply the declared shared-electricity allocation rule"
+      unit: "kWh or MJ"
+      frequency: "continuous or shift readings, aggregated monthly or by lot"
+      temporal_coverage: "same period as product and material records"
+      site_scope: "all equipment and auxiliaries inside the declared foreground boundary"
+      aggregation_rule: "subtract excluded loads, allocate documented shared loads, convert kWh to MJ, and normalize to conforming output mass"
+      quality_evidence: "meter calibration or utility invoice reconciliation; allocation worksheet; downtime log"
+    - protocol_id: cp_thermal_fuel_and_emissions
+      process_id: "card_manufacturing"
+      flow_role: "gaseous natural gas and direct fossil carbon dioxide"
+      record_type: "fuel meter, invoice, supplier composition, combustion log, stack measurement or carbon-balance worksheet"
+      raw_fields: "meter readings; reference temperature and pressure; product run time; allocation driver; carbon content; oxidation basis; captured carbon; measurement method"
+      collection_method: "use dedicated fuel metering where available; otherwise allocate by documented burner operating time and load; calculate carbon dioxide only from attributable onsite fuel or use representative stack measurement"
+      unit: "m3 natural gas and kg carbon dioxide"
+      frequency: "continuous or shift records, aggregated monthly or by lot"
+      temporal_coverage: "same period as product and material records"
+      site_scope: "onsite drying, curing and lamination burners inside the declared boundary"
+      aggregation_rule: "normalize fuel and direct carbon dioxide separately; exclude upstream supply and electricity-generation emissions"
+      quality_evidence: "meter calibration or invoice reconciliation; supplier gas specification; burner log; stack report or carbon-balance worksheet"
+    - protocol_id: cp_product_and_scrap
+      process_id: "card_manufacturing"
+      flow_role: "conforming card output and PVC scrap"
+      record_type: "production count, sample mass, finished-goods receipt, rejection, and waste-transfer records"
+      raw_fields: "accepted count; sampled card mass; accepted output mass; scrap mass; return-to-process mass; treatment route; date; product order"
+      collection_method: "weigh finished output and scrap; where output is counted, apply the lot-specific count-to-mass rule"
+      unit: "kg and item"
+      frequency: "each lot or shift, aggregated over the reporting period"
+      temporal_coverage: "same period as material and electricity records"
+      site_scope: "every line making the declared product"
+      aggregation_rule: "sum accepted output and externally transferred scrap separately; exclude internal recirculation from waste"
+      quality_evidence: "scale calibration; acceptance report; sampling record; waste transfer document; mass-balance investigation"
+  calculation_rules:
+    - id: calc_material_normalization
+      applies_to: "all mass-based product, waste and direct-emission rows"
+      rule: "normalized amount = period mass for the row / conforming finished-card mass for the same period"
+      inputs:
+        - "reconciled row mass"
+        - "accepted output mass"
+      output: "kg per kg reference product"
+      source_ids: []
+    - id: calc_electricity_normalization
+      applies_to: "electricity"
+      rule: "normalized electricity = attributable electricity in MJ / conforming finished-card mass in kg; multiply kWh by 3.6 before normalization"
+      inputs:
+        - "meter readings"
+        - "excluded loads"
+        - "allocation driver"
+        - "output mass"
+      output: "MJ per kg reference product"
+      source_ids: []
+    - id: calc_natural_gas_normalization
+      applies_to: "natural_gas"
+      rule: "normalized natural gas = attributable gas volume at declared reference conditions / conforming finished-card mass"
+      inputs:
+        - "reconciled gas volume"
+        - "reference temperature and pressure"
+        - "allocation driver"
+        - "output mass"
+      output: "m3 per kg reference product"
+      source_ids: []
+    - id: calc_count_to_mass
+      applies_to: "finished_magnetic_stripe_cards"
+      rule: "output mass = accepted card count × lot-representative mean mass per accepted card"
+      inputs:
+        - "accepted count"
+        - "sampled accepted-card masses"
+      output: "kg conforming output"
+      source_ids: []
+    - id: calc_nonfuel_material_balance
+      applies_to: "all non-fuel process materials and their outputs"
+      rule: "unexplained balance = net PVC sheet + net stripe foil + net ink + net thermo-print-compatible gloss oil + net protective gloss oil + net isopropanol + net process water − conforming card output − PVC scrap − waste ink − spent isopropanol solution − cleaning wastewater − direct isopropanol to air − every other separately named non-fuel material output − net increase in work in progress; use the same period and kg basis, and do not subtract a constituent again after it is included in a mixed-waste mass"
+      inputs:
+        - "reconciled non-fuel input masses"
+        - "output and waste masses"
+        - "named direct material emissions"
+        - "composition records"
+        - "work-in-progress change"
+      output: "dimensionally complete disclosed reconciliation result"
+      source_ids: []
+    - id: calc_isopropanol_balance
+      applies_to: "isopropanol, spent_isopropanol_cleaning_solution, printing_cleaning_wastewater, isopropanol_to_air"
+      rule: "unexplained isopropanol = net isopropanol input − recovered isopropanol − isopropanol in spent solution − isopropanol in wastewater − isopropanol retained in product or work in progress − destroyed isopropanol − isopropanol released to air; use constituent mass, not total mixed-stream mass"
+      inputs:
+        - "isopropanol issues and returns"
+        - "formulation or analysis"
+        - recovery
+        - "waste-stream composition"
+        - "control destruction"
+        - "direct measurement"
+      output: "kg isopropanol reconciliation"
+      source_ids:
+        - md-comar-26-11-19-18
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product"
+      requirement: "Retain the product specification and acceptance record linking the reported product to a physical magnetic-stripe card and disclosing any integrated circuit, substrate, dimensions, stripe specification, and personalization state."
+      evidence: "approved specification; acceptance report; product label; classification review when combined technologies are present"
+    - id: dq_temporal
+      applies_to: "all foreground rows"
+      requirement: "Use the same representative period for material, energy, conforming output, and scrap records; explain shutdowns, startup lots, abnormal rejects, and any period shorter than 12 months."
+      evidence: "period reconciliation and exception log"
+    - id: dq_completeness
+      applies_to: "foreground inventory"
+      requirement: "Cover all production lines, shifts, rework loops, quality rejects, printing and coating formulations, cleanup events, direct releases, liquid and solid wastes, thermal-fuel use and auxiliary loads inside the declared boundary; quantify excluded operations and justify any data gap."
+      evidence: "line coverage matrix; meter map; material and solvent reconciliation; cleanup and waste logs; exclusion log"
+    - id: dq_measurement
+      applies_to: "mass and energy records"
+      requirement: "Use calibrated or invoice-reconciled instruments and retain unit conversions, sampling records, and allocation workpapers."
+      evidence: "calibration certificate; invoice reconciliation; sampling record; calculation file"
+    - id: dq_upstream
+      applies_to: "background datasets"
+      requirement: "Match material form, recycled content, geography, technology, and reference period as closely as available; identify every proxy and sensitivity-critical mismatch."
+      evidence: "dataset-selection log and supplier declarations"
+validation_rules:
+  - rule_id: validate_reference_output
+    applies_to: "reference flow"
+    rule: "Confirm that finished_magnetic_stripe_cards equals 1 kg after normalization and uses the declared factory-gate, unpackaged product state."
+    source_ids: []
+  - rule_id: validate_atomic_inventory
+    applies_to: "inventory rows"
+    rule: "Confirm that each row denotes one concrete product, waste, or energy exchange; reject umbrella utility, material, packaging, waste, or emission labels."
+    source_ids: []
+  - rule_id: validate_uuid_identity
+    applies_to: "UUID-bearing rows"
+    rule: "Confirm flow type, classification, flow property, unit group, product state, and the row-specific use against the public state-100 TianGong record; leave unresolved identities blank rather than substituting proxies."
+    source_ids: []
+  - rule_id: validate_period_alignment
+    applies_to: "foreground records"
+    rule: "Confirm that material, solvent, water, fuel, electricity, product, waste and direct-emission quantities use the same site, lines, product scope, and accounting period."
+    source_ids: []
+  - rule_id: validate_mass_reconciliation
+    applies_to: "non-fuel process materials and outputs"
+    rule: "Perform the declared dimensionally complete non-fuel material balance and constituent isopropanol balance; disclose unresolved imbalance, composition assumptions, work-in-progress changes, recovery and internal recirculation."
+    source_ids: []
+  - rule_id: validate_conditional_routes
+    applies_to: "printing cleanup and thermal supply"
+    rule: "Require positive records or an explicit not-applicable justification for every conditional row. A solvent-free claim must be supported by formulation and issue records; a no-cleanup claim by operating records; and a no-natural-gas claim by energy-supply and burner records."
+    source_ids:
+      - md-comar-26-11-19-18
+  - rule_id: validate_boundary_disclosure
+    applies_to: "dataset metadata"
+    rule: "Confirm disclosure of substrate, stripe specification, printing and curing route, personalization state, geography, period, scrap treatment, combined integrated-circuit features, and shipment-packaging exclusion."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for magnetic-stripe cards"
+  downstream_use: "secondary_dataset; background_dataset after independent review and publication readiness checks"
+  allowed_use: "Cradle-to-gate product footprints and lifecycle models requiring a declared magnetic-stripe-card supply, when substrate, technology, geography, period, personalization state, and boundary are compatible"
+  excluded_use: "Smart cards or integrated-circuit-card proxies; other magnetic media; card use or end-of-life without added downstream processes; packaged delivery without separately modelled packaging"
+  required_metadata: "canonical PCR id; CPC reference; product specification; substrate and recycled content; dimensions and mean mass; stripe specification; blank/encoded/embossed/personalized state; print and curing technology; site geography; reference period; factory-gate and packaging boundary; allocation method; background dataset choices"
+  required_quality_disclosure: "metering and mass-measurement coverage; count-to-mass sampling; material and solid-output reconciliation; shared-electricity allocation; data gaps and proxies; scrap contamination and treatment; unresolved UUID and range-evidence needs"
+  update_trigger: "Change in substrate, stripe construction, printing or curing technology, personalization scope, site or electricity supply, recycled content, allocation method, product specification, or a material foreground intensity; otherwise review at least every three years"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved and original text verified 2026-09-12)"
+    used_for: "CPC 47910 product identity and separation from CPC 47920 smart cards and CPC 47530 other unrecorded magnetic media"
+  - id: "gbt-17554-2-2015"
+    type: "standard"
+    reference: "GB/T 17554.2-2015, 识别卡 测试方法 第2部分：带磁条的卡, official national-standard record, https://std.samr.gov.cn/gb/search/gbDetailed?id=71F772D80650D3A7E05397BE0A0AB82A (official record text verified 2026-09-12)"
+    used_for: "Professional Chinese terminology for cards with magnetic stripes and identification of the applicable card-test standard family"
+  - id: "watchdata-cn103699921a"
+    type: "literature"
+    reference: "Beijing WatchData System Co Ltd, CN103699921A, Invisible magnetic stripe card thermo-printing process, published 2 April 2014, https://patents.google.com/patent/CN103699921A/en (description paragraphs 0010-0018 compared with the original patent-page text on 2026-09-12)"
+    used_for: "Manufacturer-origin representative sequence of magnetic-stripe film pre-lamination, screen and offset printing, separate gloss-oil applications, sheet assembly and lamination, card punching, and conditional hot printing or embossing; no quantitative intensity adopted"
+  - id: "md-comar-26-11-19-18"
+    type: "standard"
+    reference: "Maryland Department of the Environment, COMAR 26.11.19.18, Control of Volatile Organic Compound Emissions from Screen Printing and Digital Imaging, https://regs.maryland.gov/us/md/exec/comar/26.11.19.18 (official regulation sections A(11), E and G compared with original text on 2026-09-12)"
+    used_for: "Plastic-card manufacturing boundary for screen and lithographic printing, drying ovens, adhesive application and lamination; conditional collection of inks, coatings, cleanup materials, isopropanol and direct VOC releases; regulatory limits are not empirical inventory ranges"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:ba8263a45e28f012b553953f275f0991df3848476e915aa5a6acc9923f715ad6"
+  generated_content_sha256: "sha256:a36ab78f49fc99d305585c6e766b745422dba534f8e9a9503cbc6e1161763faf"

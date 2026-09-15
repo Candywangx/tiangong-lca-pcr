@@ -1,10 +1,714 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41545"
-  title: "Zinc bars, rods, profiles and wire; zinc plates, sheets, strip and foil"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.zinc-bars-rods-profiles-and-wire-zinc-plates-sheets-strip-and-foil"
+  classification_refs: "CPC 3.0: 41545, exact mapping context"
+  covered_products: "Uncoated zinc or zinc-alloy bars, rods, profiles, wire, plates, sheets, strip and foil supplied as semi-finished metal products"
+  excluded_products: "Unwrought zinc; zinc dust, powders and flakes; zinc tubes, pipes and fittings; zinc waste and scrap; zinc-coated products whose substrate is another material; finished zinc articles"
+  representative_product: "One declared, specification-conforming zinc or zinc-alloy semi-finished product at the fabrication-facility gate"
+  production_route: "Melting and casting followed by the declared combination of rolling, extrusion, drawing, thermal conditioning, slitting and cutting; direct forming of purchased intermediate stock is allowed when declared"
+  market_state: "Bare semi-finished metal in the declared form, alloy grade, dimensions, temper and surface condition; packaging excluded from reference mass"
+functional_unit:
+  what: "Provision of a declared zinc or zinc-alloy semi-finished product meeting the specified form, chemistry, dimensions, temper and surface condition"
+  how_much: "1 kg net mass of conforming product, excluding packaging"
+  how_well: "Meets the declared product specification and quality acceptance criteria with nonconforming output excluded from product mass"
+  how_long_or_cycle: "One production batch or reporting-period share delivered at the fabrication-facility gate; no use duration is assigned"
+  reference_flow_link: "out_reference_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "Foreground system"
+      rule: "Include operations from receipt of purchased zinc-bearing and alloying inputs through conforming bare semi-product at the declared fabrication-facility gate."
+      source_ids:
+        - iza-zinc-sheet-environmental-profile
+    - rule_id: boundary_route_selection
+      applies_to: "Process inclusion"
+      rule: "Include only the casting, rolling, extrusion, drawing, thermal-conditioning, slitting and cutting operations actually used for the declared product route; disclose purchased intermediate stock and omitted operations."
+      source_ids:
+        - iza-zinc-sheet-environmental-profile
+        - nist-circular-395-zinc-and-alloys
+        - unido-techmart-91-zinc-wire
+    - rule_id: boundary_upstream_inputs
+      applies_to: "Purchased products and energy"
+      rule: "Model primary zinc production, purchased recycled material preparation, electricity, natural gas, water and alloying-material production with upstream datasets rather than inside the foreground fabrication process."
+      source_ids:
+        - iza-zinc-sheet-environmental-profile
+    - rule_id: boundary_internal_recycling
+      applies_to: "Internal zinc returns"
+      rule: "Track internal scrap recirculation as an internal transfer and do not count it as both an external input and an exported waste."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased unwrought zinc, accepted external zinc scrap, or purchased cast/formed zinc intermediate at the facility receiving point, with form, composition, supplier and upstream dataset declared"
+  starting_condition_role: "Foreground fabrication input whose upstream production is represented by a separate supplier-specific or representative dataset"
+  product_classification_scope: "Fabricated semi-finished zinc and zinc-alloy bars, rods, profiles, wire, plates, sheets, strip and foil corresponding to CPC 3.0 code 41545"
+  recursive_input_rule: "When a purchased input is itself within this product category, record it once as a purchased same-category input with its own upstream dataset and do not recursively reproduce its fabrication inventory inside the receiving process"
+  upstream_dataset_requirement: "Use a geographically, technologically, temporally and compositionally representative upstream dataset for every purchased metal, alloying addition, fuel, electricity and water input"
+  disclosure: "Declare product form, alloy, input starting form, purchased-intermediate share, recycled-content accounting, included route steps, internal recycling, allocation, factory-gate location and reporting period"
+reference_flow_definition:
+  reference_amount: "1 kg net conforming product"
+  product_flow_ref:
+    name: "Zinc bars, rods, profiles and wire, zinc plates, sheets, strip and foil"
+    uuid: "e638d7e2-b3f5-4c1f-a5b2-da12d75d89d2"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Product form"
+    - "zinc or zinc-alloy designation and composition"
+    - "dimensions including thickness or diameter"
+    - "temper or mechanical condition"
+    - "surface condition"
+    - "production route"
+    - "facility geography"
+    - technology
+    - "recycled-content accounting method"
+    - "factory-gate definition"
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "Reference product and mass-normalized inventory"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use net dry mass of conforming bare semi-product. Exclude packaging, pallets, rejected output and internal recirculation from the reference amount."
+  - id: zinc_feed_property
+    applies_to: "Special High Grade zinc input"
+    required_property_ref:
+      name: "Zinc content"
+      uuid: "7c367337-54f2-4fe9-8ee3-3f42681b0792"
+    required_unit: "kg Zn"
+    rule: "Record both received gross mass and supplier-certified zinc fraction; convert to kg zinc content without treating alloying elements as zinc."
+  - id: fuel_energy_conversion
+    applies_to: "Natural gas inputs"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Preserve metered gas volume and reference conditions, then convert to MJ using the facility or supplier net calorific value for the reporting period."
+  - id: water_consumption
+    applies_to: "Process water input"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record net make-up or consumed process water crossing the boundary; do not count recirculated internal volume repeatedly. Document any volume-to-mass density conversion."
+process_map:
+  - id: melting_casting
+    name: "Feed preparation, melting, alloying and casting"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the facility melts zinc-bearing feed or produces cast stock; omit only when purchased intermediate stock enters directly at forming"
+    role: "Foreground stock preparation"
+    quantitative_reference: "kg cast zinc stock transferred to forming"
+  - id: forming_finishing
+    name: "Rolling, extrusion, drawing and dimensional finishing"
+    inclusion: "required"
+    inclusion_condition: "Select and declare the operations actually used for the product form; do not average unrelated routes without separate product shares"
+    role: "Foreground semi-product manufacture"
+    quantitative_reference: "1 kg net conforming reference product"
+process_inventory:
+  - id: melting_casting
+    label: "Feed preparation, melting, alloying and casting"
+    inputs:
+      product:
+        - row_id: in_shg_zinc
+          role: "Special High Grade zinc metal"
+          name: "Special High Grade (SHG) zinc metal"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4719799f-8e90-4dce-83f6-55d932702228"
+          property_unit: "Zinc content / kg Zn"
+          description: "Specification-conforming unwrought zinc metal is recorded when it is purchased and melted as the principal primary zinc feed."
+          amount:
+            expression: "Supplier-certified zinc content in accepted feed charged to the declared product batch"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - iza-zinc-sheet-environmental-profile
+            ranges: []
+        - row_id: in_copper_alloying_addition
+          role: "Copper alloying addition"
+          name: "Copper metal alloying addition"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Copper metal or a declared copper-bearing master alloy is recorded only when the product recipe requires copper. The selected exchange shall be one supplier product with its composition stated."
+          amount:
+            expression: "Accepted copper-bearing material charged, with elemental copper content retained separately"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - iza-zinc-sheet-environmental-profile
+            ranges: []
+        - row_id: in_titanium_alloying_addition
+          role: "Titanium alloying addition"
+          name: "Titanium metal alloying addition"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Titanium metal or a declared titanium-bearing master alloy is recorded only when the product recipe requires titanium. The selected exchange shall be one supplier product with its composition stated."
+          amount:
+            expression: "Accepted titanium-bearing material charged, with elemental titanium content retained separately"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - iza-zinc-sheet-environmental-profile
+            ranges: []
+        - row_id: in_aluminium_alloying_addition
+          role: "Aluminium alloying addition"
+          name: "Aluminium metal alloying addition"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Aluminium metal or a declared aluminium-bearing master alloy is recorded only when the product recipe requires aluminium. The selected exchange shall be one supplier product with its composition stated."
+          amount:
+            expression: "Accepted aluminium-bearing material charged, with elemental aluminium content retained separately"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - iza-zinc-sheet-environmental-profile
+            ranges: []
+        - row_id: in_electricity_melting
+          role: "Electricity for melting and casting"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Delivered electricity used by melting, holding, casting and associated local controls is recorded from process or defensibly allocated facility meters."
+          amount:
+            expression: "Metered delivered electricity assigned to melting and casting"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg cast zinc stock output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_meters
+              source_ids:
+                - iza-zinc-sheet-environmental-profile
+            ranges: []
+        - row_id: in_natural_gas_melting
+          role: "Natural gas for melting and casting"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Gaseous natural gas combusted for melting, holding or casting is recorded separately from electricity."
+          amount:
+            expression: "Metered gas volume at documented reference conditions assigned to melting and casting"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg cast zinc stock output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_meters
+              source_ids:
+                - iza-zinc-sheet-environmental-profile
+            ranges: []
+      waste:
+        - row_id: in_recycled_zinc_scrap
+          role: "Accepted recycled zinc scrap input"
+          name: "zinc scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "b1629e09-83ea-4027-aab4-3a02406fac02"
+          property_unit: "Mass / kg"
+          description: "Externally supplied zinc scrap entering the melting process as waste is recorded separately from internally recirculated returns."
+          amount:
+            expression: "Weighed accepted external zinc scrap charged to the batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - iza-zinc-sheet-environmental-profile
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: out_cast_zinc_stock
+          role: "Internal cast zinc stock"
+          name: "Cast zinc intermediate stock"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Cast slab, billet, rod or strip transferred to forming is an internal product flow. Its form and alloy shall match the downstream route."
+          amount:
+            expression: "Weighed or production-system recorded cast stock released to forming"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg cast zinc stock output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_internal_stock_transfer
+              source_ids:
+                - iza-zinc-sheet-environmental-profile
+                - unido-techmart-91-zinc-wire
+            ranges: []
+      waste:
+        - row_id: out_zinc_dross
+          role: "Zinc dross from melting"
+          name: "Zinc dross from melting"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Zinc-bearing dross removed from melting or holding equipment is recorded as a separate waste output and is not combined with clean offcuts."
+          amount:
+            expression: "Weighed zinc dross leaving the process, with moisture and zinc content documented"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg cast zinc stock output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - iza-zinc-sheet-environmental-profile
+            ranges: []
+      elementary:
+        - row_id: out_fossil_carbon_dioxide
+          role: "Fossil carbon dioxide from onsite natural-gas combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Direct fossil carbon dioxide is recorded only for fuel combusted inside the foreground boundary; upstream electricity emissions are excluded from this row."
+          amount:
+            expression: "Facility-recorded direct fossil carbon dioxide assigned to melting and casting"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg cast zinc stock output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - iza-zinc-sheet-environmental-profile
+            ranges: []
+  - id: forming_finishing
+    label: "Rolling, extrusion, drawing and dimensional finishing"
+    inputs:
+      product:
+        - row_id: in_cast_zinc_stock
+          role: "Internal cast zinc stock"
+          name: "Cast zinc intermediate stock"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The internal cast stock from melting_casting is recorded once on entry to the declared rolling, extrusion or drawing route. Purchased intermediate stock is recorded here instead and identified as purchased."
+          amount:
+            expression: "Weighed or production-system recorded stock accepted into forming"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_internal_stock_transfer
+              source_ids:
+                - iza-zinc-sheet-environmental-profile
+                - nist-circular-395-zinc-and-alloys
+                - unido-techmart-91-zinc-wire
+            ranges: []
+        - row_id: in_electricity_forming
+          role: "Electricity for forming and finishing"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Delivered electricity for the selected rolling, extrusion, drawing, cooling, slitting and cutting equipment is recorded from route-specific or defensibly allocated meters."
+          amount:
+            expression: "Metered delivered electricity assigned to the declared forming and finishing route"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_meters
+              source_ids:
+                - iza-zinc-sheet-environmental-profile
+                - nist-circular-395-zinc-and-alloys
+                - unido-techmart-91-zinc-wire
+            ranges: []
+        - row_id: in_natural_gas_forming
+          role: "Natural gas for thermal conditioning"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Gaseous natural gas used for route-specific stock heating or thermal conditioning is recorded when combusted inside the forming boundary."
+          amount:
+            expression: "Metered gas volume at documented reference conditions assigned to the declared forming route"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_meters
+              source_ids:
+                - nist-circular-395-zinc-and-alloys
+            ranges: []
+        - row_id: in_process_water
+          role: "Process water make-up"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Process-water make-up is recorded when water is consumed by route-specific cooling or conditioning. Recirculated internal water is not counted repeatedly."
+          amount:
+            expression: "Metered make-up water crossing the forming-process boundary"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_water
+              source_ids:
+                - iza-zinc-sheet-environmental-profile
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: out_reference_product
+          role: "Conforming zinc semi-finished product"
+          name: "Zinc bars, rods, profiles and wire, zinc plates, sheets, strip and foil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e638d7e2-b3f5-4c1f-a5b2-da12d75d89d2"
+          property_unit: "Mass / kg"
+          description: "The net accepted output is the selected reference product after the declared forming and finishing operations."
+          amount:
+            expression: "1 kg net mass of conforming bare semi-product"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "reference flow amount"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: out_zinc_scrap
+          role: "Zinc offcuts and trimming scrap"
+          name: "zinc scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "b1629e09-83ea-4027-aab4-3a02406fac02"
+          property_unit: "Mass / kg"
+          description: "Clean zinc or zinc-alloy offcuts and trimming scrap leaving the foreground system are recorded separately from zinc dross and internal recirculation."
+          amount:
+            expression: "Weighed zinc scrap exported from the facility, net of internally recirculated returns"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - iza-zinc-sheet-environmental-profile
+            ranges: []
+      elementary:
+        - row_id: out_fossil_carbon_dioxide_forming
+          role: "Fossil carbon dioxide from forming-stage natural-gas combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Direct fossil carbon dioxide is recorded when natural gas is combusted for stock heating or thermal conditioning in the forming process."
+          amount:
+            expression: "Facility-recorded direct fossil carbon dioxide assigned to forming and thermal conditioning"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - nist-circular-395-zinc-and-alloys
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide_routes
+    applies_to: "Multiple product forms or routes"
+    rule: "Prefer subdivision by production line, batch, route and product form. Do not combine rolling, extrusion and drawing into an unlabelled average."
+    source_ids: []
+  - rule_id: allocation_internal_scrap
+    applies_to: "Internally recirculated zinc"
+    rule: "Treat internal returns as transfers inside the foreground system: retain their mass in the zinc balance but assign no new upstream zinc burden and no exported-waste credit."
+    source_ids: []
+  - rule_id: allocation_exported_scrap
+    applies_to: "Zinc scrap and dross leaving the boundary"
+    rule: "Report physical output and destination separately. Apply substitution, avoided burden or end-of-life credit only when required by the declared LCA method, and disclose the method, quality loss and substituted product."
+    source_ids: []
+  - rule_id: allocation_shared_energy
+    applies_to: "Shared meters and services"
+    rule: "Allocate shared electricity, natural gas and water using measured sub-metering where available; otherwise use a documented causal driver such as equipment operating time, throughput and rated load, and test materiality."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_receipts
+      process_id: "melting_casting"
+      flow_role: "Purchased SHG zinc, external zinc scrap and alloying additions"
+      record_type: "Weighbridge, batch scale, goods receipt, recipe and certificate record"
+      raw_fields: "material identity; supplier; received mass; accepted mass; charge mass; zinc, copper, titanium and aluminium fractions; moisture; contamination; batch id"
+      collection_method: "Reconcile accepted receipts and batch charges to inventory movement and supplier certificates"
+      unit: "kg; mass fraction"
+      frequency: "Each receipt and batch"
+      temporal_coverage: "Complete reporting period with opening and closing stock"
+      site_scope: "All zinc-semi-product lines inside the facility boundary"
+      aggregation_rule: "Sum accepted and charged quantities by material and product batch; calculate elemental content without merging supplier products"
+      quality_evidence: "Scale calibration; certificates of analysis; goods receipts; stock reconciliation"
+    - protocol_id: cp_energy_meters
+      process_id: "melting_casting_forming_finishing"
+      flow_role: "Electricity and natural gas"
+      record_type: "Revenue meter, process sub-meter and fuel invoice"
+      raw_fields: "meter id; opening and closing reading; interval use; gas reference conditions; net calorific value; process assignment; operating hours"
+      collection_method: "Prefer process sub-meters; reconcile to facility invoices and allocate residual shared use causally"
+      unit: "MJ; m3"
+      frequency: "Continuous or monthly"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "All included equipment and shared services"
+      aggregation_rule: "Sum by process and route; convert gas to MJ separately; normalize after reconciliation"
+      quality_evidence: "Meter calibration; invoices; allocation workbook; energy balance"
+    - protocol_id: cp_internal_stock_transfer
+      process_id: "melting_casting_forming_finishing"
+      flow_role: "Internal cast-stock output and input"
+      record_type: "Production execution and calibrated scale record"
+      raw_fields: "batch id; alloy; stock form; transfer mass; timestamp; origin process; receiving process; opening and closing work in progress"
+      collection_method: "Match each released cast-stock record to a receiving forming record and reconcile work-in-progress changes"
+      unit: "kg"
+      frequency: "Each transfer"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "All included cast and forming lines"
+      aggregation_rule: "Sum matched transfers by batch; output minus input shall equal documented work-in-progress change and measured loss"
+      quality_evidence: "Scale calibration; batch genealogy; work-in-progress reconciliation"
+    - protocol_id: cp_waste_records
+      process_id: "melting_casting_forming_finishing"
+      flow_role: "Zinc dross and exported zinc scrap"
+      record_type: "Calibrated scale, waste manifest and composition test"
+      raw_fields: "waste identity; batch; gross and tare mass; net mass; moisture; zinc content; contamination; destination; internal or external disposition"
+      collection_method: "Weigh each outgoing stream and keep dross, clean scrap and internal returns separate"
+      unit: "kg"
+      frequency: "Each movement"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "All included lines and storage points"
+      aggregation_rule: "Sum net dry mass by waste identity, alloy and destination; exclude internal returns from exported waste"
+      quality_evidence: "Scale calibration; manifests; laboratory result; receiver record"
+    - protocol_id: cp_direct_emissions
+      process_id: "melting_casting_forming_finishing"
+      flow_role: "Direct fossil carbon dioxide"
+      record_type: "Facility emissions register supported by monitoring or accepted fuel-carbon balance"
+      raw_fields: "source id; fuel use; carbon content or emission factor; oxidation basis; measured emissions; method; period"
+      collection_method: "Use regulated facility method or direct monitoring and assign only onsite-combustion emissions to the applicable foreground process"
+      unit: "kg CO2"
+      frequency: "Monthly or regulatory reporting interval"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "All included onsite combustion sources"
+      aggregation_rule: "Sum direct fossil CO2 by source and allocate shared sources causally"
+      quality_evidence: "Monitoring QA record; method approval; fuel reconciliation"
+    - protocol_id: cp_process_water
+      process_id: "forming_finishing"
+      flow_role: "Process-water make-up"
+      record_type: "Calibrated make-up meter and water balance"
+      raw_fields: "meter id; intake; discharge; recirculation; blowdown; stock change; density; route assignment"
+      collection_method: "Meter water crossing the process boundary and reconcile the recirculating system balance"
+      unit: "kg; m3"
+      frequency: "Continuous or monthly"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "Included cooling and conditioning systems"
+      aggregation_rule: "Net consumption equals intake minus returned discharge adjusted for stock change; do not sum internal recirculation"
+      quality_evidence: "Meter calibration; water balance; discharge record"
+    - protocol_id: cp_finished_product
+      process_id: "forming_finishing"
+      flow_role: "Conforming reference product"
+      record_type: "Calibrated product scale, production and quality release records"
+      raw_fields: "product id; form; alloy; dimensions; temper; surface; gross mass; packaging tare; rejected mass; accepted net mass; batch id"
+      collection_method: "Weigh accepted bare product or subtract verified packaging tare and reconcile to quality release"
+      unit: "kg"
+      frequency: "Each batch"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "All included finishing lines"
+      aggregation_rule: "Sum accepted net product mass by declared product; normalize all inventory to 1 kg"
+      quality_evidence: "Scale calibration; quality release; tare check; production reconciliation"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Every inventory amount"
+      rule: "Normalized amount = reconciled reporting-period amount / net conforming product mass"
+      inputs:
+        - "Process or facility amount"
+        - "accepted net product mass from cp_finished_product"
+      output: "Amount per 1 kg reference product"
+      source_ids: []
+    - id: calc_zinc_content
+      applies_to: "in_shg_zinc"
+      rule: "Zinc content = accepted dry feed mass × supplier-certified zinc mass fraction"
+      inputs:
+        - "Accepted mass"
+        - moisture
+        - "zinc fraction"
+      output: "kg Zn input"
+      source_ids: []
+    - id: calc_natural_gas_energy
+      applies_to: "Natural gas rows"
+      rule: "Energy = corrected gas volume × reporting-period net calorific value; preserve the original m3 record and reference conditions"
+      inputs:
+        - "Metered gas volume"
+        - "pressure and temperature basis"
+        - "net calorific value"
+      output: "MJ and m3 natural gas by process"
+      source_ids: []
+    - id: calc_zinc_mass_balance
+      applies_to: "Zinc-bearing inputs and outputs"
+      rule: "Opening stock + zinc in purchased feed + zinc in accepted external scrap = zinc in conforming product + zinc in exported scrap + zinc in dross + closing stock + quantified loss"
+      inputs:
+        - "Zinc content of feed"
+        - product
+        - "wastes and stocks"
+      output: "Reconciled zinc balance and unexplained difference"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product"
+      requirement: "Declare one product form, alloy designation and composition, dimensions, temper, surface condition and applicable specification; exclude nonconforming and packaged mass"
+      evidence: "Product specification, certificate and quality release"
+    - id: dq_route_identity
+      applies_to: "Process map"
+      requirement: "Identify whether feed is melted onsite or purchased as intermediate and identify every included rolling, extrusion, drawing, thermal-conditioning, slitting and cutting step"
+      evidence: "Process flow diagram, batch genealogy and equipment list"
+    - id: dq_mass_balance
+      applies_to: "Zinc-bearing flows"
+      requirement: "Reconcile zinc-bearing inputs, outputs, internal returns and work-in-progress; investigate and disclose material unexplained differences"
+      evidence: "calc_zinc_mass_balance, stock records and reconciliation"
+    - id: dq_energy_water
+      applies_to: "Electricity, natural gas and water"
+      requirement: "Reconcile process quantities to facility totals and document meter coverage, shared-service allocation, gas reference conditions, calorific value and water recirculation treatment"
+      evidence: "Meter register, invoices, calibration and allocation workbook"
+    - id: dq_temporal_geography
+      applies_to: "All foreground records"
+      requirement: "Use one complete representative reporting period, identify abnormal shutdowns or campaigns, and state facility geography and technology"
+      evidence: "Reporting-period register and representativeness review"
+    - id: dq_completeness
+      applies_to: "All boundary exchanges"
+      requirement: "Compare purchase, production, waste, emissions and discharge registers against the inventory; disclose excluded flows and quantified cut-offs"
+      evidence: "Register-to-inventory checklist and cut-off statement"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "Reference product"
+    rule: "Confirm that exactly 1 kg net conforming bare product is the reference output and that every required qualifier is present."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_route_boundary
+    applies_to: "Process map and inventory"
+    rule: "Confirm that included processes match the declared form and route, purchased intermediates are disclosed, and no omitted onsite operation is hidden in an upstream dataset."
+    source_ids:
+      - iza-zinc-sheet-environmental-profile
+      - nist-circular-395-zinc-and-alloys
+      - unido-techmart-91-zinc-wire
+  - rule_id: validate_atomic_flows
+    applies_to: "Process inventory"
+    rule: "Confirm that each row is one physical, chemical, waste, energy or elementary exchange and that internal transfers, dross and clean scrap are not combined."
+    source_ids: []
+  - rule_id: validate_zinc_balance
+    applies_to: "Zinc-bearing flows"
+    rule: "Run calc_zinc_mass_balance; any unexplained difference above the facility's documented measurement uncertainty requires correction or explicit disclosure."
+    source_ids: []
+  - rule_id: validate_energy_emissions
+    applies_to: "Energy and direct emissions"
+    rule: "Reconcile electricity and natural gas to meters and invoices; ensure direct fossil carbon dioxide includes only onsite combustion and excludes upstream electricity emissions."
+    source_ids:
+      - iza-zinc-sheet-environmental-profile
+  - rule_id: validate_allocation
+    applies_to: "Shared operations and exported materials"
+    rule: "Confirm subdivision was attempted first and that every remaining causal allocation or external recycling credit is documented and reproducible."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground fabrication dataset for one declared zinc or zinc-alloy semi-finished product and route"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product LCAs and lifecycle models requiring a factory-gate dataset for a compositionally, technologically and geographically representative zinc semi-product"
+  excluded_use: "Unqualified substitution among product forms, alloys or routes; representation of unwrought zinc production, zinc powder, coated substrates, finished articles, use or end-of-life; comparative assertions without full study review"
+  required_metadata: "PCR id and version; product form; alloy and composition; dimensions; temper; surface condition; specification; feed starting form; route; facility geography and technology; reporting period; recycled-content method; upstream datasets; allocation; cut-offs; data quality"
+  required_quality_disclosure: "Meter and scale coverage; supplier-certificate coverage; route subdivision; shared-service allocation; zinc mass-balance result; internal versus exported recycling; temporal, geographical and technological representativeness; unresolved identities; exclusions and uncertainty"
+  update_trigger: "Change in product form or alloy, feed starting state, furnace or forming route, facility or grid geography, fuel, recycled-content method, allocation method, upstream dataset, reporting period, or a material shift in zinc yield, energy, water, waste or direct emissions"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "dataset"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Official CPC 41545 classification identity and distinction from adjacent zinc products"
+  - id: "iza-zinc-sheet-environmental-profile"
+    type: "literature"
+    reference: "International Zinc Association, *Zinc Sheet Environmental Profile*. https://beta.zinc.org/wp-content/uploads/sites/30/2015/04/pdf_Zinc_Sheet_environ_profile.pdf"
+    used_for: "Factory-gate zinc-sheet boundary; melting, alloying, casting, rolling and slitting sequence; electricity, natural gas, alloying additions and scrap relevance"
+  - id: "nist-circular-395-zinc-and-alloys"
+    type: "official_guidance"
+    reference: "U.S. Bureau of Standards, *Circular No. 395: Zinc and Its Alloys*. https://www.govinfo.gov/content/pkg/GOVPUB-C13-0c7e0740debaa74ea7b39bf1d7dfed55/pdf/GOVPUB-C13-0c7e0740debaa74ea7b39bf1d7dfed55.pdf"
+    used_for: "Wrought-zinc routes including rolling, extrusion and drawing; sheet and strip forming distinctions"
+  - id: "unido-techmart-91-zinc-wire"
+    type: "official_guidance"
+    reference: "United Nations Industrial Development Organization, *TECHMART 91: A Catalogue of Technology Opportunities for Manufacturing Industry*. https://downloads.unido.org/ot/48/20/4820628/15001-20000_19293.pdf"
+    used_for: "Zinc-wire route from liquid zinc through continuous casting and drawing"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:13c8c8886d267fa33237d423faecb38a1c0c3b990065e499c0c7af05e14a0be3"
+  generated_content_sha256: "sha256:1d46f214737473ed203b8c987fe28c5307194cd1c904cc92363e123ea107c19e"

@@ -1,10 +1,1043 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "42310"
-  title: "Nuclear reactors"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.nuclear-reactors"
+  classification_refs: "CPC 3.0: 42310, Nuclear reactors"
+  covered_products: "Complete unloaded nuclear reactors handed over as fabricated equipment, including the declared pressure boundary, reactor internals/core supports, and installed reactivity-control drive equipment"
+  excluded_products: "Nuclear fuel and fuel elements; separately supplied reactor parts; separately supplied steam generators, boilers, turbines or generators; complete power-plant construction; civil works; operation, maintenance, spent-fuel management and decommissioning"
+  representative_product: "One complete unloaded nuclear reactor accepted against its manufacturing configuration and factory-acceptance documentation"
+  production_route: "Qualified material receipt; pressure-boundary forming, machining, welding and heat treatment; reactor-internals fabrication and cleaning; final assembly, inspection and factory acceptance testing"
+  market_state: "Accepted complete equipment at the declared manufacturer gate, unloaded, unirradiated and before site operation"
+functional_unit:
+  what: "Provide a complete unloaded nuclear reactor that meets the declared design, pressure-boundary, reactivity-control and manufacturing acceptance requirements"
+  how_much: "One accepted reactor item"
+  how_well: "Conforming to the declared technology, design rating, nuclear quality class, pressure-boundary extent, product configuration and acceptance-test plan"
+  how_long_or_cycle: "The declared design life of the reactor; manufacturing burdens are assigned once at manufacturer-gate handover"
+  reference_flow_link: "The reference flow is the accepted complete reactor output final_nuclear_reactor_output"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary begins when traceable purchased materials, qualified parts and internal intermediates enter the manufacturing organization and ends when one complete unloaded reactor passes the declared manufacturing acceptance gate. Upstream production of purchased products is linked through background datasets; the foreground contains only exchanges under the manufacturer's operational control."
+      source_ids: []
+    - rule_id: sb_manufacturing_gate
+      applies_to: "Foreground manufacturing"
+      rule: "Include material receipt, forming, machining, welding, heat treatment, cleaning, nondestructive examination, dimensional inspection, assembly, pressure/seal/electrical/functional testing and manufacturer-gate handover when performed for the reference product."
+      source_ids:
+        - iaea-np-t-3-21-2016
+        - us-nrc-ap1000-ser-ch4
+    - rule_id: sb_product_exclusions
+      applies_to: "Product boundary"
+      rule: "Exclude fuel elements, separately supplied reactor parts, separate boilers or steam generators, complete power-plant construction, civil works, fueled commissioning, operation and end-of-life unless the study explicitly adds them as separate product systems."
+      source_ids:
+        - un-cpc-3-0-2025
+        - iaea-ssg-56-2020
+    - rule_id: sb_upstream_linkage
+      applies_to: "Purchased inputs"
+      rule: "Include purchased-input quantities in the foreground and link their production burdens through upstream datasets; do not reproduce upstream processes as direct foreground elementary emissions."
+      source_ids: []
+    - rule_id: sb_direct_emissions
+      applies_to: "Foreground elementary flows"
+      rule: "Report only emissions released by included manufacturing equipment. Upstream electricity and material-production emissions remain in linked upstream datasets."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Traceable purchased steel plate, stainless-steel stock, design-specific alloys, qualified welding consumables, control-drive equipment and utilities received at the first included manufacturing site"
+  starting_condition_role: "Upstream-data handoff to reactor manufacturing foreground"
+  product_classification_scope: "Complete nuclear reactor equipment; excludes fuel, separately supplied reactor parts, separate steam-generating equipment and complete power-plant construction"
+  recursive_input_rule: "When a partly assembled reactor crosses between included sites, record one internal intermediate flow with identical identity and amount at both process boundaries; do not apply this PCR recursively or add upstream burdens a second time"
+  upstream_dataset_requirement: "Each purchased material, component, fuel, chemical, water and electricity input shall link to a geographically and technologically representative upstream dataset, with supplier-specific data preferred where nuclear-grade production materially differs"
+  disclosure: "Declare included sites, ownership/control boundary, assembly location, manufacturer-gate handover point, reactor technology and configuration, treatment of separately supplied components, excluded site work, and any data gap or proxy"
+reference_flow_definition:
+  reference_amount: "1 Item(s)"
+  product_flow_ref:
+    name: "Nuclear reactor (UUID unresolved)"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "Item(s)"
+  required_qualifiers:
+    - "reactor technology"
+    - "thermal power or design rating"
+    - "pressure-boundary extent"
+    - "included reactor internals and control-drive equipment"
+    - "nuclear quality class and governing manufacturing code"
+    - "design life"
+    - "manufacturer and production geography"
+    - "assembly location"
+    - "manufacturer-gate definition"
+    - "delivery condition"
+    - "gross accepted product mass"
+    - "fuel-free and unirradiated state"
+reference_flows:
+  []
+measurement_rules:
+  - id: mu_reference_item
+    applies_to: "Reference product and accepted output"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "Item(s)"
+    rule: "Count only complete unloaded reactors accepted under the declared product configuration. Report gross accepted product mass separately as a required qualifier; do not convert a power plant, reactor part or fuel element into an item of reference product."
+  - id: mu_mass
+    applies_to: "Solid materials, liquid water, liquid wastes, scrap and direct carbon dioxide"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use calibrated mass records or a documented density conversion. State the density, temperature and composition when converting process water or wastewater volume to mass, and prevent double counting of internal intermediate transfers."
+  - id: mu_gas_volume
+    applies_to: "Natural gas and industrial oxygen"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Record metered volume and declare pressure, temperature and reference conditions. Convert supplier or meter units to the declared m3 basis without combining the two gases."
+  - id: mu_electricity_energy
+    applies_to: "Purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electrical energy by process. Convert kWh to MJ using 3.6 MJ per kWh; do not add upstream grid emissions as foreground elementary exchanges."
+  - id: mu_component_count
+    applies_to: "Control-rod drive mechanisms"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "Item(s)"
+    rule: "Count accepted installed mechanisms and identify the design-specific mechanism type. If mass is also available, retain it as supporting foreground data rather than replacing the item count."
+process_map:
+  - id: pressure_boundary_fabrication
+    name: "Reactor pressure-boundary fabrication"
+    inclusion: "required"
+    inclusion_condition: "Always included for a complete reactor; adapt the component list to the declared reactor technology"
+    role: "Foreground forming, machining, welding, heat treatment, cleaning and inspection"
+    quantitative_reference: "Per accepted pressure-boundary assembly incorporated in one reference reactor"
+  - id: reactor_internals_fabrication
+    name: "Reactor internals and core-support fabrication"
+    inclusion: "required"
+    inclusion_condition: "Always included; material and cleaning rows apply only where used by the declared design and route"
+    role: "Foreground fabrication, welding, cleaning and inspection of reactor internals and core supports"
+    quantitative_reference: "Per accepted internals assembly incorporated in one reference reactor"
+  - id: final_assembly_and_testing
+    name: "Final reactor assembly and factory acceptance testing"
+    inclusion: "required"
+    inclusion_condition: "Always included; test-fuel rows apply only when on-site combustion occurs"
+    role: "Foreground assembly, dimensional verification, cleanliness inspection, pressure/seal/electrical/functional tests and handover"
+    quantitative_reference: "One accepted unloaded nuclear reactor"
+process_inventory:
+  - id: pressure_boundary_fabrication
+    label: "Reactor pressure-boundary fabrication"
+    inputs:
+      product:
+        - row_id: pressure_steel_plate
+          role: "Alloy-steel plate for pressure-boundary components"
+          name: "Steel Plate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "421db3a5-394d-410b-8ebf-af23a37fc878"
+          property_unit: "Mass / kg"
+          description: "Record accepted steel plate entering shell, head and other pressure-retaining component fabrication. Nuclear grade, heat number, dimensions and supplier route are foreground qualifiers."
+          amount:
+            expression: "Net received mass assigned to the reactor manufacturing order, adjusted for documented stock change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per one accepted complete reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - us-nrc-reactor-vessel-integrity
+            ranges: []
+        - row_id: pressure_flux_cored_wire
+          role: "Flux-cored welding wire"
+          name: "Flux Cored Wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1b74a576-06e0-4764-97ce-11a73f8a4752"
+          property_unit: "Mass / kg"
+          description: "Record qualified flux-cored welding wire only when this consumable is used on pressure-boundary fabrication or repair; other welding processes require their own concrete foreground flows."
+          amount:
+            expression: "Issued mass minus documented returned unused wire for the manufacturing order"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per one accepted complete reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_welding_consumables
+              source_ids:
+                - iaea-np-t-3-21-2016
+            ranges: []
+        - row_id: pressure_electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity consumed by cutting, forming, machining, welding, heat-treatment auxiliaries, inspection and supporting equipment in this process."
+          amount:
+            expression: "Process-meter reading or allocated facility-meter consumption for the manufacturing order"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per one accepted complete reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids: []
+            ranges: []
+        - row_id: pressure_natural_gas
+          role: "Gaseous natural gas for heat treatment"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas only when directly combusted in included furnaces or thermal equipment for the pressure-boundary route."
+          amount:
+            expression: "Metered natural-gas volume assigned to included pressure-boundary operations"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per one accepted complete reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids: []
+            ranges: []
+        - row_id: pressure_industrial_oxygen
+          role: "Industrial oxygen for oxy-fuel operations"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume / m3"
+          description: "Record industrial oxygen only when supplied for oxy-fuel cutting, heating or another included fabrication operation."
+          amount:
+            expression: "Supplier or cylinder inventory records assigned to included pressure-boundary operations"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per one accepted complete reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_gases
+              source_ids: []
+            ranges: []
+        - row_id: pressure_process_water
+          role: "Process water for fabrication and cleaning"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water crossing the boundary for machining, cleaning, flushing or hydrostatic operations within pressure-boundary fabrication."
+          amount:
+            expression: "Metered or supplier-recorded water input assigned to this process, net of documented recirculation within the same boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per one accepted complete reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_water
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: pressure_boundary_assembly_output
+          role: "Accepted reactor pressure-boundary assembly"
+          name: "Reactor pressure-boundary assembly (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the accepted pressure-boundary assembly as an internal intermediate transferred to final assembly. Its output quantity and the corresponding final-assembly input shall be identical."
+          amount:
+            expression: "Measured accepted assembly mass at internal transfer"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per one accepted complete reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_internal_intermediates
+              source_ids:
+                - iaea-ssg-56-2020
+            ranges: []
+      waste:
+        - row_id: pressure_steel_scrap
+          role: "Post-industrial steel scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Record segregated ferrous offcuts, turnings and rejected steel arising from this process. Contaminated or mixed waste requires a separate concrete waste flow."
+          amount:
+            expression: "Weighed scrap leaving the process boundary, net of documented internal remelting or reuse"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per one accepted complete reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solid_wastes
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: pressure_fossil_co2
+          role: "Fossil carbon dioxide from natural-gas combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Calculate direct fossil carbon dioxide released by the included natural-gas combustion only. Do not include upstream gas-supply or purchased-electricity emissions."
+          amount:
+            expression: "Direct fossil CO2 calculated from the recorded natural-gas quantity and a documented site- or supplier-specific carbon/emission factor"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "Per one accepted complete reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_energy
+              source_ids: []
+            ranges: []
+  - id: reactor_internals_fabrication
+    label: "Reactor internals and core-support fabrication"
+    inputs:
+      product:
+        - row_id: internals_austenitic_stainless_steel
+          role: "Austenitic stainless-steel stock"
+          name: "Austenitic stainless steel (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the accepted austenitic stainless-steel plate, forging or bar mass incorporated in reactor internals and core supports; declare each grade and product form in the foreground bill of materials."
+          amount:
+            expression: "Net received mass assigned to internals fabrication, adjusted for documented stock change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per one accepted complete reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - us-nrc-ap1000-ser-ch4
+            ranges: []
+        - row_id: internals_nickel_based_alloy
+          role: "Nickel-based alloy stock"
+          name: "Nickel-based alloy stock (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record nickel-based alloy stock only when required by the declared reactor-internals design. The foreground record shall identify alloy grade, product form, cobalt restriction and installed component."
+          amount:
+            expression: "Net received alloy mass assigned to internals fabrication, adjusted for documented stock change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per one accepted complete reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - us-nrc-ap1000-ser-ch4
+            ranges: []
+        - row_id: internals_flux_cored_wire
+          role: "Flux-cored welding wire"
+          name: "Flux Cored Wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1b74a576-06e0-4764-97ce-11a73f8a4752"
+          property_unit: "Mass / kg"
+          description: "Record qualified flux-cored welding wire only when used for the declared internals fabrication route."
+          amount:
+            expression: "Issued mass minus documented returned unused wire for the manufacturing order"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per one accepted complete reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_welding_consumables
+              source_ids:
+                - iaea-np-t-3-21-2016
+            ranges: []
+        - row_id: internals_electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity consumed by internals forming, machining, welding, heat treatment, cleaning, inspection and supporting equipment."
+          amount:
+            expression: "Process-meter reading or allocated facility-meter consumption for the manufacturing order"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per one accepted complete reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids: []
+            ranges: []
+        - row_id: internals_sodium_hydroxide
+          role: "Sodium hydroxide for alkaline cleaning"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide only when it crosses the foreground boundary as a product input to an alkaline cleaning bath used on reactor internals."
+          amount:
+            expression: "Pure sodium-hydroxide mass in delivered solution charged to included cleaning operations"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "Per one accepted complete reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_chemicals
+              source_ids:
+                - us-nrc-ap1000-ser-ch4
+            ranges: []
+        - row_id: internals_process_water
+          role: "Process water for internals cleaning"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water used for included cleaning, rinsing and flushing of reactor internals."
+          amount:
+            expression: "Metered or supplier-recorded water input, net of documented recirculation within the same boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per one accepted complete reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_water
+              source_ids:
+                - us-nrc-ap1000-ser-ch4
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reactor_internals_assembly_output
+          role: "Accepted reactor-internals assembly"
+          name: "Reactor-internals assembly (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the accepted reactor-internals and core-support assembly as an internal intermediate transferred to final assembly. The output and linked input amounts shall be identical."
+          amount:
+            expression: "Measured accepted assembly mass at internal transfer"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per one accepted complete reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_internal_intermediates
+              source_ids:
+                - us-nrc-ap1000-ser-ch4
+            ranges: []
+      waste:
+        - row_id: internals_steel_scrap
+          role: "Post-industrial steel scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Record segregated ferrous offcuts, turnings and rejected steel arising from internals fabrication."
+          amount:
+            expression: "Weighed scrap leaving this process, net of documented internal reuse"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per one accepted complete reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solid_wastes
+              source_ids: []
+            ranges: []
+        - row_id: internals_waste_alkaline_liquor
+          role: "Waste alkaline liquor"
+          name: "Waste Alkaline Liquor"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "ce738ef0-a711-4650-a38b-34479efd7559"
+          property_unit: "Mass / kg"
+          description: "Record spent alkaline cleaning solution only when alkaline cleaning occurs and the liquor leaves this process for treatment. Declare composition, pH, metal contamination and treatment destination."
+          amount:
+            expression: "Weighed or volume-and-density-converted mass of spent alkaline liquor transferred to treatment"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per one accepted complete reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_liquid_wastes
+              source_ids:
+                - us-nrc-ap1000-ser-ch4
+            ranges: []
+      elementary:
+        []
+  - id: final_assembly_and_testing
+    label: "Final reactor assembly and factory acceptance testing"
+    inputs:
+      product:
+        - row_id: final_pressure_boundary_assembly_input
+          role: "Reactor pressure-boundary assembly"
+          name: "Reactor pressure-boundary assembly (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal pressure-boundary assembly received from pressure_boundary_fabrication; the identity and mass shall match pressure_boundary_assembly_output."
+          amount:
+            expression: "Measured internal-transfer mass matching the upstream output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per one accepted complete reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_internal_intermediates
+              source_ids:
+                - iaea-ssg-56-2020
+            ranges: []
+        - row_id: final_reactor_internals_assembly_input
+          role: "Reactor-internals assembly"
+          name: "Reactor-internals assembly (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal reactor-internals assembly received from reactor_internals_fabrication; the identity and mass shall match reactor_internals_assembly_output."
+          amount:
+            expression: "Measured internal-transfer mass matching the upstream output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per one accepted complete reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_internal_intermediates
+              source_ids:
+                - us-nrc-ap1000-ser-ch4
+            ranges: []
+        - row_id: final_control_rod_drive_mechanism
+          role: "Control-rod drive mechanism"
+          name: "Control-rod drive mechanism (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "Record accepted control-rod drive mechanisms installed in the reference reactor. State the design-specific mechanism type and prevent double counting when supplied within another accepted assembly."
+          amount:
+            expression: "Accepted installed mechanism count from the as-built product configuration"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per one accepted complete reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_acceptance
+              source_ids:
+                - iaea-ssg-56-2020
+            ranges: []
+        - row_id: final_electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity used for final assembly, cleanliness control, pressure/seal/electrical/functional tests and supporting equipment."
+          amount:
+            expression: "Process-meter reading or allocated facility-meter consumption for the manufacturing order"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per one accepted complete reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - iaea-np-t-3-21-2016
+            ranges: []
+        - row_id: final_process_water
+          role: "Process water for hydrostatic and cleanliness testing"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water introduced for pressure, leak, flushing or cleanliness testing within the manufacturer boundary."
+          amount:
+            expression: "Metered or supplier-recorded test-water input, net of documented recirculation within the same test loop"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per one accepted complete reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_water
+              source_ids:
+                - iaea-np-t-3-21-2016
+            ranges: []
+        - row_id: final_diesel_fuel
+          role: "Diesel fuel for on-site test equipment"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "Record diesel fuel only when directly consumed by included temporary generators, pumps or other factory-test equipment."
+          amount:
+            expression: "Fuel issue, tank-level or purchase records assigned to included factory tests"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per one accepted complete reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_fuel
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: final_nuclear_reactor_output
+          role: "Accepted complete unloaded nuclear reactor"
+          name: "Nuclear reactor (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "Record one complete reactor only after the declared product configuration and manufacturing acceptance plan are satisfied. The product flow UUID remains unresolved; do not substitute a fuel rod or complete power plant."
+          amount:
+            expression: "1 accepted complete unloaded reactor"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "One reference reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - un-cpc-3-0-2025
+                - iaea-ssg-56-2020
+            ranges: []
+      waste:
+        - row_id: final_test_wastewater
+          role: "Hydrostatic-test wastewater"
+          name: "Wastewater"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "d2d44ce1-c0f4-461d-9413-f4b33e0d200f"
+          property_unit: "Mass / kg"
+          description: "Record water leaving included pressure, flushing or cleanliness tests as wastewater when it is not internally recirculated. Declare composition, treatment destination and discharge route."
+          amount:
+            expression: "Weighed or volume-and-density-converted wastewater mass transferred out of the test boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per one accepted complete reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_liquid_wastes
+              source_ids:
+                - iaea-np-t-3-21-2016
+            ranges: []
+      elementary:
+        - row_id: final_fossil_co2
+          role: "Fossil carbon dioxide from test-diesel combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Calculate direct fossil carbon dioxide released by included test-equipment diesel combustion only. Do not include upstream diesel-supply emissions."
+          amount:
+            expression: "Direct fossil CO2 calculated from recorded diesel mass and a documented site- or supplier-specific carbon/emission factor"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "Per one accepted complete reactor"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_test_fuel
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: al_subdivision
+    applies_to: "Manufacturing orders and sites"
+    rule: "Prefer process subdivision and order-specific measurement so burdens follow the reactor and process that caused them."
+    source_ids: []
+  - rule_id: al_shared_utilities
+    applies_to: "Shared electricity, gas, water and facility services"
+    rule: "Use submetered consumption where available. Otherwise allocate by a documented causal driver such as machine-hours, furnace-hours, test-hours or occupied production time; do not allocate by reactor price when a physical driver is available."
+    source_ids: []
+  - rule_id: al_scrap
+    applies_to: "Post-industrial steel scrap and recoverable alloy scrap"
+    rule: "Record scrap mass and destination before applying the study's recycling convention. Do not add an avoided-primary-production credit inside the foreground unless the chosen LCA method requires it; disclose any cut-off, substitution or end-of-life approach."
+    source_ids: []
+  - rule_id: al_rework
+    applies_to: "Rework, rejects and repair"
+    rule: "Assign rework energy, consumables and rejected material to the order and process that caused them. Sale proceeds from scrap do not make reactor manufacturing a multifunctional process."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_receipts
+      process_id: "pressure_boundary_fabrication_reactor_internals_fabrication"
+      flow_role: "Steel plate, stainless-steel stock and design-specific alloy inputs"
+      record_type: "Purchase receipt, bill of materials and material certificate"
+      raw_fields: "material identity; grade; product form; heat or lot; received mass; returns; stock change; order id; supplier; site"
+      collection_method: "Reconcile accepted receipts and issued material to the as-built bill of materials"
+      unit: "kg"
+      frequency: "Each receipt and manufacturing order"
+      temporal_coverage: "Complete production period for the reference reactor"
+      site_scope: "Every included fabrication site and supplier-controlled stock point"
+      aggregation_rule: "Sum net mass assigned to the order; preserve grade and form as separate foreground attributes"
+      quality_evidence: "Material certificates; calibrated scales; receipt/issue reconciliation; supplier approval records"
+    - protocol_id: cp_welding_consumables
+      process_id: "pressure_boundary_fabrication_reactor_internals_fabrication"
+      flow_role: "Flux-cored welding wire"
+      record_type: "Consumable issue and return records"
+      raw_fields: "wire identity; batch; qualification; issued mass; returned mass; order id; process"
+      collection_method: "Subtract returned unused wire from issued mass"
+      unit: "kg"
+      frequency: "Each issue/return"
+      temporal_coverage: "Complete fabrication period"
+      site_scope: "Every included welding location"
+      aggregation_rule: "Sum net consumed mass by process and order"
+      quality_evidence: "Welding-material batch record; qualified procedure; issue/return log"
+    - protocol_id: cp_process_energy
+      process_id: "all_processes"
+      flow_role: "Purchased electricity and natural gas"
+      record_type: "Meter, fuel invoice and equipment operating log"
+      raw_fields: "meter id; opening/closing reading; unit; reference conditions for gas; process; order id; allocation driver"
+      collection_method: "Read process meters; where shared, reconcile facility totals and apply the declared causal allocation driver"
+      unit: "MJ for electricity; m3 for gas"
+      frequency: "Continuous meter with monthly reconciliation or each batch"
+      temporal_coverage: "Complete production and test period"
+      site_scope: "Every included site"
+      aggregation_rule: "Sum direct readings; allocate only the residual shared total; document conversion and loss treatment"
+      quality_evidence: "Calibrated meter record; invoice reconciliation; operating-hour log"
+    - protocol_id: cp_fabrication_gases
+      process_id: "pressure_boundary_fabrication"
+      flow_role: "Industrial oxygen"
+      record_type: "Cylinder, bulk-tank or supplier record"
+      raw_fields: "gas identity; purity; supplied quantity; returns; pressure; temperature; process; order id"
+      collection_method: "Reconcile delivered and returned quantity, then normalize to declared reference conditions"
+      unit: "m3"
+      frequency: "Each delivery and order"
+      temporal_coverage: "Complete fabrication period"
+      site_scope: "Included oxy-fuel operations"
+      aggregation_rule: "Sum normalized volume assigned to included operations"
+      quality_evidence: "Supplier certificate; cylinder/bulk inventory; conversion record"
+    - protocol_id: cp_process_water
+      process_id: "all_processes"
+      flow_role: "Process-water inputs"
+      record_type: "Water meter, batch sheet or supplier record"
+      raw_fields: "source; quality; meter reading or volume; density; temperature; recirculated quantity; process; order id"
+      collection_method: "Measure input and subtract only documented same-boundary recirculation"
+      unit: "kg"
+      frequency: "Each batch or continuous meter with monthly reconciliation"
+      temporal_coverage: "Complete production and test period"
+      site_scope: "Every included water use point"
+      aggregation_rule: "Sum net boundary-crossing water mass by process"
+      quality_evidence: "Calibrated meter; water-quality record; density conversion; reconciliation"
+    - protocol_id: cp_internal_intermediates
+      process_id: "all_processes"
+      flow_role: "Pressure-boundary and reactor-internals assemblies"
+      record_type: "Internal transfer and acceptance record"
+      raw_fields: "intermediate identity; configuration revision; acceptance status; mass; sending process; receiving process; order id"
+      collection_method: "Match sending and receiving records one-to-one"
+      unit: "kg"
+      frequency: "Each transfer"
+      temporal_coverage: "Complete assembly period"
+      site_scope: "All included sending and receiving sites"
+      aggregation_rule: "Use identical quantity on linked output and input; exclude transfer transport unless it crosses the declared foreground boundary"
+      quality_evidence: "Accepted transfer record; calibrated scale; configuration control; discrepancy log"
+    - protocol_id: cp_solid_wastes
+      process_id: "pressure_boundary_fabrication_reactor_internals_fabrication"
+      flow_role: "Post-industrial steel scrap"
+      record_type: "Waste scale ticket and recycler manifest"
+      raw_fields: "waste identity; alloy/contamination class; gross/tare/net mass; internal reuse; destination; order id; process"
+      collection_method: "Weigh outbound scrap and reconcile internal return or reuse"
+      unit: "kg"
+      frequency: "Each shipment or collection container"
+      temporal_coverage: "Complete fabrication period"
+      site_scope: "Every included fabrication site"
+      aggregation_rule: "Sum net scrap leaving the process by identity and destination"
+      quality_evidence: "Calibrated scale; waste manifest; recycler receipt; mass-balance reconciliation"
+    - protocol_id: cp_cleaning_chemicals
+      process_id: "reactor_internals_fabrication"
+      flow_role: "Sodium hydroxide"
+      record_type: "Batch sheet and chemical receipt"
+      raw_fields: "product mass; concentration; solution density; bath charge; replenishment; recovery; order id"
+      collection_method: "Calculate pure sodium-hydroxide mass from delivered solution mass and verified concentration"
+      unit: "kg NaOH"
+      frequency: "Each bath charge"
+      temporal_coverage: "Complete cleaning period"
+      site_scope: "Included alkaline-cleaning operations"
+      aggregation_rule: "Sum pure NaOH charged minus separately documented recovered product"
+      quality_evidence: "Supplier certificate; concentration analysis; batch sheet; calculation record"
+    - protocol_id: cp_liquid_wastes
+      process_id: "reactor_internals_fabrication_final_assembly_and_testing"
+      flow_role: "Waste alkaline liquor and test wastewater"
+      record_type: "Tank meter, transfer note and treatment manifest"
+      raw_fields: "waste identity; volume or mass; density; composition; pH; metal content; destination; order id; process"
+      collection_method: "Measure mass directly or convert volume using documented density"
+      unit: "kg"
+      frequency: "Each discharge or transfer"
+      temporal_coverage: "Complete cleaning and test period"
+      site_scope: "Every included liquid-waste outlet"
+      aggregation_rule: "Sum by concrete waste identity, process and destination"
+      quality_evidence: "Calibrated tank/scale; sample analysis; manifest; water balance"
+    - protocol_id: cp_component_acceptance
+      process_id: "final_assembly_and_testing"
+      flow_role: "Control-rod drive mechanisms"
+      record_type: "As-built configuration and acceptance record"
+      raw_fields: "mechanism identity; type; serial number; accepted count; installed location; duplicate-supply check; order id"
+      collection_method: "Count accepted installed mechanisms and reconcile to the as-built configuration"
+      unit: "Item(s)"
+      frequency: "Each installation and final acceptance"
+      temporal_coverage: "Complete assembly period"
+      site_scope: "Final assembly site and supplier-controlled installation points"
+      aggregation_rule: "Sum accepted installed items; exclude rejected, spare and separately supplied units"
+      quality_evidence: "Configuration record; serial-number list; acceptance certificate; inspection record"
+    - protocol_id: cp_test_fuel
+      process_id: "final_assembly_and_testing"
+      flow_role: "Diesel fuel and its direct fossil CO2"
+      record_type: "Fuel issue, tank record and equipment test log"
+      raw_fields: "fuel identity; mass or volume; density; biogenic fraction; issue/return; equipment; test id; emission factor and provenance"
+      collection_method: "Reconcile net fuel consumed, convert volume to mass if needed, and calculate direct fossil CO2 from the documented factor"
+      unit: "kg"
+      frequency: "Each test campaign"
+      temporal_coverage: "Complete factory-test period"
+      site_scope: "Included test equipment under manufacturer control"
+      aggregation_rule: "Sum net fossil diesel mass and associated calculated direct fossil CO2"
+      quality_evidence: "Calibrated tank/scale; purchase/issue record; test log; factor certificate and calculation"
+    - protocol_id: cp_product_acceptance
+      process_id: "final_assembly_and_testing"
+      flow_role: "Complete unloaded nuclear reactor"
+      record_type: "Manufacturing acceptance and handover dossier"
+      raw_fields: "product configuration; reactor technology; design rating; nuclear quality class; pressure-boundary extent; included assemblies; acceptance status; gross mass; serial id; handover date; gate"
+      collection_method: "Count only reactors with a complete accepted dossier and declared fuel-free unirradiated state"
+      unit: "Item(s)"
+      frequency: "Each final acceptance"
+      temporal_coverage: "Entire manufacturing order"
+      site_scope: "Declared manufacturer gate"
+      aggregation_rule: "One accepted dossier equals one reference item"
+      quality_evidence: "Approved configuration; material traceability; NDT, heat-treatment, pressure/seal/electrical/functional-test, cleanliness and final-dimension records"
+  calculation_rules:
+    - id: calc_order_normalization
+      applies_to: "All inventory rows"
+      rule: "Normalized amount = net quantity assigned to the manufacturing order divided by the number of accepted complete reactors in that order. For this PCR the denominator is normally one; disclose any multi-unit batch allocation."
+      inputs:
+        - "Net order quantity"
+        - "accepted reactor count"
+        - "allocation record"
+      output: "Inventory amount per one accepted complete reactor"
+      source_ids: []
+    - id: calc_electricity_conversion
+      applies_to: "Electricity rows"
+      rule: "Electricity (MJ) = metered electricity (kWh) × 3.6 MJ/kWh. Preserve the original meter unit and conversion record."
+      inputs:
+        - "Metered kWh"
+      output: "Electricity in MJ"
+      source_ids: []
+    - id: calc_solution_active_mass
+      applies_to: "internals_sodium_hydroxide"
+      rule: "Pure NaOH mass = delivered solution mass × verified mass fraction, adjusted for separately documented returned or recovered product."
+      inputs:
+        - "Solution mass"
+        - "verified concentration"
+        - "returned/recovered amount"
+      output: "kg sodium hydroxide"
+      source_ids: []
+    - id: calc_direct_fossil_co2
+      applies_to: "pressure_fossil_co2; final_fossil_co2"
+      rule: "Direct fossil CO2 = recorded fossil-fuel quantity × documented site- or supplier-specific emission/carbon factor, with unit and oxidation-basis conversion shown. The factor shall not include upstream supply-chain emissions."
+      inputs:
+        - "Natural-gas or diesel record"
+        - factor
+        - "fossil fraction"
+        - "conversion basis"
+      output: "kg direct fossil carbon dioxide"
+      source_ids: []
+    - id: calc_internal_transfer_check
+      applies_to: "Internal intermediate rows"
+      rule: "The amount and identity of each upstream intermediate output shall equal its final-assembly input after unit conversion; investigate every difference rather than allocating it silently."
+      inputs:
+        - "Sending record"
+        - "receiving record"
+        - "unit conversion"
+      output: "Reconciled internal transfer amount"
+      source_ids: []
+    - id: calc_manufacturing_mass_balance
+      applies_to: "Each fabrication process and final assembly"
+      rule: "Reconcile traceable material inputs with accepted outputs, measured scrap/waste, direct mass emissions and documented stock change. Report excluded minor materials and unresolved imbalance; do not infer missing emissions from imbalance alone."
+      inputs:
+        - "Material receipts"
+        - "intermediate and product mass"
+        - "waste records"
+        - "stock change"
+        - "direct emissions"
+      output: "Process mass-balance reconciliation"
+      source_ids:
+        - iaea-np-t-3-21-2016
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product"
+      requirement: "Configuration, technology, design rating, pressure-boundary extent, included equipment, acceptance gate, gross mass and unloaded/unirradiated state shall be explicit."
+      evidence: "Approved product configuration and handover dossier"
+    - id: dq_material_traceability
+      applies_to: "Nuclear-grade materials and welding consumables"
+      requirement: "Preserve supplier, grade, heat/lot, product form, quantity, certificate, substitution and order linkage."
+      evidence: "Material certificates, supplier approval and issue records"
+    - id: dq_process_records
+      applies_to: "Fabrication and assembly"
+      requirement: "Retain welding procedure and consumable batch, heat-treatment, NDT, repair, pressure/seal/electrical/functional-test, calibration, cleanliness and final-dimension records applicable to the delivered configuration."
+      evidence: "Manufacturing quality dossier; iaea-np-t-3-21-2016"
+    - id: dq_temporal_coverage
+      applies_to: "All foreground rows"
+      requirement: "Cover the complete manufacturing order from first included receipt through final acceptance, including rework and rejected batches."
+      evidence: "Order dates, production logs and completeness reconciliation"
+    - id: dq_site_coverage
+      applies_to: "Multi-site manufacture"
+      requirement: "Include every site under the declared manufacturer boundary and disclose transfers that cross it."
+      evidence: "Site list, transfer records and boundary statement"
+    - id: dq_metering
+      applies_to: "Energy, gases and water"
+      requirement: "Use calibrated direct meters where available; disclose allocation drivers, conversion conditions and reconciliation gaps for shared meters."
+      evidence: "Calibration certificates, invoices and reconciliation"
+    - id: dq_waste_destination
+      applies_to: "Scrap, alkaline liquor and wastewater"
+      requirement: "Record concrete waste identity, contamination/composition, mass, destination and treatment route; do not combine distinct waste streams."
+      evidence: "Scale tickets, analyses and manifests"
+    - id: dq_uuid_resolution
+      applies_to: "UUID-empty flows"
+      requirement: "Preserve the concrete flow name and unresolved reason; do not substitute a nearby fuel, plant, raw-material or component UUID."
+      evidence: "Finalized search receipts and manifest unresolved metadata"
+    - id: dq_uncertainty
+      applies_to: "All modelled or allocated values"
+      requirement: "Disclose measurement uncertainty, allocation share and data gap; no external empirical amount range is asserted by this candidate PCR."
+      evidence: "Meter/scale accuracy, calculation record and data-quality statement"
+validation_rules:
+  - rule_id: val_reference_identity
+    applies_to: "Reference flow"
+    rule: "Confirm that the output is one complete unloaded nuclear reactor, not a fuel element, separate part, complete power plant or boiler product, and that all required qualifiers are present."
+    source_ids:
+      - un-cpc-3-0-2025
+      - iaea-ssg-56-2020
+  - rule_id: val_process_coverage
+    applies_to: "Foreground boundary"
+    rule: "Verify that pressure-boundary fabrication, internals fabrication, final assembly and applicable factory tests are represented, with all included sites and rework covered."
+    source_ids:
+      - iaea-np-t-3-21-2016
+      - us-nrc-ap1000-ser-ch4
+  - rule_id: val_atomic_flows
+    applies_to: "Inventory"
+    rule: "Confirm that every inventory card contains one concrete exchange and that gases, fuels, electricity, water, chemicals, wastes and direct emissions are not combined."
+    source_ids: []
+  - rule_id: val_internal_transfers
+    applies_to: "Internal intermediates"
+    rule: "Confirm one-to-one identity and quantity matching for pressure-boundary and internals assembly outputs and inputs, and no double counting of upstream burdens."
+    source_ids: []
+  - rule_id: val_energy_and_emissions
+    applies_to: "Energy and direct emissions"
+    rule: "Reconcile purchased energy to meters or allocation records; direct fossil CO2 shall equal foreground natural-gas or diesel use times the documented factor, while upstream electricity and fuel emissions remain in linked datasets."
+    source_ids: []
+  - rule_id: val_material_and_waste_balance
+    applies_to: "Fabrication processes"
+    rule: "Reconcile material inputs, accepted intermediate/product mass, measured scrap/waste, stock change and reported direct mass emissions; investigate and disclose unresolved imbalance."
+    source_ids:
+      - iaea-np-t-3-21-2016
+  - rule_id: val_quality_dossier
+    applies_to: "Published dataset"
+    rule: "Verify availability of material, welding, heat-treatment, NDT, pressure/seal/electrical/functional-test, calibration, cleanliness and final-dimension evidence applicable to the delivered configuration."
+    source_ids:
+      - iaea-np-t-3-21-2016
+  - rule_id: val_unresolved_evidence
+    applies_to: "Candidate limitations"
+    rule: "Keep the reference product and other UUID-empty rows unresolved until an exact public state-100 identity is audited; do not treat absent two-source ranges as external benchmarks."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground manufacturing dataset suitable for publication as a secondary_dataset or background_dataset after review and resolution/disclosure of identified gaps"
+  downstream_use: "Product-system modelling of complete unloaded nuclear-reactor manufacture and handover at the declared manufacturer gate"
+  allowed_use: "Comparison or aggregation only among datasets with compatible reactor configuration, design rating, included equipment, nuclear quality class, manufacturer-gate boundary, geography and allocation/recycling conventions"
+  excluded_use: "Electricity-generation impacts per kWh; complete nuclear-power-plant construction; fuel-cycle, site installation, operation, maintenance, spent-fuel or decommissioning results; representation of a separate reactor part or fuel element"
+  required_metadata: "Canonical PCR id; reactor technology; thermal power/design rating; product configuration; pressure-boundary extent; included equipment; governing manufacturing code and nuclear quality class; design life; gross accepted mass; manufacturer geography; included sites; assembly location; handover gate; production period; allocation and recycling methods; upstream dataset choices; unresolved UUIDs and evidence needs"
+  required_quality_disclosure: "Foreground coverage and completeness; material traceability; meter and scale calibration; allocation shares; rework and reject coverage; internal-transfer reconciliation; mass balance; waste destinations; direct-emission factors; data gaps, uncertainty and any proxy"
+  update_trigger: "Change in reactor technology or configuration, design rating, pressure-boundary extent, material grades, manufacturing route/site, energy source, cleaning/testing route, allocation or recycling method, supplier data, exact Tiangong UUID resolution, or availability of two independent boundary-compatible range sources"
+data_sources:
+  - id: "un-cpc-3-0-2025"
+    type: "dataset"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-05)"
+    used_for: "Official CPC 42310 product identity and distinction from separately classified reactor parts and steam-generating boilers"
+  - id: "us-nrc-reactor-vessel-integrity"
+    type: "official_guidance"
+    reference: "U.S. Nuclear Regulatory Commission, Reactor Vessel Integrity, https://www.nrc.gov/reactors/operating/ops-experience/reactor-vessel-integrity (retrieved 2026-09-05)"
+    used_for: "Reactor pressure-vessel construction from thick steel plate or ring forgings, welded shell courses and heads"
+  - id: "iaea-np-t-3-21-2016"
+    type: "official_guidance"
+    reference: "International Atomic Energy Agency, Procurement Engineering and Supply Chain Guidelines in Support of Operation and Maintenance of Nuclear Facilities, IAEA Nuclear Energy Series No. NP-T-3.21, Vienna, 2016, https://www-pub.iaea.org/MTCD/Publications/PDF/Pub1725_web.pdf (retrieved 2026-09-05)"
+    used_for: "Manufacturing and procurement records for material certificates, welding, heat treatment, NDT, pressure/seal/electrical/functional tests, calibration, cleanliness and final dimensions"
+  - id: "us-nrc-ap1000-ser-ch4"
+    type: "official_guidance"
+    reference: "U.S. Nuclear Regulatory Commission, Safety Evaluation Report Related to Certification of the AP1000 Standard Design, NUREG-1793, Chapter 4, Reactor, https://www.nrc.gov/reading-rm/doc-collections/nuregs/staff/sr1793/initial/chapter4.pdf (retrieved 2026-09-05)"
+    used_for: "Reactor-internals material families and process decomposition for material selection, heat treatment, welding, NDE, fabrication, contamination protection and cleaning"
+  - id: "iaea-ssg-56-2020"
+    type: "standard"
+    reference: "International Atomic Energy Agency, Design of the Reactor Coolant System and Associated Systems for Nuclear Power Plants, IAEA Safety Standards Series No. SSG-56, Vienna, 2020, https://www-pub.iaea.org/MTCD/Publications/PDF/PUB1878_web.pdf (retrieved 2026-09-05)"
+    used_for: "Reactor coolant system extent, pressure-boundary scope, control functions, component manufacture and test-related boundary qualifiers"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:15b8ce6cdeb41b9ac91c4a0963b2c3dd2609b82200ef2f1debbf904aee517d8f"
+  generated_content_sha256: "sha256:55a05d3880ca743773e858d692b7c5c8d8a0df8121478c4480243680f1af40b9"

@@ -1,10 +1,452 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "45262"
-  title: "Scanners (except combination of printer, scanner, copier and/or fax)"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.office-accounting-and-computing-machinery.scanners-except-combination-of-printer-scanner-copier-and-or-fax"
+  classification_refs: "CPC 3.0: 45262; un-cpc-3-0-structure-2025"
+  covered_products: "Standalone flatbed and sheet-fed image scanners"
+  excluded_products: "Multifunction imaging equipment; medical, 3D metrology and barcode-only scanners"
+  representative_product: "Standalone document scanner with declared model and sensor architecture"
+  production_route: "Purchased component integration, calibration, acceptance testing and packing"
+  market_state: "New, tested scanner with declared supplied accessories at factory gate"
+functional_unit:
+  what: "Digitization of declared original formats"
+  how_much: "Manufacturing declared unit: 1 kg net accepted scanner equipment; convert to one complete scanner using measured kit mass m"
+  how_well: "Declare optical resolution, color depth, document size, simplex/duplex throughput and acceptance test criteria; do not equate kg with scanning performance"
+  how_long_or_cycle: "One manufacturing and acceptance cycle. Service comparison requires separately declared lifetime pages and years; no default lifetime"
+  reference_flow_link: "scanner_output = 1 kg; manufacturing burden per scanner equals burden per kg multiplied by m. This is a partial manufacturing module, not a complete service comparison."
+system_boundary:
+  rules:
+    - rule_id: manufacturing_boundary
+      applies_to: "manufacturing"
+      rule: "Include assembly, calibration, testing, rework and packing with linked upstream supply and factory waste treatment. Disclose excluded distribution, use and end-of-life stages; never claim a full life cycle from this module."
+      source_ids:
+        - ghg-protocol-product-standard-2011
+    - rule_id: bom_completeness
+      applies_to: "foreground"
+      rule: "Reconcile the actual bill of materials. Cards below are common atomic exchanges, not a universal bill. Add each installed CCD module, feed roller, fastener, alternative housing, cushion or actual factory chemical as its own identified exchange when present. Verify absence rather than assume zero. Avoid double counting supplier assemblies and their internal parts."
+      source_ids:
+        - epson-gts55-scanner-parts
+        - epson-v19-v39-scanner-parts
+boundary_abstraction:
+  declared_starting_condition: "Finished purchased components and empty packaging received at assembly plant"
+  starting_condition_role: "Supplier-linked assembly foreground; raw-material and component production upstream"
+  product_classification_scope: "Standalone computing-input scanners; not scanner parts as finished product"
+  recursive_input_rule: "A purchased complete scanner requires a separate assembly/refurbishment route with its own supplier inventory; never recursively expand the same complete-scanner output as its own input"
+  upstream_dataset_requirement: "Link each component to matching supplier production and delivery datasets. Missing upstream coverage is a disclosed gap, never zero burden."
+  disclosure: "Report component manufacture locations, purchased/on-site split, accessory and packaging scope, and exclusions"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Scanners (except combination of printer, scanner, copier and/or fax)"
+    uuid: "9111cdf0-20a6-465c-a7cb-4b8a0fbc4968"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - model
+    - "flatbed or sheet-fed"
+    - "CIS or CCD"
+    - illumination
+    - "optical resolution"
+    - "color depth"
+    - "original size"
+    - "duplex mode"
+    - "rated throughput and test settings"
+    - "net kit mass"
+    - "supplied adapter and cable"
+    - "manufacturing site and period"
+    - "gate condition"
+    - "upstream boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_mass
+    applies_to: "scanner_output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh accepted kits separately from packaging. Use model-specific count × measured kit mass; never substitute shipping weight."
+  - id: electricity_units
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Retain meter kWh and convert by 1 kWh = 3.6 MJ. Nameplate power is not measured factory energy."
+process_map:
+  - id: scanner_assembly
+    name: "Assembly, calibration, testing and packing"
+    inclusion: "required"
+    inclusion_condition: "All in-scope manufacturing records"
+    role: "Integrated foreground production; retain operation-level meters"
+    quantitative_reference: "1 kg accepted net scanner equipment"
+process_inventory:
+  - id: scanner_assembly
+    label: "Assembly, calibration, testing and packing"
+    inputs:
+      product:
+        - row_id: housing
+          role: "Moulded ABS scanner housing"
+          name: "Moulded ABS scanner housing"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Only when the installed housing is ABS; use the supplier part mass, not resin feedstock."
+          amount:
+            expression: "Measured period total divided by accepted net scanner mass; retain applicability and raw records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted scanner equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids: []
+            ranges: []
+        - row_id: board
+          role: "Populated scanner control circuit board"
+          name: "Populated scanner control circuit board"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record the populated board as received. Exclude the image-sensor module if separately purchased."
+          amount:
+            expression: "Measured period total divided by accepted net scanner mass; retain applicability and raw records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted scanner equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids: []
+            ranges: []
+        - row_id: sensor
+          role: "Contact image sensor module"
+          name: "Contact image sensor module"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: CIS design. Record complete purchased CIS module including its integral illumination."
+          amount:
+            expression: "Measured period total divided by accepted net scanner mass; retain applicability and raw records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted scanner equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids: []
+            ranges: []
+        - row_id: motor
+          role: "Stepper motor"
+          name: "Stepper motor"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: stepper drive installed. Record purchased motor mass and rated output."
+          amount:
+            expression: "Measured period total divided by accepted net scanner mass; retain applicability and raw records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted scanner equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids: []
+            ranges: []
+        - row_id: glass
+          role: "Finished scanner glass platen"
+          name: "Finished scanner glass platen"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: flatbed design. Record finished optical platen, not unworked sheet glass."
+          amount:
+            expression: "Measured period total divided by accepted net scanner mass; retain applicability and raw records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted scanner equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids: []
+            ranges: []
+        - row_id: adapter
+          role: "AC/DC power adapter"
+          name: "AC/DC power adapter"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: adapter supplied with the product. Do not add an adapter to a USB-powered model that ships without one."
+          amount:
+            expression: "Measured period total divided by accepted net scanner mass; retain applicability and raw records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted scanner equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids: []
+            ranges: []
+        - row_id: cable
+          role: "USB cable"
+          name: "USB cable"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: USB cable supplied. Record cable with connectors; do not replace it by ribbon cable."
+          amount:
+            expression: "Measured period total divided by accepted net scanner mass; retain applicability and raw records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted scanner equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids: []
+            ranges: []
+        - row_id: box
+          role: "corrugated board boxes"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: corrugated shipping box used. Record actual empty box mass."
+          amount:
+            expression: "Measured period total divided by accepted net scanner mass; retain applicability and raw records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted scanner equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; unit group 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Meter assembly, calibration, functional testing, rework and packing electricity over the same production period."
+          amount:
+            expression: "Measured period total divided by accepted net scanner mass; retain applicability and raw records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted scanner equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: scanner_output
+          role: "Scanners (except combination of printer, scanner, copier and/or fax)"
+          name: "Scanners (except combination of printer, scanner, copier and/or fax)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9111cdf0-20a6-465c-a7cb-4b8a0fbc4968"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record accepted scanner mass including declared supplied operational accessories, excluding all transport packaging."
+          amount:
+            expression: "Measured period total divided by accepted net scanner mass; retain applicability and raw records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted scanner equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output
+              source_ids: []
+            ranges: []
+        - row_id: box_output
+          role: "corrugated board boxes"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record box mass leaving with scanners separately from net scanner mass; this is ancillary packaging, not an independently allocated co-product."
+          amount:
+            expression: "Measured period total divided by accepted net scanner mass; retain applicability and raw records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted scanner equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: reject
+          role: "Discarded standalone scanner"
+          name: "Discarded standalone scanner"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: irreparable complete scanner rejected at the factory. Record waste transfer mass and destination; internal rework is not a waste export."
+          amount:
+            expression: "Measured period total divided by accepted net scanner mass; retain applicability and raw records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted scanner equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: subdivide_first
+    applies_to: "shared_operations"
+    rule: "Use dedicated line records first. Allocate remaining shared burdens using demonstrated physical drivers; justify economic allocation only where a physical relationship cannot be established."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: reject_accounting
+    applies_to: "rejects"
+    rule: "Carry test and rework burdens into accepted output. Do not allocate a negative burden to discarded scanners or ancillary shipping boxes. Document waste treatment separately and prevent duplicate recycling credits."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_components
+      process_id: "scanner_assembly"
+      flow_role: "Purchased component and box"
+      record_type: "BOM and stock ledger"
+      raw_fields: "part id; composition; quantity; mass; receipts; opening/closing stock; returns; model"
+      collection_method: "Weigh representative parts and reconcile issued quantities to stock"
+      unit: "kg"
+      frequency: "Each batch"
+      temporal_coverage: "Declared complete production period"
+      site_scope: "Assembly site and named suppliers"
+      aggregation_rule: "Net consumption / accepted scanner kg; count × measured part mass when needed"
+      quality_evidence: "Scale calibration; supplier part drawing; stock reconciliation"
+    - protocol_id: cp_energy
+      process_id: "scanner_assembly"
+      flow_role: "Electricity"
+      record_type: "Meter and operating log"
+      raw_fields: "start/end readings; units; line; rework; operating time; allocation driver"
+      collection_method: "Submeter assembly/test/packing and reconcile facility total"
+      unit: "kWh"
+      frequency: "Each shift"
+      temporal_coverage: "Same period as accepted output"
+      site_scope: "Assembly site"
+      aggregation_rule: "Allocated kWh × 3.6 / accepted scanner kg"
+      quality_evidence: "Meter calibration; invoices; allocation worksheet"
+    - protocol_id: cp_output
+      process_id: "scanner_assembly"
+      flow_role: "Accepted scanners, shipped boxes and discarded scanners; separate records"
+      record_type: "Acceptance and dispatch ledger"
+      raw_fields: "accepted count; kit mass; box mass; reject mass; stock changes; destination; test settings"
+      collection_method: "Weigh separately; reconcile acceptance, rework and dispatch records"
+      unit: "kg"
+      frequency: "Each batch"
+      temporal_coverage: "Same complete production period"
+      site_scope: "Assembly site and waste consignee"
+      aggregation_rule: "Each output mass / accepted net scanner kg"
+      quality_evidence: "Test reports; scale checks; waste transfer records"
+  calculation_rules:
+    - id: normalize_period
+      applies_to: "all_rows"
+      rule: "q_i = Q_i / M_good; M_good = accepted count × measured net kit mass. Use inventory-adjusted consumption, including failed-unit inputs."
+      inputs:
+        - Q_i
+        - M_good
+      output: "q_i"
+      source_ids: []
+    - id: balance_material
+      applies_to: "mass"
+      rule: "Reconcile input mass against accepted kits, shipped packaging, waste and stock change. Investigate residual against documented measurement uncertainty; no universal tolerance is imposed."
+      inputs:
+        - "mass ledgers"
+      output: "residual explanation"
+      source_ids: []
+  data_quality_requirements:
+    - id: representativeness
+      applies_to: "all_rows"
+      requirement: "Assess technology, geography, time, completeness and reliability of supplier and site records."
+      evidence: "ghg-protocol-product-standard-2011"
+    - id: configuration
+      applies_to: "scanner_output"
+      requirement: "Retain model-specific BOM and acceptance settings. Do not average CIS and CCD models or ADF and flatbed configurations without production weighting and disclosure."
+      evidence: "BOM; test report; production weights"
+validation_rules:
+  - rule_id: identity_check
+    applies_to: "reference"
+    rule: "Reject multifunction equipment and missing required qualifiers; confirm mass normalization and exact flow identity."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - epa-imaging-equipment-v3-1
+  - rule_id: inventory_check
+    applies_to: "inventory"
+    rule: "Require every applicable row, its collection record and unit conversion. Blank UUID is an explicit identity gap, not permission to omit the exchange. Check BOM completeness, packaging separation, positive accepted mass and reconciled totals."
+    source_ids: []
+  - rule_id: boundary_check
+    applies_to: "dataset"
+    rule: "Block complete-life-cycle claims from this manufacturing-only module. Upstream dataset gaps and exclusions must remain visible."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+published_dataset_profile:
+  dataset_role: "Foreground manufacturing data package"
+  downstream_use: "secondary_dataset; background_dataset; process; lifecyclemodel"
+  allowed_use: "Model-specific manufacturing contribution; cradle-to-gate only with complete upstream links"
+  excluded_use: "Standalone full-life-cycle or scanner service comparison; proxy for multifunction printers"
+  required_metadata: "Required qualifiers; supplier boundaries; period; geography; production weighting; allocation"
+  required_quality_disclosure: "UUID gaps; upstream gaps; exclusions; measurement uncertainty; range evidence limitations"
+  update_trigger: "Model, BOM, sensor, supplier, site, test programme or packaging change"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division, CPC 3.0 structure, 30 June 2025; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv; retrieved 2026-09-08"
+    used_for: "Classification identity; row 45262"
+  - id: "epa-imaging-equipment-v3-1"
+    type: "standard"
+    reference: "US EPA, ENERGY STAR Imaging Equipment, Version 3.1; https://www.energystar.gov/sites/default/files/asset/document/ENERGY%20STAR%20Version%203.1%20Imaging%20Equipment%20Specification_0.pdf; retrieved 2026-09-08"
+    used_for: "Eligibility criteria section 1: scanner and multifunction definitions; no numerical efficiency limit adopted"
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard, 2011; https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf; retrieved 2026-09-08"
+    used_for: "Chapters 7–9: partial boundary disclosure, data quality and allocation hierarchy; adapted for this manufacturing module"
+  - id: "epson-gts55-scanner-parts"
+    type: "handbook"
+    reference: "Epson GT-S55/GT-S85 User Guide, Scanner Parts; https://files.support.epson.com/htmldocs/gts55_/gts55_ug/parts_1.htm; retrieved 2026-09-08"
+    used_for: "Physical inspection checklist for cover, feed roller, DC inlet and USB connector; not a bill of materials or quantity source"
+  - id: "epson-v19-v39-scanner-parts"
+    type: "handbook"
+    reference: "Epson V19/V39 Scanner Parts; https://files.support.epson.com/docid/cpd6/cpd62790/source/scanners/source/product_info/references/v19_v39/v19_v39_parts.html; retrieved 2026-09-08"
+    used_for: "Flatbed glass, carriage and USB port; route-specific physical inspection"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:5fc624986aaf67cded048800d6ff94b0867557671439afef9a111319763cbaa5"
+  generated_content_sha256: "sha256:f493409f2dc545f2537b7ac9ea2cde3c8cdefa4b3796666c9e2370843661e8fa"

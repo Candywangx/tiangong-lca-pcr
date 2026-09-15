@@ -2,10 +2,11 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.general-purpose-machinery.steam-turbines-and-other-vapour-turbines
 title:
   en-US: "Steam turbines and other vapour turbines"
-  zh-CN: null
-status: scaffold
+  zh-CN: "蒸汽轮机及其他蒸气轮机"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
+updated_at_utc: "2026-09-05T01:18:00Z"
 domains:
   - "metal-products-machinery-and-equipment"
 modules:
@@ -22,16 +23,84 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "43141"
     title: "Steam turbines and other vapour turbines"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved_flow_identities:
+    - row_id: low_alloy_steel_forging
+      reason: "No state-code-100 candidate exactly represented a delivered low-alloy steel forging."
+    - row_id: titanium_billet
+      reason: "No state-code-100 candidate exactly represented titanium billet feedstock."
+    - row_id: industrial_argon
+      reason: "No state-code-100 candidate exactly represented industrial argon with a compatible volume or mass property."
+    - row_id: metal_finishing_wastewater
+      reason: "The only state-code-100 candidate was evaporation condensate, not metal-finishing wastewater."
+    - row_id: epoxy_zinc_primer
+      reason: "No state-code-100 candidate established the specified two-component epoxy zinc-rich primer formulation."
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: low_alloy_steel_forging
+        reason_code: no_exact_candidate
+        explanation: "Five public state-code-100 candidates were directly reviewed under receipt cbec51b5-35e6-4710-a9c2-6a69aeee5bc3; none matched the required alloy and delivered-forging product state."
+      - row_id: titanium_billet
+        reason_code: no_exact_candidate
+        explanation: "Three public state-code-100 candidates were directly reviewed under receipt c9b3b516-df19-4d67-aa49-d18cc623e848; they were titanium profiles, tubing, or plate rather than billet."
+      - row_id: industrial_argon
+        reason_code: no_exact_candidate
+        explanation: "Five public state-code-100 candidates were directly reviewed under receipt 96bb6361-ea5b-41b8-abd1-053baac0e97e; none established industrial argon with a compatible property and unit group."
+      - row_id: metal_finishing_wastewater
+        reason_code: semantic_mismatch
+        explanation: "The public state-code-100 candidate reviewed under receipt 8c811f8d-4678-48b6-bc1c-42f4a82eac80 was evaporation condensate, not wastewater from metal cleaning or surface treatment."
+      - row_id: epoxy_zinc_primer
+        reason_code: semantic_mismatch
+        explanation: "The two public state-code-100 candidates reviewed under receipt 95312ddf-f4b0-4238-8074-c70332d58174 did not establish a two-component epoxy zinc-rich industrial primer."
+    range_evidence_needs:
+      - range_id: major_material_input_intensity
+        row_ids:
+          - low_alloy_steel_forging
+          - titanium_billet
+          - flux_cored_wire
+          - industrial_argon
+          - industrial_oxygen
+        explanation: "No two independent original-text sources with compatible factory-gate boundary, 1,000 kg product basis, turbine package scope, and product state were verified for material input intensities; collect the product-specific bill of materials and procurement records."
+      - range_id: manufacturing_energy_intensity
+        row_ids:
+          - fabrication_electricity
+          - heat_treatment_natural_gas
+          - assembly_test_electricity
+        explanation: "No two independent boundary-compatible original sources were verified for turbine-manufacturing energy intensities; retain meter- and invoice-based foreground collection."
+      - range_id: water_and_process_fluid_intensity
+        row_ids:
+          - fabrication_process_water
+          - cutting_fluid
+          - test_process_water
+          - turbine_lubricating_oil
+        explanation: "No two independent compatible original sources were verified for water, cutting-fluid, or turbine-fill intensities; collect batch, meter, issue, and fill records."
+      - range_id: waste_and_direct_emission_intensity
+        row_ids:
+          - postindustrial_steel_scrap
+          - waste_cutting_oil
+          - metal_finishing_wastewater
+          - heat_treatment_fossil_co2
+        explanation: "No two independent compatible original sources were verified for fabrication waste or direct-emission intensities; derive values from weighed waste transfers, wastewater records, stack records, and documented fuel-carbon calculations."
+      - range_id: dispatch_material_intensity
+        row_ids:
+          - epoxy_zinc_primer
+          - wooden_pallet
+        explanation: "No two independent compatible original sources were verified for preservation coating or wooden load-board intensity across turbine configurations; collect job-specific coating and dispatch packing records."

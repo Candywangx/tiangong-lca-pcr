@@ -1,10 +1,908 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "48315"
-  title: "Liquid crystal devices n.e.c.; lasers, except laser diodes; other optical appliances and instruments n.e.c."
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.medical-appliances-precision-and-optical-instruments-watches-and-clocks.liquid-crystal-devices-n-e-c-lasers-except-laser-diodes-other-optical-appliances-and-in-0cb52f2d"
+  classification_refs: "CPC 3.0: 48315"
+  covered_products: "Finished liquid-crystal devices n.e.c.; finished lasers other than laser diodes; finished optical appliances and instruments n.e.c."
+  excluded_products: "Laser diodes as products; separately supplied optical elements classified elsewhere; photographic equipment classified elsewhere; separately supplied parts and accessories; incomplete prototypes not placed at the declared factory gate"
+  representative_product: "A finished, accepted device within CPC 48315 whose mass, optical function, architecture, performance grade, included accessories, and route are declared"
+  production_route: "Exactly one of lcd_device_manufacturing, non_diode_laser_manufacturing, or other_optical_instrument_manufacturing"
+  market_state: "Finished and acceptance-tested at the factory gate; packaging inclusion or exclusion declared"
+functional_unit:
+  what: "Delivery of a finished CPC 48315 device that provides the declared liquid-crystal, laser, or other optical function"
+  how_much: "1 kg net mass of accepted finished product at the factory gate"
+  how_well: "Meets the declared optical function, architecture, wavelength or spectral range where relevant, performance grade, dimensional configuration, safety class where relevant, and acceptance-test criteria"
+  how_long_or_cycle: "One factory-gate delivery; no use-life equivalence is asserted"
+  reference_flow_link: "The reference product flow below is the accepted net product mass produced by the selected route"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary begins when purchased materials, components, chemicals, gases, water, and energy cross the manufacturing-site gate. It includes the selected route's in-house forming, coating or patterning, cleaning, assembly, optical alignment, testing, rework, and on-site waste handling up to accepted finished product at the factory gate. Upstream production is represented by linked product datasets. Downstream distribution, use, maintenance, and end-of-life are excluded."
+      source_ids: []
+    - rule_id: sb_route_selection
+      applies_to: "foreground model"
+      rule: "Select exactly one of the three process routes. Do not average across liquid-crystal, non-diode-laser, and other-optical-instrument products."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+    - rule_id: sb_atomic_bom_completion
+      applies_to: "purchased inputs and outputs"
+      rule: "Add an individual row for every additional material, component, process chemical, gas, waste, or direct emission in the actual route; do not use aggregated labels such as optical materials, utilities, chemicals, or wastes."
+      source_ids:
+        - us-epa-2001-computer-display-lca
+        - janssen-et-al-2024-mosaic-instrument-lca
+    - rule_id: sb_upstream_separation
+      applies_to: "purchased inputs"
+      rule: "Model upstream production through linked product datasets and keep supplier production burdens outside the foreground gate-to-gate inventory."
+      source_ids:
+        - us-epa-2001-computer-display-lca
+        - janssen-et-al-2024-mosaic-instrument-lca
+    - rule_id: sb_testing_and_rework
+      applies_to: "selected manufacturing route"
+      rule: "Include acceptance testing, optical alignment, failed tests, rework energy and materials, and resulting rejects when controlled by the reporting site."
+      source_ids:
+        - nasa-cr-95573-1968
+        - janssen-et-al-2024-mosaic-instrument-lca
+boundary_abstraction:
+  declared_starting_condition: "Purchased materials, components, chemicals, gases, water, and energy at the manufacturing-site gate, with incoming product state and supplier geography declared"
+  starting_condition_role: "Gate-to-gate foreground starting condition linked to upstream product datasets"
+  product_classification_scope: "Finished CPC 48315 products only; the selected route and product subtype are mandatory qualifiers"
+  recursive_input_rule: "A purchased input that itself falls within this PCR category is recorded once as an atomic product input with an upstream dataset; it is not recursively reconstructed inside the same foreground process"
+  upstream_dataset_requirement: "Use geography-, technology-, product-state-, and time-representative upstream datasets for every purchased input; disclose proxies and missing component coverage"
+  disclosure: "Declare route, product architecture, optical performance, included components and accessories, packaging treatment, manufacturing geography, technology period, allocation, cut-offs, rework, rejects, wastewater destination, and all omitted capital or downstream stages"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Liquid crystal devices n.e.c., lasers, except laser diodes, other optical appliances and instruments n.e.c."
+    uuid: "e2494992-0c4a-4d0f-9ef2-34c4eeedce96"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "selected route"
+    - "product subtype and intended optical function"
+    - "laser architecture and gain medium or LCD technology where applicable"
+    - "wavelength or spectral range where applicable"
+    - "performance grade and acceptance criteria"
+    - "included components and accessories"
+    - "net-product mass basis"
+    - "packaging inclusion"
+    - "manufacturing geography"
+    - "technology period"
+    - "factory-gate condition"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "accepted finished reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure net accepted product mass on a calibrated balance. Exclude packaging unless the reference-flow qualifiers explicitly include it. Normalize all route inventory quantities to 1 kg net accepted product."
+  - id: electricity_energy_conversion
+    applies_to: "purchased electricity rows"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve the metered electricity record and convert kWh to MJ using 1 kWh = 3.6 MJ. Do not add upstream grid emissions as foreground elementary flows."
+  - id: water_mass_conversion
+    applies_to: "product-water rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer direct mass records. When water is metered by volume, convert using a documented density applicable to the measured temperature and water quality; retain the source volume and density evidence."
+  - id: gas_reference_conditions
+    applies_to: "gaseous natural gas and carbon-dioxide product rows"
+    required_property_ref:
+      name: "Volume or Mass as specified by the selected Tiangong flow"
+      uuid: ""
+    required_unit: "m3 or kg"
+    rule: "For volume records disclose temperature, pressure, and whether the reading is actual or normalized volume. Do not substitute volume and mass without a composition- and condition-specific conversion."
+process_map:
+  - id: lcd_device_manufacturing
+    name: "Liquid-crystal-device manufacturing"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when the reference product is a liquid-crystal device within CPC 48315"
+    role: "Foreground panel/device fabrication, cleaning, assembly, testing, rework, and reject handling"
+    quantitative_reference: "1 kg accepted finished liquid-crystal device"
+  - id: non_diode_laser_manufacturing
+    name: "Non-diode-laser manufacturing"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when the reference product is a laser other than a laser diode"
+    role: "Foreground laser-head/system assembly, alignment, cooling integration, testing, rework, and reject handling"
+    quantitative_reference: "1 kg accepted finished non-diode laser"
+  - id: other_optical_instrument_manufacturing
+    name: "Other optical-instrument manufacturing"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when the reference product is another optical appliance or instrument n.e.c."
+    role: "Foreground optical-component preparation, electronics integration, assembly, alignment, testing, rework, and reject handling"
+    quantitative_reference: "1 kg accepted finished other optical instrument"
+process_inventory:
+  - id: lcd_device_manufacturing
+    label: "Liquid-crystal-device manufacturing"
+    inputs:
+      product:
+        - row_id: lcd_ito_coated_glass
+          role: "Indium-tin-oxide coated glass"
+          name: "Indium tin oxide coated glass"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8b595156-1e52-4615-aebf-2e9f72658a27"
+          property_unit: "Mass / kg"
+          description: "Record the coated glass sheets consumed by the liquid-crystal-device route."
+          amount:
+            expression: "measured incoming mass issued to the route, net of returned unused sheets"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lcd_inputs
+              source_ids:
+                - us-epa-2001-computer-display-lca
+            ranges: []
+        - row_id: lcd_liquid_crystal_mixture
+          role: "Display-panel liquid-crystal mixture"
+          name: "Liquid crystal mixture for display panel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the specific formulated liquid-crystal mixture charged to cells; disclose formulation identity without exposing confidential composition where prohibited."
+          amount:
+            expression: "measured mass issued minus documented recoverable return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lcd_inputs
+              source_ids:
+                - us-epa-2001-computer-display-lca
+            ranges: []
+        - row_id: lcd_polarizer_film
+          role: "LCD polarizer film"
+          name: "Polarizer film for liquid crystal display"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of polarizer film laminated into the device, including route-controlled cutting losses in the issued quantity."
+          amount:
+            expression: "measured mass issued to lamination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lcd_inputs
+              source_ids:
+                - us-epa-2001-computer-display-lca
+            ranges: []
+        - row_id: lcd_sodium_hydroxide
+          role: "Sodium hydroxide"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide crossing the site boundary for route-controlled cleaning or etching; disclose solution concentration and report active-product mass consistently."
+          amount:
+            expression: "measured sodium-hydroxide product mass issued to the route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lcd_inputs
+              source_ids:
+                - us-epa-2001-computer-display-lca
+            ranges: []
+        - row_id: lcd_electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity for panel/device processing, clean-room support allocated to the route, assembly, testing, and rework."
+          amount:
+            expression: "route-attributed metered electricity converted to MJ"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lcd_inputs
+              source_ids:
+                - us-epa-2001-computer-display-lca
+            ranges: []
+        - row_id: lcd_process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water supplied for cleaning, rinsing, and other route-controlled operations."
+          amount:
+            expression: "measured supplied process-water mass, or converted volume under water_mass_conversion"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lcd_inputs
+              source_ids:
+                - us-epa-2001-computer-display-lca
+            ranges: []
+        - row_id: lcd_natural_gas
+          role: "Gaseous natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas only when it crosses the foreground boundary as fuel or process gas for the selected LCD route; disclose role and reference conditions."
+          amount:
+            expression: "measured delivered volume at disclosed reference conditions; record not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lcd_inputs
+              source_ids:
+                - us-epa-2001-computer-display-lca
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: lcd_reference_product
+          role: "Accepted finished liquid-crystal device"
+          name: "Liquid crystal devices n.e.c., lasers, except laser diodes, other optical appliances and instruments n.e.c."
+          flow_type: "product"
+          flow_ref:
+            uuid: "e2494992-0c4a-4d0f-9ef2-34c4eeedce96"
+          property_unit: "Mass / kg"
+          description: "Record the net mass of acceptance-tested finished liquid-crystal devices leaving the process."
+          amount:
+            expression: "measured accepted net product mass before normalization"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "normalized to 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lcd_outputs
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: lcd_glass_production_waste
+          role: "Glass-production waste"
+          name: "waste from glass production"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "9e75655e-039d-421e-abec-bbe625491bc6"
+          property_unit: "Mass / kg"
+          description: "Record discarded coated or uncoated glass generated by cutting, patterning, breakage, or quality rejection; disclose contamination and destination."
+          amount:
+            expression: "measured mass transferred to recovery, treatment, or disposal"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lcd_outputs
+              source_ids:
+                - us-epa-2001-computer-display-lca
+            ranges: []
+        - row_id: lcd_spent_liquid_crystal_mixture
+          role: "Spent liquid-crystal mixture"
+          name: "Spent liquid crystal mixture"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent or off-specification liquid-crystal mixture separately from aqueous wastewater and other solvents."
+          amount:
+            expression: "measured mass transferred to recovery, treatment, or disposal"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lcd_outputs
+              source_ids:
+                - us-epa-2001-computer-display-lca
+            ranges: []
+        - row_id: lcd_process_wastewater
+          role: "LCD-process wastewater"
+          name: "Liquid crystal device process wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record the aqueous wastewater leaving the LCD foreground process before off-site treatment; disclose whether internally recycled water has been netted out."
+          amount:
+            expression: "measured discharge volume to the next treatment boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lcd_outputs
+              source_ids:
+                - us-epa-2001-computer-display-lca
+            ranges: []
+      elementary:
+        []
+  - id: non_diode_laser_manufacturing
+    label: "Non-diode-laser manufacturing"
+    inputs:
+      product:
+        - row_id: laser_nd_yag_crystal
+          role: "Nd:YAG laser crystal"
+          name: "Nd:YAG laser crystal gain medium"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the finished Nd:YAG gain crystal only for a solid-state-laser architecture that uses it. Other gain media require their own atomic product-flow cards."
+          amount:
+            expression: "measured incoming crystal mass issued to accepted and rejected laser heads; record not applicable when the architecture does not use Nd:YAG"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_laser_inputs
+              source_ids:
+                - nasa-cr-95573-1968
+            ranges: []
+        - row_id: laser_carbon_dioxide
+          role: "Carbon dioxide laser gas"
+          name: "Carbon dioxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "27f41c1c-535e-4d2a-bce9-2c7f4de11549"
+          property_unit: "Mass / kg"
+          description: "Record supplied carbon dioxide only for a carbon-dioxide-laser architecture; other laser gases require separate atomic rows."
+          amount:
+            expression: "measured supplied carbon-dioxide product mass; record not applicable when the architecture does not use carbon dioxide"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_laser_inputs
+              source_ids:
+                - nasa-cr-95573-1968
+            ranges: []
+        - row_id: laser_optical_glass
+          role: "Optical glass"
+          name: "Optical Glass"
+          flow_type: "product"
+          flow_ref:
+            uuid: "23ec9229-12c9-4994-b7ec-ccb2220a7b2f"
+          property_unit: "Mass / kg"
+          description: "Record optical glass incorporated into the laser resonator or beam-conditioning assembly; finished mirrors or lenses purchased separately require their own atomic component rows."
+          amount:
+            expression: "measured incoming optical-glass mass issued to the route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_laser_inputs
+              source_ids:
+                - nasa-cr-95573-1968
+            ranges: []
+        - row_id: laser_electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity for assembly, optical alignment, power-conversion tests, cooling tests, acceptance testing, and rework."
+          amount:
+            expression: "route-attributed metered electricity converted to MJ"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_laser_inputs
+              source_ids:
+                - nasa-cr-95573-1968
+            ranges: []
+        - row_id: laser_process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water supplied to route-controlled cooling and cleaning; closed-loop recirculation shall be disclosed without double counting recirculated water as fresh input."
+          amount:
+            expression: "measured make-up and once-through process-water mass, or converted volume under water_mass_conversion"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_laser_inputs
+              source_ids:
+                - nasa-cr-95573-1968
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: laser_reference_product
+          role: "Accepted finished non-diode laser"
+          name: "Liquid crystal devices n.e.c., lasers, except laser diodes, other optical appliances and instruments n.e.c."
+          flow_type: "product"
+          flow_ref:
+            uuid: "e2494992-0c4a-4d0f-9ef2-34c4eeedce96"
+          property_unit: "Mass / kg"
+          description: "Record the net mass of acceptance-tested finished non-diode lasers leaving the process."
+          amount:
+            expression: "measured accepted net product mass before normalization"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "normalized to 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_laser_outputs
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: laser_rejected_nd_yag_crystal
+          role: "Rejected Nd:YAG laser crystal"
+          name: "Rejected Nd:YAG laser crystal"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected or broken Nd:YAG gain crystals separately from other glass or electronic waste; record not applicable for architectures without Nd:YAG."
+          amount:
+            expression: "measured mass transferred to recovery, treatment, or disposal"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_laser_outputs
+              source_ids:
+                - nasa-cr-95573-1968
+            ranges: []
+        - row_id: laser_process_wastewater
+          role: "Non-diode-laser-process wastewater"
+          name: "Non-diode laser process wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record aqueous wastewater from cleaning or once-through cooling before off-site treatment, excluding internally recirculated water."
+          amount:
+            expression: "measured discharge volume to the next treatment boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_laser_outputs
+              source_ids:
+                - nasa-cr-95573-1968
+            ranges: []
+      elementary:
+        []
+  - id: other_optical_instrument_manufacturing
+    label: "Other optical-instrument manufacturing"
+    inputs:
+      product:
+        - row_id: optical_optical_glass
+          role: "Optical glass"
+          name: "Optical Glass"
+          flow_type: "product"
+          flow_ref:
+            uuid: "23ec9229-12c9-4994-b7ec-ccb2220a7b2f"
+          property_unit: "Mass / kg"
+          description: "Record optical glass issued to in-house shaping, polishing, or assembly; separately purchased finished optical components require individual component rows."
+          amount:
+            expression: "measured incoming optical-glass mass issued to the route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_optical_inputs
+              source_ids:
+                - janssen-et-al-2024-mosaic-instrument-lca
+            ranges: []
+        - row_id: optical_printed_wire_board
+          role: "Printed wiring board"
+          name: "Printed Wire Board"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a8bd954c-59b3-4317-b4de-02a17d6da5ca"
+          property_unit: "Mass / kg"
+          description: "Record printed wiring boards incorporated into instrument control, sensing, or readout assemblies; disclose populated or unpopulated supply state."
+          amount:
+            expression: "measured incoming board mass incorporated into accepted and rejected assemblies"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_optical_inputs
+              source_ids:
+                - janssen-et-al-2024-mosaic-instrument-lca
+            ranges: []
+        - row_id: optical_electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity for optical-component preparation, clean-room or controlled-space support allocated to the route, electronics integration, alignment, acceptance testing, and rework."
+          amount:
+            expression: "route-attributed metered electricity converted to MJ"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_optical_inputs
+              source_ids:
+                - janssen-et-al-2024-mosaic-instrument-lca
+            ranges: []
+        - row_id: optical_process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water supplied for in-house glass preparation, polishing, and cleaning."
+          amount:
+            expression: "measured process-water mass, or converted volume under water_mass_conversion"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_optical_inputs
+              source_ids:
+                - janssen-et-al-2024-mosaic-instrument-lca
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: optical_reference_product
+          role: "Accepted finished other optical instrument"
+          name: "Liquid crystal devices n.e.c., lasers, except laser diodes, other optical appliances and instruments n.e.c."
+          flow_type: "product"
+          flow_ref:
+            uuid: "e2494992-0c4a-4d0f-9ef2-34c4eeedce96"
+          property_unit: "Mass / kg"
+          description: "Record the net mass of acceptance-tested finished optical instruments leaving the process."
+          amount:
+            expression: "measured accepted net product mass before normalization"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "normalized to 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_optical_outputs
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: optical_glass_polishing_sludge
+          role: "Glass polishing sludge"
+          name: "Glass polishing sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record sludge containing glass fines and polishing medium from in-house optical-glass polishing; disclose water content and treatment destination."
+          amount:
+            expression: "measured wet mass transferred to recovery, treatment, or disposal, with dry-solids fraction reported"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_optical_outputs
+              source_ids:
+                - janssen-et-al-2024-mosaic-instrument-lca
+            ranges: []
+        - row_id: optical_process_wastewater
+          role: "Optical-instrument-process wastewater"
+          name: "Optical instrument process wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record aqueous wastewater from polishing and cleaning before off-site treatment, excluding water retained in separately reported sludge."
+          amount:
+            expression: "measured discharge volume to the next treatment boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_optical_outputs
+              source_ids:
+                - janssen-et-al-2024-mosaic-instrument-lca
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: al_subdivision_first
+    applies_to: "shared lines, clean rooms, utilities, and test facilities"
+    rule: "Subdivide or meter route-specific processes wherever technically feasible before applying allocation."
+    source_ids: []
+  - rule_id: al_physical_driver
+    applies_to: "unavoidable shared burdens"
+    rule: "Allocate by a documented causal physical driver such as machine time, metered energy, occupied controlled-space time, or processed mass when that driver represents resource use."
+    source_ids: []
+  - rule_id: al_economic_fallback
+    applies_to: "shared burdens without defensible physical relation"
+    rule: "Use economic allocation only as a disclosed fallback; report the revenue basis, price period, currency, and sensitivity to material price changes."
+    source_ids: []
+  - rule_id: al_recycling_boundary
+    applies_to: "recovered glass, metal, boards, or process chemicals"
+    rule: "Report waste quantity and recovery destination at the factory gate. Do not claim avoided burden or recycled-content credit inside the foreground inventory unless the downstream modelling method and allocation convention are explicitly declared."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_lcd_inputs
+      process_id: "lcd_device_manufacturing"
+      flow_role: "each listed atomic product input"
+      record_type: "purchase, issue, return, meter, and batch records"
+      raw_fields: "row_id; supplier flow identity; quantity; unit; concentration or reference conditions; issue and return quantity; meter boundary; batch_id; timestamp"
+      collection_method: "reconcile purchasing and stores records with route meters and production issues"
+      unit: "row unit"
+      frequency: "each batch or continuous meter with monthly reconciliation"
+      temporal_coverage: "representative continuous 12-month period or all batches for shorter campaigns"
+      site_scope: "all site operations serving the selected LCD route"
+      aggregation_rule: "sum net issued quantity by row and divide by accepted net product mass"
+      quality_evidence: "invoices; material issue and return records; meter calibration; batch genealogy; reconciliation record"
+    - protocol_id: cp_lcd_outputs
+      process_id: "lcd_device_manufacturing"
+      flow_role: "accepted product and each listed waste output"
+      record_type: "scale, acceptance, reject, discharge, and waste-transfer records"
+      raw_fields: "row_id; quantity; unit; batch_id; acceptance status; contamination; destination; discharge meter; timestamp"
+      collection_method: "reconcile accepted-product scales with reject logs, discharge meters, and waste manifests"
+      unit: "kg or m3"
+      frequency: "each batch or dispatch, with monthly reconciliation"
+      temporal_coverage: "same period as cp_lcd_inputs"
+      site_scope: "same foreground site and route"
+      aggregation_rule: "sum each output by row and divide by accepted net product mass"
+      quality_evidence: "calibrated scales; acceptance records; waste manifests; discharge-meter records; mass-balance reconciliation"
+    - protocol_id: cp_laser_inputs
+      process_id: "non_diode_laser_manufacturing"
+      flow_role: "each listed atomic product input"
+      record_type: "purchase, issue, gas, water, electricity, and test records"
+      raw_fields: "row_id; architecture; material or gas identity; quantity; unit; gas conditions; meter boundary; serial_or_batch_id; timestamp"
+      collection_method: "reconcile component issues and utility meters to the declared laser architecture and accepted serial numbers"
+      unit: "row unit"
+      frequency: "each build or continuous meter with monthly reconciliation"
+      temporal_coverage: "representative continuous 12-month period or all builds for shorter campaigns"
+      site_scope: "all site operations serving the selected laser route"
+      aggregation_rule: "sum route-attributed quantity by row and divide by accepted net product mass"
+      quality_evidence: "supplier records; issue records; meter calibration; architecture bill of materials; serial genealogy"
+    - protocol_id: cp_laser_outputs
+      process_id: "non_diode_laser_manufacturing"
+      flow_role: "accepted product and each listed waste output"
+      record_type: "scale, acceptance-test, reject, discharge, and waste-transfer records"
+      raw_fields: "row_id; quantity; unit; architecture; serial_or_batch_id; acceptance status; destination; timestamp"
+      collection_method: "reconcile accepted-product scales with test logs, reject records, wastewater meters, and waste manifests"
+      unit: "kg or m3"
+      frequency: "each build, test, or dispatch, with monthly reconciliation"
+      temporal_coverage: "same period as cp_laser_inputs"
+      site_scope: "same foreground site and route"
+      aggregation_rule: "sum each output by row and divide by accepted net product mass"
+      quality_evidence: "calibrated scales; test records; reject records; waste manifests; discharge-meter records"
+    - protocol_id: cp_optical_inputs
+      process_id: "other_optical_instrument_manufacturing"
+      flow_role: "each listed atomic product input"
+      record_type: "purchase, issue, water, electricity, and production records"
+      raw_fields: "row_id; component state; quantity; unit; meter boundary; instrument_id_or_batch; timestamp"
+      collection_method: "reconcile bill-of-materials issues and route meters to accepted instrument builds"
+      unit: "row unit"
+      frequency: "each build or continuous meter with monthly reconciliation"
+      temporal_coverage: "representative continuous 12-month period or all builds for shorter campaigns"
+      site_scope: "all site operations serving the selected optical-instrument route"
+      aggregation_rule: "sum route-attributed quantity by row and divide by accepted net product mass"
+      quality_evidence: "supplier records; issue records; bill of materials; meter calibration; build genealogy"
+    - protocol_id: cp_optical_outputs
+      process_id: "other_optical_instrument_manufacturing"
+      flow_role: "accepted product and each listed waste output"
+      record_type: "scale, acceptance-test, sludge, discharge, and waste-transfer records"
+      raw_fields: "row_id; quantity; unit; instrument_id_or_batch; acceptance status; sludge solids fraction; destination; timestamp"
+      collection_method: "reconcile accepted-product scales with test logs, sludge records, discharge meters, and waste manifests"
+      unit: "kg or m3"
+      frequency: "each build or dispatch, with monthly reconciliation"
+      temporal_coverage: "same period as cp_optical_inputs"
+      site_scope: "same foreground site and route"
+      aggregation_rule: "sum each output by row and divide by accepted net product mass"
+      quality_evidence: "calibrated scales; acceptance records; sludge sampling; waste manifests; discharge-meter records"
+  calculation_rules:
+    - id: cr_reference_normalization
+      applies_to: "every selected-route inventory row"
+      rule: "normalized amount = route-period row quantity / route-period accepted net product mass"
+      inputs:
+        - "reconciled row quantity"
+        - "accepted net product mass"
+      output: "row amount per 1 kg accepted finished product"
+      source_ids: []
+    - id: cr_electricity_mj
+      applies_to: "electricity rows"
+      rule: "electricity_MJ = metered_electricity_kWh × 3.6 MJ/kWh"
+      inputs:
+        - "route-attributed electricity meter reading in kWh"
+      output: "electricity in MJ per reference flow"
+      source_ids: []
+    - id: cr_water_mass
+      applies_to: "process-water rows measured by volume"
+      rule: "water_mass_kg = measured_volume_m3 × documented_density_kg_per_m3"
+      inputs:
+        - "measured water volume"
+        - "applicable measured or supplier density"
+      output: "process-water mass in kg per reference flow"
+      source_ids: []
+    - id: cr_route_mass_balance
+      applies_to: "each selected route"
+      rule: "reconcile total measured incoming mass with accepted product, separately reported waste, direct emissions, inventory change, and a disclosed balance difference; investigate material differences before release"
+      inputs:
+        - "atomic input and output records"
+        - "opening and closing inventory"
+      output: "route mass-balance check and unresolved difference"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all flows"
+      requirement: "Preserve supplier product identity, Tiangong UUID where confirmed, and the exact product or waste state; do not substitute broad category flows for unresolved atomic exchanges."
+      evidence: "supplier specification; direct-read identity audit; batch or waste record"
+    - id: dq_route
+      applies_to: "product and process identity"
+      requirement: "Demonstrate that exactly one route applies and disclose subtype, architecture, optical function, wavelength or spectral range, performance grade, and acceptance criteria."
+      evidence: "product specification; routing; bill of materials; acceptance plan"
+    - id: dq_measurement
+      applies_to: "mass, volume, and electricity records"
+      requirement: "Use calibrated instruments with stated coverage and retain all conversions, concentrations, gas reference conditions, and meter allocation factors."
+      evidence: "calibration certificates; raw readings; conversion worksheet"
+    - id: dq_temporal
+      applies_to: "foreground dataset period"
+      requirement: "Prefer a continuous 12-month period; for shorter or campaign production, cover all builds and explain seasonality, utilization, start-up, and rework representativeness."
+      evidence: "production calendar; meter period; campaign records"
+    - id: dq_completeness
+      applies_to: "selected route"
+      requirement: "Reconcile purchases, issues, returns, accepted output, rejects, waste transfers, wastewater, direct emissions, and inventory changes; disclose missing electronics, prototypes, testing, and manufacturing losses."
+      evidence: "reconciliation; mass balance; omission register; data coverage matrix"
+    - id: dq_source_fit
+      applies_to: "linked upstream datasets"
+      requirement: "Disclose geography, technology, time, product state, and proxy fit for every material upstream dataset."
+      evidence: "dataset mapping table and proxy justification"
+validation_rules:
+  - rule_id: vr_identity_and_route
+    applies_to: "dataset identity"
+    rule: "Confirm the reference product is within CPC 48315, is not a laser diode, and selects exactly one process route with all Required qualifiers."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: vr_reference_mass
+    applies_to: "reference flow and inventory"
+    rule: "Confirm accepted net product equals 1 kg after normalization and every included row uses the same accepted-product denominator."
+    source_ids: []
+  - rule_id: vr_uuid_semantics
+    applies_to: "UUID-bearing rows"
+    rule: "Confirm selected Tiangong UUID, flow type, property, unit group, product state, and official Chinese baseName remain consistent with the direct-read identity; do not accept a proxy UUID."
+    source_ids: []
+  - rule_id: vr_unresolved_atomic_rows
+    applies_to: "UUID-empty rows"
+    rule: "Confirm each UUID-empty row remains chemically or physically specific, appears in manifest unresolved metadata, and is not replaced by a broad candidate."
+    source_ids: []
+  - rule_id: vr_inventory_completeness
+    applies_to: "selected route"
+    rule: "Confirm all actual bill-of-materials inputs, utilities, chemicals, gases, wastes, wastewater, direct emissions, testing, rework, and rejects are represented by atomic rows or disclosed as absent."
+    source_ids:
+      - us-epa-2001-computer-display-lca
+      - nasa-cr-95573-1968
+      - janssen-et-al-2024-mosaic-instrument-lca
+  - rule_id: vr_balance_and_allocation
+    applies_to: "selected route"
+    rule: "Confirm mass-balance differences are investigated and all shared burdens use disclosed subdivision or allocation drivers."
+    source_ids: []
+  - rule_id: vr_range_status
+    applies_to: "quantitative QA"
+    rule: "Confirm no external empirical range is claimed unless at least two independent, original-text-verified, boundary-compatible sources support it; otherwise retain foreground collection and the manifest evidence need."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground product-manufacturing dataset"
+  downstream_use: "secondary_dataset; background_dataset after independent review and resolution of intended-use completeness"
+  allowed_use: "Product carbon footprint or LCA modelling for a declared CPC 48315 device when route, function, architecture, performance, geography, technology period, boundary, and data quality match the study"
+  excluded_use: "Generic averaging across the three routes; laser-diode production; use-phase service comparison; medical or safety-performance equivalence; substitution for separately classified optical components; claims outside the declared product and factory-gate boundary"
+  required_metadata: "PCR id and version; product subtype; selected route; optical function; architecture and gain medium or LCD technology where applicable; wavelength or spectral range; performance grade; included accessories; net mass; packaging treatment; geography; technology period; data period; allocation; cut-offs; upstream dataset mapping; unresolved UUIDs"
+  required_quality_disclosure: "primary-data share; meter and scale coverage; temporal and production coverage; mass-balance difference; rework and reject coverage; clean-room or test-facility allocation; missing bill-of-materials items; wastewater and direct-emission coverage; proxy datasets; range-evidence gaps"
+  update_trigger: "material change in product architecture, LCD or laser technology, optical performance, supplier bill of materials, site, clean-room or test allocation, yield, energy or water system, waste treatment, upstream dataset fit, or resolution of a UUID or range-evidence need"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-07)"
+    used_for: "Official CPC 48315 product-category identity and exclusion of laser diodes from the laser product phrase"
+  - id: "us-epa-2001-computer-display-lca"
+    type: "official_guidance"
+    reference: "U.S. Environmental Protection Agency, *Desktop Computer Displays: A Life-Cycle Assessment, Volume 1*, December 2001, https://www.epa.gov/sites/default/files/2014-01/documents/computer_display_lca.pdf (retrieved 2026-09-07)"
+    used_for: "LCD process decomposition; glass, panel components, liquid crystals, polarizer, circuit boards, electricity, fuels, water, waste, wastewater, testing, yield, and uncertainty collection needs; not used as a numeric range"
+  - id: "nasa-cr-95573-1968"
+    type: "official_guidance"
+    reference: "NASA Contractor Report NASA-CR-95573, *Deep Space Communication and Navigation Study, Volume 2: Communication Technology*, 1 May 1968, https://ntrs.nasa.gov/citations/19680019322 (retrieved 2026-09-07)"
+    used_for: "Non-diode laser architecture, gain medium, power conversion, ancillary components, and cooling boundary; not used as a numeric range"
+  - id: "janssen-et-al-2024-mosaic-instrument-lca"
+    type: "literature"
+    reference: "Janssen et al., *Estimate of the environmental impact of the ELT instrument MOSAIC*, Proceedings of SPIE 13099, 130990P, 2024, https://doi.org/10.1117/12.3018865 (retrieved 2026-09-07)"
+    used_for: "Other optical-instrument subsystem and material boundary; electronics, prototyping, testing, manufacturing loss, transport, and uncertainty disclosure; not used as a numeric range"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:8304dcf9b3d9dc982453516c5de8f95dde2cfb411ed84fe5378add2def42f59b"
+  generated_content_sha256: "sha256:6801ce668c6bbe998b259939b330bc1496f645f72692046d44bcd4bbd04b8324"

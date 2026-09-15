@@ -2,12 +2,13 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.general-purpose-machinery.furnace-burners-for-liquid-fuel-for-pulverized-solid-fuel-or-for-gas-mechanical-stokers-79477d75
 title:
   en-US: "Furnace burners for liquid fuel, for pulverized solid fuel or for gas; mechanical stokers, mechanical grates, mechanical ash dischargers and similar appliances"
-  zh-CN: null
-status: scaffold
+  zh-CN: "炉用液体燃料、粉状固体燃料或气体燃烧器；机械加煤机、机械炉排、机械卸灰器及类似装置"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
+updated_at_utc: "2026-09-05T09:32:00Z"
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +23,82 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "43410"
     title: "Furnace burners for liquid fuel, for pulverized solid fuel or for gas; mechanical stokers, mechanical grates, mechanical ash dischargers and similar appliances"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  semantic_boundary:
+    decision: promote_legacy
+    review: "The product boundary is manufactured furnace burners and mechanical firing, grate, and ash-discharging appliances. The similarly named CPC 88765 scaffold concerns manufacturing services on inputs owned by others and is neither material nor semantically equivalent."
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: stainless_steel_sheet
+        reason_code: no_exact_candidate
+        explanation: "No state-100 candidate aligned English and Chinese stainless-steel-sheet identity with its classification; receipt 9ad95067-1dda-4718-a7c5-7aeb650896e4 records the rejected candidates."
+      - row_id: cast_iron
+        reason_code: no_exact_candidate
+        explanation: "The candidate named Cast Iron was classified as iron ore; other candidates were pig iron or specific cast products; receipt be4019ad-1445-4c91-a10d-95e7a71b79aa records the rejected candidates."
+      - row_id: metal_treatment_wastewater
+        reason_code: no_exact_candidate
+        explanation: "Candidates were generic wastewater/sewerage or evaporation condensate rather than wastewater from metal surface treatment; receipt b62b2734-2530-4abf-9916-0d39bb52dcdd records the rejected candidates."
+      - row_id: metal_treatment_sludge
+        reason_code: no_exact_candidate
+        explanation: "No candidate established metal-bearing sludge from surface treatment; receipt 5cd0e18a-f043-4235-9343-30078abe1392 records the rejected candidates."
+      - row_id: gas_test_nox
+        reason_code: no_exact_candidate
+        explanation: "The aggregated nitrogen-oxides candidate was classified to non-urban air or high stacks rather than unspecified air; receipt f8bf36bc-8fb1-4822-b5cd-e96b2cad7e70 records the rejected candidates."
+      - row_id: diesel_test_nox
+        reason_code: no_exact_candidate
+        explanation: "The aggregated nitrogen-oxides candidate was classified to non-urban air or high stacks rather than unspecified air; receipt f8bf36bc-8fb1-4822-b5cd-e96b2cad7e70 records the rejected candidates."
+    range_evidence_needs:
+      - range_id: alloy_steel_sheet_amount
+        row_ids: [alloy_steel_sheet]
+        explanation: "Two independent boundary-compatible empirical sources for alloy-steel-sheet input per kg of finished appliance were not verified; collect the product-specific bill of materials."
+      - range_id: stainless_steel_sheet_amount
+        row_ids: [stainless_steel_sheet]
+        explanation: "Two independent boundary-compatible empirical sources were not verified; collect route- and model-specific stainless-steel input."
+      - range_id: cast_iron_amount
+        row_ids: [cast_iron]
+        explanation: "Two independent boundary-compatible empirical sources were not verified; collect model-specific cast-iron component mass."
+      - range_id: fabrication_electricity_amount
+        row_ids: [fabrication_electricity]
+        explanation: "Two independent product-specific factory datasets with compatible allocation and boundary were not verified; collect metered electricity and allocate to the reference product."
+      - range_id: industrial_oxygen_amount
+        row_ids: [industrial_oxygen]
+        explanation: "Two independent compatible empirical sources were not verified; collect purchased or metered oxygen used in applicable cutting operations."
+      - range_id: process_water_amount
+        row_ids: [process_water]
+        explanation: "Two independent compatible empirical sources were not verified; collect water-meter and batch records for onsite aqueous treatment."
+      - range_id: sodium_hydroxide_amount
+        row_ids: [sodium_hydroxide]
+        explanation: "Two independent compatible empirical sources were not verified; collect dosing and purchase records for onsite alkaline cleaning."
+      - range_id: gas_test_fuel_and_emissions
+        row_ids: [natural_gas_test, gas_test_co2, gas_test_nox]
+        explanation: "Two independent product-specific hot-test datasets with compatible test duty and boundary were not verified; collect test-log fuel use and direct emissions."
+      - range_id: diesel_test_fuel_and_emissions
+        row_ids: [diesel_test_fuel, diesel_test_co2, diesel_test_nox]
+        explanation: "Two independent product-specific hot-test datasets with compatible test duty and boundary were not verified; collect test-log fuel use and direct emissions."
+      - range_id: steel_scrap_amount
+        row_ids: [steel_scrap]
+        explanation: "Two independent compatible fabrication-scrap datasets were not verified; collect segregated weigh-ticket or mass-balance records."
+      - range_id: metal_treatment_residuals
+        row_ids: [metal_treatment_wastewater, metal_treatment_sludge]
+        explanation: "Two independent compatible empirical sources were not verified; collect discharge-flow, composition, moisture, and waste-manifest records."
+      - range_id: fabrication_particulate_amount
+        row_ids: [fabrication_particulate]
+        explanation: "Two independent compatible measured-emission datasets were not verified; collect representative monitored or site-calculated direct particulate emissions."

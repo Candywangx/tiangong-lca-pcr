@@ -1,10 +1,606 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "42943"
-  title: "Cloth, grill, netting and fencing, of iron or steel wire; expanded metal of iron or steel"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.cloth-grill-netting-and-fencing-of-iron-or-steel-wire-expanded-metal-of-iron-or-steel"
+  classification_refs: "CPC 3.0: 42943 (exact classification context; mapping acceptance is governed separately)"
+  covered_products: "Iron- or steel-wire cloth; welded or woven grill and netting; non-barbed wire fencing; raised or flattened expanded iron or steel sheet or plate"
+  excluded_products: "Barbed wire; copper or aluminium wire mesh; plastic or textile netting; insulated electrical wire; installation services; fabricated assemblies whose principal function is outside this product boundary"
+  representative_product: "Factory-gate steel wire mesh or expanded steel metal supplied as a declared sheet, panel, or roll"
+  production_route: "Wire route: purchased wire rod or steel wire, with route-specific drawing, weaving, knotting or resistance welding; expanded-metal route: flat steel sheet or coil, slit and stretched, optionally flattened; either route may include cutting, coiling, heat treatment, galvanising, and finishing"
+  market_state: "Conforming dry product at the factory gate, uncoated or with the declared coating, supplied as sheet, panel, or roll; detachable packaging excluded from net product mass"
+functional_unit:
+  what: "Supply iron- or steel-wire mesh, grill, netting, non-barbed fencing, or expanded iron or steel metal for the declared screening, separation, guarding, reinforcement, or fencing function"
+  how_much: "1 kg net mass of conforming factory-gate product"
+  how_well: "Meets the declared product family, steel grade, construction, aperture or mesh geometry, wire diameter or strand dimensions, surface finish or coating, dimensional tolerance, and applicable customer specification"
+  how_long_or_cycle: "One factory-gate delivery; service life and use cycles are outside this cradle-to-gate reference"
+  reference_flow_link: "The reference amount is 1 kg of the reference_product_output flow after normalising the production campaign to net conforming output"
+system_boundary:
+  rules:
+    - rule_id: boundary_site_gate
+      applies_to: "all foreground datasets"
+      rule: "Include all route-specific unit operations performed from receipt of the declared steel feedstock through net conforming product at the factory gate, including associated site utilities, chemicals, wastes, and direct emissions."
+      source_ids:
+        - usitc-standard-steel-welded-wire-mesh-2021
+        - eu-jrc-ferrous-metals-processing-2022
+        - ppg-expanded-metal-process-2018
+    - rule_id: boundary_upstream_inputs
+      applies_to: "purchased materials and energy"
+      rule: "Represent production and delivery of purchased inputs through upstream datasets; do not duplicate those upstream processes in the foreground inventory."
+      source_ids: []
+    - rule_id: boundary_actual_exchanges
+      applies_to: "unlisted site exchanges"
+      rule: "Add every material site exchange not explicitly represented below as its own chemically or physically specific product, waste, or elementary flow; do not substitute a utility, chemical, waste, or emissions umbrella."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Steel feedstock received at the foreground site as hot-rolled wire rod, drawn steel wire, or unexpanded flat steel sheet or coil; the selected state and any pre-existing coating must be declared"
+  starting_condition_role: "Upstream product input to the route-specific forming and finishing process"
+  product_classification_scope: "Factory-gate products semantically within iron- or steel-wire cloth, grill, netting, non-barbed fencing, or expanded iron or steel metal; CPC 3.0 code 42943 is classification context, not canonical identity ownership"
+  recursive_input_rule: "A purchased input already within this PCR product category, such as preformed mesh sent for coating, remains a product input with its own upstream dataset; do not recreate its production or count it as fresh steel feedstock"
+  upstream_dataset_requirement: "Link each purchased steel form, zinc, chemical, electricity, water, fuel, and same-category intermediate to a geography-, technology-, grade-, and delivery-state-appropriate upstream dataset"
+  disclosure: "Declare product family, starting feedstock state, integrated versus purchased wire drawing, mesh-forming technology, expanded-metal geometry, surface-preparation route, coating route, finishing operations, scrap recovery boundary, wastewater or bath treatment boundary, packaging inclusion, site, geography, and reference period"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Wire Mesh"
+    uuid: "f225c346-5bf4-489e-9342-9e1dcedca6ae"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product family (wire_cloth"
+    - welded_grill_or_netting
+    - woven_or_knotted_netting_or_fencing
+    - "or expanded_metal)"
+    - "iron or steel grade and alloy family"
+    - "wire diameter or sheet thickness"
+    - aperture
+    - "mesh or strand geometry"
+    - welded
+    - woven
+    - knotted
+    - "raised or flattened construction"
+    - "coating material and coating state"
+    - sheet
+    - "panel or roll delivery form"
+    - "net product mass"
+    - "production route and starting feedstock state"
+    - "manufacturing site and geography"
+    - "reference period"
+    - "recycled-content claim basis"
+    - "included finishing operations"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product and mass-based inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use net dry mass of conforming product. Exclude detachable packaging, pallets, carriers, and unrecovered process scrap. Report moisture or retained process liquid if material to the delivered state."
+  - id: area_to_mass
+    applies_to: "production or sales records reported by area"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert m2 to kg only with measured lot- or product-specific mass per area that matches alloy, wire or strand dimensions, aperture, and coating. Do not use a category-wide default conversion."
+  - id: electricity_energy
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electricity by delivery point and convert kWh to MJ using 1 kWh = 3.6 MJ; disclose voltage level, grid geography, and whether transformation or site-distribution losses are included."
+  - id: gas_volume
+    applies_to: "gaseous natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Record metered gas volume at the stated temperature and pressure reference conditions. Convert to energy only with a measured or supplier-specific calorific value for the same period."
+  - id: solution_mass
+    applies_to: "Hydrochloric acid (30%) and other supplied solutions"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record mass of the supplied solution and its concentration. Do not report active-acid mass as though it were supplied-product mass."
+process_map:
+  - id: route_specific_fabrication
+    name: "Route-specific forming, mesh making, finishing, and packing"
+    inclusion: "required"
+    inclusion_condition: "Select and disclose one covered product family and record only the route operations actually performed at the foreground site"
+    role: "foreground production"
+    quantitative_reference: "Net kg of conforming factory-gate product"
+process_inventory:
+  - id: route_specific_fabrication
+    label: "Route-specific forming, mesh making, finishing, and packing"
+    inputs:
+      product:
+        - row_id: steel_wire_rod_input
+          role: "Hot-rolled low-carbon steel wire rod"
+          name: "Hot-rolled low-carbon steel wire rod"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this input only when wire drawing occurs within the foreground site. The UUID remains unresolved because no state-100 candidate passed the bilingual identity audit."
+          amount:
+            expression: "Measured received mass issued to the covered production campaign, net of stock change and material returned to stores"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - usitc-standard-steel-welded-wire-mesh-2021
+                - eu-jrc-ferrous-metals-processing-2022
+            ranges: []
+        - row_id: steel_wire_input
+          role: "Purchased drawn steel wire"
+          name: "Steel Wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "62bb3717-f62c-43e0-baca-46a1e6f847c4"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record purchased wire that crosses the site boundary for weaving, knotting, welding, or fencing. Do not use this row for wire rod drawn on site."
+          amount:
+            expression: "Measured received mass issued to the covered production campaign, net of stock change and returns"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - usitc-standard-steel-welded-wire-mesh-2021
+            ranges: []
+        - row_id: steel_sheet_input
+          role: "Unexpanded flat steel sheet or coil"
+          name: "Unexpanded flat steel sheet or coil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the flat steel feedstock only for the expanded-metal route. The UUID remains unresolved because the public sheet candidates had conflicting bilingual material or form identities."
+          amount:
+            expression: "Measured received mass issued to slit-and-stretch production, net of stock change and returns"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - ppg-expanded-metal-process-2018
+            ranges: []
+        - row_id: electricity_input
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200b9a66 / MJ"
+          description: "Record electricity crossing the site meter for drawing, welding, weaving, expanding, flattening, cutting, coiling, pumping, ventilation, and finishing that are within the declared foreground boundary."
+          amount:
+            expression: "Metered electricity allocated from submetered operations or a documented campaign allocation and converted to MJ"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_meters
+              source_ids:
+                - usitc-standard-steel-welded-wire-mesh-2021
+                - ppg-expanded-metal-process-2018
+            ranges: []
+        - row_id: lubricating_oil_input
+          role: "Wire-drawing lubricating oil"
+          name: "lubricating oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "aec6f1a5-7b09-4704-870d-434d3ada0edd"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record fresh lubricating oil crossing the boundary only when oil-based drawing lubrication is used on site. Declare formulation and account separately for recovered oil if it leaves the boundary."
+          amount:
+            expression: "Purchased mass plus opening stock minus closing stock and separately documented recovered oil returned to use"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - eu-jrc-ferrous-metals-processing-2022
+            ranges: []
+        - row_id: hydrochloric_acid_30_input
+          role: "Hydrochloric acid supplied at 30%"
+          name: "Hydrochloric acid (30%)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "56414d25-a353-4d67-b362-87212ce6011d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg supplied solution"
+          description: "Record this acid product only when a 30% hydrochloric-acid supply crosses the boundary for on-site pickling. Other acid chemistries or supply concentrations must be separate product-flow rows."
+          amount:
+            expression: "Purchased solution mass plus opening stock minus closing stock and off-site returns"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - eu-jrc-ferrous-metals-processing-2022
+            ranges: []
+        - row_id: zinc_metal_input
+          role: "Zinc metal for galvanising"
+          name: "Special High Grade zinc metal"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2d8ff1bd-e128-4c74-a99d-b8734c99bbd2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record zinc metal only when hot-dip galvanising occurs within the foreground boundary. Declare the zinc grade and separate any other alloy additions into their own rows."
+          amount:
+            expression: "Zinc purchases plus opening bath inventory minus closing bath inventory, off-site returns, and separately measured recoverable zinc-bearing outputs"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - eu-jrc-ferrous-metals-processing-2022
+            ranges: []
+        - row_id: process_water_input
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record process water crossing the site boundary when used for aqueous cleaning, rinsing, bath make-up, or direct process cooling. Exclude non-process sanitary water and avoid counting recirculated water repeatedly."
+          amount:
+            expression: "Metered or tank-balanced make-up water crossing the foreground boundary, excluding internal recirculation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_meter
+              source_ids:
+                - eu-jrc-ferrous-metals-processing-2022
+            ranges: []
+        - row_id: natural_gas_input
+          role: "Gaseous natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Record natural gas only for on-site fired heating, drying, heat treatment, or galvanising-bath heating included in the foreground boundary."
+          amount:
+            expression: "Metered volume at declared reference conditions, assigned by submeter or documented campaign allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_meters
+              source_ids:
+                - eu-jrc-ferrous-metals-processing-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Conforming wire mesh or expanded metal"
+          name: "Wire Mesh"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f225c346-5bf4-489e-9342-9e1dcedca6ae"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record net conforming product after route-specific forming and all included finishing. Use the selected Tiangong Chinese and English baseNames only as database display identities; preserve the fuller declared product qualifiers."
+          amount:
+            expression: "Net measured conforming output, normalised to exactly 1 kg reference product"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net conforming reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output_and_waste_mass
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: steel_scrap_output
+          role: "Post-industrial steel scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record steel offcuts, trimmings, rejected pieces, and other segregated post-industrial steel scrap leaving the foreground boundary. Do not include internally remelted or immediately reworked material as an external output."
+          amount:
+            expression: "Weighed mass leaving the site, adjusted for documented stock change and excluding material internally reworked into conforming product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_and_waste_mass
+              source_ids:
+                - usitc-standard-steel-welded-wire-mesh-2021
+                - ppg-expanded-metal-process-2018
+            ranges: []
+        - row_id: spent_pickling_liquor_output
+          role: "Spent hydrochloric-acid steel-pickling liquor"
+          name: "Spent hydrochloric-acid steel-pickling liquor"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this specific waste only when hydrochloric-acid pickling is performed and spent bath liquor crosses the foreground boundary. Keep rinse-water effluent and other acids in separate rows."
+          amount:
+            expression: "Weighed or metered spent bath liquor transferred off site or to a separately modelled treatment process, net of regenerated liquor returned to the bath"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_and_waste_mass
+              source_ids:
+                - eu-jrc-ferrous-metals-processing-2022
+            ranges: []
+        - row_id: zinc_dross_output
+          role: "Zinc dross from galvanising bath"
+          name: "Zinc dross from galvanising bath"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record zinc dross only when it is separately removed from an on-site galvanising bath and leaves the foreground boundary. Do not combine it with ash, scrap steel, sludge, or wastewater."
+          amount:
+            expression: "Weighed segregated zinc dross leaving the bath and crossing the site or treatment boundary"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_and_waste_mass
+              source_ids:
+                - eu-jrc-ferrous-metals-processing-2022
+            ranges: []
+      elementary:
+        - row_id: fossil_co2_output
+          role: "Direct fossil carbon dioxide"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record direct fossil carbon dioxide crossing to air only from on-site combustion units within the foreground boundary. Do not include upstream grid-electricity or purchased-fuel production emissions."
+          amount:
+            expression: "Facility stack or emissions-system record assigned to the included combustion units and production campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-jrc-ferrous-metals-processing-2022
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide_routes
+    applies_to: "mixed product families or materially different routes"
+    rule: "Prefer separate meters, batch records, and process subdivision for wire-mesh and expanded-metal routes and for coated versus uncoated production. Do not allocate one undifferentiated plant total when route-resolved records exist."
+    source_ids: []
+  - rule_id: allocation_shared_operations
+    applies_to: "shared electricity, gas, water, and finishing operations"
+    rule: "Allocate a shared operation using a documented physical driver causally related to consumption, such as machine time, metered energy, bath throughput, or processed mass. Report the driver and allocation factor; use economic allocation only when no defensible physical relationship exists and disclose a sensitivity check."
+    source_ids: []
+  - rule_id: allocation_scrap
+    applies_to: "post-industrial steel scrap and zinc-bearing outputs"
+    rule: "Record separately measured waste outputs without avoided-burden credit in the foreground inventory. If a study applies recycling, substitution, or co-product treatment downstream, report that modelling choice, boundary, factor, and sensitivity outside the measured foreground exchange."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_receipts
+      process_id: "route_specific_fabrication"
+      flow_role: "steel_wire_rod_input; steel_wire_input; steel_sheet_input; lubricating_oil_input; hydrochloric_acid_30_input; zinc_metal_input"
+      record_type: "purchase, weighbridge, stores, bath-inventory, and issue records"
+      raw_fields: "material identity; alloy/grade; form; coating state; solution concentration; supplier; received mass; opening stock; closing stock; returns; campaign id"
+      collection_method: "Reconcile receipts and stores or bath inventory to material issued to each declared campaign"
+      unit: "kg"
+      frequency: "each receipt and campaign; aggregate monthly or by production campaign"
+      temporal_coverage: "At least 12 consecutive representative months, or the full shorter campaign with justification"
+      site_scope: "All foreground lines and stores serving the declared product"
+      aggregation_rule: "Sum receipts + opening stock - closing stock - off-site returns; assign only material issued to the declared campaign"
+      quality_evidence: "Calibrated scale records; invoices; batch certificates; stock reconciliation; concentration certificate; exception log"
+    - protocol_id: cp_energy_meters
+      process_id: "route_specific_fabrication"
+      flow_role: "electricity_input; natural_gas_input"
+      record_type: "utility invoices, main meters, submeters, and operating-hour records"
+      raw_fields: "meter id; opening reading; closing reading; unit; reference conditions for gas; production line; operating hours; campaign id"
+      collection_method: "Prefer route and line submeters; otherwise allocate a reconciled main-meter balance using documented causal operating data"
+      unit: "kWh, MJ, or m3"
+      frequency: "continuous or shift readings; reconcile monthly"
+      temporal_coverage: "Same period as production output, normally at least 12 representative months"
+      site_scope: "All included site operations and documented auxiliary loads"
+      aggregation_rule: "Net imports minus separately metered exports; convert kWh to MJ; allocate shared consumption by the disclosed driver"
+      quality_evidence: "Meter calibration; invoice reconciliation; submeter coverage; downtime and missing-data log"
+    - protocol_id: cp_water_meter
+      process_id: "route_specific_fabrication"
+      flow_role: "process_water_input"
+      record_type: "water meters, tank levels, make-up logs, and production records"
+      raw_fields: "source; meter id; opening and closing readings; tank stock change; recirculation; discharge; campaign id"
+      collection_method: "Measure fresh process-water make-up crossing the boundary and reconcile tank stock changes"
+      unit: "kg or m3 with measured density"
+      frequency: "daily or per batch; reconcile monthly"
+      temporal_coverage: "Same period as production output"
+      site_scope: "Cleaning, rinsing, bath make-up, and direct process cooling included in the route"
+      aggregation_rule: "Fresh input + opening stock - closing stock - documented off-site return; do not count internal recirculation repeatedly"
+      quality_evidence: "Meter calibration; tank reconciliation; water-source and quality record; density record when converting volume"
+    - protocol_id: cp_output_and_waste_mass
+      process_id: "route_specific_fabrication"
+      flow_role: "reference_product_output; steel_scrap_output; spent_pickling_liquor_output; zinc_dross_output"
+      record_type: "finished-goods scales, batch records, waste manifests, tank transfers, and recovery records"
+      raw_fields: "product family; grade; geometry; coating; conforming mass; reject mass; scrap mass; liquor mass; dross mass; stock change; destination; campaign id"
+      collection_method: "Weigh conforming output and each segregated waste; meter tank transfers where weighing is impracticable"
+      unit: "kg"
+      frequency: "each batch or shipment; reconcile monthly"
+      temporal_coverage: "Same period as material and energy inputs"
+      site_scope: "All included lines, finishing areas, and waste storage serving the declared product"
+      aggregation_rule: "Sum net conforming product and each named output separately; subtract documented returns and internal rework; normalise inventory to 1 kg conforming output"
+      quality_evidence: "Calibrated scales or meters; inspection release; waste manifest; stock reconciliation; internal-rework log"
+    - protocol_id: cp_direct_emissions
+      process_id: "route_specific_fabrication"
+      flow_role: "fossil_co2_output"
+      record_type: "continuous-emissions, stack-test, or facility emissions records"
+      raw_fields: "source id; fuel source; measurement method; concentration or mass rate; flow rate; operating time; campaign id"
+      collection_method: "Use direct monitored or documented facility emissions records for included on-site combustion sources"
+      unit: "kg"
+      frequency: "continuous, test campaign, or reporting period matching production"
+      temporal_coverage: "Same period as fuel and product output"
+      site_scope: "Included on-site combustion units only"
+      aggregation_rule: "Sum source-specific direct fossil CO2 and assign by measured unit throughput or documented causal driver"
+      quality_evidence: "Instrument calibration; stack-test report; source-to-fuel reconciliation; missing-data treatment"
+  calculation_rules:
+    - id: calc_reference_normalisation
+      applies_to: "every inventory row"
+      rule: "Normalised amount = campaign exchange amount / campaign net conforming product mass"
+      inputs:
+        - "exchange amount"
+        - "net conforming product mass from cp_output_and_waste_mass"
+      output: "exchange per 1 kg reference product"
+      source_ids: []
+    - id: calc_area_conversion
+      applies_to: "output or sales records measured by area"
+      rule: "Product mass = measured product area × lot-specific measured mass per area; the mass-per-area test specimen must match alloy, wire or strand dimensions, aperture, construction, and coating"
+      inputs:
+        - area
+        - "matched mass-per-area measurement"
+      output: "kg conforming product"
+      source_ids: []
+    - id: calc_campaign_mass_reconciliation
+      applies_to: "steel and zinc-bearing material balance"
+      rule: "Reconcile inputs, conforming output, stock changes, internal rework, steel scrap, zinc-bearing wastes, and other separately named outputs; investigate rather than force-close unexplained imbalance"
+      inputs:
+        - "material receipts"
+        - "output weights"
+        - "waste weights"
+        - "stock and rework records"
+      output: "disclosed campaign mass-balance residual"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Preserve the declared product family, alloy, geometry, construction, finish, coating, delivery form, and applicable specification for every aggregated batch."
+      evidence: "Product specification, inspection release, batch traveller, and finished-goods record"
+    - id: dq_temporal_alignment
+      applies_to: "all foreground exchanges"
+      requirement: "Use the same representative period for inputs, outputs, wastes, and direct emissions; disclose shutdowns, atypical campaigns, and any shorter-than-12-month period."
+      evidence: "Meter periods, production calendar, campaign reconciliation, and exception log"
+    - id: dq_completeness
+      applies_to: "site inventory"
+      requirement: "Reconcile major steel inputs and outputs and document every omitted, estimated, or unmetered exchange. Add actual route-specific chemicals, coatings, wastes, and emissions as separate atomic rows."
+      evidence: "Mass-balance residual, utility reconciliation, waste register, and completeness checklist"
+    - id: dq_upstream_match
+      applies_to: "purchased product and energy inputs"
+      requirement: "Select upstream datasets that match material grade or chemical concentration, production geography, delivery state, electricity voltage and grid, gas reference conditions, and transport boundary."
+      evidence: "Supplier certificate, invoice, upstream dataset metadata, and matching record"
+    - id: dq_uuid_review
+      applies_to: "Tiangong-linked flows"
+      requirement: "Confirm public state code 100, English and Chinese baseNames, flow type, classification, property, unit group, and product state before publication; keep unresolved rows blank rather than substituting proxies."
+      evidence: "Direct-read identity audit and unresolved review metadata"
+validation_rules:
+  - rule_id: validation_reference_flow
+    applies_to: "reference product"
+    rule: "Verify that the reported reference output is exactly 1 kg net conforming product and that all required qualifiers are present."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validation_route_consistency
+    applies_to: "process route and conditional rows"
+    rule: "Verify that wire rod, purchased wire, flat steel sheet, drawing lubricant, pickling acid, zinc, process water, natural gas, spent liquor, zinc dross, and direct CO2 are included only when the declared route and site operations make them applicable; zero or omission requires evidence of non-applicability."
+    source_ids:
+      - usitc-standard-steel-welded-wire-mesh-2021
+      - eu-jrc-ferrous-metals-processing-2022
+      - ppg-expanded-metal-process-2018
+  - rule_id: validation_mass_balance
+    applies_to: "material inputs and outputs"
+    rule: "Verify campaign-level reconciliation of steel and zinc-bearing inputs, conforming product, stock change, internal rework, scrap, dross, liquor, and separately named outputs; investigate and disclose residuals."
+    source_ids: []
+  - rule_id: validation_boundary
+    applies_to: "foreground and upstream datasets"
+    rule: "Verify that every site operation and direct exchange is included once, purchased-input production is linked upstream rather than duplicated, and same-category intermediates follow the recursive-input rule."
+    source_ids: []
+  - rule_id: validation_atomic_flows
+    applies_to: "inventory completeness"
+    rule: "Reject combined utilities, fuels, chemicals, wastes, emissions, or packaging collections; each actual exchange must be one specific flow with its own property, unit, amount rule, and route condition."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production dataset that may be published as a secondary_dataset or background_dataset after review"
+  downstream_use: "Cradle-to-gate process datasets and lifecycle models for declared steel wire mesh, netting, fencing, grill, or expanded-metal products"
+  allowed_use: "Products and routes within this PCR when required qualifiers, boundary, temporal coverage, technology, and geography are materially representative"
+  excluded_use: "Barbed wire; non-steel mesh; installation services; use or end-of-life; products with undisclosed alloy, geometry, coating, route, or reference mass; substitution across wire-mesh and expanded-metal routes without representativeness review"
+  required_metadata: "PCR id; product family; alloy and grade; recycled-content basis; geometry and construction; coating and finish; delivery form; route; starting feedstock state; included operations; site and geography; reference period; allocation method; upstream dataset choices; unresolved or estimated exchanges"
+  required_quality_disclosure: "Meter and scale coverage; material-balance residual; submeter allocation; temporal completeness; product-weighting across batches; missing-data treatment; waste and emissions coverage; UUID audit status; deviations from this PCR"
+  update_trigger: "Change in product family, alloy, geometry, forming or joining technology, coating route, starting feedstock, recycled-content claim, site energy or water system, allocation driver, waste treatment, geography, or data older than the declared representativeness period"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division. CPC Version 3.0 structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-05; cached bytes SHA-256 5cd2c1c4890dd6be16af48e9bb940fed48efff9865f39ff15edaa921da25fb7c)"
+    used_for: "Exact CPC 42943 classification identity and included material/product wording"
+  - id: "china-customs-hs-7314-zh-2022"
+    type: "official_guidance"
+    reference: "General Administration of Customs of the People's Republic of China, Announcement No. 32 of 2022, HS heading 7314 terminology, reproduced by the Hong Kong Trade and Industry Department. https://www.tid.gov.hk/en/tradecircular/files/2022/ci2022308a.pdf (retrieved 2026-09-05; downloaded bytes SHA-256 e0a578406620d8a3a38027a915627b1140629f8d104a2a6ac1fdf3481970f1e5)"
+    used_for: "Professional Chinese terminology for steel-wire cloth, netting, fencing, grill, and expanded metal"
+  - id: "usitc-standard-steel-welded-wire-mesh-2021"
+    type: "official_guidance"
+    reference: "U.S. International Trade Commission. *Standard Steel Welded Wire Mesh from Mexico*, Publication 5175, April 2021. https://www.usitc.gov/sites/default/files/publications/701_731/pub5175.pdf (retrieved 2026-09-05)"
+    used_for: "Wire-rod drawing or rolling, resistance welding, cutting, coiling, product identity, and wire-route process decomposition"
+  - id: "eu-jrc-ferrous-metals-processing-2022"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre. *Best Available Techniques (BAT) Reference Document for the Ferrous Metals Processing Industry*, JRC131649, 2022, DOI 10.2760/196475. https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/ferrous-metals-processing-industry (retrieved 2026-09-05)"
+    used_for: "Wire drawing, pretreatment, pickling, galvanising, heat treatment, finishing, and conditional foreground operations"
+  - id: "ppg-expanded-metal-process-2018"
+    type: "extension_guidance"
+    reference: "PPG Aerospace/Dexmet. *Slit and Stretch: How Expanded Metals Are Made*, 1 June 2018. https://www.ppg.com/en-US/aerospace/support/articles/slit-and-stretch-how-expanded-metals-are-made (retrieved 2026-09-05)"
+    used_for: "Expanded-metal sheet input, slit-and-stretch forming, calendering or flattening, cutting, and optional secondary finishing"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:bf870010d59271b136b630146e8c2ae76e5354d20be26e176b6d97fd6b332012"
+  generated_content_sha256: "sha256:39ce76758e43219e7f330b00e7f24f40e0abb6a32221d792a359a28dd85ab4be"

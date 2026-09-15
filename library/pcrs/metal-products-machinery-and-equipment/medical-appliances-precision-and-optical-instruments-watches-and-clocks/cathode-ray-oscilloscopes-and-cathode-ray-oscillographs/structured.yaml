@@ -1,10 +1,584 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "48242"
-  title: "Cathode-ray oscilloscopes and cathode-ray oscillographs"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.medical-appliances-precision-and-optical-instruments-watches-and-clocks.cathode-ray-oscilloscopes-and-cathode-ray-oscillographs"
+  classification_refs: "CPC 3.0: 48242 (exact classification context)"
+  covered_products: "Complete cathode-ray oscilloscopes; complete cathode-ray oscillographs that display and record electrical waveforms"
+  excluded_products: "Digital/LCD oscilloscopes without a cathode-ray display; standalone cathode-ray tubes; monitors; televisions; probes; parts; accessories; repair services; refurbished instruments"
+  representative_product: "Packaged, calibrated cathode-ray oscilloscope ready for sale"
+  production_route: "Purchased component receipt, instrument assembly, calibration and electrical safety testing, and protective packaging"
+  market_state: "New, complete, packaged instrument at the manufacturer factory gate"
+functional_unit:
+  what: "A complete cathode-ray oscilloscope or cathode-ray oscillograph that displays an input signal as a cathode-ray waveform and, when applicable, records it"
+  how_much: "1 kg of packaged reference product"
+  how_well: "Conforming to the declared model specification and passed calibration, functional, and applicable measuring-circuit safety tests"
+  how_long_or_cycle: "One completed manufacturing cycle to factory-gate release; use life is outside the boundary"
+  reference_flow_link: "finished_instrument"
+system_boundary:
+  rules:
+    - rule_id: boundary_rule_1
+      applies_to: "foreground manufacturing"
+      rule: "Include component receipt, instrument assembly, calibration and electrical safety testing, packaging, direct wastes, and packaged output."
+      source_ids:
+        - us-epa-desktop-computer-displays-lca-2001
+        - iec-61010-2-030-2017
+    - rule_id: boundary_rule_2
+      applies_to: "purchased inputs"
+      rule: "Keep upstream CRT, board, metal, plastic, copper, packaging, and electricity production in linked upstream datasets; do not duplicate them in foreground assembly."
+      source_ids:
+        - us-epa-desktop-computer-displays-lca-2001
+    - rule_id: boundary_rule_3
+      applies_to: "exclusions"
+      rule: "Exclude capital equipment, employee travel, distribution, use, repair, and end-of-life unless the study expands and reports them separately."
+      source_ids:
+        - eu-jrc-ilcd-lca-detailed-guidance-2010
+boundary_abstraction:
+  declared_starting_condition: "Purchased CRTs, boards, housings, conductors, packaging, and electricity cross the manufacturing-site receiving boundary"
+  starting_condition_role: "Cradle-to-gate upstream products supplied to the foreground instrument-manufacturing system"
+  product_classification_scope: "Complete cathode-ray oscilloscopes and cathode-ray oscillographs, independent of model-specific bandwidth or channel count"
+  recursive_input_rule: "A same-category instrument entering for incorporation or remanufacture is a separate input with its own upstream dataset; it is not silently folded into the reference product"
+  upstream_dataset_requirement: "Every purchased product and energy input requires a geographically and technologically representative upstream dataset or an explicit data gap"
+  disclosure: "Declare purchased-versus-in-house component boundaries, board population state, CRT type, housing material, packaging configuration, rework, test duration, electricity allocation, exclusions, and cut-offs"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Cathode-ray oscilloscopes and cathode-ray oscillographs"
+    uuid: "0b3b194a-85eb-4034-8599-9f44eb63f98b"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - model
+    - "oscilloscope or oscillograph"
+    - "analogue bandwidth"
+    - "channel count"
+    - "recording capability"
+    - "CRT type and size"
+    - "mains rating"
+    - "applicable measuring-circuit category"
+    - "calibration status"
+    - "packaging included"
+    - "production geography"
+    - "production period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "packaged reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net packaged-product mass on calibrated scales; include sale packaging and exclude pallets and reusable transport fixtures."
+  - id: component_mass
+    applies_to: "material and component inputs and waste outputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert receipt, issue, return, and waste records to a consistent mass basis and disclose it."
+  - id: electricity_energy
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Convert metered kWh using 1 kWh = 3.6 MJ; disclose voltage, grid geography, losses, and meter allocation."
+process_map:
+  - id: instrument_assembly
+    name: "Instrument mechanical and electrical assembly"
+    inclusion: "required"
+    inclusion_condition: "All products"
+    role: "Foreground production"
+    quantitative_reference: "kg assembled product sent to test"
+  - id: calibration_and_safety_test
+    name: "Calibration, functional test, and electrical safety test"
+    inclusion: "required"
+    inclusion_condition: "All products; programme follows declared model and market requirements"
+    role: "Foreground conditioning"
+    quantitative_reference: "kg conforming product sent to packaging"
+  - id: protective_packaging
+    name: "Protective packaging"
+    inclusion: "required"
+    inclusion_condition: "Each packaging component is recorded only when present in the declared configuration"
+    role: "Foreground packaging"
+    quantitative_reference: "1 kg packaged reference product"
+process_inventory:
+  - id: instrument_assembly
+    label: "Instrument mechanical and electrical assembly"
+    inputs:
+      product:
+        - row_id: cathode_ray_tube
+          role: "Cathode-ray tube"
+          name: "Cathode-ray tube"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the finished tube issued to assembly and retain its specification and supplier."
+          amount:
+            expression: "measured net mass issued minus unused returns"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_mass
+              source_ids:
+                - us-epa-desktop-computer-displays-lca-2001
+            ranges: []
+        - row_id: printed_wire_board
+          role: "Printed wiring board"
+          name: "Printed Wire Board"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a8bd954c-59b3-4317-b4de-02a17d6da5ca"
+          property_unit: "Mass / kg"
+          description: "Record the board issued to assembly and retain its population state and function."
+          amount:
+            expression: "measured net board mass incorporated; declare bare or populated state"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_mass
+              source_ids:
+                - us-epa-desktop-computer-displays-lca-2001
+            ranges: []
+        - row_id: steel_sheet
+          role: "Steel sheet for shields and enclosure parts"
+          name: "Steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this exchange when steel sheet is incorporated in shields, chassis, or enclosure parts."
+          amount:
+            expression: "measured net incorporated steel-sheet mass; record only when present"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_mass
+              source_ids:
+                - us-epa-desktop-computer-displays-lca-2001
+            ranges: []
+        - row_id: plastic_housing
+          role: "Plastic housing"
+          name: "Plastic housing"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8751d2f6-df48-47d3-ac51-d34f96fbec96"
+          property_unit: "Mass / kg"
+          description: "Record the complete housing issued to assembly and retain its polymer composition."
+          amount:
+            expression: "measured net housing mass incorporated; disclose polymer and recycled content"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_mass
+              source_ids:
+                - us-epa-desktop-computer-displays-lca-2001
+            ranges: []
+        - row_id: copper_wire
+          role: "Copper wire"
+          name: "copper wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "da2d966d-fe62-44dc-ba0f-b1cd7c7cf33e"
+          property_unit: "Mass / kg"
+          description: "Record wire incorporated outside purchased boards and CRT subassemblies to prevent double counting."
+          amount:
+            expression: "measured net incorporated wire outside purchased boards and CRT subassemblies"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_mass
+              source_ids:
+                - us-epa-desktop-computer-displays-lca-2001
+            ranges: []
+        - row_id: assembly_electricity
+          role: "Assembly electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity attributable to mechanical and electrical assembly."
+          amount:
+            expression: "allocated metered assembly electricity converted to MJ"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: broken_crt_glass
+          role: "Broken cathode-ray-tube glass"
+          name: "Broken cathode-ray-tube glass waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record broken CRT glass separately because its composition and treatment differ from ordinary glass."
+          amount:
+            expression: "measured mass transferred off the assembly line"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_waste
+              source_ids:
+                - us-epa-desktop-computer-displays-lca-2001
+            ranges: []
+        - row_id: waste_populated_pwb
+          role: "Rejected populated printed wiring board"
+          name: "Waste populated printed wiring board"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "eb5ffe4a-49af-450c-9a31-3efdfd343f8a"
+          property_unit: "Mass / kg"
+          description: "Record populated boards rejected before off-site recovery or treatment."
+          amount:
+            expression: "measured rejected populated-board mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_waste
+              source_ids:
+                - us-epa-desktop-computer-displays-lca-2001
+            ranges: []
+        - row_id: polystyrene_housing_scrap
+          role: "Polystyrene housing scrap"
+          name: "Polystyrene housing scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record housing scrap separately from packaging waste."
+          amount:
+            expression: "measured housing scrap mass; keep separate from packaging waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_waste
+              source_ids:
+                - us-epa-desktop-computer-displays-lca-2001
+            ranges: []
+      elementary:
+        []
+  - id: calibration_and_safety_test
+    label: "Calibration, functional test, and electrical safety test"
+    inputs:
+      product:
+        - row_id: test_electricity
+          role: "Test electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity used by powered instruments and test equipment."
+          amount:
+            expression: "allocated metered electricity for powered units and test equipment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_electricity
+              source_ids:
+                - iec-61010-2-030-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: protective_packaging
+    label: "Protective packaging"
+    inputs:
+      product:
+        - row_id: corrugated_box
+          role: "Corrugated fibreboard box"
+          name: "Corrugated fibreboard box"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the converted corrugated box included with the sale-ready instrument."
+          amount:
+            expression: "measured mass consumed net of unused returns"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_mass
+              source_ids: []
+            ranges: []
+        - row_id: expanded_polystyrene_packaging
+          role: "Expanded-polystyrene protective packaging"
+          name: "Expanded-polystyrene protective packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record moulded inserts when present in the declared packaging configuration."
+          amount:
+            expression: "measured insert mass consumed net of unused returns; record only when present"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_mass
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_instrument
+          role: "Packaged finished instrument"
+          name: "Cathode-ray oscilloscopes and cathode-ray oscillographs"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0b3b194a-85eb-4034-8599-9f44eb63f98b"
+          property_unit: "Mass / kg"
+          description: "Record only conforming instruments released with the declared sale packaging."
+          amount:
+            expression: "fixed normalization output of 1 kg packaged reference product"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "separable production"
+    rule: "Avoid allocation by separately metering assembly, test, and packaging and assigning model-specific component issues directly."
+    source_ids:
+      - eu-jrc-ilcd-lca-detailed-guidance-2010
+  - rule_id: allocation_rule_2
+    applies_to: "shared utilities and wastes"
+    rule: "Allocate shared electricity and waste using measured equipment time, test time, mass, or another causal physical driver; disclose it."
+    source_ids:
+      - eu-jrc-ilcd-lca-detailed-guidance-2010
+  - rule_id: allocation_rule_3
+    applies_to: "saleable scrap"
+    rule: "Report gross input, incorporated mass, scrap output, and credited recovery separately; do not subtract revenue or avoided burden without a declared method."
+    source_ids:
+      - eu-jrc-ilcd-lca-detailed-guidance-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_component_mass
+      process_id: "instrument_assembly"
+      flow_role: "component inputs"
+      record_type: "ERP issue and return plus BOM"
+      raw_fields: "model; lot; component; issued; returned; board state; supplier"
+      collection_method: "Reconcile stores movements and weigh representative components"
+      unit: "kg"
+      frequency: "each lot; monthly aggregation"
+      temporal_coverage: "12 representative months or full campaign"
+      site_scope: "all in-scope assembly lines"
+      aggregation_rule: "net issued mass / packaged output mass"
+      quality_evidence: "scale calibration; stock reconciliation; BOM revision"
+    - protocol_id: cp_process_electricity
+      process_id: "instrument_assembly_calibration_and_safety_test"
+      flow_role: "process electricity"
+      record_type: "submeter or allocated site meter"
+      raw_fields: "start; end; process hours; output mass; driver"
+      collection_method: "Read calibrated meters and separate assembly from test where feasible"
+      unit: "kWh"
+      frequency: "each shift or batch"
+      temporal_coverage: "same period as production"
+      site_scope: "all lines and test stations"
+      aggregation_rule: "kWh × 3.6 / packaged output mass"
+      quality_evidence: "meter calibration; allocation worksheet; downtime log"
+    - protocol_id: cp_assembly_waste
+      process_id: "instrument_assembly"
+      flow_role: "assembly waste"
+      record_type: "labelled container and transfer records"
+      raw_fields: "identity; composition; gross; tare; net; destination"
+      collection_method: "Weigh each segregated stream before transfer"
+      unit: "kg"
+      frequency: "each transfer"
+      temporal_coverage: "same period as production"
+      site_scope: "all assembly lines"
+      aggregation_rule: "net mass by flow / packaged output mass"
+      quality_evidence: "scale calibration; manifests; recovery certificates"
+    - protocol_id: cp_packaging_mass
+      process_id: "protective_packaging"
+      flow_role: "sale packaging"
+      record_type: "issue and return records"
+      raw_fields: "component; material; issued; returned; output mass"
+      collection_method: "Reconcile stores and sample-weigh components"
+      unit: "kg"
+      frequency: "each lot; monthly aggregation"
+      temporal_coverage: "same period as production"
+      site_scope: "all packaging lines in scope"
+      aggregation_rule: "net consumed / packaged output mass"
+      quality_evidence: "scale calibration; specification; reconciliation"
+  calculation_rules:
+    - id: calc_net_material
+      applies_to: "component and packaging rows"
+      rule: "(issued mass - unused returned mass) / released packaged-product mass"
+      inputs:
+        - issue
+        - return
+        - "and output records"
+      output: "kg input/kg reference product"
+      source_ids: []
+    - id: calc_electricity
+      applies_to: "electricity rows"
+      rule: "(metered kWh × 3.6) / released packaged-product mass"
+      inputs:
+        - "meter readings and output mass"
+      output: "MJ/kg reference product"
+      source_ids: []
+    - id: calc_waste
+      applies_to: "waste rows"
+      rule: "sum(gross container mass - tare) / released packaged-product mass"
+      inputs:
+        - "container weights and output mass"
+      output: "kg waste/kg reference product"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all flows"
+      requirement: "Preserve supplier grade, component state, polymer, CRT composition, destination, and UUID decision; never use an umbrella flow."
+      evidence: "specifications, BOM, manifests, UUID audit"
+    - id: dq_temporal
+      applies_to: "foreground inventory"
+      requirement: "Use 12 representative months or the complete campaign; disclose shutdowns, trials, and exceptional scrap."
+      evidence: "dated meters, ERP, production, and waste records"
+    - id: dq_completeness
+      applies_to: "balances"
+      requirement: "Reconcile accepted output, rejects, returns, and wastes; explain residuals and cut-offs."
+      evidence: "reconciliation worksheet and signed review"
+    - id: dq_measurement
+      applies_to: "scales and meters"
+      requirement: "Use calibrated instruments and retain status, resolution, and allocation worksheets."
+      evidence: "certificates and meter logs"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "product identity"
+    rule: "Confirm a cathode-ray display and complete oscilloscope or oscillograph; reject digital/LCD-only instruments, parts, and monitors."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - teledyne-lecroy-oscilloscope-overview-zh
+  - rule_id: validation_rule_2
+    applies_to: "reference flow"
+    rule: "Confirm finished-product UUID, Mass, kg, 1 kg normalization, packaging boundary, and every required qualifier."
+    source_ids: []
+  - rule_id: validation_rule_3
+    applies_to: "inventory"
+    rule: "Require all 13 row ids or documented non-applicability for BOM-dependent rows; disclose UUID gaps and range-evidence needs."
+    source_ids:
+      - us-epa-desktop-computer-displays-lca-2001
+  - rule_id: validation_rule_4
+    applies_to: "balances"
+    rule: "Recalculate materials, electricity, waste, and output normalization; investigate duplicate board/CRT content and unexplained mass."
+    source_ids:
+      - eu-jrc-ilcd-lca-detailed-guidance-2010
+  - rule_id: validation_rule_5
+    applies_to: "tests"
+    rule: "Retain passed functional, calibration, and applicable measuring-circuit safety-test evidence."
+    source_ids:
+      - iec-61010-2-030-2017
+published_dataset_profile:
+  dataset_role: "Foreground manufacturing dataset for new cathode-ray oscilloscopes and cathode-ray oscillographs"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Cradle-to-gate studies with compatible model, technology, geography, time, packaging, and test scope"
+  excluded_use: "Digital/LCD oscilloscopes, monitors, televisions, standalone CRTs, refurbished products, use, repair, or end-of-life without separate modelling"
+  required_metadata: "model; type; bandwidth; channels; recording; CRT; mains; measuring category; calibration; board state; housing; packaging; site; period; allocation; cut-offs; UUID gaps"
+  required_quality_disclosure: "record coverage, calibration, BOM revision, supplier coverage, mass reconciliation, waste destinations, allocation drivers, exceptional scrap, UUID gaps, and missing range evidence"
+  update_trigger: "Material change in CRT, board, housing, packaging, site, test programme, allocation, upstream data, or confirmed TianGong identities"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-07)"
+    used_for: "Official CPC 48242 identity"
+  - id: "un-cpc-1-1-chinese"
+    type: "official_guidance"
+    reference: "UN Statistics Division, Central Product Classification (CPC) Version 1.1, Chinese edition, Series M No. 77/Ver.1.1, https://unstats.un.org/unsd/publication/SeriesM/M_77ver1_1c.pdf (retrieved 2026-09-07)"
+    used_for: "Official Chinese rendering of the unchanged CPC 48242 product title"
+  - id: "us-epa-desktop-computer-displays-lca-2001"
+    type: "literature"
+    reference: "US EPA, Desktop Computer Displays: A Life-Cycle Assessment, Volume 1, EPA 744-R-01-004a, December 2001, https://www.epa.gov/sites/default/files/2014-01/documents/computer_display_lca.pdf (retrieved 2026-09-07)"
+    used_for: "Analogous CRT decomposition, components, and assembly waste; no amount ranges transferred"
+  - id: "iec-61010-2-030-2017"
+    type: "standard"
+    reference: "IEC 61010-2-030:2017, Safety requirements for equipment having testing or measuring circuits, https://webstore.iec.ch/en/publication/31488 (retrieved 2026-09-07)"
+    used_for: "Measuring-circuit scope and safety-test qualification"
+  - id: "eu-jrc-ilcd-lca-detailed-guidance-2010"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, ILCD Handbook: General guide for Life Cycle Assessment - Detailed guidance, first edition, 2010, https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf (retrieved 2026-09-07)"
+    used_for: "Scope and inventory review; subdivision/direct assignment to avoid allocation; causal physical allocation relationships"
+  - id: "teledyne-lecroy-oscilloscope-overview-zh"
+    type: "handbook"
+    reference: "Teledyne LeCroy, Oscilloscope technical overview (Chinese), https://zh-cn.teledynelecroy.com/oscilloscope/ (retrieved 2026-09-07)"
+    used_for: "Chinese terminology and CRT analogue-oscilloscope function"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:7d475e59fa21e655e800cb30639af33b303bb9f3b47b72566c84028f93de0570"
+  generated_content_sha256: "sha256:859de7fe6c72d13f268f0b295ac8bf162085149ba7331fae4dec843a1e5b3724"

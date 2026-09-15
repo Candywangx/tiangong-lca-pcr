@@ -1,10 +1,633 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41287"
-  title: "Other tubes and pipes, of circular cross-section, welded, of steel"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.other-tubes-and-pipes-of-circular-cross-section-welded-of-steel"
+  classification_refs: "CPC 3.0: 41287 (classification context; mapping acceptance is governed separately)"
+  covered_products: "Circular-cross-section longitudinally or helically welded tubes and pipes of non-alloy, alloy, or stainless steel, other than oil/gas line pipe and oil/gas well casing or tubing"
+  excluded_products: "Seamless pipe; non-circular tube or hollow profiles; open-seam, riveted, or similarly closed pipe; oil/gas line pipe; oil/gas well casing and tubing; pipe fittings; upstream steelmaking and coil production"
+  representative_product: "Mill-finished circular welded steel pipe supplied by mass"
+  production_route: "Steel coil preparation, edge forming, circular forming, seam welding, sizing, cutting, inspection, and declared conditional finishing"
+  market_state: "Conforming pipe at the pipe-mill gate, with coating, heat-treatment state, end finish, dimensions, and grade declared"
+functional_unit:
+  what: "A declared circular-cross-section welded steel tube or pipe meeting the stated dimensional, grade, weld, surface, and inspection requirements"
+  how_much: "1 kg net mass of conforming pipe"
+  how_well: "Meets the producer-declared product specification and acceptance tests, with rejected material excluded from conforming output"
+  how_long_or_cycle: "One production campaign; no service life is assigned at the mill gate"
+  reference_flow_link: "The functional unit is realized by the mass of conforming pipe crossing the pipe-mill gate"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "foreground pipe-mill system"
+      rule: "Include coil preparation, forming, seam welding, sizing, cutting, inspection, internal material handling, and on-site treatment of their direct wastes and emissions; include conditional finishing when performed."
+      source_ids:
+        - eu-fmp-bref-2022
+    - rule_id: boundary_upstream
+      applies_to: "purchased products and energy"
+      rule: "Link every purchased material and energy input to an upstream dataset outside the foreground gate-to-gate inventory; do not count upstream emissions as direct mill emissions."
+      source_ids: []
+    - rule_id: boundary_conditional_routes
+      applies_to: "pickling, thermal treatment, arc-welding consumables, and galvanizing"
+      rule: "Include each route only when production records show that it is used for the declared reference product and keep its exchanges separate."
+      source_ids:
+        - eu-fmp-bref-2022
+boundary_abstraction:
+  declared_starting_condition: "Steel coil received at the pipe mill with grade, mass, dimensions, coating state, supplier dataset, and transport hand-off declared"
+  starting_condition_role: "Upstream steel production is represented by supplier-specific or otherwise justified upstream coil datasets; the foreground begins at mill receipt"
+  product_classification_scope: "Circular-cross-section welded steel tubes and pipes within the semantic boundary stated in Sections 1 and 2"
+  recursive_input_rule: "A purchased input already meeting this same finished-pipe category is not re-modelled as coil; record it as an upstream same-category product with its own dataset and disclose the reason for purchase"
+  upstream_dataset_requirement: "Upstream datasets must match steel grade family, coil product state, coating state, production geography, and temporal period as closely as practicable"
+  disclosure: "Declare included operations, outsourced steps, welding route, heat treatment, pickling, galvanizing or other coating, recycled-content accounting, and the treatment destination of each waste"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Steel Pipe"
+    uuid: "370d14a6-55f3-4fdd-90b2-84751125ff00"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "steel grade and alloy family"
+    - "outside diameter"
+    - "wall thickness"
+    - length
+    - "longitudinal or helical seam"
+    - "welding technology"
+    - "heat-treatment state"
+    - "surface and coating state"
+    - "end finish"
+    - "applicable product specification"
+    - "inspection acceptance basis"
+    - "production geography and period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "conforming reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net dry product mass on calibrated scales after required finishing; exclude pallets, wrapping, dunnage, test coupons, and rejected pipe."
+  - id: length_to_mass
+    applies_to: "production records reported by length"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert length to mass only with a documented measured mass-per-length or a geometry-and-density calculation using declared outside diameter, wall thickness, and grade density; retain the conversion basis."
+  - id: energy_preservation
+    applies_to: "purchased electricity and fuel"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Preserve supplier or meter units and conversion factors; do not combine electricity with fuel. Report gaseous natural gas volume together with reference temperature and pressure."
+process_map:
+  - id: forming_welding
+    name: "Coil preparation, forming, welding, sizing, cutting, and inspection"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Foreground pipe manufacture"
+    quantitative_reference: "kg conforming pipe output"
+  - id: acid_pickling
+    name: "Hydrochloric-acid pickling, rinsing, and neutralization"
+    inclusion: "conditional"
+    inclusion_condition: "Include when scale removal or surface preparation uses hydrochloric-acid pickling"
+    role: "Conditional surface preparation"
+    quantitative_reference: "kg pipe leaving pickling"
+  - id: hot_dip_galvanizing
+    name: "Hot-dip zinc coating"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared market state has an on-site hot-dip zinc coating"
+    role: "Conditional protective coating"
+    quantitative_reference: "kg coated conforming pipe"
+process_inventory:
+  - id: forming_welding
+    label: "Coil preparation, forming, welding, sizing, cutting, and inspection"
+    inputs:
+      product:
+        - row_id: fw_hot_rolled_steel_coil
+          role: "Hot-rolled steel coil feedstock"
+          name: "steel hot rolled coil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f1a1835-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record the weighed hot-rolled coil entering manufacture for the declared product campaign."
+          amount:
+            expression: "Measured net coil input allocated to the declared product campaign"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg conforming pipe output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_welding
+              source_ids: []
+            ranges: []
+        - row_id: fw_electricity
+          role: "Purchased alternating-current electricity"
+          name: "alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bfc48b1-c262-4156-a817-b2c8a1b21598"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered alternating-current electricity consumed by the included forming and welding line."
+          amount:
+            expression: "Metered electricity for the declared campaign, preserving the documented conversion from the meter unit"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming pipe output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_welding
+              source_ids: []
+            ranges: []
+        - row_id: fw_process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record make-up process water crossing the facility boundary for direct use in cooling, rinsing, or testing on this line; do not count recirculated internal water again."
+          amount:
+            expression: "Metered or mass-converted make-up process water attributable to the declared campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming pipe output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_welding
+              source_ids: []
+            ranges: []
+        - row_id: fw_natural_gas
+          role: "Gaseous natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record natural gas only when directly consumed for included heat treatment, drying, or other documented thermal operation."
+          amount:
+            expression: "Metered gas volume at documented reference conditions; zero only when no included gas-fired operation serves the campaign"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming pipe output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_welding
+              source_ids: []
+            ranges: []
+        - row_id: fw_flux_cored_wire
+          role: "Flux-cored welding wire"
+          name: "Flux Cored Wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1b74a576-06e0-4764-97ce-11a73f8a4752"
+          property_unit: "Mass / kg"
+          description: "Record flux-cored wire only for a documented flux-cored arc-welding seam or repair operation; it is not applicable to resistance or induction welding without filler."
+          amount:
+            expression: "Weighed issues minus documented returns for the declared campaign"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming pipe output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_welding
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: fw_steel_pipe
+          role: "Conforming welded steel pipe"
+          name: "Steel Pipe"
+          flow_type: "product"
+          flow_ref:
+            uuid: "370d14a6-55f3-4fdd-90b2-84751125ff00"
+          property_unit: "Mass / kg"
+          description: "Record only pipe that passes the declared inspection and specification acceptance criteria."
+          amount:
+            expression: "Measured net mass of conforming pipe at the mill gate"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_welding
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: fw_post_industrial_steel_scrap
+          role: "Post-industrial steel scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Record offcuts, edge trim, and rejected steel leaving the foreground system as post-industrial scrap; internal remelt or direct reuse does not cross this boundary."
+          amount:
+            expression: "Weighed scrap transferred out of the foreground system"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming pipe output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_welding
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: fw_carbon_dioxide_fossil
+          role: "Direct fossil carbon dioxide"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record only direct fossil carbon dioxide from included on-site natural-gas combustion; exclude upstream electricity and fuel-supply emissions."
+          amount:
+            expression: "Stack measurement or calculation from recorded fuel using a disclosed combustion factor and oxidation basis"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming pipe output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_forming_welding
+              source_ids: []
+            ranges: []
+  - id: acid_pickling
+    label: "Hydrochloric-acid pickling, rinsing, and neutralization"
+    inputs:
+      product:
+        - row_id: pk_hydrochloric_acid_30
+          role: "Hydrochloric acid solution at 30%"
+          name: "Hydrochloric acid (30%)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "56414d25-a353-4d67-b362-87212ce6011d"
+          property_unit: "Mass / kg"
+          description: "Record fresh 30% hydrochloric-acid solution replenished to the pickling line; a different supplied concentration requires a distinct flow identity or an explicitly documented concentration conversion."
+          amount:
+            expression: "Measured delivered solution mass attributable to the declared campaign"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg pipe leaving pickling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pickling
+              source_ids:
+                - eu-fmp-bref-2022
+            ranges: []
+        - row_id: pk_process_water
+          role: "Pickling rinse water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record make-up process water entering the pickling rinse stages, excluding recirculated internal water."
+          amount:
+            expression: "Metered or mass-converted make-up water attributable to the declared campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg pipe leaving pickling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pickling
+              source_ids:
+                - eu-fmp-bref-2022
+            ranges: []
+        - row_id: pk_sodium_hydroxide
+          role: "Sodium hydroxide"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide only when it is added on site to neutralize pickling liquor or rinse water within the foreground boundary."
+          amount:
+            expression: "Measured product mass, with solution concentration and dry-equivalent conversion disclosed"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg pipe leaving pickling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pickling
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: pk_spent_hydrochloric_pickling_liquor
+          role: "Spent hydrochloric-acid pickling liquor"
+          name: "Spent hydrochloric-acid pickling liquor"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent hydrochloric-acid liquor containing dissolved iron and entrained scale when it leaves the foreground system for recovery or treatment. The Tiangong UUID remains unresolved because no exact chemical-state candidate was found."
+          amount:
+            expression: "Weighed or volume-and-density-converted spent liquor sent off site"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg pipe leaving pickling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pickling
+              source_ids:
+                - eu-fmp-bref-2022
+            ranges: []
+      elementary:
+        []
+  - id: hot_dip_galvanizing
+    label: "Hot-dip zinc coating"
+    inputs:
+      product:
+        - row_id: gv_zinc_metal
+          role: "Special-high-grade zinc metal"
+          name: "Special High Grade zinc metal"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2d8ff1bd-e128-4c74-a99d-b8734c99bbd2"
+          property_unit: "Mass / kg"
+          description: "Record zinc metal added to the galvanizing bath and attributed through bath stock reconciliation to the declared coated-pipe campaign."
+          amount:
+            expression: "Zinc receipts plus opening stock minus closing stock and separately measured residues, allocated to the declared campaign"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg coated conforming pipe output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_galvanizing
+              source_ids:
+                - eu-fmp-bref-2022
+            ranges: []
+        - row_id: gv_process_water
+          role: "Galvanizing process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record make-up process water used by on-site cleaning, rinsing, or cooling stages serving the galvanized pipe."
+          amount:
+            expression: "Metered or mass-converted make-up water attributable to the declared campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg coated conforming pipe output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_galvanizing
+              source_ids:
+                - eu-fmp-bref-2022
+            ranges: []
+        - row_id: gv_natural_gas
+          role: "Galvanizing natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas directly consumed by the galvanizing kettle or associated included drying stage."
+          amount:
+            expression: "Metered gas volume at documented reference conditions attributable to the declared campaign"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg coated conforming pipe output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_galvanizing
+              source_ids:
+                - eu-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: gv_carbon_dioxide_fossil
+          role: "Direct galvanizing fossil carbon dioxide"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record only direct fossil carbon dioxide from natural-gas combustion in the included galvanizing process."
+          amount:
+            expression: "Stack measurement or calculation from recorded fuel using a disclosed combustion factor and oxidation basis"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg coated conforming pipe output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_galvanizing
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "shared production lines and utilities"
+    rule: "Prefer campaign, line, or meter subdivision. Allocate only residual shared quantities after documenting why subdivision is unavailable."
+    source_ids: []
+  - rule_id: allocation_residual
+    applies_to: "residual shared inputs and emissions"
+    rule: "Allocate by a causal physical driver such as measured operating time, processed mass, or metered demand; do not use revenue unless no defensible physical relation exists and the exception is disclosed."
+    source_ids: []
+  - rule_id: allocation_scrap
+    applies_to: "post-industrial steel scrap"
+    rule: "Report the scrap amount and destination separately. Apply the study's declared recycling method consistently and do not simultaneously credit avoided primary steel and assign recycled-content benefit to the same scrap."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_forming_welding
+      process_id: "forming_welding"
+      flow_role: "materials, utilities, output, scrap, and direct CO2"
+      record_type: "production, scale, meter, invoice, and inspection records"
+      raw_fields: "coil mass; electricity; water; gas volume and reference conditions; wire issues and returns; accepted pipe mass; scrap mass; fuel factor; direct CO2"
+      collection_method: "Reconcile campaign records to line meters, calibrated scales, and accepted-output records"
+      unit: "kg, MJ, m3"
+      frequency: "each campaign, aggregated monthly"
+      temporal_coverage: "representative continuous 12-month period or all campaigns for a shorter declared production period"
+      site_scope: "all equipment serving the declared line, with shared services allocated explicitly"
+      aggregation_rule: "sum each atomic exchange and divide by net conforming pipe mass"
+      quality_evidence: "calibration records, meter reconciliation, stock balance, rejection log, and supervisor approval"
+    - protocol_id: cp_pickling
+      process_id: "acid_pickling"
+      flow_role: "acid, water, neutralizer, and spent liquor"
+      record_type: "delivery, tank, meter, batch, and waste-transfer records"
+      raw_fields: "solution mass and concentration; water mass or volume; sodium hydroxide mass and concentration; spent-liquor mass or volume and density"
+      collection_method: "Reconcile tank stock, receipts, measured additions, and off-site transfers by campaign"
+      unit: "kg"
+      frequency: "each bath change and campaign, aggregated monthly"
+      temporal_coverage: "same period as the pipe campaign"
+      site_scope: "all pickling and rinse stages serving the declared product"
+      aggregation_rule: "calculate net fresh inputs and outgoing spent liquor, then divide by pipe mass leaving pickling"
+      quality_evidence: "concentration certificates, calibrated tank or scale records, density method, and transfer manifest"
+    - protocol_id: cp_galvanizing
+      process_id: "hot_dip_galvanizing"
+      flow_role: "zinc, water, gas, and direct CO2"
+      record_type: "stock, purchase, meter, production, and emission-factor records"
+      raw_fields: "zinc receipts and stocks; zinc residues; water; gas volume and reference conditions; coated output; fuel factor; direct CO2"
+      collection_method: "Reconcile bath metal and utility meters to the coated-pipe campaign"
+      unit: "kg, m3"
+      frequency: "each campaign, aggregated monthly"
+      temporal_coverage: "same period as the coated-pipe campaign"
+      site_scope: "galvanizing stages serving the declared product"
+      aggregation_rule: "calculate net zinc and each utility or emission per coated output mass"
+      quality_evidence: "bath inventory, certified scales, meter calibration, residue records, and factor provenance"
+  calculation_rules:
+    - id: calc_normalization
+      applies_to: "every inventory row"
+      rule: "normalized amount = campaign exchange / net mass of the applicable conforming process output"
+      inputs:
+        - "atomic exchange amount"
+        - "conforming output mass"
+      output: "amount per kg applicable output"
+      source_ids: []
+    - id: calc_water_mass
+      applies_to: "water recorded by volume"
+      rule: "water mass = metered volume × measured or justified density at the recorded condition; retain volume and density"
+      inputs:
+        - "water volume"
+        - density
+      output: "kg process water"
+      source_ids: []
+    - id: calc_direct_co2
+      applies_to: "direct natural-gas combustion"
+      rule: "direct fossil CO2 = recorded gas activity × disclosed fuel-specific factor × oxidation fraction; do not add upstream supply-chain CO2"
+      inputs:
+        - "gas activity"
+        - factor
+        - "oxidation fraction"
+      output: "kg direct fossil CO2"
+      source_ids: []
+    - id: calc_zinc_balance
+      applies_to: "galvanizing zinc input"
+      rule: "net zinc attributed = receipts + opening bath stock - closing bath stock - separately measured residues, with allocation to the campaign disclosed"
+      inputs:
+        - "zinc receipts"
+        - stocks
+        - residues
+        - "campaign allocation driver"
+      output: "kg zinc metal"
+      source_ids:
+        - eu-fmp-bref-2022
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Grade, dimensions, seam orientation, welding technology, heat treatment, coating, end finish, acceptance specification, geography, and period must be recorded."
+      evidence: "product specification, production order, and inspection release"
+    - id: dq_mass_balance
+      applies_to: "steel-bearing flows"
+      requirement: "Reconcile coil input with conforming pipe, scrap, test coupons, work-in-process change, and other separately identified steel outputs; investigate material imbalance."
+      evidence: "signed campaign mass balance and scale calibration"
+    - id: dq_completeness
+      applies_to: "all included processes"
+      requirement: "Account for at least 95% of measured input mass and measured energy by included records; list excluded flows individually and justify each exclusion."
+      evidence: "completeness calculation and exclusion register"
+    - id: dq_temporal
+      applies_to: "foreground data"
+      requirement: "Prefer a continuous 12-month period; if shorter, cover all campaigns and disclose seasonality, shutdowns, and atypical production."
+      evidence: "dated records and representativeness statement"
+    - id: dq_conditional_routes
+      applies_to: "conditional processes and flows"
+      requirement: "Record an explicit present/not-present decision for pickling, heat treatment, flux-cored wire, and galvanizing; do not leave route applicability implicit."
+      evidence: "process route sheet and bill of materials"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference flow"
+    rule: "Fail validation when any required product qualifier is missing or when the product is seamless, non-circular, open-seam/riveted, oil/gas line pipe, or oil/gas well casing/tubing."
+    source_ids:
+      - unsd-cpc-3-0-2025
+  - rule_id: validate_reference_amount
+    applies_to: "reference product"
+    rule: "Confirm that the normalized conforming Steel Pipe output equals 1 kg and uses the required Mass property and mass unit group."
+    source_ids: []
+  - rule_id: validate_inventory_balance
+    applies_to: "steel-bearing flows"
+    rule: "Require a documented coil-to-output mass balance and explanations for work-in-process change and every material discrepancy."
+    source_ids: []
+  - rule_id: validate_direct_emissions
+    applies_to: "fossil carbon dioxide"
+    rule: "Confirm that direct CO2 includes only on-site combustion and excludes upstream electricity and fuel-supply emissions."
+    source_ids: []
+  - rule_id: validate_conditional_processes
+    applies_to: "pickling and galvanizing"
+    rule: "Include the detailed process and its atomic exchanges when the route is present; otherwise document non-applicability and do not insert zero-valued proxy exchanges."
+    source_ids:
+      - eu-fmp-bref-2022
+  - rule_id: validate_unresolved_uuid
+    applies_to: "spent pickling liquor"
+    rule: "Keep the UUID empty until an exact public state-100 chemical-state identity is audited; do not substitute generic waste acid."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground production dataset for circular welded steel pipe manufacture"
+  downstream_use: "secondary_dataset; background_dataset after independent review and publication readiness checks"
+  allowed_use: "product carbon footprinting, life-cycle assessment, procurement comparison, and downstream product modelling when grade, dimensions, weld route, coating state, geography, period, and allocation method are compatible"
+  excluded_use: "seamless pipe, non-circular hollow sections, oil/gas line pipe, oil/gas well casing or tubing, fittings, or a cradle-to-gate steelmaking dataset without linked upstream steel and energy datasets"
+  required_metadata: "all reference-flow qualifiers; site and period; included and outsourced processes; supplier dataset choices; route decisions; recycled-content and recycling method; allocation; cut-offs; data quality; unresolved UUID disclosure"
+  required_quality_disclosure: "meter and scale coverage, mass-balance result, completeness result, temporal representativeness, technology representativeness, source and factor provenance, and material exclusions"
+  update_trigger: "material change in steel grade mix, coil supplier, welding technology, product dimensions, heat treatment, coating route, energy supply, process efficiency, waste destination, allocation method, or a newer representative period"
+data_sources:
+  - id: "unsd-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-04)"
+    used_for: "Original-text verification of CPC 41287 identity and separation from adjacent seamless, line-pipe, casing/tubing, non-circular, and other closure categories"
+  - id: "eu-fmp-bref-2022"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Ferrous Metals Processing Industry BAT Reference Document page and adopted BREF, December 2022, https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/ferrous-metals-processing-industry (retrieved 2026-09-04)"
+    used_for: "Original-text verification of downstream ferrous-metal processing, surface preparation, pickling, rinsing, finishing, and conditional hot-dip galvanizing process decomposition; no empirical amount range was inferred"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:04b2b3aff22299aa94ec3aeb7a03cd50985f0845357abf64ced26eea9f3fdb63"
+  generated_content_sha256: "sha256:b462bfecd090fc264f176f05bec83d37178bb7dedc3d53ced0bee18c6034c96e"

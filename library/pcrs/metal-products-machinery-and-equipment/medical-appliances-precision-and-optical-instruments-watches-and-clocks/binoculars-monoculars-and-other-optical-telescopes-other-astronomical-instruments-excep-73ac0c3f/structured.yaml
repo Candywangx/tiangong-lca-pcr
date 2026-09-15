@@ -1,10 +1,905 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "48314"
-  title: "Binoculars, monoculars and other optical telescopes; other astronomical instruments, except instruments for radio-astronomy; compound optical microscopes"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.medical-appliances-precision-and-optical-instruments-watches-and-clocks.binoculars-monoculars-and-other-optical-telescopes-other-astronomical-instruments-excep-73ac0c3f"
+  classification_refs: "CPC 3.0: 48314"
+  covered_products: "Binoculars; monoculars; optical telescopes; non-radio astronomical instruments; compound optical microscopes"
+  excluded_products: "Radio-astronomy instruments; electron and scanning-probe microscopes; simple magnifiers; separately sold cameras or detectors"
+  representative_product: "One declared, saleable optical instrument model at the factory gate"
+  production_route: "Conditional in-house optical-element fabrication, optomechanical fabrication, and electronics integration, followed by required assembly, alignment, testing, and final packaging"
+  market_state: "Finished, quality-released, factory-gate instrument in its declared shipment configuration"
+functional_unit:
+  what: "A quality-released instrument within the declared covered product family and model configuration"
+  how_much: "1 kg net mass of finished instrument"
+  how_well: "Meets the manufacturer's declared optical, mechanical, electrical, and acceptance-test specifications"
+  how_long_or_cycle: "At factory gate; no use-duration equivalence is asserted"
+  reference_flow_link: "r24_reference_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "all processes"
+      rule: "Include all on-site operations from receipt of starting inputs through quality release and final packaging; exclude use, distribution, maintenance, and end-of-life."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+        - tochigi-nikon-lens-manufacturing
+        - tamron-lens-manufacturing
+    - rule_id: boundary_conditional_routes
+      applies_to: "optical_element_fabrication; optomechanical_component_fabrication; electronics_integration"
+      rule: "Include a conditional process only when performed within the reporting foreground; otherwise record each purchased replacement assembly as its own input to the first consuming process."
+      source_ids:
+        - koehler-et-al-2021-optics-manufacturing
+        - tochigi-nikon-lens-manufacturing
+        - tamron-lens-manufacturing
+    - rule_id: boundary_background_separation
+      applies_to: "purchased inputs and utilities"
+      rule: "Do not repeat extraction, material production, electricity generation, or supplier operations already represented by linked background datasets."
+      source_ids:
+        - eu-pef-2021-method
+boundary_abstraction:
+  declared_starting_condition: "Purchased materials, blanks, components, assemblies, electricity, water, adhesive, and packaging as received at the reporting site"
+  starting_condition_role: "Foreground gate; upstream production and delivery are represented by linked background datasets"
+  product_classification_scope: "Finished instruments within the semantic boundary of CPC 3.0 code 48314"
+  recursive_input_rule: "A purchased instrument or assembly within the same broad category remains a named purchased product input and must not recursively invoke this PCR inside the same foreground model"
+  upstream_dataset_requirement: "Link each purchased input and utility to a geographically, technologically, and temporally representative background dataset without duplicating its upstream inventory"
+  disclosure: "Declare which conditional processes are in-house, which subassemblies are purchased, facility sharing, coating route, electronics content, packaging configuration, cut-offs, and excluded operations"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Binoculars, monoculars and other optical telescopes, other astronomical instruments, except instruments for radio-astronomy, compound optical microscopes"
+    uuid: "d2f8e7e0-b94f-4ea8-a75d-19f3ef90a8c7"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "instrument family"
+    - "model and configuration"
+    - "optical design"
+    - "magnification and aperture or numerical aperture"
+    - "optical material and coating"
+    - "powered or digital features"
+    - "included accessories"
+    - "net instrument mass"
+    - "shipment packaging status"
+    - "production geography"
+    - technology
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "r24_reference_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure net mass after quality release and before removable shipment packaging; normalize all exchanges to exactly 1 kg."
+  - id: material_mass
+    applies_to: "Material, component, adhesive, packaging, and waste rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use calibrated mass records; convert supplier units to kg and document moisture, concentration, and gross-to-net corrections when material."
+  - id: electricity_energy
+    applies_to: "Electricity rows"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Convert metered electricity to MJ using 3.6 MJ per kWh; do not combine electricity with fuels, heat, or compressed air."
+  - id: water_mass
+    applies_to: "r03_process_water"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer direct mass measurement; if volume is measured, document temperature, density, reference conditions, and conversion."
+  - id: internal_transfer_balance
+    applies_to: "Internal intermediate input/output pairs"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use the same foreground flow identity and equal normalized quantity on both sides of each internal transfer; purchased substitutes must be separately identified inputs."
+process_map:
+  - id: optical_element_fabrication
+    name: "Optical-element fabrication"
+    inclusion: "conditional"
+    inclusion_condition: "Performed in-house rather than represented by purchased finished optical elements"
+    role: "Produces finished optical elements by grinding, polishing, cleaning, and related finishing"
+    quantitative_reference: "1 kg net reference product"
+  - id: optomechanical_component_fabrication
+    name: "Optomechanical-component fabrication"
+    inclusion: "conditional"
+    inclusion_condition: "Metal housings, barrels, stages, or mounts are machined in-house"
+    role: "Produces model-specific optomechanical components"
+    quantitative_reference: "1 kg net reference product"
+  - id: electronics_integration
+    name: "Electronics integration"
+    inclusion: "conditional"
+    inclusion_condition: "The declared model contains powered or digital functions assembled in-house"
+    role: "Produces the configured electronics subassembly"
+    quantitative_reference: "1 kg net reference product"
+  - id: instrument_assembly_alignment_testing
+    name: "Instrument assembly, alignment, and testing"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Integrates applicable optical, mechanical, and electronic subassemblies and releases an unboxed instrument"
+    quantitative_reference: "1 kg net reference product"
+  - id: final_packaging
+    name: "Final packaging"
+    inclusion: "required"
+    inclusion_condition: "Always; zero quantities are permitted only for packaging components demonstrably absent"
+    role: "Adds the declared shipment packaging and produces the reference product"
+    quantitative_reference: "1 kg net reference product"
+process_inventory:
+  - id: optical_element_fabrication
+    label: "Optical-element fabrication"
+    inputs:
+      product:
+        - row_id: r01_optical_glass_blank
+          role: "Optical glass pressing blank"
+          name: "Optical Glass Pressing Blank"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a68c2948-174f-4e17-a3ee-f2b289d50d18"
+          property_unit: "Mass / kg"
+          description: "Record the net mass of optical glass blanks entering in-house optical-element fabrication."
+          amount:
+            expression: "Measured received mass minus documented returns and unused carry-over attributable to the reporting period"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_optical_element_fabrication
+              source_ids:
+                - koehler-et-al-2021-optics-manufacturing
+                - tamron-lens-manufacturing
+            ranges: []
+        - row_id: r02_optics_electricity
+          role: "Electricity for optical-element fabrication"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record only electrical energy used by in-house grinding, polishing, cleaning, coating, and supporting equipment within this process boundary."
+          amount:
+            expression: "Submetered electricity or allocated equipment electricity under allocation_shared_resources"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_optical_element_fabrication
+              source_ids:
+                - eu-pef-2021-method
+                - tochigi-nikon-lens-manufacturing
+                - tamron-lens-manufacturing
+            ranges: []
+        - row_id: r03_process_water
+          role: "Process water for optical-element fabrication"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water entering in-house grinding, polishing, and cleaning; cooling water in a closed loop is recorded only as net make-up water, not recirculated throughput."
+          amount:
+            expression: "Metered or batch-recorded net process-water input, excluding recirculated volume"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_optical_element_fabrication
+              source_ids:
+                - koehler-et-al-2021-optics-manufacturing
+                - tamron-lens-manufacturing
+            ranges: []
+        - row_id: r04_cerium_oxide
+          role: "Cerium oxide polishing material"
+          name: "Cerium oxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b23ee368-01e2-4fcd-8e8f-e8115ee04555"
+          property_unit: "Mass / kg"
+          description: "Record cerium oxide consumed as polishing material when used by the declared route."
+          amount:
+            expression: "Inventory withdrawal plus opening stock minus closing stock, corrected for returned unused material"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_optical_element_fabrication
+              source_ids:
+                - tamron-lens-manufacturing
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: r05_finished_optical_element
+          role: "Finished optical element"
+          name: "Finished optical element"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Create a model- and route-specific foreground intermediate flow for finished optical elements transferred to assembly; do not substitute the CPC reference product flow."
+          amount:
+            expression: "Measured accepted mass transferred to instrument assembly"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_optical_element_fabrication
+              source_ids:
+                - tochigi-nikon-lens-manufacturing
+                - tamron-lens-manufacturing
+            ranges: []
+      waste:
+        - row_id: r06_waste_polishing_media
+          role: "Waste polishing media"
+          name: "Waste polishing media"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "cdb1838e-d3ec-41e1-87ee-627b9ce95e88"
+          property_unit: "Mass / kg"
+          description: "Record collected spent polishing media leaving the process for treatment or recovery; exclude material carried in separately measured wastewater."
+          amount:
+            expression: "Measured dispatched waste mass, net of container tare"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_optical_element_fabrication
+              source_ids:
+                - koehler-et-al-2021-optics-manufacturing
+                - tamron-lens-manufacturing
+            ranges: []
+        - row_id: r07_optical_process_wastewater
+          role: "Optical-process wastewater"
+          name: "Optical-process wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the mixed aqueous waste stream from grinding, polishing, and cleaning only when it crosses the foreground boundary for on-site or off-site treatment."
+          amount:
+            expression: "Metered discharge mass or measured volume converted with documented density, net of separately recorded recovered water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_optical_element_fabrication
+              source_ids:
+                - koehler-et-al-2021-optics-manufacturing
+                - tamron-lens-manufacturing
+            ranges: []
+      elementary:
+        []
+  - id: optomechanical_component_fabrication
+    label: "Optomechanical-component fabrication"
+    inputs:
+      product:
+        - row_id: r08_aluminium_alloy
+          role: "Aluminium alloy stock"
+          name: "Aluminium alloy"
+          flow_type: "product"
+          flow_ref:
+            uuid: "28b47d6d-68b4-4810-b764-01a1fc1352dc"
+          property_unit: "Mass / kg"
+          description: "Record aluminium alloy stock entering in-house machining of housings, barrels, stages, or mounts."
+          amount:
+            expression: "Measured issued mass minus documented reusable remnants returned to stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_optomechanical_component_fabrication
+              source_ids:
+                - tochigi-nikon-lens-manufacturing
+            ranges: []
+        - row_id: r09_machining_electricity
+          role: "Electricity for optomechanical fabrication"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electrical energy used by in-house machining and associated process equipment."
+          amount:
+            expression: "Submetered electricity or allocated equipment electricity under allocation_shared_resources"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_optomechanical_component_fabrication
+              source_ids:
+                - eu-pef-2021-method
+                - tochigi-nikon-lens-manufacturing
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: r10_optomechanical_component
+          role: "Optomechanical component"
+          name: "Optomechanical component"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Create a model-specific foreground intermediate flow for accepted machined housings, barrels, stages, or mounts transferred to assembly."
+          amount:
+            expression: "Measured accepted mass transferred to instrument assembly"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_optomechanical_component_fabrication
+              source_ids:
+                - tochigi-nikon-lens-manufacturing
+            ranges: []
+      waste:
+        - row_id: r11_aluminium_scrap
+          role: "Aluminium scrap"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass / kg"
+          description: "Record aluminium scrap leaving the foreground for recycling or waste treatment, net of internal recirculation."
+          amount:
+            expression: "Measured dispatched scrap mass, net of tare and internally reused chips or remnants"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_optomechanical_component_fabrication
+              source_ids:
+                - tochigi-nikon-lens-manufacturing
+            ranges: []
+      elementary:
+        []
+  - id: electronics_integration
+    label: "Electronics integration"
+    inputs:
+      product:
+        - row_id: r12_populated_pcb_assembly
+          role: "Populated instrument-control printed circuit board assembly"
+          name: "Populated instrument-control printed circuit board assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record a purchased populated printed circuit board assembly only for powered or digital models integrated in-house."
+          amount:
+            expression: "Measured accepted mass issued to the reporting model, net of returned defective assemblies"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electronics_integration
+              source_ids: []
+            ranges: []
+        - row_id: r13_electronics_electricity
+          role: "Electricity for electronics integration"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electrical energy used for in-house electronics integration and functional testing within this conditional process."
+          amount:
+            expression: "Submetered electricity or allocated workstation electricity under allocation_shared_resources"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electronics_integration
+              source_ids:
+                - eu-pef-2021-method
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: r14_electronics_subassembly
+          role: "Electronics subassembly"
+          name: "Electronics subassembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Create a configuration-specific foreground intermediate flow for the accepted electronics subassembly transferred to instrument assembly."
+          amount:
+            expression: "Measured accepted mass transferred to instrument assembly"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electronics_integration
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: instrument_assembly_alignment_testing
+    label: "Instrument assembly, alignment, and testing"
+    inputs:
+      product:
+        - row_id: r15_finished_optical_element_input
+          role: "Finished optical element input"
+          name: "Finished optical element"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal transfer from r05_finished_optical_element when optical elements are made in-house. If purchased, add the exact purchased optical-element product input instead of using this internal row."
+          amount:
+            expression: "Equal to the accepted internal transfer from r05_finished_optical_element"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_instrument_assembly_alignment_testing
+              source_ids:
+                - tochigi-nikon-lens-manufacturing
+                - tamron-lens-manufacturing
+            ranges: []
+        - row_id: r16_optomechanical_component_input
+          role: "Optomechanical component input"
+          name: "Optomechanical component"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal transfer from r10_optomechanical_component when optomechanical parts are made in-house. If purchased, add each exact purchased component input instead."
+          amount:
+            expression: "Equal to the accepted internal transfer from r10_optomechanical_component"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_instrument_assembly_alignment_testing
+              source_ids:
+                - tochigi-nikon-lens-manufacturing
+            ranges: []
+        - row_id: r17_electronics_subassembly_input
+          role: "Electronics subassembly input"
+          name: "Electronics subassembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "For powered or digital models integrated in-house, record the internal transfer from r14_electronics_subassembly; otherwise omit it and record any purchased electronics input by its exact identity."
+          amount:
+            expression: "Equal to the accepted internal transfer from r14_electronics_subassembly when applicable"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_instrument_assembly_alignment_testing
+              source_ids: []
+            ranges: []
+        - row_id: r18_uv_adhesive
+          role: "UV adhesive"
+          name: "UV adhesive"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6fe0476a-94ee-46e6-9d6d-e165a53ccd2a"
+          property_unit: "Mass / kg"
+          description: "Record UV-curing adhesive consumed in optical or mechanical bonding only when used by the declared assembly route."
+          amount:
+            expression: "Dispensed mass from batch records or opening stock plus receipts minus closing stock and documented returns"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_instrument_assembly_alignment_testing
+              source_ids:
+                - tamron-lens-manufacturing
+            ranges: []
+        - row_id: r19_assembly_electricity
+          role: "Electricity for assembly, alignment, and testing"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electrical energy used by assembly tools, alignment stations, acceptance testing, and directly attributable support equipment."
+          amount:
+            expression: "Submetered electricity or equipment power multiplied by logged operating time, with shared use allocated under allocation_shared_resources"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_instrument_assembly_alignment_testing
+              source_ids:
+                - eu-pef-2021-method
+                - tochigi-nikon-lens-manufacturing
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: r20_unboxed_instrument
+          role: "Unboxed quality-released instrument"
+          name: "Unboxed quality-released optical instrument"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Create a model-specific foreground intermediate for the instrument that has passed acceptance testing but has not received removable shipment packaging."
+          amount:
+            expression: "Measured net mass transferred to final packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_instrument_assembly_alignment_testing
+              source_ids:
+                - tochigi-nikon-lens-manufacturing
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: final_packaging
+    label: "Final packaging"
+    inputs:
+      product:
+        - row_id: r21_unboxed_instrument_input
+          role: "Unboxed quality-released instrument input"
+          name: "Unboxed quality-released optical instrument"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal transfer from r20_unboxed_instrument; its quantity must equal the net reference-product mass."
+          amount:
+            expression: "Equal to the transfer from r20_unboxed_instrument"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_packaging
+              source_ids: []
+            ranges: []
+        - row_id: r22_corrugated_board_box
+          role: "Corrugated board box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record the net mass of corrugated board boxes included in the declared shipment configuration."
+          amount:
+            expression: "Packaging bill-of-material mass or measured box mass multiplied by units used, net of reused boxes"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_packaging
+              source_ids: []
+            ranges: []
+        - row_id: r23_polyethylene_foam_insert
+          role: "Polyethylene foam cushioning insert"
+          name: "Polyethylene foam cushioning insert"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record polyethylene foam cushioning inserts only when included in the declared shipment configuration."
+          amount:
+            expression: "Packaging bill-of-material mass or measured insert mass multiplied by units used"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_packaging
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: r24_reference_product
+          role: "Reference product"
+          name: "Binoculars, monoculars and other optical telescopes, other astronomical instruments, except instruments for radio-astronomy, compound optical microscopes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d2f8e7e0-b94f-4ea8-a75d-19f3ef90a8c7"
+          property_unit: "Mass / kg"
+          description: "Record exactly 1 kg net mass of the declared quality-released instrument; removable shipment packaging is not included in this amount."
+          amount:
+            expression: "Fixed at 1 kg after normalization from measured net finished-instrument mass"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_final_packaging
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoidance
+    applies_to: "all processes"
+    rule: "Collect model-, batch-, line-, or equipment-specific data and subdivide processes whenever feasible, avoiding allocation."
+    source_ids:
+      - eu-pef-2021-method
+  - rule_id: allocation_shared_resources
+    applies_to: "shared electricity, water, consumables, and facility services"
+    rule: "Allocate by a documented physical causal driver: metered consumption first, then equipment operating time multiplied by rated or measured demand, then batch processing time or mass only when demonstrably causal. Never allocate by revenue without showing that no physical relationship is practicable."
+    source_ids:
+      - eu-pef-2021-method
+  - rule_id: allocation_recycling_outputs
+    applies_to: "r06_waste_polishing_media; r11_aluminium_scrap"
+    rule: "Record the measured waste output at the foreground boundary without avoided-burden credit. Link downstream treatment or recycling consistently; disclose any alternative recycling convention outside this PCR result."
+    source_ids:
+      - eu-pef-2021-method
+  - rule_id: allocation_internal_transfers
+    applies_to: "r05_finished_optical_element; r10_optomechanical_component; r14_electronics_subassembly; r20_unboxed_instrument and paired inputs"
+    rule: "Internal transfers receive no independent environmental burden or co-product allocation; burdens remain in their producing foreground processes and transfer quantities must balance."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_optical_element_fabrication
+      process_id: "optical_element_fabrication"
+      flow_role: "all inputs and outputs"
+      record_type: "meter, stock, transfer, and waste records"
+      raw_fields: "timestamps; batch/model; opening/receipts/issues/returns/closing; meter readings; output and waste mass"
+      collection_method: "Reconcile batch and period records for the exact in-house route"
+      unit: "kg; MJ"
+      frequency: "Per batch with monthly reconciliation"
+      temporal_coverage: "Representative continuous 12-month period or justified production campaign"
+      site_scope: "Reporting site and declared equipment"
+      aggregation_rule: "Sum valid records, subtract returns and carry-over, allocate shared resources, then divide by net reference-product kg"
+      quality_evidence: "Calibration, invoices, stock ledgers, meter logs, transfer tickets, waste manifests"
+    - protocol_id: cp_optomechanical_component_fabrication
+      process_id: "optomechanical_component_fabrication"
+      flow_role: "all inputs and outputs"
+      record_type: "stock issue, meter, transfer, and scrap records"
+      raw_fields: "timestamps; alloy grade; issued/returned mass; meter readings; accepted output; scrap mass"
+      collection_method: "Reconcile issued stock, accepted transfers, and dispatched scrap"
+      unit: "kg; MJ"
+      frequency: "Per batch with monthly reconciliation"
+      temporal_coverage: "Representative continuous 12-month period or justified production campaign"
+      site_scope: "Reporting site and declared machines"
+      aggregation_rule: "Sum attributable records and normalize by net reference-product kg"
+      quality_evidence: "Scale calibration, stock ledger, machine logs, scrap tickets"
+    - protocol_id: cp_electronics_integration
+      process_id: "electronics_integration"
+      flow_role: "all inputs and outputs"
+      record_type: "purchase issue, meter, and transfer records"
+      raw_fields: "timestamps; assembly part number; issued/returned mass; meter readings; accepted output"
+      collection_method: "Reconcile accepted purchased boards, workstation energy, and internal transfers"
+      unit: "kg; MJ"
+      frequency: "Per batch"
+      temporal_coverage: "Representative continuous 12-month period or justified production campaign"
+      site_scope: "Reporting site and declared workstations"
+      aggregation_rule: "Sum attributable records and normalize by net reference-product kg"
+      quality_evidence: "BOM, receiving records, meter or equipment logs, test and transfer records"
+    - protocol_id: cp_instrument_assembly_alignment_testing
+      process_id: "instrument_assembly_alignment_testing"
+      flow_role: "all inputs and outputs"
+      record_type: "transfer, dispensing, meter, and acceptance records"
+      raw_fields: "timestamps; model/configuration; transferred masses; adhesive stock or dispensing; energy; accepted and rejected units"
+      collection_method: "Reconcile internal or purchased components, adhesive, energy, and accepted output"
+      unit: "kg; MJ"
+      frequency: "Per production batch"
+      temporal_coverage: "Representative continuous 12-month period or justified production campaign"
+      site_scope: "Reporting assembly and test site"
+      aggregation_rule: "Sum attributable records, apply documented physical allocation, divide by accepted net instrument mass"
+      quality_evidence: "BOM, batch traveler, dispensing records, meter logs, alignment and acceptance-test records"
+    - protocol_id: cp_final_packaging
+      process_id: "final_packaging"
+      flow_role: "product and packaging inputs; reference output"
+      record_type: "transfer, BOM, scale, and packaging issue records"
+      raw_fields: "model/configuration; unboxed mass; packaging component/count/mass; finished net mass"
+      collection_method: "Reconcile unboxed transfer, exact shipment configuration, and net reference output"
+      unit: "kg"
+      frequency: "Per packaging configuration and batch"
+      temporal_coverage: "Same period as assembly records"
+      site_scope: "Reporting packaging site"
+      aggregation_rule: "Sum each atomic packaging component separately; set normalized net reference output to 1 kg"
+      quality_evidence: "Approved packaging BOM, scale calibration, issue records, finished-goods release"
+  calculation_rules:
+    - id: normalize_to_reference_mass
+      applies_to: "all inventory rows"
+      rule: "normalized amount = attributable period amount / accepted net instrument mass in the same period"
+      inputs:
+        - "attributable exchange amount"
+        - "accepted net instrument mass"
+      output: "exchange per 1 kg net reference product"
+      source_ids: []
+    - id: convert_electricity_to_mj
+      applies_to: "r02_optics_electricity; r09_machining_electricity; r13_electronics_electricity; r19_assembly_electricity"
+      rule: "MJ = metered kWh × 3.6"
+      inputs:
+        - "metered or calculated kWh"
+      output: "MJ electricity"
+      source_ids: []
+    - id: calculate_stock_consumption
+      applies_to: "stock-accounted materials"
+      rule: "consumption = opening stock + receipts − closing stock − documented returns or transfers outside the studied production"
+      inputs:
+        - "reconciled stock records"
+      output: "kg consumed"
+      source_ids: []
+    - id: balance_internal_transfers
+      applies_to: "paired internal intermediate rows"
+      rule: "producing-process output quantity = consuming-process input quantity after common normalization"
+      inputs:
+        - "paired output and input records"
+      output: "balanced kg transfer"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and all purchased inputs"
+      requirement: "Preserve exact flow identity, property, unit, geography, technology, supplier state, and product-state qualifiers; unresolved UUIDs remain explicit."
+      evidence: "Direct-read UUID audit, BOM, supplier specification, and dataset metadata"
+    - id: dq_temporal
+      applies_to: "all foreground data"
+      requirement: "Prefer one representative continuous 12-month period; justify campaigns, extrapolation, shutdowns, rework, and abnormal production."
+      evidence: "Dated source records and production log"
+    - id: dq_metering
+      applies_to: "electricity and water"
+      requirement: "Use calibrated submeters where feasible; disclose estimation, allocation driver, meter boundary, and conversion assumptions."
+      evidence: "Calibration certificate, meter map, readings, and calculation sheet"
+    - id: dq_mass_balance
+      applies_to: "material-processing and internal-transfer processes"
+      requirement: "Reconcile material inputs with accepted output, waste, stock change, and documented losses; investigate material discrepancies."
+      evidence: "Signed mass-balance worksheet and source records"
+    - id: dq_route_disclosure
+      applies_to: "all conditional processes"
+      requirement: "State included and excluded routes, purchased substitutes, coating route, powered/digital content, and packaging configuration."
+      evidence: "Process map, BOM, supplier list, and dataset comment"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "reference product"
+    rule: "Exactly one quantitative reference must resolve to UUID d2f8e7e0-b94f-4ea8-a75d-19f3ef90a8c7, Mass, kg, and an amount of 1 after normalization; all required qualifiers must be declared."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_atomic_inventory
+    applies_to: "all inventory rows"
+    rule: "Every row must be one atomic exchange; UUID-empty rows must remain explicitly unresolved and no category label may replace a concrete flow."
+    source_ids: []
+  - rule_id: validate_conditional_routes
+    applies_to: "conditional processes"
+    rule: "Each conditional process must be marked included or not applicable with evidence; when excluded, its internally produced intermediates must not be counted and exact purchased substitutes must be added."
+    source_ids:
+      - tochigi-nikon-lens-manufacturing
+      - tamron-lens-manufacturing
+  - rule_id: validate_internal_transfer_balance
+    applies_to: "paired internal intermediates"
+    rule: "Included internal output/input pairs must use the same foreground identity and equal normalized mass; no background burden may be attached twice."
+    source_ids: []
+  - rule_id: validate_electricity_separation
+    applies_to: "electricity rows"
+    rule: "Electricity must be reported in MJ and separately for each applicable process; fuels, heat, and compressed air must not be combined with it."
+    source_ids:
+      - eu-pef-2021-method
+  - rule_id: validate_packaging_and_net_mass
+    applies_to: "final packaging"
+    rule: "Reference amount must exclude removable shipment packaging, while each included packaging component is separately reported; absent components require configuration evidence."
+    source_ids: []
+  - rule_id: validate_allocation
+    applies_to: "shared resources and waste outputs"
+    rule: "Every non-direct assignment must identify the quantity, physical driver, records, formula, and affected products; waste outputs receive no avoided-burden credit in the foreground result."
+    source_ids:
+      - eu-pef-2021-method
+  - rule_id: validate_ranges
+    applies_to: "all inventory rows"
+    rule: "No numerical default or QA range may be inferred from this PCR; any added range requires verified boundary-compatible evidence and source identifiers."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Factory-gate foreground production dataset for one declared optical-instrument model and configuration"
+  downstream_use: "Construction of TianGong foreground data packages and downstream process or lifecycle-model projections"
+  allowed_use: "Model-specific comparison or contribution analysis when functional performance, configuration, boundary, geography, technology, period, and data quality are compatible"
+  excluded_use: "Universal product-family average; use-phase or lifetime comparison; radio-astronomy, electron-microscope, or separately sold component claims; unsupported numerical defaults"
+  required_metadata: "Required reference qualifiers; site and period; included conditional routes; purchased assemblies; coating route; electronics content; packaging configuration; background links; allocation; cut-offs"
+  required_quality_disclosure: "Primary-data coverage, metering and estimation shares, mass-balance closure, unresolved flow identities, allocation drivers, data gaps, and deviations from this PCR"
+  update_trigger: "Material change in model configuration, optical design, mass, manufacturing route, supplier, site, energy mix, electronics, packaging, allocation, or reporting period"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Official CPC 48314 English identity and classification boundary"
+  - id: "un-cpc-1-1-chinese"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 1.1, Chinese, https://unstats.un.org/unsd/publication/SeriesM/M_77ver1_1c.pdf"
+    used_for: "Verified professional Chinese rendering of the product-category wording"
+  - id: "koehler-et-al-2021-optics-manufacturing"
+    type: "literature"
+    reference: "Köhler et al., “Quantification of Carbonic Contamination of Fused Silica Surfaces at Different Stages of Classical Optics Manufacturing,” Materials 14(7), 1620, 2021, https://doi.org/10.3390/ma14071620"
+    used_for: "Classical optical grinding, lapping, polishing, water, coolant, and polishing-media process relevance"
+  - id: "tochigi-nikon-lens-manufacturing"
+    type: "extension_guidance"
+    reference: "Tochigi Nikon, “NIKKOR Lens Work Process (ニッコールレンズ作業工程),” https://www.jp.nikon.com/company/corporate/group/ktn/businesses/imaging/process/"
+    used_for: "Grinding, fine grinding, polishing, coating, barrel-component machining, electronics/FPC integration, assembly, operational checks, and final optical inspection route decomposition"
+  - id: "tamron-lens-manufacturing"
+    type: "extension_guidance"
+    reference: "Tamron, “Lens Manufacturing Process,” https://www.tamron.com/global/monozukuri/tour/content.html"
+    used_for: "Fine grinding, coolant circulation, polishing, cleaning, purified water, vacuum deposition, centering, and bonding route decomposition"
+  - id: "eu-pef-2021-method"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279, Annex I, Product Environmental Footprint Method, https://environment.ec.europa.eu/system/files/2021-12/Annexes%201%20to%202.pdf"
+    used_for: "Specific energy metering, subdivision, physical-causality allocation, and foreground/background consistency"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:6db6b6ca82a8c8316a5336d7e07d9ed2ddfd64db7b4e4d5bbf7002ee7ff8b4a3"
+  generated_content_sha256: "sha256:189fb45fbd8b15729f661b4e909342bd608fc2e0981ee6aa0bd861f1aa3e7911"

@@ -1,10 +1,586 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41601"
-  title: "Tungsten, molybdenum, tantalum, magnesium, cobalt, cadmium, titanium, zirconium, beryllium, gallium, hafnium, indium, niobium, rhenium and thallium, germanium and vanadium, unwrought, and powders thereof, except powders of magnesium; cobalt mattes and other intermediate products of cobalt metallurgy"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.tungsten-molybdenum-tantalum-magnesium-cobalt-cadmium-titanium-zirconium-beryllium-gall-f36ccdf2"
+  classification_refs: "CPC 3.0: 41601 (exact classification context; no accepted mapping is asserted by this PCR)"
+  covered_products: "Declared unwrought metals and non-magnesium metal powders listed in scope; cobalt mattes and other declared cobalt-metallurgy intermediates"
+  excluded_products: "Wrought products and articles; magnesium powder; cermets; metal waste and scrap sold as waste; products outside the declared chemical identity or market state"
+  representative_product: "Tungsten Powder"
+  production_route: "Representative route: tungsten-concentrate hydrometallurgy to tungsten trioxide followed by hydrogen reduction; other covered products require their own declared route-specific process map"
+  market_state: "Dry saleable powder at the producing facility gate; purity, particle-size distribution, moisture and oxygen content declared"
+functional_unit:
+  what: "Production of saleable tungsten powder meeting the declared product specification"
+  how_much: "1 kg dry tungsten powder"
+  how_well: "At declared tungsten purity, particle-size distribution, moisture, oxygen content and lot acceptance status"
+  how_long_or_cycle: "One production lot represented over the declared reporting period"
+  reference_flow_link: "tungsten_powder_output"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary starts when tungsten concentrate or another explicitly declared metallurgical feed is received at the conversion facility. For the representative route it includes alkaline digestion or leaching, solid-liquid separation, purification and precipitation/calcination to tungsten trioxide, hydrogen reduction, powder finishing, on-site air-emission control and wastewater or residue generation up to dry saleable tungsten powder at the facility gate. Upstream production and delivery of concentrate, electricity, fuels, gases, chemicals and water shall be represented by linked datasets. Treatment after a waste crosses the foreground boundary is linked as downstream treatment and is not silently absorbed."
+      source_ids: []
+    - rule_id: boundary_route_specificity
+      applies_to: "every foreground dataset"
+      rule: "Include only unit operations actually used for the declared product and route, and disclose excluded route stages; do not import tungsten-route exchanges into another covered metal."
+      source_ids:
+        - jrc-nfm-bref-2017
+    - rule_id: boundary_upstream_inputs
+      applies_to: "purchased feeds and utilities"
+      rule: "Represent production and delivery of each purchased feed, electricity, fuel, industrial gas, chemical and water input with an upstream dataset."
+      source_ids:
+        - jrc-nfm-bref-2017
+    - rule_id: boundary_direct_releases
+      applies_to: "foreground emissions and wastes"
+      rule: "Record direct air releases, waterborne releases and each waste leaving the controlled process as separate atomic exchanges before downstream treatment."
+      source_ids:
+        - jrc-nfm-bref-2017
+boundary_abstraction:
+  declared_starting_condition: "Received metallurgical feed at facility gate, with exact material identity, primary/secondary status, origin, total mass, moisture, target-metal grade and impurity profile declared"
+  starting_condition_role: "Upstream product input to the foreground conversion route"
+  product_classification_scope: "CPC 41601 context restricted to the exact covered product and market state declared by the dataset"
+  recursive_input_rule: "A same-category product used as feed is recorded as a separate product input with its own upstream dataset; do not recursively include its production in the current foreground process or net it against output"
+  upstream_dataset_requirement: "Link geographically and technologically representative datasets for each received feed, electricity supply, fuel, gas, chemical and water input"
+  disclosure: "Disclose product identity, route, feed origin and grade, primary/secondary share, process ownership, cut-offs, recycled-content accounting, allocation, abatement, wastewater and residue destinations"
+reference_flow_definition:
+  reference_amount: "1 kg dry saleable product"
+  product_flow_ref:
+    name: "Tungsten Powder"
+    uuid: "50fa22a2-c21a-49ec-a088-53d2c4656c86"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "exact chemical/product identity"
+    - "primary or secondary feed status"
+    - "production route"
+    - "dry or as-received basis"
+    - "purity and assay method"
+    - "particle-size distribution"
+    - moisture
+    - "oxygen content"
+    - "facility geography"
+    - technology
+    - "reporting period"
+    - "allocation method"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_dry_mass
+    applies_to: "reference product and mass-normalized inventory"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report saleable product on a dry-mass basis. When weighed as received, retain gross mass and measured moisture and calculate dry mass as gross mass multiplied by one minus the moisture mass fraction."
+  - id: gas_reference_conditions
+    applies_to: "natural gas, industrial oxygen and unresolved hydrogen rows"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Record gas volume with temperature, absolute pressure and dry/wet basis. Convert all gas records to the single reference condition declared by the dataset; do not combine volumes at different conditions."
+  - id: electricity_energy_conversion
+    applies_to: "purchased electricity rows"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electrical energy and convert kWh to MJ using 1 kWh = 3.6 MJ. Declare voltage level, grid geography, on-site generation and loss boundary."
+  - id: material_assay_basis
+    applies_to: "tungsten concentrate, tungsten trioxide, residue and powder"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Retain both total material mass and measured tungsten mass fraction. Never substitute contained-tungsten mass for total flow mass without an explicit conversion record."
+process_map:
+  - id: tungsten_hydrometallurgy
+    name: "Tungsten concentrate digestion, purification and oxide preparation"
+    inclusion: "conditional"
+    inclusion_condition: "Required when tungsten powder is produced through an alkaline hydrometallurgical route from tungsten concentrate"
+    role: "foreground conversion and intermediate production"
+    quantitative_reference: "kg dry tungsten trioxide transferred to reduction"
+  - id: tungsten_powder_reduction
+    name: "Hydrogen reduction and tungsten powder finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Required when tungsten powder is produced by hydrogen reduction of tungsten trioxide"
+    role: "foreground reduction and final product production"
+    quantitative_reference: "kg dry saleable tungsten powder"
+  - id: other_covered_metal_route
+    name: "Declared route for another covered CPC 41601 product"
+    inclusion: "conditional"
+    inclusion_condition: "Required in place of the representative tungsten route when the reference product is not tungsten powder"
+    role: "route-specific foreground production"
+    quantitative_reference: "1 kg dry declared saleable product"
+process_inventory:
+  - id: tungsten_hydrometallurgy
+    label: "Tungsten concentrate digestion, purification and oxide preparation"
+    inputs:
+      product:
+        - row_id: tungsten_concentrate_input
+          role: "Tungsten concentrate feed"
+          name: "Tungsten concentrate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d78c8bc-0a1c-4f89-9c86-efc516cd7e76"
+          property_unit: "Mass / kg"
+          description: "Tungsten concentrate received from beneficiation crosses the facility gate as the representative metal-bearing feed."
+          amount:
+            expression: "measured as-received mass corrected to dry mass, with tungsten grade retained separately"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg dry tungsten trioxide transferred to reduction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hydromet_batch
+              source_ids:
+                - jrc-nfm-bref-2017
+            ranges: []
+        - row_id: hydromet_process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Water supplied for digestion, washing and solution preparation is measured as one product input; recirculated internal water is not double-counted."
+          amount:
+            expression: "metered net process-water input crossing the foreground boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg dry tungsten trioxide transferred to reduction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hydromet_batch
+              source_ids:
+                - jrc-nfm-bref-2017
+            ranges: []
+        - row_id: sodium_hydroxide_input
+          role: "Sodium hydroxide"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Sodium hydroxide used in alkaline digestion is recorded as delivered product mass; concentration and solution carrier water are retained."
+          amount:
+            expression: "purchased or issued mass, with active NaOH concentration recorded"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dry tungsten trioxide transferred to reduction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hydromet_batch
+              source_ids:
+                - jrc-nfm-bref-2017
+            ranges: []
+        - row_id: hydromet_electricity
+          role: "Electricity for hydrometallurgy"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Purchased electricity used by digestion, pumping, separation and purification equipment is separately submetered or allocated from a documented meter hierarchy."
+          amount:
+            expression: "submetered electrical energy converted to MJ"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg dry tungsten trioxide transferred to reduction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hydromet_batch
+              source_ids:
+                - jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: tungsten_trioxide_output
+          role: "Tungsten trioxide intermediate"
+          name: "Tungsten trioxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Dry tungsten trioxide transferred to the reduction process is an internal product flow. Its UUID remains unresolved and it shall not be replaced with tungstic acid or ammonium paratungstate."
+          amount:
+            expression: "measured dry transfer mass reconciled with tungsten assay and batch balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dry tungsten trioxide transferred to reduction"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_hydromet_batch
+              source_ids:
+                - jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        - row_id: tungsten_leach_residue
+          role: "Tungsten-bearing leach residue"
+          name: "Tungsten-bearing leach residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "The wet solid separated after digestion or leaching is recorded as a distinct waste; moisture and residual tungsten content are retained."
+          amount:
+            expression: "measured wet mass with moisture and tungsten assay retained"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dry tungsten trioxide transferred to reduction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hydromet_batch
+              source_ids:
+                - jrc-nfm-bref-2017
+            ranges: []
+        - row_id: tungsten_process_wastewater
+          role: "Tungsten-containing process wastewater"
+          name: "Tungsten-containing process wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Liquid wastewater discharged from washing, purification or abatement is recorded before off-site treatment; volume or density conversion and dissolved tungsten concentration are retained."
+          amount:
+            expression: "metered volume converted to mass using measured density, or directly measured mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg dry tungsten trioxide transferred to reduction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hydromet_batch
+              source_ids:
+                - jrc-nfm-bref-2017
+            ranges: []
+      elementary:
+        []
+  - id: tungsten_powder_reduction
+    label: "Hydrogen reduction and tungsten powder finishing"
+    inputs:
+      product:
+        - row_id: tungsten_trioxide_input
+          role: "Tungsten trioxide feed"
+          name: "Tungsten trioxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The internal tungsten trioxide from hydrometallurgy enters the reduction furnace. It carries the same unresolved identity as the preceding process output."
+          amount:
+            expression: "measured dry furnace-charge mass reconciled to the transferred intermediate"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dry saleable tungsten powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_reduction_batch
+              source_ids:
+                - jrc-nfm-bref-2017
+            ranges: []
+        - row_id: hydrogen_reductant
+          role: "Industrial hydrogen reductant"
+          name: "Industrial hydrogen"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Elemental hydrogen supplied to reduce tungsten trioxide is recorded at the declared gas reference condition. No exact Tiangong product UUID was confirmed."
+          amount:
+            expression: "metered hydrogen supplied minus separately measured recovered hydrogen exported from the process boundary"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dry saleable tungsten powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reduction_batch
+              source_ids:
+                - jrc-nfm-bref-2017
+            ranges: []
+        - row_id: reduction_electricity
+          role: "Electricity for reduction and finishing"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Purchased electricity used by reduction furnaces, gas circulation, cooling auxiliaries, milling, sieving and packing equipment is separately recorded."
+          amount:
+            expression: "submetered electrical energy converted to MJ"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg dry saleable tungsten powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reduction_batch
+              source_ids:
+                - jrc-nfm-bref-2017
+            ranges: []
+        - row_id: reduction_natural_gas
+          role: "Natural gas for furnace heat"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Gaseous natural gas is included only when combusted within the reduction or finishing boundary; it is not combined with hydrogen."
+          amount:
+            expression: "metered natural gas at the declared reference condition; not applicable for an all-electric route"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dry saleable tungsten powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reduction_batch
+              source_ids:
+                - jrc-nfm-bref-2017
+            ranges: []
+        - row_id: combustion_oxygen
+          role: "Industrial oxygen for supported combustion"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume / m3"
+          description: "Industrial oxygen is included only when purchased oxygen supports on-site natural-gas combustion; purity and pressure are declared."
+          amount:
+            expression: "metered oxygen at the declared reference condition; not applicable when ambient air alone supports combustion or no fuel is burned"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dry saleable tungsten powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reduction_batch
+              source_ids:
+                - jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: tungsten_powder_output
+          role: "Saleable tungsten powder"
+          name: "Tungsten Powder"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50fa22a2-c21a-49ec-a088-53d2c4656c86"
+          property_unit: "Mass / kg"
+          description: "Dry saleable tungsten powder accepted against the declared lot specification is the reference output."
+          amount:
+            expression: "measured accepted lot mass corrected to dry mass; fixed to 1 kg after normalization"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg dry saleable tungsten powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_reduction_batch
+              source_ids:
+                - un-cpc-3-0-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: fossil_co2_output
+          role: "Fossil carbon dioxide from on-site natural-gas combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Direct fossil carbon dioxide is included only for natural gas combusted inside the foreground boundary; upstream electricity emissions are excluded from this row."
+          amount:
+            expression: "calculate from metered natural gas and a verified site fuel-carbon balance; not applicable when no fossil fuel is combusted on site"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dry saleable tungsten powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_reduction_batch
+              source_ids:
+                - jrc-nfm-bref-2017
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "multi-output foreground operations"
+    rule: "Avoid allocation by subdividing independently metered unit operations and by preserving internal intermediate transfers."
+    source_ids:
+      - jrc-nfm-bref-2017
+  - rule_id: allocation_recovery_loop
+    applies_to: "recycled process material returned within the same reporting system"
+    rule: "Treat an internal recovery loop as an internal transfer; count only make-up input and net waste or product crossing the foreground boundary."
+    source_ids: []
+  - rule_id: allocation_joint_products
+    applies_to: "jointly produced saleable metals or cobalt intermediates"
+    rule: "If subdivision is not possible, apply a documented physical relation based on measured recoverable metal mass when it reflects causality; otherwise use economic allocation with the price period, currency and sensitivity disclosed. Do not credit a waste unless it leaves as a documented product with a market function."
+    source_ids:
+      - jrc-nfm-bref-2017
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_hydromet_batch
+      process_id: "tungsten_hydrometallurgy"
+      flow_role: "each listed feed, utility, intermediate and waste exchange"
+      record_type: "batch ledger, weigh ticket, meter, laboratory assay and waste manifest"
+      raw_fields: "timestamp; batch_id; flow identity; supplier or destination; gross mass or meter reading; moisture; tungsten grade; concentration; meter start/end; density; unit"
+      collection_method: "reconcile purchase/issue records and calibrated meters to batch production and laboratory assays"
+      unit: "kg, m3, MJ, mass fraction"
+      frequency: "each batch with monthly reconciliation"
+      temporal_coverage: "at least 12 consecutive representative months or all batches for a shorter campaign"
+      site_scope: "all foreground hydrometallurgical units under operational control"
+      aggregation_rule: "sum by atomic flow and normalize to dry tungsten trioxide transfer; document shared-meter allocation"
+      quality_evidence: "meter calibration; weigh tickets; certificates of analysis; laboratory QA/QC; stock reconciliation; waste manifests"
+    - protocol_id: cp_reduction_batch
+      process_id: "tungsten_powder_reduction"
+      flow_role: "each listed feed, energy, gas, product and direct-emission exchange"
+      record_type: "furnace batch sheet, gas and electricity meter, product lot record and fuel-carbon record"
+      raw_fields: "timestamp; batch_id; flow identity; meter start/end; gas temperature and pressure; gross mass; moisture; product acceptance; carbon content; unit"
+      collection_method: "reconcile furnace charges, gas and energy meters, accepted product lots and direct-emission calculation inputs"
+      unit: "kg, m3, MJ, mass fraction"
+      frequency: "each furnace batch with monthly reconciliation"
+      temporal_coverage: "at least 12 consecutive representative months or all batches for a shorter campaign"
+      site_scope: "all reduction and finishing units under operational control"
+      aggregation_rule: "sum by atomic flow and normalize to dry accepted powder; document shared-meter allocation and rejected lots"
+      quality_evidence: "calibrated meters; batch sheets; product certificates; moisture and oxygen tests; fuel certificates; mass and carbon balance closure"
+  calculation_rules:
+    - id: calc_dry_mass
+      applies_to: "concentrate, tungsten trioxide, residue and powder"
+      rule: "dry mass = as-received mass × (1 − moisture mass fraction)"
+      inputs:
+        - "as-received mass"
+        - "measured moisture fraction"
+      output: "kg dry material"
+      source_ids: []
+    - id: calc_flow_normalization
+      applies_to: "every inventory row"
+      rule: "normalized amount = reporting-period atomic-flow amount ÷ reporting-period dry accepted tungsten-powder mass"
+      inputs:
+        - "reconciled flow amount"
+        - "dry accepted product mass"
+      output: "amount per kg reference flow"
+      source_ids: []
+    - id: calc_electricity_mj
+      applies_to: "electricity records"
+      rule: "MJ = metered kWh × 3.6"
+      inputs:
+        - "metered kWh"
+      output: "MJ electricity"
+      source_ids: []
+    - id: calc_gas_reference_volume
+      applies_to: "hydrogen, natural gas and oxygen records"
+      rule: "convert measured gas volume to the dataset-declared temperature, absolute pressure and wet/dry basis and retain the conversion inputs"
+      inputs:
+        - "measured volume"
+        - temperature
+        - "absolute pressure"
+        - "moisture basis"
+        - "compressibility method"
+      output: "m3 at declared reference condition"
+      source_ids: []
+    - id: calc_direct_fossil_co2
+      applies_to: "on-site natural-gas combustion"
+      rule: "derive fossil CO2 from metered fuel and the verified site fuel-carbon balance; reconcile carbon in fuel, exported streams and unoxidized residues"
+      inputs:
+        - "natural-gas quantity"
+        - "fuel carbon data"
+        - "exported carbon"
+        - "residual carbon"
+      output: "kg fossil CO2"
+      source_ids:
+        - jrc-nfm-bref-2017
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and all product inputs"
+      requirement: "Confirm exact chemical identity, market state, purity or grade, moisture basis, primary/secondary status and supplier or internal origin."
+      evidence: "product specification; certificate of analysis; supplier declaration; Tiangong direct-read identity where UUID-bearing"
+    - id: dq_route
+      applies_to: "foreground process map"
+      requirement: "Declare every included unit operation and reconcile the process map to equipment, batch and meter records; a non-tungsten dataset must replace the representative route and flows."
+      evidence: "process flow diagram; equipment list; batch routing; meter map"
+    - id: dq_temporal
+      applies_to: "all foreground records"
+      requirement: "Use one consistent reporting period and explain shutdowns, start-ups, maintenance and non-representative campaigns."
+      evidence: "dated records; production calendar; exception log"
+    - id: dq_completeness
+      applies_to: "mass, tungsten and carbon balances"
+      requirement: "Report balance closure, missing-meter estimates and cut-offs; investigate material gaps that could hide residues, wastewater or emissions."
+      evidence: "signed reconciliation; uncertainty record; corrective-action log"
+    - id: dq_uuid
+      applies_to: "UUID-empty rows"
+      requirement: "Preserve the exact atomic name and do not substitute a proxy UUID until a public state-100 exact flow is directly verified."
+      evidence: "finalized hybrid-search receipt and future direct-read review"
+validation_rules:
+  - rule_id: validate_reference_product
+    applies_to: "reference flow"
+    rule: "Confirm that the reference output is dry saleable Tungsten Powder with the stated UUID, Mass property and kg unit, or that a non-tungsten covered dataset has explicitly replaced it with an exact product identity and has not retained the tungsten UUID."
+    source_ids:
+      - un-cpc-3-0-2025
+  - rule_id: validate_atomic_inventory
+    applies_to: "all inventory rows"
+    rule: "Confirm that every row is one physical, chemical, waste, energy or elementary exchange and that route-inapplicable rows are explicitly marked not applicable rather than merged or silently omitted."
+    source_ids: []
+  - rule_id: validate_balance
+    applies_to: "each reporting period"
+    rule: "Reconcile total material, tungsten and—when fossil fuel is burned—carbon balances across inputs, products, internal transfers, wastes and direct emissions; disclose closure and unresolved loss."
+    source_ids:
+      - jrc-nfm-bref-2017
+  - rule_id: validate_gas_basis
+    applies_to: "hydrogen, natural gas and oxygen"
+    rule: "Confirm one declared gas reference condition and verify every volume conversion from retained temperature, pressure and moisture-basis data."
+    source_ids: []
+  - rule_id: validate_no_proxy_uuid
+    applies_to: "UUID-empty inventory rows"
+    rule: "Reject a dataset that assigns tungstic acid, ammonium paratungstate, tungsten tailings, mixed gas or another non-exact candidate UUID to the unresolved tungsten trioxide, leach residue, wastewater or hydrogen rows."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; may serve as background_dataset after independent review and resolution of relevant identity and range-evidence gaps"
+  downstream_use: "Product-footprint and lifecycle models requiring route-, geography- and product-specific production of a declared covered unwrought metal, powder or cobalt intermediate"
+  allowed_use: "Use when product identity, market state, feed, route, technology, geography, reporting period, allocation and data-quality disclosures match the study"
+  excluded_use: "Generic proxying across covered metals or routes; wrought or fabricated products; magnesium powder; mining-only datasets; comparison that ignores purity, grade, product state or allocation differences"
+  required_metadata: "exact product and flow UUID when available; chemical specification; dry/as-received basis; feed origin and primary/secondary share; route and technology; geography; reporting period; reference gas conditions; allocation; cut-offs; source and destination datasets"
+  required_quality_disclosure: "foreground share; meter and assay coverage; mass, tungsten and carbon balance closure; uncertainty and estimation methods; unresolved UUIDs; representativeness limits; range-evidence gaps"
+  update_trigger: "material route, feed, technology, energy mix, purity specification, allocation or abatement change; reporting period older than the programme threshold; exact replacement UUID or compatible independent range evidence becomes available"
+data_sources:
+  - id: "un-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 structure, code 41601, 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Official classification identity and product-boundary wording"
+  - id: "jrc-nfm-bref-2017"
+    type: "official_guidance"
+    reference: "Cusano, Gonzalo, Farrell, Remus, Roudier and Delgado Sancho, Best Available Techniques Reference Document for the Non-Ferrous Metals Industries, EUR 28648 EN, JRC107041, 2017, doi:10.2760/8224. https://publications.jrc.ec.europa.eu/repository/handle/JRC107041"
+    used_for: "Non-ferrous-metal process boundary, common and sector-specific process decomposition, resource inputs, direct air/water emissions, wastes, monitoring and data-quality controls"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d87d81bb4f3d913c2140de245da38129e70d3d10c6c9ce36d37764374bf7133a"
+  generated_content_sha256: "sha256:31bfdbec561f0742e1274948546d07c0c75934cfa9a8a72ab281a55f451bcc43"

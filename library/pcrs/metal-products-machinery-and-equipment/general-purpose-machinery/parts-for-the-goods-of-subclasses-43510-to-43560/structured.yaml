@@ -1,10 +1,550 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43570"
-  title: "Parts for the goods of subclasses 43510 to 43560"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.parts-for-the-goods-of-subclasses-43510-to-43560"
+  classification_refs: "CPC 3.0: 43570, exact"
+  covered_products: "Separately supplied parts designed solely or principally for goods in the CPC 43510 to 43560 family"
+  excluded_products: "Complete machines; CPC 43580 buckets, shovels, grabs and grips; independently classified standard items; services; installation; maintenance; use; end-of-life"
+  representative_product: "One uncoated, machined alloy-steel lifting or handling equipment part delivered at the producing factory gate"
+  production_route: "Hot-worked alloy-steel bar receipt, cutting, machining, mechanical finishing, inspection, with conditional on-site heat treatment, thermal cutting, and aqueous cleaning"
+  market_state: "Finished, separately supplied part at factory gate; unpackaged; mass, material grade, dimensions, treatment state, surface condition, and intended parent-machine family declared"
+functional_unit:
+  what: "A separately supplied part that meets the declared drawing, material, dimensional, surface-condition, and acceptance requirements for its stated lifting or handling equipment application"
+  how_much: "1 kg net mass of accepted finished part"
+  how_well: "Conforming to the declared drawing revision, material grade, tolerance class, treatment state, surface condition, and inspection status"
+  how_long_or_cycle: "One production lot represented by the reporting period; no use-stage service life is included"
+  reference_flow_link: "The reference flow is the measured net mass of accepted finished parts leaving the producing factory gate"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary begins when externally supplied materials, utilities, and components arrive at the producing site and ends with the accepted, unpackaged part at the factory gate. Upstream production and delivery of purchased inputs are represented by linked background datasets. The foreground includes the actual cutting, machining, finishing, inspection, and any declared on-site heat treatment, thermal cutting, cleaning, joining, coating, or other route-specific operation used for the reported part."
+      source_ids: []
+    - rule_id: boundary_input_output_inventory
+      applies_to: "all foreground processes"
+      rule: "Record each actual raw material, fuel, energy carrier, process chemical, water input, product, waste, and direct elementary emission as a separate exchange. Retain a process flow sheet showing where wastes and emissions arise."
+      source_ids:
+        - eu-smitheries-foundries-bat-2024
+    - rule_id: boundary_route_disclosure
+      applies_to: "product variants"
+      rule: "Include only operations actually used for the declared part and disclose which forming, machining, heat-treatment, cleaning, joining, coating, and inspection steps are on-site or outsourced."
+      source_ids:
+        - eu-smitheries-foundries-bat-2024
+    - rule_id: boundary_category_exclusions
+      applies_to: "product identity"
+      rule: "Exclude complete lifting or handling machinery and the separately classified CPC 43580 buckets, shovels, grabs and grips from this parts PCR."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+        - un-cpc-3-0-explanatory-notes-2025
+boundary_abstraction:
+  declared_starting_condition: "Externally supplied materials, components, fuels, electricity, gases, and water as received at the producing site"
+  starting_condition_role: "Foreground collection begins at site receipt; upstream production and delivery remain linked background processes"
+  product_classification_scope: "Separately supplied parts solely or principally for the CPC 43510 to 43560 lifting and handling equipment family"
+  recursive_input_rule: "A purchased CPC 43570 part incorporated into another reported part remains a distinct technosphere input with its upstream dataset; an internally transferred intermediate is not reclassified as a new reference product"
+  upstream_dataset_requirement: "Link a geographically, technologically, temporally, and product-state appropriate upstream dataset for every purchased material, component, fuel, electricity supply, gas, water supply, and outsourced treatment"
+  disclosure: "Declare part identity, drawing revision, parent-machine family, material/alloy, gross input and net output masses, manufacturing and treatment route, outsourced steps, scrap destination, geography, reporting period, and factory-gate state"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Finished lifting and handling equipment part"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "intended parent-machine family"
+    - "part name and drawing number/revision"
+    - "material and alloy grade"
+    - "net finished mass"
+    - "manufacturing route"
+    - "heat-treatment state"
+    - "coating or surface condition"
+    - "dimensional or tolerance class"
+    - "acceptance status"
+    - "production geography"
+    - "reporting period"
+    - "recycled-content claim basis"
+    - "unpackaged factory-gate state"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product and mass-balance rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use dry, clean net mass at the declared factory-gate state. Exclude transport packaging and separately supplied accessories. Retain weighing records and the allocation from lot output to accepted output."
+  - id: electricity_energy
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Retain the metered or invoiced unit, conversion factor, and converted MJ. Do not combine electricity with fuel or purchased heat."
+  - id: gas_volume
+    applies_to: "gaseous natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report metered volume at declared reference conditions. If invoices use energy, retain the supplier conversion and reference conditions before expressing the Tiangong flow in m3."
+process_map:
+  - id: part_manufacturing
+    name: "Material preparation, machining, finishing, and inspection"
+    inclusion: "required"
+    inclusion_condition: "Always included for the representative machined alloy-steel part"
+    role: "Foreground production"
+    quantitative_reference: "1 kg accepted finished part"
+  - id: onsite_heat_treatment
+    name: "On-site natural-gas heat treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when the declared part receives on-site natural-gas-fired heat treatment"
+    role: "Foreground thermal treatment"
+    quantitative_reference: "Accepted heat-treated part mass allocated to the reference output"
+  - id: aqueous_cleaning
+    name: "On-site aqueous cleaning"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when process water crosses the site boundary for cleaning or rinsing the declared part"
+    role: "Foreground finishing"
+    quantitative_reference: "Accepted cleaned part mass allocated to the reference output"
+process_inventory:
+  - id: part_manufacturing
+    label: "Material preparation, machining, finishing, and inspection"
+    inputs:
+      product:
+        - row_id: alloy_steel_bar_input
+          role: "Hot-worked alloy-steel bar stock"
+          name: "Bars and rods of alloy steel, not further worked than forged, hot-rolled, hot-drawn or extruded (except bars or rods of high-speed steel or silico-manganese steel)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c11c7e9a-d020-4b89-a50c-4a82c0f76943"
+          property_unit: "Mass / kg"
+          description: "This is the mass of alloy-steel bar stock received for the representative machined-part route."
+          amount:
+            expression: "measured accepted bar-stock mass issued to the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_input
+              source_ids:
+                - eu-smitheries-foundries-bat-2024
+            ranges: []
+        - row_id: electricity_input
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Electricity used by covered cutting, machining, finishing, inspection, and allocated auxiliary equipment is recorded separately from fuels."
+          amount:
+            expression: "metered or invoiced electricity allocated to the reported lot and converted to MJ with a documented factor"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_input
+              source_ids:
+                - eu-smitheries-foundries-bat-2024
+            ranges: []
+        - row_id: industrial_oxygen_input
+          role: "Industrial oxygen for thermal cutting"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume / m3"
+          description: "Oxygen is included only when thermal cutting using supplied industrial oxygen occurs within the foreground boundary."
+          amount:
+            expression: "supplier-metered or invoiced industrial oxygen consumed by the reported lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished part produced with the thermal-cutting route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_industrial_oxygen
+              source_ids:
+                - eu-smitheries-foundries-bat-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: output_finished_lifting_handling_part
+          role: "Accepted finished part"
+          name: "Finished lifting and handling equipment part"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This is the accepted net output mass of the separately supplied part at the declared factory-gate state. Its exact Tiangong product UUID remains unresolved."
+          amount:
+            expression: "measured accepted output mass normalized to 1 kg"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg accepted finished part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finished_output
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: post_industrial_steel_scrap
+          role: "Segregated post-industrial steel scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Clean alloy-steel offcuts and machining chips leaving the foreground process as a segregated waste flow are weighed separately from contaminated residues."
+          amount:
+            expression: "measured mass of segregated steel offcuts and chips leaving the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_scrap_output
+              source_ids:
+                - eu-smitheries-foundries-bat-2024
+            ranges: []
+      elementary:
+        []
+  - id: onsite_heat_treatment
+    label: "On-site natural-gas heat treatment"
+    inputs:
+      product:
+        - row_id: natural_gas_input
+          role: "Gaseous natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Natural gas is recorded only for the declared on-site gas-fired heat-treatment route."
+          amount:
+            expression: "metered or invoiced gaseous natural gas allocated to the heat-treated production lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished part receiving on-site gas-fired heat treatment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_natural_gas
+              source_ids:
+                - eu-smitheries-foundries-bat-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: fossil_co2_output
+          role: "Direct fossil carbon dioxide"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Direct fossil carbon dioxide is included only for natural gas combusted within the declared foreground boundary; upstream electricity emissions are excluded from this row."
+          amount:
+            expression: "measured stack mass or verified site combustion-emissions ledger amount allocated to the heat-treated production lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished part receiving on-site gas-fired heat treatment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_fossil_co2
+              source_ids:
+                - eu-smitheries-foundries-bat-2024
+            ranges: []
+  - id: aqueous_cleaning
+    label: "On-site aqueous cleaning"
+    inputs:
+      product:
+        - row_id: process_water_input
+          role: "Process water for cleaning and rinsing"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Process water is included only when it crosses the site boundary for the declared cleaning or rinsing operation."
+          amount:
+            expression: "metered process-water mass allocated to the cleaned production lot, net of documented closed-loop reuse"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished part receiving on-site aqueous cleaning"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_water
+              source_ids:
+                - eu-smitheries-foundries-bat-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "shared manufacturing operations"
+    rule: "Prefer subdivision and direct metering by machine, operation, production order, or lot. Where direct metering is unavailable, allocate shared inputs and outputs using a documented causal driver such as machine time, processed mass, or measured power-time."
+    source_ids: []
+  - rule_id: allocation_rejects_rework
+    applies_to: "rejects and rework"
+    rule: "Include the inputs and outputs of internal rework in the reported lot. Exclude rejected mass from accepted reference output and disclose whether it is reworked, recycled, or discarded."
+    source_ids: []
+  - rule_id: allocation_scrap
+    applies_to: "post-industrial steel scrap"
+    rule: "Treat segregated steel scrap as a waste output at the factory gate. Do not subtract an avoided-virgin-material credit inside this attributional foreground inventory; disclose any downstream recycling model separately."
+    source_ids: []
+  - rule_id: allocation_multi_product
+    applies_to: "unavoidable shared multi-product operation"
+    rule: "If subdivision and causal allocation are not feasible, use a documented mass allocation for materially similar outputs; use economic allocation only when physical causality is demonstrably unsuitable, and report the prices, period, and sensitivity."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_input
+      process_id: "part_manufacturing"
+      flow_role: "alloy-steel bar input"
+      record_type: "purchase, receiving, issue, and return records"
+      raw_fields: "material identity; heat/lot; gross issued mass; returned mass; moisture/contamination correction if any"
+      collection_method: "reconcile calibrated scale or verified ERP issue records to the production order"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "full reporting period"
+      site_scope: "all covered production lines"
+      aggregation_rule: "sum net issued mass and divide by accepted finished output mass"
+      quality_evidence: "purchase certificate; material certificate; scale calibration; lot reconciliation"
+    - protocol_id: cp_energy_input
+      process_id: "part_manufacturing"
+      flow_role: "purchased electricity"
+      record_type: "meter and invoice records"
+      raw_fields: "opening/closing readings; submeter value; invoice quantity; conversion factor; allocation driver"
+      collection_method: "reconcile site meter, submeters, and invoices; allocate only covered operations"
+      unit: "MJ"
+      frequency: "monthly and each production campaign when submetered"
+      temporal_coverage: "full reporting period"
+      site_scope: "all covered operations and allocated auxiliaries"
+      aggregation_rule: "convert documented source unit to MJ, subtract excluded loads, and divide by accepted output mass"
+      quality_evidence: "meter calibration; invoice reconciliation; allocation worksheet"
+    - protocol_id: cp_industrial_oxygen
+      process_id: "part_manufacturing"
+      flow_role: "industrial oxygen input"
+      record_type: "supplier meter, cylinder, or invoice records"
+      raw_fields: "supplied volume; opening/closing stock; returned stock; reference temperature and pressure; allocation driver"
+      collection_method: "reconcile consumption and stock change for thermal cutting"
+      unit: "m3"
+      frequency: "each lot or delivery cycle"
+      temporal_coverage: "all thermal-cutting campaigns in the reporting period"
+      site_scope: "all applicable thermal-cutting equipment at the producing site"
+      aggregation_rule: "allocate consumed volume to thermally cut accepted output mass"
+      quality_evidence: "supplier specification; invoice; stock ledger; meter certificate"
+    - protocol_id: cp_finished_output
+      process_id: "part_manufacturing"
+      flow_role: "accepted finished part output"
+      record_type: "final inspection and weighing records"
+      raw_fields: "part identity; drawing revision; count; unit mass or lot mass; rejected mass; acceptance status"
+      collection_method: "weigh accepted output after final finishing and before transport packaging"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "full reporting period"
+      site_scope: "all accepted product in scope"
+      aggregation_rule: "sum accepted net mass; normalize inventory to 1 kg"
+      quality_evidence: "calibrated scale record; inspection release; lot traceability"
+    - protocol_id: cp_scrap_output
+      process_id: "part_manufacturing"
+      flow_role: "post-industrial steel scrap"
+      record_type: "scrap-bin and dispatch records"
+      raw_fields: "alloy family; offcut mass; chip mass; contamination status; destination"
+      collection_method: "weigh segregated offcuts and chips and reconcile with dispatch records"
+      unit: "kg"
+      frequency: "each lot or bin dispatch"
+      temporal_coverage: "full reporting period"
+      site_scope: "all covered machining lines"
+      aggregation_rule: "sum segregated steel scrap and allocate by production order or processed mass"
+      quality_evidence: "scale calibration; bin identity; recycler receipt; mass-balance reconciliation"
+    - protocol_id: cp_natural_gas
+      process_id: "onsite_heat_treatment"
+      flow_role: "gaseous natural gas input"
+      record_type: "meter and invoice records"
+      raw_fields: "meter readings; invoiced volume; reference conditions; allocation driver"
+      collection_method: "reconcile furnace or site meter to invoice and isolate covered heat-treatment campaigns"
+      unit: "m3"
+      frequency: "each campaign and monthly"
+      temporal_coverage: "all applicable heat-treatment campaigns"
+      site_scope: "all applicable heat-treatment furnaces at the producing site"
+      aggregation_rule: "allocate by metered furnace use or documented heat-treatment load"
+      quality_evidence: "meter calibration; invoice; furnace log; allocation worksheet"
+    - protocol_id: cp_direct_fossil_co2
+      process_id: "onsite_heat_treatment"
+      flow_role: "direct fossil carbon dioxide output"
+      record_type: "stack measurement or verified emissions ledger"
+      raw_fields: "measured CO2 mass or ledger amount; fuel identity; monitoring period; allocation driver"
+      collection_method: "use site measurement or a separately verified facility combustion ledger; do not substitute upstream electricity emissions"
+      unit: "kg"
+      frequency: "each monitoring period"
+      temporal_coverage: "all applicable heat-treatment campaigns"
+      site_scope: "all applicable on-site combustion units serving the covered heat-treatment route"
+      aggregation_rule: "allocate the verified direct emission to covered heat-treatment output"
+      quality_evidence: "monitoring report; ledger verification; allocation worksheet"
+    - protocol_id: cp_process_water
+      process_id: "aqueous_cleaning"
+      flow_role: "process water input"
+      record_type: "meter, tank, and invoice records"
+      raw_fields: "inlet reading; make-up water; recovered water; discharged water; allocation driver"
+      collection_method: "reconcile make-up water to the cleaning line water balance"
+      unit: "kg"
+      frequency: "each lot and monthly"
+      temporal_coverage: "all applicable cleaning campaigns"
+      site_scope: "all applicable aqueous-cleaning lines at the producing site"
+      aggregation_rule: "use net external make-up water and divide by accepted cleaned output mass"
+      quality_evidence: "meter calibration; water balance; invoice; production log"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "normalized amount equals the covered lot amount divided by accepted net finished-part mass; the published reference output is then 1 kg"
+      inputs:
+        - "covered lot exchange amount"
+        - "accepted output mass"
+      output: "exchange amount per 1 kg accepted finished part"
+      source_ids: []
+    - id: calc_mass_reconciliation
+      applies_to: "representative steel route"
+      rule: "reconcile alloy-steel input with accepted output, segregated steel scrap, measured rejects, returned stock, and documented stock change; explain the residual"
+      inputs:
+        - "net issued alloy-steel mass"
+        - "accepted output mass"
+        - scrap
+        - rejects
+        - returns
+        - "stock change"
+      output: "lot mass-balance residual and completeness flag"
+      source_ids:
+        - eu-smitheries-foundries-bat-2024
+    - id: calc_energy_allocation
+      applies_to: "shared electricity or natural-gas meters"
+      rule: "allocate shared energy using directly metered consumption where available; otherwise use documented machine power-time, furnace load, or processed mass and retain excluded loads"
+      inputs:
+        - "meter or invoice total"
+        - "submeter data"
+        - "operating time"
+        - "rated or measured power"
+        - "production mass"
+      output: "allocated energy per covered lot"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product"
+      requirement: "Maintain drawing revision, parent-machine family, material grade, heat-treatment state, surface condition, and inspection release for every included lot."
+      evidence: "drawing; material certificate; route card; inspection release"
+    - id: dq_measurement
+      applies_to: "mass, energy, gas, oxygen, and water records"
+      requirement: "Use calibrated meters or reconcile invoices and stock records; document conversion factors, reference conditions, and allocation drivers."
+      evidence: "calibration certificates; invoices; stock ledgers; allocation worksheets"
+    - id: dq_temporal
+      applies_to: "foreground reporting period"
+      requirement: "Cover a representative continuous period or all campaigns in the declared period; disclose start/end dates, shutdowns, atypical campaigns, and missing records."
+      evidence: "production calendar; meter coverage; exception log"
+    - id: dq_completeness
+      applies_to: "input/output inventory"
+      requirement: "Reconcile material, energy, water, waste, and direct-emission records against production orders and the process flow sheet; justify every omitted applicable exchange."
+      evidence: "mass balance; energy reconciliation; water balance; input/output inventory"
+    - id: dq_upstream
+      applies_to: "purchased inputs and outsourced operations"
+      requirement: "Use upstream datasets compatible with the declared product state, geography, technology, and time; disclose proxies and cut-offs."
+      evidence: "dataset metadata; supplier documentation; proxy register"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "Fail validation when the part name, intended parent-machine family, drawing revision, material grade, net mass, route, treatment state, surface condition, or factory-gate state is missing."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_reference_amount
+    applies_to: "reference flow"
+    rule: "Require exactly 1 kg accepted net finished-part mass and exclude transport packaging and rejected product from the reference amount."
+    source_ids: []
+  - rule_id: validate_atomic_inventory
+    applies_to: "process inventory"
+    rule: "Require one physical, chemical, waste, energy, or elementary exchange per inventory row; reject combined utilities, material families, waste groups, and emission groups."
+    source_ids:
+      - eu-smitheries-foundries-bat-2024
+  - rule_id: validate_conditional_routes
+    applies_to: "conditional processes"
+    rule: "Require natural gas and direct fossil CO2 rows only when on-site gas-fired heat treatment occurs, oxygen only when supplied oxygen is used in on-site thermal cutting, and process water only when on-site aqueous cleaning uses external make-up water."
+    source_ids:
+      - eu-smitheries-foundries-bat-2024
+  - rule_id: validate_mass_balance
+    applies_to: "representative steel route"
+    rule: "Require reconciliation of net alloy-steel input, accepted output, steel scrap, rejects, returns, and stock change; any residual shall be quantified and explained."
+    source_ids:
+      - eu-smitheries-foundries-bat-2024
+  - rule_id: validate_uuid_gap
+    applies_to: "reference product identity"
+    rule: "Keep the reference-product UUID empty until a public state-100 flow exactly identifies a separately supplied CPC 43570 part with mass property and compatible product state."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground product-manufacturing dataset eligible for publication as a secondary_dataset or background_dataset after review"
+  downstream_use: "attributional cradle-to-factory-gate modelling of the declared lifting or handling equipment part and downstream assemblies that consume it"
+  allowed_use: "Use only for a part matching the declared parent-machine family, material/alloy, finished state, route, geography, period, and factory-gate boundary, or after a documented representativeness review"
+  excluded_use: "Complete lifting or handling machines; CPC 43580 attachments; parts with materially different material or production route without adaptation; installation; maintenance; use-stage operation; end-of-life; consequential recycling credit"
+  required_metadata: "PCR id and version; part name; parent-machine family; drawing revision; material/alloy; net mass; route; treatment and surface state; site and geography; period; allocation method; upstream dataset versions; unresolved reference-product UUID status"
+  required_quality_disclosure: "meter and scale coverage; allocation shares; mass-balance residual; missing or proxy data; outsourced operations; recycled-content claim basis; scrap destination; range-evidence gaps"
+  update_trigger: "drawing or material change; route or treatment change; supplier or energy mix change; site relocation; major process change; reporting data older than the declared validity period; confirmation of an exact reference-product UUID; new independent range evidence"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Ver. 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv, retrieved 2026-09-05"
+    used_for: "Official CPC 43570 identity and neighboring category exclusions"
+  - id: "un-cpc-3-0-explanatory-notes-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Ver. 3.0 Explanatory Notes, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf, retrieved 2026-09-05"
+    used_for: "Category context for lifting and handling equipment and separate CPC 43580 attachments"
+  - id: "eu-smitheries-foundries-bat-2024"
+    type: "official_guidance"
+    reference: "European Commission, Implementing Decision (EU) 2024/2974, ELI http://data.europa.eu/eli/dec_impl/2024/2974/2024-12-06, retrieved 2026-09-05"
+    used_for: "Route-conditioned forming, machining, finishing, and heat-treatment decomposition; input/output inventory and monitoring of materials, fuels, energy, water, wastes, and emissions"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:305c302e9f07a7936c7114f75d041fa0c383c4a55b6cb8328498f5797445287c"
+  generated_content_sha256: "sha256:9085031ce1ada5b4a42ecf67628731b750503b083af359dee4b84618487dd3f7"
