@@ -1,10 +1,782 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "47215"
-  title: "Digital cameras"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.radio-television-and-communication-equipment-and-apparatus.digital-cameras"
+  classification_refs: "CPC 3.0: 47215, Digital cameras; exact semantic mapping intent"
+  covered_products: "New complete digital still cameras; fixed-lens, mirrorless and digital SLR configurations"
+  excluded_products: "Film cameras; television cameras; video camera recorders; smartphones; separately sold sensors, lenses and camera components; repair and refurbishment services"
+  representative_product: "The declared production model and configuration, accepted for digital still photography; no default brand or sensor size"
+  production_route: "Purchased finished modules; mechanical assembly; firmware loading; optical alignment and imaging acceptance tests; supplied-accessory verification; packing"
+  market_state: "New tested camera at the factory gate, with net camera configuration and shipping contents separately identified"
+functional_unit:
+  what: "Manufacture a declared digital still-camera configuration capable of recording digital photographs"
+  how_much: "1 kg net accepted camera configuration at the factory gate; report the corresponding camera count"
+  how_well: "Declared sensor technology and format, effective pixels, optical configuration, focus/exposure functions, firmware and documented imaging acceptance criteria"
+  how_long_or_cycle: "One manufacturing and acceptance cycle; no assumed service life or lifetime photograph count"
+  reference_flow_link: "finished_camera"
+system_boundary:
+  rules:
+    - rule_id: boundary_site
+      applies_to: "foreground_processes"
+      rule: "Include actual assembly, adjustment, inspection, rework and packing activity. Split supplier operations from site operations and include each once."
+      source_ids:
+        - nikon-manufacturing
+    - rule_id: boundary_upstream
+      applies_to: "linked_model"
+      rule: "Retain attributable upstream processes and justify exclusions. Disclose transport legs and supplier dataset boundaries; do not add a delivery leg already included in supplier data."
+      source_ids:
+        - ghg-protocol-product-standard-2011
+    - rule_id: boundary_extensions
+      applies_to: "additional_site_operations"
+      rule: "Expand the process map and atomic inventory before using this modular profile for in-house component fabrication or chemical processing; collect each actual utility, chemical, waste and direct emission separately."
+      source_ids: []
+    - rule_id: boundary_downstream
+      applies_to: "dataset_interpretation"
+      rule: "This manufacturing profile excludes customer distribution, use and end-of-life of sold cameras. A full product footprint must add declared downstream scenarios; do not label the manufacturing module a full product life cycle."
+      source_ids:
+        - ghg-protocol-product-standard-2011
+boundary_abstraction:
+  declared_starting_condition: "Finished purchased image-sensor, electronic, optical and enclosure components received at the declared assembly site; supplier processing excluded from direct site records"
+  starting_condition_role: "Foreground collection cut; not a claim that the components have no upstream burden"
+  product_classification_scope: "Dedicated digital still-camera configurations within the semantic CPC 47215 boundary"
+  recursive_input_rule: "Link an externally purchased complete digital camera to its upstream dataset as a bounded input. Internal accepted cameras transfer once from assembly to packing and cancel on aggregation; do not recursively manufacture them again."
+  upstream_dataset_requirement: "Link each purchased component, electricity supply, packaging and off-site waste treatment to a compatible dataset when building a cradle-to-gate model. Record geography, technology, reference state, allocation and cut-offs; flag missing links."
+  disclosure: "Report supplier/site responsibilities, included operations, transport treatment, accessory and mass boundaries, direct waste fate, data gaps and all exclusions; distinguish gate-to-gate records from an upstream-complete model."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Digital cameras"
+    uuid: "9e283879-4269-4280-9b6e-8f09891ec5ed"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Model and BOM revision"
+    - "fixed/interchangeable lens configuration"
+    - "included lens and battery identities"
+    - "net-mass inclusions"
+    - "supplied accessory list"
+    - "sensor technology/format/effective pixels"
+    - "firmware and imaging acceptance criteria"
+    - "site/country/reporting period"
+    - "supplier and in-house process boundaries"
+    - "new-product state"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_mass
+    applies_to: "reference and intermediate camera"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Weigh the declared net configuration by model. Record camera count N and accepted net mass M; m_unit = M/N. Never substitute gross shipping mass or a different model's catalogue mass."
+  - id: count_conversion
+    applies_to: "BOM and supplied accessories"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Convert counted items using measured item masses and reconcile them with issue/return records. A piece is not a kg. Include battery casings, protection electronics and module substrates in the corresponding purchased module."
+  - id: energy_conversion
+    applies_to: "factory electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Preserve the meter's electrical-energy basis; multiply kWh by 3.6 for MJ. Battery rated capacity is a specification, not measured factory charging energy."
+  - id: internal_transfer
+    applies_to: "assembly to packing"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use the same net configuration on both internal transfer rows. Match batch identifiers and reconcile stock changes before connecting processes."
+  - id: shipping_balance
+    applies_to: "packed output"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconstruct shipped physical mass as net camera mass plus separately recorded accessories and packaging. Do not treat the difference from net reference mass as unexplained loss."
+process_map:
+  - id: assembly
+    name: "Camera assembly and imaging acceptance"
+    inclusion: "required"
+    inclusion_condition: "Applies to each manufactured model"
+    role: "foreground production"
+    quantitative_reference: "1 kg accepted unpackaged net camera configuration"
+  - id: packing
+    name: "Accessory verification and packing"
+    inclusion: "required"
+    inclusion_condition: "Applies to factory-gate release"
+    role: "foreground finishing"
+    quantitative_reference: "1 kg released net camera configuration"
+process_inventory:
+  - id: assembly
+    label: "Camera assembly and imaging acceptance"
+    inputs:
+      product:
+        - row_id: cmos_sensor
+          role: "CMOS image sensor module"
+          name: "CMOS image sensor module"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: A CMOS module is fitted and purchased separately from the populated board. CCD designs require their own separately identified sensor row."
+          amount:
+            expression: "Consumed module mass, including substrate and package, divided by accepted assembly net mass."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted unpackaged net camera configuration"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids:
+                - nikon-z8-reference-guide
+            ranges: []
+        - row_id: camera_pcb
+          role: "Populated digital-camera circuit-board assembly"
+          name: "Populated digital-camera circuit-board assembly"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: A populated camera board crosses the site boundary; identify every device already included in that board."
+          amount:
+            expression: "Consumed populated-board mass divided by accepted assembly net mass; include mounted electronic devices exactly once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted unpackaged net camera configuration"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids: []
+            ranges: []
+        - row_id: camera_housing
+          role: "Finished digital-camera housing"
+          name: "Finished digital-camera housing"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: A finished enclosure is received from a supplier; record its material composition and surface finish."
+          amount:
+            expression: "Consumed finished-housing mass divided by accepted assembly net mass; add separate records if fabrication moves on site."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted unpackaged net camera configuration"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids: []
+            ranges: []
+        - row_id: camera_lens
+          role: "Digital-camera objective lens assembly"
+          name: "Digital-camera objective lens assembly"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: An integral objective or specified kit lens is included; omit with evidence for a body-only configuration."
+          amount:
+            expression: "Consumed complete lens-assembly mass divided by accepted net configuration mass; do not add its upstream glass a second time."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted unpackaged net camera configuration"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids: []
+            ranges: []
+        - row_id: camera_lcd
+          role: "Digital-camera LCD display module"
+          name: "Digital-camera LCD display module"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: The declared camera has an LCD module supplied separately; other display technologies require their own atomic row."
+          amount:
+            expression: "Consumed assembled LCD-module mass divided by accepted assembly net mass, including its attached controller when supplied."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted unpackaged net camera configuration"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids:
+                - nikon-z8-reference-guide
+            ranges: []
+        - row_id: camera_battery
+          role: "Rechargeable lithium-ion camera battery pack"
+          name: "Rechargeable lithium-ion camera battery pack"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: The net configuration includes a supplied operating lithium-ion battery; it may be fitted or travel with the camera to packing. Record other chemistries separately."
+          amount:
+            expression: "Consumed complete pack mass, including enclosure and protection circuit, divided by accepted assembly net mass."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted unpackaged net camera configuration"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids:
+                - cipa-camera-battery-guidance
+                - nikon-z8-reference-guide
+            ranges: []
+        - row_id: steel_screws
+          role: "Steel screw"
+          name: "Steel screw"
+          flow_type: "product"
+          flow_ref:
+            uuid: "895204f6-6425-4814-afc5-cb97e530e892"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Separately issued steel screws are used and not already counted inside purchased assemblies."
+          amount:
+            expression: "Net issued screw mass divided by accepted assembly net mass; retain grade, coating and size records."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted unpackaged net camera configuration"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_components
+              source_ids: []
+            ranges: []
+        - row_id: assembly_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Electricity supplies assembly, firmware loading, optical tests, rework or attributable shared room services."
+          amount:
+            expression: "Metered and justified allocated MJ divided by accepted assembly net mass; include failed test attempts."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted unpackaged net camera configuration"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: unpacked_camera
+          role: "Digital cameras"
+          name: "Digital cameras"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9e283879-4269-4280-9b6e-8f09891ec5ed"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: The configured camera passes imaging acceptance and leaves assembly unboxed; any included kit lens and operating battery accompany it."
+          amount:
+            expression: "Accepted net configuration mass divided by the same process output mass; record paired transfer to packing."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted unpackaged net camera configuration"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_camera_transfer
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: discarded_camera
+          role: "Discarded digital camera"
+          name: "Discarded digital camera"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: A failed camera leaves the boundary as waste after rework is ruled out. Separately removed batteries or parts require separate waste rows."
+          amount:
+            expression: "Weighed discarded-camera mass after identified removals divided by accepted assembly net mass."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted unpackaged net camera configuration"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: packing
+    label: "Accessory verification and packing"
+    inputs:
+      product:
+        - row_id: camera_to_pack
+          role: "Digital cameras"
+          name: "Digital cameras"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9e283879-4269-4280-9b6e-8f09891ec5ed"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Receive the same accepted unboxed configuration from assembly; this is an internal product link, not a new purchase."
+          amount:
+            expression: "Matched incoming net configuration mass divided by released net mass, with stock and rejected transfers reconciled."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net camera configuration"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_camera_transfer
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_box
+          role: "corrugated board boxes"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: A corrugated shipping or sales box is consumed for the supplied configuration."
+          amount:
+            expression: "Consumed converted-box mass divided by released net camera mass; retain carton grade and recycled-content evidence."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net camera configuration"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packing_items
+              source_ids: []
+            ranges: []
+        - row_id: pulp_insert
+          role: "Molded pulp packaging insert"
+          name: "Molded pulp packaging insert"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2452c680-7e60-4e7d-b170-fb98ac7a9fe2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: A moulded-pulp protective insert is used in the package."
+          amount:
+            expression: "Consumed insert mass divided by released net camera mass; do not combine it with paper leaflets or plastic inserts."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net camera configuration"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packing_items
+              source_ids: []
+            ranges: []
+        - row_id: ldpe_bag
+          role: "Low-density polyethylene packaging bag"
+          name: "Low-density polyethylene packaging bag"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: An LDPE bag is used for the camera or one supplied accessory; verify the polymer grade."
+          amount:
+            expression: "Consumed bag mass divided by released net camera mass; record separately from other polymer packaging."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net camera configuration"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packing_items
+              source_ids: []
+            ranges: []
+        - row_id: usb_cable
+          role: "USB cable"
+          name: "USB cable"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: The regional supplied-accessory list includes a USB cable; declare connector types and length."
+          amount:
+            expression: "Mass of supplied complete USB cables divided by released net camera mass."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net camera configuration"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packing_items
+              source_ids:
+                - nikon-z8-reference-guide
+            ranges: []
+        - row_id: battery_charger
+          role: "Camera lithium-ion battery charger"
+          name: "Camera lithium-ion battery charger"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: A dedicated charger is supplied; separately sold chargers are outside this product package."
+          amount:
+            expression: "Consumed complete charger mass divided by released net camera mass; identify included mains leads and avoid duplicate counting."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net camera configuration"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packing_items
+              source_ids:
+                - nikon-z8-reference-guide
+            ranges: []
+        - row_id: camera_strap
+          role: "Camera neck strap"
+          name: "Camera neck strap"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: A finished camera neck strap is supplied with the declared configuration."
+          amount:
+            expression: "Consumed strap mass, including buckles, divided by released net camera mass; record textile and trim composition."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net camera configuration"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packing_items
+              source_ids:
+                - nikon-z8-reference-guide
+            ranges: []
+        - row_id: packing_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Packing equipment consumes electricity; shared meters are apportioned once with assembly."
+          amount:
+            expression: "Metered and allocated packing MJ divided by released net camera mass; manual-only packing records demonstrated absence."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net camera configuration"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packing_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_camera
+          role: "Digital cameras"
+          name: "Digital cameras"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9e283879-4269-4280-9b6e-8f09891ec5ed"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: The tested camera configuration is released in its declared package state at the factory gate."
+          amount:
+            expression: "Released net camera mass divided by itself, giving the 1 kg reference output; retain camera count and gross shipping mass separately."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net camera configuration"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: corrugated_waste
+          role: "Segregated corrugated-board waste"
+          name: "Segregated corrugated-board waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: Damaged or trimmed corrugated board leaves packing as a separately collected waste."
+          amount:
+            expression: "Weighed segregated corrugated-board waste divided by released net camera mass; disclose moisture and contamination."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net camera configuration"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packing_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "shared_site_activity"
+    rule: "Prefer model-specific metering or process subdivision. If unavoidable, use a demonstrated physical relationship; justify an alternative relationship when physical allocation cannot be established."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: allocation_camera_time
+    applies_to: "assembly_and_test_electricity"
+    rule: "For a shared test station, collect model-specific powered test time and load. Allocate its measured total by those demonstrated demands, not by camera mass or pixel count alone. Reconcile allocated totals to the meter."
+    source_ids: []
+  - rule_id: allocation_rework
+    applies_to: "acceptance_and_rejects"
+    rule: "Charge failed attempts and rework to the production cohort that caused them; only accepted output enters the normalization denominator. Record recovered parts and internal reuse explicitly, without duplicate purchases."
+    source_ids: []
+  - rule_id: allocation_waste
+    applies_to: "outgoing_scrap"
+    rule: "Document waste/co-product status and treatment responsibility. Disclose the recycling allocation method and report any displacement claim separately; no automatic virgin-material credit is assigned by this PCR."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: allocation_rule_5
+    applies_to: "foreground_burden_allocation"
+    rule: "The test-time and cohort conventions are foreground protocols of this PCR, not manufacturer benchmark factors."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_components
+      process_id: "assembly"
+      flow_role: "Individual purchased components"
+      record_type: "BOM and stock ledger"
+      raw_fields: "model; revision; part_id; item_mass; issues; returns; opening_stock; closing_stock; supplier; integrated_subparts"
+      collection_method: "Weigh representative parts; reconcile released BOM with stores and supplier declarations"
+      unit: "kg and item count"
+      frequency: "Each lot and BOM revision"
+      temporal_coverage: "Entire declared production period including failed lots"
+      site_scope: "Assembly line and supplying stores"
+      aggregation_rule: "Determine consumed mass for each part separately and divide by accepted assembly net mass"
+      quality_evidence: "Scale calibration; invoice; signed BOM; stock reconciliation"
+    - protocol_id: cp_assembly_energy
+      process_id: "assembly"
+      flow_role: "Electricity"
+      record_type: "Meter and equipment log"
+      raw_fields: "meter_id; opening_MJ; closing_MJ; model; powered_test_time; measured_load; idle_time; allocation_driver"
+      collection_method: "Submeter assembly, firmware loading, optical testing and attributable room services; reconcile shared supply"
+      unit: "MJ; kWh; h"
+      frequency: "Each shift and model change"
+      temporal_coverage: "Same period as accepted-output records"
+      site_scope: "Assembly and test equipment plus declared shared services"
+      aggregation_rule: "Allocate measured interval energy once, then divide by accepted assembly net mass"
+      quality_evidence: "Meter calibration; station logs; reconciliation to utility meter"
+    - protocol_id: cp_camera_transfer
+      process_id: "assembly"
+      flow_role: "Accepted camera and internal transfer"
+      record_type: "Acceptance and stock record"
+      raw_fields: "serial_or_lot; model; net_configuration; accepted_count; accepted_mass; transfer_mass; stock_change; rework_status"
+      collection_method: "Weigh accepted configuration and pair transfer records with packing receipt"
+      unit: "kg and camera count"
+      frequency: "Each lot transfer"
+      temporal_coverage: "Same reporting period with opening/closing work in progress"
+      site_scope: "Assembly exit and packing receipt"
+      aggregation_rule: "Match paired net mass and batch; calculate transfer per destination output without double counting"
+      quality_evidence: "Acceptance tests; scale evidence; two-sided transfer ledger"
+    - protocol_id: cp_assembly_waste
+      process_id: "assembly"
+      flow_role: "Discarded digital camera"
+      record_type: "Waste transfer record"
+      raw_fields: "lot; failure_reason; net_mass; battery_present; removed_parts; destination; treatment"
+      collection_method: "Weigh discarded cameras after recording separately removed components; retain contractor ticket"
+      unit: "kg"
+      frequency: "Each disposal shipment"
+      temporal_coverage: "Same cohort as assembly consumption"
+      site_scope: "Reject area to off-site recipient"
+      aggregation_rule: "Sum actual discarded camera mass separately from rework and normalize by accepted assembly mass"
+      quality_evidence: "Waste ticket; dismantling ledger; recipient treatment evidence"
+    - protocol_id: cp_packing_items
+      process_id: "packing"
+      flow_role: "Each supplied accessory or package article"
+      record_type: "Packing BOM and stock ledger"
+      raw_fields: "model; sales_region; item_id; issued_count; returned_count; item_mass; opening_stock; closing_stock"
+      collection_method: "Weigh each item; check regional package contents and issued stock"
+      unit: "kg and item count"
+      frequency: "Each packing lot and configuration change"
+      temporal_coverage: "Same period as camera release"
+      site_scope: "Packing line and stores"
+      aggregation_rule: "Consume and normalize each item separately by released net camera mass"
+      quality_evidence: "Scale check; packing BOM; regional content declaration"
+    - protocol_id: cp_packing_energy
+      process_id: "packing"
+      flow_role: "Electricity"
+      record_type: "Meter log"
+      raw_fields: "meter_id; interval_energy; model; line_time; allocation_driver"
+      collection_method: "Measure packing/sealing line energy and reconcile its share of common supply"
+      unit: "MJ; kWh"
+      frequency: "Each shift"
+      temporal_coverage: "Same reporting period"
+      site_scope: "Packing equipment"
+      aggregation_rule: "Normalize measured allocated energy by released net camera mass"
+      quality_evidence: "Meter check; shift log; no overlap with assembly meter"
+    - protocol_id: cp_release
+      process_id: "packing"
+      flow_role: "Finished camera"
+      record_type: "Release ledger"
+      raw_fields: "model; accepted_count; net_mass; accessory_mass; packaging_mass; shipped_gross_mass; opening_stock; closing_stock"
+      collection_method: "Weigh net configuration and packaged units separately; reconcile release count"
+      unit: "kg and camera count"
+      frequency: "Each released lot"
+      temporal_coverage: "Entire reporting period"
+      site_scope: "Factory gate"
+      aggregation_rule: "Sum released net camera mass; retain count-to-mass and gross-mass reconciliation"
+      quality_evidence: "Release authorization; scale calibration; shipment record"
+    - protocol_id: cp_packing_waste
+      process_id: "packing"
+      flow_role: "Corrugated-board waste"
+      record_type: "Waste ledger"
+      raw_fields: "dry_mass; moisture_state; carton_grade; source_lot; contamination; destination"
+      collection_method: "Weigh segregated cardboard and retain collection ticket"
+      unit: "kg"
+      frequency: "Each waste pickup"
+      temporal_coverage: "Same period as packing records"
+      site_scope: "Packing area to recipient"
+      aggregation_rule: "Normalize discarded corrugated board by released net camera mass"
+      quality_evidence: "Weighbridge or scale record; waste ticket"
+  calculation_rules:
+    - id: calc_consumption
+      applies_to: "each component and package article"
+      rule: "C_i = opening stock + receipts - closing stock - documented unused returns - transfers outside the cohort; reconcile to issues minus returns without counting receipts twice"
+      inputs:
+        - "Item-specific stock and issue records from cp_components or cp_packing_items"
+      output: "Consumed mass C_i in kg"
+      source_ids: []
+    - id: calc_normalize
+      applies_to: "each process exchange"
+      rule: "q_i = C_i / M_good for the same model, process and period; use measured energy or waste mass in place of C_i where applicable; M_good must be positive"
+      inputs:
+        - "Relevant collection protocol and cp_camera_transfer or cp_release"
+      output: "kg/kg or MJ/kg process output"
+      source_ids: []
+    - id: calc_transfer
+      applies_to: "assembly to packing link"
+      rule: "Packing demand for accepted camera = matched incoming net mass / released net mass. Scale assembly by that demand and cancel the linked intermediate exchange at aggregation"
+      inputs:
+        - cp_camera_transfer
+        - cp_release
+        - "work-in-progress and reject records"
+      output: "Internally consistent linked manufacturing model"
+      source_ids: []
+    - id: calc_count
+      applies_to: "downstream unit conversion"
+      rule: "Inventory per camera = inventory per kg multiplied by measured net kg per camera of the same configuration"
+      inputs:
+        - cp_release
+        - "normalized inventory"
+      output: "Per-camera dataset with declared mass basis"
+      source_ids: []
+    - id: calc_yield
+      applies_to: "assembly acceptance"
+      rule: "Acceptance yield = accepted camera count / started camera count for a closed cohort; retain work-in-progress and rework records to explain the denominator"
+      inputs:
+        - cp_camera_transfer
+        - "production-start log"
+      output: "Observed cohort yield, without an assumed category value"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_configuration
+      applies_to: "Product and parts"
+      requirement: "Freeze the BOM, firmware, camera/lens/battery configuration and sales-region package contents. Identify whether sensor and display are already included in a purchased board or module."
+      evidence: "Signed BOM, part drawings and package records; nikon-z8-reference-guide illustrates state distinctions"
+    - id: dq_completeness
+      applies_to: "All processes"
+      requirement: "Reconcile every BOM line, stock movement, meter and outgoing waste. Add separately identified atomic rows for unlisted real exchanges. Missing data must be marked as gaps, never silent zeroes."
+      evidence: "Completeness register and process walk-through"
+    - id: dq_period
+      applies_to: "Normalization"
+      requirement: "Use matched output and consumption periods. Explain stock changes, prototypes, shutdowns, rejects and outsourced processing. Do not divide annual energy by an unrelated month's output."
+      evidence: "Dated collection records and cohort ledger"
+    - id: dq_measurement
+      applies_to: "Weighing and metering"
+      requirement: "Retain instrument identity, calibration, uncertainty and sampling coverage; distinguish measured, supplier-reported and calculated values."
+      evidence: "Calibration certificates, sampling plan and supplier declarations"
+    - id: dq_upstream
+      applies_to: "Linked data"
+      requirement: "Check product state, geography, technology, time and allocation compatibility for each upstream dataset. Missing UUID identity and missing upstream impact data are different gaps."
+      evidence: "Supplier dataset register and boundary reconciliation"
+    - id: dq_ranges
+      applies_to: "Empirical comparisons"
+      requirement: "Collect model-specific material use, energy, acceptance yield, packaging and waste observations. No external empirical range is supplied here; do not substitute catalogue specifications or one published case."
+      evidence: "Foreground records; any later external interval requires two independent original-text-verified compatible sources"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference_product"
+    rule: "Verify dedicated digital still-camera identity and all required qualifiers; reject substitution by camcorder, film camera or component data."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_mass
+    applies_to: "quantitative_reference"
+    rule: "Require positive accepted net mass and paired camera count; keep kit, battery, accessory and packaging mass boundaries explicit. Check conversion using the same configuration."
+    source_ids: []
+  - rule_id: validate_modules
+    applies_to: "component_inventory"
+    rule: "Ensure each selected row is one exchange; remove duplicate sensor, board, lens or battery burdens when a purchased module already includes them."
+    source_ids: []
+  - rule_id: validate_transfers
+    applies_to: "linked_processes"
+    rule: "Match camera transfer identifiers, property, unit and net configuration; reconcile stock and losses, then cancel the intermediate only on aggregation."
+    source_ids: []
+  - rule_id: validate_energy
+    applies_to: "electricity"
+    rule: "Check meter boundary, kWh-to-MJ conversion, allocation closure and coverage of tests/rework/room services. Never calculate factory energy from battery capacity alone."
+    source_ids: []
+  - rule_id: validate_evidence
+    applies_to: "row_values"
+    rule: "Require traceable source records and collection protocols for each amount. Check missing versus absent exchanges and do not replace missing identities with proxy UUIDs."
+    source_ids: []
+  - rule_id: validate_scope
+    applies_to: "published_claims"
+    rule: "Distinguish manufacturing inventory from a complete lifetime footprint; disclose gaps, upstream coverage, exclusions and allocation choices."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Manufacturing module for a specified digital still-camera model/configuration; input to process and lifecyclemodel projections after upstream linking"
+  allowed_use: "Supplier and assembly modelling with disclosed state/technology/geography; measured conversion between kg and camera count; separately declared life-cycle scenario construction"
+  excluded_use: "Unqualified comparisons of photographic service; full life-cycle or GHG Protocol conformity claims from this partial module alone; substitution for film cameras or video camera recorders; treating missing upstream data as zero"
+  required_metadata: "Reference qualifiers; net unit mass and count; included kit/packaging list; reporting period and site; BOM/firmware revision; process and supplier boundaries; allocation; upstream dataset links"
+  required_quality_disclosure: "Primary-record coverage; meter allocation; sampling and uncertainty; stock reconciliation; failed and reworked output; UUID gaps; external-range gaps; unlinked upstream burdens and exclusions"
+  update_trigger: "BOM, sensor, battery, lens, packaging or supplied-accessory change; process or supplier relocation; meter/allocation change; new reporting period; new independently verified evidence"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division, CPC 3.0 structure, 30 June 2025, row 47215 and adjacent camera rows. [Official CSV](https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv). Retrieved 2026-09-09."
+    used_for: "Product classification identity; no inventory amounts"
+  - id: "cipa-camera-battery-guidance"
+    type: "official_guidance"
+    reference: "Camera & Imaging Products Association, Chinese camera battery guidance. [Original page](https://www.cipa.jp/battery/index_c.html), retrieved 2026-09-09."
+    used_for: "Professional Chinese category terminology and assembled battery-pack identity"
+  - id: "nikon-manufacturing"
+    type: "handbook"
+    reference: "Nikon, Manufacturing, Manufacturing Activities / Production section and its assembly-adjustment and performance-evaluation captions. [Original technical page](https://www.nikon.com/company/technology/manufacturing/), retrieved and reverified 2026-09-09."
+    used_for: "Assembly/adjustment and performance-evaluation context; the described Nikon Group in-house processing informs supplier/site boundary checks, not a universal route or amount"
+  - id: "nikon-z8-reference-guide"
+    type: "handbook"
+    reference: "Nikon Z 8 Reference Guide, [Specifications](https://onlinemanual.nikonimglib.com/z8/en/specifications_375.html) and [Package Contents](https://onlinemanual.nikonimglib.com/z8/en/package_contents_4.html), retrieved 2026-09-09."
+    used_for: "Sensor, LCD, battery, accessory and body/equipped-state qualifiers; a single manual, not independent range observations"
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), chapters 6, 7 and 9. [Original PDF](https://ghgprotocol.org/sites/default/files/ghgp/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf), retrieved 2026-09-09."
+    used_for: "Reference-unit clarity, attributable-process disclosure and allocation hierarchy; applied as methodological guidance, not certification of this partial manufacturing profile"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:320fee2d20d5e9cc022c56d1ded8f16fef4d89f5c23fecec393dfad2b58cfc63"
+  generated_content_sha256: "sha256:30032399d76272a8ca1fb249209cdbced6ef1340dfa044463f6c0a4801dfece7"

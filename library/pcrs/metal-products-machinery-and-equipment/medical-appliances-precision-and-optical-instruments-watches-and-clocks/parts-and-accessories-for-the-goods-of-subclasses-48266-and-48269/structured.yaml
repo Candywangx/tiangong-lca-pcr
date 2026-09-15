@@ -1,10 +1,882 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "48284"
-  title: "Parts and accessories for the goods of subclasses 48266 and 48269"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.medical-appliances-precision-and-optical-instruments-watches-and-clocks.parts-and-accessories-for-the-goods-of-subclasses-48266-and-48269"
+  classification_refs: "CPC 3.0: 48284 (exact classification context)"
+  covered_products: "Dedicated mechanical, hydraulic, pneumatic, electrical, or electronic parts, subassemblies, replacement parts, and accessories for goods of CPC 48266 or CPC 48269"
+  excluded_products: "Complete goods of CPC 48266 or 48269; parts for other CPC 482 subclasses; generic raw materials; installation, repair, calibration, distribution, use, and end-of-life services"
+  representative_product: "One declared, accepted saleable part or accessory configuration with a product-specific bill of materials and route"
+  production_route: "Product-specific combination of forming, machining or moulding; conditional surface treatment; conditional electronics assembly; required final inspection and packaging"
+  market_state: "Factory-gate saleable part or accessory, tested and packaged as declared; unused"
+functional_unit:
+  what: "Provide a declared part or accessory with the specified fit, form, interface, and control or measurement-support function for one identified host-good design in CPC 48266 or 48269"
+  how_much: "1 kg of accepted saleable part or accessory output at the factory gate"
+  how_well: "Conforms to the producer's declared drawing revision, material specification, dimensional tolerances, interface requirements, and final acceptance test"
+  how_long_or_cycle: "One factory-gate production reference period; service life is outside this cradle-to-gate reference flow"
+  reference_flow_link: "Accepted output mass of the declared product configuration, excluding rejected units and normalized to 1 kg"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary begins when specified materials, purchased parts, and consumables cross the reporting-site gate. It ends with the accepted part or accessory and declared sale-unit packaging at the factory gate. Include actual on-site forming, machining, moulding, washing, surface treatment, coating, electronics assembly, final inspection, testing, and packaging operations. Link upstream production of purchased materials, components, electricity, water, gases, chemicals, and packaging through representative upstream datasets. Exclude capital equipment unless the study goal explicitly requires it and discloses that extension."
+      source_ids: []
+    - rule_id: sb_product_specific_route
+      applies_to: "all foreground processes"
+      rule: "Include only the operations actually used for the declared product revision, and retain the route and process-ownership evidence."
+      source_ids:
+        - eu-pef-method-2021
+    - rule_id: sb_complete_inventory
+      applies_to: "all included foreground processes"
+      rule: "Record all known material, water, energy, product, waste, and elementary exchanges individually; do not hide route-specific exchanges in an umbrella row."
+      source_ids:
+        - eu-pef-method-2021
+    - rule_id: sb_surface_treatment_condition
+      applies_to: "surface_finishing"
+      rule: "Include aqueous electrochemical or chemical treatment, solvent cleaning, coating, degreasing, or adhesive application only when performed for the declared product, and record each actual chemical and emission species separately."
+      source_ids:
+        - eu-jrc-stm-bref-2006
+        - eu-jrc-sts-bref-2020
+boundary_abstraction:
+  declared_starting_condition: "Received specified raw materials, purchased components or subassemblies, consumables, and packaging at the reporting-site gate"
+  starting_condition_role: "Upstream product inputs to product-specific foreground manufacturing"
+  product_classification_scope: "Dedicated parts and accessories for goods of CPC 48266 or CPC 48269; not the complete host goods and not parts assigned to other CPC 4828 subclasses"
+  recursive_input_rule: "A purchased input that is itself in this PCR category is recorded once as a product input with supplier identity, quantity, and an upstream dataset; do not recursively reproduce its manufacturing inside the receiving process"
+  upstream_dataset_requirement: "Use geography-, technology-, product-state-, and time-representative upstream datasets for every purchased input; disclose proxies and unresolved identities"
+  disclosure: "Declare process ownership, outsourced steps, material grades, supplied forms, surface chemistry, electronics content, packaging state, allocation, exclusions, and any departure from the common process pattern"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Parts and accessories for goods of subclasses 48266 and 48269"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "host-good subclass (48266 or 48269)"
+    - "part/accessory name and function"
+    - "product and drawing revision"
+    - "material grades and supplied forms"
+    - "accepted-unit mass"
+    - "manufacturing route and process ownership"
+    - "surface finish and bath/coating chemistry when applicable"
+    - "electronics and populated-board content when applicable"
+    - "acceptance test"
+    - "included sale-unit packaging"
+    - "production geography"
+    - technology
+    - "reference period"
+reference_flows:
+  []
+measurement_rules:
+  - id: mu_reference_mass
+    applies_to: "reference product and mass-based material, waste, and packaging rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use net dry or as-received mass consistently with the declared product and material specification. Weigh accepted output separately from rejects and normalize all inventory quantities to 1 kg accepted output."
+  - id: mu_piece_to_mass
+    applies_to: "production and packaging records available only by piece or sale unit"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert counts using a documented representative measured mass for the same product revision and sale-unit configuration; retain sample size, scale resolution, and sampling date."
+  - id: mu_electricity
+    applies_to: "electricity rows"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the meter reading and convert kWh to MJ using 1 kWh = 3.6 MJ; do not mix purchased electricity with fuels or purchased heat."
+  - id: mu_gas_volume
+    applies_to: "industrial oxygen"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "State the supplier or meter reference conditions and convert all gas volumes to one declared temperature and pressure basis before aggregation."
+  - id: mu_solution_mass
+    applies_to: "sodium hydroxide solution"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record delivered solution mass and concentration separately; report the selected flow amount on the declared sodium-hydroxide product basis without silently converting solution mass to pure NaOH."
+process_map:
+  - id: material_forming_machining
+    name: "Material forming, machining, or polymer moulding"
+    inclusion: "conditional"
+    inclusion_condition: "Include each operation performed at the reporting site to create the declared component geometry from received material"
+    role: "Foreground component fabrication"
+    quantitative_reference: "Accepted intermediate mass transferred to subsequent included steps"
+  - id: surface_finishing
+    name: "Surface preparation and finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Include when aqueous, electrolytic, chemical, solvent, coating, degreasing, adhesive, or comparable finishing is applied"
+    role: "Foreground cleaning, protection, or functional finish"
+    quantitative_reference: "Finished component mass leaving the step"
+  - id: electronics_assembly
+    name: "Electronics and populated-board assembly"
+    inclusion: "conditional"
+    inclusion_condition: "Include when a populated printed wiring board or soldered electronic assembly is incorporated or produced"
+    role: "Foreground electronic subassembly production"
+    quantitative_reference: "Accepted populated assembly mass transferred to final inspection"
+  - id: final_inspection_packaging
+    name: "Final assembly, inspection, testing, and sale-unit packaging"
+    inclusion: "required"
+    inclusion_condition: "Always include final acceptance and output accounting; include each packaging row only when present in the declared sale state"
+    role: "Foreground completion and reference-product output"
+    quantitative_reference: "1 kg accepted saleable part or accessory"
+process_inventory:
+  - id: material_forming_machining
+    label: "Material forming, machining, or polymer moulding"
+    inputs:
+      product:
+        - row_id: fm_aluminium_alloy
+          role: "Aluminium-alloy feedstock"
+          name: "Aluminium alloy"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record aluminium alloy only when it appears in the product-specific bill of materials; declare grade and supplied form."
+          amount:
+            expression: "Mass of aluminium-alloy feedstock issued to the qualifying production orders"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fm_bom_receipts
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: fm_stainless_steel_sheet
+          role: "Stainless-steel sheet"
+          name: "Stainless-steel sheet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record stainless-steel sheet only when it appears in the product-specific bill of materials; declare grade, thickness, and supplied finish."
+          amount:
+            expression: "Mass of stainless-steel sheet issued to the qualifying production orders"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fm_bom_receipts
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: fm_polycarbonate_granulate
+          role: "Polycarbonate moulding feedstock"
+          name: "Polycarbonate granulate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0c945ca0-edf2-41f3-ba9e-23af3e75c6d1"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include this row only when polycarbonate is moulded or otherwise consumed for the declared product."
+          amount:
+            expression: "Mass of polycarbonate granulate issued to qualifying production orders, net of documented unopened returns"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fm_bom_receipts
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: fm_electricity
+          role: "Forming and machining electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; unit group Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Include purchased electricity consumed by forming, machining, moulding, and directly associated extraction or cooling equipment."
+          amount:
+            expression: "Metered or physically allocated purchased electricity converted to MJ"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fm_utilities
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: fm_industrial_oxygen
+          role: "Oxygen for oxygen-assisted cutting"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3; unit group Units of volume 93a60a57-a3c8-12da-a746-0800200c9a66"
+          description: "Include only when industrial oxygen crosses the site boundary for cutting the declared part."
+          amount:
+            expression: "Supplier or meter volume at declared reference conditions allocated to qualifying production orders"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fm_utilities
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: fm_process_water
+          role: "Wet-machining or cleaning water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include only when process water is supplied for wet machining, rinsing, or inter-operation cleaning in this process."
+          amount:
+            expression: "Metered or tank-balance water supplied to qualifying operations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fm_utilities
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: fm_aluminium_scrap
+          role: "Aluminium manufacturing scrap"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include when aluminium offcuts, chips, or rejected aluminium parts leave the foreground process as waste."
+          amount:
+            expression: "Weighed outgoing aluminium scrap attributable to qualifying orders"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fm_waste
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: fm_stainless_steel_scrap
+          role: "Stainless-steel manufacturing scrap"
+          name: "Stainless-steel manufacturing scrap"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include when stainless-steel offcuts, chips, or rejected stainless parts leave the process as waste; preserve the alloy grade."
+          amount:
+            expression: "Weighed outgoing stainless-steel scrap attributable to qualifying orders"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fm_waste
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: fm_polycarbonate_scrap
+          role: "Polycarbonate manufacturing scrap"
+          name: "Polycarbonate production scrap"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include when polycarbonate sprues, runners, purge, or rejected mouldings leave the process as waste."
+          amount:
+            expression: "Weighed outgoing polycarbonate scrap attributable to qualifying orders"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fm_waste
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+      elementary:
+        []
+  - id: surface_finishing
+    label: "Surface preparation and finishing"
+    inputs:
+      product:
+        - row_id: sf_sodium_hydroxide
+          role: "Sodium hydroxide for alkaline treatment"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include only when sodium hydroxide is actually consumed in alkaline cleaning, etching, or another declared bath."
+          amount:
+            expression: "Delivered sodium-hydroxide product mass added to baths for qualifying orders, with concentration retained"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sf_inputs
+              source_ids:
+                - eu-jrc-stm-bref-2006
+            ranges: []
+        - row_id: sf_process_water
+          role: "Surface-treatment process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include process water supplied to active baths, rinses, and associated surface-treatment operations."
+          amount:
+            expression: "Metered or tank-balance process water used by qualifying surface-treatment orders"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sf_inputs
+              source_ids:
+                - eu-jrc-stm-bref-2006
+            ranges: []
+        - row_id: sf_electricity
+          role: "Surface-treatment electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; unit group Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Include purchased electricity for baths, pumps, extraction, coating, curing, and directly associated equipment."
+          amount:
+            expression: "Metered or physically allocated electricity converted to MJ"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sf_inputs
+              source_ids:
+                - eu-jrc-stm-bref-2006
+                - eu-jrc-sts-bref-2020
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: sf_metal_finishing_wastewater
+          role: "Metal-finishing wastewater"
+          name: "Metal-finishing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include wastewater discharged to on-site or off-site treatment from the declared surface-treatment route; report bath chemistry and measured constituents separately in supporting records."
+          amount:
+            expression: "Metered or tank-balance wastewater leaving the process for treatment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sf_waste
+              source_ids:
+                - eu-jrc-stm-bref-2006
+            ranges: []
+      elementary:
+        []
+  - id: electronics_assembly
+    label: "Electronics and populated-board assembly"
+    inputs:
+      product:
+        - row_id: ea_populated_printed_wiring_board
+          role: "Populated printed wiring board"
+          name: "Populated printed wiring board"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include only when a populated printed wiring board is purchased or transferred into the declared electronics-assembly process."
+          amount:
+            expression: "Product-specific populated-board mass issued to qualifying orders"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ea_bom
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: ea_lead_free_solder
+          role: "Flux-free lead-free solder"
+          name: "Lead-free solder, flux-free"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a78ab927-44b9-4978-a3e3-2b9fb20d3648"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include only when flux-free lead-free solder is consumed; any separately consumed flux is a distinct product flow."
+          amount:
+            expression: "Feeder issue or inventory-depletion mass attributable to qualifying orders"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ea_bom
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: ea_electricity
+          role: "Electronics-assembly electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; unit group Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Include purchased electricity for placement, soldering, extraction, inspection, and directly associated line equipment."
+          amount:
+            expression: "Metered or physically allocated electricity converted to MJ"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ea_energy_waste
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: ea_populated_board_scrap
+          role: "Rejected populated printed wiring board"
+          name: "Waste populated printed wiring board"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "eb5ffe4a-49af-450c-9a31-3efdfd343f8a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include rejected populated boards that leave the process as waste; do not use this flow for bare-board offcuts."
+          amount:
+            expression: "Weighed rejected populated-board mass leaving qualifying orders"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ea_energy_waste
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+      elementary:
+        []
+  - id: final_inspection_packaging
+    label: "Final assembly, inspection, testing, and sale-unit packaging"
+    inputs:
+      product:
+        - row_id: fi_corrugated_board_box
+          role: "Corrugated-board sale box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include only when a corrugated board box is part of the declared factory-gate sale unit."
+          amount:
+            expression: "Packaging issue mass allocated by the actual number of accepted products per sale box"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fi_pack_energy
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: fi_polyethylene_packaging_film
+          role: "Polyethylene protective film"
+          name: "Polyethylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include only when polyethylene film is part of the declared factory-gate sale unit; other polymers require separate atomic rows."
+          amount:
+            expression: "Film issue mass allocated by the actual number of accepted products per packaged sale unit"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fi_pack_energy
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: fi_electricity
+          role: "Final inspection and test electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; unit group Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Include purchased electricity for final assembly, inspection, test benches, and packaging equipment."
+          amount:
+            expression: "Metered or physically allocated electricity converted to MJ"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fi_pack_energy
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: fi_reference_product
+          role: "Accepted reference product"
+          name: "Parts and accessories for goods of subclasses 48266 and 48269"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record only units that pass the declared final acceptance test and are in the declared factory-gate sale state."
+          amount:
+            expression: "Accepted output mass normalized to exactly 1 kg reference product"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fi_output
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: al_subdivision_first
+    applies_to: "shared or multifunctional foreground operations"
+    rule: "Avoid allocation by separately metering, timing, weighing, or otherwise subdividing processes and collecting only the exchanges directly attributable to the declared product."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: al_physical_relationship
+    applies_to: "shared exchanges that cannot be subdivided"
+    rule: "Allocate using a documented causal physical relationship, such as machine time and rated or measured power for electricity, bath loading or treated surface area for finishing, or accepted mass throughput when it represents resource use."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: al_other_relationship
+    applies_to: "exchanges without a defensible physical relationship"
+    rule: "Use another relationship, including economic allocation, only after documenting why subdivision and physical allocation are infeasible; report the data period, products, factors, and sensitivity."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: al_scrap_no_credit
+    applies_to: "manufacturing scrap and waste"
+    rule: "Report scrap as an outgoing waste flow at the foreground boundary. Do not subtract an avoided-production credit inside this gate-to-gate inventory unless a separately declared downstream system-expansion study requires it."
+    source_ids:
+      - eu-pef-method-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_fm_bom_receipts
+      process_id: "material_forming_machining"
+      flow_role: "product-specific material inputs"
+      record_type: "approved bill of materials, purchase/receipt records, material issue and return records"
+      raw_fields: "product_revision; production_order; material_name; grade; supplied_form; quantity_issued; unopened_return; unit"
+      collection_method: "Reconcile approved bill of materials to warehouse issues and returns for qualifying orders"
+      unit: "kg"
+      frequency: "each production order, aggregated monthly"
+      temporal_coverage: "representative continuous 12 months or all batches if production is shorter"
+      site_scope: "all reporting-site forming, machining, and moulding lines"
+      aggregation_rule: "Sum issued mass minus documented unopened returns; allocate only to qualifying orders and normalize by accepted output mass"
+      quality_evidence: "controlled bill of materials, material certificates, calibrated scales, issue/return audit trail"
+    - protocol_id: cp_fm_utilities
+      process_id: "material_forming_machining"
+      flow_role: "electricity, industrial oxygen, and process water"
+      record_type: "utility meters, supplier invoices, cylinder/tank balances, machine logs"
+      raw_fields: "meter_id; opening; closing; unit; reference_conditions; machine_hours; production_order; allocation_driver"
+      collection_method: "Prefer submetering; otherwise reconcile site totals and apply a documented physical driver"
+      unit: "kWh, m3, kg"
+      frequency: "meter period and each cylinder/tank change"
+      temporal_coverage: "representative continuous 12 months or all batches if shorter"
+      site_scope: "included forming, machining, moulding, extraction, and cooling equipment"
+      aggregation_rule: "Convert electricity to MJ; standardize gas volume; allocate by causal driver; normalize by accepted output mass"
+      quality_evidence: "meter calibration, invoice reconciliation, machine log, reference-condition record"
+    - protocol_id: cp_fm_waste
+      process_id: "material_forming_machining"
+      flow_role: "material-specific manufacturing scrap"
+      record_type: "scrap-bin weights, waste transfer notes, reject records"
+      raw_fields: "material; alloy_or_polymer; source_order; gross_weight; tare; destination; date"
+      collection_method: "Weigh each segregated material stream and reconcile with production mass balance"
+      unit: "kg"
+      frequency: "each dispatch or batch"
+      temporal_coverage: "same period as material inputs"
+      site_scope: "all included fabrication lines"
+      aggregation_rule: "Sum net outgoing mass by material and normalize by accepted output mass"
+      quality_evidence: "calibrated scale, tare record, transfer note, material segregation check"
+    - protocol_id: cp_sf_inputs
+      process_id: "surface_finishing"
+      flow_role: "bath chemicals, rinse water, and electricity"
+      record_type: "bath make-up and replenishment logs, chemical receipts, meters"
+      raw_fields: "bath_id; chemistry; product_concentration; addition_mass; water_meter; electricity_meter; treated_order; treated_mass"
+      collection_method: "Record each chemical separately and reconcile bath additions and utility meters to treated orders"
+      unit: "kg, kWh"
+      frequency: "each addition and meter period"
+      temporal_coverage: "representative continuous 12 months or all campaigns if shorter"
+      site_scope: "all included surface-treatment lines"
+      aggregation_rule: "Sum qualifying additions and metered utilities; convert electricity to MJ; normalize by accepted output mass"
+      quality_evidence: "bath log, concentration analysis, supplier certificate, meter calibration"
+    - protocol_id: cp_sf_waste
+      process_id: "surface_finishing"
+      flow_role: "metal-finishing wastewater"
+      record_type: "discharge meter, tank transfer, wastewater manifest, analytical results"
+      raw_fields: "stream_id; volume_or_mass; density; bath_origin; constituents; destination; date"
+      collection_method: "Meter or tank-balance each distinct wastewater stream and retain analytical characterization"
+      unit: "kg"
+      frequency: "each discharge or transfer"
+      temporal_coverage: "same period as surface-treatment inputs"
+      site_scope: "included baths, rinses, and local treatment"
+      aggregation_rule: "Convert to mass using measured density when needed; sum by distinct waste identity and normalize by accepted output mass"
+      quality_evidence: "calibrated meter, tank reconciliation, laboratory report, waste manifest"
+    - protocol_id: cp_ea_bom
+      process_id: "electronics_assembly"
+      flow_role: "populated board and solder inputs"
+      record_type: "bill of materials, board receipts/issues, solder feeder and inventory records"
+      raw_fields: "product_revision; board_identity; board_mass; solder_identity; alloy; flux_state; issue_mass; return_mass; order"
+      collection_method: "Reconcile product-specific electronics bill of materials to physical issues and returns"
+      unit: "kg"
+      frequency: "each production order"
+      temporal_coverage: "representative continuous 12 months or all batches if shorter"
+      site_scope: "included electronics assembly lines"
+      aggregation_rule: "Sum net issue mass by atomic input and normalize by accepted output mass"
+      quality_evidence: "approved bill of materials, supplier certificate, calibrated balance, feeder reconciliation"
+    - protocol_id: cp_ea_energy_waste
+      process_id: "electronics_assembly"
+      flow_role: "electricity and populated-board rejects"
+      record_type: "line meter, equipment logs, reject log, reject weights"
+      raw_fields: "meter_id; kWh; line_hours; product_order; reject_board_identity; reject_mass; disposition"
+      collection_method: "Submeter or physically allocate line electricity and weigh populated-board rejects separately"
+      unit: "kWh, kg"
+      frequency: "shift or batch"
+      temporal_coverage: "same period as electronics inputs"
+      site_scope: "included placement, soldering, extraction, and inspection equipment"
+      aggregation_rule: "Convert electricity to MJ; sum reject mass; normalize both by accepted output mass"
+      quality_evidence: "meter calibration, equipment log, reject authorization, scale record"
+    - protocol_id: cp_fi_pack_energy
+      process_id: "final_inspection_packaging"
+      flow_role: "packaging and final-stage electricity"
+      record_type: "packaging specifications, issue records, test-bench meters, accepted counts"
+      raw_fields: "packaging_identity; packaging_mass; units_per_pack; issue_quantity; kWh; accepted_count; product_revision"
+      collection_method: "Weigh packaging samples for the same specification and reconcile issues; meter or physically allocate final-stage electricity"
+      unit: "kg, kWh"
+      frequency: "each packaging lot and meter period"
+      temporal_coverage: "representative continuous 12 months or all batches if shorter"
+      site_scope: "final assembly, test, inspection, and sale-unit packaging"
+      aggregation_rule: "Allocate packaging by actual packed units; convert electricity to MJ; normalize by accepted output mass"
+      quality_evidence: "packaging specification, sample-weigh record, issue reconciliation, meter calibration"
+    - protocol_id: cp_fi_output
+      process_id: "final_inspection_packaging"
+      flow_role: "accepted reference-product output"
+      record_type: "final inspection record, serial/lot register, accepted count, unit weights"
+      raw_fields: "product_revision; lot; accepted_count; rejected_count; unit_mass_sample; total_accepted_mass; test_result"
+      collection_method: "Count only accepted units and determine output mass by total weighing or representative unit-mass sampling"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "same period as all inventory records"
+      site_scope: "all final acceptance points in the reporting site"
+      aggregation_rule: "Sum accepted output mass; use it as the denominator for all normalized exchanges"
+      quality_evidence: "approved acceptance criteria, calibrated scale, sampling record, signed release record"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every inventory row"
+      rule: "normalized amount = qualifying allocated amount / accepted reference-product mass"
+      inputs:
+        - "allocated exchange amount"
+        - "accepted output mass from cp_fi_output"
+      output: "amount per 1 kg accepted reference product"
+      source_ids:
+        - eu-pef-method-2021
+    - id: calc_electricity_conversion
+      applies_to: "fm_electricity; sf_electricity; ea_electricity; fi_electricity"
+      rule: "electricity (MJ) = metered electricity (kWh) × 3.6"
+      inputs:
+        - "metered kWh"
+      output: "MJ of purchased electricity"
+      source_ids: []
+    - id: calc_piece_mass
+      applies_to: "count-based material, packaging, or output records"
+      rule: "mass = count × representative measured mass per piece for the same revision and specification"
+      inputs:
+        - count
+        - "sample mean mass"
+        - "sample size"
+      output: "kg"
+      source_ids: []
+    - id: calc_material_mass_balance
+      applies_to: "aluminium, stainless steel, and polycarbonate routes"
+      rule: "opening inventory + receipts - closing inventory = accepted internal/output mass + separately identified scrap + separately identified retained material; investigate unexplained difference"
+      inputs:
+        - inventory
+        - receipt
+        - issue
+        - return
+        - output
+        - "and waste weights"
+      output: "reconciled material quantities and unexplained difference"
+      source_ids:
+        - eu-pef-method-2021
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product and all bill-of-material rows"
+      requirement: "Use one declared product and drawing revision; retain host-good subclass, function, accepted specification, and material/component identifiers."
+      evidence: "approved drawing, bill of materials, specification, acceptance record"
+    - id: dq_temporal_alignment
+      applies_to: "all rows"
+      requirement: "Use the same representative reporting period for inputs, outputs, allocation drivers, and accepted production; disclose shutdowns, prototypes, rework, and abnormal campaigns."
+      evidence: "dated meters, orders, logs, and production reconciliation"
+    - id: dq_measurement
+      applies_to: "mass, energy, water, and gas records"
+      requirement: "Use calibrated or verified instruments appropriate to the measured quantity; record resolution, calibration status, and any conversion assumptions."
+      evidence: "calibration certificate, meter check, sample-weigh record"
+    - id: dq_completeness
+      applies_to: "all included processes"
+      requirement: "Reconcile the product-specific bill of materials, utilities, outputs, and each material-specific waste stream; explain omissions and mass-balance differences."
+      evidence: "signed reconciliation and variance investigation"
+    - id: dq_representativeness
+      applies_to: "upstream datasets and allocations"
+      requirement: "Document geography, technology, time, product state, supplier, and allocation driver; disclose every proxy and why it is used."
+      evidence: "dataset metadata, supplier record, allocation worksheet"
+validation_rules:
+  - rule_id: vr_identity_boundary
+    applies_to: "dataset identity"
+    rule: "Confirm the output is a dedicated part or accessory for a declared CPC 48266 or 48269 host good, not a complete instrument or a part classified elsewhere."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: vr_reference_output
+    applies_to: "reference flow"
+    rule: "Confirm accepted output equals 1 kg after normalization and rejected units are excluded from the reference product."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: vr_route_condition
+    applies_to: "process map and inventory"
+    rule: "Confirm every included process and flow occurred for the declared revision, and every non-applicable conditional row is supported by route or bill-of-material evidence."
+    source_ids:
+      - eu-pef-method-2021
+      - eu-jrc-stm-bref-2006
+      - eu-jrc-sts-bref-2020
+  - rule_id: vr_atomic_flows
+    applies_to: "inventory"
+    rule: "Reject umbrella material, utility, fuel, chemical, waste, wastewater, or emissions rows; each exchange must have one physical or chemical identity and one direction."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: vr_uuid_semantics
+    applies_to: "UUID-bearing flows"
+    rule: "Confirm flow type, baseName, classification, product state, property, unit group, and foreground qualifier compatibility; do not use a proxy UUID."
+    source_ids: []
+  - rule_id: vr_mass_reconciliation
+    applies_to: "material-forming routes"
+    rule: "Reconcile each declared aluminium, stainless-steel, and polycarbonate input with accepted material, separately identified scrap, retained inventory, and explained difference."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: vr_allocation
+    applies_to: "shared processes"
+    rule: "Verify subdivision was attempted first and every remaining allocation driver is causal, period-aligned, documented, and consistently applied."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: vr_bilingual_alignment
+    applies_to: "PCR implementation metadata"
+    rule: "Preserve process ids, row ids, rule ids, UUIDs, controlled values, reference amount, and source ids across English and Chinese implementation views."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "product-specific foreground manufacturing dataset for one declared part or accessory configuration"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Cradle-to-gate modelling of the declared CPC 48284 part or accessory and its use as an input to a compatible host-good lifecycle model"
+  excluded_use: "Generic representation of all instrument parts; complete CPC 48266 or 48269 goods; other CPC 4828 parts; use-stage, maintenance, distribution, or end-of-life claims without added downstream modelling; comparative assertion across unlike designs without equivalence review"
+  required_metadata: "canonical PCR id; CPC context; host-good subclass; part/accessory function; product and drawing revision; accepted-unit mass; bill of materials; route; process ownership; surface chemistry; electronics content; packaging state; geography; technology; reference period; allocation; data quality; unresolved UUIDs and proxies"
+  required_quality_disclosure: "primary-data coverage by process and flow; meter and scale status; bill-of-material reconciliation; material mass-balance differences; allocation drivers; upstream dataset representativeness; exclusions; abnormal production; wastewater characterization; proxy and UUID gaps"
+  update_trigger: "change in host-good applicability, product revision, material grade or mass, supplied form, process route, surface chemistry, electronics design, packaging, supplier geography or technology, allocation basis, reference period, or a newly confirmed exact Tiangong UUID"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-07)"
+    used_for: "Official CPC 48284 identity and separation from complete goods in subclasses 48266 and 48269"
+  - id: "eu-pef-method-2021"
+    type: "official_guidance"
+    reference: "European Commission, Commission Recommendation (EU) 2021/2279, Annex I Product Environmental Footprint Method, consolidated 30 December 2021, https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:02021H2279-20211230 (retrieved 2026-09-07)"
+    used_for: "Functional unit and reference flow; product-specific bill of materials and manufacturing data; complete process input/output collection; allocation hierarchy; data quality"
+  - id: "eu-jrc-stm-bref-2006"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Surface Treatment of Metals and Plastics BREF, adopted August 2006, https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/surface-treatment-metals-and-plastics (retrieved 2026-09-07)"
+    used_for: "Conditional inclusion of water-based electrolytic and chemical surface-treatment processes and associated activities"
+  - id: "eu-jrc-sts-bref-2020"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Surface Treatment Using Organic Solvents BREF, adopted December 2020, https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/surface-treatment-using-organic-solvents-including-wood-and-wood-products-preservation (retrieved 2026-09-07)"
+    used_for: "Conditional inclusion of coating, cleaning, degreasing, and adhesive application for metal and plastic goods"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:7b5908d0213985a539107aa2eb039597645785ce366a1a98433dce8549490e74"
+  generated_content_sha256: "sha256:d77f3ae2d7be0d21b42334d68dc331c8cd6453b61eb462e28152e54c5fda05bf"

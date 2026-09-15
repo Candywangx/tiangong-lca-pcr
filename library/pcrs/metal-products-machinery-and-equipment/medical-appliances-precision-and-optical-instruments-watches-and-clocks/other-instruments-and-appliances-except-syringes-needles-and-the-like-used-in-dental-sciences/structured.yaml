@@ -1,10 +1,599 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "48130"
-  title: "Other instruments and appliances (except syringes, needles and the like), used in dental sciences"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.medical-appliances-precision-and-optical-instruments-watches-and-clocks.other-instruments-and-appliances-except-syringes-needles-and-the-like-used-in-dental-sciences"
+  classification_refs: "CPC 3.0: 48130"
+  covered_products: "Finished instruments and appliances intended for dental-science use within CPC 3.0 code 48130, including single-use or reusable and powered or non-powered products when they meet the declared category boundary"
+  excluded_products: "Syringes, needles and like injection articles; products classified as dental furniture, sterilizers, diagnostic imaging equipment, dental materials or preparations; dental and manufacturing services"
+  representative_product: "Reusable stainless-steel dental hand instrument, supplied at the manufacturer gate"
+  production_route: "Purchased stainless steel; forming or machining; conditional aqueous cleaning or surface treatment; final assembly or inspection; packaging"
+  market_state: "Accepted finished product in its declared saleable packaging, with sterility state and reusable or single-use status declared"
+functional_unit:
+  what: "Supply of a finished dental instrument or appliance that performs the manufacturer-declared dental function"
+  how_much: "1 kg net mass of accepted finished product, excluding packaging, with item count also reported"
+  how_well: "Conforms to the declared model, material, performance, surface-finish, cleanliness and sterility specifications"
+  how_long_or_cycle: "At the manufacturer gate; reusable life or single-use status is declared but no use cycle is included in the reference amount"
+  reference_flow_link: "One kilogram of the accepted output row finished_dental_instrument"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "Foreground manufacturing package"
+      rule: "Include on-site fabrication, aqueous cleaning or surface treatment when performed, assembly, inspection, packaging, direct utilities, wastes and direct emissions through release of the accepted product at the manufacturer gate."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+        - ec-jrc-stm-bref-2006
+    - rule_id: boundary_conditional_routes
+      applies_to: "Route-specific operations"
+      rule: "Include an operation only when it occurs for the declared product; identify outsourced treatment or sterilization as a purchased service or upstream process and do not silently omit it."
+      source_ids:
+        - ec-jrc-stm-bref-2006
+    - rule_id: boundary_direct_emissions
+      applies_to: "Foreground elementary flows"
+      rule: "Report only emissions that cross directly from the foreground site to the environment; keep upstream emissions in linked product or energy datasets."
+      source_ids:
+        - ec-jrc-stm-bref-2006
+boundary_abstraction:
+  declared_starting_condition: "Purchased raw materials, components, packaging and energy carriers delivered to the manufacturing-site gate"
+  starting_condition_role: "Foreground manufacturing input boundary"
+  product_classification_scope: "Dental instruments and appliances within the reviewed semantic boundary; CPC 3.0 code 48130 is mapping context, not canonical identity"
+  recursive_input_rule: "A purchased instrument or appliance in the same category is recorded as one product input with supplier-stage completion and quantity disclosed; do not recursively recreate its manufacturing inventory inside this foreground package."
+  upstream_dataset_requirement: "Link each purchased material, component, energy carrier and packaging input to a geography-, technology- and product-state-appropriate upstream dataset."
+  disclosure: "Declare which fabrication, surface-treatment, cleaning, assembly, inspection, sterilization and packaging operations occur on site; identify outsourced operations and cut-offs."
+reference_flow_definition:
+  reference_amount: "1 kg net finished product"
+  product_flow_ref:
+    name: "Dental instrument or appliance; Tiangong UUID unresolved"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product type and model"
+    - "intended dental function"
+    - "powered or non-powered"
+    - "single-use or reusable"
+    - "bill of materials and stainless-steel grade when applicable"
+    - "net mass and item count"
+    - "manufacturing route"
+    - "surface treatment"
+    - "cleanliness and sterility state"
+    - "packaging configuration"
+    - "manufacturing geography"
+    - "reference year"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product and all mass-normalized rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize to 1 kg of accepted net product mass after final inspection; exclude packaging mass and rejected units from the denominator and report item count separately."
+  - id: electricity_energy
+    applies_to: "Electricity rows"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve the metered kWh record and convert to MJ using 1 kWh = 3.6 MJ; do not include upstream electricity-generation emissions as direct foreground emissions."
+  - id: water_mass
+    applies_to: "Process-water and wastewater rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer mass measurement; when only volume is measured, use a documented, temperature-appropriate density and retain the original volume record."
+  - id: gas_volume
+    applies_to: "Natural-gas row"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200b9a66"
+    required_unit: "m3"
+    rule: "State the metering reference temperature, pressure and dry or wet basis and use one consistent volume basis."
+process_map:
+  - id: material_fabrication
+    name: "Material forming and machining"
+    inclusion: "conditional"
+    inclusion_condition: "Include when raw material is formed, cut, ground or machined at the reporting site; otherwise disclose purchased finished components."
+    role: "Foreground fabrication"
+    quantitative_reference: "Accepted product mass and material balance"
+  - id: surface_treatment_cleaning
+    name: "Aqueous cleaning and surface treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when aqueous cleaning, passivation, electrochemical treatment, coating, rinsing or heated drying occurs at the reporting site."
+    role: "Foreground finishing"
+    quantitative_reference: "Treated product mass or treated surface area, reconciled to accepted product"
+  - id: final_inspection_packaging
+    name: "Final inspection and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always include the final acceptance decision and saleable packaging performed before the manufacturer gate."
+    role: "Foreground release"
+    quantitative_reference: "1 kg accepted net finished product"
+process_inventory:
+  - id: material_fabrication
+    label: "Material forming and machining"
+    inputs:
+      product:
+        - row_id: stainless_steel_input
+          role: "Stainless-steel stock"
+          name: "Stainless steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "84c2403f-5062-5d68-8276-838384d32b89"
+          property_unit: "Mass / kg"
+          description: "Record stainless steel that crosses the site boundary into products manufactured on the representative route. Declare grade, stock form, supplier, recycled content when known, and delivered mass."
+          amount:
+            expression: "Purchased stainless-steel mass consumed in accepted and rejected production, net of documented unchanged returns to supplier"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_records
+              source_ids:
+                - us-fda-iso-21850-1-recognition-2026
+            ranges: []
+        - row_id: fabrication_electricity
+          role: "Fabrication electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electrical energy used by forming, machining, grinding, extraction and directly supporting fabrication equipment."
+          amount:
+            expression: "Metered fabrication electricity converted from kWh to MJ"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_records
+              source_ids: []
+            ranges: []
+        - row_id: fabrication_process_water
+          role: "Fabrication process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water used directly for machining coolant make-up or in-process washing when those uses occur in fabrication."
+          amount:
+            expression: "Metered fabrication process-water input, excluding sanitary water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: post_industrial_steel_scrap
+          role: "Segregated steel fabrication scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Record steel offcuts, swarf and rejected steel pieces leaving the fabrication process as one segregated post-industrial scrap flow. Declare alloy grade, contamination, internal recycling and destination."
+          amount:
+            expression: "Weighed steel scrap leaving the foreground fabrication process, excluding material internally returned within the same measured balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: surface_treatment_cleaning
+    label: "Aqueous cleaning and surface treatment"
+    inputs:
+      product:
+        - row_id: surface_sodium_hydroxide
+          role: "Sodium hydroxide for alkaline cleaning"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide consumed in alkaline cleaning or treatment baths only when that chemical is used for the declared product route. Declare supplied concentration and active mass."
+          amount:
+            expression: "Supplied sodium-hydroxide product mass added to the foreground baths"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_records
+              source_ids:
+                - ec-jrc-stm-bref-2006
+            ranges: []
+        - row_id: surface_process_water
+          role: "Surface-treatment process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water used for bath make-up and rinsing in the on-site cleaning or surface-treatment route."
+          amount:
+            expression: "Metered bath make-up and rinse-water input, excluding sanitary water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_records
+              source_ids:
+                - ec-jrc-stm-bref-2006
+            ranges: []
+        - row_id: surface_electricity
+          role: "Surface-treatment electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity used by bath circulation, electrochemical treatment, pumps, extraction, drying and directly supporting surface-treatment equipment."
+          amount:
+            expression: "Metered surface-treatment electricity converted from kWh to MJ"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_records
+              source_ids:
+                - ec-jrc-stm-bref-2006
+            ranges: []
+        - row_id: surface_natural_gas
+          role: "Natural gas for bath heating or drying"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas consumed on site only when it directly heats treatment solutions or dries treated product. Declare metering reference conditions and exclude upstream gas-supply emissions from direct emissions."
+          amount:
+            expression: "Metered natural-gas volume attributable to bath heating or drying"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_records
+              source_ids:
+                - ec-jrc-stm-bref-2006
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: surface_wastewater
+          role: "Surface-treatment wastewater"
+          name: "Wastewater"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "d2d44ce1-c0f4-461d-9413-f4b33e0d200f"
+          property_unit: "Mass / kg"
+          description: "Record the single aqueous waste stream sent to on-site discharge control or off-site treatment. Declare pH, measured metals or other relevant contaminants, treatment state, and destination."
+          amount:
+            expression: "Measured wastewater mass leaving the surface-treatment process boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_records
+              source_ids:
+                - ec-jrc-stm-bref-2006
+            ranges: []
+      elementary:
+        - row_id: surface_fossil_co2
+          role: "Direct fossil carbon dioxide from natural-gas combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record only fossil carbon dioxide released directly by on-site combustion of the natural gas in surface_natural_gas. Do not add power-sector or upstream fuel-supply emissions."
+          amount:
+            expression: "Directly measured emission or natural-gas use multiplied by a documented site-specific fossil-carbon emission factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_co2
+              source_ids: []
+            ranges: []
+  - id: final_inspection_packaging
+    label: "Final inspection and packaging"
+    inputs:
+      product:
+        - row_id: packaging_electricity
+          role: "Final inspection and packaging electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity used by final inspection, cleaning verification, assembly where present, labelling and packaging equipment."
+          amount:
+            expression: "Metered or defensibly submeter-allocated electricity for final inspection and packaging"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_board_boxes
+          role: "Corrugated outer boxes"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record corrugated board boxes supplied as the paper-based outer packaging component. Other packaging components shall be added as separate atomic rows rather than aggregated into this row."
+          amount:
+            expression: "Purchased corrugated-box mass incorporated in saleable packaged output, including attributable damaged boxes"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_dental_instrument
+          role: "Accepted finished dental instrument or appliance"
+          name: "Dental instrument or appliance; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the net mass and item count of accepted finished product released at the manufacturer gate. The Tiangong product-flow UUID remains unresolved; do not substitute a metal, scrap or generic medical-device proxy."
+          amount:
+            expression: "Accepted net product mass, normalized to exactly 1 kg; report item count as a required companion quantity"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg accepted net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "Shared manufacturing operations"
+    rule: "Avoid allocation by separately metering route-specific operations and assigning material, energy, water, waste and emissions to the product family or batch that caused them."
+    source_ids: []
+  - rule_id: allocation_shared_loads
+    applies_to: "Unseparated shared utilities"
+    rule: "When direct metering is unavailable, allocate a shared load using a measured causal driver such as machine time, treated surface area, bath throughput or accepted product mass; disclose the driver and test sensitivity when it materially affects results."
+    source_ids:
+      - ec-jrc-stm-bref-2006
+  - rule_id: allocation_scrap
+    applies_to: "Steel scrap and recovered treatment materials"
+    rule: "Report scrap and recovered material quantities and destinations explicitly. Do not credit avoided primary production inside the foreground inventory unless the selected downstream system model requires that substitution and the method is disclosed."
+    source_ids:
+      - ec-jrc-stm-bref-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_fabrication_records
+      process_id: "material_fabrication"
+      flow_role: "stainless_steel_input; fabrication_electricity; fabrication_process_water; post_industrial_steel_scrap"
+      record_type: "Purchase, meter, production and waste records"
+      raw_fields: "material UUID or grade, received mass, returns, electricity kWh, water mass or volume, scrap mass, accepted product mass, batch and date"
+      collection_method: "Reconcile invoices and stock movement to calibrated meters or scales for the same production period"
+      unit: "kg; kWh; m3"
+      frequency: "Per batch or monthly, with annual reconciliation"
+      temporal_coverage: "At least 12 consecutive months or the full campaign for shorter production"
+      site_scope: "Reporting site and declared product family"
+      aggregation_rule: "Sum attributable quantities, subtract documented unchanged returns, then normalize by accepted net product mass"
+      quality_evidence: "Purchase records, meter IDs, calibration status, batch records and mass-balance reconciliation"
+    - protocol_id: cp_surface_records
+      process_id: "surface_treatment_cleaning"
+      flow_role: "surface_sodium_hydroxide; surface_process_water; surface_electricity; surface_natural_gas; surface_wastewater"
+      record_type: "Bath, meter, chemical and discharge records"
+      raw_fields: "chemical product mass and concentration, water input, electricity kWh, gas volume and reference conditions, wastewater mass or volume, contaminant results, treated mass or area"
+      collection_method: "Read dedicated meters where available; reconcile bath make-up and discharge logs to the declared route"
+      unit: "kg; kWh; m3; m2"
+      frequency: "Per batch or shift, aggregated monthly"
+      temporal_coverage: "At least 12 consecutive months or the full campaign"
+      site_scope: "On-site treatment line serving the declared product"
+      aggregation_rule: "Assign by direct batch record; otherwise use treated area or mass and disclose the driver"
+      quality_evidence: "Meter calibration, bath log, laboratory result, waste transfer note and route record"
+    - protocol_id: cp_combustion_co2
+      process_id: "surface_treatment_cleaning"
+      flow_role: "surface_fossil_co2"
+      record_type: "Fuel and emission-factor record"
+      raw_fields: "gas volume, reference conditions, fossil carbon content or approved factor, oxidation basis, measured CO2 when available"
+      collection_method: "Prefer direct measurement; otherwise multiply normalized collected fuel by a documented site-specific or jurisdiction-approved factor"
+      unit: "kg CO2; m3 gas"
+      frequency: "Same period as gas consumption"
+      temporal_coverage: "Same period as cp_surface_records"
+      site_scope: "On-site combustion serving the declared route"
+      aggregation_rule: "Sum direct fossil CO2 and normalize by accepted net product mass"
+      quality_evidence: "Fuel certificate, factor source, calculation sheet and meter calibration"
+    - protocol_id: cp_packaging_records
+      process_id: "final_inspection_packaging"
+      flow_role: "packaging_electricity; corrugated_board_boxes; finished_dental_instrument"
+      record_type: "Packaging purchase, meter and release records"
+      raw_fields: "electricity kWh, box mass, damaged boxes, accepted net product mass, item count, rejected units, model, packaging and sterility state"
+      collection_method: "Reconcile packaging specifications and issues to released production lots and final inspection records"
+      unit: "kg; count; kWh"
+      frequency: "Per released lot, aggregated monthly"
+      temporal_coverage: "At least 12 consecutive months or full campaign"
+      site_scope: "Final inspection and packaging area"
+      aggregation_rule: "Sum attributable inputs and normalize by accepted net product mass; keep item count as companion data"
+      quality_evidence: "Release record, packaging specification, scale calibration, meter allocation and rejection log"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "All inventory rows"
+      rule: "normalized amount = attributable period amount / accepted net product mass for the same period"
+      inputs:
+        - "Attributable flow amount"
+        - "accepted net product mass"
+      output: "Flow amount per 1 kg accepted net finished product"
+      source_ids: []
+    - id: calc_electricity_mj
+      applies_to: "Electricity rows"
+      rule: "electricity_MJ = metered_kWh × 3.6"
+      inputs:
+        - "Metered kWh"
+      output: "MJ of Electricity"
+      source_ids: []
+    - id: calc_water_mass
+      applies_to: "Water and wastewater rows measured by volume"
+      rule: "mass_kg = measured_volume × documented density at the declared temperature"
+      inputs:
+        - Volume
+        - density
+        - temperature
+      output: "kg water or wastewater"
+      source_ids: []
+    - id: calc_direct_fossil_co2
+      applies_to: "surface_fossil_co2"
+      rule: "direct fossil CO2 = normalized gas quantity × documented fossil-carbon emission factor, or normalized direct measurement"
+      inputs:
+        - "Collected natural-gas use and verified factor"
+        - "or direct CO2 measurement"
+      output: "kg carbon dioxide (fossil) per kg accepted product"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product"
+      requirement: "Retain model, intended dental function, powered status, single-use or reusable status, material specification, net mass, count, surface state, sterility state and packaging configuration."
+      evidence: "Product specification, bill of materials and lot-release record"
+    - id: dq_route_completeness
+      applies_to: "Process map"
+      requirement: "Reconcile the declared site route to the three process-map stages and state why each conditional stage is included or absent; disclose outsourced treatment and sterilization."
+      evidence: "Process flow diagram, traveller or routing record"
+    - id: dq_mass_balance
+      applies_to: "Stainless steel, accepted product and steel scrap"
+      requirement: "Reconcile received and returned stainless steel, accepted product, rejects, scrap and material retained in work in progress for the same period; explain material gaps."
+      evidence: "Stock ledger, batch record, scale records and reconciliation"
+    - id: dq_temporal
+      applies_to: "All foreground rows"
+      requirement: "Use one consistent period of at least 12 consecutive months where production is continuous, or the complete declared campaign; disclose abnormal downtime and rework."
+      evidence: "Date-bounded source records and production log"
+    - id: dq_measurement
+      applies_to: "Metered and weighed rows"
+      requirement: "Record meter or scale identity, calibration status, allocation method and missing-data treatment; preserve original units before conversion."
+      evidence: "Calibration certificates, raw readings and calculation workbook"
+    - id: dq_surface_effluent
+      applies_to: "Surface-treatment wastewater"
+      requirement: "Retain treatment state, destination and measurements for route-relevant contaminants; do not infer direct environmental emissions from wastewater composition without a discharge boundary."
+      evidence: "Laboratory results, discharge permit records or waste transfer notes"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "Product category and reference flow"
+    rule: "Confirm the product is a dental instrument or appliance within the stated boundary and is not a syringe, needle or like injection article; verify that all required qualifiers are present."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - us-fda-iso-21850-1-recognition-2026
+  - rule_id: validate_reference_amount
+    applies_to: "Reference product"
+    rule: "Confirm the output is exactly 1 kg accepted net product after normalization, packaging mass is excluded, and item count is reported."
+    source_ids: []
+  - rule_id: validate_atomic_inventory
+    applies_to: "Inventory rows"
+    rule: "Confirm every row is one atomic exchange, every conditional row matches the declared route, and no generic material, energy, packaging, waste or emission collection substitutes for concrete rows."
+    source_ids: []
+  - rule_id: validate_uuid_semantics
+    applies_to: "UUID-bearing rows"
+    rule: "Confirm selected flow name, flow type, property, unit group and product state match the current public Tiangong state-100 identity; the unresolved reference product must remain without a proxy UUID."
+    source_ids: []
+  - rule_id: validate_balance_and_boundary
+    applies_to: "Material, energy, waste and emissions"
+    rule: "Check period alignment, stainless-steel mass balance, energy conversion, wastewater destination, and that upstream electricity and fuel emissions are not duplicated as direct foreground emissions."
+    source_ids:
+      - ec-jrc-stm-bref-2006
+published_dataset_profile:
+  dataset_role: "Foreground manufacturing dataset that may be published as a secondary_dataset or background_dataset after review"
+  downstream_use: "Product carbon-footprint, life-cycle inventory and lifecycle-model construction for the declared dental instrument or appliance"
+  allowed_use: "Comparisons or modelling within the declared product type, material route, manufacturing geography, technology, time period, sterility state and packaging boundary"
+  excluded_use: "Clinical service impacts, user reprocessing, distribution, use-phase energy or consumables, and end-of-life unless separately modelled; proxying unrelated medical devices or dental materials"
+  required_metadata: "PCR id and version; product model and function; net mass and item count; powered and use-cycle status; bill of materials; route and outsourced operations; geography; technology; reference period; sterility and packaging state; allocation and cut-off choices"
+  required_quality_disclosure: "Source coverage; measured versus allocated shares; meter and scale quality; missing-data treatment; material-balance gap; surface-treatment and wastewater route; unresolved reference-product UUID"
+  update_trigger: "Material change in product design, bill of materials, manufacturing route, surface chemistry, energy mix, site, supplier boundary, sterility or packaging configuration, allocation driver, or a new exact Tiangong reference-product identity"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, code 48130, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-06)"
+    used_for: "Official classification identity and explicit exclusion of syringes, needles and like articles"
+  - id: "us-fda-iso-21850-1-recognition-2026"
+    type: "official_guidance"
+    reference: "U.S. FDA Recognized Consensus Standards, recognition 4-395 for ISO 21850-1:2020, Dentistry — Materials for dental instruments — Part 1: Stainless steel, https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfstandards/detail.cfm?standard__identification_no=46977 (retrieved 2026-09-06)"
+    used_for: "Stainless steel representative route and applicability to single-use, reusable, powered and non-powered dental instruments"
+  - id: "ec-jrc-stm-bref-2006"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Reference Document on Best Available Techniques for the Surface Treatment of Metals and Plastics, August 2006, Executive Summary pp. i–v, https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/stm_bref_0806.pdf (retrieved 2026-09-06)"
+    used_for: "Conditional surface-treatment decomposition; collection of electricity, fuel, water, acids or alkalis, wastewater, wastes and direct emissions"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:1f8aca944fae768279b8eedac6bc6c606a8706aa52394fc23ec90cc4afc3c9dc"
+  generated_content_sha256: "sha256:4272528acee5ecc48143c9c980efbea1e880fe57414aed740f42ee7d05680b07"

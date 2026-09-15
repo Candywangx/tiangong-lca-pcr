@@ -1,10 +1,850 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43562"
-  title: "Other lifting, handling, loading or unloading machinery"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.other-lifting-handling-loading-or-unloading-machinery"
+  classification_refs: "CPC:3.0:43562 — Other lifting, handling, loading or unloading machinery; official explanatory-note HS scope 8428.10, .20, .31, .32, .33, .39, .40, .60 and .90"
+  covered_products: "Complete lifting, handling, loading or unloading machinery assigned to CPC 43562 after applying official residual-category rules"
+  excluded_products: "Industrial robots; machinery assigned to CPC 43510, 43520, 43530, 43540 or 43550; separately supplied parts under CPC 43570; separately supplied buckets, shovels, grabs and grips under CPC 43580; installation, repair and handling services"
+  representative_product: "A complete factory-tested machine in its released factory-gate configuration, normalized to 1,000 kg net finished-machine mass"
+  production_route: "Product-specific purchased bill of materials; conditional in-house cutting, forming, welding and machining; conditional wet or powder coating; required assembly and functional testing; packaging and factory-gate release"
+  market_state: "New, complete, factory-tested machinery at the manufacturer's gate; packaging status and included accessories declared"
+functional_unit:
+  what: "Factory-gate provision of complete CPC 43562 machinery with its declared lifting, handling, loading or unloading function"
+  how_much: "1,000 kg net mass of finished machinery"
+  how_well: "Conforms to the declared model specification, rated load or throughput, lift or travel parameters, duty class, drive and control architecture, test acceptance criteria, and included accessories"
+  how_long_or_cycle: "One accepted factory-gate production output; use-stage service life and operating cycles are not represented and must be declared in a downstream use scenario"
+  reference_flow_link: "reference_product_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_product_specific
+      applies_to: "bill of materials and manufacturing activity"
+      rule: "Use a product-specific bill of materials and product-attributable company records. Include every known material and energy input, waste and direct emission within the declared foreground boundary as a separate atomic exchange."
+      source_ids:
+        - eu-pef-method-2021
+    - rule_id: boundary_factory_gate
+      applies_to: "foreground process coverage"
+      rule: "Include receiving and attribution, applicable in-house fabrication and surface finishing, final assembly and testing, packaging, and release through the manufacturer's factory gate."
+      source_ids:
+        - eu-pef-method-2021
+    - rule_id: boundary_supplier_link
+      applies_to: "purchased inputs"
+      rule: "Link each purchased input to an upstream dataset at its declared delivery boundary. Avoid double counting supplier production or transport already included in that dataset."
+      source_ids:
+        - eu-pef-method-2021
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "post-factory-gate stages"
+      rule: "Exclude distribution after release, installation, operation, maintenance, replacements, decommissioning and end of life from this foreground package; add them only in an explicitly scoped downstream lifecycle model."
+      source_ids: []
+    - rule_id: boundary_no_cutoff_by_list
+      applies_to: "inventory completeness"
+      rule: "This pattern list is a minimum. Expand the instantiated dataset with one atomic row for every additional product-specific BOM item, process consumable, waste and direct elementary emission; do not treat absence from this generic list as a cut-off rule."
+      source_ids:
+        - eu-pef-method-2021
+boundary_abstraction:
+  declared_starting_condition: "Purchased materials, components, fuels, electricity and water at the boundary declared by each supplier dataset, ready for the manufacturer's receiving and production processes"
+  starting_condition_role: "Explicit boundary anchor separating upstream supplier systems from the manufacturer's foreground operations"
+  product_classification_scope: "Complete machinery assigned to CPC 3.0 subclass 43562; not industrial robots or products, parts or services assigned to a more specific category"
+  recursive_input_rule: "A purchased complete CPC 43562 machine incorporated into another machine remains a separate input with its own upstream dataset; do not merge it into the reference output or recursively apply this foreground inventory to itself"
+  upstream_dataset_requirement: "Every purchased atomic material, component, energy carrier, water input and packaging article requires a geographically, technologically and temporally appropriate upstream dataset whose delivery boundary is stated"
+  disclosure: "Declare factory sites, reference period, product model or product-family composition, BOM coverage, make-or-buy boundary, included production routes, packaging status, allocation, data gaps, proxies, and all excluded downstream stages"
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Other lifting, handling, loading or unloading machinery"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product designation and model"
+    - "documented CPC 43562 classification rationale"
+    - "net finished-machine mass"
+    - "rated load or throughput"
+    - "lift height"
+    - "travel or handling envelope as applicable"
+    - "duty class or declared operating cycle"
+    - "drive type and energy carrier"
+    - "control architecture"
+    - "principal load-bearing material grades"
+    - "factory configuration"
+    - "included accessories"
+    - "packaging status"
+    - "manufacturing geography and reference period"
+    - "purchased-input delivery boundaries"
+    - "allocation method"
+    - "excluded downstream stages"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product and mass-normalized inventory"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net finished-machine mass from a calibrated scale, verified shipping record net of separately reported packaging, or a reconciled product-specific bill of materials. Normalize attributable amounts to exactly 1,000 kg net finished machinery."
+  - id: electricity_energy
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electricity by process. When records are in kWh, convert using the exact identity 1 kWh = 3.6 MJ and retain the original reading and conversion."
+  - id: gas_volume
+    applies_to: "gaseous natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report gas volume at declared reference temperature and pressure. If an energy or emission calculation is performed, retain the meter volume, reference conditions, net calorific value, carbon factor, fossil fraction and oxidation factor used."
+  - id: water_mass
+    applies_to: "process water and wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use measured mass or convert a metered volume using a documented density and reference conditions; do not equate input water and wastewater without accounting for retained water, evaporation and other outlets."
+  - id: packaging_mass
+    applies_to: "EURO wooden pallet and corrugated cardboard"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record only packaging released with the reference product. State whether pallets are new, reused, returned or excluded, and do not divide reusable packaging without a documented use count."
+process_map:
+  - id: material_preparation
+    name: "Material receipt and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always include product-specific BOM receipt, inspection and attribution; individual preparation operations are included when performed in-house"
+    role: "Foreground BOM control and material preparation"
+    quantitative_reference: "Attributable purchased input per 1,000 kg accepted net finished machinery"
+  - id: fabrication
+    name: "Structural fabrication and machining"
+    inclusion: "conditional"
+    inclusion_condition: "Include when cutting, forming, welding, machining or aqueous fabrication support is performed within the reporting organization"
+    role: "Foreground conversion of structural materials"
+    quantitative_reference: "Attributable process activity per 1,000 kg accepted net finished machinery"
+  - id: surface_finishing
+    name: "Surface preparation and coating"
+    inclusion: "conditional"
+    inclusion_condition: "Include each wet-coating or powder-coating route actually performed in-house; omit only with documented purchased-finished or uncoated configuration"
+    role: "Foreground corrosion protection and finish"
+    quantitative_reference: "Attributable process activity per 1,000 kg accepted net finished machinery"
+  - id: assembly_testing
+    name: "Final assembly and functional testing"
+    inclusion: "required"
+    inclusion_condition: "Always include assembly and acceptance testing; diesel testing applies only to diesel-fuelled or diesel-tested configurations"
+    role: "Foreground assembly and acceptance"
+    quantitative_reference: "Attributable process activity per 1,000 kg accepted net finished machinery"
+  - id: release_dispatch
+    name: "Packaging, release and dispatch gate"
+    inclusion: "required"
+    inclusion_condition: "Always include product release; include each packaging article only when it leaves the factory with the product"
+    role: "Foreground packaging and reference-product release"
+    quantitative_reference: "1,000 kg net accepted finished machinery"
+process_inventory:
+  - id: material_preparation
+    label: "Material receipt and preparation"
+    inputs:
+      product:
+        - row_id: carbon_steel_plate
+          role: "Carbon-steel plate for load-bearing fabrication"
+          name: "Carbon steel plate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record delivered carbon-steel plate only when it is an actual product-specific BOM line crossing the foreground boundary. Grade, thickness, surface condition, recycled-content claim and supplier delivery boundary remain required qualifiers."
+          amount:
+            expression: "Net accepted mass attributable to the reference product from purchase, receipt and inventory-change records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg accepted net finished machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_receipts
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: fabrication
+    label: "Structural fabrication and machining"
+    inputs:
+      product:
+        - row_id: fabrication_electricity
+          role: "Purchased electricity for fabrication"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity attributable to cutting, forming, welding, machining and local extraction when these operations are in scope."
+          amount:
+            expression: "Submetered consumption or documented allocation of facility electricity to fabrication orders"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted net finished machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: cutting_oxygen
+          role: "Industrial oxygen for thermal cutting"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume / m3"
+          description: "Record industrial oxygen only when oxygen-assisted thermal cutting or another documented fabrication operation consumes it."
+          amount:
+            expression: "Supplier-meter or cylinder-balance volume attributable to in-scope production orders at declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted net finished machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: fabrication_process_water
+          role: "Process water for fabrication"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water used in machining, cleaning or other fabrication operations only when it crosses the process boundary."
+          amount:
+            expression: "Metered or tank-balance water attributable to in-scope fabrication orders"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted net finished machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: post_industrial_steel_scrap
+          role: "Post-industrial steel scrap from fabrication"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Record segregated ferrous offcuts, chips and rejected steel leaving fabrication as post-industrial waste. Treatment route and any sale as a secondary material are disclosed separately from flow identity."
+          amount:
+            expression: "Weighed outgoing scrap plus verified inventory change attributable to in-scope production orders"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted net finished machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+      elementary:
+        []
+  - id: surface_finishing
+    label: "Surface preparation and coating"
+    inputs:
+      product:
+        - row_id: industrial_maintenance_coating
+          role: "Industrial maintenance coating for the wet-coating route"
+          name: "Industrial Maintenance Coatings"
+          flow_type: "product"
+          flow_ref:
+            uuid: "46c99c8a-0ae9-4be8-972f-a2b9ab3baaf5"
+          property_unit: "Mass / kg"
+          description: "Record this atomic coating only when a wet industrial-maintenance coating is applied. Formulation, solids content, mixing losses, supplier and application method remain foreground qualifiers."
+          amount:
+            expression: "Issued coating mass minus sealed return and verified inventory change attributable to the reference product"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted net finished machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: powder_coating
+          role: "Powder coating for the powder-coating route"
+          name: "Powder Coating"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0c581697-0eed-4b86-a070-b94966eb7344"
+          property_unit: "Mass / kg"
+          description: "Record powder coating only when the product uses that route. Powder recovery and recirculation remain inside the process; only net fresh input crosses the boundary."
+          amount:
+            expression: "Fresh powder issued minus sealed return and verified inventory change attributable to the reference product"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted net finished machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: coating_electricity
+          role: "Purchased electricity for surface finishing"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity for preparation, ventilation, pumping, application, curing and pollution control attributable to the in-scope coating route."
+          amount:
+            expression: "Submetered consumption or documented allocation to surface-finishing orders"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted net finished machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: coating_natural_gas
+          role: "Gaseous natural gas for coating ovens"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas only when directly consumed for drying, curing or thermal surface-treatment equipment."
+          amount:
+            expression: "Metered volume attributable to surface finishing at declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted net finished machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: coating_process_water
+          role: "Process water for surface preparation"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water used for washing, rinsing or aqueous surface preparation when that route is present."
+          amount:
+            expression: "Metered or tank-balance water attributable to surface preparation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted net finished machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: coating_wastewater
+          role: "Wastewater from surface preparation"
+          name: "Wastewater"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "d2d44ce1-c0f4-461d-9413-f4b33e0d200f"
+          property_unit: "Mass / kg"
+          description: "Record wastewater leaving aqueous preparation or coating support as a single wastewater waste flow. Declare composition, on-site pretreatment, recipient system and destination."
+          amount:
+            expression: "Measured discharge mass or metered volume converted using documented density, attributable to surface finishing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted net finished machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+      elementary:
+        - row_id: coating_nmvoc
+          role: "Non-methane volatile organic compounds released to air"
+          name: "non-methane volatile organic compounds"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-a302-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct NMVOC released after capture and treatment from the wet-coating route. Do not use this row for methane or for solvent retained in product or transferred as waste."
+          amount:
+            expression: "Measured released NMVOC mass attributable to the wet-coating route, with monitoring basis and treatment operating state retained"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted net finished machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: coating_fossil_co2
+          role: "Fossil carbon dioxide from coating heat"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record only direct fossil carbon dioxide from on-site natural-gas combustion for the coating route. Upstream fuel-supply emissions remain in the natural-gas supplier dataset."
+          amount:
+            expression: "Direct measured emission or value calculated by calc_direct_fossil_co2 from collected fuel and site factor records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted net finished machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_coating_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+  - id: assembly_testing
+    label: "Final assembly and functional testing"
+    inputs:
+      product:
+        - row_id: assembly_electricity
+          role: "Purchased electricity for assembly and testing"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for mechanical, electrical and hydraulic assembly, controls configuration, functional testing and acceptance checks."
+          amount:
+            expression: "Submetered consumption or documented allocation to assembly and accepted test orders"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted net finished machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_test_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: test_diesel
+          role: "Diesel fuel consumed in functional testing"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "Record diesel fuel only for machines or test rigs that combust diesel during in-scope acceptance testing. Grade and biogenic fraction remain foreground qualifiers."
+          amount:
+            expression: "Tank, issue or calibrated test-bench fuel balance attributable to accepted product tests"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted net finished machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_test_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: test_fossil_co2
+          role: "Fossil carbon dioxide from diesel testing"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record only direct fossil carbon dioxide from in-scope diesel combustion. Upstream diesel-supply emissions remain in the diesel supplier dataset."
+          amount:
+            expression: "Direct measured emission or value calculated by calc_direct_fossil_co2 from collected diesel and site factor records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted net finished machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly_test_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+  - id: release_dispatch
+    label: "Packaging, release and dispatch gate"
+    inputs:
+      product:
+        - row_id: euro_wooden_pallet
+          role: "EURO wooden pallet released with the machine"
+          name: "Wooden pallet (EURO)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "96b2b9ac-cfb6-46bf-8ad1-c056e338950a"
+          property_unit: "Mass / kg"
+          description: "Record EURO wooden pallets only when they leave the factory with the reference product. Other pallet designs require their own atomic flow row."
+          amount:
+            expression: "Net pallet mass released with accepted reference products, adjusted only by a documented reuse or return rule"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg accepted net finished machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: corrugated_cardboard
+          role: "Corrugated cardboard released with the machine"
+          name: "Corrugated cardboard"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bde297e-98df-463f-bcb4-0db52bf6e0b5"
+          property_unit: "Mass / kg"
+          description: "Record corrugated cardboard used for protectors, cartons or separators only when it leaves the factory with the reference product."
+          amount:
+            expression: "Issued corrugated-cardboard mass minus unused return and inventory change attributable to released products"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg accepted net finished machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Accepted factory-gate machinery"
+          name: "Other lifting, handling, loading or unloading machinery"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the net mass of complete, accepted CPC 43562 machinery released at the factory gate. Packaging mass is excluded from net machine mass and recorded in its own input rows when released with the product."
+          amount:
+            expression: "Accepted net finished-machine mass used as the normalization denominator"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "exactly 1,000 kg accepted net finished machinery"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release_records
+              source_ids:
+                - un-cpc-3-0-structure-2025
+                - un-cpc-3-0-explanatory-notes-2025
+                - eu-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "multi-product facilities and shared processes"
+    rule: "First avoid allocation by product-specific BOMs, production orders, submetering, separate waste weighing, or subdivision of unit processes."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_physical
+    applies_to: "shared burdens that cannot be subdivided"
+    rule: "Allocate using a documented causal physical driver such as measured machine hours, process time, mass processed or metered energy. Demonstrate why the driver represents the shared input or emission."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_other_relationship
+    applies_to: "residual multifunctional burdens"
+    rule: "Use another relationship, including economic value, only after documenting why subdivision, system expansion and a relevant physical relationship are not feasible. Record prices, reference period, calculation and sensitivity."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_scrap
+    applies_to: "steel scrap and other recoverable outputs"
+    rule: "Report the gross waste flow and treatment destination. Do not subtract avoided primary production within the foreground process; any recycling credit or substitution belongs to an explicitly declared downstream modelling convention."
+    source_ids:
+      - eu-pef-method-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_bom_receipts
+      process_id: "material_preparation"
+      flow_role: "product-specific material and component inputs"
+      record_type: "purchase order, BOM, receipt and inventory record"
+      raw_fields: "item_id; material_or_component_name; grade_or_specification; supplier; delivery_boundary; received_mass_kg; rejected_mass_kg; opening_stock_kg; closing_stock_kg; production_order"
+      collection_method: "Reconcile engineering BOM with procurement, receiving and stock records; weigh material where records do not provide verified mass"
+      unit: "kg"
+      frequency: "each receipt and production order"
+      temporal_coverage: "representative continuous 12-month period or complete declared campaign"
+      site_scope: "every factory contributing to the declared product"
+      aggregation_rule: "Sum accepted attributable input and inventory change by atomic flow; normalize with calc_reference_normalization"
+      quality_evidence: "approved BOM revision; supplier document; calibrated scale record; stock reconciliation; exception log"
+    - protocol_id: cp_fabrication_records
+      process_id: "fabrication"
+      flow_role: "fabrication electricity, oxygen, process water and steel scrap"
+      record_type: "submeter, cylinder or bulk-gas record, water meter, production order and scrap ticket"
+      raw_fields: "order_id; operation; electricity_kWh; oxygen_m3; oxygen_reference_conditions; water_kg_or_m3; water_density; scrap_kg; meter_period; allocation_driver"
+      collection_method: "Read submeters where available; otherwise reconcile facility meter and documented physical allocation driver; weigh outgoing steel scrap"
+      unit: "MJ; m3; kg"
+      frequency: "each production order with at least monthly meter reconciliation"
+      temporal_coverage: "same reference period as product output"
+      site_scope: "every in-scope fabrication site and outsourced operation whose burden is not in a supplier dataset"
+      aggregation_rule: "Attribute by order or approved allocation driver; convert electricity and water under section 4; normalize with calc_reference_normalization"
+      quality_evidence: "calibration records; bills; meter logs; scrap weigh tickets; order routing; allocation worksheet"
+    - protocol_id: cp_coating_records
+      process_id: "surface_finishing"
+      flow_role: "coating materials, energy, water, wastewater and direct air emissions"
+      record_type: "batch issue, meter, wastewater record and emission monitoring record"
+      raw_fields: "order_id; coating_route; wet_coating_kg; powder_coating_kg; returned_material_kg; electricity_kWh; natural_gas_m3; gas_reference_conditions; water_kg_or_m3; wastewater_kg_or_m3; nmvoc_kg; fossil_co2_kg; emission_method; treatment_state"
+      collection_method: "Reconcile batch issues and returns; read process meters; measure wastewater; use direct emission monitoring or documented site calculation inputs"
+      unit: "kg; MJ; m3"
+      frequency: "each coating batch with at least monthly meter and emission reconciliation"
+      temporal_coverage: "same reference period as product output and representative of treatment operation"
+      site_scope: "every in-scope preparation, coating, curing and pollution-control line"
+      aggregation_rule: "Keep wet and powder routes separate; attribute by order, area or documented process driver; normalize with calc_reference_normalization"
+      quality_evidence: "batch sheets; safety or formulation record; meter calibration; discharge record; monitoring report; treatment operating log"
+    - protocol_id: cp_assembly_test_records
+      process_id: "assembly_testing"
+      flow_role: "assembly electricity, test diesel and direct fossil CO2"
+      record_type: "production order, submeter, fuel issue and test record"
+      raw_fields: "order_id; model; accepted_status; electricity_kWh; diesel_kg; diesel_fossil_fraction; test_hours; measured_co2_kg; emission_factor; factor_unit; oxidation_factor"
+      collection_method: "Read test-bench and area meters; reconcile fuel issue and return; retain direct monitoring or site-specific factor evidence"
+      unit: "kg; MJ"
+      frequency: "each assembly and acceptance-test order"
+      temporal_coverage: "same reference period as product output"
+      site_scope: "every in-scope assembly and test site"
+      aggregation_rule: "Include accepted and rejected test activity attributable to released products; normalize with calc_reference_normalization"
+      quality_evidence: "accepted test certificate; meter calibration; fuel log; factor source; rejection and rework record"
+    - protocol_id: cp_release_records
+      process_id: "release_dispatch"
+      flow_role: "released packaging and net reference-product output"
+      record_type: "packing list, scale record and release record"
+      raw_fields: "order_id; product_model; cpc_rationale; accepted_units; net_machine_mass_kg; pallet_type; pallet_mass_kg; pallet_reuse_status; corrugated_cardboard_kg; packaging_status; release_date"
+      collection_method: "Weigh or reconcile verified shipping and BOM mass; distinguish net machine mass from packaging and reusable transport fixtures"
+      unit: "kg"
+      frequency: "each released order"
+      temporal_coverage: "same reference period as manufacturing records"
+      site_scope: "every dispatch gate in the declared dataset"
+      aggregation_rule: "Sum accepted net machine mass and attributable packaging by atomic flow; normalize with calc_reference_normalization"
+      quality_evidence: "calibrated scale certificate; packing list; acceptance release; product specification; classification review"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every attributable inventory row"
+      rule: "normalized amount = attributable amount × 1,000 / accepted net finished-machine mass; use consistent kg mass and the same product population in numerator and denominator"
+      inputs:
+        - "attributable row amount"
+        - "accepted net finished-machine mass in kg"
+      output: "row amount per 1,000 kg reference product"
+      source_ids:
+        - eu-pef-method-2021
+    - id: calc_electricity_conversion
+      applies_to: "electricity records in kWh"
+      rule: "electricity_MJ = electricity_kWh × 3.6; retain the original meter unit and value"
+      inputs:
+        - electricity_kWh
+      output: "electricity_MJ"
+      source_ids: []
+    - id: calc_direct_fossil_co2
+      applies_to: "direct natural-gas or diesel combustion"
+      rule: "Use direct measured fossil CO2 where available; otherwise multiply collected fuel quantity by the documented site factor, fossil fraction and oxidation factor with unit-consistent conversions. Do not include upstream fuel-supply emissions in this direct row."
+      inputs:
+        - "fuel quantity"
+        - "reference conditions or density"
+        - "emission factor and unit"
+        - "fossil fraction"
+        - "oxidation factor"
+      output: "kg fossil CO2"
+      source_ids:
+        - eu-pef-method-2021
+    - id: calc_mass_reconciliation
+      applies_to: "each product population"
+      rule: "Reconcile purchased and opening-stock mass against closing stock, accepted product, waste, measured emissions and documented inventory changes. Investigate and disclose unexplained imbalance; do not force balance by assigning it to an umbrella flow."
+      inputs:
+        - "atomic input masses"
+        - "stock changes"
+        - "product mass"
+        - "atomic waste and emission masses"
+      output: "mass-balance check and discrepancy disclosure"
+      source_ids:
+        - eu-pef-method-2021
+    - id: calc_shared_process_allocation
+      applies_to: "shared manufacturing records"
+      rule: "Apply the ordered allocation rules in section 7 and retain the unallocated total, driver, denominator, allocated result and rationale"
+      inputs:
+        - "shared total"
+        - "product-attributable driver"
+        - "total driver"
+        - "selected hierarchy step"
+      output: "allocated product amount"
+      source_ids:
+        - eu-pef-method-2021
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "product and every inventory row"
+      requirement: "Confirm product classification, model, state, flow type, property and unit. Expand every product-specific BOM or waste item as one atomic flow and preserve unresolved UUIDs rather than using a proxy."
+      evidence: "classification review; approved BOM; UUID direct-read audit; unresolved-flow register"
+    - id: dq_technology
+      applies_to: "manufacturing routes"
+      requirement: "Records shall represent the declared cutting, joining, coating, assembly and test technologies; separate wet and powder coating and other materially different routes."
+      evidence: "routing, batch and equipment records; technology coverage statement"
+    - id: dq_geography
+      applies_to: "sites and supplier links"
+      requirement: "Identify every factory and the geography and delivery boundary of material, energy, water and waste-treatment datasets."
+      evidence: "site list; supplier dataset metadata; dispatch and waste-transfer records"
+    - id: dq_time
+      applies_to: "foreground reference period"
+      requirement: "Use a continuous representative 12-month period or a complete declared campaign; align numerator and product-output denominator and explain shutdowns, ramp-up, abnormal rework or missing periods."
+      evidence: "dated meters, orders, invoices, stock records and coverage calculation"
+    - id: dq_precision
+      applies_to: "measured and calculated amounts"
+      requirement: "Retain calibration, meter resolution, conversion factors, allocation drivers and uncertainty or data-gap notes for significant rows."
+      evidence: "calibration certificates; calculation workbook; factor source; uncertainty statement"
+    - id: dq_completeness
+      applies_to: "process and exchange coverage"
+      requirement: "Reconcile BOM, energy, water, waste and direct-emission records. Report coverage and unresolved items; do not use this generic pattern list as permission to omit product-specific exchanges."
+      evidence: "completeness matrix; mass and energy reconciliation; exception register"
+validation_rules:
+  - rule_id: validate_identity_scope
+    applies_to: "reference product"
+    rule: "Confirm the product is complete CPC 43562 machinery and not an industrial robot, a product assigned to another specific lifting-equipment subclass, a separately supplied part, or a service."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - un-cpc-3-0-explanatory-notes-2025
+  - rule_id: validate_reference_qualifiers
+    applies_to: "reference flow"
+    rule: "Reject a data package that omits model, CPC rationale, net mass, rated function, operating or duty qualifier, drive, principal materials, factory configuration, packaging status, geography, period, boundary or allocation disclosure."
+    source_ids:
+      - un-cpc-3-0-explanatory-notes-2025
+  - rule_id: validate_reference_mass
+    applies_to: "normalization"
+    rule: "Confirm accepted net finished-machine mass equals the reference denominator and excludes separately reported packaging; all normalized rows use the same accepted product population."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: validate_atomic_inventory
+    applies_to: "all exchanges"
+    rule: "Reject plural collections, combined carriers, unexpanded BOM categories, combined waste streams, or one row containing more than one physical, chemical, waste or elementary exchange."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: validate_route_conditions
+    applies_to: "conditional processes and rows"
+    rule: "Require evidence for every included route and a documented not-applicable determination for omitted fabrication, wet coating, powder coating, natural-gas curing, aqueous preparation, diesel testing and packaging rows."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: validate_combustion_consistency
+    applies_to: "on-site fuel use"
+    rule: "When natural gas or diesel is combusted in scope, require a corresponding direct fossil-CO2 record or a justified measured-zero result; keep upstream supplier emissions out of the direct row."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: validate_allocation
+    applies_to: "shared and multifunctional processes"
+    rule: "Confirm the section 7 hierarchy, driver, denominator and sensitivity are documented and that recoverable scrap is reported gross without an undeclared avoided-burden credit."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: validate_data_quality
+    applies_to: "dataset readiness"
+    rule: "Confirm technological, geographical and time representativeness, precision, completeness, source metadata, calibration evidence, data gaps and proxies are disclosed."
+    source_ids:
+      - eu-pef-method-2021
+published_dataset_profile:
+  dataset_role: "Product-specific foreground manufacturing data package for complete CPC 43562 machinery at the factory gate"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Link as the manufacturing-stage dataset in a documented lifecycle model whose product identity, reference mass, geography, technology, period and boundary match the qualifiers"
+  excluded_use: "Unqualified comparison between different machinery functions or duty classes; product-safety or conformity claim; use-stage performance claim; installation, maintenance or end-of-life result without separate scenarios"
+  required_metadata: "canonical PCR id; product model; CPC and HS classification rationale; reference mass; rated load or throughput; lift, travel or handling envelope; duty class or cycle; drive and controls; principal material grades; included accessories; packaging status; factory sites; reference period; supplier boundaries; allocation; route inclusion; data gaps and proxies"
+  required_quality_disclosure: "BOM and process coverage; accepted and rejected production population; meter and calibration coverage; technological, geographical and temporal representativeness; precision; mass reconciliation; allocation sensitivity; unresolved UUIDs and range evidence needs"
+  update_trigger: "Material change to product design, BOM, supplier delivery boundary, factory or route, coating system, energy mix, fuel, test procedure, packaging, allocation method, reference period, classification scope or newly confirmed Tiangong UUID"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Official CPC 43562 identity and its residual position after CPC 43561 Industrial robots"
+  - id: "un-cpc-3-0-explanatory-notes-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Explanatory Notes, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Official CPC 43562 title and HS 2022 headings or subheadings 8428.10, .20, .31, .32, .33, .39, .40, .60 and .90"
+  - id: "un-cpc-1-1-chinese-2002"
+    type: "official_guidance"
+    reference: "United Nations, Central Product Classification Version 1.1, Chinese edition, Series M No. 77/Ver.1.1, https://unstats.un.org/unsd/publication/SeriesM/M_77ver1_1c.pdf"
+    used_for: "Established Chinese terminology for “其他起重、装卸、装载、或卸载机械”; punctuation modernized without changing meaning"
+  - id: "eu-pef-method-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 of 15 December 2021, Annex I, Product Environmental Footprint Method, consolidated English text, https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX%3A02021H2279-20211230"
+    used_for: "Product-specific BOM and company-specific manufacturing data; inventory completeness; foreground record sources; allocation hierarchy; technological, geographical and time representativeness and precision"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:607611ee388de59e3a391b330df4304d11ba6649cc516c85dd076543153cccb7"
+  generated_content_sha256: "sha256:7728b9457b8b605f4eb32ebd2987ec9484af860178072145fb8d3723e381e238"

@@ -1,10 +1,383 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "47699"
-  title: "Other non-musical audio discs and tapes"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.radio-television-and-communication-equipment-and-apparatus.other-non-musical-audio-discs-and-tapes"
+  classification_refs: "CPC 3.0: 47699, Other non-musical audio discs and tapes (un-cpc-3-0-structure-2025)"
+  covered_products: "Finished recorded optical discs or magnetic tapes whose principal payload is non-musical audio other than audiobooks"
+  excluded_products: "Musical audio media; audiobooks; text-based, video, or software media; unrecorded media; digital-only audio; recording or playback equipment; retail and distribution packaging"
+  representative_product: "A quality-approved recorded physical audio disc or magnetic tape ready to leave the recording or replication facility"
+  production_route: "Receipt of a verified digital or physical audio master and compatible unrecorded medium; route-specific recording or replication; verification; finishing; release at facility gate"
+  market_state: "Finished recorded medium, quality approved, before optional retail or distribution packaging"
+functional_unit:
+  what: "Provide non-musical recorded audio on a declared physical disc or magnetic-tape format"
+  how_much: "1 kg net mass of finished recorded media"
+  how_well: "Compatible with the declared playback format and passing the producer's documented content-integrity and playback checks"
+  how_long_or_cycle: "One factory-gate production output; recorded playing duration and storage capacity are declared qualifiers, not normalization denominators"
+  reference_flow_link: "finished_non_musical_audio_media"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground gate begins with receipt of a verified audio master and compatible unrecorded optical or magnetic medium. It includes recording or replication, content and playback verification, route-specific finishing performed at the facility, and handling of off-spec recorded media up to the point where waste crosses the foreground boundary. Upstream production and delivery of unrecorded media and electricity are represented by linked background datasets."
+      source_ids: []
+    - rule_id: system_boundary_rule_2
+      applies_to: "foreground_system_boundary"
+      rule: "Content creation and original-master production, capital equipment, employee travel, retail or distribution packaging, outbound distribution, playback, storage during use, and end-of-life after sale are outside this gate unless a study explicitly expands its scope and reports them separately."
+      source_ids: []
+    - rule_id: boundary_rule_1
+      applies_to: "foreground gate"
+      rule: "Include all recording or replication, verification, and on-site finishing operations required to turn the declared unrecorded medium into accepted finished media."
+      source_ids: []
+    - rule_id: boundary_rule_2
+      applies_to: "upstream supplies"
+      rule: "Link each unrecorded-medium and electricity input to a compatible upstream dataset and do not import upstream emissions again as direct foreground exchanges."
+      source_ids: []
+    - rule_id: boundary_rule_3
+      applies_to: "alternative formats"
+      rule: "Model optical and magnetic routes as alternatives. Include only the blank-medium and reject rows applicable to the declared physical format."
+      source_ids: []
+    - rule_id: boundary_rule_4
+      applies_to: "packaging"
+      rule: "Exclude retail and distribution packaging from the reference product mass; where the study includes packaging, add each actual packaging component as an atomic foreground flow and state the expanded boundary."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "A verified audio master and format-compatible unrecorded optical medium or unrecorded magnetic medium are available at the recording or replication facility"
+  starting_condition_role: "Foreground production starts at recording or replication; creation of the recorded programme and production of blank media are upstream conditions"
+  product_classification_scope: "Finished physical media in the semantic boundary aligned to CPC 3.0 code 47699; sibling audiobook, text, music, video, software, and unrecorded-media categories are excluded"
+  recursive_input_rule: "A previously recorded CPC 47699 medium reused as a production input shall be recorded as that concrete input with supplier dataset and purpose; it shall not be relabelled as blank media or silently recursed into the reference output"
+  upstream_dataset_requirement: "Use geography-, technology-, format-, and delivery-compatible datasets for unrecorded media and delivered electricity; disclose any proxy and its materiality"
+  disclosure: "Declare format, route, master hand-off point, recording or replication technology, included finishing steps, reject treatment hand-off, packaging treatment, geography, site, and production period"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Other non-musical audio discs and tapes"
+    uuid: "c034b78e-2758-4e41-a0dd-6932715d2beb"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "physical format and format specification"
+    - "optical-disc or magnetic-tape route"
+    - "recorded-content category"
+    - "playing duration"
+    - "storage capacity where applicable"
+    - "recording or replication technology"
+    - "site and geography"
+    - "production period"
+    - "net product mass"
+    - "quality-control acceptance criteria"
+    - "packaging exclusion or separately modelled packaging statement"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "finished reference product and mass-based material or reject rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net mass with calibrated scales after recording, verification, and finishing. Exclude retail and distribution packaging from the reference product mass."
+  - id: count_to_mass
+    applies_to: "item-count production records"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert counts to mass only from a measured, format-specific mean net mass for the same production campaign; retain count, sampled mass, sample size, and calculation."
+  - id: electricity_energy
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Record delivered electricity for the included campaign. Preserve metered kWh and convert with 1 kWh = 3.6 MJ when the projected inventory is expressed in MJ."
+process_map:
+  - id: recording_finishing
+    name: "Recording, verification, and finishing of physical audio media"
+    inclusion: "required"
+    inclusion_condition: "Always included; route-specific rows apply only to the declared optical-disc or magnetic-tape format"
+    role: "Foreground production"
+    quantitative_reference: "1 kg accepted finished recorded media"
+process_inventory:
+  - id: recording_finishing
+    label: "Recording, verification, and finishing of physical audio media"
+    inputs:
+      product:
+        - row_id: unrecorded_optical_media
+          role: "Unrecorded optical medium for the optical-disc route"
+          name: "Optical media, not recorded"
+          flow_type: "product"
+          flow_ref:
+            uuid: "714535e8-24d4-44bf-8496-4837f638fdd4"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the net mass of compatible unrecorded optical media entering the included campaign. This row applies only when the declared finished format is an optical disc."
+          amount:
+            expression: "measured campaign input mass of unrecorded optical media"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished recorded media for the optical-disc route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_campaign_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: unrecorded_magnetic_media
+          role: "Unrecorded magnetic medium for the magnetic-tape route"
+          name: "Magnetic media, not recorded, except cards with a magnetic stripe"
+          flow_type: "product"
+          flow_ref:
+            uuid: "40bcd8b1-541d-4314-9e57-fc1250fd692e"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the net mass of compatible unrecorded magnetic media entering the included campaign. This row applies only when the declared finished format is a magnetic tape."
+          amount:
+            expression: "measured campaign input mass of unrecorded magnetic media"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished recorded media for the magnetic-tape route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_campaign_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: recording_electricity
+          role: "Delivered electricity for recording and verification"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200b9a66 / MJ"
+          description: "Record delivered electricity consumed by recording or replication, verification, finishing, and attributable auxiliary equipment during the included campaign."
+          amount:
+            expression: "metered campaign electricity less documented non-production loads, allocated under section 7 when a shared meter cannot be subdivided"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished recorded media"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_campaign_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_non_musical_audio_media
+          role: "Accepted finished non-musical audio media"
+          name: "Other non-musical audio discs and tapes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c034b78e-2758-4e41-a0dd-6932715d2beb"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only media that pass the declared content-integrity and playback acceptance checks and meet the product boundary in section 1."
+          amount:
+            expression: "exactly 1 kg after campaign normalization"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "PCR reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_campaign_mass_balance
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: optical_media_reject
+          role: "Off-spec recorded optical media"
+          name: "Off-spec recorded optical media"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the mass of recorded optical media rejected by content-integrity, playback, or finishing checks when the optical-disc route is used. Keep the downstream waste treatment as a separate linked process or dataset."
+          amount:
+            expression: "measured or mass-balance-reconciled optical-route reject mass crossing the foreground boundary"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished recorded media for the optical-disc route"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_campaign_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: magnetic_media_reject
+          role: "Off-spec recorded magnetic media"
+          name: "Off-spec recorded magnetic media"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the mass of recorded magnetic media rejected by content-integrity, playback, or finishing checks when the magnetic-tape route is used. Keep the downstream waste treatment as a separate linked process or dataset."
+          amount:
+            expression: "measured or mass-balance-reconciled magnetic-route reject mass crossing the foreground boundary"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished recorded media for the magnetic-tape route"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_campaign_mass_balance
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "shared equipment and meters"
+    rule: "Avoid allocation by recording route-, line-, campaign-, or time-resolved activity. Subtract documented idle and non-production loads before normalization."
+    source_ids: []
+  - rule_id: allocation_rule_2
+    applies_to: "multiple recorded-media products in one campaign"
+    rule: "When subdivision is not practicable and products use the same operations, allocate shared burdens by accepted finished-product mass; separately measured route-specific inputs and rejects remain directly assigned."
+    source_ids: []
+  - rule_id: allocation_rule_3
+    applies_to: "recovered rejects or saleable secondary outputs"
+    rule: "Apply no avoided-burden credit inside the foreground inventory. Report the measured output mass, destination, and any external recycling or substitution scenario separately."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_campaign_mass_balance
+      process_id: "recording_finishing"
+      flow_role: "unrecorded medium input, accepted finished product, and route-specific rejects"
+      record_type: "weighbridge, calibrated scale, production count, and reject log"
+      raw_fields: "campaign_id; format; route; input_mass_kg; accepted_count; accepted_sample_mass_kg; accepted_output_mass_kg; optical_reject_mass_kg; magnetic_reject_mass_kg; waste_destination"
+      collection_method: "Weigh batch inputs and rejects; weigh accepted output directly or convert counts using a campaign-specific measured mean mass"
+      unit: "kg"
+      frequency: "each campaign, with every reject batch logged"
+      temporal_coverage: "representative production period covering normal formats and operating conditions"
+      site_scope: "each recording or replication site and line"
+      aggregation_rule: "Sum route-specific masses by campaign; reconcile input, accepted output, retained work in progress, and rejects; normalize to 1 kg accepted output"
+      quality_evidence: "current calibration record; signed production and reject logs; count-to-mass sample record; documented reconciliation"
+    - protocol_id: cp_campaign_electricity
+      process_id: "recording_finishing"
+      flow_role: "delivered electricity"
+      record_type: "revenue meter, submeter, equipment logger, and production schedule"
+      raw_fields: "meter_id; reading_start_kWh; reading_end_kWh; logger_kWh; campaign_start; campaign_end; downtime_kWh; non_production_kWh; accepted_output_mass_kg"
+      collection_method: "Prefer campaign submetering; otherwise reconcile meter readings to operating logs and apply the allocation rules"
+      unit: "kWh retained and MJ projected"
+      frequency: "each campaign or continuous logging aggregated by campaign"
+      temporal_coverage: "same production period as the mass balance"
+      site_scope: "each site and included line"
+      aggregation_rule: "Net campaign kWh = end minus start minus documented downtime and non-production use; divide by accepted output kg; multiply by 3.6 for MJ/kg"
+      quality_evidence: "meter specification or calibration evidence; timestamped readings; production schedule; allocation record"
+  calculation_rules:
+    - id: calc_normalize_mass
+      applies_to: "each mass-based input or reject row"
+      rule: "normalized kg/kg = campaign row mass (kg) / accepted finished-product mass (kg)"
+      inputs:
+        - "route-specific input or reject mass"
+        - "accepted output mass"
+      output: "kg per 1 kg reference product"
+      source_ids: []
+    - id: calc_count_to_mass
+      applies_to: "accepted output recorded by count"
+      rule: "accepted output mass = accepted count × measured campaign-specific mean net mass per item"
+      inputs:
+        - "accepted count"
+        - "sampled net item masses"
+        - "sample size"
+      output: "accepted finished-product mass in kg"
+      source_ids: []
+    - id: calc_electricity
+      applies_to: "recording_electricity"
+      rule: "normalized MJ/kg = net attributable campaign electricity (kWh) × 3.6 / accepted finished-product mass (kg)"
+      inputs:
+        - "meter readings"
+        - "documented exclusions"
+        - "allocation record"
+        - "accepted output mass"
+      output: "MJ per 1 kg reference product"
+      source_ids: []
+    - id: calc_mass_reconciliation
+      applies_to: "campaign mass balance"
+      rule: "Compare applicable blank-medium input mass with accepted output, route-specific reject output, and documented work-in-progress change; investigate and disclose unexplained imbalance"
+      inputs:
+        - "input mass"
+        - "accepted output"
+        - "applicable reject mass"
+        - "work-in-progress change"
+      output: "reconciled campaign mass statement"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product"
+      requirement: "Demonstrate that content is non-musical audio, is not an audiobook or excluded sibling product, and is supplied on the declared physical format."
+      evidence: "product specification; content classification; format identifier; quality-release record"
+    - id: dq_route
+      applies_to: "route-specific inventory"
+      requirement: "Include exactly one applicable blank-medium row and its matching reject row; justify any zero reject result from complete logs."
+      evidence: "bill of materials; route declaration; production and reject logs"
+    - id: dq_measurement
+      applies_to: "mass and electricity"
+      requirement: "Use calibrated or specification-controlled instruments and retain raw readings and conversions."
+      evidence: "calibration or meter specification; raw readings; calculation worksheet"
+    - id: dq_temporal
+      applies_to: "all foreground rows"
+      requirement: "Use one consistent production period and disclose shutdowns, rework, abnormal campaigns, and data gaps."
+      evidence: "production calendar; campaign log; gap register"
+    - id: dq_completeness
+      applies_to: "foreground gate"
+      requirement: "Reconcile accepted output, applicable blank-medium input, route-specific rejects, and electricity to the declared campaign and facility boundary."
+      evidence: "signed completeness checklist; mass reconciliation; meter reconciliation"
+    - id: dq_background
+      applies_to: "upstream datasets"
+      requirement: "Document geography, technology, product state, delivery boundary, age, and proxy limitations for every linked blank-medium and electricity dataset."
+      evidence: "dataset metadata and proxy assessment"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "product identity"
+    rule: "Reject a data package whose output is music, an audiobook, text-based media, video, software, unrecorded media, or digital-only audio."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validation_rule_2
+    applies_to: "reference flow"
+    rule: "Require exactly 1 kg net accepted finished-media output after normalization and require all reference-flow qualifiers."
+    source_ids: []
+  - rule_id: validation_rule_3
+    applies_to: "route consistency"
+    rule: "Require either the optical input and optical reject rows or the magnetic input and magnetic reject rows; reject a mixed route unless the dataset reports separately normalized route shares and inventories."
+    source_ids: []
+  - rule_id: validation_rule_4
+    applies_to: "UUID and units"
+    rule: "Require state-100 UUID identity for each UUID-bearing row, Mass in kg for mass rows, and delivered electricity in MJ after documented kWh conversion."
+    source_ids: []
+  - rule_id: validation_rule_5
+    applies_to: "inventory completeness"
+    rule: "Require campaign-aligned accepted output, applicable blank-medium input, electricity, reject accounting, calculation records, and treatment destination disclosure."
+    source_ids: []
+  - rule_id: validation_rule_6
+    applies_to: "packaging"
+    rule: "Confirm that retail and distribution packaging is excluded from reference product mass or is represented by separate atomic flows under an explicitly expanded boundary."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for recorded non-musical audio media at the recording or replication facility gate"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Format- and route-compatible cradle-to-facility-gate modelling when required qualifiers, upstream datasets, allocation, and data-quality disclosures are available"
+  excluded_use: "Music, audiobooks, text, video, software, blank media, downloadable or streamed audio, playback service, distribution, use, or end-of-life without additional processes"
+  required_metadata: "PCR id and version; format; route; content category; playing duration; capacity where applicable; technology; site; geography; production period; net product mass; master hand-off point; finishing scope; packaging treatment; allocation method; reject destinations; background-dataset identities"
+  required_quality_disclosure: "Instrument status; temporal coverage; campaign representativeness; count-to-mass sampling; meter allocation; mass and electricity reconciliation; data gaps; route applicability; proxy limitations; unresolved waste-flow UUIDs"
+  update_trigger: "Change in physical format, recording or replication technology, site, electricity supply, master hand-off, finishing scope, packaging boundary, allocation method, reject treatment, or a material shift in measured input, electricity, or reject intensity"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Official CPC 47699 product-classification identity and separation from CPC 47691 and 47692 sibling categories"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:e6563672df3a192054f0b011d255d81e09b9bc19fe99f0b37c56b738ed49813d"
+  generated_content_sha256: "sha256:d19f57c8437f490c86eefdf1d2fb8cca48e6f25df8b3d165146589a4b1bcdc9e"

@@ -1,10 +1,754 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41241"
-  title: "Bars and rods, hot-rolled, in irregularly wound coils, of iron or non-alloy steel"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.bars-and-rods-hot-rolled-in-irregularly-wound-coils-of-iron-or-non-alloy-steel"
+  classification_refs: "CPC 3.0: 41241 (exact)"
+  covered_products: "Hot-rolled bars and rods of iron or non-alloy steel delivered in irregular coils, including wire rod with circular, oval, square, hexagonal, octagonal or other rolled cross-sections when the product remains wire rod at the factory gate."
+  excluded_products: "Alloy-steel or stainless-steel wire rod; straight bars; flat-rolled coils; cold-drawn or cold-rolled wire; pickled, coated or fabricated downstream wire products."
+  representative_product: "Non-alloy steel wire rod hot-rolled from billet and delivered as an identified irregular coil."
+  production_route: "Receipt of billet or bloom; reheating; descaling; continuous roughing, intermediate and finishing rolling; controlled water and air cooling where used; coil laying or winding; inspection and dispatch preparation. Upstream steelmaking route is declared as BOF, EAF or another documented route in the linked billet dataset."
+  market_state: "Factory-gate, uncoated hot-rolled wire rod in an irregular coil; grade, chemistry, cross-section, nominal diameter or dimensions, tolerances, surface state, coil mass and delivery condition are declared."
+functional_unit:
+  what: "Supply factory-gate non-alloy steel wire rod in an irregular coil for downstream drawing, rolling or fabrication."
+  how_much: "1 metric tonne (1,000 kg) of accepted wire rod."
+  how_well: "Conforms to the declared grade or purchase specification, chemical composition, cross-section, dimensions and tolerances, mechanical or metallurgical condition, surface condition and coil acceptance criteria."
+  how_long_or_cycle: "One production output at the steelworks gate; no use-stage service duration is represented."
+  reference_flow_link: "Output row reference_product_wire_rod of process wire_rod_hot_rolling."
+system_boundary:
+  rules:
+    - rule_id: sb_foreground_start_end
+      applies_to: "foreground_system_boundary"
+      rule: "Start at receipt of the identified billet or bloom and end with accepted non-alloy steel wire rod in an irregular coil ready to leave the steelworks gate."
+      source_ids:
+        - jrc-fmp-bref-2022
+        - worldsteel-wire-rod-2022
+    - rule_id: sb_required_operations
+      applies_to: "foreground_system_boundary"
+      rule: "Include reheating, descaling, roughing, intermediate and finishing rolling, controlled cooling, coil laying or winding, inspection, dispatch preparation and attributable on-site water and waste treatment."
+      source_ids:
+        - jrc-fmp-bref-2022
+    - rule_id: sb_upstream_link
+      applies_to: "upstream_steel_input"
+      rule: "Keep ironmaking, steelmaking and casting outside the foreground rolling process and link the billet or bloom to a representative upstream dataset; integrated ownership does not remove this disclosure."
+      source_ids:
+        - worldsteel-lci-methodology-2017
+    - rule_id: sb_direct_exchanges
+      applies_to: "foreground_inventory"
+      rule: "Record each directly used fuel, electricity flow, process-water make-up and lubricant, and each waste and elementary emission as a separate exchange; record zero with evidence when a listed exchange is demonstrated absent."
+      source_ids:
+        - jrc-fmp-bref-2022
+        - worldsteel-lci-methodology-2017
+    - rule_id: sb_exclusions
+      applies_to: "downstream_system_boundary"
+      rule: "Exclude downstream cold drawing, cold rolling, pickling, coating, fabrication, distribution, use and end of life unless a separate declared study extension models them."
+      source_ids:
+        - worldsteel-wire-rod-2022
+boundary_abstraction:
+  declared_starting_condition: "Identified non-alloy steel billet or bloom received at the wire-rod mill boundary, with mass, grade, dimensions, temperature state, supplier or captive source, upstream route and linked upstream dataset declared."
+  starting_condition_role: "Upstream semi-finished steel product input to foreground hot rolling."
+  product_classification_scope: "Non-alloy steel wire rod delivered in irregular coils; classification does not extend to alloy steel, stainless steel, straight bars, flat products or downstream cold-worked and coated products."
+  recursive_input_rule: "If an input already meets this PCR's wire-rod product definition, record it as an explicit product input with its upstream dataset and stated purpose; do not recursively apply this PCR to hide re-rolling or blending."
+  upstream_dataset_requirement: "Link every billet or bloom input to a geographically, technologically and temporally representative upstream dataset that discloses steelmaking route, recycled input treatment and transport to the mill. Unknown origin uses a documented conservative regional or global dataset and remains a quality limitation."
+  disclosure: "Declare whether casting is coupled to the mill, hot charging is used, reheating fuel and burner technology, descaling configuration, rolling train, controlled-cooling system, water-circuit type, on-site treatment, internal material returns, exported co-products and factory-gate point."
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Bars and rods, hot-rolled, in irregularly wound coils, of iron or non-alloy steel"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "steel grade or specification"
+    - "non-alloy chemistry basis"
+    - "cross-section shape"
+    - "nominal diameter or dimensions and tolerance"
+    - "surface state"
+    - "coil mass"
+    - "delivery condition"
+    - "rolling and controlled-cooling technology"
+    - "billet or bloom origin and BOF"
+    - "EAF or other upstream route"
+    - "production site and geography"
+    - "production period"
+    - "accepted-product and downgrade criteria"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "accepted reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize every exchange to 1,000 kg of accepted wire rod at the factory gate. Exclude rejected or downgraded material from the denominator and record its fate separately."
+  - id: material_mass
+    applies_to: "billet, lubricant, scale, scrap, sludge and emitted substances"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use calibrated mass records or concentration multiplied by measured carrier volume; retain wet or dry basis, moisture and sampling basis where they affect the result."
+  - id: electricity_energy
+    applies_to: "alternating-current electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the metered electricity and conversion record. Convert kWh to MJ with 1 kWh = 3.6 MJ and do not mix electricity with fuel energy."
+  - id: natural_gas_volume
+    applies_to: "gaseous natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Record metered volume separately from energy content and declare temperature, pressure and standard or normal reference conditions; retain net calorific value when an energy conversion is calculated."
+  - id: water_mass
+    applies_to: "process-water make-up and wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Distinguish gross recirculating flow from make-up water and discharged wastewater. Report only boundary-crossing make-up and discharge as inventory amounts while retaining loop-flow records for engineering checks."
+process_map:
+  - id: wire_rod_hot_rolling
+    name: "Non-alloy steel wire-rod hot rolling and coil preparation"
+    inclusion: "required"
+    inclusion_condition: "Always required for products in scope."
+    role: "Foreground production from received billet or bloom through accepted irregular coil at the steelworks gate."
+    quantitative_reference: "1,000 kg accepted wire rod output."
+process_inventory:
+  - id: wire_rod_hot_rolling
+    label: "Non-alloy steel wire-rod hot rolling and coil preparation"
+    inputs:
+      product:
+        - row_id: steel_billet_input
+          role: "Received non-alloy steel billet or bloom"
+          name: "Billet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7de70586-42d8-40bb-a687-e0e0c05722e4"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "The identified semi-finished steel feed crosses into the wire-rod mill boundary. Record received mass by grade and lot, net of returnable transport items, and link the supplier or captive upstream dataset."
+          amount:
+            expression: "Sum accepted billet or bloom mass charged to production and normalize with calc_normalize_one_tonne."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg accepted wire rod"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_energy
+              source_ids:
+                - jrc-fmp-bref-2022
+                - worldsteel-lci-methodology-2017
+            ranges: []
+        - row_id: natural_gas_reheating
+          role: "Natural gas for reheating"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3; unit group 93a60a57-a3c8-12da-a746-0800200c9a66"
+          description: "Meter gaseous natural gas supplied to the billet reheating furnace. The flow is applicable only where the declared furnace actually consumes natural gas; absence is demonstrated by fuel and furnace records."
+          amount:
+            expression: "Meter furnace natural-gas volume at declared reference conditions and normalize with calc_normalize_one_tonne; record zero only when another documented furnace energy source is used."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted wire rod"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_energy
+              source_ids:
+                - jrc-fmp-bref-2022
+                - worldsteel-lci-methodology-2017
+            ranges: []
+        - row_id: electricity_hot_rolling
+          role: "Alternating-current electricity for mill operations"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; unit group 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Meter alternating-current electricity used by furnace auxiliaries, descaling pumps, rolling stands, cooling systems, coil handling, inspection and attributable treatment equipment. Allocate shared meters by documented submetering or a physical driver."
+          amount:
+            expression: "Sum metered electricity attributable to the production period, convert to MJ, and normalize with calc_normalize_one_tonne."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted wire rod"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_energy
+              source_ids:
+                - jrc-fmp-bref-2022
+                - worldsteel-lci-methodology-2017
+            ranges: []
+        - row_id: process_water
+          role: "Process-water make-up"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record fresh or externally supplied make-up water entering cooling, descaling and water-treatment loops. Do not report the gross recirculating loop flow as a boundary input."
+          amount:
+            expression: "Meter make-up water entering the declared mill water system, subtract documented water supplied to out-of-scope users, and normalize with calc_normalize_one_tonne."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted wire rod"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_energy
+              source_ids:
+                - jrc-fmp-bref-2022
+            ranges: []
+        - row_id: rolling_lubricant
+          role: "Rolling lubricant oil"
+          name: "Hot rolling oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b6d54639-2da8-49b3-89d2-e14324bb14c8"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record the specific lubricant oil crossing the process boundary for rolling and mill equipment when it is consumed or lost. Recovered oil returned to the same system is not counted again as a new input."
+          amount:
+            expression: "Sum lubricant issued to the mill minus measured uncontaminated returns and inventory change, then normalize with calc_normalize_one_tonne."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted wire rod"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_energy
+              source_ids:
+                - jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_wire_rod
+          role: "Accepted non-alloy steel wire rod in irregular coils"
+          name: "Bars and rods, hot-rolled, in irregularly wound coils, of iron or non-alloy steel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This is the quantitative-reference output after cooling, coil formation and acceptance inspection. The exact TianGong product-flow UUID remains unresolved and must not be replaced by a proxy."
+          amount:
+            expression: "Fixed reference output of 1,000 kg accepted product; retain actual gross and accepted output masses for yield and allocation calculations."
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg accepted wire rod at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "source_rule"
+              source_ids:
+                - unsd-cpc-3-0-2025
+                - worldsteel-wire-rod-2022
+            ranges: []
+      waste:
+        - row_id: steel_crop_scrap
+          role: "Steel crop ends and cobble scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record clean steel crop ends, cobbles and rejected steel leaving the foreground process for internal remelting, external recovery or disposal. Keep each destination quantity separate in the underlying records."
+          amount:
+            expression: "Weigh or reconcile generated scrap by destination and normalize with calc_normalize_one_tonne; subtract only material demonstrably returned within the same measured foreground system."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted wire rod"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_outputs_waste
+              source_ids:
+                - jrc-fmp-bref-2022
+                - worldsteel-lci-methodology-2017
+            ranges: []
+        - row_id: mill_scale
+          role: "Iron-oxide mill scale"
+          name: "Mill scale"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "763bdad1-b443-428a-89b6-371a6807fc6c"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record mill scale separated during reheating, descaling, rolling and water treatment. Retain oil and moisture basis and the declared fate because clean recovered scale and oily scale are not interchangeable."
+          amount:
+            expression: "Sum weighed scale by oil-content class and destination, convert to the declared wet or dry basis, and normalize with calc_normalize_one_tonne."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted wire rod"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_outputs_waste
+              source_ids:
+                - jrc-fmp-bref-2022
+            ranges: []
+        - row_id: hot_rolling_wastewater
+          role: "Hot-rolling wastewater to treatment"
+          name: "Wastewater"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "ba1c2ea5-0ea3-4981-a893-45a0650fea62"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3; unit group 93a60a57-a3c8-12da-a746-0800200c9a66"
+          description: "Record blowdown or wastewater leaving the declared mill water loop for on-site or external treatment. A closed loop with no discharge is recorded as zero with water-balance evidence."
+          amount:
+            expression: "Meter discharged wastewater volume at declared reference conditions, distinguish on-site from external treatment, and normalize with calc_normalize_one_tonne."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted wire rod"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_outputs_waste
+              source_ids:
+                - jrc-fmp-bref-2022
+            ranges: []
+        - row_id: oily_water_treatment_sludge
+          role: "Oily iron-bearing water-treatment sludge"
+          name: "Oily iron-bearing water-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record oily sludge removed from the hot-rolling water-treatment system. Retain moisture, oil and iron-oxide content and the recovery or disposal destination."
+          amount:
+            expression: "Sum weighed wet sludge by destination, retain analysis and moisture basis, and normalize with calc_normalize_one_tonne."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted wire rod"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_outputs_waste
+              source_ids:
+                - jrc-fmp-bref-2022
+            ranges: []
+      elementary:
+        - row_id: fossil_co2_air
+          role: "Fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record direct fossil carbon dioxide from reheating-fuel combustion and other foreground fossil-carbon oxidation. Do not include upstream electricity or billet-production emissions in this row."
+          amount:
+            expression: "Use validated stack or mass-balance records attributable to the foreground mill and normalize with calc_normalize_one_tonne."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted wire rod"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - jrc-fmp-bref-2022
+                - worldsteel-lci-methodology-2017
+            ranges: []
+        - row_id: nox_air
+          role: "Nitrogen oxides to air, expressed as nitrogen dioxide"
+          name: "Nitrogen oxides to air, expressed as nitrogen dioxide"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record the monitored nitrogen-oxides emission from reheating combustion using the facility's declared reporting basis expressed as nitrogen dioxide."
+          amount:
+            expression: "Multiply validated concentration by dry or wet stack-gas volume on the same oxygen and reference-condition basis, or use the validated annual mass report, then normalize with calc_normalize_one_tonne."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted wire rod"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - jrc-fmp-bref-2022
+                - worldsteel-lci-methodology-2017
+            ranges: []
+        - row_id: sulfur_dioxide_air
+          role: "Sulphur dioxide to air"
+          name: "Sulphur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record sulphur dioxide emitted by the declared reheating fuel. Where the fuel and verified monitoring demonstrate no reportable emission, retain the evidence for the zero value."
+          amount:
+            expression: "Use validated stack mass or a documented fuel-sulphur balance for the same production period and normalize with calc_normalize_one_tonne."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted wire rod"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - jrc-fmp-bref-2022
+                - worldsteel-lci-methodology-2017
+            ranges: []
+        - row_id: carbon_monoxide_air
+          role: "Carbon monoxide to air"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record carbon monoxide from incomplete combustion in the reheating system on the facility's validated reporting basis."
+          amount:
+            expression: "Multiply validated concentration by stack-gas volume on consistent conditions, or use the validated annual mass report, then normalize with calc_normalize_one_tonne."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted wire rod"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - jrc-fmp-bref-2022
+                - worldsteel-lci-methodology-2017
+            ranges: []
+        - row_id: particulate_matter_air
+          role: "Total particulate matter to air"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record total particulate matter emitted from the reheating furnace, descaling and rolling sources after declared controls. Keep source-level measurements so unlike sampling methods are not silently merged."
+          amount:
+            expression: "Sum validated source-specific particulate mass for the production period and normalize with calc_normalize_one_tonne."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted wire rod"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - jrc-fmp-bref-2022
+                - worldsteel-lci-methodology-2017
+            ranges: []
+        - row_id: iron_water
+          role: "Iron discharged to water"
+          name: "iron"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9597-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record iron in treated effluent discharged across the environment boundary. Subtract measured iron already present in intake water when required by the selected water-accounting method."
+          amount:
+            expression: "Multiply representative iron concentration by matched discharge volume, subtract documented intake load, and normalize with calc_normalize_one_tonne."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted wire rod"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_emissions
+              source_ids:
+                - worldsteel-lci-methodology-2017
+            ranges: []
+        - row_id: mineral_oil_water
+          role: "Mineral oil discharged to water"
+          name: "Mineral oil to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record mineral oil in treated effluent discharged across the environment boundary using the declared analytical method."
+          amount:
+            expression: "Multiply representative mineral-oil concentration by matched discharge volume, subtract documented intake load where relevant, and normalize with calc_normalize_one_tonne."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted wire rod"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_emissions
+              source_ids:
+                - jrc-fmp-bref-2022
+                - worldsteel-lci-methodology-2017
+            ranges: []
+        - row_id: suspended_solids_water
+          role: "Suspended solids discharged to water"
+          name: "Suspended solids to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record suspended solids in treated effluent discharged across the environment boundary using the declared filtration and drying method."
+          amount:
+            expression: "Multiply representative suspended-solids concentration by matched discharge volume, subtract documented intake load, and normalize with calc_normalize_one_tonne."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted wire rod"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_emissions
+              source_ids:
+                - jrc-fmp-bref-2022
+                - worldsteel-lci-methodology-2017
+            ranges: []
+allocation_rules:
+  - rule_id: alloc_subdivide_first
+    applies_to: "foreground_shared_operations"
+    rule: "Avoid allocation by submetering or subdividing separately operated lines, grades, campaigns and treatment units wherever the causal exchange can be measured."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: alloc_internal_returns
+    applies_to: "internal_scrap_scale_and_water"
+    rule: "Keep scrap, scale, oil and water returned within the measured foreground system as internal loops; do not credit them as exported co-products and do not count the same return as a new external input."
+    source_ids:
+      - jrc-fmp-bref-2022
+      - worldsteel-wire-rod-2022
+      - worldsteel-lci-methodology-2017
+  - rule_id: alloc_exported_recovery
+    applies_to: "exported_recovered_material"
+    rule: "For a separately measured output with a documented external market and function, apply system expansion only when the substituted function and dataset are demonstrated; otherwise report it as waste to its actual treatment. Disclose the substitution and sensitivity."
+    source_ids:
+      - worldsteel-wire-rod-2022
+      - worldsteel-lci-methodology-2017
+  - rule_id: alloc_shared_treatment
+    applies_to: "shared_water_waste_and_energy_services"
+    rule: "Allocate shared water treatment, waste treatment and energy services by direct metering first, then by a physical causal driver such as treated volume, pollutant load, energy or mass; disclose the driver and exclude unrelated plant operations."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: alloc_upstream_scrap_method
+    applies_to: "linked_billet_or_bloom_dataset"
+    rule: "Preserve the recycled-input and end-of-life method of the linked upstream steel dataset and report it separately from foreground mill scrap; do not apply a second scrap credit inside this rolling process."
+    source_ids:
+      - worldsteel-wire-rod-2022
+      - worldsteel-lci-methodology-2017
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_energy
+      process_id: "wire_rod_hot_rolling"
+      flow_role: "billet, natural gas, electricity, process-water make-up and lubricant inputs"
+      record_type: "weighbridge, production ledger, invoice, tank or stock record and calibrated meter"
+      raw_fields: "timestamp; grade and lot; gross and net mass; meter start and end; unit; gas temperature and pressure basis; electricity kWh; water source; lubricant issue, return and stock change; product attribution"
+      collection_method: "Reconcile records to production campaigns; use dedicated meters where available and a documented physical driver for shared services."
+      unit: "kg; m3; kWh; MJ"
+      frequency: "continuous or per batch with monthly reconciliation"
+      temporal_coverage: "Normally 12 consecutive months; a shorter period of at least 6 months requires justification and correction for predictable operating or seasonal variation."
+      site_scope: "All equipment and utilities attributable to the declared wire-rod mill at the site."
+      aggregation_rule: "Sum boundary-crossing quantities for the period, resolve stock changes and returns, then normalize to accepted output."
+      quality_evidence: "Calibration certificates; meter hierarchy; invoices; weighbridge tickets; stock reconciliation; campaign log; allocation worksheet."
+    - protocol_id: cp_outputs_waste
+      process_id: "wire_rod_hot_rolling"
+      flow_role: "accepted product, steel scrap, mill scale, wastewater and oily sludge"
+      record_type: "product scale, waste scale, dispatch record, water meter and treatment record"
+      raw_fields: "output grade and mass; acceptance status; scrap mass and destination; scale wet or dry mass, oil and moisture; wastewater volume and destination; sludge wet mass and analysis"
+      collection_method: "Reconcile accepted, downgraded, internally returned, externally recovered and disposed outputs to the same production period."
+      unit: "kg; m3"
+      frequency: "per batch or shipment with monthly reconciliation"
+      temporal_coverage: "Same representative period as cp_material_energy."
+      site_scope: "Foreground mill and attributable on-site treatment."
+      aggregation_rule: "Sum each physical output and destination separately; retain internal-loop records; normalize to accepted product."
+      quality_evidence: "Product certificates; calibrated scales; waste transfer notes; recovery receipts; water balance; sludge laboratory results."
+    - protocol_id: cp_air_emissions
+      process_id: "wire_rod_hot_rolling"
+      flow_role: "direct fossil carbon dioxide, nitrogen oxides, sulphur dioxide, carbon monoxide and total particulate matter"
+      record_type: "continuous emissions monitoring, periodic stack test, mass balance or regulated annual mass report"
+      raw_fields: "source id; operating hours; concentration; reference oxygen; wet or dry basis; temperature and pressure; gas volume; fuel carbon and sulphur where used; control status; uncertainty"
+      collection_method: "Match concentration and gas-flow conditions; aggregate only attributable source masses; retain calculation and monitoring hierarchy."
+      unit: "kg; mg/Nm3; Nm3"
+      frequency: "continuous where monitored, otherwise each valid test and annual reconciliation"
+      temporal_coverage: "Same representative period as production data; document test representativeness."
+      site_scope: "Reheating furnace and other declared mill air-emission points."
+      aggregation_rule: "Calculate source mass for the production period, avoid double counting measured and calculated reports, and normalize to accepted product."
+      quality_evidence: "Monitoring certificates; laboratory reports; reference-condition calculations; fuel analysis; regulatory submissions; data-gap log."
+    - protocol_id: cp_water_emissions
+      process_id: "wire_rod_hot_rolling"
+      flow_role: "iron, mineral oil and suspended solids discharged to water"
+      record_type: "flow-proportional or representative sample paired with discharge meter"
+      raw_fields: "outfall; sample time; analytical method; concentration; discharge volume; intake concentration where applicable; treatment status; detection limit; uncertainty"
+      collection_method: "Pair representative concentrations with matched discharge volumes; subtract documented intake load where the accounting method requires it."
+      unit: "kg; mg/L; m3"
+      frequency: "per permit and process variability, with monthly and annual reconciliation"
+      temporal_coverage: "Same representative period as production and water-balance data."
+      site_scope: "Attributable final outfalls from the mill or shared treatment after allocation."
+      aggregation_rule: "Calculate each pollutant mass separately, handle non-detects by the declared rule, and normalize to accepted product."
+      quality_evidence: "Accredited laboratory reports; chain of custody; meter calibration; permit reports; intake and outfall balance; allocation worksheet."
+  calculation_rules:
+    - id: calc_normalize_one_tonne
+      applies_to: "every foreground exchange"
+      rule: "normalized amount = period exchange amount / period accepted wire-rod mass × 1,000 kg"
+      inputs:
+        - "period exchange amount"
+        - "period accepted wire-rod mass"
+      output: "exchange amount per 1,000 kg accepted wire rod"
+      source_ids:
+        - worldsteel-wire-rod-2022
+    - id: calc_electricity_mj
+      applies_to: "alternating-current electricity"
+      rule: "electricity MJ = metered kWh × 3.6; retain the original kWh record and do not combine electricity with fuel energy"
+      inputs:
+        - "metered kWh"
+      output: "MJ alternating-current electricity"
+      source_ids: []
+    - id: calc_water_pollutant_mass
+      applies_to: "each water elementary flow"
+      rule: "pollutant mass = matched discharge volume × representative concentration minus documented intake pollutant load; apply consistent volume and concentration units"
+      inputs:
+        - "discharge volume"
+        - "outfall concentration"
+        - "intake concentration where applicable"
+      output: "kg pollutant discharged"
+      source_ids:
+        - worldsteel-lci-methodology-2017
+    - id: calc_mass_balance
+      applies_to: "rolling-process completeness"
+      rule: "Reconcile billet input and other mass inputs with accepted product, downgraded product, scrap, scale, sludge, measured emissions and inventory change; investigate unexplained imbalance rather than forcing closure."
+      inputs:
+        - "all mass inputs"
+        - "product and residue outputs"
+        - "inventory change"
+      output: "documented mill mass balance and unexplained difference"
+      source_ids:
+        - worldsteel-lci-methodology-2017
+    - id: calc_shared_service_allocation
+      applies_to: "shared electricity, water and treatment"
+      rule: "Allocate the measured shared total to the wire-rod process using the declared physical driver; allocation shares across users must sum to the measured total."
+      inputs:
+        - "shared total"
+        - "driver quantity by user"
+      output: "attributable foreground exchange"
+      source_ids:
+        - worldsteel-lci-methodology-2017
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product and billet input"
+      requirement: "Retain grade, chemistry basis, cross-section, nominal dimensions, coil and lot identity, delivery state, upstream route and acceptance status; do not mix alloy steel or straight-bar production into the denominator."
+      evidence: "Product specification, test certificate, production order, coil tag and acceptance record."
+    - id: dq_primary_foreground
+      applies_to: "gate-to-gate foreground"
+      requirement: "Use measured primary data for the rolling mill and attributable treatment; calculated or estimated substitutions require a documented hierarchy, formula and uncertainty."
+      evidence: "Meter and scale records, laboratory reports, calculation files and data-gap log."
+    - id: dq_temporal
+      applies_to: "all foreground records"
+      requirement: "Use a representative 12-month period where practicable. If a period of at least 6 months is used, justify it and account for predictable seasonal, campaign and maintenance variation."
+      evidence: "Period coverage report, operating calendar, downtime and campaign records."
+    - id: dq_geography_technology
+      applies_to: "upstream and foreground datasets"
+      requirement: "Match site geography, electricity supply, reheating fuel, burner, rolling train, cooling and water-circuit technology; disclose deviations and unknown upstream billet origin."
+      evidence: "Dataset metadata, supplier record, process flow diagram and technology description."
+    - id: dq_completeness
+      applies_to: "inventory"
+      requirement: "Account for every listed atomic exchange or retain evidence that it is zero; document any additional site-specific material, fuel, emission or waste and the cut-off decision."
+      evidence: "Completeness checklist, mass and energy balances, environmental register and cut-off log."
+    - id: dq_no_proxy_uuid
+      applies_to: "TianGong identity references"
+      requirement: "Leave a UUID empty until the exact flow, type, state, property and unit support are directly verified; do not promote a semantically different steel, utility, waste or emission proxy."
+      evidence: "UUID audit record and unresolved-inventory register."
+    - id: dq_range_evidence
+      applies_to: "quantitative ranges"
+      requirement: "Do not infer an external empirical range unless at least two independent original sources have compatible system boundary, declared unit and product state; until then use foreground records without an invented range."
+      evidence: "Source-comparison record or explicit unresolved range-evidence need."
+validation_rules:
+  - rule_id: val_reference_output
+    applies_to: "reference_flow"
+    rule: "Confirm exactly 1,000 kg of accepted non-alloy steel wire rod in irregular coils is the quantitative-reference output and all inventory rows use the same accepted-output denominator."
+    source_ids:
+      - worldsteel-wire-rod-2022
+  - rule_id: val_identity_scope
+    applies_to: "product_identity"
+    rule: "Reject a data package that mixes alloy or stainless steel, straight bars, flat products or downstream cold-worked and coated products without separate modelling and disclosure."
+    source_ids:
+      - unsd-cpc-3-0-2025
+      - jrc-fmp-bref-2022
+  - rule_id: val_boundary_link
+    applies_to: "system_boundary"
+    rule: "Confirm billet or bloom origin and upstream route are declared and linked; confirm downstream drawing, rolling, coating, distribution, use and end of life are excluded or separately identified."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+      - worldsteel-wire-rod-2022
+  - rule_id: val_process_completeness
+    applies_to: "foreground_inventory"
+    rule: "Confirm reheating, descaling, rolling, controlled cooling, coil formation, attributable water treatment and every listed atomic exchange are measured or explicitly evidenced as zero."
+    source_ids:
+      - jrc-fmp-bref-2022
+      - worldsteel-lci-methodology-2017
+  - rule_id: val_mass_balance
+    applies_to: "mass_inventory"
+    rule: "Reconcile billet and other mass inputs against accepted product, scrap, scale, sludge, direct emissions and inventory change; investigate and disclose unexplained imbalance."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: val_energy_water_separation
+    applies_to: "energy_and_water_inventory"
+    rule: "Confirm electricity, natural gas and water are separate exchanges; confirm water make-up is not gross recirculating flow and gas reference conditions are declared."
+    source_ids:
+      - jrc-fmp-bref-2022
+      - worldsteel-lci-methodology-2017
+  - rule_id: val_allocation
+    applies_to: "allocation_and_recovery"
+    rule: "Confirm internal returns receive no exported-product credit, shared-service allocations close to the measured total, and any system-expansion credit names an actual external function and substitute dataset."
+    source_ids:
+      - worldsteel-wire-rod-2022
+      - worldsteel-lci-methodology-2017
+  - rule_id: val_uuid_resolution
+    applies_to: "tiangong_references"
+    rule: "Confirm every populated UUID has public state 100, exact semantics, correct flow type, property and unit support; confirm every empty UUID appears in the unresolved inventory register."
+    source_ids: []
+  - rule_id: val_bilingual_alignment
+    applies_to: "bilingual_pcr"
+    rule: "Confirm English and Chinese process ids, row ids, UUIDs, controlled values, source ids and normative rule ids are identical and that human-facing Chinese flow names are localized."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset or background_dataset produced from reviewed site foreground records."
+  downstream_use: "Cradle-to-gate product systems for downstream wire drawing, cold rolling, fabrication and product LCA; process and lifecyclemodel projections that require a declared non-alloy steel wire-rod input."
+  allowed_use: "Use when product chemistry, delivery state, upstream route, geography, technology and period are representative and the chosen recycling or allocation method is compatible with the downstream study."
+  excluded_use: "Do not use as a proxy for alloy or stainless wire rod, straight bar, reinforcing bar, flat-rolled coil, cold-drawn wire, coated wire, fabricated wire products or a site whose upstream steel route and mill technology are materially different without sensitivity analysis."
+  required_metadata: "PCR id and version; product grade and specification; chemistry basis; cross-section and nominal dimensions; coil mass and delivery state; site and geography; period; billet origin and upstream route; hot-charge status; reheating fuel and technology; rolling and cooling configuration; water-circuit and treatment boundary; allocation and recycling method; reference-product UUID status."
+  required_quality_disclosure: "Primary-data share; meter and scale coverage; temporal coverage; allocation drivers; mass and energy balance results; water balance; emission-monitoring basis; missing or estimated exchanges; unresolved UUIDs; upstream dataset quality; uncertainty and cut-off decisions."
+  update_trigger: "Change in steel grade family, billet source or BOF/EAF route, reheating fuel or burner, hot-charge practice, rolling or cooling technology, water circuit, treatment route, allocation or recycling method, site geography, reference-product UUID, or a production-period update that materially changes representative results."
+data_sources:
+  - id: "unsd-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, code 41241. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-03)."
+    used_for: "Official product-classification identity and non-alloy irregular-coil scope."
+  - id: "jrc-fmp-bref-2022"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Ferrous Metals Processing Industry, EUR 31321 EN, JRC131649, 2022. https://doi.org/10.2760/196475 (retrieved 2026-09-03)."
+    used_for: "Original-text process sequence for wire-rod mills; reheating, descaling, rolling, controlled cooling and coiling; hot-rolling inputs, water circuits, wastes and emissions."
+  - id: "worldsteel-wire-rod-2022"
+    type: "dataset"
+    reference: "World Steel Association, worldsteel LCA eco-profile: Wire Rod, May 2022. https://worldsteel.org/wp-content/uploads/worldsteel_eco-profiles_global-Wire-Rod-2022_Other.pdf (retrieved 2026-09-03)."
+    used_for: "Declared one-tonne product, wire-rod state, BOF/EAF route disclosure, factory-gate boundary, internal scrap treatment and co-product system expansion."
+  - id: "worldsteel-lci-methodology-2017"
+    type: "method_factor"
+    reference: "World Steel Association, Life Cycle Inventory Methodology Report for Steel Products, 2017, ISBN 978-2-930069-89-0. https://worldsteel.org/wp-content/uploads/Life-cycle-inventory-methodology-report.pdf (retrieved 2026-09-03)."
+    used_for: "Steel LCI boundary, upstream semi-finished steel linkage, foreground collection, emissions completeness, data quality, cut-off, scrap, co-product, allocation and validation rules."
+  - id: "china-mof-tariff-2014"
+    type: "official_guidance"
+    reference: "Ministry of Finance of the People's Republic of China, tariff schedule with HS 7213 Chinese product terms, 2014. https://m.mof.gov.cn/zcfb/201404/P020140429621906752215.pdf (retrieved 2026-09-03)."
+    used_for: "Professional Chinese terminology for 热轧盘条 and 铁或非合金钢条、杆; no quantitative rule."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:967f82cf71c98200774dc7dbb8d7a08b8c05160362e024dc144b579b07cdbcf5"
+  generated_content_sha256: "sha256:cadff26004204b93ea8eab08172955b07f98df0e97e0e0a300c585498ec74c60"

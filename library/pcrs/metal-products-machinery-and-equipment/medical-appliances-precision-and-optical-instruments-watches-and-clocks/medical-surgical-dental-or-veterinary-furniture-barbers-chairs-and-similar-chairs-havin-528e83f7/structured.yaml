@@ -1,10 +1,917 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "48180"
-  title: "Medical, surgical, dental or veterinary furniture; barbers' chairs and similar chairs, having rotating as well as both reclining and elevating movements"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.medical-appliances-precision-and-optical-instruments-watches-and-clocks.medical-surgical-dental-or-veterinary-furniture-barbers-chairs-and-similar-chairs-havin-528e83f7"
+  classification_refs: "CPC 3.0: 48180 — Medical, surgical, dental or veterinary furniture; barbers' chairs and similar chairs, having rotating as well as both reclining and elevating movements"
+  covered_products: "Complete medical, surgical, dental or veterinary furniture; complete barber's or similar chairs with rotating, reclining and elevating movements"
+  excluded_products: "Ordinary furniture; wheelchairs; standalone instruments, diagnostic apparatus and sterilizers; parts sold separately; distribution, use and end-of-life services"
+  representative_product: "One market-ready complete adjustable furniture item at the manufacturer's factory gate"
+  production_route: "Purchased materials and components → component preparation and fabrication → conditional surface treatment → assembly, factory testing and packaging"
+  market_state: "Finished, quality-released, packaged product at factory gate; new production unless a remanufactured route is separately declared"
+functional_unit:
+  what: "Provision at the factory gate of one complete furniture item that performs the declared medical, surgical, dental, veterinary or qualifying multi-motion chair function"
+  how_much: "One finished item"
+  how_well: "Meets the manufacturer's declared intended use, adjustment functions, load/performance class, dimensional specification and quality-release criteria"
+  how_long_or_cycle: "One manufacturing batch; service life and use-stage performance are outside this cradle-to-gate reference and must be declared separately if used downstream"
+  reference_flow_link: "The measured net product mass of the one finished item links the count-based declared unit to the mass-based TianGong reference product flow"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground system begins when purchased materials, components, packaging, electricity, fuel and process water cross the manufacturing-site gate. It ends when the complete item has passed factory testing and is packaged for dispatch. Upstream production datasets for every purchased input are linked as background; they are not recreated inside the foreground process."
+      source_ids: []
+    - rule_id: boundary_include_manufacturing
+      applies_to: "cradle-to-gate foreground"
+      rule: "Include onsite component preparation, cutting/forming/machining/welding, conditional surface treatment, assembly, factory testing, rework attributable to conforming output and packaging."
+      source_ids:
+        - epd-norway-npcr-026-2024
+    - rule_id: boundary_include_surface_treatments
+      applies_to: "any applied finish"
+      rule: "Declare each applied surface-treatment material and its onsite utilities, wastes and direct emissions even when the treatment is a small share of product mass."
+      source_ids:
+        - epd-norway-npcr-026-2024
+    - rule_id: boundary_exclude_downstream
+      applies_to: "downstream stages"
+      rule: "Exclude distribution after the factory gate, installation, use, maintenance, repair, replacement and end-of-life from this dataset; disclose any downstream scenario separately."
+      source_ids:
+        - epd-norway-npcr-026-2024
+    - rule_id: boundary_no_capital_goods
+      applies_to: "manufacturing infrastructure"
+      rule: "Exclude capital equipment and buildings unless the study goal explicitly requires them and the departure is disclosed."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased raw materials, finished components, packaging, electricity, fuel and process water received at the manufacturing-site gate, with supplier and supplied-state records"
+  starting_condition_role: "Foreground manufacturing gate; upstream production remains in linked background datasets"
+  product_classification_scope: "Complete products within the reviewed CPC 48180 semantic boundary, independent of the external code as canonical identity"
+  recursive_input_rule: "If a complete item in the same product category enters refurbishment or remanufacture, record it once as a supplied product input at the declared starting condition and do not recursively expand its prior manufacturing in this foreground dataset"
+  upstream_dataset_requirement: "Link geography-, technology- and supplied-state-representative upstream datasets for every purchased material, component, energy carrier, water and packaging input"
+  disclosure: "Declare new or remanufactured route, product configuration, included mechanisms/electronics, net mass, surface-treatment route, packaging, site geography, reporting period, allocation and all excluded stages"
+reference_flow_definition:
+  reference_amount: "Measured net mass in kg of one quality-released finished item, excluding transport packaging"
+  product_flow_ref:
+    name: "Medical, surgical, dental or veterinary furniture, barbers' chairs and similar chairs, having rotating as well as both reclining and elevating movements"
+    uuid: "e39dcb5d-76b1-4daa-b234-4016b382ad57"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product subtype and intended use"
+    - "model/configuration"
+    - manual
+    - hydraulic
+    - "pneumatic or electric adjustment route"
+    - "included electrical/electronic and dental-equipment components"
+    - "upholstery and surface-finish specification"
+    - "load/performance class"
+    - "net product mass"
+    - "packaging configuration and mass"
+    - "manufacturing site and geography"
+    - "reporting period"
+    - "new or declared remanufactured market state"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_item_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure the net mass of one quality-released product after final assembly and testing and before transport packaging; record packaging separately."
+  - id: component_count_to_mass
+    applies_to: "purchased components and packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert purchase counts to dry supplied mass using batch-specific weighing or documented supplier mass; retain count and conversion evidence."
+  - id: electricity_energy_basis
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve meter readings and convert billed electrical energy to MJ with the declared exact unit identity; disclose grid geography, voltage level and loss boundary."
+  - id: gas_volume_basis
+    applies_to: "gaseous natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Record metered gas volume and the billing or reference temperature and pressure; do not mix uncorrected and standard volumes."
+  - id: one_item_normalization
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "row-specific"
+      uuid: ""
+    required_unit: "row-specific"
+    rule: "Allocate or calculate each exchange for the same reporting period, then normalize to one conforming finished item and disclose its net mass."
+process_map:
+  - id: material_fabrication
+    name: "Material and component preparation and fabrication"
+    inclusion: "required"
+    inclusion_condition: "Always; record only atomic materials and components present in the declared bill of materials"
+    role: "Foreground frame, panel, upholstery and mechanism preparation"
+    quantitative_reference: "One conforming item leaving fabrication"
+  - id: surface_treatment
+    name: "Surface preparation and coating"
+    inclusion: "conditional"
+    inclusion_condition: "Include when degreasing, rinsing, coating or thermal curing occurs within the reporting-site boundary"
+    role: "Foreground finishing"
+    quantitative_reference: "One conforming set of treated parts"
+  - id: assembly_testing_packaging
+    name: "Final assembly, factory testing and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always; conditional packaging rows apply only when the named component is used"
+    role: "Foreground completion and reference-product output"
+    quantitative_reference: "One quality-released packaged item"
+process_inventory:
+  - id: material_fabrication
+    label: "Material and component preparation and fabrication"
+    inputs:
+      product:
+        - row_id: hot_rolled_strip_steel
+          role: "Hot-rolled strip steel"
+          name: "Hot rolled strip steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "984781e6-5296-48d7-a630-553209cd51c5"
+          property_unit: "Mass / kg"
+          description: "Record purchased hot-rolled non-alloy strip steel that is cut, formed or welded into the product."
+          amount:
+            expression: "measured issued mass minus documented unused return for one conforming item"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one quality-released finished item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_components
+              source_ids: []
+            ranges: []
+        - row_id: stainless_steel_sheet
+          role: "Stainless-steel sheet"
+          name: "Stainless-steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record stainless-steel sheet only when it is present in the declared product bill of materials; the TianGong UUID remains unresolved."
+          amount:
+            expression: "measured issued mass minus documented unused return for one conforming item"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one quality-released finished item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_components
+              source_ids: []
+            ranges: []
+        - row_id: aluminium_extrusion_profile
+          role: "Aluminium extrusion profile"
+          name: "Aluminium extrusion profile"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197be3-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record purchased aluminium extrusion profile only when used in the frame or support structure."
+          amount:
+            expression: "measured issued mass minus documented unused return for one conforming item"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one quality-released finished item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_components
+              source_ids: []
+            ranges: []
+        - row_id: flexible_polyurethane_foam
+          role: "Flexible polyurethane foam"
+          name: "Flexible polyurethane foam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record flexible polyurethane cushioning foam only for upholstered configurations; the TianGong UUID remains unresolved."
+          amount:
+            expression: "measured foam mass incorporated in one conforming item, including attributable cutting loss before waste segregation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one quality-released upholstered item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_components
+              source_ids: []
+            ranges: []
+        - row_id: pvc_coated_polyester_fabric
+          role: "PVC-coated polyester fabric"
+          name: "PVC-coated polyester fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record supplied PVC-coated polyester upholstery fabric only when used; the TianGong UUID remains unresolved."
+          amount:
+            expression: "measured supplied fabric mass incorporated in one conforming item plus attributable cutting loss"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one quality-released upholstered item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_components
+              source_ids: []
+            ranges: []
+        - row_id: electric_linear_actuator
+          role: "Electric linear actuator"
+          name: "Electric linear actuator"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record a complete purchased electric linear actuator only for electrically adjusted configurations; the TianGong UUID remains unresolved."
+          amount:
+            expression: "measured or supplier-documented mass of actuators installed in one conforming item"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one quality-released electrically adjusted item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_components
+              source_ids: []
+            ranges: []
+        - row_id: hydraulic_cylinder
+          role: "Hydraulic cylinder"
+          name: "Hydraulic cylinder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record a complete purchased hydraulic cylinder only for hydraulically adjusted configurations; the TianGong UUID remains unresolved."
+          amount:
+            expression: "measured or supplier-documented mass of cylinders installed in one conforming item"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one quality-released hydraulically adjusted item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_components
+              source_ids: []
+            ranges: []
+        - row_id: steel_screws
+          role: "Steel screws"
+          name: "Steel screw"
+          flow_type: "product"
+          flow_ref:
+            uuid: "895204f6-6425-4814-afc5-cb97e530e892"
+          property_unit: "Mass / kg"
+          description: "Record purchased steel screws incorporated during fabrication or subassembly."
+          amount:
+            expression: "count installed screws and convert to batch-specific measured or supplier-documented mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per one quality-released finished item"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom_components
+              source_ids: []
+            ranges: []
+        - row_id: fabrication_electricity
+          role: "Fabrication electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record purchased electricity used by onsite cutting, forming, machining, welding and fabrication support equipment."
+          amount:
+            expression: "submetered electricity or reporting-period meter allocation to conforming fabrication output"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one quality-released finished item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: scrap_steel
+          role: "Scrap steel"
+          name: "Scrap steel"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c3fc5605-baa3-4b25-9934-ecf7fcbc72da"
+          property_unit: "Mass / kg"
+          description: "Record segregated ferrous steel scrap generated by fabrication and transferred to its declared treatment destination."
+          amount:
+            expression: "weighed scrap generated net of documented internal reuse"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one quality-released finished item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_scrap
+              source_ids: []
+            ranges: []
+        - row_id: aluminium_scrap
+          role: "Aluminium scrap"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass / kg"
+          description: "Record segregated aluminium scrap only when aluminium fabrication occurs and transfer the actual mass to its declared destination."
+          amount:
+            expression: "weighed scrap generated net of documented internal reuse"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one quality-released item containing fabricated aluminium"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_scrap
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: surface_treatment
+    label: "Surface preparation and coating"
+    inputs:
+      product:
+        - row_id: thermoset_powder_coating
+          role: "Thermoset powder coating"
+          name: "Thermoset powder coating"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record one formulated thermoset powder-coating product only when onsite powder coating occurs; the TianGong UUID remains unresolved."
+          amount:
+            expression: "issued coating mass minus recovered coating returned to the same process"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per one conforming set of coated parts for one finished item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_materials
+              source_ids:
+                - epd-norway-npcr-026-2024
+            ranges: []
+        - row_id: surface_sodium_hydroxide
+          role: "Sodium hydroxide"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide only when used in an onsite alkaline cleaning or surface-preparation bath."
+          amount:
+            expression: "active sodium-hydroxide mass added, calculated from solution mass and measured concentration"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per one conforming set of treated parts for one finished item"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_surface_materials
+              source_ids: []
+            ranges: []
+        - row_id: surface_process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water supplied to onsite cleaning and rinse stages."
+          amount:
+            expression: "metered water mass or volume converted with documented density and allocated to treated parts"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one conforming set of treated parts for one finished item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_utilities
+              source_ids: []
+            ranges: []
+        - row_id: surface_natural_gas
+          role: "Natural gas for curing"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas only when combusted onsite for coating-oven heat."
+          amount:
+            expression: "metered and reference-condition-corrected gas volume allocated to conforming coated parts"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per one conforming set of treated parts for one finished item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_utilities
+              source_ids: []
+            ranges: []
+        - row_id: surface_treatment_electricity
+          role: "Surface-treatment electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record purchased electricity used by cleaning, pumping, ventilation, coating application and curing equipment."
+          amount:
+            expression: "submetered electricity or reporting-period meter allocation to conforming treated parts"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one conforming set of treated parts for one finished item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_utilities
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: metal_finishing_wastewater
+          role: "Metal-finishing wastewater"
+          name: "Metal-finishing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record aqueous wastewater leaving onsite metal cleaning and rinsing before treatment or offsite transfer; the TianGong UUID remains unresolved."
+          amount:
+            expression: "measured discharge mass or volume converted with documented density and allocated to treated parts"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one conforming set of treated parts for one finished item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_wastes
+              source_ids: []
+            ranges: []
+        - row_id: powder_coating_waste
+          role: "Powder-coating waste"
+          name: "Powder coating waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "9aa53a82-5462-400e-9096-efab7718201f"
+          property_unit: "Mass / kg"
+          description: "Record spent powder coating and booth/filter residue that leaves the process as a separately managed waste."
+          amount:
+            expression: "weighed waste transferred to the declared treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one conforming set of coated parts for one finished item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_wastes
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: surface_fossil_carbon_dioxide
+          role: "Fossil carbon dioxide from curing"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record only direct fossil carbon dioxide emitted by onsite natural-gas combustion; exclude upstream and purchased-electricity emissions from this elementary-flow row."
+          amount:
+            expression: "measured stack mass or calculated site fuel-carbon balance allocated to conforming coated parts"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per one conforming set of treated parts for one finished item"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_surface_direct_emissions
+              source_ids: []
+            ranges: []
+  - id: assembly_testing_packaging
+    label: "Final assembly, factory testing and packaging"
+    inputs:
+      product:
+        - row_id: corrugated_board_boxes
+          role: "Corrugated board boxes"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record corrugated-board boxes used to dispatch one finished item."
+          amount:
+            expression: "measured mass of boxes consumed for one dispatched item"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one packaged finished item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_components
+              source_ids: []
+            ranges: []
+        - row_id: pe_ld_film
+          role: "PE-LD film"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass / kg"
+          description: "Record low-density polyethylene film used to wrap or protect one finished item."
+          amount:
+            expression: "measured mass of PE-LD film consumed for one dispatched item"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one packaged finished item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_components
+              source_ids: []
+            ranges: []
+        - row_id: wooden_pallet
+          role: "Wooden pallet"
+          name: "Pallets, box pallets and other load boards, of wood, pallet collars of wood"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4b49871e-95be-4e0c-9223-9902f9eaa763"
+          property_unit: "Mass / kg"
+          description: "Record a wooden pallet only when it is dispatched with the product; declare pallet reuse and allocation."
+          amount:
+            expression: "measured pallet mass multiplied by the documented share assigned to one dispatched item"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per one packaged finished item"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_components
+              source_ids: []
+            ranges: []
+        - row_id: assembly_packaging_electricity
+          role: "Assembly, testing and packaging electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record purchased electricity used by final assembly tools, adjustment/function tests and packaging equipment."
+          amount:
+            expression: "submetered electricity or reporting-period meter allocation to quality-released items"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one quality-released finished item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Quality-released medical or qualifying multi-motion furniture"
+          name: "Medical, surgical, dental or veterinary furniture, barbers' chairs and similar chairs, having rotating as well as both reclining and elevating movements"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e39dcb5d-76b1-4daa-b234-4016b382ad57"
+          property_unit: "Mass / kg"
+          description: "Record the complete product only after it passes declared factory quality and adjustment-function tests."
+          amount:
+            expression: "measured net mass of one quality-released finished item, excluding transport packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "one quality-released finished item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reference_product_release
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "multi-product manufacturing"
+    rule: "Subdivide and meter product lines, surface-treatment batches and test cells wherever technically feasible before applying allocation."
+    source_ids: []
+  - rule_id: allocation_shared_utilities
+    applies_to: "shared electricity, fuel and water"
+    rule: "Use process submeters first; otherwise allocate with a documented physical driver such as machine time, treated area, bath throughput or product mass that causally represents resource use."
+    source_ids: []
+  - rule_id: allocation_scrap
+    applies_to: "steel, aluminium and coating wastes"
+    rule: "Record the measured outgoing waste at the foreground boundary and its actual destination; do not claim avoided virgin-production credits inside this cradle-to-gate inventory."
+    source_ids: []
+  - rule_id: allocation_rework
+    applies_to: "rework and rejects"
+    rule: "Assign rework and reject burdens to the reporting-period conforming output that caused them; disclose unusual campaigns and do not omit failed factory tests."
+    source_ids: []
+  - rule_id: allocation_pallet_reuse
+    applies_to: "reusable wooden pallets"
+    rule: "Allocate pallet mass by the documented number of dispatch uses or another auditable physical reuse record; a single-use assumption must be explicit."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_bom_components
+      process_id: "material_fabrication"
+      flow_role: "each named purchased material or component"
+      record_type: "approved bill of materials, issue/return record, supplier specification, check weight"
+      raw_fields: "model; lot; item code; count; issued mass; returned mass; installed mass; supplier mass"
+      collection_method: "reconcile production orders to stock issue/return and verify count-to-mass conversions by weighing"
+      unit: "kg and count"
+      frequency: "each production order; monthly reconciliation"
+      temporal_coverage: "representative reporting year or declared campaign"
+      site_scope: "all manufacturing sites in dataset"
+      aggregation_rule: "sum net issued mass for conforming items and normalize by quality-released count"
+      quality_evidence: "approved BOM revision, calibrated-scale record, supplier certificate, stock reconciliation"
+    - protocol_id: cp_process_electricity
+      process_id: "material_fabrication_assembly_testing_packaging"
+      flow_role: "purchased electricity"
+      record_type: "submeter, utility meter and production log"
+      raw_fields: "meter start/end; multiplier; process; operating time; conforming count"
+      collection_method: "read dedicated submeters or allocate facility meter with documented physical driver"
+      unit: "MJ"
+      frequency: "monthly and at campaign boundaries"
+      temporal_coverage: "same period as production output"
+      site_scope: "reporting-site boundary"
+      aggregation_rule: "subtract documented non-production loads, allocate by process and normalize by conforming item"
+      quality_evidence: "meter calibration/status, invoice reconciliation, allocation worksheet"
+    - protocol_id: cp_fabrication_scrap
+      process_id: "material_fabrication"
+      flow_role: "each named metal scrap"
+      record_type: "scale ticket, scrap-bin log, transfer note"
+      raw_fields: "material identity; gross; tare; net mass; internal reuse; destination"
+      collection_method: "weigh segregated scrap and reconcile to material mass balance"
+      unit: "kg"
+      frequency: "each transfer; monthly reconciliation"
+      temporal_coverage: "same period as material consumption"
+      site_scope: "reporting-site fabrication area"
+      aggregation_rule: "sum net external transfer by material and normalize by conforming item"
+      quality_evidence: "calibrated scale, transfer documentation, mass-balance check"
+    - protocol_id: cp_surface_materials
+      process_id: "surface_treatment"
+      flow_role: "each named coating or bath chemical"
+      record_type: "purchase, issue, concentration and recovery record"
+      raw_fields: "product identity; solution mass; active concentration; issued mass; recovered mass; batch"
+      collection_method: "reconcile chemical/coating issue and recovery; calculate active mass where applicable"
+      unit: "kg"
+      frequency: "each bath make-up or coating batch"
+      temporal_coverage: "same period as treated output"
+      site_scope: "onsite surface-treatment boundary"
+      aggregation_rule: "sum net consumed mass and allocate to conforming treated parts"
+      quality_evidence: "SDS/product specification, concentration test, stock reconciliation"
+    - protocol_id: cp_surface_utilities
+      process_id: "surface_treatment"
+      flow_role: "process water, natural gas and electricity"
+      record_type: "water/gas/electricity meter and treatment log"
+      raw_fields: "meter start/end; correction factor; reference conditions; treated batch; conforming output"
+      collection_method: "use dedicated meters or documented causal allocation"
+      unit: "kg, m3 and MJ"
+      frequency: "per batch where metered; monthly minimum"
+      temporal_coverage: "same period as surface-treated output"
+      site_scope: "onsite surface-treatment boundary"
+      aggregation_rule: "correct units/reference conditions, allocate to conforming treated parts and normalize per item"
+      quality_evidence: "meter calibration/status, invoices, batch records"
+    - protocol_id: cp_surface_wastes
+      process_id: "surface_treatment"
+      flow_role: "each named wastewater or coating waste"
+      record_type: "discharge meter, tank/scale ticket, manifest"
+      raw_fields: "waste identity; quantity; density; treatment; destination; date"
+      collection_method: "meter or weigh each segregated waste and reconcile with inputs"
+      unit: "kg"
+      frequency: "each discharge/transfer; monthly reconciliation"
+      temporal_coverage: "same period as surface-treatment inputs"
+      site_scope: "onsite generation to first waste receiver"
+      aggregation_rule: "sum actual outgoing mass by waste identity and normalize per item"
+      quality_evidence: "discharge record, density measurement, waste manifest, mass-balance check"
+    - protocol_id: cp_surface_direct_emissions
+      process_id: "surface_treatment"
+      flow_role: "direct fossil carbon dioxide"
+      record_type: "stack measurement or site fuel-carbon balance"
+      raw_fields: "stack flow; concentration; time; gas volume; fuel carbon content; oxidation basis; allocation driver"
+      collection_method: "measure stack mass or calculate from metered fuel and documented carbon balance"
+      unit: "kg"
+      frequency: "per test campaign or reporting period"
+      temporal_coverage: "same period as curing fuel"
+      site_scope: "direct onsite emission boundary"
+      aggregation_rule: "calculate direct fossil CO2 only and allocate to conforming treated parts"
+      quality_evidence: "instrument calibration, laboratory fuel data, calculation worksheet"
+    - protocol_id: cp_packaging_components
+      process_id: "assembly_testing_packaging"
+      flow_role: "each named packaging component"
+      record_type: "packaging BOM, issue record, check weight, reuse log"
+      raw_fields: "component identity; count; unit mass; consumed mass; reuse cycles; product count"
+      collection_method: "weigh packaging or multiply issued counts by verified unit mass"
+      unit: "kg and count"
+      frequency: "each packaging configuration; monthly reconciliation"
+      temporal_coverage: "same period as dispatched output"
+      site_scope: "reporting-site packaging boundary"
+      aggregation_rule: "calculate mass assigned to one dispatched item by component and documented reuse"
+      quality_evidence: "approved packaging BOM, scale record, pallet reuse log"
+    - protocol_id: cp_reference_product_release
+      process_id: "assembly_testing_packaging"
+      flow_role: "reference product"
+      record_type: "final quality-release, function-test and scale record"
+      raw_fields: "serial/model; configuration; net mass; test result; disposition; date"
+      collection_method: "weigh each model sample or every item as required and count only conforming released output"
+      unit: "kg and count"
+      frequency: "each item or statistically justified batch"
+      temporal_coverage: "full reporting period"
+      site_scope: "all sites and models in dataset"
+      aggregation_rule: "sum released net mass and count; report mass per item and variability"
+      quality_evidence: "calibrated scale, signed test record, nonconformance log"
+  calculation_rules:
+    - id: calc_net_material_input
+      applies_to: "named BOM materials"
+      rule: "net material input = issued mass − documented unused return; separately report waste rather than subtracting external scrap from the purchased-input exchange"
+      inputs:
+        - "issued mass"
+        - "return mass"
+        - "conforming count"
+      output: "kg per item"
+      source_ids: []
+    - id: calc_count_to_mass
+      applies_to: "screws and packaging"
+      rule: "component mass = installed or issued count × batch-specific verified unit mass; reconcile with check weight"
+      inputs:
+        - count
+        - "verified unit mass"
+        - "check weight"
+      output: "kg per item"
+      source_ids: []
+    - id: calc_active_sodium_hydroxide
+      applies_to: "sodium hydroxide"
+      rule: "active NaOH mass = solution mass × measured mass fraction; retain concentration and solution-state records"
+      inputs:
+        - "solution mass"
+        - "measured concentration"
+      output: "kg active NaOH per item"
+      source_ids: []
+    - id: calc_process_allocation
+      applies_to: "shared utility meters"
+      rule: "process exchange per item = corrected reporting-period process quantity × causal allocation share ÷ conforming item count"
+      inputs:
+        - "corrected meter quantity"
+        - "allocation driver"
+        - "conforming count"
+      output: "row unit per item"
+      source_ids: []
+    - id: calc_surface_fossil_co2
+      applies_to: "direct curing emission"
+      rule: "use measured stack mass, or calculate fossil CO2 from metered gas and documented fuel-carbon balance; exclude upstream supply and electricity emissions"
+      inputs:
+        - "stack data or corrected gas volume"
+        - "fuel carbon content"
+        - "oxidation basis"
+        - "allocation driver"
+      output: "kg fossil CO2 per item"
+      source_ids: []
+    - id: calc_mass_balance
+      applies_to: "fabrication and surface treatment"
+      rule: "reconcile named material inputs with product incorporation, internal return, named waste and documented stock change; investigate unexplained differences"
+      inputs:
+        - input
+        - return
+        - product
+        - "waste and stock-change masses"
+      output: "mass-balance closure and exception record"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Preserve model, intended use, adjustment mechanism, included electronics/equipment, upholstery/finish, performance class, net mass and market state for every represented configuration."
+      evidence: "approved specification, BOM, drawings, quality-release record"
+    - id: dq_temporal_match
+      applies_to: "all foreground exchanges"
+      requirement: "Use input, waste, emission and conforming-output records from the same representative year or declared campaign; explain substitutions and shutdown/start-up effects."
+      evidence: "dated meters, invoices, production logs, manifests"
+    - id: dq_site_coverage
+      applies_to: "multi-site datasets"
+      requirement: "Include every site performing an in-scope manufacturing step or declare exclusions and their quantitative significance."
+      evidence: "site list, process map, consolidated ledger"
+    - id: dq_meter_and_scale
+      applies_to: "measured quantities"
+      requirement: "Record calibration or verification status, resolution, missing-data treatment and unit/reference-condition conversions."
+      evidence: "calibration certificate, verification log, calculation workbook"
+    - id: dq_bom_completeness
+      applies_to: "materials and packaging"
+      requirement: "Reconcile the approved material and packaging BOM to the inventory; surface treatments and electrical/electronic components must be explicitly disclosed."
+      evidence: "signed BOM reconciliation and exception list"
+    - id: dq_waste_destination
+      applies_to: "each waste flow"
+      requirement: "Preserve waste identity, hazardous status where applicable, first receiver, treatment route and whether material is internally reused."
+      evidence: "waste manifest, receiver record, internal reuse log"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "reference product"
+    rule: "Confirm that the output is exactly one quality-released complete item, its measured net mass uses the reference UUID and packaging is excluded from that net mass."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_scope_identity
+    applies_to: "product category"
+    rule: "Confirm the declared item has a special medical, surgical, dental or veterinary furniture function, or that a barber/similar chair has rotating, reclining and elevating movements."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_atomic_inventory
+    applies_to: "all inventory rows"
+    rule: "Reject collection labels and combined exchanges; each row must retain one concrete flow, one direction, one flow type, one property and one unit."
+    source_ids: []
+  - rule_id: validate_conditional_routes
+    applies_to: "route-specific rows"
+    rule: "A conditional material, component, surface-treatment, fuel, waste or packaging row must be present only when its named route occurs and must not be silently replaced with a different flow."
+    source_ids: []
+  - rule_id: validate_mass_balance
+    applies_to: "fabrication and finishing"
+    rule: "Reconcile input, return, product incorporation, named waste and stock change; investigate and disclose unexplained differences before dataset release."
+    source_ids: []
+  - rule_id: validate_direct_emissions
+    applies_to: "fossil carbon dioxide"
+    rule: "Confirm that the row contains only direct onsite fossil CO2 and excludes upstream natural-gas and purchased-electricity emissions."
+    source_ids: []
+  - rule_id: validate_source_and_uuid_gaps
+    applies_to: "unresolved inventory"
+    rule: "Preserve UUID-empty rows and range-evidence needs as review metadata; do not substitute proxy UUIDs or unsupported numeric ranges."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Product- and site-specific cradle-to-factory-gate foreground dataset suitable for controlled publication as a secondary_dataset or background_dataset after review"
+  downstream_use: "Supply-chain LCA of medical, surgical, dental or veterinary furniture and qualifying multi-motion chairs; product manufacturing comparison only after reference flow, configuration, boundary and data quality are aligned"
+  allowed_use: "Use for the declared model/configuration, manufacturing geography, technology, reporting period and new/remanufactured state; aggregate variants only with disclosed production-weighted records"
+  excluded_use: "Do not represent distribution, installation, service life, clinical use, maintenance, repair, replacement or end-of-life; do not apply to ordinary furniture, standalone equipment or parts sold separately"
+  required_metadata: "canonical PCR id; product subtype/intended use; model/configuration; mechanism and electronics; upholstery/finish; performance class; net mass; packaging; site/geography; reporting period; market state; allocation; data sources; unresolved identities and range needs"
+  required_quality_disclosure: "foreground coverage, meter/scale status, BOM reconciliation, temporal and site representativeness, allocation drivers, mass-balance exceptions, waste destinations and any proxy or missing data"
+  update_trigger: "change in product configuration or mechanism, material/finish/packaging BOM, manufacturing site or route, energy supply, allocation method, waste treatment, reporting period representativeness, reference UUID or resolved inventory UUID"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "CPC 48180 classification identity and English title"
+  - id: "un-cpc-1-1-zh-2002"
+    type: "official_guidance"
+    reference: "United Nations, Central Product Classification Version 1.1, Chinese edition, ST/ESA/STAT/SER.M/77/Ver.1.1, https://unstats.un.org/unsd/publication/SeriesM/M_77ver1_1c.pdf"
+    used_for: "Verified professional Chinese terminology for the stable 48180 category"
+  - id: "epd-norway-npcr-026-2024"
+    type: "official_guidance"
+    reference: "The Norwegian EPD Foundation, NPCR 026 Part B for Furniture and components of furniture, version 3.0, issued 8 October 2024, https://www.epd-norge.no/getfile.php/13161869-1741627951/PCRer/NPCR%20026%20%20Furniture_update_2024_v3.0_final-2.pdf"
+    used_for: "Complete-furniture and component scope, one-piece reference, electrically operated furniture, product-stage surface treatments, material disclosure and downstream-stage separation"
+  - id: "eu-ecolabel-furniture-2016"
+    type: "standard"
+    reference: "Commission Decision (EU) 2016/1332 of 28 July 2016 establishing ecological criteria for the award of the EU Ecolabel for furniture, https://eur-lex.europa.eu/eli/dec/2016/1332/oj/eng"
+    used_for: "Furniture definition and atomic component/material terminology including frames, fasteners, textiles, coated fabrics and polyurethane foam"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:5cd3510655b181aba29c4991930a634cbad235969cea307db0231db72997786e"
+  generated_content_sha256: "sha256:9531eefab29be20d11bb22a1746b343b9ab2f6fe01a52b269d5598c0160e4cdf"

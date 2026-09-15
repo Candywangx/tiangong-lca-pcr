@@ -1,10 +1,771 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41320"
-  title: "Gold (including gold plated with platinum), unwrought or in semi-manufactured forms, or in powder form"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.gold-including-gold-plated-with-platinum-unwrought-or-in-semi-manufactured-forms-or-in-739283c7"
+  classification_refs: "CPC 3.0: 41320"
+  covered_products: "Unwrought gold; gold powder; semi-manufactured gold forms; gold plated with platinum, where gold remains the classified product"
+  excluded_products: "Gold ores and concentrates; waste and scrap of gold; base metals or silver clad with gold; finished jewellery, coins, electronic parts, and other finished articles"
+  representative_product: "Mass-accounted saleable gold in the declared form and fineness"
+  production_route: "Refining of assayed doré or accepted gold scrap by the declared pyrometallurgical, electrorefining, hydrochloric-acid/chlorine, aqua-regia, precipitation, melting, casting, granulation, powder, or forming sequence actually used"
+  market_state: "At the refinery or forming facility gate, unpackaged, with form, fineness, alloy/platinum-plating status, and moisture or surface-treatment basis declared"
+functional_unit:
+  what: "Production of a declared saleable gold form within CPC 41320"
+  how_much: "1 kg net gold product at the facility gate"
+  how_well: "Conforming to the producer's declared fineness, physical form, dimensions or particle specification, alloy status, and platinum-plating status"
+  how_long_or_cycle: "One production lot or campaign represented by the reporting period; no use duration is assigned"
+  reference_flow_link: "The output row output_gold is the quantitative reference"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground system contains feed acceptance and assay; only the preparation, melting, dissolution, refining, electrorefining, precipitation, casting, granulation, powder production, or semi-manufacturing operations actually used; off-gas capture and treatment; internal wastewater transfer and treatment attributable to the product; and final product assay and weighing. Buildings and capital equipment are outside the default foreground inventory unless explicitly included."
+      source_ids: []
+    - rule_id: boundary_rule_1
+      applies_to: "foreground_operation_selection"
+      rule: "Include only operations actually used to transform accepted feed into the declared gold product; record route-specific reagents and emissions as conditional atomic exchanges."
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+        - fritz-gold-scrap-recycling-2020
+    - rule_id: boundary_rule_2
+      applies_to: "environmental_controls"
+      rule: "Include attributable off-gas capture/scrubbing and wastewater neutralization or treatment; do not report untreated generation and treated release as the same exchange."
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+        - fritz-gold-scrap-recycling-2020
+    - rule_id: boundary_rule_3
+      applies_to: "upstream_and_recycling_boundary"
+      rule: "Keep physical foreground collection from accepted feed to saleable product distinct from upstream datasets and the declared recycling system model."
+      source_ids:
+        - fritz-gold-scrap-recycling-2020
+boundary_abstraction:
+  declared_starting_condition: "Received gold-bearing feed has crossed the facility gate and has a unique lot identity, measured mass, representative gold assay, physical-state description, supplier/source route, and waste-or-product legal status."
+  starting_condition_role: "Foreground gate input; upstream production, collection, and transport are represented separately when required by the declared study boundary."
+  product_classification_scope: "Saleable outputs within CPC 3.0 code 41320 only."
+  recursive_input_rule: "A purchased or transferred gold input already within CPC 41320 is recorded with its own upstream dataset and is not recursively re-produced inside this foreground process. Internal rework is recorded once in the mass balance and is not a new external input."
+  upstream_dataset_requirement: "Link doré, gold scrap under the chosen recycling system model, electricity, fuels, oxygen, water, and each reagent to geography-, technology-, concentration-, and delivery-appropriate upstream datasets when constructing cradle-to-gate results."
+  disclosure: "Declare feed route and legal status, supplier/source geography, assay and dry-mass basis, refining/forming technology, included environmental-control operations, recycling allocation approach, co-products, internal recycling, cut-offs, product form/fineness, and whether upstream transport is included."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Gold"
+    uuid: "4ceb691b-15cf-4775-b55e-06a0370973a7"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "final physical form"
+    - "gold fineness and assay method"
+    - "alloy composition"
+    - "platinum-plating presence and coating basis"
+    - "production route"
+    - "primary/intermediate or recycled feed route"
+    - "facility geography"
+    - "reporting period"
+    - "net-mass boundary"
+    - "packaging exclusion"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product and mass-accounted material rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report net mass excluding packaging. State whether powder moisture, surface coating, or retained process liquid is included; normalize every inventory amount to 1 kg of the declared reference product."
+  - id: contained_gold_accounting
+    applies_to: "Doré, scrap, product, residue, and co-product metal accounting"
+    required_property_ref:
+      name: "Mass and assay fraction"
+      uuid: ""
+    required_unit: "kg Au"
+    rule: "Calculate contained gold from measured lot mass, dry-matter correction where relevant, and representative assay. Preserve gross mass and assay records; do not substitute nominal fineness for measured assay."
+  - id: gas_reference_conditions
+    applies_to: "Natural gas and industrial oxygen"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Record meter reference temperature, pressure, dry/wet basis, and standard condition. Convert volume only when those conditions and the conversion method are documented."
+  - id: electricity_energy_basis
+    applies_to: "Alternating-current electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Retain the original meter unit and billing interval. When converting kWh to MJ, apply the exact SI relation 1 kWh = 3.6 MJ and retain both values."
+process_map:
+  - id: gold_refining_and_forming
+    name: "Gold feed preparation, refining, environmental control, and final forming"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Foreground production from accepted refinery feed to saleable gold product"
+    quantitative_reference: "1 kg output_gold"
+process_inventory:
+  - id: gold_refining_and_forming
+    label: "Gold feed preparation, refining, environmental control, and final forming"
+    inputs:
+      product:
+        - row_id: feed_dore_bullion
+          role: "Doré bullion refinery feed"
+          name: "Doré bullion"
+          flow_type: "product"
+          flow_ref:
+            uuid: "51a53db0-358c-463b-96b3-691fc1e4b654"
+          property_unit: "Mass / kg"
+          description: "Doré bullion is recorded when it enters the foreground gate as a product input. Include it only for lots supplied as doré; preserve measured mass, gold/silver assay, impurity profile, source route, and supplier dataset link."
+          amount:
+            expression: "measured net mass of accepted doré lots"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference gold product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_and_assay
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: input_electricity
+          role: "Alternating-current electricity"
+          name: "alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bfc48b1-c262-4156-a817-b2c8a1b21598"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered alternating-current electricity consumed by included production and environmental-control equipment."
+          amount:
+            expression: "measured electricity consumption allocated to included operations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference gold product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_fuel_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - fritz-gold-scrap-recycling-2020
+            ranges: []
+        - row_id: input_natural_gas
+          role: "Gaseous natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas when used in included furnaces, dryers, or thermal environmental-control operations."
+          amount:
+            expression: "measured delivered gas at documented reference conditions"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference gold product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_fuel_records
+              source_ids:
+                - fritz-gold-scrap-recycling-2020
+            ranges: []
+        - row_id: input_industrial_oxygen
+          role: "Industrial oxygen"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume / m3"
+          description: "Record industrial oxygen only when used in cupellation, oxy-fuel melting, oxidation, or another included refining operation."
+          amount:
+            expression: "measured oxygen delivered at documented reference conditions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference gold product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas_reagent_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: input_process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water supplied for dissolution, washing, granulation, electrolyte makeup, scrubbing, or attributable wastewater treatment. Keep fresh and internally recycled water separate."
+          amount:
+            expression: "measured fresh process-water input"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference gold product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - fritz-gold-scrap-recycling-2020
+            ranges: []
+        - row_id: input_hydrochloric_acid
+          role: "Hydrochloric acid solution"
+          name: "Hydrochloric acid solution"
+          flow_type: "product"
+          property_unit: "Mass / kg solution"
+          description: "Record hydrochloric acid solution only for a route that consumes it. Supplied concentration and product state are mandatory qualifiers; the UUID remains unresolved until an exact concentration-specific identity is selected."
+          amount:
+            expression: "measured mass of supplied hydrochloric acid solution and recorded concentration"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference gold product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reagent_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - fritz-gold-scrap-recycling-2020
+            ranges: []
+        - row_id: input_nitric_acid
+          role: "Nitric acid"
+          name: "Nitric acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bf883501-c052-414e-8e21-e6f53cc257ba"
+          property_unit: "Mass / kg"
+          description: "Record nitric acid only when aqua regia or another included nitric-acid operation is used; retain supplied concentration and grade."
+          amount:
+            expression: "measured mass of supplied nitric acid with concentration recorded"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference gold product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reagent_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - fritz-gold-scrap-recycling-2020
+            ranges: []
+        - row_id: input_sodium_hydroxide
+          role: "Sodium hydroxide"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide consumed in off-gas scrubbing, wastewater neutralization, cyanide destruction where applicable, or another included operation; retain supplied concentration and state."
+          amount:
+            expression: "measured mass of supplied sodium hydroxide product or solution"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference gold product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reagent_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - fritz-gold-scrap-recycling-2020
+            ranges: []
+        - row_id: input_quicklime
+          role: "Quicklime"
+          name: "Quicklime"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record quicklime only when consumed in attributable wastewater neutralization. Do not substitute generic lime or a volume-only loose-product identity."
+          amount:
+            expression: "measured mass of quicklime consumed"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference gold product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reagent_records
+              source_ids:
+                - fritz-gold-scrap-recycling-2020
+            ranges: []
+        - row_id: input_sulfur_dioxide
+          role: "Sulfur dioxide"
+          name: "sulfur dioxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "fdbae35b-dde5-45ff-9834-f61e1cdf32e4"
+          property_unit: "Mass / kg"
+          description: "Record sulfur dioxide only when used to precipitate gold from solution; retain purity and supply state."
+          amount:
+            expression: "measured mass supplied to gold precipitation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference gold product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas_reagent_records
+              source_ids:
+                - fritz-gold-scrap-recycling-2020
+            ranges: []
+        - row_id: input_chlorine
+          role: "Chlorine gas"
+          name: "Chlorine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1fb2c22c-c189-4e2a-9a9f-810b59c37325"
+          property_unit: "Mass / kg"
+          description: "Record chlorine only when used in Miller refining, hydrochloric-acid/chlorine dissolution, or an included electrolyte operation."
+          amount:
+            expression: "measured mass supplied to included operations"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference gold product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas_reagent_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        - row_id: feed_gold_scrap
+          role: "Gold scrap refinery feed"
+          name: "Waste and scrap of gold or gold-clad metal"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record accepted waste and scrap of gold or gold-clad metal only for the secondary route. Preserve legal status, source category, measured mass, gold assay, non-gold composition, and recycling system model."
+          amount:
+            expression: "measured net mass of accepted gold-scrap lots"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference gold product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_and_assay
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - fritz-gold-scrap-recycling-2020
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: output_gold
+          role: "Reference gold product"
+          name: "Gold"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4ceb691b-15cf-4775-b55e-06a0370973a7"
+          property_unit: "Mass / kg"
+          description: "Record the saleable product after final assay and weighing. Form, fineness, dimensions or particle specification, alloy composition, and platinum-plating status must match the declared reference product."
+          amount:
+            expression: "measured net mass of conforming saleable gold product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "exactly 1 kg reference gold product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_and_assay
+              source_ids:
+                - un-cpc-3-0-structure-2025
+                - eu-jrc-nfm-bref-2017
+                - fritz-gold-scrap-recycling-2020
+            ranges: []
+      waste:
+        - row_id: output_wastewater
+          role: "Refinery wastewater transferred for treatment"
+          name: "Wastewater"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "d2d44ce1-c0f4-461d-9413-f4b33e0d200f"
+          property_unit: "Mass / kg"
+          description: "Record one measured wastewater stream transferred from included operations to treatment. Retain pH, mass or density conversion, dissolved/suspended metals, chloride/nitrate content, destination, and pre/post-treatment state."
+          amount:
+            expression: "measured mass of the defined refinery wastewater stream"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference gold product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - fritz-gold-scrap-recycling-2020
+            ranges: []
+        - row_id: output_metal_hydroxide_sludge
+          role: "Metal-hydroxide sludge from wastewater neutralization"
+          name: "Metal-hydroxide sludge from gold-refinery wastewater treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg wet sludge"
+          description: "Record dewatered metal-hydroxide sludge generated by neutralizing and filtering attributable gold-refinery wastewater. Keep it separate from anode sludge, petroleum-refinery sludge, and recoverable intermediates."
+          amount:
+            expression: "measured wet mass with dry-matter fraction and destination recorded"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference gold product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - fritz-gold-scrap-recycling-2020
+            ranges: []
+      elementary:
+        - row_id: emission_carbon_dioxide_fossil
+          role: "Fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil carbon dioxide from combustion within included operations. Exclude upstream electricity emissions."
+          amount:
+            expression: "calculated direct fossil CO2 from measured fuel use and documented carbon/oxidation basis, or measured stack mass"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference gold product"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_and_fuel_records
+              source_ids:
+                - fritz-gold-scrap-recycling-2020
+            ranges: []
+        - row_id: emission_hydrogen_chloride_to_air
+          role: "Hydrogen chloride to air"
+          name: "hydrogen chloride"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aab0-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record measured post-abatement hydrogen chloride released from included refinery stacks when chloride operations apply."
+          amount:
+            expression: "measured post-abatement stack release integrated over the reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference gold product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stack_emission_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: emission_chlorine_to_air
+          role: "Chlorine to air"
+          name: "Chlorine emitted to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured post-abatement chlorine when chlorine operations apply. Select a UUID only after the actual air compartment is established."
+          amount:
+            expression: "measured post-abatement stack release integrated over the reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference gold product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stack_emission_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: emission_nitrogen_dioxide_to_air
+          role: "Nitrogen dioxide to air"
+          name: "Nitrogen dioxide emitted to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO2"
+          description: "Record nitrogen-oxide monitoring as nitrogen dioxide mass only when the method reports that basis. Do not substitute nitrite."
+          amount:
+            expression: "measured post-abatement nitrogen dioxide release integrated over the reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference gold product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stack_emission_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "separately_metered_operations"
+    rule: "Avoid allocation by subdividing and directly assigning measured inputs, wastes, and emissions to the operation and lot that produced them."
+    source_ids:
+      - fritz-gold-scrap-recycling-2020
+  - rule_id: allocation_rule_2
+    applies_to: "inseparable_multi_output_operations"
+    rule: "When gold and other valuable metals are inseparable at the measurement point, report mass allocation and economic allocation based on documented contemporaneous net values as sensitivity cases; identify the primary case and retain masses, assays, prices, currency, date, and calculations."
+    source_ids:
+      - fritz-gold-scrap-recycling-2020
+  - rule_id: allocation_rule_3
+    applies_to: "internal_recovery_and_rework"
+    rule: "Return internally recovered gold-bearing residues to the mass balance once without treating them as a new external input or avoided product. Exported material receives a separate verified product or waste flow."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: allocation_rule_4
+    applies_to: "recycled_feed"
+    rule: "Declare the recycling system model for gold scrap and keep upstream collection or avoided-primary-production credit outside the physical foreground inventory unless the boundary is explicitly expanded."
+    source_ids:
+      - fritz-gold-scrap-recycling-2020
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass_and_assay
+      process_id: "gold_refining_and_forming"
+      flow_role: "accepted feed, product, and contained-gold balance"
+      record_type: "scale record and laboratory assay"
+      raw_fields: "lot_id; time; gross_mass; tare_mass; net_mass; dry_fraction; Au_assay; other_assays; assay_method; sample_id; form; disposition"
+      collection_method: "Calibrated weighing and documented representative sampling/assay for each lot"
+      unit: "kg; mass fraction"
+      frequency: "Every lot"
+      temporal_coverage: "Full reporting period"
+      site_scope: "Receiving, intermediate, and dispatch points"
+      aggregation_rule: "Calculate contained metal by lot before period aggregation"
+      quality_evidence: "Scale calibration; sampling plan; laboratory QA/QC; chain of custody; reconciliation"
+    - protocol_id: cp_energy_and_fuel_records
+      process_id: "gold_refining_and_forming"
+      flow_role: "electricity, natural gas, and direct fossil CO2"
+      record_type: "meter, invoice, and fuel specification"
+      raw_fields: "meter_id; readings; unit; time; allocation_driver; gas_conditions; carbon_factor; oxidation_basis"
+      collection_method: "Read calibrated meters, reconcile invoices, and assign only included operations"
+      unit: "MJ; kWh; m3"
+      frequency: "At least monthly and at campaign change"
+      temporal_coverage: "Full reporting period"
+      site_scope: "Included production and control equipment"
+      aggregation_rule: "Sum each carrier, subtract documented exports, normalize to product, and calculate direct CO2 separately"
+      quality_evidence: "Calibration; invoices; reconciliation; fuel specification"
+    - protocol_id: cp_gas_reagent_records
+      process_id: "gold_refining_and_forming"
+      flow_role: "oxygen, sulfur dioxide, and chlorine"
+      record_type: "flow meter, tank/cylinder issue, or invoice"
+      raw_fields: "identity; purity; state; mass_or_volume; reference_conditions; issue_quantity; operation; lot_id"
+      collection_method: "Reconcile delivery and issue records to operation and campaign"
+      unit: "kg; m3"
+      frequency: "Each delivery or issue"
+      temporal_coverage: "Full reporting period"
+      site_scope: "Included refining operations"
+      aggregation_rule: "Sum each gas separately by consuming route"
+      quality_evidence: "Calibration; supplier certificate; stock reconciliation"
+    - protocol_id: cp_water_records
+      process_id: "gold_refining_and_forming"
+      flow_role: "fresh process water"
+      record_type: "water meter and transfer record"
+      raw_fields: "meter_id; source; readings; unit; density; operation; recycled_return"
+      collection_method: "Meter fresh water separately from recycled water"
+      unit: "kg; m3"
+      frequency: "At least monthly"
+      temporal_coverage: "Full reporting period"
+      site_scope: "Included supply points"
+      aggregation_rule: "Convert volume only with documented density; prevent recycled-water double count"
+      quality_evidence: "Calibration; water balance; invoice or abstraction record"
+    - protocol_id: cp_reagent_records
+      process_id: "gold_refining_and_forming"
+      flow_role: "liquid and solid reagents"
+      record_type: "purchase, stock, batch, and dosing records"
+      raw_fields: "identity; concentration; grade; state; opening_stock; receipts; closing_stock; issued; returns; operation; lot_id"
+      collection_method: "Reconcile stock change and dosing for each chemical separately"
+      unit: "kg product; kg active"
+      frequency: "Each batch with monthly reconciliation"
+      temporal_coverage: "Full reporting period"
+      site_scope: "Reagent stores and dosing points"
+      aggregation_rule: "Use opening plus receipts minus closing minus returns; report product and active basis separately"
+      quality_evidence: "Supplier certificate; stock reconciliation; calibrated dosing record"
+    - protocol_id: cp_waste_records
+      process_id: "gold_refining_and_forming"
+      flow_role: "wastewater and hydroxide sludge"
+      record_type: "meter/scale, analysis, and transfer manifest"
+      raw_fields: "stream_id; stage; mass_or_volume; density; pH; dry_fraction; metals; anions; destination; waste_code; date"
+      collection_method: "Meter each defined stream and retain representative analysis and transfer evidence"
+      unit: "kg; m3; mass fraction"
+      frequency: "Each transfer or continuous total"
+      temporal_coverage: "Full reporting period"
+      site_scope: "Attributable treatment transfers"
+      aggregation_rule: "Aggregate each stream by treatment state and destination; prevent pre/post-treatment double count"
+      quality_evidence: "Calibration; laboratory QA/QC; manifest; treatment log"
+    - protocol_id: cp_stack_emission_records
+      process_id: "gold_refining_and_forming"
+      flow_role: "post-abatement HCl, chlorine, and NO2"
+      record_type: "monitor or stack test plus operating log"
+      raw_fields: "source_id; pollutant; concentration; flow; reference_conditions; correction; duration; method; detection_limit; hours; abatement_status"
+      collection_method: "Pair concentration with dry-gas flow and operating time using the applicable method"
+      unit: "kg; mg/Nm3; Nm3/h"
+      frequency: "Permit frequency or continuous"
+      temporal_coverage: "Representative operating states in the reporting period"
+      site_scope: "Each attributable emission point"
+      aggregation_rule: "Calculate mass by source and sum only like substances on the same chemical basis"
+      quality_evidence: "Calibration; accredited report; detection-limit rule; operating logs"
+  calculation_rules:
+    - id: calc_rule_1
+      applies_to: "contained gold by lot"
+      rule: "contained_Au_kg = net_mass_kg × dry_matter_fraction × Au_assay_mass_fraction"
+      inputs:
+        - "lot mass"
+        - "dry fraction"
+        - assay
+      output: "kg contained Au"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_rule_2
+      applies_to: "normalized inventory"
+      rule: "normalized_exchange = reporting_period_exchange ÷ conforming_output_gold_kg"
+      inputs:
+        - "period exchange and product mass"
+      output: "exchange per 1 kg gold"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_rule_3
+      applies_to: "stock-reconciled reagent use"
+      rule: "reagent_use = opening_stock + receipts - closing_stock - documented_returns"
+      inputs:
+        - "stock and issue records"
+      output: "kg product and active substance"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_rule_4
+      applies_to: "direct fossil carbon dioxide"
+      rule: "Calculate from measured fuel using documented carbon content and oxidation basis; exclude biogenic and upstream fuel-cycle emissions."
+      inputs:
+        - "fuel quantity"
+        - "energy basis"
+        - "carbon factor"
+        - "oxidation basis"
+      output: "kg fossil CO2"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_rule_5
+      applies_to: "measured stack release"
+      rule: "pollutant_mass = concentration × dry-gas flow × operating duration under consistent reference conditions and documented below-detection treatment"
+      inputs:
+        - concentration
+        - "gas flow"
+        - duration
+        - correction
+      output: "kg pollutant"
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+    - id: calc_rule_6
+      applies_to: "gold mass-balance closure"
+      rule: "closure = (contained_Au_inputs - contained_Au_outputs_and_documented_losses) ÷ contained_Au_inputs; investigate rather than force discrepancies outside the approved control limit"
+      inputs:
+        - "assayed inputs"
+        - products
+        - residues
+        - "work-in-progress change"
+        - losses
+      output: "dimensionless reconciliation"
+      source_ids:
+        - mass-balance-identity
+  data_quality_requirements:
+    - id: dq_1
+      applies_to: "product and feed identity"
+      requirement: "Preserve lot-level form, assay, fineness, impurity/alloy profile, source route, legal status, and chain of custody; do not merge doré and scrap routes before route-level reporting."
+      evidence: "Weighing, assay, supplier declaration, and lot genealogy"
+    - id: dq_2
+      applies_to: "completeness"
+      requirement: "Cover all included operations and all applicable atomic rows for the reporting period; explain every missing or zero route-specific row."
+      evidence: "Signed process-map and ledger/utility reconciliation"
+    - id: dq_3
+      applies_to: "temporal and geographic representativeness"
+      requirement: "Use one coherent period, normally at least 12 consecutive months unless a complete campaign is more representative; identify facility and upstream dataset geographies."
+      evidence: "Reporting calendar, production log, and metadata"
+    - id: dq_4
+      applies_to: "metrology and laboratory quality"
+      requirement: "Use calibrated instruments and documented sampling, detection limits, laboratory QA/QC, and uncertainty for assay and emissions."
+      evidence: "Calibration, sampling plans, control charts, accredited reports"
+    - id: dq_5
+      applies_to: "technology and controls"
+      requirement: "Declare route, operating state, abatement, wastewater treatment, internal recycling, and exceptional events represented."
+      evidence: "Process flow diagram, batch sheets, control logs, incident records"
+    - id: dq_6
+      applies_to: "allocation transparency"
+      requirement: "Retain unallocated measurements and all mass/economic allocation inputs for reproduction and sensitivity comparison."
+      evidence: "Allocation workbook, masses/assays, price sources, dates"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "reference_product"
+    rule: "Confirm output_gold equals 1 kg after normalization and that form, fineness, alloy composition, and platinum-plating status are within the category."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validation_rule_2
+    applies_to: "inventory_identity"
+    rule: "Confirm each card is one atomic exchange; UUID rows match the stated identity/property/unit and official Chinese name; unresolved rows remain UUID-empty."
+    source_ids: []
+  - rule_id: validation_rule_3
+    applies_to: "route_consistency"
+    rule: "Reject a route-specific reagent or emission without the corresponding declared operation, or an operation whose applicable measured inputs, wastes, or releases are omitted without explanation."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+      - fritz-gold-scrap-recycling-2020
+  - rule_id: validation_rule_4
+    applies_to: "mass_and_assay_balance"
+    rule: "Recalculate contained-gold inputs, outputs, work-in-progress change, residues, and measured losses; investigate rather than force discrepancies."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: validation_rule_5
+    applies_to: "environmental_control_state"
+    rule: "Confirm wastewater identifies treatment state/destination and air releases are post-abatement with actual compartment and monitoring basis."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: validation_rule_6
+    applies_to: "data_provenance"
+    rule: "Confirm every normalized amount traces to the named protocol and same-period records, with conversions and allocation reproducible."
+    source_ids: []
+  - rule_id: validation_rule_7
+    applies_to: "range_use"
+    rule: "Do not apply an external empirical range until at least two independent, original-text-verified, boundary-compatible sources support synthesis for the route and product state."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production dataset eligible as a secondary_dataset or background_dataset after review"
+  downstream_use: "Product, process, and lifecyclemodel records for declared gold forms and route-specific cradle-to-gate studies"
+  allowed_use: "Use for the represented facility, feed route, technology, product form/fineness, geography, period, allocation case, and boundary"
+  excluded_use: "Not a generic mine-to-gold dataset or proxy for finished jewellery/electronics/coins, another recycling model, or another refining route without review"
+  required_metadata: "PCR id/version; product form/fineness; alloy/plating status; feed route/legal status; geography; period; process route; boundary; upstream datasets; recycling model; allocation; UUID resolutions; owner/review status"
+  required_quality_disclosure: "Coverage; mass/assay reconciliation; metrology; representativeness; cut-offs; allocation sensitivity; unresolved UUIDs; uncertainty; abnormal events; environmental-control state"
+  update_trigger: "Change in feed route, technology, controls, product form/fineness, allocation, geography, supplier mix, or period; material correction; resolution of open UUID or range evidence"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-04)"
+    used_for: "Official CPC 41320 identity and market forms"
+  - id: "eu-jrc-nfm-bref-2017"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Non-Ferrous Metals Industries, 2017, https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2020-01/JRC107041_NFM_bref2017.pdf (retrieved 2026-09-04)"
+    used_for: "Feedstocks, gold routes, reagents, controls, emissions and wastewater monitoring"
+  - id: "fritz-gold-scrap-recycling-2020"
+    type: "literature"
+    reference: "Fritz, B.; Aichele, C.; Schmidt, M. Environmental impact of high-value gold scrap recycling. International Journal of Life Cycle Assessment 25, 1930-1941 (2020). https://doi.org/10.1007/s11367-020-01809-6 (retrieved 2026-09-04)"
+    used_for: "Recycled-gold boundary, aqua-regia process, reagents, wastewater/sludge, foreground collection, and allocation"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:a8ebf52d13b19ed04276d070f828f7740a4402a09654fde4e513e944074d8643"
+  generated_content_sha256: "sha256:bdd0d40b31a8a297d205fa0b518b48b237367619841dd790ee826fa2441a2a8f"

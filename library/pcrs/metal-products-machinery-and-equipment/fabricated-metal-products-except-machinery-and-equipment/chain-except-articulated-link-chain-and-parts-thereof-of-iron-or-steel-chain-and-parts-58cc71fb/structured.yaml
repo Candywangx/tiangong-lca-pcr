@@ -1,10 +1,820 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "42991"
-  title: "Chain (except articulated link chain) and parts thereof, of iron or steel; chain and parts thereof, of copper"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.chain-except-articulated-link-chain-and-parts-thereof-of-iron-or-steel-chain-and-parts-58cc71fb"
+  classification_refs: "CPC 3.0: 42991 (exact)"
+  covered_products: "Iron or steel skid, stud-link, welded-link and other non-articulated chain; copper chain; and separately marketed parts thereof"
+  excluded_products: "Articulated link chain; wire rope, stranded wire and cable; complete chain slings or assemblies whose reference product includes hooks or other accessories; chains of materials other than iron, steel or copper"
+  representative_product: "Unpackaged factory-gate finished non-articulated iron/steel chain, copper chain, or a separately marketed chain part"
+  production_route: "Purchased wire or rod preparation followed by applicable drawing, cutting, forming, joining/welding, heat treatment, cleaning, coating, testing and inspection"
+  market_state: "Saleable, unpackaged, dry finished chain or chain part at the manufacturing site gate; material, grade, dimensions, joining method, heat treatment, coating and test status declared"
+functional_unit:
+  what: "Finished chain or chain part within this PCR boundary"
+  how_much: "1 kg net product mass"
+  how_well: "Conforms to the declared material, grade, dimensional, joining, heat-treatment, coating, proof-load and other applicable product specifications"
+  how_long_or_cycle: "One production lot released at the factory gate; no service-life function is credited"
+  reference_flow_link: "reference_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "Foreground chain manufacturing"
+      rule: "Include all site operations from receipt of purchased metal feedstock through release of dry, unpackaged conforming chain or chain parts, including internal recycling and pollution-control operations attributable to the product."
+      source_ids:
+        - ec-fmp-bat-2022
+        - us-epa-brass-wire-mill-1971
+    - rule_id: boundary_actual_routes
+      applies_to: "Conditional operations"
+      rule: "Include wire drawing, electric welding or other joining, heat treatment/quenching, acid or mechanical cleaning, coating, proof testing and effluent or off-gas treatment only when performed; disclose absent and outsourced operations and require a supplier dataset for outsourced production steps."
+      source_ids:
+        - ec-fmp-bat-2022
+        - eu-chain-certification-1973
+    - rule_id: boundary_upstream_inputs
+      applies_to: "Purchased product and waste-treatment inputs"
+      rule: "Link each purchased metal, chemical, fuel, electricity, water and waste-treatment service to a geographically and technologically representative upstream dataset; do not include upstream burdens as direct foreground emissions."
+      source_ids:
+        - ec-fmp-bat-2022
+boundary_abstraction:
+  declared_starting_condition: "Purchased iron/non-alloy steel wire, alloy-steel wire or copper wire rod at the chain-manufacturing site gate, with material grade, form, dimensions, coating, recycled-content claim and supplier geography declared"
+  starting_condition_role: "Purchased formed-metal feedstock; upstream metal production and wire/rod manufacture are represented by linked upstream datasets"
+  product_classification_scope: "Finished non-articulated iron/steel chain and parts, plus copper chain and parts, consistent with CPC 3.0 42991"
+  recursive_input_rule: "If purchased chain or an in-scope chain part enters the foreground system, record it as a separate technosphere input with supplier dataset and declared mass; do not recursively recreate its production inside this PCR"
+  upstream_dataset_requirement: "Use supplier-specific data when available; otherwise use a documented geography-, alloy/grade-, technology-, recycled-content- and product-state-compatible dataset for each purchased input"
+  disclosure: "Declare material route, feedstock state, forming/joining technology, heat treatment, cleaning chemistry, coating, testing, internal recycling, wastewater/off-gas treatment, outsourced steps, production geography and production period"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Chain (except articulated link chain) or chain part, of iron, steel or copper"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "chain or part"
+    - iron
+    - "steel or copper and alloy/grade"
+    - "link or part geometry and nominal dimensions"
+    - "calibrated/non-calibrated status where applicable"
+    - "joining or welding method"
+    - "heat-treatment route"
+    - "coating/finish"
+    - "proof-load or test specification and result where applicable"
+    - "net product mass"
+    - "production site and geography"
+    - "production period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product and mass-normalized inputs/outputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh dry, unpackaged conforming product and normalize all inventory to 1 kg net product. Do not include pallets, reels, drums or removable packaging in reference mass."
+  - id: metal_mass_balance
+    applies_to: "Metal feedstock, finished product and segregated metal scrap"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Preserve measured material and alloy routes separately. Reconcile input metal mass to conforming product, segregated scrap, scale/sludge retained in other recorded waste, and documented inventory change."
+  - id: electricity_conversion
+    applies_to: "Purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Convert metered kWh to MJ using 3.6 MJ/kWh; retain the original meter value, voltage level, grid geography, contract mix and included site losses."
+  - id: gas_volume
+    applies_to: "Natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report metered volume at declared reference temperature and pressure and state whether the meter value is corrected to standard conditions; do not substitute energy without retaining the conversion basis."
+  - id: solution_mass
+    applies_to: "Purchased acids, oxidants and alkali"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record supplied solution mass and declared concentration. Do not report active-substance mass as solution mass without a documented conversion."
+process_map:
+  - id: chain_manufacturing
+    name: "Integrated chain and chain-part manufacturing"
+    inclusion: "required"
+    inclusion_condition: "All applicable operations performed by or attributable to the manufacturing site are consolidated; route-conditional exchanges are recorded only when present"
+    role: "Foreground manufacturing from purchased metal feedstock to dry, unpackaged conforming factory-gate product"
+    quantitative_reference: "1 kg net conforming product"
+process_inventory:
+  - id: chain_manufacturing
+    label: "Integrated chain and chain-part manufacturing"
+    inputs:
+      product:
+        - row_id: non_alloy_steel_wire
+          role: "Non-alloy steel wire"
+          name: "Steel Wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "62bb3717-f62c-43e0-baca-46a1e6f847c4"
+          property_unit: "Mass / kg"
+          description: "Record purchased non-alloy steel wire consumed in iron/non-alloy-steel chain or part production."
+          amount:
+            expression: "Net issued mass minus measured reusable return to stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_inputs
+              source_ids:
+                - ec-fmp-bat-2022
+                - eu-chain-certification-1973
+            ranges: []
+        - row_id: alloy_steel_wire
+          role: "Alloy-steel wire"
+          name: "Wire drawing, steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "461d98b3-a825-41bb-9b16-056331873326"
+          property_unit: "Mass / kg"
+          description: "Record low-alloy or other alloy-steel wire only for an alloy-steel product route."
+          amount:
+            expression: "Net issued mass minus measured reusable return to stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_inputs
+              source_ids:
+                - ec-fmp-bat-2022
+                - eu-chain-certification-1973
+            ranges: []
+        - row_id: copper_wire_rod
+          role: "Copper wire rod"
+          name: "Copper wire rod"
+          flow_type: "product"
+          flow_ref:
+            uuid: "99715c69-4245-44ff-a438-0e0d68377386"
+          property_unit: "Mass / kg"
+          description: "Record purchased copper wire rod only for copper chain or part production."
+          amount:
+            expression: "Net issued mass minus measured reusable return to stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_inputs
+              source_ids:
+                - us-epa-brass-wire-mill-1971
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record delivered electricity for forming, drawing, welding, heat treatment, cleaning, coating, testing and attributable auxiliaries."
+          amount:
+            expression: "Metered delivered electricity allocated from operation-level or site-level records, converted under electricity_conversion"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_inputs
+              source_ids:
+                - ec-fmp-bat-2022
+            ranges: []
+        - row_id: natural_gas
+          role: "Natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas delivered to onsite furnaces or other directly attributable combustion equipment."
+          amount:
+            expression: "Metered delivered volume under declared reference conditions, net of separately metered non-product uses"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_inputs
+              source_ids:
+                - ec-fmp-bat-2022
+            ranges: []
+        - row_id: process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record net make-up process water entering cleaning, rinsing, quenching, scrubbing or other product-attributable operations; do not count recirculated water repeatedly."
+          amount:
+            expression: "Metered make-up water plus documented tank additions minus recovered water exported from the process boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_chemicals
+              source_ids:
+                - ec-fmp-bat-2022
+                - us-epa-brass-wire-mill-1971
+            ranges: []
+        - row_id: hydrochloric_acid_30pct
+          role: "Hydrochloric acid solution, 30%"
+          name: "Hydrochloric acid (30%)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "56414d25-a353-4d67-b362-87212ce6011d"
+          property_unit: "Mass / kg"
+          description: "Record purchased 30% hydrochloric acid solution only when used for pickling, stripping or acid make-up."
+          amount:
+            expression: "Net purchased or issued solution mass at 30% concentration, excluding recovered acid reused within the process"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_chemicals
+              source_ids:
+                - ec-fmp-bat-2022
+            ranges: []
+        - row_id: sulfuric_acid
+          role: "Sulfuric acid"
+          name: "Sulfuric acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee2e3c3-bee7-4520-92b7-3e23afbfcd6f"
+          property_unit: "Mass / kg"
+          description: "Record purchased sulfuric acid only when used for steel or copper pickling or acid regeneration make-up."
+          amount:
+            expression: "Net purchased or issued solution mass at declared concentration, excluding recovered acid reused within the process"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_chemicals
+              source_ids:
+                - ec-fmp-bat-2022
+                - us-epa-brass-wire-mill-1971
+            ranges: []
+        - row_id: hydrogen_peroxide_27_5pct
+          role: "Hydrogen peroxide solution, 27.5%"
+          name: "Hydrogen peroxide (27.5%)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "445b37f0-46b7-400d-a369-530e17d598af"
+          property_unit: "Mass / kg"
+          description: "Record purchased 27.5% hydrogen peroxide solution only when used in copper bright pickling or an equivalent declared oxidation step."
+          amount:
+            expression: "Net issued solution mass at 27.5% concentration"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_chemicals
+              source_ids:
+                - us-epa-brass-wire-mill-1971
+            ranges: []
+        - row_id: sodium_hydroxide
+          role: "Sodium hydroxide"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide used for alkaline cleaning, neutralization or attributable wastewater treatment."
+          amount:
+            expression: "Net issued product or solution mass, with supplied concentration declared"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_chemicals
+              source_ids:
+                - ec-fmp-bat-2022
+                - us-epa-brass-wire-mill-1971
+            ranges: []
+        - row_id: zinc_metal
+          role: "Zinc metal"
+          name: "Special High Grade zinc metal"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2d8ff1bd-e128-4c74-a99d-b8734c99bbd2"
+          property_unit: "Mass / kg"
+          description: "Record special-high-grade unwrought zinc consumed only when the finished chain or part is zinc-coated onsite."
+          amount:
+            expression: "Purchased zinc charged to the coating system minus measured recovered metal and closing inventory, assigned to conforming product and separately recorded residues"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_chemicals
+              source_ids:
+                - ec-fmp-bat-2022
+            ranges: []
+        - row_id: drawing_lubricant_calcium_stearate
+          role: "Calcium stearate drawing lubricant"
+          name: "Calcium stearate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record calcium stearate make-up only when it is the specific dry-drawing lubricant used; UUID remains unresolved."
+          amount:
+            expression: "Net issued fresh lubricant minus separately recovered reusable lubricant"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_chemicals
+              source_ids:
+                - ec-fmp-bat-2022
+                - us-epa-brass-wire-mill-1971
+            ranges: []
+        - row_id: quenching_oil
+          role: "Quenching oil"
+          name: "Quenching Oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "02f62137-e204-46e6-8e72-e88b450fbdc4"
+          property_unit: "Mass / kg"
+          description: "Record fresh quenching-oil make-up only for an onsite oil-quench heat-treatment route."
+          amount:
+            expression: "Net fresh oil addition minus recovered oil exported for reuse; do not count recirculated bath inventory as consumption"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_chemicals
+              source_ids:
+                - ec-fmp-bat-2022
+                - eu-chain-certification-1973
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Reference chain or chain part"
+          name: "Chain (except articulated link chain) or chain part, of iron, steel or copper"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only dry, unpackaged conforming chain or separately marketed chain parts released at the factory gate. The exact TianGong product-flow UUID is unresolved."
+          amount:
+            expression: "1 kg net conforming product by definition"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "source_rule"
+              source_ids:
+                - un-cpc-3-0-2025
+                - eu-chain-certification-1973
+            ranges: []
+      waste:
+        - row_id: post_industrial_steel_scrap
+          role: "Post-industrial steel scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Record segregated steel offcuts, flash, cropped ends and rejected steel links leaving for recycling or treatment."
+          amount:
+            expression: "Measured outbound mass plus documented inventory change, excluding internally remelted or directly reused pieces"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_outputs
+              source_ids:
+                - ec-fmp-bat-2022
+            ranges: []
+        - row_id: copper_scrap
+          role: "Copper scrap"
+          name: "Copper Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "4fbbb5f1-560a-4052-ba0c-652c5dfc282e"
+          property_unit: "Mass / kg"
+          description: "Record segregated copper offcuts and rejected copper links or parts leaving for recycling or treatment."
+          amount:
+            expression: "Measured outbound mass plus documented inventory change, excluding internally reused copper"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_outputs
+              source_ids:
+                - us-epa-brass-wire-mill-1971
+            ranges: []
+        - row_id: spent_pickling_acid
+          role: "Spent pickling acid"
+          name: "Spent pickling acid"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent hydrochloric- or sulfuric-acid pickling liquor leaving the site boundary, with acid type, residual concentration, dissolved metals and recovery destination declared; UUID remains unresolved."
+          amount:
+            expression: "Measured outbound mass plus documented tank inventory change, net of onsite-regenerated acid returned to use"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_outputs
+              source_ids:
+                - ec-fmp-bat-2022
+                - us-epa-brass-wire-mill-1971
+            ranges: []
+        - row_id: acidic_rinse_wastewater
+          role: "Acidic metal-bearing rinse wastewater"
+          name: "Acidic metal-bearing rinse wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record segregated acidic rinse wastewater exported to sewer or offsite treatment after subtracting water recirculated onsite; declare pH, principal acid, dissolved metals and treatment destination. UUID remains unresolved."
+          amount:
+            expression: "Metered or mass-balanced net wastewater crossing the site boundary"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_outputs
+              source_ids:
+                - ec-fmp-bat-2022
+                - us-epa-brass-wire-mill-1971
+            ranges: []
+      elementary:
+        - row_id: particulate_matter_air
+          role: "Particulate matter to air"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass / kg"
+          description: "Record measured net particulate matter released to air after capture and abatement from forming, drawing, welding, mechanical cleaning, heat treatment and finishing."
+          amount:
+            expression: "Sum measured channelled and quantified fugitive releases after abatement; avoid double counting captured dust recorded as waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - ec-fmp-bat-2022
+            ranges: []
+        - row_id: hydrogen_chloride_air
+          role: "Hydrogen chloride to air"
+          name: "hydrogen chloride"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aab0-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record measured net hydrogen chloride released to air from hydrochloric-acid pickling or stripping after abatement."
+          amount:
+            expression: "Measured channelled plus quantified fugitive HCl release after abatement"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - ec-fmp-bat-2022
+            ranges: []
+        - row_id: nitrogen_oxides_air
+          role: "Nitrogen oxides to air"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured aggregate NOx released to air from onsite fuel combustion using the facility's declared reporting convention; UUID remains unresolved and nitrous oxide shall not be substituted."
+          amount:
+            expression: "Measured channelled plus quantified fugitive NOx release after abatement, with NO2-equivalent or other reporting basis declared"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - ec-fmp-bat-2022
+            ranges: []
+        - row_id: carbon_dioxide_fossil_air
+          role: "Fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil carbon dioxide from onsite natural-gas combustion or other declared fossil sources; upstream electricity emissions are excluded from this foreground row."
+          amount:
+            expression: "Direct stack measurement or a disclosed site carbon balance based on collected fuel records, with method and factor source retained"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - ec-fmp-bat-2022
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid_subdivide
+    applies_to: "Distinct product families, material routes and major operations"
+    rule: "Prefer subdivision using operation meters, batch records and product-specific material issues. Keep iron/non-alloy steel, alloy steel and copper routes separate whenever records permit."
+    source_ids:
+      - ec-fmp-bat-2022
+  - rule_id: allocation_shared_operations
+    applies_to: "Shared forming, heat treatment, cleaning, coating, testing and auxiliaries"
+    rule: "If subdivision is not possible, allocate shared burdens by a documented causal driver such as machine time, furnace load-time, treated surface area, bath throughput or metered energy. Use mass only when no more causal driver exists and disclose the sensitivity."
+    source_ids:
+      - ec-fmp-bat-2022
+  - rule_id: allocation_scrap_no_avoided_burden
+    applies_to: "Steel scrap, copper scrap and recovered treatment materials"
+    rule: "Report all output masses and destinations. Do not assign avoided primary-metal or treatment credits inside the foreground inventory; apply any recycling or substitution convention in a separately disclosed downstream model."
+    source_ids:
+      - ec-fmp-bat-2022
+      - us-epa-brass-wire-mill-1971
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_inputs
+      process_id: "chain_manufacturing"
+      flow_role: "Each metal feedstock row"
+      record_type: "Purchase, issue, return and inventory records"
+      raw_fields: "material/grade; supplier; lot; opening stock; receipts; issues; reusable returns; closing stock; mass"
+      collection_method: "Calibrated scales reconciled to stores and production records"
+      unit: "kg"
+      frequency: "Each lot; aggregate monthly"
+      temporal_coverage: "Representative continuous 12-month period or declared shorter campaign"
+      site_scope: "All lines producing the declared product"
+      aggregation_rule: "receipts + opening stock - closing stock - reusable returns, assigned by product route"
+      quality_evidence: "Scale calibration, supplier certificates, lot traceability and stock reconciliation"
+    - protocol_id: cp_energy_inputs
+      process_id: "chain_manufacturing"
+      flow_role: "Electricity and natural gas"
+      record_type: "Utility meters, invoices and operating logs"
+      raw_fields: "meter id; opening/closing reading; unit; reference conditions; operation; downtime; product quantity"
+      collection_method: "Submeter preferred; otherwise site meter allocated by causal driver"
+      unit: "kWh, MJ, m3"
+      frequency: "Continuous or each shift; aggregate monthly"
+      temporal_coverage: "Representative continuous 12-month period or declared shorter campaign"
+      site_scope: "All attributable production and pollution-control equipment"
+      aggregation_rule: "Net delivered amount less excluded uses, allocated and normalized to conforming product mass"
+      quality_evidence: "Meter calibration, invoice reconciliation, allocation worksheet and operating-hours log"
+    - protocol_id: cp_water_chemicals
+      process_id: "chain_manufacturing"
+      flow_role: "Each water or chemical row"
+      record_type: "Meter, batch, purchase, issue and tank-inventory records"
+      raw_fields: "substance; concentration; lot; opening/closing inventory; additions; recovered return; export; treated product mass"
+      collection_method: "Calibrated flow meter or scale plus bath/tank balance"
+      unit: "kg"
+      frequency: "Each batch or shift; aggregate monthly"
+      temporal_coverage: "Representative continuous 12-month period or declared shorter campaign"
+      site_scope: "Each applicable cleaning, drawing, heat-treatment, coating or treatment line"
+      aggregation_rule: "Net fresh input = additions + receipts + opening stock - closing stock - recovered export; normalize to product mass"
+      quality_evidence: "Calibration, safety data sheet, concentration analysis, batch sheet and tank balance"
+    - protocol_id: cp_product_output
+      process_id: "chain_manufacturing"
+      flow_role: "Reference product"
+      record_type: "Release, scale and quality records"
+      raw_fields: "product id; material/grade; dimensions; joining method; heat treatment; coating; test specification/result; dry net mass; rejects"
+      collection_method: "Calibrated scale linked to release inspection"
+      unit: "kg"
+      frequency: "Each production lot"
+      temporal_coverage: "Representative continuous 12-month period or declared shorter campaign"
+      site_scope: "All conforming product made at the declared site"
+      aggregation_rule: "Sum dry unpackaged released mass; exclude rejects, packaging and stock not released"
+      quality_evidence: "Scale calibration, inspection record, material certificate and test certificate where applicable"
+    - protocol_id: cp_waste_outputs
+      process_id: "chain_manufacturing"
+      flow_role: "Each waste row"
+      record_type: "Waste scales/manifests, tank levels and recovery logs"
+      raw_fields: "waste identity; composition; origin; mass; opening/closing inventory; recovery; destination; treatment"
+      collection_method: "Weighbridge/scale or documented density-volume conversion with tank balance"
+      unit: "kg"
+      frequency: "Each shipment; reconcile monthly"
+      temporal_coverage: "Representative continuous 12-month period or declared shorter campaign"
+      site_scope: "All attributable waste and wastewater leaving the site"
+      aggregation_rule: "Outbound mass + closing stock - opening stock; subtract internal reuse and prevent duplicate reporting"
+      quality_evidence: "Scale calibration, manifest, laboratory composition/pH, tank record and recycler/treatment receipt"
+    - protocol_id: cp_direct_emissions
+      process_id: "chain_manufacturing"
+      flow_role: "Each elementary emission row"
+      record_type: "Continuous monitoring, stack tests, mass balance and fugitive estimate records"
+      raw_fields: "pollutant; source; flow; concentration; test period; abatement status; reporting basis; operating time"
+      collection_method: "Applicable calibrated monitoring or validated site calculation"
+      unit: "kg"
+      frequency: "Continuous where installed; otherwise each required test and monthly calculation"
+      temporal_coverage: "Representative continuous 12-month period or declared shorter campaign"
+      site_scope: "All attributable point and quantified fugitive sources"
+      aggregation_rule: "Sum post-abatement releases by pollutant and normalize to conforming product mass"
+      quality_evidence: "Calibration, sampling standard, laboratory report, detection limit, uncertainty and operating log"
+  calculation_rules:
+    - id: calc_normalized_amount
+      applies_to: "Every inventory exchange"
+      rule: "normalized amount = period exchange amount / dry unpackaged conforming product mass"
+      inputs:
+        - "Exchange record"
+        - "cp_product_output mass"
+      output: "Amount per 1 kg reference product"
+      source_ids: []
+    - id: calc_net_input
+      applies_to: "Materials, water and chemicals"
+      rule: "net fresh input = receipts + opening inventory - closing inventory - reusable material returned outside the accounted product system"
+      inputs:
+        - Purchase
+        - stock
+        - issue
+        - "recovery and return records"
+      output: "Net product input by atomic flow"
+      source_ids:
+        - ec-fmp-bat-2022
+    - id: calc_net_waste
+      applies_to: "Waste outputs"
+      rule: "net waste crossing boundary = shipments + closing waste inventory - opening waste inventory; exclude material internally reused in the same period"
+      inputs:
+        - "Waste manifests"
+        - scales
+        - "tanks and inventory"
+      output: "Net waste output by atomic flow"
+      source_ids:
+        - ec-fmp-bat-2022
+        - us-epa-brass-wire-mill-1971
+    - id: calc_electricity_mj
+      applies_to: "Electricity"
+      rule: "MJ = metered kWh × 3.6"
+      inputs:
+        - "Metered kWh"
+      output: "Delivered electricity in MJ"
+      source_ids: []
+    - id: calc_shared_burden
+      applies_to: "Unsubdivided shared operations"
+      rule: "Allocate by the documented causal driver; if mass is the fallback, share = product mass / total conforming mass through the shared operation"
+      inputs:
+        - "Shared burden"
+        - "driver by product"
+        - "total driver"
+      output: "Product-attributed shared burden"
+      source_ids:
+        - ec-fmp-bat-2022
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Reference product"
+      requirement: "Retain product drawing/specification, material and grade, link/part geometry, joining method, heat treatment, coating, test status, net mass and lot identity."
+      evidence: "Product specification, material certificate, route card, inspection and test records"
+    - id: dq_time
+      applies_to: "All foreground rows"
+      requirement: "Use one representative continuous production period of at least 12 months where available; disclose shorter campaigns, shutdowns, abnormal operations and seasonal gaps."
+      evidence: "Dated meters, batch records, production logs and completeness reconciliation"
+    - id: dq_completeness
+      applies_to: "Process and emissions inventory"
+      requirement: "Reconcile material, energy, water, chemical, waste and emission records across every applicable operation and pollution-control unit; explain all missing or estimated exchanges."
+      evidence: "Mass/energy/water balances, chemical inventory, waste and waste-gas/wastewater inventories"
+    - id: dq_technology
+      applies_to: "Conditional routes"
+      requirement: "Identify forming/drawing, joining, furnace/quench, cleaning, coating, proof-test and abatement technology and whether each step is onsite, outsourced or absent."
+      evidence: "Process flow sheet, equipment register and supplier records"
+    - id: dq_measurement
+      applies_to: "Meters, scales and analyses"
+      requirement: "Retain calibration status, sampling method, detection limit, concentration/reference-condition conversion and uncertainty for every material measurement."
+      evidence: "Calibration certificates, laboratory reports and conversion worksheets"
+    - id: dq_upstream
+      applies_to: "Linked datasets"
+      requirement: "Match geography, material/alloy, product state, technology, recycled content and time; document any proxy and its expected direction of bias."
+      evidence: "Supplier dataset or documented dataset-selection record"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "Reference product"
+    rule: "Fail if the product is articulated link chain, a chain assembly outside the boundary, a material other than iron/steel/copper, or lacks material/grade, dimensions, route, finish, test status and net-mass qualifiers."
+    source_ids:
+      - un-cpc-3-0-2025
+      - eu-chain-certification-1973
+  - rule_id: validate_reference_mass
+    applies_to: "Reference flow"
+    rule: "Confirm exactly 1 kg dry unpackaged conforming product and exclude rejects and packaging from the denominator."
+    source_ids: []
+  - rule_id: validate_routes
+    applies_to: "Process map"
+    rule: "Confirm every onsite and outsourced drawing, forming, joining, heat-treatment, cleaning, coating, testing and treatment step is declared and every applicable exchange is present."
+    source_ids:
+      - ec-fmp-bat-2022
+      - us-epa-brass-wire-mill-1971
+  - rule_id: validate_balance
+    applies_to: "Metal, water and chemicals"
+    rule: "Require documented metal reconciliation and net-consumption treatment for recirculated water, acid, lubricant, quench oil and recovered coating metal; investigate unexplained imbalance."
+    source_ids:
+      - ec-fmp-bat-2022
+      - us-epa-brass-wire-mill-1971
+  - rule_id: validate_emissions
+    applies_to: "Direct emissions"
+    rule: "Confirm emissions are post-abatement foreground releases, use the declared compartment/reporting basis, exclude upstream electricity emissions and do not substitute nitrous oxide for unresolved NOx."
+    source_ids:
+      - ec-fmp-bat-2022
+  - rule_id: validate_allocation
+    applies_to: "Shared burdens and recyclable outputs"
+    rule: "Confirm subdivision or causal allocation is documented and no avoided-burden recycling credit is embedded in the foreground inventory."
+    source_ids:
+      - ec-fmp-bat-2022
+published_dataset_profile:
+  dataset_role: "Product-specific or site-average factory-gate foreground production dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Cradle-to-gate product systems and downstream models requiring a qualified factory-gate chain or chain-part dataset"
+  excluded_use: "Articulated link chain; chain slings/assemblies including accessories; other materials; use-phase performance; repair; end-of-life; or comparative assertions when material route, product state, geography, technology or data quality are incompatible"
+  required_metadata: "PCR id/version; product and part/chain status; material/alloy/grade; dimensions; calibrated status where applicable; joining method; heat treatment; coating; proof/test specification and result where applicable; site/geography; period; net mass; process routes; allocation; upstream datasets; unresolved UUIDs"
+  required_quality_disclosure: "Temporal coverage and completeness; meter/scale calibration; concentration and reference-condition conversions; route-specific allocation; metal/water/chemical balances; waste and emission methods; uncertainty; proxies; exclusions and outsourced steps"
+  update_trigger: "Material, grade, feedstock, forming/joining technology, furnace/quench, cleaning chemistry, coating, abatement, supplier electricity/fuel, allocation method, site, production mix, regulation, reference-flow UUID or evidence changes materially"
+data_sources:
+  - id: "un-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure and Explanatory Notes, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "English product-category identity and articulated-link-chain exclusion"
+  - id: "un-cpc-1-1-zh-2004"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 1.1, Chinese edition, ST/ESA/STAT/SER.M/77/Ver.1.1, https://digitallibrary.un.org/record/536544/files/M_77ver1_1c.pdf"
+    used_for: "Professional Chinese rendering of the unchanged CPC 42991 product identity"
+  - id: "ec-fmp-bat-2022"
+    type: "official_guidance"
+    reference: "European Commission, Commission Implementing Decision (EU) 2022/2110 establishing BAT conclusions for the ferrous metals processing industry, https://eur-lex.europa.eu/eli/dec_impl/2022/2110/oj/eng"
+    used_for: "Wire drawing, heating, pickling, coating, energy, water, chemicals, residues, waste-gas/wastewater inventories and monitoring"
+  - id: "us-epa-brass-wire-mill-1971"
+    type: "official_guidance"
+    reference: "U.S. Environmental Protection Agency, Brass Wire Mill Process Changes and Waste Abatement, Recovery and Reuse, Project 12010 DPF, November 1971, https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=9100XAZP.TXT"
+    used_for: "Copper wire-rod drawing, annealing, repeated pickling/rinsing, lubricant use, copper recovery and treatment-residue process decomposition"
+  - id: "eu-chain-certification-1973"
+    type: "standard"
+    reference: "Council Directive 73/361/EEC of 19 November 1973 on certification and marking of wire-ropes, chains and hooks, https://eur-lex.europa.eu/eli/dir/1973/361/oj/eng"
+    used_for: "Conditional round-steel-chain material, dimensions, joining, heat treatment, proof-load, breaking-strength, test and marking qualifiers"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:9a591575903b74fc6c8dba8a7998500b2030a05497de82de5b470e93cfff401c"
+  generated_content_sha256: "sha256:9598cd6a2e5ebd37035a5df17d88ef59b821367f4b91d31d15bfb4f742032f7d"

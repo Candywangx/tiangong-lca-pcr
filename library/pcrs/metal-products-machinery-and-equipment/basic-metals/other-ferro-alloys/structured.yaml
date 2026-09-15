@@ -1,10 +1,1136 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41115"
-  title: "Other ferro-alloys"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.other-ferro-alloys"
+  classification_refs: "CPC 3.0: 41115 Other ferro-alloys"
+  covered_products: "Declared grades of ferrosilicon, ferrovanadium, ferromolybdenum, ferrotungsten, ferrotitanium, ferroniobium, ferroboron, ferrophosphorus, and other residual ferro-alloys"
+  excluded_products: "Ferro-manganese; ferro-chromium; ferro-nickel; pig iron and spiegeleisen; directly reduced iron; iron or steel powders; crude steel; pure alloying metals; silicon metal when not sold as a ferro-alloy"
+  representative_product: "A composition-tested, saleable declared grade of other ferro-alloy at the producing plant"
+  production_route: "Site-declared carbothermic submerged-arc reduction, metallothermic or silicothermic reduction, induction/remelting, or another documented route; do not combine unlike routes without separate inventories"
+  market_state: "Solid lumps, granules, or powder at the producing plant gate, with declared alloy grade, particle-size class, and packaging state"
+functional_unit:
+  what: "Production of one declared grade of other ferro-alloy for use as an alloying, deoxidizing, or process additive"
+  how_much: "1 kg net saleable product"
+  how_well: "Conforming to the producer-declared chemical composition, carbon content, physical form, particle-size class, and acceptance specification"
+  how_long_or_cycle: "One production campaign or reporting period represented by the dataset; no service-duration credit is assigned"
+  reference_flow_link: "reference_product_other_ferroalloy"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "Include all onsite operations needed to convert received feedstocks into the declared saleable grade, including charge preparation, furnace or reaction-vessel operation, tapping, ladle treatment, casting or granulation, crushing and screening, internal recycling, and operation of dust or off-gas controls. Upstream production of electricity, ores, concentrates, reducers, fluxes, scrap preparation, and packaging shall be linked as background datasets rather than duplicated inside the foreground process."
+      source_ids: []
+    - rule_id: boundary_plant_gate
+      applies_to: "foreground system"
+      rule: "Start at receipt of burden-bearing inputs and end at accepted product leaving the producing plant; include onsite pollution-control operations associated with production."
+      source_ids:
+        - us-epa-ap42-ferroalloy-1995
+    - rule_id: boundary_route_separation
+      applies_to: "multi-route facilities"
+      rule: "Keep carbothermic, metallothermic, remelting, and conditioning inventories separate until measured common services require documented allocation."
+      source_ids:
+        - us-epa-ap42-ferroalloy-1995
+    - rule_id: boundary_offgas_residues
+      applies_to: "furnace gas, slag, and dust"
+      rule: "Record off-gas combustion, recovery, flaring, captured dust, slag reuse, sale, recycling, or disposal according to the actual site fate."
+      source_ids:
+        - us-epa-ap42-ferroalloy-1995
+boundary_abstraction:
+  declared_starting_condition: "Composition- and state-declared ores, concentrates, oxides, iron units, reducers, fluxes, electrodes, electricity, and water as received at the ferro-alloy plant boundary"
+  starting_condition_role: "Burden-bearing upstream inputs to the foreground ferro-alloy production route"
+  product_classification_scope: "One declared other-ferro-alloy grade within the residual CPC 41115 boundary; separately classified ferro-manganese, ferro-chromium, and ferro-nickel are outside scope"
+  recursive_input_rule: "When an input is itself an other ferro-alloy, record it as a separately sourced upstream product with its grade, route, and supplier dataset; do not recursively reproduce the same foreground route inside itself"
+  upstream_dataset_requirement: "Link each purchased material and energy input to a geographically and technologically representative cradle-to-gate dataset, or disclose a named data gap without substituting a proxy UUID"
+  disclosure: "Declare product chemistry and form, process route, furnace enclosure, electricity supply, carbon-source origin, internal recycling, off-gas capture or use, slag and dust fate, allocation, geography, and reporting period"
+reference_flow_definition:
+  reference_amount: "1 kg net saleable other ferro-alloy at the factory gate"
+  product_flow_ref:
+    name: "Other ferro-alloy, declared grade, at plant"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "alloy designation and composition"
+    - "carbon content"
+    - "reduction or remelting route"
+    - "furnace or reaction-vessel type"
+    - "plant geography"
+    - "product form and particle-size class"
+    - "moisture if material"
+    - "packaging state"
+    - "reporting period"
+    - "electricity supply"
+    - "carbon-reducer origin"
+    - "off-gas fate"
+    - slag
+    - dust
+    - "and off-spec-product fate"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use the net mass of accepted saleable product at the factory gate; exclude pallets and packaging, and report moisture when it materially affects comparability."
+  - id: grade_assay
+    applies_to: "product and intermediate alloy"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "kg/kg"
+    rule: "Report the campaign-weighted chemical assay and carbon content used to identify the declared grade; do not infer grade from trade name alone."
+  - id: energy_conversion
+    applies_to: "electricity and other metered energy"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Preserve the metered energy carrier and unit; document every conversion factor and do not merge electricity with heat or fuel."
+  - id: mass_reconciliation
+    applies_to: "each production route"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile measured charge, saleable product, internally recycled material, slag, captured dust, and other recorded losses for the same reporting period; explain unresolved imbalance."
+  - id: air_emission_mass
+    applies_to: "direct atmospheric emissions"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Report pollutant mass for the declared air compartment and monitoring basis; retain dry/wet gas, oxygen correction, capture, flare, or recovery assumptions."
+process_map:
+  - id: carbothermic_smelting
+    name: "Carbothermic submerged-arc smelting"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared alloy is produced by carbon reduction in a submerged electric arc or equivalent resistance furnace"
+    role: "Foreground reduction, tapping, and primary gas control"
+    quantitative_reference: "kg molten or cast route product"
+  - id: metallothermic_reduction
+    name: "Metallothermic or silicothermic reduction"
+    inclusion: "conditional"
+    inclusion_condition: "Include when aluminium, silicon, or both reduce a declared metal oxide to the ferro-alloy"
+    role: "Foreground reaction, tapping, and primary dust control"
+    quantitative_reference: "kg molten or cast route product"
+  - id: product_conditioning
+    name: "Product cooling, crushing, screening, and release"
+    inclusion: "required"
+    inclusion_condition: "Always include; zero-value an operation only with evidence that the saleable product bypasses it"
+    role: "Foreground finishing and factory-gate release"
+    quantitative_reference: "1 kg net saleable other ferro-alloy"
+process_inventory:
+  - id: carbothermic_smelting
+    label: "Carbothermic submerged-arc smelting"
+    inputs:
+      product:
+        - row_id: cb_quartz
+          role: "Quartz feed"
+          name: "Quartz, declared metallurgical grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record quartz only when silica is charged as a reactant for the declared grade."
+          amount:
+            expression: "measured dry or as-received mass with moisture basis retained"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg molten or cast carbothermic route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cb_materials
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+        - row_id: cb_iron_oxide_concentrate
+          role: "Iron oxide concentrate"
+          name: "Iron oxide concentrate, declared grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the chemically declared iron-bearing oxide feed when it crosses the plant boundary."
+          amount:
+            expression: "measured received mass and retained moisture and iron assay"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg molten or cast carbothermic route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cb_materials
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+        - row_id: cb_steel_scrap
+          role: "Steel scrap iron unit"
+          name: "Steel scrap, declared grade and preparation state"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record prepared steel scrap when it supplies iron to the furnace charge."
+          amount:
+            expression: "measured charged mass net of rejected receipts"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg molten or cast carbothermic route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cb_materials
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+        - row_id: cb_metallurgical_coke
+          role: "Metallurgical coke reducer"
+          name: "Metallurgical coke, declared grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record coke as one distinct carbon-reducer input; do not combine it with charcoal, coal, or wood chips."
+          amount:
+            expression: "measured charged mass with moisture, ash, and carbon basis retained"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg molten or cast carbothermic route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cb_materials
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+        - row_id: cb_limestone
+          role: "Limestone flux"
+          name: "Limestone, declared flux grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record limestone when charged as a flux for the declared furnace campaign."
+          amount:
+            expression: "measured charged mass with moisture and carbonate basis retained"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg molten or cast carbothermic route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cb_materials
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+        - row_id: cb_graphite_electrode
+          role: "Graphite electrode consumption"
+          name: "Graphite electrode, declared furnace grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured net consumption of the declared furnace electrode type."
+          amount:
+            expression: "opening stock plus receipts minus closing stock and recoverable remnants"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg molten or cast carbothermic route product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cb_electrodes
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+        - row_id: cb_electricity
+          role: "Furnace electricity"
+          name: "Alternating current, actual site supply"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record electricity delivered to the submerged-arc furnace and its dedicated controls separately from other energy carriers."
+          amount:
+            expression: "metered electricity attributable to the furnace campaign, converted to MJ with the documented conversion rule"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg molten or cast carbothermic route product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cb_electricity
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+        - row_id: cb_cooling_water
+          role: "Cooling-water make-up"
+          name: "Cooling-water make-up, declared source and treatment state"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only make-up water entering the plant system; report recirculation separately in operational metadata without counting it repeatedly as a boundary input."
+          amount:
+            expression: "metered make-up water assigned to the furnace campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg molten or cast carbothermic route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cb_water
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cb_molten_alloy
+          role: "Molten or cast carbothermic ferro-alloy intermediate"
+          name: "Molten or cast other ferro-alloy intermediate, declared grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual declared alloy grade transferred to conditioning, preserving its physical state."
+          amount:
+            expression: "measured transferred mass reconciled to taps and retained inventory"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg molten or cast carbothermic route product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cb_product
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+      waste:
+        - row_id: cb_slag
+          role: "Carbothermic furnace slag"
+          name: "Carbothermic ferro-alloy furnace slag, declared composition"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record slag as waste only when its actual site fate meets the dataset's waste-flow definition; separately disclose internal recycle or sale as a co-product."
+          amount:
+            expression: "measured mass leaving the process by the declared fate"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg molten or cast carbothermic route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cb_residues
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+        - row_id: cb_captured_dust
+          role: "Captured furnace dust"
+          name: "Captured carbothermic ferro-alloy furnace dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record collected particulate removed by baghouse, scrubber, or other primary control with its treatment state and destination."
+          amount:
+            expression: "measured collected mass adjusted for retained moisture when relevant"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg molten or cast carbothermic route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cb_residues
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+      elementary:
+        - row_id: cb_co_air
+          role: "Fossil carbon monoxide to air"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66) / kg; unit group Units of mass (93a60a57-a4c8-11da-a746-0800200c9a66)"
+          description: "Record uncaptured or discharged fossil carbon monoxide after any combustion, recovery, or flare operation. Biogenic carbon monoxide is a distinct exchange and shall not be merged into this row."
+          amount:
+            expression: "monitored or engineering-calculated fossil carbon-monoxide stack and fugitive mass for the campaign"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg molten or cast carbothermic route product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cb_air_emissions
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+        - row_id: cb_co2_air
+          role: "Fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66) / kg; unit group Units of mass (93a60a57-a4c8-11da-a746-0800200c9a66)"
+          description: "Record direct fossil carbon dioxide from metallurgical coke, fossil electrode consumption, and any other declared fossil carbon source. Biogenic carbon dioxide is a distinct exchange and shall not be merged into this row."
+          amount:
+            expression: "monitored or carbon-balance-derived direct fossil carbon-dioxide mass for the campaign"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg molten or cast carbothermic route product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cb_air_emissions
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+  - id: metallothermic_reduction
+    label: "Metallothermic or silicothermic reduction"
+    inputs:
+      product:
+        - row_id: mt_vanadium_pentoxide
+          role: "Vanadium pentoxide feed"
+          name: "Vanadium pentoxide, declared purity and physical state"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record vanadium pentoxide only for a declared ferrovanadium route that consumes it."
+          amount:
+            expression: "measured charged mass and retained assay"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg molten or cast metallothermic route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mt_materials
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+        - row_id: mt_molybdenum_trioxide
+          role: "Molybdenum trioxide feed"
+          name: "Molybdenum trioxide, declared purity and physical state"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record molybdenum trioxide only for a declared ferromolybdenum route that consumes it."
+          amount:
+            expression: "measured charged mass and retained assay"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg molten or cast metallothermic route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mt_materials
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+        - row_id: mt_tungsten_trioxide
+          role: "Tungsten trioxide feed"
+          name: "Tungsten trioxide, declared purity and physical state"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record tungsten trioxide only for a declared ferrotungsten route that consumes it."
+          amount:
+            expression: "measured charged mass and retained assay"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg molten or cast metallothermic route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mt_materials
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+        - row_id: mt_niobium_pentoxide
+          role: "Niobium pentoxide feed"
+          name: "Niobium pentoxide, declared purity and physical state"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record niobium pentoxide only for a declared ferroniobium route that consumes it."
+          amount:
+            expression: "measured charged mass and retained assay"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg molten or cast metallothermic route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mt_materials
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+        - row_id: mt_titanium_dioxide
+          role: "Titanium dioxide feed"
+          name: "Titanium dioxide, declared purity and physical state"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record titanium dioxide-bearing feed only for a declared ferrotitanium route that consumes it."
+          amount:
+            expression: "measured charged mass and retained assay"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg molten or cast metallothermic route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mt_materials
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+        - row_id: mt_aluminium
+          role: "Aluminium reductant"
+          name: "Aluminium metal, declared purity and particle form"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record aluminium as a distinct reducer when used in the declared metallothermic reaction."
+          amount:
+            expression: "measured charged mass"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg molten or cast metallothermic route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mt_materials
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+        - row_id: mt_ferrosilicon_reductant
+          role: "Ferrosilicon reductant"
+          name: "Ferrosilicon, declared silicon and carbon grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record ferrosilicon as a distinct reducer when used in the declared silicothermic reaction."
+          amount:
+            expression: "measured charged mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg molten or cast metallothermic route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mt_materials
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+        - row_id: mt_steel_scrap
+          role: "Steel scrap iron unit"
+          name: "Steel scrap, declared grade and preparation state"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record prepared steel scrap when it supplies iron to the metallothermic charge."
+          amount:
+            expression: "measured charged mass net of rejected receipts"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg molten or cast metallothermic route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mt_materials
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+        - row_id: mt_calcium_oxide
+          role: "Calcium oxide flux"
+          name: "Calcium oxide, declared flux grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record calcium oxide only when it is charged as a flux in the declared reaction."
+          amount:
+            expression: "measured charged mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg molten or cast metallothermic route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mt_materials
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+        - row_id: mt_electricity
+          role: "Auxiliary electricity"
+          name: "Alternating current, actual site supply"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record electricity for charge preparation, preheating, fume extraction, and dedicated route equipment without combining it with fuel."
+          amount:
+            expression: "metered electricity attributable to the metallothermic campaign, converted to MJ with the documented conversion rule"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg molten or cast metallothermic route product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_mt_electricity
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: mt_molten_alloy
+          role: "Molten or cast metallothermic ferro-alloy intermediate"
+          name: "Molten or cast other ferro-alloy intermediate, declared grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual declared alloy grade transferred to conditioning, preserving its physical state."
+          amount:
+            expression: "measured recovered alloy mass reconciled to reaction batches and retained inventory"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg molten or cast metallothermic route product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_mt_product
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+      waste:
+        - row_id: mt_slag
+          role: "Metallothermic reaction slag"
+          name: "Metallothermic ferro-alloy reaction slag, declared composition"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the chemically declared reaction slag according to its actual recycling, sale, treatment, or disposal fate."
+          amount:
+            expression: "measured mass leaving the process by the declared fate"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg molten or cast metallothermic route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mt_residues
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+        - row_id: mt_captured_dust
+          role: "Captured reaction dust"
+          name: "Captured metallothermic ferro-alloy reaction dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record particulate captured from charging, reaction, tapping, and cooling with its actual treatment state and destination."
+          amount:
+            expression: "measured collected mass adjusted for retained moisture when relevant"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg molten or cast metallothermic route product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mt_residues
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+      elementary:
+        []
+  - id: product_conditioning
+    label: "Product cooling, crushing, screening, and release"
+    inputs:
+      product:
+        - row_id: pc_molten_alloy
+          role: "Molten or cast ferro-alloy intermediate"
+          name: "Molten or cast other ferro-alloy intermediate, declared grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the route-linked intermediate entering cooling or finishing; preserve alloy grade and producing process."
+          amount:
+            expression: "measured transferred mass from the declared upstream route"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net saleable other ferro-alloy"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pc_internal_transfer
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+        - row_id: pc_electricity
+          role: "Conditioning electricity"
+          name: "Alternating current, actual site supply"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record electricity for cooling auxiliaries, crushing, screening, conveying, and dedicated dust collection."
+          amount:
+            expression: "metered electricity attributable to product conditioning, converted to MJ with the documented conversion rule"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net saleable other ferro-alloy"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pc_electricity
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_other_ferroalloy
+          role: "Saleable declared-grade other ferro-alloy"
+          name: "Other ferro-alloy, declared grade, at plant"
+          flow_type: "product"
+          property_unit: "Mass (93a60a56-a3c8-11da-a746-0800200b9a66) / kg; unit group Units of mass (93a60a57-a4c8-11da-a746-0800200c9a66)"
+          description: "This is the reference product after acceptance testing and final mass determination."
+          amount:
+            expression: "1 kg net accepted product by definition; collect total campaign output before normalization"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net saleable other ferro-alloy at the factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pc_product_release
+              source_ids:
+                - unstats-cpc-3-2025
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+      waste:
+        - row_id: pc_offspec_scrap
+          role: "Off-spec ferro-alloy scrap"
+          name: "Off-spec other ferro-alloy scrap, declared grade"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected or off-size alloy as waste only when it leaves internal recycling and meets the declared waste-flow status."
+          amount:
+            expression: "measured mass by actual internal recycle, external recycling, sale, or disposal fate"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net saleable other ferro-alloy"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pc_residues
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+        - row_id: pc_captured_dust
+          role: "Captured crushing and screening dust"
+          name: "Captured other ferro-alloy crushing and screening dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record dust collected from product breaking, crushing, screening, transfer, and storage with its actual fate."
+          amount:
+            expression: "measured collected mass attributable to the declared product campaign"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg net saleable other ferro-alloy"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pc_residues
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+      elementary:
+        - row_id: pc_pm10_air
+          role: "Residual PM10 to air"
+          name: "Particulate matter, PM10, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record residual particulate matter no greater than 10 micrometres discharged after conditioning dust controls."
+          amount:
+            expression: "monitored or engineering-calculated discharged mass attributable to the declared campaign"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg net saleable other ferro-alloy"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pc_air_emissions
+              source_ids:
+                - us-epa-ap42-ferroalloy-1995
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "route and campaign inventories"
+    rule: "Avoid allocation by separate metering and subdivision of carbothermic, metallothermic, remelting, and conditioning operations wherever records permit."
+    source_ids: []
+  - rule_id: allocation_internal_recycling
+    applies_to: "internally recycled alloy, slag, and dust"
+    rule: "Keep burdens and credits for material recycled within the foreground system inside that system; do not create an exported co-product for an internal transfer."
+    source_ids:
+      - us-epa-ap42-ferroalloy-1995
+  - rule_id: allocation_exported_coproduct
+    applies_to: "sold slag, recovered furnace gas, or other exported co-product"
+    rule: "Apply documented physical causality when measurable; otherwise allocate unresolved shared burdens by dry mass, report the sensitivity, and disclose product prices without using them silently as the default basis."
+    source_ids:
+      - us-epa-ap42-ferroalloy-1995
+  - rule_id: allocation_shared_services
+    applies_to: "shared electricity, water, extraction, and conditioning services"
+    rule: "Allocate measured shared services by causal meter, operating time, gas volume, or equipment throughput; use product mass only when no more causal record exists and disclose the affected share."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_cb_materials
+      process_id: "carbothermic_smelting"
+      flow_role: "charge materials"
+      record_type: "weighbridge, batch sheet, receipt assay"
+      raw_fields: "material identity; supplier; lot; wet mass; moisture; assay; charged mass; returns"
+      collection_method: "reconcile receipts, stock change, and furnace batch sheets"
+      unit: "kg"
+      frequency: "each receipt and charge"
+      temporal_coverage: "complete declared campaign or annual period"
+      site_scope: "all carbothermic furnaces in scope"
+      aggregation_rule: "sum charged mass by atomic material and divide by route output"
+      quality_evidence: "calibrated scales, supplier certificates, moisture and assay records"
+    - protocol_id: cp_cb_electrodes
+      process_id: "carbothermic_smelting"
+      flow_role: "graphite electrode"
+      record_type: "inventory and maintenance log"
+      raw_fields: "opening stock; receipts; closing stock; recoverable remnants; electrode grade"
+      collection_method: "stock-balance calculation"
+      unit: "kg"
+      frequency: "each reporting period"
+      temporal_coverage: "same period as furnace output"
+      site_scope: "all carbothermic furnaces in scope"
+      aggregation_rule: "net consumed mass divided by route output"
+      quality_evidence: "stock count, purchase records, maintenance log"
+    - protocol_id: cp_cb_electricity
+      process_id: "carbothermic_smelting"
+      flow_role: "furnace electricity"
+      record_type: "revenue or submeter record"
+      raw_fields: "meter id; opening and closing reading; losses; campaign assignment; supplier mix"
+      collection_method: "calibrated meter reading"
+      unit: "kWh"
+      frequency: "continuous or per batch"
+      temporal_coverage: "same period as furnace output"
+      site_scope: "furnace and dedicated controls"
+      aggregation_rule: "sum attributable readings and divide by route output"
+      quality_evidence: "meter calibration and reconciliation to site invoice"
+    - protocol_id: cp_cb_water
+      process_id: "carbothermic_smelting"
+      flow_role: "cooling-water make-up"
+      record_type: "water submeter and treatment log"
+      raw_fields: "source; treatment state; make-up volume or mass; blowdown; recirculation"
+      collection_method: "submeter reading and water balance"
+      unit: "kg"
+      frequency: "daily or continuous"
+      temporal_coverage: "same period as furnace output"
+      site_scope: "furnace cooling system"
+      aggregation_rule: "count only boundary make-up and divide by route output"
+      quality_evidence: "meter calibration and water-balance closure"
+    - protocol_id: cp_cb_product
+      process_id: "carbothermic_smelting"
+      flow_role: "molten or cast route product"
+      record_type: "tap, ladle, casting, and stock record"
+      raw_fields: "alloy grade; tap mass; transfer mass; assay; inventory change"
+      collection_method: "reconcile taps, transfers, and inventory"
+      unit: "kg"
+      frequency: "each tap or batch"
+      temporal_coverage: "complete declared campaign"
+      site_scope: "all carbothermic route output"
+      aggregation_rule: "net transferred grade-specific mass"
+      quality_evidence: "scale calibration, assay certificate, signed production log"
+    - protocol_id: cp_cb_residues
+      process_id: "carbothermic_smelting"
+      flow_role: "slag and captured dust"
+      record_type: "container, skip, weighbridge, and destination record"
+      raw_fields: "residue identity; mass; moisture; composition; destination; internal recycle"
+      collection_method: "direct weighing and destination reconciliation"
+      unit: "kg"
+      frequency: "each movement"
+      temporal_coverage: "same period as furnace output"
+      site_scope: "all route residue destinations"
+      aggregation_rule: "sum by atomic residue and fate"
+      quality_evidence: "scale tickets, laboratory composition, transfer manifest"
+    - protocol_id: cp_cb_air_emissions
+      process_id: "carbothermic_smelting"
+      flow_role: "carbon monoxide and carbon dioxide"
+      record_type: "CEMS, stack test, gas-use, flare, and carbon-balance record"
+      raw_fields: "gas flow; concentration; temperature; pressure; moisture; oxygen; operating time; carbon source; recovery and flare"
+      collection_method: "validated monitoring or documented mass balance"
+      unit: "kg"
+      frequency: "continuous or campaign-representative test"
+      temporal_coverage: "same period as furnace output"
+      site_scope: "stacks and material fugitive sources in scope"
+      aggregation_rule: "calculate each pollutant separately and divide by route output"
+      quality_evidence: "calibration gas, stack-test report, uncertainty and data-coverage statement"
+    - protocol_id: cp_mt_materials
+      process_id: "metallothermic_reduction"
+      flow_role: "oxide feeds, reducers, iron units, and flux"
+      record_type: "batch sheet, receipt assay, and scale record"
+      raw_fields: "material identity; purity; physical state; lot; charged mass; returns"
+      collection_method: "batch-scale record reconciled to receipts and stock"
+      unit: "kg"
+      frequency: "each reaction batch"
+      temporal_coverage: "complete declared campaign"
+      site_scope: "all metallothermic vessels in scope"
+      aggregation_rule: "sum each atomic material and divide by route output"
+      quality_evidence: "calibrated scales, supplier assay, batch authorization"
+    - protocol_id: cp_mt_electricity
+      process_id: "metallothermic_reduction"
+      flow_role: "auxiliary electricity"
+      record_type: "submeter or equipment-hour record"
+      raw_fields: "meter reading; equipment load; operating time; campaign assignment; supplier mix"
+      collection_method: "direct metering, or documented load-time calculation when unmetered"
+      unit: "kWh"
+      frequency: "each batch or reporting period"
+      temporal_coverage: "same period as reaction output"
+      site_scope: "dedicated preparation, extraction, and handling equipment"
+      aggregation_rule: "sum attributable electricity and divide by route output"
+      quality_evidence: "meter calibration or equipment specification and operating log"
+    - protocol_id: cp_mt_product
+      process_id: "metallothermic_reduction"
+      flow_role: "molten or cast route product"
+      record_type: "batch yield, tap, casting, and assay record"
+      raw_fields: "alloy grade; recovered mass; retained metal; assay; inventory change"
+      collection_method: "reconcile reaction batches and recovered alloy"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "complete declared campaign"
+      site_scope: "all metallothermic route output"
+      aggregation_rule: "net transferred grade-specific mass"
+      quality_evidence: "calibrated scales, assay certificate, signed batch record"
+    - protocol_id: cp_mt_residues
+      process_id: "metallothermic_reduction"
+      flow_role: "reaction slag and captured dust"
+      record_type: "container, weighbridge, and destination record"
+      raw_fields: "residue identity; mass; moisture; composition; destination; internal recycle"
+      collection_method: "direct weighing and destination reconciliation"
+      unit: "kg"
+      frequency: "each movement"
+      temporal_coverage: "same period as reaction output"
+      site_scope: "all route residue destinations"
+      aggregation_rule: "sum by atomic residue and fate"
+      quality_evidence: "scale tickets, laboratory composition, transfer manifest"
+    - protocol_id: cp_pc_internal_transfer
+      process_id: "product_conditioning"
+      flow_role: "incoming alloy intermediate"
+      record_type: "transfer and inventory record"
+      raw_fields: "source process; grade; physical state; transfer mass; beginning and ending inventory"
+      collection_method: "reconcile route outputs with conditioning receipts"
+      unit: "kg"
+      frequency: "each transfer"
+      temporal_coverage: "complete declared campaign"
+      site_scope: "all conditioning lines in scope"
+      aggregation_rule: "net grade-specific mass entering conditioning"
+      quality_evidence: "scale calibration and cross-process reconciliation"
+    - protocol_id: cp_pc_electricity
+      process_id: "product_conditioning"
+      flow_role: "conditioning electricity"
+      record_type: "submeter or equipment-hour record"
+      raw_fields: "meter reading; line; operating time; product grade; supplier mix"
+      collection_method: "direct metering, or documented load-time calculation when unmetered"
+      unit: "kWh"
+      frequency: "continuous or each shift"
+      temporal_coverage: "same period as saleable output"
+      site_scope: "cooling, crushing, screening, conveying, and dedicated controls"
+      aggregation_rule: "sum attributable electricity and divide by accepted product"
+      quality_evidence: "meter calibration or equipment specification and operating log"
+    - protocol_id: cp_pc_product_release
+      process_id: "product_conditioning"
+      flow_role: "saleable product"
+      record_type: "packing, dispatch, stock, and quality-release record"
+      raw_fields: "grade; lot; gross mass; packaging tare; net mass; assay; particle size; moisture; release status"
+      collection_method: "reconcile accepted net mass, dispatch, and stock change"
+      unit: "kg"
+      frequency: "each released lot"
+      temporal_coverage: "complete declared campaign"
+      site_scope: "all product release points"
+      aggregation_rule: "sum accepted net product by declared grade"
+      quality_evidence: "calibrated scales, laboratory certificate, release authorization"
+    - protocol_id: cp_pc_residues
+      process_id: "product_conditioning"
+      flow_role: "off-spec scrap and captured dust"
+      record_type: "rejection, container, weighbridge, and destination record"
+      raw_fields: "residue identity; grade; mass; moisture; destination; internal recycle"
+      collection_method: "direct weighing and fate reconciliation"
+      unit: "kg"
+      frequency: "each movement"
+      temporal_coverage: "same period as saleable output"
+      site_scope: "all conditioning residue destinations"
+      aggregation_rule: "sum by atomic residue and fate"
+      quality_evidence: "scale tickets, rejection record, transfer manifest"
+    - protocol_id: cp_pc_air_emissions
+      process_id: "product_conditioning"
+      flow_role: "PM10"
+      record_type: "stack test, dust-control, and operating record"
+      raw_fields: "gas flow; PM10 concentration; operating time; control status; material throughput"
+      collection_method: "validated stack test or engineering calculation tied to actual control operation"
+      unit: "kg"
+      frequency: "campaign-representative test and each control-state change"
+      temporal_coverage: "same period as saleable output"
+      site_scope: "conditioning exhausts and identified fugitive sources"
+      aggregation_rule: "calculate discharged PM10 and divide by accepted product"
+      quality_evidence: "stack-test report, control-maintenance log, uncertainty statement"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "Divide each period-total exchange by accepted net mass of the same declared product grade; keep unlike grades or routes separate unless a documented allocation rule is applied."
+      inputs:
+        - "period exchange"
+        - "accepted net product mass"
+        - grade
+        - route
+      output: "exchange per 1 kg reference product"
+      source_ids: []
+    - id: calc_stock_balance
+      applies_to: "electrodes and stored materials"
+      rule: "Consumption = opening stock + receipts - closing stock - externally returned or transferred material; reconcile unexplained loss."
+      inputs:
+        - "opening stock"
+        - receipts
+        - "closing stock"
+        - returns
+        - transfers
+      output: "net consumed mass"
+      source_ids: []
+    - id: calc_carbon_emissions
+      applies_to: "direct carbon monoxide and carbon dioxide"
+      rule: "Use validated concentration-and-flow monitoring or a documented carbon balance; subtract recovered or exported carbon-containing gas only when measured and avoid double counting subsequent combustion."
+      inputs:
+        - "gas flow"
+        - concentration
+        - time
+        - moisture
+        - oxygen
+        - "carbon input"
+        - "recovered gas"
+        - "flare records"
+      output: "separate direct CO and CO2 masses"
+      source_ids:
+        - us-epa-ap42-ferroalloy-1995
+    - id: calc_mass_reconciliation
+      applies_to: "each route and conditioning"
+      rule: "Compare total measured mass inputs with product, internal transfers, residues, measured emissions, and inventory change; retain the imbalance and its investigation rather than forcing closure."
+      inputs:
+        - "material inputs"
+        - products
+        - residues
+        - "measured emissions"
+        - "inventory changes"
+      output: "documented route mass-balance residual"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Identify one alloy grade, chemical assay, carbon content, physical form, particle-size class, and acceptance specification."
+      evidence: "lot release and laboratory certificates"
+    - id: dq_route_identity
+      applies_to: "all foreground processes"
+      requirement: "Identify the reduction or remelting route, furnace or vessel type, enclosure and gas-control configuration, and material preparation performed onsite."
+      evidence: "process flow diagram, equipment register, campaign log"
+    - id: dq_temporal_alignment
+      applies_to: "all exchanges"
+      requirement: "Use the same reporting period for material, energy, production, residue, and emission records; disclose gaps, shutdowns, and abnormal campaigns."
+      evidence: "period reconciliation and coverage statement"
+    - id: dq_geographic_technology
+      applies_to: "upstream links"
+      requirement: "Select supplier datasets that match the declared geography, technology, product state, and grade; document any unresolved identity instead of silently using a proxy."
+      evidence: "supplier metadata and UUID audit record"
+    - id: dq_completeness
+      applies_to: "inventory"
+      requirement: "Include each actually used material, energy carrier, waste, and direct emission as one atomic row and reconcile it to source records."
+      evidence: "signed completeness checklist and mass or energy reconciliation"
+    - id: dq_uncertainty
+      applies_to: "calculated and monitored values"
+      requirement: "Retain meter, assay, sampling, emission-test, allocation, and data-gap uncertainty and state how it affects the normalized result."
+      evidence: "calibration, laboratory QA, stack-test QA, and uncertainty statement"
+validation_rules:
+  - rule_id: validation_identity
+    applies_to: "product category"
+    rule: "Reject a data package that omits the alloy grade, composition, carbon content, route, physical form, or factory-gate state."
+    source_ids:
+      - unstats-cpc-3-2025
+  - rule_id: validation_exclusions
+    applies_to: "product category"
+    rule: "Reject use of this PCR for ferro-manganese, ferro-chromium, ferro-nickel, pig iron, directly reduced iron, iron or steel powder, crude steel, or a pure alloying metal."
+    source_ids:
+      - unstats-cpc-3-2025
+  - rule_id: validation_reference_mass
+    applies_to: "reference flow"
+    rule: "Confirm that normalized output equals 1 kg net accepted product and excludes packaging tare."
+    source_ids: []
+  - rule_id: validation_route_processes
+    applies_to: "process map"
+    rule: "Require the applicable production route plus product conditioning; explain every omitted normally associated operation."
+    source_ids:
+      - us-epa-ap42-ferroalloy-1995
+  - rule_id: validation_atomic_inventory
+    applies_to: "inventory"
+    rule: "Reject combined utilities, fuels, raw materials, wastes, or emissions; each row must identify one physical or chemical exchange."
+    source_ids: []
+  - rule_id: validation_internal_transfers
+    applies_to: "route and conditioning links"
+    rule: "Confirm that grade-specific upstream route output equals conditioning input after documented inventory change and loss."
+    source_ids: []
+  - rule_id: validation_offgas_residues
+    applies_to: "direct emissions and wastes"
+    rule: "Confirm that carbon monoxide, carbon dioxide, slag, captured dust, PM10, and off-spec product are reported when applicable and their actual recovery, reuse, sale, or disposal fate is declared."
+    source_ids:
+      - us-epa-ap42-ferroalloy-1995
+  - rule_id: validation_uuid_status
+    applies_to: "all UUID-bearing rows"
+    rule: "Accept only directly audited public Tiangong state-code-100 identities whose names, flow type, classification, property, unit group, product state, geography, technology, and comments match the row."
+    source_ids: []
+  - rule_id: validation_range_evidence
+    applies_to: "quantitative QA ranges"
+    rule: "Do not infer an external range from fewer than two independent original-text sources with compatible boundary, functional unit, and product state; omit the range and preserve the foreground collection requirement when evidence is insufficient."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Grade-, route-, site-, and period-specific foreground production dataset eligible for later publication after methodology and identity review"
+  downstream_use: "Secondary dataset or background dataset for systems consuming a declared other ferro-alloy at the producing plant gate"
+  allowed_use: "Studies whose alloy grade, physical form, geography, production route, electricity supply, carbon-source origin, and residue treatment are compatible or explicitly adjusted"
+  excluded_use: "Unspecified average ferro-alloy; separately classified ferro-manganese, ferro-chromium, or ferro-nickel; pure alloying metal; downstream steelmaking; a different route or grade without documented representativeness"
+  required_metadata: "PCR id and version; product and grade; composition and carbon content; form and particle size; route and equipment; plant geography; reporting period; production volume; electricity supply; reducer origin; off-gas, slag, dust, and off-spec-product fate; allocation; UUID audit status"
+  required_quality_disclosure: "Primary-data coverage; meter and assay QA; stack-test or calculation basis; mass-balance residual; allocation shares; upstream dataset representativeness; unresolved UUIDs and range-evidence needs; uncertainty and data gaps"
+  update_trigger: "Change in alloy grade or specification, production route, furnace or controls, electricity supply, reducer origin, residue fate, allocation, plant geography, or a material shift in inputs, emissions, or production efficiency"
+data_sources:
+  - id: "unstats-cpc-3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure and Explanatory Notes, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv and https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-09-04)"
+    used_for: "Official product classification identity and residual boundary relative to separately listed ferro-manganese, ferro-chromium, and ferro-nickel"
+  - id: "us-epa-ap42-ferroalloy-1995"
+    type: "official_guidance"
+    reference: "U.S. Environmental Protection Agency, AP-42 Section 12.4 Ferroalloy Production, October 1986, reformatted January 1995, https://www.epa.gov/sites/production/files/2020-11/documents/c12s04.pdf (retrieved 2026-09-04)"
+    used_for: "Ferro-alloy definition, submerged-arc and metallothermic route decomposition, raw-material preparation, tapping and conditioning, slag and dust handling, and direct air-emission coverage"
+  - id: "cn-mofcom-ferroalloy-2009"
+    type: "official_guidance"
+    reference: "Ministry of Commerce of the People's Republic of China, Announcement No. 93 of 2009 and annexed ferro-alloy export enterprise categories, https://www.mofcom.gov.cn/zcfb/blgg/art/2009/art_25c5e2496e634d28b4ba58211d059275.html (retrieved 2026-09-04)"
+    used_for: "Verification of professional Chinese ferro-alloy terminology, including “其他铁合金” and names of representative alloy families"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:5c7b3f1dbc960afae679958d5f6e9b93a69fae1d7fcb25e86b093038f35ef47f"
+  generated_content_sha256: "sha256:10794e354cbbede97ec05234d0e5682c7424c34e86a3bcf002ed9f5dc398de18"

@@ -1,10 +1,1205 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "46430"
-  title: "Parts of primary cells, primary batteries and electric accumulators (including separators)"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.electrical-machinery-and-apparatus.parts-of-primary-cells-primary-batteries-and-electric-accumulators-including-separators"
+  classification_refs: "CPC 3.0: 46430, exact classification context"
+  covered_products: "Separately marketed battery separators; coated positive or negative electrodes; lead-acid grids and pasted or formed plates; other dedicated ready-for-assembly parts only when an exact product flow and route-specific inventory are supplied"
+  excluded_products: "Complete primary cells, primary batteries, and electric accumulators; upstream active-material powders sold as chemicals; generic metal or plastic articles without demonstrated battery dedication; electrolyte sold separately; battery-management systems; production scrap sold or transferred as waste; repair services"
+  representative_product: "Microporous polyolefin battery separator, dry and released for battery assembly"
+  production_route: "Conditional polyolefin-separator conversion, lithium-ion electrode coating and finishing, or lead-acid grid/plate manufacture; the selected route and technology shall be declared"
+  market_state: "Conforming, separately supplied, ready-for-assembly part at the manufacturing gate; dry, dimensions and specification declared"
+functional_unit:
+  what: "A conforming microporous battery separator released for assembly into a declared cell or battery system"
+  how_much: "1 kg net dry mass of accepted separator product, excluding outbound distribution packaging"
+  how_well: "Meets the producer's declared material construction, thickness, porosity, mechanical, thermal, cleanliness, and compatibility specifications; rejected product is excluded from the reference amount"
+  how_long_or_cycle: "One production reporting period, with lot and campaign coverage disclosed"
+  reference_flow_link: "The accepted output separator_product normalized to 1 kg"
+system_boundary:
+  rules:
+    - rule_id: boundary_route_selection
+      applies_to: "all foreground data packages"
+      rule: "Include exactly the route-specific processes and atomic exchanges that physically occur for the declared part; do not combine separator, lithium-ion electrode, and lead-acid grid/plate routes into an average unless a documented product mix and common reference product justify aggregation."
+      source_ids:
+        - mun-won-polyolefin-separator-manufacturing-2021
+        - hawley-li-ion-electrode-manufacturing-2019
+        - us-epa-ap42-storage-battery-production-1995
+    - rule_id: boundary_upstream_inputs
+      applies_to: "purchased materials and utilities"
+      rule: "End the foreground boundary at receipt of purchased inputs and link each input to an upstream dataset; do not reproduce upstream polymerization, mining, refining, active-material synthesis, metal production, electricity generation, gas supply, or water supply inside the foreground route."
+      source_ids: []
+    - rule_id: boundary_controls_and_recovery
+      applies_to: "solvent recovery and air-pollution controls"
+      rule: "Include energy, water, recovered material, captured waste, and residual direct emissions from on-site recovery and control equipment when that equipment serves the selected route."
+      source_ids:
+        - hawley-li-ion-electrode-manufacturing-2019
+        - us-epa-ap42-storage-battery-production-1995
+    - rule_id: boundary_complete_battery_exclusion
+      applies_to: "downstream assembly"
+      rule: "Exclude cell stacking or winding, complete battery assembly, electrolyte filling of complete cells, formation of complete batteries, use, and end-of-life unless the declared product is itself the corresponding separately supplied part and the operation occurs before its release gate."
+      source_ids:
+        - un-cpc-3-0-2025
+boundary_abstraction:
+  declared_starting_condition: "Purchased polymers, metals, active materials, binders, solvents, chemicals, water, fuels, and electricity are received at the battery-part manufacturing facility with specification and supplier identity records."
+  starting_condition_role: "Upstream product inputs to route-specific foreground conversion"
+  product_classification_scope: "Separately supplied ready-for-assembly parts of primary cells, primary batteries, and electric accumulators, with a confirmed reference object for battery separators"
+  recursive_input_rule: "A purchased item already within this product category is recorded once as an upstream product input with its exact part identity; do not recursively include its manufacture inside the same foreground process unless the facility performs that manufacture and records it as a separate subprocess."
+  upstream_dataset_requirement: "Use supplier- and geography-specific upstream datasets when available; otherwise disclose proxy geography, technology, product state, recycled content, and any missing supplier data."
+  disclosure: "Declare part family, chemistry, route, included operations, purchased-versus-on-site material preparation, solvent recovery, emission controls, scrap destination, accepted-output mass, exclusions, and any added packaging or transport."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Battery Separator"
+    uuid: "e99018c0-aaf6-4f02-81cd-3dadeda4fabb"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "part family"
+    - "primary or rechargeable battery application"
+    - "electrochemical system"
+    - "separator polymer and layer construction"
+    - "coating material and coating status"
+    - "dry or wet separator process"
+    - thickness
+    - "porosity or air-permeability specification"
+    - "width and delivery form"
+    - "accepted-product moisture basis"
+    - "recycled-content claim"
+    - "production geography"
+    - technology
+    - "reporting period"
+    - "allocation method"
+    - "packaging exclusion or inclusion"
+reference_flows:
+  []
+measurement_rules:
+  - id: measurement_reference_mass
+    applies_to: "reference product and all mass-normalized rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize exchanges to 1 kg net dry mass of accepted product. Record moisture or retained process-oil basis where it affects measured mass, and do not include rejected material or distribution packaging in the denominator."
+  - id: measurement_electricity
+    applies_to: "electricity rows"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electrical energy and convert to MJ using 1 kWh = 3.6 MJ; declare meter boundary and any submeter allocation."
+  - id: measurement_natural_gas
+    applies_to: "natural-gas rows"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report gas volume at the supplier or meter reference conditions and declare temperature, pressure, and whether the value is standard or actual volume."
+  - id: measurement_solutions
+    applies_to: "sulfuric acid, NMP, liquid paraffin, and process-water rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record gross purchased or replenishment mass crossing the boundary and separately declare concentration, purity, recovered fraction, and retained or evaporated fraction where applicable."
+process_map:
+  - id: separator_manufacturing
+    name: "Microporous polyolefin separator manufacture"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the reference product is a polyolefin battery separator; choose dry PP, wet PE, multilayer, and ceramic-coating operations according to the declared technology."
+    role: "Foreground film conversion, pore formation, coating, finishing, and release"
+    quantitative_reference: "1 kg accepted dry separator"
+  - id: lithium_ion_electrode_manufacturing
+    name: "Lithium-ion electrode manufacture"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the product is a separately supplied coated lithium-ion anode or cathode; record only the declared polarity, chemistry, solvent, and current collector."
+    role: "Foreground slurry preparation, coating, drying, solvent recovery, calendaring, slitting, and release"
+    quantitative_reference: "1 kg accepted dry electrode"
+  - id: lead_acid_grid_plate_manufacturing
+    name: "Lead-acid grid or plate manufacture"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the product is a separately supplied lead-acid grid or pasted/formed plate; distinguish cast or stamped grid and pasted or formed plate state."
+    role: "Foreground alloy melting, casting or stamping, paste preparation, pasting, curing, optional formation, finishing, and release"
+    quantitative_reference: "1 kg accepted grid or plate"
+process_inventory:
+  - id: separator_manufacturing
+    label: "Microporous polyolefin separator manufacture"
+    inputs:
+      product:
+        - row_id: separator_polyethylene
+          role: "Polyethylene resin"
+          name: "polyethylene"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f4dfd1a4-b24e-471e-bd21-04ad7a45ea52"
+          property_unit: "Mass / kg"
+          description: "Record polyethylene in primary form when the declared separator uses a PE wet-process or PE-containing multilayer route."
+          amount:
+            expression: "measured net polyethylene charged to the route, including startup material and losses"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted separator"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separator_records
+              source_ids:
+                - mun-won-polyolefin-separator-manufacturing-2021
+            ranges: []
+        - row_id: separator_polypropylene
+          role: "Polypropylene resin"
+          name: "Polypropylene resin"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record separator-grade polypropylene in primary form only for dry PP or PP-containing multilayer routes; the exact Tiangong UUID remains unresolved."
+          amount:
+            expression: "measured net polypropylene charged to the route, including startup material and losses"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted separator"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separator_records
+              source_ids:
+                - mun-won-polyolefin-separator-manufacturing-2021
+            ranges: []
+        - row_id: separator_liquid_paraffin
+          role: "Liquid paraffin process oil"
+          name: "Liquid paraffin process oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record liquid paraffin used as the pore-forming diluent only for a wet separator process; do not substitute paraffin wax or generic mineral oil."
+          amount:
+            expression: "measured fresh and make-up liquid paraffin entering the foreground boundary"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted separator"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separator_records
+              source_ids:
+                - mun-won-polyolefin-separator-manufacturing-2021
+            ranges: []
+        - row_id: separator_aluminium_oxide
+          role: "Aluminium oxide coating powder"
+          name: "Aluminium oxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1ab686e8-5888-4f37-8fe7-3030773ddc9e"
+          property_unit: "Mass / kg"
+          description: "Record aluminium oxide only when an alumina-coated separator is produced; declare purity, particle specification, and whether the material is supplied in a coating formulation."
+          amount:
+            expression: "measured dry aluminium oxide entering the coating operation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted separator"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separator_records
+              source_ids:
+                - mun-won-polyolefin-separator-manufacturing-2021
+            ranges: []
+        - row_id: separator_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity for extrusion, stretching, extraction, coating, drying, winding, ventilation, and route-dedicated auxiliaries."
+          amount:
+            expression: "measured route electricity at the declared meter boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted separator"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separator_records
+              source_ids:
+                - mun-won-polyolefin-separator-manufacturing-2021
+            ranges: []
+        - row_id: separator_process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water that crosses the boundary for cooling, washing, extraction support, or coating preparation; exclude closed-loop recirculation that does not cross the boundary."
+          amount:
+            expression: "measured fresh and make-up process water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted separator"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separator_records
+              source_ids:
+                - mun-won-polyolefin-separator-manufacturing-2021
+            ranges: []
+        - row_id: separator_natural_gas
+          role: "Natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas only when it is burned on site for route-dedicated thermal duty; exclude upstream fuel-supply emissions from direct elementary outputs."
+          amount:
+            expression: "measured natural gas delivered to route-dedicated heaters or allocated from a documented common meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted separator"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separator_records
+              source_ids:
+                - mun-won-polyolefin-separator-manufacturing-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: separator_product
+          role: "Accepted battery separator"
+          name: "Battery Separator"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e99018c0-aaf6-4f02-81cd-3dadeda4fabb"
+          property_unit: "Mass / kg"
+          description: "Record only separator mass that passes release inspection. Startup web, edge trim, and rejected rolls are excluded from this output."
+          amount:
+            expression: "accepted net dry separator mass normalized to exactly 1 kg"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg accepted separator"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_separator_records
+              source_ids:
+                - mun-won-polyolefin-separator-manufacturing-2021
+            ranges: []
+      waste:
+        - row_id: separator_pe_offcut_waste
+          role: "Polyethylene separator offcut scrap"
+          name: "Polyethylene battery separator offcut scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record dry PE startup web, edge trim, and rejected separator only when transferred out of the process as a distinct solid waste stream; declare contamination state."
+          amount:
+            expression: "weighed PE separator offcut and reject mass leaving the foreground process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted separator"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separator_records
+              source_ids:
+                - mun-won-polyolefin-separator-manufacturing-2021
+            ranges: []
+        - row_id: separator_pp_offcut_waste
+          role: "Polypropylene separator offcut scrap"
+          name: "Polypropylene battery separator offcut scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record dry PP startup web, edge trim, and rejected separator only when transferred out of the process as a distinct solid waste stream; declare contamination state."
+          amount:
+            expression: "weighed PP separator offcut and reject mass leaving the foreground process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted separator"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separator_records
+              source_ids:
+                - mun-won-polyolefin-separator-manufacturing-2021
+            ranges: []
+      elementary:
+        - row_id: separator_carbon_dioxide
+          role: "Fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record measured direct fossil carbon dioxide from on-site natural-gas combustion serving this route; do not include upstream electricity or fuel-supply emissions."
+          amount:
+            expression: "measured or facility-verified direct stack emission allocated to the separator route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted separator"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separator_records
+              source_ids: []
+            ranges: []
+  - id: lithium_ion_electrode_manufacturing
+    label: "Lithium-ion electrode manufacture"
+    inputs:
+      product:
+        - row_id: electrode_nickel_rich_nmc
+          role: "Nickel-rich NMC cathode active material"
+          name: "Ni-rich NMC"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f9e483f6-34da-43a9-bb96-c86bca4b494b"
+          property_unit: "Mass / kg"
+          description: "Record this input only for a declared nickel-rich NMC cathode; do not use it for other cathode chemistries."
+          amount:
+            expression: "measured dry active material charged to cathode slurry or dry-electrode mixing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted electrode"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_records
+              source_ids:
+                - hawley-li-ion-electrode-manufacturing-2019
+            ranges: []
+        - row_id: electrode_graphite_powder
+          role: "Graphite active-material powder"
+          name: "Battery-grade graphite active-material powder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record battery-grade graphite powder only for a graphite negative-electrode route; the exact Tiangong UUID remains unresolved."
+          amount:
+            expression: "measured dry graphite powder charged to anode slurry or dry-electrode mixing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted electrode"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_records
+              source_ids:
+                - hawley-li-ion-electrode-manufacturing-2019
+            ranges: []
+        - row_id: electrode_carbon_black
+          role: "Carbon black conductive additive"
+          name: "Carbon black"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record carbon black used as a conductive additive; do not combine it with active material or binder."
+          amount:
+            expression: "measured dry carbon black charged to electrode mixing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted electrode"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_records
+              source_ids:
+                - hawley-li-ion-electrode-manufacturing-2019
+            ranges: []
+        - row_id: electrode_pvdf
+          role: "PVDF binder"
+          name: "Polyvinylidene Fluoride（PVDF）"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f7f888c7-9524-4326-9a36-86f91e184a0b"
+          property_unit: "Mass / kg"
+          description: "Record PVDF only when the declared electrode formulation uses this binder."
+          amount:
+            expression: "measured dry PVDF binder charged to mixing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted electrode"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_records
+              source_ids:
+                - hawley-li-ion-electrode-manufacturing-2019
+            ranges: []
+        - row_id: electrode_nmp
+          role: "NMP solvent"
+          name: "N-Methyl-2-pyrrolidone (NMP)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5c41bfdd-a740-4672-aa66-88df7ea25f81"
+          property_unit: "Mass / kg"
+          description: "Record gross fresh and make-up NMP entering the foreground boundary for an NMP-based wet coating route; separately record recovery and residual air release."
+          amount:
+            expression: "measured purchased and make-up NMP crossing the foreground boundary"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted electrode"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_records
+              source_ids:
+                - hawley-li-ion-electrode-manufacturing-2019
+            ranges: []
+        - row_id: electrode_aluminium_foil
+          role: "Aluminium current-collector foil"
+          name: "Aluminum foil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d3e373a5-987f-4e3a-9f5b-8feaa9aa01e2"
+          property_unit: "Mass / kg"
+          description: "Record aluminium foil only for an electrode manufactured on aluminium current collector; declare alloy, thickness, and surface treatment."
+          amount:
+            expression: "measured aluminium foil issued to coating, including edge trim and startup losses"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted electrode"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_records
+              source_ids:
+                - hawley-li-ion-electrode-manufacturing-2019
+            ranges: []
+        - row_id: electrode_copper_foil
+          role: "Copper current-collector foil"
+          name: "Copper Foil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2e6d00db-7f50-43db-b13d-f8d4c14e51c5"
+          property_unit: "Mass / kg"
+          description: "Record copper foil only for an electrode manufactured on copper current collector; declare thickness, temper, and surface treatment."
+          amount:
+            expression: "measured copper foil issued to coating, including edge trim and startup losses"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted electrode"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_records
+              source_ids:
+                - hawley-li-ion-electrode-manufacturing-2019
+            ranges: []
+        - row_id: electrode_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity for mixing, coating, drying, solvent recovery, calendaring, slitting, ventilation, dry-room service allocated to this route, and inspection."
+          amount:
+            expression: "measured route electricity at the declared meter boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted electrode"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_records
+              source_ids:
+                - hawley-li-ion-electrode-manufacturing-2019
+            ranges: []
+        - row_id: electrode_process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record water crossing the boundary for aqueous slurry, equipment cleaning, cooling make-up, or control equipment; declare its role."
+          amount:
+            expression: "measured fresh and make-up process water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted electrode"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_records
+              source_ids:
+                - hawley-li-ion-electrode-manufacturing-2019
+            ranges: []
+        - row_id: electrode_natural_gas
+          role: "Natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas only when burned on site for electrode drying or solvent recovery."
+          amount:
+            expression: "measured natural gas delivered to route-dedicated thermal equipment or allocated from a documented common meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted electrode"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_records
+              source_ids:
+                - hawley-li-ion-electrode-manufacturing-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: electrode_graphite_anode_product
+          role: "Accepted graphite anode"
+          name: "Graphite Anode"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ec5373c5-73d9-4831-9cb3-374ed54dba65"
+          property_unit: "Mass / kg"
+          description: "Record this output only for a conforming graphite negative electrode released ready for battery assembly."
+          amount:
+            expression: "accepted net dry electrode mass normalized to exactly 1 kg"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg accepted graphite anode"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_electrode_records
+              source_ids:
+                - hawley-li-ion-electrode-manufacturing-2019
+            ranges: []
+        - row_id: electrode_cathode_product
+          role: "Accepted lithium-ion cathode"
+          name: "Ready-for-assembly lithium-ion battery cathode"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this output only for a conforming coated cathode released ready for battery assembly; its exact Tiangong UUID remains unresolved."
+          amount:
+            expression: "accepted net dry cathode mass normalized to exactly 1 kg"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg accepted cathode"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_electrode_records
+              source_ids:
+                - hawley-li-ion-electrode-manufacturing-2019
+            ranges: []
+      waste:
+        - row_id: electrode_nmc_cathode_offcut_waste
+          role: "Coated NMC cathode offcut scrap"
+          name: "Coated nickel-rich NMC cathode offcut scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record coated aluminium-foil startup material, edge trim, and rejected nickel-rich NMC cathodes as one composition-specific solid waste stream; do not combine with waste solvent or anode scrap."
+          amount:
+            expression: "weighed coated NMC cathode offcuts and rejects leaving the foreground process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted electrode"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_records
+              source_ids:
+                - hawley-li-ion-electrode-manufacturing-2019
+            ranges: []
+        - row_id: electrode_graphite_anode_offcut_waste
+          role: "Coated graphite anode offcut scrap"
+          name: "Coated graphite anode offcut scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record coated copper-foil startup material, edge trim, and rejected graphite anodes as one composition-specific solid waste stream; do not combine with waste solvent or cathode scrap."
+          amount:
+            expression: "weighed coated graphite-anode offcuts and rejects leaving the foreground process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted electrode"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_records
+              source_ids:
+                - hawley-li-ion-electrode-manufacturing-2019
+            ranges: []
+      elementary:
+        - row_id: electrode_nmp_to_air
+          role: "NMP to air"
+          name: "1-methyl-2-pyrrolidone"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a784-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record measured residual NMP released to air after recovery and controls; do not use purchased solvent minus recovered solvent without accounting for retained solvent, waste solvent, and stock change."
+          amount:
+            expression: "measured residual NMP air emission for the electrode route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted electrode"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_records
+              source_ids:
+                - hawley-li-ion-electrode-manufacturing-2019
+            ranges: []
+        - row_id: electrode_carbon_dioxide
+          role: "Fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record measured direct fossil carbon dioxide from on-site natural-gas combustion serving drying or recovery; do not include upstream electricity or gas-supply emissions."
+          amount:
+            expression: "measured or facility-verified direct stack emission allocated to the electrode route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted electrode"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_records
+              source_ids: []
+            ranges: []
+  - id: lead_acid_grid_plate_manufacturing
+    label: "Lead-acid grid or plate manufacture"
+    inputs:
+      product:
+        - row_id: lead_antimony_alloy
+          role: "Lead-antimony alloy"
+          name: "Lead-antimony alloy"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1f4bc7a0-5cc5-4cc6-bb83-5b05a6653732"
+          property_unit: "Mass / kg"
+          description: "Record lead-antimony alloy only for a declared cast-grid or small-part route using this alloy; declare alloy composition and recycled content."
+          amount:
+            expression: "measured alloy charged to grid or small-part casting"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted lead-acid grid or plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lead_part_records
+              source_ids:
+                - us-epa-ap42-storage-battery-production-1995
+            ranges: []
+        - row_id: lead_oxide
+          role: "Lead oxide powder"
+          name: "Lead oxide powder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record lead oxide powder only when paste is prepared on site; do not combine it with lead alloy."
+          amount:
+            expression: "measured dry lead oxide charged to paste mixing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted lead-acid plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lead_part_records
+              source_ids:
+                - us-epa-ap42-storage-battery-production-1995
+            ranges: []
+        - row_id: lead_sulfuric_acid
+          role: "Sulfuric acid"
+          name: "Sulfuric acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee2e3c3-bee7-4520-92b7-3e23afbfcd6f"
+          property_unit: "Mass / kg"
+          description: "Record sulfuric acid entering paste preparation or separate plate formation; declare concentration and operation."
+          amount:
+            expression: "measured gross acid solution crossing the foreground boundary, with acid concentration recorded"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted lead-acid plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lead_part_records
+              source_ids:
+                - us-epa-ap42-storage-battery-production-1995
+            ranges: []
+        - row_id: lead_barium_sulfate
+          role: "Barium sulfate expander"
+          name: "Refined barium sulfate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record refined barium sulfate only when used in a declared negative-paste expander formulation; natural barite is not an exact substitute."
+          amount:
+            expression: "measured dry barium sulfate charged to negative-paste mixing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted negative plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lead_part_records
+              source_ids:
+                - us-epa-ap42-storage-battery-production-1995
+            ranges: []
+        - row_id: lead_carbon_black
+          role: "Carbon black expander"
+          name: "Carbon black"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record carbon black only when it is separately charged to a negative-paste expander formulation."
+          amount:
+            expression: "measured dry carbon black charged to negative-paste mixing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted negative plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lead_part_records
+              source_ids:
+                - us-epa-ap42-storage-battery-production-1995
+            ranges: []
+        - row_id: lead_process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water crossing the boundary for paste mixing, plate rinsing, cooling make-up, or emission-control equipment; declare its role."
+          amount:
+            expression: "measured fresh and make-up process water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted lead-acid grid or plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lead_part_records
+              source_ids:
+                - us-epa-ap42-storage-battery-production-1995
+            ranges: []
+        - row_id: lead_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity for mixing, pasting, curing, optional plate formation, cutting, ventilation, controls, and inspection."
+          amount:
+            expression: "measured route electricity at the declared meter boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted lead-acid grid or plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lead_part_records
+              source_ids:
+                - us-epa-ap42-storage-battery-production-1995
+            ranges: []
+        - row_id: lead_natural_gas
+          role: "Natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas only when burned on site for alloy melting, curing, drying, or route-dedicated thermal duty."
+          amount:
+            expression: "measured natural gas delivered to route equipment or allocated from a documented common meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted lead-acid grid or plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lead_part_records
+              source_ids:
+                - us-epa-ap42-storage-battery-production-1995
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: lead_grid_product
+          role: "Accepted lead-acid battery grid"
+          name: "Ready-for-assembly lead-acid battery grid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this output only for a conforming cast or stamped grid released as a separately supplied part; the exact Tiangong UUID remains unresolved."
+          amount:
+            expression: "accepted net grid mass normalized to exactly 1 kg"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg accepted grid"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_lead_part_records
+              source_ids:
+                - us-epa-ap42-storage-battery-production-1995
+            ranges: []
+        - row_id: lead_plate_product
+          role: "Accepted lead-acid battery plate"
+          name: "Ready-for-assembly lead-acid battery plate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this output only for a conforming pasted, cured, or separately formed plate released as a separately supplied part; declare plate polarity and state. The exact Tiangong UUID remains unresolved."
+          amount:
+            expression: "accepted net dry plate mass normalized to exactly 1 kg"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg accepted plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_lead_part_records
+              source_ids:
+                - us-epa-ap42-storage-battery-production-1995
+            ranges: []
+      waste:
+        - row_id: lead_grid_scrap_waste
+          role: "Lead-antimony battery-grid scrap"
+          name: "Lead-antimony battery-grid scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record lead-antimony casting scrap, grid offcuts, and rejected grids leaving the foreground process as a declared solid waste stream; internal remelt is not an external output."
+          amount:
+            expression: "weighed lead-antimony grid scrap transferred off site or to an independently modelled treatment process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted lead-acid grid or plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lead_part_records
+              source_ids:
+                - us-epa-ap42-storage-battery-production-1995
+            ranges: []
+        - row_id: lead_plate_scrap_waste
+          role: "Pasted lead-acid battery-plate scrap"
+          name: "Pasted lead-acid battery-plate scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected pasted or formed lead-acid plates and plate offcuts leaving the foreground process as a declared solid waste stream; disclose polarity, acid state, and whether the scrap is wet or dry."
+          amount:
+            expression: "weighed pasted or formed plate scrap transferred off site or to an independently modelled treatment process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted lead-acid plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lead_part_records
+              source_ids:
+                - us-epa-ap42-storage-battery-production-1995
+            ranges: []
+      elementary:
+        - row_id: lead_to_air
+          role: "Lead to air"
+          name: "lead"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4d9a8790-3ddd-11dd-91dc-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record measured lead and lead-compound releases to air expressed as elemental lead after on-site controls; use another compartment-specific flow only when release context is verified."
+          amount:
+            expression: "measured total operational lead release to unspecified air allocated to the selected part route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted lead-acid grid or plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lead_part_records
+              source_ids:
+                - us-epa-ap42-storage-battery-production-1995
+            ranges: []
+        - row_id: lead_sulfuric_acid_mist
+          role: "Sulfuric acid mist to air"
+          name: "Sulfuric acid mist to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured sulfuric acid mist only when plate formation or another acid operation occurs within this part boundary; the exact Tiangong UUID remains unresolved."
+          amount:
+            expression: "measured sulfuric acid mist released after controls from part-level acid operations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted lead-acid plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lead_part_records
+              source_ids:
+                - us-epa-ap42-storage-battery-production-1995
+            ranges: []
+        - row_id: lead_carbon_dioxide
+          role: "Fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record measured direct fossil carbon dioxide from on-site natural-gas combustion serving alloy melting, curing, or drying; do not include upstream electricity or gas-supply emissions."
+          amount:
+            expression: "measured or facility-verified direct stack emission allocated to the lead-part route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted lead-acid grid or plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lead_part_records
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide_routes
+    applies_to: "mixed part families and technologies"
+    rule: "Subdivide separator, electrode, grid, and plate routes and separately meter route-specific material, energy, waste, and emission flows before applying allocation."
+    source_ids: []
+  - rule_id: allocation_common_services
+    applies_to: "common utilities and pollution controls"
+    rule: "Allocate only genuinely common services using a documented causal driver such as metered energy, machine time, exhaust volume, treated mass, or accepted dry output mass; do not allocate by revenue when a physical causal driver is available."
+    source_ids: []
+  - rule_id: allocation_scrap_and_recovery
+    applies_to: "scrap, recovered solvent, and internal recycle"
+    rule: "Report off-site scrap and recovered solvent as separate outputs without netting them against gross material inputs. Internal recycle does not cross the system boundary; record the associated on-site energy and losses and disclose the recycle loop."
+    source_ids:
+      - hawley-li-ion-electrode-manufacturing-2019
+      - us-epa-ap42-storage-battery-production-1995
+  - rule_id: allocation_unavoidable_choice
+    applies_to: "residual multi-output allocation"
+    rule: "When subdivision and causal allocation cannot resolve a residual burden, use dry output mass, disclose the affected flows and allocation fraction, and test a plausible alternative driver in sensitivity analysis."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_separator_records
+      process_id: "separator_manufacturing"
+      flow_role: "all separator inputs, accepted output, offcut waste, and direct emissions"
+      record_type: "batch issue records; utility meters; weighbridge or waste manifests; release inspection; stack or facility emission records"
+      raw_fields: "material identity; supplier; lot; opening and closing stock; issued mass; returned mass; electricity; gas volume and reference conditions; water; accepted dry output; offcut mass; direct CO2; route and coating state"
+      collection_method: "reconcile purchasing and inventory movements to batch records; read dedicated meters or allocate documented common meters; weigh accepted and rejected web; use verified direct-emission records"
+      unit: "kg; MJ; m3"
+      frequency: "each batch with monthly aggregation"
+      temporal_coverage: "representative consecutive production period, normally at least 12 months or the full shorter campaign"
+      site_scope: "all on-site operations serving the declared separator route"
+      aggregation_rule: "subtract documented returns and stock change from gross issues; normalize each exchange by accepted dry separator mass; keep dry and wet routes separate"
+      quality_evidence: "calibrated meter and scale records; material certificates; batch sheets; release test results; waste transfer records; emission-monitoring or verified inventory records"
+    - protocol_id: cp_electrode_records
+      process_id: "lithium_ion_electrode_manufacturing"
+      flow_role: "all electrode inputs, accepted outputs, offcut waste, NMP emission, and direct CO2"
+      record_type: "formulation and batch records; foil issue records; meters; solvent recovery logs; reject logs; release inspection; air-emission records"
+      raw_fields: "polarity; chemistry; dry ingredients; solvent; foil type and mass; electricity; gas; water; recovered NMP; waste solvent; accepted dry electrode; offcut mass; NMP to air; direct CO2"
+      collection_method: "reconcile weighed formulation and foil records with inventory change; meter utilities; reconcile solvent input, recovery, waste, retained solvent, stock change, and measured release; weigh accepted and rejected electrode"
+      unit: "kg; MJ; m3"
+      frequency: "each batch and roll with monthly aggregation"
+      temporal_coverage: "representative consecutive production period, normally at least 12 months or the full shorter campaign"
+      site_scope: "all on-site operations serving the declared electrode route, including allocated dry-room and recovery services"
+      aggregation_rule: "keep cathode and anode, chemistry, solvent route, and current collector separate; normalize by accepted dry electrode mass"
+      quality_evidence: "calibrated scales and meters; formulation certificates; coating and drying logs; solvent-recovery balance; release tests; waste manifests; emission records"
+    - protocol_id: cp_lead_part_records
+      process_id: "lead_acid_grid_plate_manufacturing"
+      flow_role: "all lead-part inputs, accepted outputs, scrap, lead emission, acid mist, and direct CO2"
+      record_type: "melt and casting logs; paste recipes; acid and water records; meters; curing or formation logs; scrap records; release inspection; emission records"
+      raw_fields: "alloy composition and mass; lead oxide; acid mass and concentration; barium sulfate; carbon black; water; electricity; gas reference conditions; accepted grid or plate mass; plate polarity and state; lead scrap; lead to air; acid mist; direct CO2"
+      collection_method: "reconcile material issues and stock change; read meters; weigh accepted product and off-site scrap; use route-specific measured emissions after controls"
+      unit: "kg; MJ; m3"
+      frequency: "each batch with monthly aggregation"
+      temporal_coverage: "representative consecutive production period, normally at least 12 months or the full shorter campaign"
+      site_scope: "all on-site operations serving the declared grid or plate route and its controls"
+      aggregation_rule: "separate cast and stamped grids, positive and negative pastes, and formed and unformed plate states; normalize by accepted dry grid or plate mass"
+      quality_evidence: "calibrated scales and meters; alloy and chemical certificates; batch and cure records; release tests; waste manifests; stack-test or verified emission records"
+  calculation_rules:
+    - id: calc_normalize_accepted_mass
+      applies_to: "all collected inventory rows"
+      rule: "normalized exchange = reporting-period exchange crossing the boundary / reporting-period accepted dry product mass"
+      inputs:
+        - "reconciled exchange quantity"
+        - "accepted product mass"
+      output: "exchange per 1 kg accepted product"
+      source_ids: []
+    - id: calc_inventory_reconciliation
+      applies_to: "purchased materials and solvents"
+      rule: "consumed input = opening stock + receipts - closing stock - documented returns; report gross boundary input before subtracting internal recovery"
+      inputs:
+        - "stock records"
+        - "purchase receipts"
+        - returns
+        - "internal recovery logs"
+      output: "reconciled input mass"
+      source_ids: []
+    - id: calc_common_meter_allocation
+      applies_to: "common utility meters"
+      rule: "allocated utility = common-meter quantity × documented causal share; causal shares shall sum to one over the meter boundary"
+      inputs:
+        - "common-meter reading"
+        - "route driver totals"
+      output: "route-specific electricity, gas, or water"
+      source_ids: []
+    - id: calc_output_and_scrap_balance
+      applies_to: "accepted product and solid scrap"
+      rule: "reconcile input solids with accepted output, off-site scrap, captured residues, retained process material, and documented stock change; investigate unexplained imbalance rather than assigning it to a generic waste row"
+      inputs:
+        - "material issues"
+        - "accepted output"
+        - scrap
+        - residues
+        - "stock change"
+      output: "disclosed mass-balance closure"
+      source_ids: []
+    - id: calc_solvent_balance
+      applies_to: "NMP and wet-separator process oil"
+      rule: "reconcile fresh input, recovered internal recycle, off-site waste, residual product retention, air release, and stock change without double counting internal recycle as a boundary flow"
+      inputs:
+        - "solvent or process-oil input"
+        - recovery
+        - waste
+        - "retained mass"
+        - "air emission"
+        - "stock change"
+      output: "disclosed solvent balance"
+      source_ids:
+        - hawley-li-ion-electrode-manufacturing-2019
+        - mun-won-polyolefin-separator-manufacturing-2021
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product and route outputs"
+      requirement: "Declare part family, polarity where relevant, chemistry, material construction, dimensions, dry or wet process, formed or unformed state, specification, and accepted-product mass."
+      evidence: "Product specification; bill of materials; release inspection; batch and lot traceability"
+    - id: dq_temporal_representativeness
+      applies_to: "all foreground data"
+      requirement: "Cover a representative consecutive period, normally 12 months; if a shorter campaign is used, disclose dates, production volume, startup effects, and seasonality limitation."
+      evidence: "Meter dates; batch records; production calendar; explanation of exclusions"
+    - id: dq_completeness
+      applies_to: "all route exchanges"
+      requirement: "Reconcile purchased inputs, accepted output, internal recycle, off-site waste, and direct emissions; document every excluded operation and zero row as not applicable rather than silently omitting it."
+      evidence: "Mass and solvent balances; meter reconciliation; waste manifests; emission records"
+    - id: dq_meter_allocation
+      applies_to: "shared services"
+      requirement: "Identify the physical meter boundary and causal allocation driver; report the share assigned to the selected route and retain evidence that shares sum to one."
+      evidence: "Meter map; driver records; allocation worksheet"
+    - id: dq_uuid_and_localization
+      applies_to: "Tiangong references"
+      requirement: "Use only directly verified state-100 UUIDs and exact Tiangong Chinese baseNames. Keep unresolved rows UUID-empty until an exact identity, classification, property, unit group, product state, and compartment are confirmed."
+      evidence: "Finalized UUID-search receipts; direct-read identity records; unresolved manifest entries"
+    - id: dq_range_status
+      applies_to: "important inventory amounts"
+      requirement: "Treat all amounts as foreground requirements. No external empirical range is approved until at least two independent original sources with compatible boundary, reference unit, and product state support a synthesis."
+      evidence: "Foreground records; manifest range-evidence needs; future source review"
+validation_rules:
+  - rule_id: validation_reference_output
+    applies_to: "reference flow"
+    rule: "The separator route shall report exactly 1 kg accepted Battery Separator as the reference output and shall exclude offcut, reject, moisture-basis, and outbound packaging mass from that amount. A non-separator product shall not use the separator UUID."
+    source_ids: []
+  - rule_id: validation_route_exclusivity
+    applies_to: "process selection"
+    rule: "At least one declared route shall apply, and every included process and row shall match the declared part family, chemistry, polarity, material, and technology; unrelated conditional rows shall be marked not applicable."
+    source_ids: []
+  - rule_id: validation_atomic_flows
+    applies_to: "process inventory"
+    rule: "Each inventory card shall represent one atomic exchange with direction, flow type, property, unit, amount source, basis, evidence, and applicable route; combined utilities, materials, wastes, or emission groups fail validation."
+    source_ids: []
+  - rule_id: validation_mass_and_solvent_balance
+    applies_to: "foreground calculations"
+    rule: "The data package shall present accepted-output, solid-material, and applicable solvent balances and explain material imbalances rather than assigning them to unspecified losses."
+    source_ids:
+      - hawley-li-ion-electrode-manufacturing-2019
+      - mun-won-polyolefin-separator-manufacturing-2021
+      - us-epa-ap42-storage-battery-production-1995
+  - rule_id: validation_emission_scope
+    applies_to: "direct elementary flows"
+    rule: "Direct lead, sulfuric acid mist, NMP, and fossil CO2 rows shall be included only when the emitting operation occurs inside the foreground boundary; upstream electricity and purchased-input emissions shall remain in linked upstream datasets."
+    source_ids:
+      - hawley-li-ion-electrode-manufacturing-2019
+      - us-epa-ap42-storage-battery-production-1995
+  - rule_id: validation_unresolved_identity
+    applies_to: "UUID-empty rows"
+    rule: "UUID-empty rows are review-required and shall not be silently mapped to broader, differently classified, differently measured, or wrong-compartment candidates."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; eligible for background_dataset use only after methodology review, exact output-flow resolution for the declared part, and complete quality disclosure"
+  downstream_use: "Foreground product-system construction for separately supplied battery parts; process and lifecyclemodel projections; supplier or technology comparison within the same declared part family and reference-flow definition"
+  allowed_use: "Use for a declared separator route with the confirmed reference flow, or for another covered part only after an exact approved product flow and route inventory are supplied; compare datasets only when part state, chemistry, specification, boundary, allocation, geography, and period are compatible"
+  excluded_use: "Complete battery or cell results; performance-per-kWh claims without a separate functional model; cross-chemistry or cross-part comparison without functional equivalence; reuse of the separator UUID for electrodes, grids, plates, or other parts; use of unresolved UUIDs as confirmed identities"
+  required_metadata: "PCR id and version state; part family; exact product flow; chemistry and polarity; material construction; route and technology; dimensions and delivery form; accepted-output mass and moisture basis; geography; reporting period; meter boundaries; allocation; solvent recovery; emission controls; scrap destination; exclusions; upstream dataset choices"
+  required_quality_disclosure: "Primary-data share; temporal, geographical, and technological representativeness; material and solvent balance closure; metering and allocation coverage; unresolved flow identities; data gaps; proxies; verification status; absence of approved external amount ranges"
+  update_trigger: "Change in part family, chemistry, active material, polymer, layer construction, coating, current collector, alloy, dry/wet process, formation state, solvent or recovery system, energy source, emission controls, scrap route, facility geography, allocation driver, reference product identity, or evidence supporting ranges"
+data_sources:
+  - id: "un-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Official CPC 46430 classification identity and separation from complete cells, batteries, and accumulators"
+  - id: "us-epa-ap42-storage-battery-production-1995"
+    type: "official_guidance"
+    reference: "U.S. EPA, AP-42 Section 12.15, Storage Battery Production, January 1995, https://www.epa.gov/sites/default/files/2020-11/documents/c12s15.pdf"
+    used_for: "Lead-acid grid, paste, plate, curing, formation, scrap, control, lead-emission, and sulfuric-acid-mist process decomposition"
+  - id: "mun-won-polyolefin-separator-manufacturing-2021"
+    type: "literature"
+    reference: "Mun, S. C.; Won, J. H. Manufacturing Processes of Microporous Polyolefin Separators for Lithium-Ion Batteries and Correlations between Mechanical and Physical Properties. Crystals 2021, 11, 1013. https://doi.org/10.3390/cryst11091013"
+    used_for: "Dry PP and wet PE separator process routes; extrusion, annealing, stretching, extraction, multilayer, and coating decisions"
+  - id: "hawley-li-ion-electrode-manufacturing-2019"
+    type: "literature"
+    reference: "Hawley, W. B.; Li, J. Electrode manufacturing for lithium-ion batteries—Analysis of current and next generation processing. Journal of Energy Storage 25 (2019) 100862. https://doi.org/10.1016/j.est.2019.100862"
+    used_for: "Electrode mixing, slurry, coating, drying, solvent recovery, current-collector, calendaring, waste, and quality-control process decomposition"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:21a81cca0828f5a15db16786e2e5970d1da763a74b0fa92ebcc6d2a7d4e6acf8"
+  generated_content_sha256: "sha256:0e3e9549e2444dbe367751e183173f802e5e52773b63640bda035e0d5ec8e6d9"

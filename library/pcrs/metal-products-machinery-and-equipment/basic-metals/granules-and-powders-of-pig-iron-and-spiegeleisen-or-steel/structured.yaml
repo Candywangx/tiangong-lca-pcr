@@ -1,10 +1,753 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41117"
-  title: "Granules and powders, of pig iron and spiegeleisen, or steel"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.granules-and-powders-of-pig-iron-and-spiegeleisen-or-steel"
+  classification_refs: "CPC 3.0 41117, exact"
+  covered_products: "Dry, saleable granules and powders of pig iron, spiegeleisen, or steel, including shot and angular grit meeting the declared product specification"
+  excluded_products: "Direct-reduced or sponge iron; ferro-alloy powders other than spiegeleisen; scrap filings, turnings, and other wastes; radioactive or medicinal iron powders; compacted, sintered, coated, or otherwise downstream-fabricated articles"
+  representative_product: "Dry steel powder, with grade, particle-size distribution, morphology, and route declared"
+  production_route: "The one route actually operated: water, gas, or air atomization; mechanical comminution; or cut-wire granulation, with applicable recovery, drying, classification, and internal recycling"
+  market_state: "Dry bulk material at the factory gate, before packaging"
+functional_unit:
+  what: "Dry, saleable granules or powder of pig iron, spiegeleisen, or steel meeting the declared specification"
+  how_much: "1,000 kg dry product"
+  how_well: "Conforming product after final recovery, drying, and classification; grade, route, morphology, and particle-size distribution declared"
+  how_long_or_cycle: "One representative production campaign within the reporting period"
+  reference_flow_link: "Process granule_powder_production, output row reference_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "Foreground production campaign"
+      rule: "Include receipt and preparation of feedstock; route-specific melting or conditioning; atomization, comminution, or wire cutting; recovery; drying; classification; internal recycle handling; and on-site pollution control used by the campaign."
+      source_ids:
+        - mathias-metal-powder-production-2024
+    - rule_id: boundary_route_specific
+      applies_to: "Declared production route"
+      rule: "Include only operations and atomic exchanges used by the declared route. A row whose inclusion condition is false is absent, not zero-filled."
+      source_ids:
+        - mathias-metal-powder-production-2024
+    - rule_id: boundary_recursive_input
+      applies_to: "Purchased product inputs"
+      rule: "Model purchased products at their point of receipt and link upstream supply datasets separately."
+      source_ids: []
+    - rule_id: boundary_packaging
+      applies_to: "Packaging"
+      rule: "Exclude packaging by default. If included for a study, add each material and component as a separate exchange and disclose the expanded boundary."
+      source_ids: []
+    - rule_id: boundary_emissions_and_waste
+      applies_to: "Direct releases and external waste transfers"
+      rule: "Include measured or calculated direct releases and every externally transferred atomic waste flow. Keep internal recycle loops within the process and report purges separately."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Metallic feedstock, atomizing media, and electricity received by the reporting facility"
+  starting_condition_role: "Upstream product inputs to the foreground production campaign"
+  product_classification_scope: "CPC 3.0 41117 dry granules and powders of pig iron, spiegeleisen, or steel"
+  recursive_input_rule: "Upstream production of purchased feedstock, electricity, water, and gases is represented by linked upstream datasets, not reconstructed inside this foreground process"
+  upstream_dataset_requirement: "Use geographically and technologically representative supplier or market datasets and disclose any proxy; do not replace a missing exact flow with a differently named UUID"
+  disclosure: "Declare the operated route, material family and grade, site, reporting period, product moisture basis, internal recycle accounting, pollution-control boundary, and any optional packaging inclusion"
+reference_flow_definition:
+  reference_amount: "1,000"
+  product_flow_ref:
+    name: "Steel powder, dry"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Material family"
+    - "alloy or grade"
+    - "production route"
+    - "dry product state"
+    - morphology
+    - "particle-size distribution and test method"
+    - "site geography"
+    - "production period"
+    - "recycled-content accounting"
+    - "moisture correction method"
+reference_flows:
+  []
+measurement_rules:
+  - id: measure_dry_product_mass
+    applies_to: "reference_product, metallic inputs, dry solid wastes, and mass emissions"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh on calibrated scales. Report product and particulate solids on a dry-mass basis; retain measured wet mass, sampling time, moisture fraction, and drying method."
+  - id: measure_particle_size
+    applies_to: "Reference product identity"
+    required_property_ref:
+      name: "Particle-size distribution"
+      uuid: ""
+    required_unit: "µm or mm"
+    rule: "Report the test method, sieve or equivalent cut points, and retained/passing fractions. For customs-identity screening, granules have less than 90% by mass passing 1 mm and at least 90% passing 5 mm; powders have at least 90% passing 1 mm. Product specifications remain controlling."
+  - id: measure_electricity
+    applies_to: "electricity_input"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve raw meter readings and meter boundaries. When raw records are in kWh, apply the documented physical conversion 1 kWh = 3.6 MJ without changing the supply boundary."
+  - id: measure_liquids
+    applies_to: "demineralized_water_input"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Use calibrated meters or tank mass/volume records; disclose temperature or density conversion when mass is converted to volume."
+  - id: measure_gases
+    applies_to: "natural_gas_input, industrial_oxygen_input, nitrogen_gas_input, argon_gas_input, compressed_air_input"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report supplied volume at the meter reference temperature and pressure; do not combine different gases or pressure levels."
+  - id: measure_pm10
+    applies_to: "pm10_air"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use a site-specific stack or fugitive-emission measurement or calculation. Document concentration, gas volume, capture efficiency, operating time, receiving compartment, and emission height."
+  - id: account_internal_recycle
+    applies_to: "Returned oversize, undersize, and collected powder"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record gross generation and return separately. Do not count an internal return as an external input or output; disclose purge and external transfer separately."
+process_map:
+  - id: granule_powder_production
+    name: "Ferrous granule or powder production campaign"
+    inclusion: "required"
+    inclusion_condition: "Always include; populate only the atomic rows applicable to the one route actually operated"
+    role: "Aggregate gate-to-gate foreground process"
+    quantitative_reference: "1,000 kg dry conforming output in reference_product"
+process_inventory:
+  - id: granule_powder_production
+    label: "Ferrous granule or powder production campaign"
+    inputs:
+      product:
+        - row_id: pig_iron_feedstock
+          role: "Pig-iron feedstock"
+          name: "Pig iron, in pigs"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Pig iron received in pigs crosses the site boundary as metallic feedstock when the declared product is made from pig iron."
+          amount:
+            expression: "Measure the dry received mass charged to the campaign; include only when pig iron is an actual feedstock."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg dry conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - un-cpc-3-0-2025
+                - uk-hmrc-iron-steel-classification-2022
+            ranges: []
+        - row_id: spiegeleisen_feedstock
+          role: "Spiegeleisen feedstock"
+          name: "Spiegeleisen, in pigs"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Spiegeleisen received in pigs crosses the site boundary as metallic feedstock only for a declared spiegeleisen product or blend."
+          amount:
+            expression: "Measure the dry received mass charged to the campaign; include only when spiegeleisen is an actual feedstock."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg dry conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - un-cpc-3-0-2025
+                - uk-hmrc-iron-steel-classification-2022
+            ranges: []
+        - row_id: steel_ingot_feedstock
+          role: "Steel-ingot feedstock"
+          name: "Steel ingot"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Steel ingot crosses the site boundary as the metallic feedstock for an atomized or mechanically comminuted steel-powder route when used."
+          amount:
+            expression: "Measure the dry received mass charged to the campaign; include only when steel ingot is an actual feedstock."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg dry conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - mathias-metal-powder-production-2024
+            ranges: []
+        - row_id: steel_wire_feedstock
+          role: "Steel-wire feedstock"
+          name: "Steel wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Steel wire crosses the site boundary as the metallic feedstock only for a cut-wire granule route."
+          amount:
+            expression: "Measure the dry received wire mass allocated to the campaign; include only for cut-wire production."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg dry conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - uk-hmrc-iron-steel-classification-2022
+            ranges: []
+        - row_id: electricity_input
+          role: "Alternating-current electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value / MJ"
+          description: "Purchased alternating-current electricity crosses the site boundary for the equipment used by the production campaign."
+          amount:
+            expression: "Sum campaign-attributable interval or submeter records; disclose voltage, provider, geography, supply technology, delivery boundary, and treatment of line losses."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg dry conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meter
+              source_ids: []
+            ranges: []
+        - row_id: natural_gas_input
+          role: "Gaseous natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Gaseous natural gas crosses the site boundary only when it is consumed by direct-fired melting, preheating, drying, or heat-treatment equipment attributable to the campaign."
+          amount:
+            expression: "Meter or reconcile purchased natural gas at the stated reference temperature and pressure; include only the quantity attributable to the campaign and disclose the combustion equipment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg dry conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_media
+              source_ids: []
+            ranges: []
+        - row_id: industrial_oxygen_input
+          role: "Industrial oxygen"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume / m3"
+          description: "Industrial oxygen crosses the site boundary only when oxygen enrichment or oxy-fuel operation is used by campaign-attributable melting or heating equipment."
+          amount:
+            expression: "Meter or reconcile purchased oxygen at the stated reference temperature and pressure; include only when used and disclose the consuming equipment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg dry conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_media
+              source_ids: []
+            ranges: []
+        - row_id: demineralized_water_input
+          role: "Demineralized water"
+          name: "Demineralized water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Demineralized water crosses the site boundary only when consumed as the atomizing or conditioning liquid in the declared water-atomization route."
+          amount:
+            expression: "Meter net make-up water attributable to the campaign; exclude internally recirculated water from external input."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg dry conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_media
+              source_ids:
+                - mathias-metal-powder-production-2024
+            ranges: []
+        - row_id: nitrogen_gas_input
+          role: "Nitrogen gas"
+          name: "Nitrogen gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "96ba4c16-fd7c-424e-b318-d87484d3d7c0"
+          property_unit: "Volume / m3"
+          description: "Gaseous nitrogen crosses the site boundary only when used as the atomizing or protective gas in the declared route."
+          amount:
+            expression: "Meter or reconcile purchased nitrogen at the stated reference temperature and pressure; include only when used."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg dry conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_media
+              source_ids:
+                - mathias-metal-powder-production-2024
+            ranges: []
+        - row_id: argon_gas_input
+          role: "Argon gas"
+          name: "Argon, gaseous"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Gaseous argon crosses the site boundary only when used as the atomizing or protective gas in the declared route."
+          amount:
+            expression: "Meter or reconcile purchased argon at the stated reference temperature and pressure; include only when used."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg dry conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_media
+              source_ids:
+                - mathias-metal-powder-production-2024
+            ranges: []
+        - row_id: compressed_air_input
+          role: "Compressed air"
+          name: "Compressed air"
+          flow_type: "product"
+          flow_ref:
+            uuid: "46e2b1e4-5a4e-4579-b6a2-65b03f9ce825"
+          property_unit: "Volume / m3"
+          description: "Compressed air crosses the site boundary only when purchased or centrally supplied to the air-atomization route and not already included in another site energy record."
+          amount:
+            expression: "Meter delivered air at the stated reference temperature and pressure; disclose compressor boundary and avoid double counting its electricity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg dry conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_media
+              source_ids:
+                - mathias-metal-powder-production-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Dry saleable steel powder"
+          name: "Steel powder, dry"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The representative reference product crosses the factory gate after recovery, drying, and final classification. For pig-iron, spiegeleisen, or granule datasets, replace the representative name only with the exact declared product while preserving the row id and reference-flow rules."
+          amount:
+            expression: "Fix at 1,000 kg dry conforming output; measure gross production and moisture correction before normalization."
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg dry conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "source_rule"
+              collection_protocol_id: cp_product_output
+              source_ids:
+                - un-cpc-3-0-2025
+                - uk-hmrc-iron-steel-classification-2022
+                - mathias-metal-powder-production-2024
+            ranges: []
+      waste:
+        - row_id: off_spec_steel_powder
+          role: "Off-specification steel powder"
+          name: "Steel powder waste, off-specification"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Dry off-specification powder crosses the boundary as waste only when it is transferred externally rather than returned internally to production."
+          amount:
+            expression: "Weigh dry externally transferred off-specification powder; exclude recorded internal recycle and include only when generated."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg dry conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_transfers
+              source_ids: []
+            ranges: []
+        - row_id: atomization_sludge
+          role: "Iron-bearing atomization sludge"
+          name: "Iron-bearing water-atomization sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Iron-bearing sludge crosses the boundary only when water-atomization solids are removed and transferred externally."
+          amount:
+            expression: "Record wet transfer mass and representative dry-solids fraction; report dry solids and disclose wet mass separately."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg dry conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_transfers
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: pm10_air
+          role: "PM10 emission to air"
+          name: "Particulate matter, <10 µm, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Direct particulate matter smaller than 10 µm crosses the boundary to the receiving air compartment after the applicable control device."
+          amount:
+            expression: "Use site-specific measured or calculated post-control PM10 attributable to the campaign; report stack and fugitive releases separately in supporting records and disclose emission height."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg dry conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pm10_monitoring
+              source_ids: []
+            ranges: []
+        - row_id: fossil_co2_air
+          role: "Fossil carbon dioxide emission to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide from on-site combustion crosses the boundary to air only when fossil natural gas or another separately recorded fossil fuel is combusted in campaign-attributable equipment."
+          amount:
+            expression: "Calculate campaign-attributable fossil carbon dioxide from measured fuel consumption and documented fuel carbon content or direct stack evidence; exclude biogenic carbon dioxide and upstream fuel-supply emissions."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg dry conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fossil_co2
+              source_ids: []
+            ranges: []
+        - row_id: iron_to_water
+          role: "Iron emission to water"
+          name: "Iron, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Iron crosses the elementary-flow boundary to the receiving water compartment only when a measured campaign-attributable aqueous discharge remains after the treatment included within the foreground boundary."
+          amount:
+            expression: "Calculate discharged iron mass from the site-specific iron concentration and non-overlapping net effluent volume for the campaign; disclose dissolved or total-iron method, receiving compartment, and treatment boundary."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg dry conforming product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_iron_to_water
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "Shared foreground operations"
+    rule: "Subdivide campaigns by material family, alloy or grade, route, and product size class whenever meters, batch records, or production records permit."
+    source_ids: []
+  - rule_id: allocation_internal_recycle
+    applies_to: "Internal ferrous returns"
+    rule: "Keep returned oversize, undersize, and recovered powder inside the process. Record gross generation, return, and purge; assign neither an external input nor an avoided-product credit to the internal loop."
+    source_ids: []
+  - rule_id: allocation_external_coproduct
+    applies_to: "Multiple saleable outputs"
+    rule: "If more than one saleable co-product remains after subdivision, use a documented physical causal relation where demonstrable; otherwise allocate by dry mass and disclose quantities, prices, and a sensitivity check rather than defaulting to economic allocation."
+    source_ids: []
+  - rule_id: allocation_no_waste_credit
+    applies_to: "External waste transfers"
+    rule: "Report externally transferred off-specification powder and sludge as waste outputs. Do not claim avoided-production credit inside this gate-to-gate process; model any receiving recycling system separately."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_receipts
+      process_id: "granule_powder_production"
+      flow_role: "Metallic feedstock inputs"
+      record_type: "Scale, receipt, and batch records"
+      raw_fields: "material identity; supplier; grade; gross and tare mass; moisture; batch id"
+      collection_method: "Reconcile receipts to campaign charge and inventory change"
+      unit: "kg dry"
+      frequency: "Each receipt and batch"
+      temporal_coverage: "Complete reporting campaign"
+      site_scope: "Reporting facility"
+      aggregation_rule: "Sum campaign-attributable dry mass by atomic feedstock row"
+      quality_evidence: "Calibration record, receipt, batch reconciliation"
+    - protocol_id: cp_electricity_meter
+      process_id: "granule_powder_production"
+      flow_role: "electricity_input"
+      record_type: "Interval meter and invoice"
+      raw_fields: "start/end readings; interval; meter boundary; kWh; provider; voltage; losses"
+      collection_method: "Submeter campaign equipment or allocate documented shared-meter use by operating time and rated load"
+      unit: "kWh raw; MJ reported"
+      frequency: "Interval or batch"
+      temporal_coverage: "Complete reporting campaign"
+      site_scope: "Reporting facility"
+      aggregation_rule: "Sum campaign-attributable readings, then convert to MJ"
+      quality_evidence: "Meter calibration, invoice, allocation worksheet"
+    - protocol_id: cp_process_media
+      process_id: "granule_powder_production"
+      flow_role: "Water, fuel-gas, oxygen, and atomizing-gas inputs"
+      record_type: "Meter, tank, and purchase records"
+      raw_fields: "medium identity; volume; reference temperature; pressure; opening/closing stock; consuming equipment"
+      collection_method: "Reconcile meters and purchases by medium; subtract internal recirculation and exclude quantities already represented by another utility record"
+      unit: "m3"
+      frequency: "Each batch or meter interval"
+      temporal_coverage: "Complete reporting campaign"
+      site_scope: "Reporting facility"
+      aggregation_rule: "Sum separately for demineralized water, natural gas, industrial oxygen, nitrogen, argon, and compressed air"
+      quality_evidence: "Meter calibration, delivery ticket, stock reconciliation"
+    - protocol_id: cp_product_output
+      process_id: "granule_powder_production"
+      flow_role: "reference_product"
+      record_type: "Product scale and laboratory records"
+      raw_fields: "gross/tare mass; moisture; grade; route; morphology; size distribution"
+      collection_method: "Weigh each conforming lot and determine representative moisture and size distribution"
+      unit: "kg dry"
+      frequency: "Each lot"
+      temporal_coverage: "Complete reporting campaign"
+      site_scope: "Reporting facility"
+      aggregation_rule: "Sum conforming dry mass before normalization"
+      quality_evidence: "Scale calibration, laboratory method, certificate of analysis"
+    - protocol_id: cp_waste_transfers
+      process_id: "granule_powder_production"
+      flow_role: "Solid waste outputs"
+      record_type: "Scale ticket, analysis, transfer manifest"
+      raw_fields: "waste identity; wet mass; dry-solids fraction; destination; date"
+      collection_method: "Reconcile generated, internally returned, stored, and externally transferred quantities"
+      unit: "kg dry"
+      frequency: "Each transfer"
+      temporal_coverage: "Complete reporting campaign plus opening/closing stock"
+      site_scope: "Reporting facility"
+      aggregation_rule: "Sum external dry-solid transfer separately by waste row"
+      quality_evidence: "Scale calibration, laboratory result, signed manifest"
+    - protocol_id: cp_pm10_monitoring
+      process_id: "granule_powder_production"
+      flow_role: "pm10_air"
+      record_type: "Stack test, monitoring, or engineering calculation"
+      raw_fields: "concentration; gas volume; operating time; capture efficiency; compartment; height"
+      collection_method: "Calculate post-control campaign PM10 from site-specific measurements or documented factors"
+      unit: "kg"
+      frequency: "Test and operating interval"
+      temporal_coverage: "Representative operation within reporting period"
+      site_scope: "Reporting process and control device"
+      aggregation_rule: "Sum stack and fugitive results without double counting"
+      quality_evidence: "Test report, instrument calibration, calculation sheet"
+    - protocol_id: cp_fossil_co2
+      process_id: "granule_powder_production"
+      flow_role: "fossil_co2_air"
+      record_type: "Fuel meter, fuel carbon analysis, carbon balance, or direct stack evidence"
+      raw_fields: "fuel volume; reference conditions; carbon content; oxidation basis; operating period"
+      collection_method: "Reconcile campaign fossil-fuel use and calculate fossil carbon dioxide without mixing upstream or biogenic emissions"
+      unit: "kg"
+      frequency: "Each batch or meter interval"
+      temporal_coverage: "Complete reporting campaign"
+      site_scope: "Reporting process and combustion equipment"
+      aggregation_rule: "Sum non-overlapping campaign-attributable fossil carbon dioxide results"
+      quality_evidence: "Meter calibration, supplier composition or analysis, calculation sheet"
+    - protocol_id: cp_iron_to_water
+      process_id: "granule_powder_production"
+      flow_role: "iron_to_water"
+      record_type: "Effluent flow and iron-concentration records"
+      raw_fields: "net volume; sampling period; dissolved or total iron concentration; treatment boundary; receiving compartment"
+      collection_method: "Pair representative concentration with the corresponding non-overlapping discharge volume after in-boundary treatment"
+      unit: "kg"
+      frequency: "Sampling and meter interval"
+      temporal_coverage: "Complete reporting campaign"
+      site_scope: "Reporting process and included treatment"
+      aggregation_rule: "Sum concentration-times-volume results by discharge point without double counting"
+      quality_evidence: "Flow-meter calibration, laboratory report, discharge log"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "All inventory rows"
+      rule: "normalized amount = campaign amount × 1,000 / campaign dry conforming product mass"
+      inputs:
+        - "Campaign exchange and reference_product dry mass"
+      output: "Exchange per 1,000 kg dry product"
+      source_ids: []
+    - id: calc_product_dry_mass
+      applies_to: "reference_product and dry solid rows"
+      rule: "dry mass = measured wet mass × (1 − moisture mass fraction)"
+      inputs:
+        - "Wet mass"
+        - "representative moisture fraction"
+      output: "kg dry"
+      source_ids: []
+    - id: calc_sludge_dry_solids
+      applies_to: "atomization_sludge"
+      rule: "dry solids = wet sludge mass × dry-solids mass fraction"
+      inputs:
+        - "Wet transfer mass"
+        - "dry-solids fraction"
+      output: "kg dry solids"
+      source_ids: []
+    - id: calc_gas_mass
+      applies_to: "Optional supporting disclosure for gas inputs"
+      rule: "mass = metered reference volume × documented density at the same reference conditions"
+      inputs:
+        - Volume
+        - "gas identity"
+        - temperature
+        - pressure
+        - density
+      output: "kg supporting value"
+      source_ids: []
+    - id: calc_pm10_emission
+      applies_to: "pm10_air"
+      rule: "post-control PM10 = measured concentration × dry gas volume, or documented uncontrolled emission × (1 − capture efficiency); use one non-overlapping method per source"
+      inputs:
+        - "Site measurement or calculation inputs"
+      output: "kg PM10"
+      source_ids: []
+    - id: calc_fossil_co2_emission
+      applies_to: "fossil_co2_air"
+      rule: "fossil carbon dioxide = measured fossil-fuel amount × documented carbon content × documented oxidation and molecular-mass conversion, or a non-overlapping direct stack result"
+      inputs:
+        - "Fuel amount"
+        - "carbon content"
+        - "oxidation basis"
+        - "direct stack evidence if used"
+      output: "kg fossil carbon dioxide"
+      source_ids: []
+    - id: calc_iron_to_water
+      applies_to: "iron_to_water"
+      rule: "discharged iron mass = matched net effluent volume × measured dissolved or total iron concentration"
+      inputs:
+        - "Net effluent volume"
+        - "iron concentration"
+        - "sampling coverage"
+      output: "kg iron to water"
+      source_ids: []
+    - id: calc_mass_balance
+      applies_to: "Campaign material balance"
+      rule: "closure = (dry product + external dry solid outputs + documented dry stock increase) / (dry metallic inputs + documented dry stock decrease)"
+      inputs:
+        - "Metallic inputs"
+        - product
+        - "solid wastes"
+        - "inventory changes"
+      output: "Dimensionless closure ratio"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Reference product"
+      requirement: "Verify CPC identity and declare material family, grade, route, morphology, size distribution, and dry market state."
+      evidence: "Product specification, certificate of analysis, CPC and customs boundary sources"
+    - id: dq_route
+      applies_to: "Process inventory"
+      requirement: "Demonstrate that every included conditional row was used by the declared route and every inapplicable row was omitted."
+      evidence: "Process flow diagram, batch recipe, operating log"
+    - id: dq_measurement
+      applies_to: "Foreground quantities"
+      requirement: "Use calibrated meters or reconciled primary records; disclose estimation and allocation for shared meters."
+      evidence: "Calibration certificates, records, reconciliation worksheet"
+    - id: dq_temporal
+      applies_to: "All foreground data"
+      requirement: "Cover a representative campaign and state reporting dates, downtime treatment, abnormal operation, and stock changes."
+      evidence: "Production calendar and operating log"
+    - id: dq_completeness
+      applies_to: "Material, waste, and direct-emission rows"
+      requirement: "Reconcile feedstock, product, internal recycle, inventory change, external transfers, and direct releases; investigate material-balance gaps."
+      evidence: "Signed mass-balance review and emissions reconciliation"
+    - id: dq_range_evidence
+      applies_to: "External QA ranges"
+      requirement: "Do not publish a numeric external range without two mutually independent original-text sources with compatible boundary, unit, and product state."
+      evidence: "Source audit and independence keys, or unresolved range-evidence need"
+validation_rules:
+  - rule_id: validate_identity_and_state
+    applies_to: "Reference product and dataset metadata"
+    rule: "Declare an in-scope ferrous granule or powder, its material family, grade, route, dry state, morphology, particle-size distribution, site, and reporting period."
+    source_ids:
+      - un-cpc-3-0-2025
+      - uk-hmrc-iron-steel-classification-2022
+  - rule_id: validate_reference_amount
+    applies_to: "Reference flow and all exchanges"
+    rule: "Require reference_product to equal 1,000 kg on the documented dry-mass basis and all other quantities to use the same normalization."
+    source_ids: []
+  - rule_id: validate_atomic_inventory
+    applies_to: "Process inventory"
+    rule: "Require every exchange to be one concrete physical, chemical, waste, or energy flow; no combined utility, fuel, packaging, waste, wastewater, or emission category is present."
+    source_ids: []
+  - rule_id: validate_route_consistency
+    applies_to: "Conditional inventory rows"
+    rule: "Require only rows applicable to the one operated route; conditional rows are absent rather than populated with zero."
+    source_ids:
+      - mathias-metal-powder-production-2024
+  - rule_id: validate_mass_balance
+    applies_to: "Campaign material balance"
+    rule: "Reconcile metallic inputs, dry product, internal recycle, stock changes, and external solid outputs, and investigate and disclose unexplained gaps."
+    source_ids: []
+  - rule_id: validate_waste_and_emissions
+    applies_to: "External wastes and direct releases"
+    rule: "Require each external waste, direct air release, and direct water release to have a destination or receiving compartment, measurement or calculation evidence, and no double counting with internal recycle or control-device capture."
+    source_ids: []
+  - rule_id: validate_uuid_state
+    applies_to: "TianGong references"
+    rule: "Require every adopted TianGong UUID to be directly verified at public state_code=100 for base name, language, type, classification, property, unit group, state, geography, technology, and comment; unresolved rows remain UUID-empty and appear in manifest review metadata."
+    source_ids: []
+  - rule_id: validate_source_provenance
+    applies_to: "External evidence"
+    rule: "Require final sources to resolve to verified original official or peer-reviewed text; discovery metadata and snippets are not evidence, and any external range satisfies the two-independent-source rule."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Gate-to-gate foreground production dataset for dry ferrous granules or powders"
+  downstream_use: "Link to upstream supply datasets and downstream product systems or lifecycle models after route and reference-flow validation"
+  allowed_use: "Product-specific LCA modeling when material family, grade, route, dry state, size specification, geography, period, and foreground evidence are compatible"
+  excluded_use: "Automatic proxy for direct-reduced iron, ferro-alloy powder other than spiegeleisen, scrap, fabricated powder-metal articles, or a route and state not represented by the dataset"
+  required_metadata: "Canonical PCR id; CPC code; product family and grade; route; dry state; morphology; size distribution and test method; site and geography; reporting period; reference amount; electricity supply qualifiers; internal recycle treatment; allocation; UUID audit status"
+  required_quality_disclosure: "Meter coverage, estimation and shared-meter allocation, mass-balance closure, moisture corrections, waste destinations, PM10 method, missing exact UUIDs, and unresolved range-evidence needs"
+  update_trigger: "Material change in feedstock or grade, production route, product size specification, site or electricity supply, pollution control, allocation, reference-flow UUID availability, or verified range evidence"
+data_sources:
+  - id: "un-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *CPC Version 3.0 Structure* and *Explanatory Notes* (2025). [Structure CSV](https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv); [Explanatory Notes PDF](https://unstats.un.org/UNSDWebsite/statcom/session_56/documents/BG-3o-Explanatory_Notes_of_the_Central_Product_Classification_Version3-E.pdf)"
+    used_for: "CPC 41117 identity, wording, and separation from adjacent primary iron forms"
+  - id: "uk-hmrc-iron-steel-classification-2022"
+    type: "official_guidance"
+    reference: "UK HM Revenue & Customs, [Classifying iron and steel](https://www.gov.uk/guidance/classifying-iron-and-steel), updated 7 March 2022"
+    used_for: "Heading 7205 granule and powder particle-size boundary, cut-wire inclusion, pig iron and spiegeleisen definitions, and exclusions"
+  - id: "mathias-metal-powder-production-2024"
+    type: "literature"
+    reference: "Mathias et al., “Metal powder as feedstock for laser-based additive manufacturing: From production to powder modification,” *Journal of Materials Research* 39, 19–47 (2024). [DOI 10.1557/s43578-023-01271-8](https://doi.org/10.1557/s43578-023-01271-8)"
+    used_for: "Production-route taxonomy; atomization sequence; water, air, nitrogen, argon, and other gas roles; recovery, drying, sieving, and post-processing"
+  - id: "china-customs-tariff-2021"
+    type: "official_guidance"
+    reference: "Guangzhou Municipal Commerce Bureau-hosted official tariff annex, [2021 tariff PDF](https://sw.gz.gov.cn/attachment/6/6733/6733943/6989367.pdf)"
+    used_for: "Professional Chinese product title “生铁、镜铁及钢铁的颗粒和粉末”"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:beb608802decc216e8e6f6197c00201a5e60dd3ae7b99be3ffc182ac3e631574"
+  generated_content_sha256: "sha256:6e14e25ad49ff9121e4f44309d5c99e2c3e538a6ea6fca02d6931323743904ef"

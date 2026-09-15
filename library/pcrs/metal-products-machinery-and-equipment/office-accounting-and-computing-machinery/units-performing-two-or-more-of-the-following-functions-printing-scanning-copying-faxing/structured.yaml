@@ -1,10 +1,547 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "45266"
-  title: "Units performing two or more of the following functions: printing, scanning, copying, faxing"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.office-accounting-and-computing-machinery.units-performing-two-or-more-of-the-following-functions-printing-scanning-copying-faxing"
+  classification_refs: "CPC 3.0: 45266; un-cpc-3-0-structure-2025"
+  covered_products: "Functionally integrated multifunction document-imaging equipment"
+  excluded_products: "Single-function standalone machines; loose parts; printing services"
+  representative_product: "Assembled multifunction printer with document scanning and copying"
+  production_route: "Purchased-component assembly, configuration, testing and packing; disclose inkjet or electrophotographic technology"
+  market_state: "Tested new device at factory gate; declared starter-cartridge and accessory configuration"
+functional_unit:
+  what: "Provision of a tested multifunction document-imaging device"
+  how_much: "1 kg of saleable device; disclose measured kg per device and device count"
+  how_well: "Pass model-specific tests for each declared function; disclose print speed, image resolution, colour capability, media size, duplexing and connectivity"
+  how_long_or_cycle: "One completed production cycle; no assumed service lifetime. Service comparison requires a separate declared lifetime, page workload and operating-mode schedule"
+  reference_flow_link: "reference_product; device count equals reference mass divided by measured net device mass"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "Include all site assembly and test inputs, packaging, actual rejects and attributable electricity. Require upstream datasets for every purchased component; supplier fabrication is upstream rather than an unrecorded zero burden. The BOM collection protocol defines this foreground boundary."
+      source_ids: []
+    - rule_id: system_boundary_rule_2
+      applies_to: "foreground_system_boundary"
+      rule: "Exclude customer operation, maintenance, distribution after the gate and final device disposal from the production result. A life-cycle extension must report these modules separately with workload, lifetime, geography, operating-mode energy and cartridge replacement records; the operating-mode distinction is supported by epa-imaging-equipment-v1-2."
+      source_ids: []
+    - rule_id: system_boundary_rule_3
+      applies_to: "foreground_system_boundary"
+      rule: "Component cards represent disjoint purchased articles. A print-engine module must exclude any housing, chassis, board, power supply or cable already entered separately. Add a separately identified atomic exchange for every additional BOM item or actual site chemical, waste or emission; the common inventory is not permission to omit site-specific exchanges."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased finished components received at the assembly site"
+  starting_condition_role: "Foreground assembly input boundary"
+  product_classification_scope: "Integrated multifunction imaging device, CPC 3.0 45266"
+  recursive_input_rule: "If a complete multifunction device enters for refurbishment, record it once as an input with prior-life burden convention; do not recursively expand identical device assembly without an explicit upstream dataset. Report refurbishment as a separate route"
+  upstream_dataset_requirement: "Supplier-specific or justified secondary datasets for components, cartridges, packaging and electricity with matching delivery state and geography"
+  disclosure: "BOM coverage; subcontracting; inbound transport treatment; device configuration; upstream dataset gaps; excluded life-cycle modules; refurbished input convention"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Units performing two or more of the following functions: printing, scanning, copying, faxing"
+    uuid: "3389a683-0d35-45b8-8b91-25cc03fab92c"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - model
+    - "function combination"
+    - "marking technology"
+    - "new or refurbished state"
+    - "production site and year"
+    - "device net mass"
+    - "included cartridge and accessory masses"
+    - "print speed"
+    - resolution
+    - "media size"
+    - "colour capability"
+    - duplexing
+    - "network configuration"
+    - "test acceptance criteria"
+reference_flows:
+  []
+measurement_rules:
+  - id: device_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Weigh the configured device including installed starter cartridges; exclude external packaging. Report separately any external accessories included in delivery. Do not infer mass from retail shipping weight."
+  - id: electricity_units
+    applies_to: "assembly and test electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Preserve metered electrical energy; convert kWh to MJ using 3.6. Do not treat electricity as a fuel mass or add upstream generation emissions as direct site emissions."
+  - id: cartridge_balance
+    applies_to: "cartridges and test consumption"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record incoming cartridge gross mass and delivered residual fill. Test ink or toner already withdrawn from those cartridges is not a second material input. Reconcile depletion, waste and delivered mass."
+  - id: paper_mass
+    applies_to: "test paper"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use measured paper mass or sheet count times measured sheet area times grammage. Distinguish sheets from printed sides and retain duplex information."
+process_map:
+  - id: assembly_test
+    name: "Assembly, configuration, testing and packing"
+    inclusion: "required"
+    inclusion_condition: "All covered production datasets"
+    role: "foreground production"
+    quantitative_reference: "1 kg saleable device"
+process_inventory:
+  - id: assembly_test
+    label: "Assembly, configuration, testing and packing"
+    inputs:
+      product:
+        - row_id: housing
+          role: "ABS printer housing"
+          name: "ABS printer housing"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Where a finished ABS housing is purchased separately; other polymers require separate specific rows."
+          amount:
+            expression: "Net recorded exchange divided by accepted device mass for the same period; apply normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted configured device, excluding external packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom
+              source_ids: []
+            ranges: []
+        - row_id: chassis
+          role: "Steel printer chassis"
+          name: "Steel printer chassis"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Where a steel chassis is purchased separately from the print engine."
+          amount:
+            expression: "Net recorded exchange divided by accepted device mass for the same period; apply normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted configured device, excluding external packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom
+              source_ids: []
+            ranges: []
+        - row_id: board
+          role: "Populated printer control circuit board"
+          name: "Populated printer control circuit board"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Where a populated control board is purchased separately; exclude boards embedded in recorded modules."
+          amount:
+            expression: "Net recorded exchange divided by accepted device mass for the same period; apply normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted configured device, excluding external packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom
+              source_ids: []
+            ranges: []
+        - row_id: scanner
+          role: "Document-scanner module"
+          name: "Document-scanner module"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Where a document-scanner module is installed; exclude standalone scanner devices."
+          amount:
+            expression: "Net recorded exchange divided by accepted device mass for the same period; apply normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted configured device, excluding external packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom
+              source_ids: []
+            ranges: []
+        - row_id: engine
+          role: "Printer print-engine assembly"
+          name: "Printer print-engine assembly"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Where a complete print-engine assembly is purchased; declare marking technology and embedded parts; do not duplicate separately recorded components."
+          amount:
+            expression: "Net recorded exchange divided by accepted device mass for the same period; apply normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted configured device, excluding external packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom
+              source_ids: []
+            ranges: []
+        - row_id: psu
+          role: "Printer power supply unit"
+          name: "Printer power supply unit"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Where a printer power supply is purchased separately from recorded modules."
+          amount:
+            expression: "Net recorded exchange divided by accepted device mass for the same period; apply normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted configured device, excluding external packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom
+              source_ids: []
+            ranges: []
+        - row_id: cable
+          role: "Insulated copper power cable"
+          name: "Insulated copper power cable"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Where a copper power cable crosses the boundary separately; record insulation and termination state."
+          amount:
+            expression: "Net recorded exchange divided by accepted device mass for the same period; apply normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted configured device, excluding external packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom
+              source_ids: []
+            ranges: []
+        - row_id: box
+          role: "corrugated board boxes"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Where a corrugated shipping box is supplied; exclude the device mass and record delivered box output separately."
+          amount:
+            expression: "Net recorded exchange divided by accepted device mass for the same period; apply normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted configured device, excluding external packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom
+              source_ids: []
+            ranges: []
+        - row_id: paper
+          role: "Uncoated printing paper"
+          name: "Uncoated printing paper"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Where new uncoated paper is consumed in function tests; reused originals are not repeatedly entered."
+          amount:
+            expression: "Net recorded exchange divided by accepted device mass for the same period; apply normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted configured device, excluding external packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom
+              source_ids: []
+            ranges: []
+        - row_id: toner
+          role: "Filled black toner cartridge"
+          name: "Filled black toner cartridge"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Where the model uses a black toner cartridge; record gross issues and residual fill after testing; colour cartridges require individual added rows."
+          amount:
+            expression: "Net recorded exchange divided by accepted device mass for the same period; apply normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted configured device, excluding external packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom
+              source_ids: []
+            ranges: []
+        - row_id: ink
+          role: "Filled black ink cartridge"
+          name: "Filled black ink cartridge"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Where the model uses a black ink cartridge; record gross issues and residual fill after testing; colour cartridges require individual added rows."
+          amount:
+            expression: "Net recorded exchange divided by accepted device mass for the same period; apply normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted configured device, excluding external packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "All attributable assembly, configuration, test and packing electricity, including common loads allocated by cp_energy."
+          amount:
+            expression: "Net recorded exchange divided by accepted device mass for the same period; apply normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted configured device, excluding external packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Units performing two or more of the following functions: printing, scanning, copying, faxing"
+          name: "Units performing two or more of the following functions: printing, scanning, copying, faxing"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3389a683-0d35-45b8-8b91-25cc03fab92c"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Accepted configured device mass excluding external packaging; include installed cartridge residuals."
+          amount:
+            expression: "Accepted device mass normalized to 1 kg; retain actual batch mass and count."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted configured device, excluding external packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output
+              source_ids: []
+            ranges: []
+        - row_id: delivered_box
+          role: "corrugated board boxes"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Delivered corrugated box mass as accompanying packaging; no co-product allocation or credit."
+          amount:
+            expression: "Net recorded exchange divided by accepted device mass for the same period; apply normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted configured device, excluding external packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: waste_paper
+          role: "Discarded printed test paper"
+          name: "Discarded printed test paper"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Where printed test sheets leave the site as segregated paper waste."
+          amount:
+            expression: "Net recorded exchange divided by accepted device mass for the same period; apply normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted configured device, excluding external packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output
+              source_ids: []
+            ranges: []
+        - row_id: reject
+          role: "Discarded multifunction printer"
+          name: "Discarded multifunction printer"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Where a terminal rejected complete device leaves for treatment; internal repair and rework are not external waste outputs."
+          amount:
+            expression: "Net recorded exchange divided by accepted device mass for the same period; apply normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted configured device, excluding external packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "foreground_burden_allocation"
+    rule: "Apply the BOM and meter protocol to subdivide model-specific assembly and testing before allocating common resources. Allocate shared electricity by measured station energy or documented machine-time and power observations; disclose the driver and denominator. Do not divide a device's manufacturing burden among its functions and then add it again for each function."
+    source_ids: []
+  - rule_id: allocation_rule_2
+    applies_to: "foreground_burden_allocation"
+    rule: "Record rejects and external waste treatment without an automatic avoided-virgin-material credit. Internal rework remains in the same batch balance; only terminal saleable output enters the normalization denominator. Report any alternative recycling allocation separately with the selected downstream method."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_bom
+      process_id: "assembly_test"
+      flow_role: "component, consumable and packaging exchanges"
+      record_type: "BOM and stock records"
+      raw_fields: "model; part number; material; quantity issued; returns; opening and closing stocks; component mass; supplier boundary; included subparts"
+      collection_method: "Reconcile weighed BOM with warehouse issues and supplier invoices; retain cartridge residual-fill measurements"
+      unit: "kg"
+      frequency: "each model and batch"
+      temporal_coverage: "Complete declared production period including rework"
+      site_scope: "Assembly site and attributable subcontracted operations"
+      aggregation_rule: "Net issues divided by accepted device mass; exclude embedded duplicates"
+      quality_evidence: "Scale calibration; BOM revision; invoices; signed stock reconciliation"
+    - protocol_id: cp_energy
+      process_id: "assembly_test"
+      flow_role: "electricity"
+      record_type: "submeter records"
+      raw_fields: "meter start and end; unit; station; model; time; grid region; voltage; shared-load allocation"
+      collection_method: "Meter assembly and all function tests; document allocation where direct submetering is unavailable"
+      unit: "MJ or kWh"
+      frequency: "each batch or shift"
+      temporal_coverage: "Same period as accepted output"
+      site_scope: "Assembly and test stations plus attributable common loads"
+      aggregation_rule: "Sum allocated energy divided by accepted device mass"
+      quality_evidence: "Meter calibration and station-time logs"
+    - protocol_id: cp_output
+      process_id: "assembly_test"
+      flow_role: "saleable device and waste"
+      record_type: "acceptance and waste records"
+      raw_fields: "serial count; configured net mass; tested functions; failed count; rework transfers; waste type and mass; destination"
+      collection_method: "Weigh accepted devices and separate waste consignments; reconcile acceptance logs and waste transfer records"
+      unit: "kg"
+      frequency: "each batch and consignment"
+      temporal_coverage: "Same period as input records"
+      site_scope: "Assembly site gate"
+      aggregation_rule: "Sum terminal outputs by exchange; normalize by accepted device mass"
+      quality_evidence: "Test reports; weighbridge tickets; waste manifests; mass reconciliation"
+  calculation_rules:
+    - id: normalize
+      applies_to: "inventory"
+      rule: "q_i = period net exchange_i / period accepted net device mass; exclude recovered internal rework from terminal outputs"
+      inputs:
+        - cp_bom
+        - cp_energy
+        - cp_output
+      output: "kg or MJ per kg device"
+      source_ids: []
+    - id: device_conversion
+      applies_to: "count reporting"
+      rule: "device count = accepted device mass / measured configured mass per device; separate models before averaging"
+      inputs:
+        - cp_output
+      output: "count accompanying mass-based dataset"
+      source_ids: []
+    - id: mass_reconcile
+      applies_to: "material balance"
+      rule: "Opening stock + receipts = closing stock + accepted device mass + external packaging output + waste outputs + documented losses; avoid counting embedded cartridges twice"
+      inputs:
+        - cp_bom
+        - cp_output
+      output: "Signed balance with investigated discrepancy"
+      source_ids: []
+  data_quality_requirements:
+    - id: configuration
+      applies_to: "reference product"
+      requirement: "Document each supported function and test outcome; retain model, technology and installed options"
+      evidence: "Product specification and acceptance test records; epa-imaging-equipment-v1-2"
+    - id: completeness
+      applies_to: "inventory"
+      requirement: "Reconcile complete disjoint BOM and waste ledger. Record any additional material as an individual exchange; missing data must not become a zero"
+      evidence: "cp_bom and cp_output"
+    - id: representation
+      applies_to: "upstream and energy"
+      requirement: "Record data year, geography, technology, supplier state, allocation and dataset boundary; explain substitutions"
+      evidence: "Supplier and meter records"
+    - id: uncertainty
+      applies_to: "amounts"
+      requirement: "Use foreground uncertainty and measured variability; do not infer an empirical range from one device or from an energy-efficiency limit"
+      evidence: "Calibration records, batch variability and uncertainty disclosure"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "foreground_dataset_conformance"
+    rule: "Reject a reference definition missing its function combination, device configuration or kg-per-device conversion. Confirm that the selected device satisfies at least two functions under un-cpc-3-0-structure-2025."
+    source_ids: []
+  - rule_id: validation_rule_2
+    applies_to: "foreground_dataset_conformance"
+    rule: "Check complete BOM coverage, absence of duplicated subassemblies, cartridge depletion balance, positive accepted output and reconciliation of rework. Investigate balance residuals against documented measurement uncertainty; no arbitrary percentage tolerance is prescribed."
+    source_ids: []
+  - rule_id: validation_rule_3
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require each inventory row's flow type, property and unit to agree with its selected identity. Missing flow identity or upstream dataset coverage must be disclosed and resolved before claiming complete database-linked coverage."
+    source_ids: []
+  - rule_id: validation_rule_4
+    applies_to: "foreground_dataset_conformance"
+    rule: "Check that all records share the declared production period and boundary; factory-gate results must not be advertised as whole-life or equal-service comparisons without the separate service scenario."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset"
+  downstream_use: "background_dataset for configured multifunction-device supply; process and lifecyclemodel projections of the foreground data package"
+  allowed_use: "Factory-gate production modelling with compatible device configuration and upstream coverage"
+  excluded_use: "Whole-life environmental claims without use and end-of-life modules; automatic function-by-function comparison; single-function machine substitution"
+  required_metadata: "model; functions; technology; kg per device; cartridge configuration; site; year; BOM coverage; allocation; upstream dataset links"
+  required_quality_disclosure: "missing flows; unresolved identities; meter coverage; uncertainty; upstream proxies; exclusions; material balance"
+  update_trigger: "BOM, technology, site, electricity mix, cartridge configuration or test-protocol change"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations, CPC Version 3.0 structure, 30 June 2025; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv ; retrieved 2026-09-09"
+    used_for: "Verified row 45266; classification identity and scope"
+  - id: "epa-imaging-equipment-v1-2"
+    type: "standard"
+    reference: "US EPA, ENERGY STAR Product Specification for Imaging Equipment, Version 1.2, definition 1.A.5 and operating-mode definitions; https://www.energystar.gov/sites/default/files/Imaging_Equipment_Program_Requirements%20v1_2.pdf ; retrieved 2026-09-09"
+    used_for: "Historical functional-integration definition and operating-mode distinctions; no current certification claim or empirical amount range"
+  - id: "hp-officejet-9010-disassembly"
+    type: "handbook"
+    reference: "HP, Product End-of-Life Disassembly Instructions, OfficeJet Pro 9010 and Premier/9019, document c07585754, sections 1 and 3; https://www8.hp.com/h20195/v2/GetDocument.aspx?docname=c07585754 ; retrieved 2026-09-09"
+    used_for: "Verified component locations and disassembly sequence support illustrative scanner, chassis, board, cartridge and power-supply decomposition; model-specific quantities are not category amounts"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:61ed1b2cc57ab3d2d8ebef203fe7939fe8e934292e317a44f773c8f240a77f35"
+  generated_content_sha256: "sha256:271f52c477b1567ac97a07d0e6967368df296a6990d42f313a2b9ad9b9243a45"

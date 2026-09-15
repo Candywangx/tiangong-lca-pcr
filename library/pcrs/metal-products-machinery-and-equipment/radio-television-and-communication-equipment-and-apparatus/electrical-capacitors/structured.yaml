@@ -1,10 +1,877 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "47110"
-  title: "Electrical capacitors"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.radio-television-and-communication-equipment-and-apparatus.electrical-capacitors"
+  classification_refs: "CPC 3.0:47110"
+  covered_products: "Discrete fixed and variable electrical capacitors; route-specific foreground packages"
+  excluded_products: "Batteries; separately sold parts; capacitor-bank control equipment; complete electronic apparatus"
+  representative_product: "A tested capacitor of one declared dielectric and electrical rating"
+  production_route: "Ceramic sheet/electrode processing and firing; formed-foil winding and impregnation; metallized-film winding; route-specific termination and inspection"
+  market_state: "Conforming factory-gate component, dry external surface, electrically discharged; packaging separately inventoried"
+functional_unit:
+  what: "Provide the declared capacitance function as an intermediate component"
+  how_much: "1 kg net conforming capacitors of one declared product specification"
+  how_well: "Declare capacitance, tolerance, rated AC/DC voltage, ESR or dissipation factor, leakage, dielectric class and test temperature/frequency"
+  how_long_or_cycle: "One factory-gate delivery; service life is not inferred. A use-stage extension must declare duty cycle, temperature, lifetime and replacement rate."
+  reference_flow_link: "Normalize accepted batch output to 1 kg; mass is an intermediate-product declared unit and does not establish functional equivalence between designs."
+system_boundary:
+  rules:
+    - rule_id: boundary_production
+      applies_to: "foreground"
+      rule: "Include all on-site attributable production, rejects, thermal treatment, clean-room demand, testing, packing and waste transfers from the declared purchased-material state to accepted output."
+      source_ids:
+        - ghg-protocol-product-standard-2011
+    - rule_id: boundary_upstream
+      applies_to: "upstream"
+      rule: "Link upstream production and delivery datasets for each purchased material and energy input. Green-tape manufacture, foil etching/forming and film metallization must be upstream or explicitly foreground, never omitted or counted twice."
+      source_ids:
+        - murata-mlcc-production-2011
+        - nichicon-aluminum-technical-notes
+        - tdk-film-capacitors-primer
+    - rule_id: boundary_extensions
+      applies_to: "completeness"
+      rule: "The cards are route anchors, not a cut-off list. Reconcile the BOM, purchases and emissions register; add one atomic exchange for every actual omitted constituent, carrier film, plating salt, solvent emission, treatment chemical, fuel or waste. Other dielectrics, variable and double-layer designs require verified route extensions; do not transfer these route inventories by mass alone."
+      source_ids:
+        - ghg-protocol-product-standard-2011
+    - rule_id: boundary_partial
+      applies_to: "downstream"
+      rule: "Report factory production separately from cradle-to-gate results. Default production excludes use and end-of-life of the sold capacitor; an extended life-cycle model declares those scenarios separately."
+      source_ids:
+        - ghg-protocol-product-standard-2011
+boundary_abstraction:
+  declared_starting_condition: "Purchased green ceramic tape, electrode pastes, formed anode foil, etched cathode foil, separator paper, formulated electrolyte or metallized film at documented delivery state"
+  starting_condition_role: "Foreground entry condition; not an upstream burden exemption"
+  product_classification_scope: "CPC 3.0:47110; parts separately identified"
+  recursive_input_rule: "Purchased capacitors for rework retain a separate supplied-state upstream dataset; do not recursively apply the same finished-output process. Internal rework is a measured loop, with additional energy and losses."
+  upstream_dataset_requirement: "Document supplier technology, geography, period, material state and excluded operations for every linked dataset"
+  disclosure: "Declare gate location, make/buy split, outsourced steps, transport, treatment boundary, exclusions and extension coverage"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "capacitor"
+    uuid: "df93339b-f27d-4f3e-b672-9d2ef0c536f6"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "dielectric and electrolyte identity"
+    - "fixed/variable design"
+    - "capacitance and tolerance"
+    - "rated voltage AC/DC"
+    - "ESR/leakage test conditions"
+    - "dimensions and net item mass"
+    - "route and purchased-material state"
+    - "supplier and site geography"
+    - "production period"
+    - yield
+    - "boundary and upstream coverage"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use accepted net component mass, excluding packaging; count conversion uses measured batch mean item mass."
+  - id: energy_basis
+    applies_to: "electricity and fuel"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert metered kWh to MJ using 3.6 MJ/kWh; retain natural gas volume and reference conditions separately."
+  - id: formulation_mass
+    applies_to: "paste and electrolyte"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record supplied formulation mass; do not equate metal, solids or active salt mass to purchased mixture mass."
+  - id: water_basis
+    applies_to: "water and liquid waste"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "A volume-to-mass conversion requires measured density and temperature; wastewater pollutant mass is separate from wet stream mass."
+process_map:
+  - id: ceramic
+    name: "Ceramic chip fabrication"
+    inclusion: "conditional"
+    inclusion_condition: "Ceramic dielectric route"
+    role: "foreground production"
+    quantitative_reference: "per 1 kg accepted capacitor output"
+  - id: electrolytic
+    name: "Aluminum electrolytic element fabrication"
+    inclusion: "conditional"
+    inclusion_condition: "Wet aluminum electrolytic route"
+    role: "foreground production"
+    quantitative_reference: "per 1 kg accepted capacitor output"
+  - id: film_winding
+    name: "Film element fabrication"
+    inclusion: "conditional"
+    inclusion_condition: "Metallized polypropylene film route"
+    role: "foreground production"
+    quantitative_reference: "per 1 kg accepted capacitor output"
+  - id: finishing
+    name: "Termination, assembly, testing and packing"
+    inclusion: "required"
+    inclusion_condition: "All declared routes"
+    role: "foreground production"
+    quantitative_reference: "per 1 kg accepted capacitor output"
+  - id: utilities
+    name: "Metered site services and direct combustion"
+    inclusion: "required"
+    inclusion_condition: "All declared routes; gas only where combusted"
+    role: "foreground production"
+    quantitative_reference: "per 1 kg accepted capacitor output"
+process_inventory:
+  - id: ceramic
+    label: "Ceramic chip fabrication"
+    inputs:
+      product:
+        - row_id: ceramic_tape
+          role: "Barium titanate green ceramic tape"
+          name: "Barium titanate green ceramic tape"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Barium-titanate tape route: record purchased tape mass, binder content and thickness; exclude removable carrier from tape mass."
+          amount:
+            expression: "Collect the batch quantity specified above and divide by accepted net batch output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted capacitor output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ceramic
+              source_ids:
+                - murata-mlcc-production-2011
+            ranges: []
+        - row_id: nickel_paste
+          role: "Nickel electrode paste"
+          name: "Nickel electrode paste"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Nickel internal electrode route: weigh formulated paste issued less returns, with metal and solvent fractions."
+          amount:
+            expression: "Collect the batch quantity specified above and divide by accepted net batch output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted capacitor output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ceramic
+              source_ids:
+                - murata-mlcc-production-2011
+            ranges: []
+        - row_id: copper_paste
+          role: "Copper electrode paste"
+          name: "Copper electrode paste"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Copper external electrode route: weigh wet paste consumption; distinguish applied solids from evaporated solvent."
+          amount:
+            expression: "Collect the batch quantity specified above and divide by accepted net batch output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted capacitor output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ceramic
+              source_ids:
+                - murata-mlcc-production-2011
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: ceramic_reject
+          role: "Rejected multilayer ceramic capacitor"
+          name: "Rejected multilayer ceramic capacitor"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "When ceramic rejects leave for treatment: weigh fired rejected chips separately from unfired tape trim; identify metal content and destination."
+          amount:
+            expression: "Collect the batch quantity specified above and divide by accepted net batch output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted capacitor output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ceramic
+              source_ids:
+                - murata-mlcc-production-2011
+            ranges: []
+      elementary:
+        []
+  - id: electrolytic
+    label: "Aluminum electrolytic element fabrication"
+    inputs:
+      product:
+        - row_id: anode_foil
+          role: "Formed aluminum anode foil for capacitor"
+          name: "Formed aluminum anode foil for capacitor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Wet aluminum route: weigh oxide-formed anode foil; record purity, thickness, forming voltage and supplier etching/forming coverage."
+          amount:
+            expression: "Collect the batch quantity specified above and divide by accepted net batch output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted capacitor output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrolytic
+              source_ids:
+                - nichicon-aluminum-technical-notes
+            ranges: []
+        - row_id: cathode_foil
+          role: "Etched aluminum foil"
+          name: "Al coil of etched foil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7e6ef577-653b-4ef1-9b41-74f1e31c2ff3"
+          property_unit: "Mass / kg"
+          description: "Wet aluminum route: weigh etched foil used as cathode; declare thickness, purity, etch state and any subsequent formation."
+          amount:
+            expression: "Collect the batch quantity specified above and divide by accepted net batch output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted capacitor output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrolytic
+              source_ids:
+                - nichicon-aluminum-technical-notes
+            ranges: []
+        - row_id: paper
+          role: "Capacitor separator paper"
+          name: "Capacitor separator paper"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Wet aluminum route: weigh dry separator paper by grade, moisture and roll state; do not substitute battery polymer separator."
+          amount:
+            expression: "Collect the batch quantity specified above and divide by accepted net batch output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted capacitor output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrolytic
+              source_ids:
+                - nichicon-aluminum-technical-notes
+            ranges: []
+        - row_id: electrolyte
+          role: "Liquid aluminum-capacitor electrolyte"
+          name: "Liquid aluminum-capacitor electrolyte"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Liquid impregnation route: weigh one purchased electrolyte formulation per record and retain supplier formulation/SDS identity, solvent, salts and concentrations. Distinct formulations require distinct exchanges."
+          amount:
+            expression: "Collect the batch quantity specified above and divide by accepted net batch output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted capacitor output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrolytic
+              source_ids:
+                - nichicon-aluminum-technical-notes
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: aluminum_scrap
+          role: "Aluminum foil scrap"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass / kg"
+          description: "Where foil trim is removed: weigh segregated aluminum foil scrap, report contamination and recycler receipt; internal recirculation is not a new purchased input."
+          amount:
+            expression: "Collect the batch quantity specified above and divide by accepted net batch output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted capacitor output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrolytic
+              source_ids:
+                - nichicon-aluminum-technical-notes
+            ranges: []
+        - row_id: spent_electrolyte
+          role: "Spent aluminum-capacitor electrolyte"
+          name: "Spent aluminum-capacitor electrolyte"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "When spent impregnation liquid is discharged: weigh separately from rinse water, declare composition, hazard classification and treatment destination."
+          amount:
+            expression: "Collect the batch quantity specified above and divide by accepted net batch output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted capacitor output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrolytic
+              source_ids:
+                - nichicon-aluminum-technical-notes
+            ranges: []
+      elementary:
+        []
+  - id: film_winding
+    label: "Film element fabrication"
+    inputs:
+      product:
+        - row_id: film
+          role: "Metallized polypropylene capacitor film"
+          name: "Metallized polypropylene capacitor film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Metallized PP route: measure film consumption with polymer thickness and electrode metal mass; supplier dataset must include metallization."
+          amount:
+            expression: "Collect the batch quantity specified above and divide by accepted net batch output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted capacitor output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_film_winding
+              source_ids:
+                - tdk-film-capacitors-primer
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: film_scrap
+          role: "Metallized polypropylene film scrap"
+          name: "Metallized polypropylene film scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "When slitting or winding trim leaves: weigh metallized PP scrap; record metal coating, contamination and destination."
+          amount:
+            expression: "Collect the batch quantity specified above and divide by accepted net batch output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted capacitor output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_film_winding
+              source_ids:
+                - tdk-film-capacitors-primer
+            ranges: []
+      elementary:
+        []
+  - id: finishing
+    label: "Termination, assembly, testing and packing"
+    inputs:
+      product:
+        - row_id: wire
+          role: "Tinned copper wire"
+          name: "Tinned copper wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Where lead wires are fitted: weigh purchased tinned copper wire including coating; record diameter and reject losses."
+          amount:
+            expression: "Collect the batch quantity specified above and divide by accepted net batch output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted capacitor output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing
+              source_ids:
+                - tdk-film-capacitors-primer
+            ranges: []
+        - row_id: can
+          role: "Aluminum capacitor can"
+          name: "Aluminum capacitor can"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Where aluminum cans are fitted: record empty formed can mass and count, coating state and supplier forming coverage."
+          amount:
+            expression: "Collect the batch quantity specified above and divide by accepted net batch output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted capacitor output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing
+              source_ids:
+                - nichicon-aluminum-technical-notes
+            ranges: []
+        - row_id: seal
+          role: "Butyl rubber capacitor seal"
+          name: "Butyl rubber capacitor seal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only where the BOM specifies a butyl-rubber end seal: weigh the finished seal, retaining compound and curing specification."
+          amount:
+            expression: "Collect the batch quantity specified above and divide by accepted net batch output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted capacitor output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing
+              source_ids:
+                - nichicon-aluminum-technical-notes
+            ranges: []
+        - row_id: epoxy
+          role: "Epoxy resin"
+          name: "Epoxy resin"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e2bab6ae-d42f-4fca-bab5-ae9c6692f105"
+          property_unit: "Mass / kg"
+          description: "Where epoxy encapsulation is used: weigh resin consumption and retain formulation; collect hardener as its own chemical exchange if supplied separately."
+          amount:
+            expression: "Collect the batch quantity specified above and divide by accepted net batch output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted capacitor output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing
+              source_ids: []
+            ranges: []
+        - row_id: nickel
+          role: "Nickel"
+          name: "Nickel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Where nickel plating uses soluble nickel anodes: weigh net nickel anode consumption; bath salts and additives require separate species records."
+          amount:
+            expression: "Collect the batch quantity specified above and divide by accepted net batch output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted capacitor output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing
+              source_ids:
+                - murata-mlcc-production-2011
+            ranges: []
+        - row_id: tin
+          role: "Tin"
+          name: "Tin"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Where tin plating uses soluble tin anodes: weigh net tin consumption; do not infer it from finished coating alone."
+          amount:
+            expression: "Collect the batch quantity specified above and divide by accepted net batch output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted capacitor output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing
+              source_ids:
+                - murata-mlcc-production-2011
+            ranges: []
+        - row_id: box
+          role: "Corrugated cardboard box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Where cardboard shipping boxes are used: weigh empty boxes and allocate to shipped conforming capacitor mass; collect carrier tape/reels separately when present."
+          amount:
+            expression: "Collect the batch quantity specified above and divide by accepted net batch output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted capacitor output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_capacitor
+          role: "capacitor"
+          name: "capacitor"
+          flow_type: "product"
+          flow_ref:
+            uuid: "df93339b-f27d-4f3e-b672-9d2ef0c536f6"
+          property_unit: "Mass / kg"
+          description: "All routes: record net mass and count of accepted tested capacitors; exclude packaging and failed units; retain capacitance, voltage and test conditions."
+          amount:
+            expression: "Collect the batch quantity specified above and divide by accepted net batch output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted capacitor output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing
+              source_ids:
+                - ghg-protocol-product-standard-2011
+            ranges: []
+      waste:
+        - row_id: plating_water
+          role: "Nickel plating wastewater"
+          name: "Nickel plating wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only when nickel-plating wastewater is transferred to treatment: measure wet mass and nickel concentration; distinguish treatment transfer from final elementary discharge."
+          amount:
+            expression: "Collect the batch quantity specified above and divide by accepted net batch output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted capacitor output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: utilities
+    label: "Metered site services and direct combustion"
+    inputs:
+      product:
+        - row_id: electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "All routes: meter electricity for production, thermal processing, clean rooms, compressed air, aging and testing; reconcile shared services without duplicate allocation."
+          amount:
+            expression: "Collect the batch quantity specified above and divide by accepted net batch output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted capacitor output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - ghg-protocol-product-standard-2011
+            ranges: []
+        - row_id: process_water
+          role: "Process Water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Where water is supplied: meter fresh process water, distinguish makeup from recirculation and record treatment quality."
+          amount:
+            expression: "Collect the batch quantity specified above and divide by accepted net batch output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted capacitor output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - ghg-protocol-product-standard-2011
+            ranges: []
+        - row_id: natural_gas
+          role: "natural gas in the gaseous state"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Only for on-site gas combustion: meter supplied volume at declared temperature and pressure, with composition and heating-value basis."
+          amount:
+            expression: "Collect the batch quantity specified above and divide by accepted net batch output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted capacitor output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - ghg-protocol-product-standard-2011
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: fossil_co2
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Only for direct fossil-carbon oxidation: collect measured stack CO2 or calculate from measured fuel carbon with oxidation and carbon-retention records. Exclude upstream electricity emissions."
+          amount:
+            expression: "Collect the batch quantity specified above and divide by accepted net batch output in kg."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted capacitor output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids:
+                - ghg-protocol-product-standard-2011
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "shared_operations"
+    rule: "Use submetering and batch segregation first. If unavoidable, allocate shared burden by measured causal drivers such as furnace occupancy or machine time, documenting the physical relationship."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: allocation_fallback
+    applies_to: "coproducts"
+    rule: "Use economic or another justified relationship only where physical allocation cannot be established; retain prices, period and sensitivity. Do not pool unlike capacitor ratings solely by item count."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: allocation_rejects
+    applies_to: "rework_and_scrap"
+    rule: "Accepted output bears production and reject-treatment demand. Account internal rework without duplicate virgin input. Report exported scrap mass and recycling convention explicitly; no automatic avoided-virgin credit."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_ceramic
+      process_id: "ceramic"
+      flow_role: "individual exchanges and yield"
+      record_type: "primary batch ledger"
+      raw_fields: "row id; material grade; opening/closing stock; receipts; returns; meter readings; net accepted mass; rejects; work in progress; test conditions; supplier transport distance and mode"
+      collection_method: "Calibrated scales/meters, BOM reconciliation, supplier certificates and treatment manifests; record each substance separately"
+      unit: "kg; MJ; m3 with reference conditions"
+      frequency: "Each batch and meter interval"
+      temporal_coverage: "Declare a representative continuous production period including start-up, idle and seasonal conditions"
+      site_scope: "Declared site, line and outsourced stage"
+      aggregation_rule: "Sum reconciled quantities for the same product route; divide by accepted net output, retaining allocation and inventory changes"
+      quality_evidence: "Calibration; invoices; BOM; test certificates; yield and mass-balance reconciliation"
+    - protocol_id: cp_electrolytic
+      process_id: "electrolytic"
+      flow_role: "individual exchanges and yield"
+      record_type: "primary batch ledger"
+      raw_fields: "row id; material grade; opening/closing stock; receipts; returns; meter readings; net accepted mass; rejects; work in progress; test conditions; supplier transport distance and mode"
+      collection_method: "Calibrated scales/meters, BOM reconciliation, supplier certificates and treatment manifests; record each substance separately"
+      unit: "kg; MJ; m3 with reference conditions"
+      frequency: "Each batch and meter interval"
+      temporal_coverage: "Declare a representative continuous production period including start-up, idle and seasonal conditions"
+      site_scope: "Declared site, line and outsourced stage"
+      aggregation_rule: "Sum reconciled quantities for the same product route; divide by accepted net output, retaining allocation and inventory changes"
+      quality_evidence: "Calibration; invoices; BOM; test certificates; yield and mass-balance reconciliation"
+    - protocol_id: cp_film_winding
+      process_id: "film_winding"
+      flow_role: "individual exchanges and yield"
+      record_type: "primary batch ledger"
+      raw_fields: "row id; material grade; opening/closing stock; receipts; returns; meter readings; net accepted mass; rejects; work in progress; test conditions; supplier transport distance and mode"
+      collection_method: "Calibrated scales/meters, BOM reconciliation, supplier certificates and treatment manifests; record each substance separately"
+      unit: "kg; MJ; m3 with reference conditions"
+      frequency: "Each batch and meter interval"
+      temporal_coverage: "Declare a representative continuous production period including start-up, idle and seasonal conditions"
+      site_scope: "Declared site, line and outsourced stage"
+      aggregation_rule: "Sum reconciled quantities for the same product route; divide by accepted net output, retaining allocation and inventory changes"
+      quality_evidence: "Calibration; invoices; BOM; test certificates; yield and mass-balance reconciliation"
+    - protocol_id: cp_finishing
+      process_id: "finishing"
+      flow_role: "individual exchanges and yield"
+      record_type: "primary batch ledger"
+      raw_fields: "row id; material grade; opening/closing stock; receipts; returns; meter readings; net accepted mass; rejects; work in progress; test conditions; supplier transport distance and mode"
+      collection_method: "Calibrated scales/meters, BOM reconciliation, supplier certificates and treatment manifests; record each substance separately"
+      unit: "kg; MJ; m3 with reference conditions"
+      frequency: "Each batch and meter interval"
+      temporal_coverage: "Declare a representative continuous production period including start-up, idle and seasonal conditions"
+      site_scope: "Declared site, line and outsourced stage"
+      aggregation_rule: "Sum reconciled quantities for the same product route; divide by accepted net output, retaining allocation and inventory changes"
+      quality_evidence: "Calibration; invoices; BOM; test certificates; yield and mass-balance reconciliation"
+    - protocol_id: cp_utilities
+      process_id: "utilities"
+      flow_role: "individual exchanges and yield"
+      record_type: "primary batch ledger"
+      raw_fields: "row id; material grade; opening/closing stock; receipts; returns; meter readings; net accepted mass; rejects; work in progress; test conditions; supplier transport distance and mode"
+      collection_method: "Calibrated scales/meters, BOM reconciliation, supplier certificates and treatment manifests; record each substance separately"
+      unit: "kg; MJ; m3 with reference conditions"
+      frequency: "Each batch and meter interval"
+      temporal_coverage: "Declare a representative continuous production period including start-up, idle and seasonal conditions"
+      site_scope: "Declared site, line and outsourced stage"
+      aggregation_rule: "Sum reconciled quantities for the same product route; divide by accepted net output, retaining allocation and inventory changes"
+      quality_evidence: "Calibration; invoices; BOM; test certificates; yield and mass-balance reconciliation"
+  calculation_rules:
+    - id: normalize
+      applies_to: "each inventory row"
+      rule: "q_i = Q_i / M_good; M_good must be positive. Q_i is net consumption or measured output over the same period."
+      inputs:
+        - Q_i
+        - M_good
+      output: "quantity per kg"
+      source_ids: []
+    - id: stock_balance
+      applies_to: "purchased material"
+      rule: "Net consumed = opening stock + receipts - closing stock - external returns; identify work-in-progress changes."
+      inputs:
+        - "stock ledger"
+      output: "Q_i"
+      source_ids: []
+    - id: count_mass
+      applies_to: "reference output"
+      rule: "Net mass = accepted count × measured mean item mass; retain sample plan and variation."
+      inputs:
+        - count
+        - "weighed sample"
+      output: "M_good"
+      source_ids: []
+    - id: fuel_carbon
+      applies_to: "direct CO2"
+      rule: "Use measured stack mass or fuel carbon balance with measured oxidation and retained carbon. Identify any factor source explicitly; upstream grid CO2 is not direct stack CO2."
+      inputs:
+        - "stack or fuel-carbon records"
+      output: "direct fossil CO2"
+      source_ids:
+        - ghg-protocol-product-standard-2011
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all materials"
+      requirement: "Retain exact grade, supplied state, composition and provenance; no substitution of generic metal for processed foil or paste."
+      evidence: "supplier certificates and BOM"
+    - id: dq_completeness
+      applies_to: "site inventory"
+      requirement: "Reconcile all materials, energy, rejects and emission species. Record absent conditional flows as not applicable with evidence; unknown is not zero."
+      evidence: "purchase, emission and treatment registers"
+    - id: dq_quality
+      applies_to: "measurements and upstream data"
+      requirement: "Disclose time, geography, technology, uncertainty, calibration and coverage; prioritize primary records for controlled operations."
+      evidence: "ghg-protocol-product-standard-2011"
+    - id: dq_performance
+      applies_to: "comparability"
+      requirement: "Comparison requires equivalent electrical service and lifetime assumptions; mass-normalized values alone do not establish equivalence."
+      evidence: "electrical tests and functional specification"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference_flow"
+    rule: "Require all reference qualifiers, positive accepted output, consistent unit conversion and net mass excluding packaging."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: validate_route
+    applies_to: "process_inventory"
+    rule: "Every included process must have records; verify conditional-route applicability and all site-specific extensions. Missing process chemistry or unreviewed route extensions make completeness inconclusive."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: validate_balance
+    applies_to: "amounts"
+    rule: "Reconcile material, metal, solvent and energy ledgers within stated measurement uncertainty. Explain discrepancies and reject rates; no universal literature yield threshold applies."
+    source_ids: []
+  - rule_id: validate_links
+    applies_to: "upstream_and_waste"
+    rule: "Reject double counting of supplier processing, internal transfers, waste treatment and grid emissions. Unresolved UUIDs require explicit disclosure and must not be replaced with proxies silently."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+published_dataset_profile:
+  dataset_role: "foreground_dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Route-qualified capacitor production input to process or lifecyclemodel with explicit upstream coverage"
+  excluded_use: "Unqualified cross-dielectric comparisons; full life-cycle claims from gate-only data; application to unverified routes"
+  required_metadata: "Product specification; reference qualifiers; site; period; process map; starting states; suppliers; units; allocation and transport"
+  required_quality_disclosure: "Measurement uncertainty; source coverage; unresolved identities; omitted operations; range-evidence limitations and route extensions"
+  update_trigger: "Changes in dielectric, supplier state, energy supply, yield, plating chemistry, formulation or electrical rating"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC 3.0 structure, 30 June 2025; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv; retrieved 2026-09-09; independence_key: un-cpc-3-0-structure-2025"
+    used_for: "CPC 47110 identity; 47171 separates parts"
+  - id: "murata-mlcc-production-2011"
+    type: "literature"
+    reference: "Murata, Basics of capacitors, Lesson 3, 28 June 2011; https://article.murata.com/en-eu/article/basics-of-capacitors-3; retrieved 2026-09-09; independence_key: murata-basics-capacitors-lesson-3-2011"
+    used_for: "Ceramic sheet, electrode, firing, termination and inspection sequence"
+  - id: "nichicon-aluminum-technical-notes"
+    type: "handbook"
+    reference: "Nichicon, General Descriptions of Aluminum Electrolytic Capacitors, sections 1-3 to 1-6, PDF pages 3-6; https://www.nichicon.co.jp/english/products/pdf/aluminum-e.pdf; retrieved 2026-09-09; independence_key: nichicon-aluminum-technical-notes"
+    used_for: "Formed and etched foil, separator, impregnation, housing, aging and electrical characterization"
+  - id: "tdk-film-capacitors-primer"
+    type: "literature"
+    reference: "TDK, Capacitors Part 4, Film Capacitors [1], construction section; https://www.tdk.com/en/tech-mag/electronics_primer/7; retrieved 2026-09-09; independence_key: tdk-electronics-primer-7"
+    used_for: "Film dielectric, metallized versus foil electrodes, wound and laminated construction"
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard, 2011, chapters 6-9 and summary pages 14-15; https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf; retrieved 2026-09-09; independence_key: wri-wbcsd-product-standard-2011"
+    used_for: "Intermediate-product reference flow, partial boundary, primary collection and allocation hierarchy; GHG method support only"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b9af19297fe4845fb5cd9e2e403e37632490920fdafa9f5d7aca9c4fcf320cc9"
+  generated_content_sha256: "sha256:219b6f2e7a7894a12994aed9ae3582d1f7bda32359b8ff02266479fb2c84ed05"

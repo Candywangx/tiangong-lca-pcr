@@ -1,10 +1,1048 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "42922"
-  title: "Interchangeable tools for hand tools or for machine tools, including dies for drawing or extruding metal, and rock drilling or earth boring tools; knives for machines; plates, sticks, tips and the like for tools, unmounted, of sintered metal carbides or cermets"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.interchangeable-tools-for-hand-tools-or-for-machine-tools-including-dies-for-drawing-or-6e18c194"
+  classification_refs: "CPC 3.0: 42922"
+  covered_products: "Interchangeable tools for hand tools or machine tools; metal drawing and extrusion dies; rock-drilling and earth-boring tools; machine knives; unmounted sintered-metal-carbide or cermet plates, sticks, tips, and similar tool articles."
+  excluded_products: "Complete hand tools classified separately from their interchangeable working tools; tool holders without the working tool; complete machine tools; general-purpose fasteners or wear parts without a tool function."
+  representative_product: "A declared conforming finished tool item or homogeneous batch, normalized by net finished-product mass."
+  production_route: "Route-specific steel blank machining and heat treatment, or hardmetal/cermet powder preparation, pressing and sintering, followed by grinding/finishing; CVD coating is conditional; inspection and sales packaging are included."
+  market_state: "Finished, inspected, saleable tool product at the manufacturing factory gate, with coating and packaging state declared."
+functional_unit:
+  what: "A conforming finished interchangeable tool, die, machine knife, drilling/boring tool, or unmounted carbide/cermet tool article that performs its declared cutting, forming, drilling, or wear-resistant tool function."
+  how_much: "1 kg net finished-product mass, excluding sales packaging."
+  how_well: "Meets the declared drawing, grade, dimensions, tolerances, hardness or other specified performance properties, surface treatment, and acceptance criteria."
+  how_long_or_cycle: "One factory-gate production output; service life is not asserted and must be modelled separately when use performance is compared."
+  reference_flow_link: "The measured net mass of conforming finished output represented by out_finished_interchangeable_tool, normalized to 1 kg."
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "foreground manufacturing"
+      rule: "Include received-material preparation, route-applicable thermal consolidation or heat treatment, machining/grinding, route-applicable coating, inspection, and sales packaging through the factory gate."
+      source_ids:
+        - loglisci-priarone-settineri-2013-tool-manufacturing
+        - hsu-2024-turning-insert-lca
+    - rule_id: boundary_atomic_actuals
+      applies_to: "all included processes"
+      rule: "Record every actual purchased material, gas, utility, waste, and direct elementary emission as a separate atomic exchange; confidential recipes may withhold quantities but not the existence and chemical identity needed for a complete model."
+      source_ids:
+        - hsu-2024-turning-insert-lca
+        - ec-2001-non-ferrous-metals-bref
+    - rule_id: boundary_outsourced_steps
+      applies_to: "outsourced heat treatment, coating, or finishing"
+      rule: "Keep an outsourced operation inside the cradle-to-gate product system and link the transported intermediate to a supplier process dataset; disclose transport and the supplier technology."
+      source_ids:
+        - loglisci-priarone-settineri-2013-tool-manufacturing
+    - rule_id: boundary_internal_recycling
+      applies_to: "rework and recovered hardmetal"
+      rule: "Treat internal rework as an internal loop without a second product credit; separately measure purchased or externally recovered powder and disclose its source and recycled content."
+      source_ids:
+        - hsu-2024-turning-insert-lca
+        - ec-2001-non-ferrous-metals-bref
+boundary_abstraction:
+  declared_starting_condition: "Traceable tool-steel bar, plate, or near-net blank, or separately specified carbide/cermet powders and recycled powder, received at the foreground manufacturing site."
+  starting_condition_role: "The physical entry point for site foreground collection; upstream production and delivery of each purchased input require linked background datasets."
+  product_classification_scope: "Finished products within the semantic boundary of CPC 42922, independent of the classification used by a supplier dataset."
+  recursive_input_rule: "A purchased semi-finished or finished CPC 42922 tool article is recorded as one product input with its own upstream dataset; its production is not recreated inside the same foreground package."
+  upstream_dataset_requirement: "Use supplier-specific datasets where available; otherwise select technology-, material-grade-, recycled-content-, geography-, and delivery-state-representative background datasets and disclose substitutions."
+  disclosure: "Declare product family, substrate route, purchased-input state, recycled content, coating route, packaging state, site geography, data period, outsourced operations, and every excluded or added life-cycle stage."
+reference_flow_definition:
+  reference_amount: "1 kg net finished product"
+  product_flow_ref:
+    name: "Finished CPC 42922 interchangeable tool product"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "tool family and geometry"
+    - "drawing or product standard"
+    - "substrate material and grade"
+    - "recycled-powder content where applicable"
+    - "heat-treatment or sintering route"
+    - "coating chemistry and technology or uncoated state"
+    - "hardness and acceptance criteria"
+    - "net product mass"
+    - "packaging state"
+    - "manufacturing site and geography"
+    - "data period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product and final output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure conforming finished product after all included finishing and coating operations but before sales packaging; exclude packaging, rejected output, fixtures, and reusable carriers."
+  - id: item_to_mass
+    applies_to: "Piece-count production records"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Convert item counts using measured batch net mass or a verified product-specific unit mass; disclose the count, measured mass, product geometry, and conversion source."
+  - id: electricity_energy
+    applies_to: "Electricity inputs"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Preserve the directly metered energy basis; when meters report kWh, convert using exactly 1 kWh = 3.6 MJ and retain the original meter value."
+  - id: gas_reference_conditions
+    applies_to: "Gaseous fuel and coating inputs"
+    required_property_ref:
+      name: "Volume or Mass as assigned to the selected flow"
+      uuid: ""
+    required_unit: "m3 or kg"
+    rule: "State reference temperature and pressure for every volume record and do not mix standard and actual cubic metres without a documented conversion."
+  - id: mass_balance_basis
+    applies_to: "Material, intermediate, product, scrap, and sludge rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use one moisture and stock-change convention within a campaign and reconcile input mass to product, internal carry-over, recoverable scrap, waste, and measured losses."
+process_map:
+  - id: material_preparation
+    name: "Material receipt, powder/blend preparation, and blank forming"
+    inclusion: "required"
+    inclusion_condition: "Include the product-specific steel or powder inputs actually used; omit non-applicable route rows with documented zero use."
+    role: "Foreground material preparation"
+    quantitative_reference: "kg prepared blank per measured campaign"
+  - id: thermal_consolidation
+    name: "Route-specific heat treatment or powder pressing and sintering"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the manufacturing site or an in-scope supplier performs heat treatment, pressing, sintering, or an equivalent thermal consolidation step."
+    role: "Foreground thermal processing"
+    quantitative_reference: "kg treated or sintered blank per batch"
+  - id: machining_grinding
+    name: "Machining, grinding, honing, and dimensional finishing"
+    inclusion: "required"
+    inclusion_condition: "Include the actual machining and abrasive-finishing sequence for the declared tool family."
+    role: "Foreground shape and edge generation"
+    quantitative_reference: "kg conforming machined output per campaign"
+  - id: cvd_coating
+    name: "Chemical-vapour-deposition coating"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when CVD coating is applied; add every recipe-specific precursor as its own atomic row if it is not already listed."
+    role: "Foreground surface treatment"
+    quantitative_reference: "kg coated output and coating batches"
+  - id: inspection_packaging
+    name: "Final inspection, marking, and sales packaging"
+    inclusion: "required"
+    inclusion_condition: "Include final acceptance, marking, and the actual sales packaging configuration; record zero packaging only for a documented bulk-unpackaged product."
+    role: "Foreground finalization"
+    quantitative_reference: "kg net conforming finished output"
+process_inventory:
+  - id: material_preparation
+    label: "Material receipt, powder/blend preparation, and blank forming"
+    inputs:
+      product:
+        - row_id: in_tool_steel_bar
+          role: "High-speed tool-steel round bar"
+          name: "High-speed tool-steel round bar"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the received high-speed or other declared tool-steel bar used for the steel route. This row is not applicable to a powder-only hardmetal/cermet route."
+          amount:
+            expression: "measured received mass consumed, adjusted for opening and closing stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - loglisci-priarone-settineri-2013-tool-manufacturing
+            ranges: []
+        - row_id: in_tungsten_carbide_powder
+          role: "Tungsten carbide powder"
+          name: "Tungsten carbide powder"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e2c47d47-229c-44f3-9ed0-e74fbbf0176f"
+          property_unit: "Mass / kg"
+          description: "Record separately specified tungsten carbide powder consumed in hardmetal or cermet preparation; recycled content and supplier powder route are required qualifiers."
+          amount:
+            expression: "measured issued mass net of verified return to stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - hsu-2024-turning-insert-lca
+                - ec-2001-non-ferrous-metals-bref
+            ranges: []
+        - row_id: in_cobalt_powder
+          role: "Cobalt powder"
+          name: "Cobalt powder"
+          flow_type: "product"
+          flow_ref:
+            uuid: "abe5e361-25a1-4258-a481-589bf66e3b13"
+          property_unit: "Cobalt content / kg"
+          description: "Record cobalt binder powder separately when it is added to the powder blend; use cobalt-content mass consistently with the selected flow property."
+          amount:
+            expression: "measured cobalt-content mass issued to the declared powder recipe"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - hsu-2024-turning-insert-lca
+            ranges: []
+        - row_id: in_prep_electricity
+          role: "Electricity for material preparation"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity delivered to mixing, pressing or blank-forming equipment and directly attributable auxiliaries."
+          amount:
+            expression: "submetered energy or campaign operating hours multiplied by verified load, including attributable idle and auxiliary demand"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_meters
+              source_ids:
+                - loglisci-priarone-settineri-2013-tool-manufacturing
+                - hsu-2024-turning-insert-lca
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: out_prepared_tool_blank
+          role: "Prepared tool blank"
+          name: "Prepared tool blank"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the route-specific prepared blank transferred to thermal processing or machining as an internal intermediate."
+          amount:
+            expression: "measured mass of accepted prepared blanks leaving this process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_outputs
+              source_ids:
+                - loglisci-priarone-settineri-2013-tool-manufacturing
+                - hsu-2024-turning-insert-lca
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: thermal_consolidation
+    label: "Route-specific heat treatment or powder pressing and sintering"
+    inputs:
+      product:
+        - row_id: in_thermal_electricity
+          role: "Electricity for thermal consolidation"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for electric furnaces, powder pressing, vacuum systems, cooling systems, and directly attributable auxiliaries used by the declared route."
+          amount:
+            expression: "measured batch energy allocated to conforming treated output"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_meters
+              source_ids:
+                - hsu-2024-turning-insert-lca
+            ranges: []
+        - row_id: in_thermal_natural_gas
+          role: "Natural gas for furnace heating"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas only when directly combusted for an in-scope furnace; otherwise document zero use for this row."
+          amount:
+            expression: "metered delivered gas at declared reference conditions, allocated to the production batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_combustion
+              source_ids:
+                - loglisci-priarone-settineri-2013-tool-manufacturing
+            ranges: []
+        - row_id: in_thermal_process_water
+          role: "Process Water for thermal equipment"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record make-up water crossing the foreground boundary for cooling or thermal equipment; do not record recirculated internal water again."
+          amount:
+            expression: "metered or tank-balance make-up water net of documented return outside the process boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_meters
+              source_ids:
+                - hsu-2024-turning-insert-lca
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: out_treated_tool_blank
+          role: "Heat-treated or sintered tool blank"
+          name: "Heat-treated or sintered tool blank"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record conforming treated or sintered blanks transferred to machining as an internal intermediate."
+          amount:
+            expression: "measured conforming blank mass after thermal processing and before machining"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_outputs
+              source_ids:
+                - loglisci-priarone-settineri-2013-tool-manufacturing
+                - hsu-2024-turning-insert-lca
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: out_furnace_co2_fossil
+          role: "Direct fossil carbon dioxide from furnace combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record only direct on-site fossil carbon dioxide from fuel combustion; upstream electricity emissions remain in the electricity dataset."
+          amount:
+            expression: "measured direct emission or calculated from metered fuel, documented carbon fraction, documented oxidation fraction, and the 44/12 molecular-mass ratio"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fuel_combustion
+              source_ids: []
+            ranges: []
+  - id: machining_grinding
+    label: "Machining, grinding, honing, and dimensional finishing"
+    inputs:
+      product:
+        - row_id: in_machining_electricity
+          role: "Electricity for machining and grinding"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for machine tools, grinders, filtration, pumps, coolant conditioning, and directly attributable auxiliaries."
+          amount:
+            expression: "submetered campaign energy including production, run-time, idle, filtration, cooling, and pumping demand attributable to the product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_meters
+              source_ids:
+                - loglisci-priarone-settineri-2013-tool-manufacturing
+                - hsu-2024-turning-insert-lca
+            ranges: []
+        - row_id: in_cutting_fluid
+          role: "Cutting Fluid"
+          name: "Cutting Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "576d250f-4f36-4385-939d-0f03b8f95a10"
+          property_unit: "Mass / kg"
+          description: "Record the actual mineral cutting oil or formulated grinding coolant make-up crossing the boundary; disclose formulation, water content, recirculation, and stock change."
+          amount:
+            expression: "purchases plus opening stock minus closing stock minus documented transfer, allocated to the campaign"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_consumables
+              source_ids:
+                - loglisci-priarone-settineri-2013-tool-manufacturing
+                - hsu-2024-turning-insert-lca
+            ranges: []
+        - row_id: in_alumina_grinding_wheel
+          role: "Vitrified aluminium-oxide grinding wheel"
+          name: "Vitrified aluminium-oxide grinding wheel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record consumed vitrified aluminium-oxide grinding-wheel mass from issue, dressing, and replacement records; do not substitute loose alumina or bauxite flows."
+          amount:
+            expression: "opening wheel mass plus issued wheel mass minus closing reusable wheel mass, allocated to conforming output"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_consumables
+              source_ids:
+                - loglisci-priarone-settineri-2013-tool-manufacturing
+            ranges: []
+        - row_id: in_machining_process_water
+          role: "Process Water for machining and honing"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process-water make-up used in water-based coolant, honing, or wet finishing; document zero use for an oil-only dry-of-water route."
+          amount:
+            expression: "metered make-up water or documented batch preparation mass net of recirculated internal water"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_meters
+              source_ids:
+                - hsu-2024-turning-insert-lca
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: out_machined_tool
+          role: "Machined and honed tool before coating"
+          name: "Machined and honed tool before coating"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record conforming machined output before optional coating as an internal intermediate."
+          amount:
+            expression: "measured conforming output mass after machining and honing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_outputs
+              source_ids:
+                - loglisci-priarone-settineri-2013-tool-manufacturing
+                - hsu-2024-turning-insert-lca
+            ranges: []
+      waste:
+        - row_id: out_postindustrial_steel_scrap
+          role: "Post-industrial steel machining scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Record segregated steel chips, bar ends, and offcuts leaving the foreground boundary for recovery or treatment."
+          amount:
+            expression: "weighed dispatched mass, corrected for documented coolant carry-over"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_transfers
+              source_ids:
+                - loglisci-priarone-settineri-2013-tool-manufacturing
+            ranges: []
+        - row_id: out_metal_grinding_sludge
+          role: "Metal-bearing grinding sludge"
+          name: "Metal-bearing grinding sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the dewatered metal-, abrasive-, and coolant-bearing grinding sludge leaving the site as one physically distinct waste stream; state dry matter and residual liquid basis."
+          amount:
+            expression: "weighed dispatched wet mass with measured or documented dry-matter fraction"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_transfers
+              source_ids:
+                - hsu-2024-turning-insert-lca
+                - ec-2001-non-ferrous-metals-bref
+            ranges: []
+      elementary:
+        []
+  - id: cvd_coating
+    label: "Chemical-vapour-deposition coating"
+    inputs:
+      product:
+        - row_id: in_cvd_electricity
+          role: "Electricity for CVD coating"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for charging, heating, vacuum, coating, post-cleaning, and directly attributable auxiliaries."
+          amount:
+            expression: "measured coating-batch energy allocated to conforming coated output"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_meters
+              source_ids:
+                - hsu-2024-turning-insert-lca
+            ranges: []
+        - row_id: in_cvd_nitrogen
+          role: "Nitrogen gas for CVD coating"
+          name: "Nitrogen gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "96ba4c16-fd7c-424e-b318-d87484d3d7c0"
+          property_unit: "Volume / m3"
+          description: "Record gaseous nitrogen delivered to the declared CVD recipe at stated reference conditions."
+          amount:
+            expression: "recipe controller or gas-meter volume allocated by conforming coated mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_recipe
+              source_ids:
+                - hsu-2024-turning-insert-lca
+            ranges: []
+        - row_id: in_cvd_hydrogen
+          role: "Hydrogen gas for CVD coating"
+          name: "Hydrogen gas"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record industrial hydrogen gas delivered to the declared CVD recipe; do not substitute hydrogen-bearing acids or mixed process gases."
+          amount:
+            expression: "recipe controller or gas-meter volume allocated by conforming coated mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_recipe
+              source_ids:
+                - hsu-2024-turning-insert-lca
+            ranges: []
+        - row_id: in_cvd_methane
+          role: "Methane"
+          name: "Methane"
+          flow_type: "product"
+          flow_ref:
+            uuid: "59aebe7f-6f66-41b4-aa71-49bea068dc7b"
+          property_unit: "Mass / kg"
+          description: "Record methane consumed as a CVD precursor separately from natural gas used as fuel."
+          amount:
+            expression: "metered or recipe-controller methane mass, with any volume-to-mass conversion conditions documented"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_recipe
+              source_ids:
+                - hsu-2024-turning-insert-lca
+            ranges: []
+        - row_id: in_cvd_carbon_dioxide
+          role: "Carbon dioxide gas for CVD coating"
+          name: "Carbon dioxide gas for CVD coating"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record gaseous carbon dioxide consumed in the declared CVD recipe as a product input; do not use the fossil elementary-emission identity for this row."
+          amount:
+            expression: "recipe controller or gas-meter volume allocated by conforming coated mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_recipe
+              source_ids:
+                - hsu-2024-turning-insert-lca
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: out_coated_tool
+          role: "CVD-coated tool"
+          name: "CVD-coated tool"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record conforming coated tools transferred to final inspection as an internal intermediate."
+          amount:
+            expression: "measured conforming coated mass leaving the coating batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_outputs
+              source_ids:
+                - hsu-2024-turning-insert-lca
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: inspection_packaging
+    label: "Final inspection, marking, and sales packaging"
+    inputs:
+      product:
+        - row_id: in_packaging_electricity
+          role: "Electricity for inspection, marking, and packaging"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for inspection equipment, laser marking, packaging machines, and directly attributable auxiliaries."
+          amount:
+            expression: "measured or operating-time-derived energy allocated to conforming dispatched output"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_meters
+              source_ids:
+                - hsu-2024-turning-insert-lca
+            ranges: []
+        - row_id: in_paper_box
+          role: "Paper box"
+          name: "Paper box"
+          flow_type: "product"
+          flow_ref:
+            uuid: "12d5d744-7725-4dbc-b102-43c80547f777"
+          property_unit: "Mass / kg"
+          description: "Record the total mass of paper boxes crossing the factory gate with the reference product; state whether each box is folding boxboard or corrugated board."
+          amount:
+            expression: "packaging bill-of-material mass reconciled to dispatched sale units"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_dispatch
+              source_ids:
+                - hsu-2024-turning-insert-lca
+            ranges: []
+        - row_id: in_polypropylene_tray
+          role: "Polypropylene insert tray"
+          name: "Polypropylene insert tray"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of polypropylene trays dispatched with the product; do not substitute a generic plastic-container UUID without material and form confirmation."
+          amount:
+            expression: "packaging bill-of-material mass reconciled to dispatched sale units"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_dispatch
+              source_ids:
+                - hsu-2024-turning-insert-lca
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: out_finished_interchangeable_tool
+          role: "Finished CPC 42922 interchangeable tool product"
+          name: "Finished CPC 42922 interchangeable tool product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only conforming saleable product net mass. The reference-product UUID remains unresolved because no directly read candidate covers the complete product boundary without narrowing by material, function, or form."
+          amount:
+            expression: "exactly 1 kg after normalization from measured conforming net batch mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch_outputs
+              source_ids:
+                - unsd-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "multi-product manufacturing"
+    rule: "Subdivide processes and use product-, line-, batch-, or recipe-specific measurements before applying allocation."
+    source_ids:
+      - loglisci-priarone-settineri-2013-tool-manufacturing
+      - hsu-2024-turning-insert-lca
+  - rule_id: allocation_shared_batch
+    applies_to: "shared furnace, pressing, coating, and packaging batches"
+    rule: "Allocate shared measured inputs by a documented causal driver; use conforming output mass when no stronger causal relation is demonstrated, and disclose the batch population, rejects, and driver."
+    source_ids:
+      - hsu-2024-turning-insert-lca
+  - rule_id: allocation_scrap_boundary
+    applies_to: "metal scrap and recovered hardmetal leaving the foreground"
+    rule: "Record the measured waste or recovered-material flow at the factory boundary without avoided-production credit in the foreground inventory; model downstream recycling consistently in a separately declared scenario."
+    source_ids:
+      - ec-2001-non-ferrous-metals-bref
+  - rule_id: allocation_internal_rework
+    applies_to: "in-process rejects and returned material"
+    rule: "Keep material returned to the same production system as an internal loop; include the additional energy and consumables and count only material that exits the boundary as waste."
+    source_ids:
+      - hsu-2024-turning-insert-lca
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_receipts
+      process_id: "material_preparation"
+      flow_role: "steel and powder inputs"
+      record_type: "purchase, issue, return, and stock records"
+      raw_fields: "material identity; grade; supplier; lot; recycled content; opening stock; receipts; issues; returns; closing stock; mass"
+      collection_method: "reconcile traceable warehouse and recipe records"
+      unit: "kg"
+      frequency: "each lot and campaign"
+      temporal_coverage: "representative production period, normally at least 12 months or a complete disclosed campaign"
+      site_scope: "all in-scope production and storage locations"
+      aggregation_rule: "opening + receipts - closing - documented transfers, allocated to conforming campaign output"
+      quality_evidence: "supplier certificates, calibrated scales, stock reconciliation, recipe release"
+    - protocol_id: cp_energy_meters
+      process_id: "all_process_ids"
+      flow_role: "electricity input"
+      record_type: "meter and equipment log"
+      raw_fields: "meter id; start/end reading; unit; process; operating state; batch; product output; allocation driver"
+      collection_method: "calibrated submeter; otherwise verified load multiplied by logged time"
+      unit: "kWh and MJ"
+      frequency: "each batch or monthly with batch linkage"
+      temporal_coverage: "same period as production output"
+      site_scope: "all in-scope lines and attributable auxiliaries"
+      aggregation_rule: "subtract non-production baseload when separately measured, then allocate by causal driver"
+      quality_evidence: "calibration record, meter photographs/export, operating log, conversion record"
+    - protocol_id: cp_fuel_combustion
+      process_id: "thermal_consolidation"
+      flow_role: "furnace fuel and direct carbon dioxide"
+      record_type: "fuel meter, invoice, composition, and emissions record"
+      raw_fields: "gas volume; reference conditions; carbon fraction; oxidation fraction; batch; furnace; direct emission measurement"
+      collection_method: "calibrated meter or reconciled invoice; approved site calculation for CO2"
+      unit: "m3 and kg"
+      frequency: "each batch or monthly with furnace linkage"
+      temporal_coverage: "same period as treated output"
+      site_scope: "all in-scope direct combustion sources"
+      aggregation_rule: "allocate metered fuel to batch; calculate CO2 only from documented composition and oxidation"
+      quality_evidence: "meter calibration, supplier gas specification, calculation workbook, monitoring record"
+    - protocol_id: cp_water_meters
+      process_id: "thermal_consolidation_machining_grinding"
+      flow_role: "process-water make-up"
+      record_type: "meter, tank, and batch record"
+      raw_fields: "source; meter readings; make-up mass/volume; density; recirculation; discharge; batch"
+      collection_method: "calibrated meter or tank mass balance"
+      unit: "kg"
+      frequency: "batch or monthly with line linkage"
+      temporal_coverage: "same period as production output"
+      site_scope: "all in-scope water systems"
+      aggregation_rule: "count only water crossing the foreground boundary and allocate by measured use or batch driver"
+      quality_evidence: "meter calibration, tank log, density conversion, water-system diagram"
+    - protocol_id: cp_consumables
+      process_id: "machining_grinding"
+      flow_role: "cutting fluid and grinding wheel"
+      record_type: "purchase, issue, replacement, dressing, and stock record"
+      raw_fields: "product identity; formulation; opening stock; receipts; additions; returns; closing stock; wheel initial/residual mass; batch"
+      collection_method: "stock-change reconciliation with replacement and dressing logs"
+      unit: "kg"
+      frequency: "each addition or replacement; aggregate by campaign"
+      temporal_coverage: "same period as machined output"
+      site_scope: "all in-scope machine tools and coolant systems"
+      aggregation_rule: "opening + receipts - closing - transfers, allocated to conforming machined output"
+      quality_evidence: "invoices, safety data sheet, issue log, scale record, wheel-change log"
+    - protocol_id: cp_waste_transfers
+      process_id: "machining_grinding"
+      flow_role: "steel scrap and grinding sludge"
+      record_type: "container scale and waste transfer record"
+      raw_fields: "waste identity; container tare/gross mass; destination; recovery/disposal route; dry matter; coolant carry-over; batch link"
+      collection_method: "calibrated scale and legally or operationally controlled transfer note"
+      unit: "kg"
+      frequency: "each shipment"
+      temporal_coverage: "same period as production output"
+      site_scope: "all in-scope waste collection points"
+      aggregation_rule: "sum net dispatched mass and allocate to linked campaigns; report dry-matter correction separately"
+      quality_evidence: "scale calibration, transfer note, laboratory dry-matter result, destination receipt"
+    - protocol_id: cp_coating_recipe
+      process_id: "cvd_coating"
+      flow_role: "coating gases"
+      record_type: "recipe controller, gas meter, and cylinder stock record"
+      raw_fields: "chemical identity; purity; recipe; flow/consumption; reference conditions; opening/closing cylinder mass; batch; conforming coated mass"
+      collection_method: "controller export or gas-meter/cylinder mass balance"
+      unit: "m3 or kg"
+      frequency: "every coating batch"
+      temporal_coverage: "all in-scope coating batches in the data period"
+      site_scope: "all in-scope coating equipment, gas supply points, and batches"
+      aggregation_rule: "allocate each atomic gas separately to conforming coated mass using the disclosed batch driver"
+      quality_evidence: "recipe approval, controller export, meter calibration, cylinder reconciliation"
+    - protocol_id: cp_packaging_dispatch
+      process_id: "inspection_packaging"
+      flow_role: "sales packaging"
+      record_type: "bill of materials, packaging issue, and dispatch record"
+      raw_fields: "component identity; material; unit mass; issued count; returned count; dispatched product mass; packaging configuration"
+      collection_method: "verified component weighing and dispatch reconciliation"
+      unit: "kg"
+      frequency: "each packaging configuration and dispatch batch"
+      temporal_coverage: "same period as finished output"
+      site_scope: "all in-scope sales packaging"
+      aggregation_rule: "net component count × verified unit mass, normalized by dispatched net product mass"
+      quality_evidence: "packaging specification, calibrated scale, issue record, dispatch record"
+    - protocol_id: cp_batch_outputs
+      process_id: "all_process_ids"
+      flow_role: "intermediate and final outputs"
+      record_type: "batch traveller, acceptance, reject, rework, and mass record"
+      raw_fields: "batch id; product id; route; input mass; intermediate mass; conforming mass; reject mass; rework return; item count; unit mass"
+      collection_method: "calibrated weighing linked to quality release"
+      unit: "kg"
+      frequency: "every batch"
+      temporal_coverage: "all batches represented by the dataset"
+      site_scope: "all in-scope production lines, outsourced steps, and acceptance points"
+      aggregation_rule: "sum conforming net mass; keep rework internal; normalize final output to 1 kg"
+      quality_evidence: "scale calibration, batch traveller, quality release, reject/rework log"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every inventory row"
+      rule: "normalized amount = campaign amount / conforming finished-product net mass"
+      inputs:
+        - "campaign exchange amount"
+        - "conforming net output mass"
+      output: "exchange per 1 kg net finished product"
+      source_ids: []
+    - id: calc_shared_batch_allocation
+      applies_to: "shared thermal, coating, or packaging batch"
+      rule: "allocated amount = measured batch amount × declared causal share; when mass is used, causal share = product conforming mass / total conforming batch mass"
+      inputs:
+        - "measured batch amount"
+        - "product and total conforming output"
+        - "declared driver"
+      output: "product-attributed batch exchange"
+      source_ids:
+        - hsu-2024-turning-insert-lca
+    - id: calc_furnace_co2
+      applies_to: "out_furnace_co2_fossil"
+      rule: "fossil CO2 mass = fuel mass × fossil carbon mass fraction × oxidation fraction × 44/12; if fuel is metered by volume, first apply the supplier density at declared conditions"
+      inputs:
+        - "metered fuel"
+        - density
+        - "fossil carbon fraction"
+        - "oxidation fraction"
+      output: "kg direct fossil CO2"
+      source_ids: []
+    - id: calc_material_balance
+      applies_to: "each production campaign"
+      rule: "unexplained difference = total material inputs - conforming output - measured internal carry-over - outputs leaving as scrap or waste - documented stock change"
+      inputs:
+        - material
+        - product
+        - intermediate
+        - waste
+        - "and stock records on one basis"
+      output: "mass-balance residual and percentage"
+      source_ids: []
+    - id: calc_packaging_mass
+      applies_to: "paper box and polypropylene tray"
+      rule: "packaging mass = net dispatched component count × verified component unit mass"
+      inputs:
+        - "issue/return count"
+        - "dispatched count"
+        - "unit mass"
+      output: "kg packaging per 1 kg net product"
+      source_ids:
+        - hsu-2024-turning-insert-lca
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and all material flows"
+      requirement: "Preserve product drawing, grade, chemical or commercial identity, supplier, lot, delivery state, coating state, and selected TianGong identity; document every unresolved UUID without substituting a proxy."
+      evidence: "product specification, certificate, invoice, lot record, UUID audit"
+    - id: dq_temporal
+      applies_to: "foreground activity data"
+      requirement: "Cover a representative continuous period, normally at least 12 months; a shorter campaign is allowed only when it captures a complete disclosed production campaign and seasonality or load variation is immaterial."
+      evidence: "meter period, batch list, production schedule, representativeness statement"
+    - id: dq_completeness
+      applies_to: "process inventory"
+      requirement: "Reconcile all process stages and actual atomic inputs, direct emissions, waste transfers, outsourced steps, rework loops, and packaging against production and purchasing records."
+      evidence: "completeness checklist, ledgers, batch travellers, transfer notes"
+    - id: dq_measurement
+      applies_to: "meters, scales, and controller data"
+      requirement: "Use calibrated instruments and retain raw readings, reference conditions, conversions, and data-gap treatment."
+      evidence: "calibration certificates, raw exports, conversion workbook"
+    - id: dq_allocation
+      applies_to: "shared processes"
+      requirement: "Demonstrate subdivision attempts and retain the causal basis, batch population, conforming mass, rejects, and sensitivity to the selected allocation driver."
+      evidence: "process map, meter assignment, allocation workbook, sensitivity record"
+    - id: dq_geography_technology
+      applies_to: "upstream datasets"
+      requirement: "Match material grade, recycled content, production technology, geography, and delivery state; disclose and assess every proxy."
+      evidence: "supplier dataset, technology note, geographic match review"
+validation_rules:
+  - rule_id: validate_identity_scope
+    applies_to: "reference product"
+    rule: "Fail validation if the product is outside the covered CPC 42922 semantic boundary or if tool family, material/grade, geometry, route, coating state, factory-gate state, and net mass are not declared."
+    source_ids:
+      - unsd-cpc-3-0-structure-2025
+  - rule_id: validate_reference_mass
+    applies_to: "reference flow"
+    rule: "Require exactly 1 kg normalized conforming net finished-product mass and verify that packaging, rejects, fixtures, and reusable carriers are excluded."
+    source_ids: []
+  - rule_id: validate_route_processes
+    applies_to: "process map"
+    rule: "Require material preparation, machining/grinding, and final inspection/packaging; require thermal consolidation and CVD coating only when their declared route conditions apply, and require disclosure of outsourced steps."
+    source_ids:
+      - loglisci-priarone-settineri-2013-tool-manufacturing
+      - hsu-2024-turning-insert-lca
+  - rule_id: validate_atomic_inventory
+    applies_to: "all inventory rows"
+    rule: "Fail if a selected flow combines multiple chemicals, utilities, fuels, materials, wastes, or emissions, or if an actual recipe component is hidden under an umbrella row."
+    source_ids: []
+  - rule_id: validate_uuid_semantics
+    applies_to: "UUID-bearing rows"
+    rule: "Require public state-100 identity, correct flow type, property and unit group, exact semantic fit, and the official TianGong Chinese baseName; reject narrower or proxy UUIDs."
+    source_ids: []
+  - rule_id: validate_mass_balance
+    applies_to: "campaign inventory"
+    rule: "Investigate and disclose the mass-balance residual; validation is inconclusive when stock changes, internal rework, coolant carry-over, or missing waste streams prevent reconciliation."
+    source_ids: []
+  - rule_id: validate_energy_and_gases
+    applies_to: "energy, fuel, and coating gases"
+    rule: "Verify kWh-to-MJ conversion, gas reference conditions, separation of methane precursor from natural-gas fuel, and separation of product carbon dioxide from elementary fossil CO2."
+    source_ids: []
+  - rule_id: validate_allocation
+    applies_to: "shared batches and scrap"
+    rule: "Require documented subdivision, causal allocation driver, batch population, reject treatment, and consistent no-credit treatment for foreground scrap."
+    source_ids:
+      - hsu-2024-turning-insert-lca
+      - ec-2001-non-ferrous-metals-bref
+  - rule_id: validate_unresolved_evidence
+    applies_to: "unresolved UUIDs and ranges"
+    rule: "Keep unresolved identity and range-evidence needs visible; do not invent UUIDs, proxies, single-value ranges, or source-backed ranges without two compatible independent original sources."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground product-manufacturing data package for a declared CPC 42922 tool product and route."
+  downstream_use: "secondary_dataset; background_dataset after review of representativeness and unresolved items"
+  allowed_use: "Cradle-to-gate product footprints, supply-chain inventories, process improvement, and downstream process or lifecyclemodel projections for matching tool family, grade, route, coating, geography, and period."
+  excluded_use: "Comparative claims about tool service life or machining performance without a performance-equivalent functional unit; substitution across unlike tool families or grades; use as a generic proxy while reference-product or material identities remain unresolved."
+  required_metadata: "PCR id and version; product drawing/family; net mass; material and grade; recycled content; route and equipment; coating chemistry/state; packaging state; site/geography; data period; upstream dataset choices; allocation; outsourced steps; unresolved items."
+  required_quality_disclosure: "Measurement coverage and calibration; stock changes; mass-balance residual; allocation drivers; reject and rework treatment; waste destinations; gas reference conditions; data gaps; UUID and range-evidence status."
+  update_trigger: "Change in product geometry or grade, material or recycled content, thermal/coating route, major equipment or energy supply, packaging, supplier geography, allocation method, or a material shift in normalized inventory."
+data_sources:
+  - id: "unsd-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Current CPC 42922 identity and English product boundary."
+  - id: "unsd-cpc-1-1-chinese-2007"
+    type: "official_guidance"
+    reference: "United Nations, 产品总分类版本1.1, official Chinese publication. https://digitallibrary.un.org/record/536544/files/M_77ver1_1c.pdf"
+    used_for: "Verified professional Chinese title and continuity of CPC 42922 scope."
+  - id: "loglisci-priarone-settineri-2013-tool-manufacturing"
+    type: "literature"
+    reference: "Loglisci, G.; Priarone, P. C.; Settineri, L. (2013). Cutting tool manufacturing: a sustainability perspective. Proceedings of the 11th Global Conference on Sustainable Manufacturing, ISBN 978-3-7983-2609-5. https://d-nb.info/1078666539/34"
+    used_for: "Steel tap route, machining/grinding inputs, metering, scrap, and process allocation."
+  - id: "hsu-2024-turning-insert-lca"
+    type: "literature"
+    reference: "Hsu, E. H.-W. (2024). Enabling emission tracking in tool manufacturing: Life cycle assessment of turning insert production. KTH. https://www.diva-portal.org/smash/get/diva2:1894895/FULLTEXT01.pdf"
+    used_for: "WC-Co insert route, pressing/sintering, grinding, CVD gases, packaging, waste, batch allocation, and foreground collection."
+  - id: "ec-2001-non-ferrous-metals-bref"
+    type: "official_guidance"
+    reference: "European Commission (2001). Reference Document on Best Available Techniques in the Non Ferrous Metals Industries. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2020-03/superseded_nfm_bref_1201.pdf"
+    used_for: "Tungsten carbide production context, hardmetal inputs and residues, and recycled-hardmetal disclosure."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f0a95fb4876f413d32e82a3495c5afc58c0ad287ca97df63e99eafb7a1e22964"
+  generated_content_sha256: "sha256:bb486cc40468a4a5d722687215b6807b7463fbd2e936a9a6f9cd66fc85491e2d"

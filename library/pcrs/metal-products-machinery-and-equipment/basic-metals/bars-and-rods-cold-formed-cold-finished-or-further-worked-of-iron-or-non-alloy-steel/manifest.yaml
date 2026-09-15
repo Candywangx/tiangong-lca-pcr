@@ -2,12 +2,12 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.basic-metals.bars-and-rods-cold-formed-cold-finished-or-further-worked-of-iron-or-non-alloy-steel
 title:
   en-US: "Bars and rods, cold-formed, cold-finished or further worked, of iron or non-alloy steel"
-  zh-CN: null
-status: scaffold
+  zh-CN: "铁或非合金钢冷成形、冷加工或进一步加工的棒材和杆材"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +22,175 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "41261"
     title: "Bars and rods, cold-formed, cold-finished or further worked, of iron or non-alloy steel"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  semantic_boundary:
+    decision: create_distinct_material_pcr
+    rationale: "The category is the plant-gate conversion of hot-rolled iron or non-alloy steel bars or rods into cold-drawn, ground, peeled, straightened, polished, or otherwise further-worked bars or rods. It excludes upstream steelmaking and hot rolling and is not covered by the separate categories for wire, alloy-steel bars, sections, tubes, or products only hot-worked."
+    evidence_source_ids:
+      - unstats-cpc-3-0-structure-2025
+      - eu-jrc-fmp-bref-2022
+  unresolved_flow_identities:
+    - row_id: finished_bar_product
+      reason: No exact Tiangong reference-product flow was directly verified; the complete UUID-empty inventory register remains under review_metadata.unresolved.inventory_flow_uuids.
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: hot_rolled_bar_input
+        reason_code: no_exact_candidate
+        explanation: Directly read candidates were rebar-specific, cold-drawn, high-wire-rod, or insufficiently explicit about hot-rolled state; none exactly matched the declared iron or non-alloy-steel bar-or-rod feed.
+      - row_id: hydrochloric_acid_input
+        reason_code: no_exact_candidate
+        explanation: Directly read candidates fixed 0.2 N, 30%, or 36% concentration or did not establish the delivered solution state; none exactly matched the foreground concentration and solution-mass basis.
+      - row_id: pretreated_bar_intermediate
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: This site-specific descaled bar or rod is an internal intermediate whose identity depends on the declared feed and surface-preparation route.
+      - row_id: spent_pickling_liquor
+        reason_code: no_exact_candidate
+        explanation: No directly read public Tiangong waste flow was verified for spent hydrochloric-acid pickling liquor containing dissolved iron at the site composition.
+      - row_id: acidic_rinse_water
+        reason_code: no_exact_candidate
+        explanation: No directly read public Tiangong waste flow was verified for acidic rinse water containing iron chlorides at the site composition.
+      - row_id: iron_oxide_scale_waste
+        reason_code: no_exact_candidate
+        explanation: No directly read public Tiangong waste flow was verified for captured iron-oxide scale from the declared surface-preparation equipment.
+      - row_id: steel_bar_feed
+        reason_code: no_exact_candidate
+        explanation: No directly read public Tiangong product flow was verified for the hot-rolled or descaled non-alloy-steel bar-or-rod feed entering cold finishing.
+      - row_id: metalworking_lubricant_input
+        reason_code: no_exact_candidate
+        explanation: No directly read public Tiangong product flow was verified for the actual single metalworking lubricant oil used by the declared cold-finishing route.
+      - row_id: cold_finished_bar_intermediate
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: This site-specific cold-finished bar or rod is an internal intermediate before optional annealing and final inspection.
+      - row_id: steel_offcuts_cold_finishing
+        reason_code: no_exact_candidate
+        explanation: No directly read public Tiangong waste flow was verified for clean iron or non-alloy-steel offcuts from cold finishing.
+      - row_id: spent_lubricant_oil
+        reason_code: no_exact_candidate
+        explanation: No directly read public Tiangong waste flow was verified for spent metalworking lubricant oil with the site contaminant profile.
+      - row_id: captured_grinding_dust
+        reason_code: no_exact_candidate
+        explanation: No directly read public Tiangong waste flow was verified for captured iron or non-alloy-steel grinding dust from the declared finishing route.
+      - row_id: cold_finished_bar_to_annealing
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: This transfer is the same site-specific cold-finished internal intermediate entering conditional annealing.
+      - row_id: protective_nitrogen
+        reason_code: no_exact_candidate
+        explanation: Industrial oxygen and other fuel-gas candidates are the wrong substances; the directly read nitrogen candidate uses Mass/kg rather than the required Volume/m3 basis, and the liquid-nitrogen candidates have the wrong product state.
+      - row_id: annealed_bar_intermediate
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: This site-specific annealed bar or rod is an internal intermediate before final sizing and inspection.
+      - row_id: nitrogen_oxides_air
+        reason_code: no_exact_candidate
+        explanation: The directly read candidates denote nitrous oxide rather than combustion nitrogen oxides reported as NOx (normally as NO2), so no exact elementary flow was verified.
+      - row_id: cold_finished_bar_to_final
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: This transfer is the site-specific unannealed cold-finished internal intermediate entering final sizing and inspection.
+      - row_id: annealed_bar_to_final
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: This transfer is the site-specific annealed internal intermediate entering final sizing and inspection.
+      - row_id: finished_bar_product
+        reason_code: no_exact_candidate
+        explanation: Directly read candidates were alloy steel, the wrong product form, or lacked an unambiguous cold-formed, cold-finished, or further-worked state; no exact reference-product flow was verified.
+      - row_id: final_steel_offcuts
+        reason_code: no_exact_candidate
+        explanation: No directly read public Tiangong waste flow was verified for clean iron or non-alloy-steel offcuts from final sizing.
+    range_evidence_needs:
+      - range_id: range_need_hot_rolled_bar_input
+        row_id: hot_rolled_bar_input
+        explanation: Two independent, original-text-verified, boundary-compatible sources for feed-to-product mass loss were not available; collect foreground mass records.
+      - range_id: range_need_hydrochloric_acid_input
+        row_id: hydrochloric_acid_input
+        explanation: Two independent sources for hydrochloric-acid use per product mass with compatible concentration, regeneration, and boundary conditions were not available.
+      - range_id: range_need_rinse_water_input
+        row_id: rinse_water_input
+        explanation: Two independent sources for rinse-water use with compatible recirculation and discharge boundaries were not available.
+      - range_id: range_need_pickling_electricity
+        row_id: pickling_electricity
+        explanation: Two independent sources for surface-preparation electricity with compatible equipment and product state were not available.
+      - range_id: range_need_spent_pickling_liquor
+        row_id: spent_pickling_liquor
+        explanation: Two independent sources for spent-liquor generation with compatible acid recovery and bath-management boundaries were not available.
+      - range_id: range_need_acidic_rinse_water
+        row_id: acidic_rinse_water
+        explanation: Two independent sources for acidic rinse-water generation with compatible recirculation and treatment boundaries were not available.
+      - range_id: range_need_iron_oxide_scale_waste
+        row_id: iron_oxide_scale_waste
+        explanation: Two independent sources for captured scale generation with compatible feed oxidation state and descaling route were not available.
+      - range_id: range_need_hydrogen_chloride_air
+        row_id: hydrogen_chloride_air
+        explanation: Two independent sources for uncontrolled or abated hydrogen-chloride emissions with compatible capture and treatment boundaries were not available.
+      - range_id: range_need_pretreated_bar_intermediate
+        row_id: pretreated_bar_intermediate
+        explanation: Two independent sources for the surface-preparation transfer yield with compatible feed state and descaling route were not available.
+      - range_id: range_need_steel_bar_feed
+        row_id: steel_bar_feed
+        explanation: Two independent sources for cold-finishing yield with compatible bar geometry and finishing route were not available.
+      - range_id: range_need_rolling_electricity
+        row_id: rolling_electricity
+        explanation: Two independent sources for drawing, grinding, peeling, or straightening electricity with compatible technology boundaries were not available.
+      - range_id: range_need_metalworking_lubricant_input
+        row_id: metalworking_lubricant_input
+        explanation: Two independent sources for lubricant use with compatible cold-finishing technology and lubricant state were not available.
+      - range_id: range_need_steel_offcuts_cold_finishing
+        row_id: steel_offcuts_cold_finishing
+        explanation: Two independent sources for cold-finishing offcut generation with compatible geometry and yield boundaries were not available.
+      - range_id: range_need_spent_lubricant_oil
+        row_id: spent_lubricant_oil
+        explanation: Two independent sources for spent-lubricant generation with compatible reuse and disposal boundaries were not available.
+      - range_id: range_need_captured_grinding_dust
+        row_id: captured_grinding_dust
+        explanation: Two independent sources for captured grinding-dust generation with compatible abatement and finishing routes were not available.
+      - range_id: range_need_cold_finished_bar_intermediate
+        row_id: cold_finished_bar_intermediate
+        explanation: Two independent sources for cold-finishing transfer yield with compatible geometry, reduction, and route boundaries were not available.
+      - range_id: range_need_cold_finished_bar_to_annealing
+        row_id: cold_finished_bar_to_annealing
+        explanation: Two independent sources for the pre-annealing transfer yield with compatible cold-work and heat-treatment boundaries were not available.
+      - range_id: range_need_natural_gas_input
+        row_id: natural_gas_input
+        explanation: Two independent sources for annealing natural-gas use with compatible furnace, product, and reference-volume conditions were not available.
+      - range_id: range_need_annealing_electricity
+        row_id: annealing_electricity
+        explanation: Two independent sources for annealing electricity with compatible furnace and product boundaries were not available.
+      - range_id: range_need_protective_nitrogen
+        row_id: protective_nitrogen
+        explanation: Two independent sources for protective-nitrogen use with compatible furnace-atmosphere and purge boundaries were not available.
+      - range_id: range_need_fossil_co2_air
+        row_id: fossil_co2_air
+        explanation: Two independent sources for direct fossil-carbon-dioxide intensity with compatible fuel composition and combustion boundaries were not available; use foreground monitoring or calculation records.
+      - range_id: range_need_nitrogen_oxides_air
+        row_id: nitrogen_oxides_air
+        explanation: Two independent sources for nitrogen-oxides intensity with compatible burner, oxygen reference, and abatement boundaries were not available.
+      - range_id: range_need_annealed_bar_intermediate
+        row_id: annealed_bar_intermediate
+        explanation: Two independent sources for annealing transfer yield with compatible furnace, scale-formation, and product boundaries were not available.
+      - range_id: range_need_cold_finished_bar_to_final
+        row_id: cold_finished_bar_to_final
+        explanation: Two independent sources for unannealed transfer yield with compatible final-sizing and product-state boundaries were not available.
+      - range_id: range_need_annealed_bar_to_final
+        row_id: annealed_bar_to_final
+        explanation: Two independent sources for annealed transfer yield with compatible final-sizing and product-state boundaries were not available.
+      - range_id: range_need_finished_bar_product
+        row_id: finished_bar_product
+        explanation: No independent empirical output-yield range was synthesized; the declared reference amount remains a normalization identity and site mass records control yield.
+      - range_id: range_need_final_steel_offcuts
+        row_id: final_steel_offcuts
+        explanation: Two independent sources for final-sizing offcut generation with compatible product geometry and delivered-length requirements were not available.

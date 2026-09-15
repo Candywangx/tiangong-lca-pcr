@@ -2,12 +2,12 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.office-accounting-and-computing-machinery.accounting-machines-cash-registers-postage-franking-machines-ticket-issuing-machines-an-3d465500
 title:
   en-US: "Accounting machines, cash registers, postage-franking machines, ticket-issuing machines and similar machines, incorporating a calculating device (except point-of-sale terminals, ATMs and similar machines)"
-  zh-CN: null
-status: scaffold
+  zh-CN: "会计机、现金出纳机、邮资盖印机、售票机及装有计算装置的类似机器（销售点终端、自动柜员机及类似机器除外）"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +22,70 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "45141"
     title: "Accounting machines, cash registers, postage-franking machines, ticket-issuing machines and similar machines, incorporating a calculating device (except point-of-sale terminals, ATMs and similar machines)"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  semantic_boundary_review:
+    result: distinct_material_pcr_required
+    explanation: "Repository identity review found no other canonical PCR manifest covering CPC 45141 machines; CPC 45142 point-of-sale terminals, ATMs and similar machines remain expressly excluded."
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: steel_chassis
+        reason_code: no_exact_candidate
+        explanation: "Receipt ce59da49-a25d-455b-8f87-3077cf29064f returned structural, vehicle, fastener, and misclassified case candidates, none an office-machine sheet-metal chassis component."
+      - row_id: keypad_assembly
+        reason_code: no_exact_candidate
+        explanation: "Receipt 1e98fbd2-7b1c-4d4d-a928-08bc380534a0 returned only a combined housing-and-mechanical-parts flow, not a keypad assembly."
+      - row_id: printer_mechanism
+        reason_code: no_exact_candidate
+        explanation: "Receipt 9bd0d93f-2170-40a3-95d7-1d1c64d2ebd8 returned unrelated products or complete printers, not an integrated thermal printer mechanism."
+      - row_id: power_supply_unit
+        reason_code: no_exact_candidate
+        explanation: "Receipt d4872cde-23d5-4f39-add9-0a3a37471d34 returned photovoltaic modules, an LED driver, measuring apparatus, or an umbrella subassembly flow, not the target power-supply unit."
+      - row_id: cable_assembly
+        reason_code: no_exact_candidate
+        explanation: "Receipt a8ad94ff-03b2-4496-8a73-92d1302cd9b7 did not establish a connectorized cable assembly generic to this product boundary."
+      - row_id: cash_drawer
+        reason_code: no_exact_candidate
+        explanation: "Receipt 717620d7-aa9f-4889-9e5e-4df44d89b0c7 returned complete machines, vending-machine frames, or a nonspecific actuation assembly, not a cash drawer."
+      - row_id: battery_pack
+        reason_code: no_exact_candidate
+        explanation: "Receipt fc2609c5-8dfc-4b1a-bf90-f58f04c2a1ab did not establish a rechargeable lithium-ion battery pack with compatible classification, state, and property."
+      - row_id: foam_insert
+        reason_code: no_exact_candidate
+        explanation: "Receipt bb429901-6def-4966-9e86-c2636a388a3a did not establish expanded polyethylene chemistry and formed packaging-insert state."
+      - row_id: polyethylene_bag
+        reason_code: no_exact_candidate
+        explanation: "Receipt 57cc6d93-8390-46e8-9cd5-eec57e20b49c returned a polyethylene bag without the required low-density-polyethylene qualifier."
+      - row_id: plastic_housing_scrap
+        reason_code: no_exact_candidate
+        explanation: "Receipt 52dcf3fd-1ff6-4670-ba8a-4fcb6fde9572 returned packaging waste or mixed scrap, not source-separated injection-moulded housing scrap."
+    range_evidence_needs:
+      - range_id: component_mass_ranges
+        row_ids: [pcb_assembly, plastic_housing, steel_chassis, display_module, keypad_assembly, printer_mechanism, power_supply_unit, cable_assembly, steel_screws, cash_drawer, battery_pack]
+        explanation: "No two independent original sources with compatible product configuration, system boundary, and net-mass basis were verified; collect product-specific BOM masses."
+      - range_id: packaging_mass_ranges
+        row_ids: [corrugated_box, foam_insert, polyethylene_bag, printed_manual]
+        explanation: "No two independent original sources with compatible packaged-product boundary were verified; collect product-specific packaging BOM masses."
+      - range_id: assembly_electricity_range
+        row_ids: [assembly_electricity]
+        explanation: "No two independent original sources with compatible assembly/test/packaging boundary and reference-machine basis were verified; collect metered company-specific electricity."
+      - range_id: output_and_waste_ranges
+        row_ids: [reference_machine, populated_board_waste, plastic_housing_scrap, steel_scrap, cardboard_waste]
+        explanation: "No two independent original sources with compatible yield, reject definition, and treatment boundary were verified; collect measured output and source-separated waste masses."

@@ -1,10 +1,755 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41602"
-  title: "Tungsten, molybdenum, tantalum, magnesium, cobalt, cadmium, titanium, zirconium, beryllium, gallium, hafnium, indium, niobium, rhenium and thallium, germanium and vanadium, wrought, and articles thereof; powders of magnesium"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.tungsten-molybdenum-tantalum-magnesium-cobalt-cadmium-titanium-zirconium-beryllium-gall-65effba7"
+  classification_refs: "CPC 3.0: 41602"
+  covered_products: "Wrought forms and articles of the named metals and their declared alloys; magnesium metal powder produced by a declared mechanical route"
+  excluded_products: "Unwrought metal and non-magnesium metal powders classified outside CPC 41602; ores and concentrates; primary smelting and refining unless explicitly co-located; chemical powder production; waste and scrap as the reference product; products whose principal function places them in a more specific downstream category"
+  representative_product: "Titanium plate"
+  production_route: "Forming and fabrication from metal feedstock; conditional mechanical milling, abrading, or atomizing for magnesium powder"
+  market_state: "Conforming dry product at the reporting facility gate, with grade, composition, dimensions or particle-size distribution, temper or condition, surface finish, and packaging state declared"
+functional_unit:
+  what: "One declared wrought metal product or article, or magnesium metal powder, meeting the stated commercial specification"
+  how_much: "1 kg net mass of conforming product"
+  how_well: "Meets the declared grade or alloy composition, geometry or particle-size distribution, temper or condition, surface finish, and quality acceptance criteria"
+  how_long_or_cycle: "At the plant gate; no use duration is assigned"
+  reference_flow_link: "reference_product_mass"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "Foreground product system"
+      rule: "Include all actual unit operations from receipt of declared feedstock through final inspection and plant-gate readiness; exclude upstream primary metal production unless co-located and explicitly modelled."
+      source_ids:
+        - us-epa-nfmf-471
+        - us-epa-nfmf-guidance-1989
+    - rule_id: boundary_on_site_casting
+      applies_to: "Casting before forming"
+      rule: "Include on-site casting only when it produces billets, ingots, bars, strip, shot, or another precursor that is subsequently formed on the same site; disclose the mass link to forming."
+      source_ids:
+        - us-epa-nfmf-471
+    - rule_id: boundary_surface_treatment
+      applies_to: "On-site chemical or electrochemical treatment"
+      rule: "Include cleaning, etching, and surface treatment performed at the forming site together with their baths, rinse water, wastewater, sludge, and releases."
+      source_ids:
+        - us-epa-nfmf-471
+        - us-epa-nfmf-guidance-1989
+    - rule_id: boundary_powder_route
+      applies_to: "Magnesium powder"
+      rule: "Include declared mechanical milling, abrading, or atomizing and associated conditioning; chemical precipitation and powder produced only as the final refining step require a different upstream methodology."
+      source_ids:
+        - us-epa-nfmf-471
+        - us-epa-nfmf-guidance-1989
+    - rule_id: boundary_actual_atomic_flows
+      applies_to: "All included operations"
+      rule: "Add every actual material, energy, water, gas, waste, and elementary exchange as a separate atomic flow; absence of a template row is not a cut-off permission."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Metal or alloy feedstock received at the reporting facility, identified by metal, composition, physical form, supplier, recycled-content claim, and measured incoming mass"
+  starting_condition_role: "Upstream product entering plant-gate forming, fabrication, or magnesium-powder production"
+  product_classification_scope: "One product within CPC 3.0 code 41602; classification is context and does not replace the declared material and product identity"
+  recursive_input_rule: "A same-category wrought input that already embodies forming burdens shall be recorded as its exact purchased product flow with an upstream dataset and shall not be recursively re-expanded inside this foreground process"
+  upstream_dataset_requirement: "Each purchased metal, alloy, fuel, electricity, chemical, gas, and water input shall link to a geographically and technologically appropriate upstream dataset or disclose the missing link"
+  disclosure: "Declare included unit operations, outsourced operations, internal recycle loops, cut-off decisions, on-site treatment, allocation decisions, and whether casting, surface treatment, powder production, and packaging occur inside the boundary"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Titanium Plate"
+    uuid: "f32fc628-252f-40fe-8f8d-fd0efb955e92"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "principal metal and alloy or grade"
+    - "product form"
+    - "dimensions or particle-size distribution"
+    - temper
+    - "heat-treatment or powder condition"
+    - "surface finish"
+    - "recycled-content claim and accounting method"
+    - "production route"
+    - "facility geography"
+    - "technology period"
+    - "plant-gate packaging state"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "Reference product and all mass-normalized inventory"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net dry or as-specified saleable mass after final inspection and before dispatch; disclose whether unavoidable surface films, coatings, and immediate packaging are included."
+  - id: energy_conversion
+    applies_to: "Electricity and fuel records"
+    required_property_ref:
+      name: "Net calorific value for energy flows"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Preserve original meter or invoice units, document conversion factors, and report electricity using 1 kWh = 3.6 MJ without treating electricity as fuel combustion."
+  - id: gas_volume_conditions
+    applies_to: "Natural gas and industrial oxygen"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Record metered volume together with temperature, pressure, and dry or wet basis; convert only with a documented reference condition."
+  - id: solution_mass_basis
+    applies_to: "Process water, cutting fluid, and sodium-hydroxide solution"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Report delivered product or solution mass and separately disclose concentration and make-up water; do not report active chemical mass as solution mass."
+process_map:
+  - id: metal_forming_fabrication
+    name: "Metal forming, fabrication, and finishing"
+    inclusion: "required"
+    inclusion_condition: "Always for a wrought product or article; not used for a magnesium-powder-only data package"
+    role: "Foreground conversion of declared metal stock into the conforming wrought product"
+    quantitative_reference: "1 kg conforming product"
+  - id: magnesium_powder_production
+    name: "Mechanical magnesium-powder production and conditioning"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when the reference product is magnesium powder"
+    role: "Foreground milling, abrading, or atomizing and final powder conditioning"
+    quantitative_reference: "1 kg conforming magnesium powder"
+process_inventory:
+  - id: metal_forming_fabrication
+    label: "Metal forming, fabrication, and finishing"
+    inputs:
+      product:
+        - row_id: mf_titanium_billet
+          role: "Titanium billet feedstock"
+          name: "Titanium billet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the incoming titanium billet consumed by the representative forming route. Supplier production remains upstream unless co-located."
+          amount:
+            expression: "measured accepted billet mass charged to the process, net of returned unopened stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming titanium plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_records
+              source_ids:
+                - us-epa-nfmf-guidance-1989
+            ranges: []
+        - row_id: mf_electricity
+          role: "Electricity supplied to forming and fabrication"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record purchased or on-site-supplied electrical energy consumed by forming, machining, finishing, controls, and allocated auxiliaries."
+          amount:
+            expression: "metered electricity attributable to the included process, converted from kWh where necessary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming titanium plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: mf_natural_gas
+          role: "Natural gas for direct thermal operations"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas only when a furnace, oven, dryer, or other included thermal unit burns it directly."
+          amount:
+            expression: "metered natural-gas volume attributable to included thermal operations; use not_applicable when none is burned"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming titanium plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: mf_process_water
+          role: "Process water for contact cooling and rinsing"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water that crosses the process boundary for contact cooling, rinsing, bath make-up, or wet cleaning; exclude non-contact recirculation make-up only when separately metered and demonstrably outside the process boundary."
+          amount:
+            expression: "measured water input to included forming and surface-treatment operations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming titanium plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_chemical_records
+              source_ids:
+                - us-epa-nfmf-471
+                - us-epa-nfmf-guidance-1989
+            ranges: []
+        - row_id: mf_cutting_fluid
+          role: "Cutting fluid for machining and grinding"
+          name: "Cutting Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "576d250f-4f36-4385-939d-0f03b8f95a10"
+          property_unit: "Mass / kg"
+          description: "Record cutting-fluid make-up only when machining, grinding, drilling, turning, or a comparable wet metal-removal operation is included."
+          amount:
+            expression: "measured fresh cutting-fluid concentrate or delivered product added to the system; disclose dilution water separately"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming titanium plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_fluid_records
+              source_ids:
+                - niosh-metalworking-fluids-1998
+            ranges: []
+        - row_id: mf_sodium_hydroxide
+          role: "Sodium hydroxide for alkaline surface treatment"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide only when an included alkaline cleaning, etching, or wastewater-treatment operation consumes it."
+          amount:
+            expression: "measured delivered sodium-hydroxide product or solution mass with concentration disclosed"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming titanium plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_chemical_records
+              source_ids:
+                - us-epa-nfmf-guidance-1989
+            ranges: []
+        - row_id: mf_industrial_oxygen
+          role: "Industrial oxygen for thermal cutting or heating"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume / m3"
+          description: "Record industrial oxygen only when it is supplied to an included thermal cutting or heating operation; do not use this row for compressed air or inert gas."
+          amount:
+            expression: "metered oxygen volume attributable to the included operation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming titanium plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: mf_titanium_plate
+          role: "Conforming titanium plate"
+          name: "Titanium Plate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f32fc628-252f-40fe-8f8d-fd0efb955e92"
+          property_unit: "Mass / kg"
+          description: "Record only plate that passes the declared product acceptance criteria. This output is the representative reference flow."
+          amount:
+            expression: "measured net conforming product mass; normalize the reported inventory to exactly 1 kg"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg conforming titanium plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_records
+              source_ids:
+                - un-cpc-3-structure-2025
+            ranges: []
+      waste:
+        - row_id: mf_titanium_scrap
+          role: "Titanium offcuts and machining scrap"
+          name: "Titanium scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record titanium offcuts, turnings, and other recoverable solid titanium leaving the process as one segregated waste flow. Internally recycled scrap stays inside the process and is tracked in the mass balance without a boundary exchange."
+          amount:
+            expression: "measured titanium scrap mass leaving the foreground boundary"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming titanium plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_records
+              source_ids:
+                - niosh-metalworking-fluids-1998
+            ranges: []
+        - row_id: mf_waste_cutting_oil
+          role: "Waste cutting oil removed from the system"
+          name: "Waste cutting oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "80d926e3-0f76-4a19-9b1e-ffec9deb1216"
+          property_unit: "Mass / kg"
+          description: "Record removed cutting oil that leaves for treatment, recycling, or disposal. Do not combine it with aqueous coolant or other waste oil."
+          amount:
+            expression: "measured mass removed from the cutting-fluid system and transferred off site"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming titanium plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_fluid_records
+              source_ids:
+                - niosh-metalworking-fluids-1998
+            ranges: []
+        - row_id: mf_acidic_titanium_wastewater
+          role: "Acidic titanium-bearing wastewater"
+          name: "Acidic titanium-bearing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the aqueous waste stream from titanium acid etching, pickling, or rinsing only when it leaves the foreground process for on-site or off-site treatment. Declare acid species, titanium concentration, other regulated constituents, pH, and treatment destination."
+          amount:
+            expression: "measured wastewater mass at the transfer point, with composition from representative sampling"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming titanium plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - us-epa-nfmf-471
+                - us-epa-nfmf-guidance-1989
+            ranges: []
+      elementary:
+        - row_id: mf_fossil_co2
+          role: "Fossil carbon dioxide from on-site fuel combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil carbon dioxide released from included natural-gas combustion. Upstream electricity-generation emissions are excluded from this foreground row."
+          amount:
+            expression: "measured or facility-calculated direct fossil carbon-dioxide mass attributable to included combustion"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming titanium plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions_records
+              source_ids: []
+            ranges: []
+        - row_id: mf_titanium_particulate
+          role: "Titanium particulate released to air"
+          name: "Titanium particulate to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record controlled titanium-bearing particulate crossing the stack or fugitive air boundary. Declare elemental or compound form, particle-size basis, release compartment, and abatement capture basis."
+          amount:
+            expression: "measured release or calculation from captured dust and verified control performance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming titanium plate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions_records
+              source_ids:
+                - niosh-metalworking-fluids-1998
+            ranges: []
+  - id: magnesium_powder_production
+    label: "Mechanical magnesium-powder production and conditioning"
+    inputs:
+      product:
+        - row_id: mp_magnesium_ingot
+          role: "Magnesium ingot feedstock"
+          name: "Magnesium ingot"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the magnesium metal ingot or other declared solid magnesium feed entering mechanical powder production."
+          amount:
+            expression: "measured accepted magnesium feed mass charged to powder production"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming magnesium powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_records
+              source_ids:
+                - us-epa-nfmf-471
+                - us-epa-nfmf-guidance-1989
+            ranges: []
+        - row_id: mp_electricity
+          role: "Electricity supplied to magnesium-powder operations"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity consumed by milling, abrading, atomizing, classification, drying, ventilation, and allocated auxiliaries actually included."
+          amount:
+            expression: "metered electricity attributable to the included magnesium-powder process"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming magnesium powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - us-epa-nfmf-guidance-1989
+            ranges: []
+        - row_id: mp_natural_gas
+          role: "Natural gas for magnesium-powder heating or drying"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas only when it is burned in an included feed-heating, atomizing, or drying unit."
+          amount:
+            expression: "metered natural-gas volume attributable to the included powder operation; use not_applicable when none is burned"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming magnesium powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: mp_process_water
+          role: "Process water for wet powder production"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record water only for a wet milling, wet atomizing, washing, or other water-contact route."
+          amount:
+            expression: "measured process-water input attributable to magnesium-powder production; use not_applicable for a verified dry route"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming magnesium powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_chemical_records
+              source_ids:
+                - us-epa-nfmf-guidance-1989
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: mp_magnesium_powder
+          role: "Conforming magnesium metal powder"
+          name: "Magnesium metal powder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only powder meeting the declared magnesium composition, moisture, particle-size distribution, morphology, and contamination limits."
+          amount:
+            expression: "measured net conforming powder mass; normalize the reported inventory to exactly 1 kg"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg conforming magnesium metal powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_records
+              source_ids:
+                - un-cpc-3-structure-2025
+                - us-epa-nfmf-guidance-1989
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: mp_fossil_co2
+          role: "Fossil carbon dioxide from magnesium-powder thermal operations"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil carbon dioxide only when an included powder-production unit burns natural gas. Do not include upstream electricity-generation emissions in this row."
+          amount:
+            expression: "measured or facility-calculated direct fossil carbon-dioxide mass attributable to included combustion"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming magnesium powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions_records
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "Shared lines and utilities"
+    rule: "Subdivide by separately metered process, campaign, line, or product before considering allocation. A data package that cannot establish a causal allocation basis shall disclose the gap and shall not claim full PCR conformance."
+    source_ids: []
+  - rule_id: allocation_internal_recycle
+    applies_to: "Internal metal scrap, powder, water, and fluid loops"
+    rule: "Keep internal recycle within the foreground system; record gross circulation for process control but count only make-up input and boundary-crossing outputs in the inventory."
+    source_ids: []
+  - rule_id: allocation_recovered_scrap
+    applies_to: "Scrap or off-spec product leaving the boundary"
+    rule: "Record the measured boundary flow and treatment destination. Do not subtract an avoided-production credit inside the foreground inventory unless the downstream modelling convention is separately declared."
+    source_ids: []
+  - rule_id: allocation_joint_outputs
+    applies_to: "Unavoidable joint production"
+    rule: "Use direct physical causality where documented. If no defensible causal relationship exists, retain all burdens on the declared reference product pending a reviewed allocation rule rather than silently applying economic allocation."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass_records
+      process_id: "metal_forming_fabrication_magnesium_powder_production"
+      flow_role: "Feedstock, conforming product, scrap, internal recycle, and off-spec mass"
+      record_type: "Scale and production records"
+      raw_fields: "timestamp; batch; flow identity; alloy or grade; gross mass; tare; net mass; disposition"
+      collection_method: "Calibrated scales reconciled to batch and warehouse records"
+      unit: "kg"
+      frequency: "Each batch or transfer"
+      temporal_coverage: "At least one representative continuous 12-month period, or the full campaign for campaign production"
+      site_scope: "All included lines and storage transfer points"
+      aggregation_rule: "Sum net boundary masses by exact flow; retain internal recycle separately; normalize by conforming output"
+      quality_evidence: "Calibration certificates; batch reconciliation; inventory opening and closing balances"
+    - protocol_id: cp_energy_records
+      process_id: "metal_forming_fabrication_magnesium_powder_production"
+      flow_role: "Electricity and natural gas"
+      record_type: "Meter, invoice, and equipment log"
+      raw_fields: "meter id; opening and closing reading; unit; fuel state; reference conditions; operating hours; downtime; allocation driver"
+      collection_method: "Submeter preferred; reconcile to invoices and exclude unrelated loads"
+      unit: "Native meter unit"
+      frequency: "Monthly and each campaign"
+      temporal_coverage: "Same period as product output"
+      site_scope: "All included equipment and shared auxiliaries"
+      aggregation_rule: "Sum included consumption, apply documented conversion, then divide by conforming output mass"
+      quality_evidence: "Meter calibration; invoice reconciliation; allocation worksheet"
+    - protocol_id: cp_water_chemical_records
+      process_id: "metal_forming_fabrication_magnesium_powder_production"
+      flow_role: "Process water and sodium hydroxide"
+      record_type: "Meter, batch make-up, purchase, and stock records"
+      raw_fields: "water meter readings; chemical product identity; concentration; delivered mass; opening and closing stock; bath make-up; disposal"
+      collection_method: "Meter water and reconcile chemical consumption by inventory balance"
+      unit: "kg"
+      frequency: "Each bath make-up and monthly"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Included cooling, cleaning, etching, rinsing, and treatment systems"
+      aggregation_rule: "Report product or solution mass separately from concentration and dilution water"
+      quality_evidence: "Meter checks; supplier certificate; bath log; stock reconciliation"
+    - protocol_id: cp_cutting_fluid_records
+      process_id: "metal_forming_fabrication"
+      flow_role: "Cutting-fluid make-up and waste cutting oil"
+      record_type: "Fluid-system and waste-transfer records"
+      raw_fields: "formulation; concentrate mass; dilution water; sump inventory; change-out mass; recovered mass; destination"
+      collection_method: "Reconcile additions, retained inventory, recovered oil, and transferred waste"
+      unit: "kg"
+      frequency: "Each addition and change-out"
+      temporal_coverage: "Same period as product output"
+      site_scope: "All included machining and grinding systems"
+      aggregation_rule: "Sum fresh product and boundary waste separately; do not combine oil and aqueous coolant"
+      quality_evidence: "Supplier SDS; fluid log; waste manifest; mass-balance check"
+    - protocol_id: cp_gas_records
+      process_id: "metal_forming_fabrication"
+      flow_role: "Industrial oxygen"
+      record_type: "Cylinder inventory or calibrated flow meter"
+      raw_fields: "gas identity; purity; pressure; temperature; flow; cylinder opening and closing mass or volume; operation"
+      collection_method: "Meter flow or reconcile cylinder inventory at declared reference conditions"
+      unit: "m3"
+      frequency: "Each campaign or monthly"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Included thermal cutting and heating equipment"
+      aggregation_rule: "Sum exact gas only and normalize by conforming output"
+      quality_evidence: "Meter calibration; supplier delivery record; cylinder reconciliation"
+    - protocol_id: cp_wastewater_records
+      process_id: "metal_forming_fabrication"
+      flow_role: "Acidic titanium-bearing wastewater"
+      record_type: "Flow meter, tank transfer, and representative sample"
+      raw_fields: "transfer mass or volume; density; pH; acid species; titanium concentration; other constituents; treatment destination"
+      collection_method: "Meter each transfer and sample using a documented representative plan"
+      unit: "kg"
+      frequency: "Each transfer; composition at representative frequency"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Every included etching, pickling, rinse, and treatment discharge point"
+      aggregation_rule: "Convert volume with measured density where needed; keep distinct waste streams separate"
+      quality_evidence: "Meter calibration; laboratory report; chain of custody; treatment manifest"
+    - protocol_id: cp_direct_emissions_records
+      process_id: "metal_forming_fabrication_magnesium_powder_production"
+      flow_role: "Direct fossil CO2 and metal particulate"
+      record_type: "CEMS, stack test, fuel/emissions calculation, or captured-dust balance"
+      raw_fields: "source id; period; measured concentration or mass; gas flow; fuel record; emission compartment; chemical form; particle-size basis; control efficiency; uncertainty"
+      collection_method: "Prefer direct measurement; otherwise use a documented facility calculation from collected records"
+      unit: "kg"
+      frequency: "Continuous, each test, or monthly calculation as applicable"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Every included stationary and fugitive release point"
+      aggregation_rule: "Sum by exact elementary flow and compartment; never include upstream electricity emissions"
+      quality_evidence: "Calibration and stack-test reports; calculation workbook; control-device records"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Every inventory row"
+      rule: "Normalized amount = period boundary amount / period conforming product mass"
+      inputs:
+        - "Exact-flow boundary amount"
+        - "conforming product mass"
+      output: "Amount per 1 kg reference product"
+      source_ids: []
+    - id: calc_material_balance
+      applies_to: "Metal or magnesium mass"
+      rule: "Reconcile accepted feed = conforming product + boundary scrap or residue + closing in-process inventory - opening in-process inventory + documented unmeasured loss; investigate rather than hide a material residual"
+      inputs:
+        - Feed
+        - product
+        - scrap
+        - residue
+        - "and in-process inventory records"
+      output: "Batch and period mass-balance residual"
+      source_ids: []
+    - id: calc_energy_conversion
+      applies_to: "Electricity"
+      rule: "MJ = metered kWh × 3.6"
+      inputs:
+        - "Metered kWh"
+      output: "Electricity in MJ"
+      source_ids: []
+    - id: calc_direct_emissions
+      applies_to: "Direct fossil CO2 and particulate"
+      rule: "Apply only the documented facility measurement or calculation method to collected source records; report method, factors, uncertainty, and compartment"
+      inputs:
+        - Fuel
+        - CEMS
+        - stack-test
+        - flow
+        - concentration
+        - "and control records"
+      output: "kg of exact elementary flow"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Reference product and all metal-bearing flows"
+      requirement: "Preserve exact metal, alloy or grade, physical state, product form, and boundary role; do not use a generic heavy-metals, metal-powder, wastewater, or scrap identity."
+      evidence: "Product specification; supplier certificate; Tiangong direct-read identity; waste characterization"
+    - id: dq_temporal
+      applies_to: "Foreground activity data"
+      requirement: "Use temporally matched input and output records covering at least one representative continuous 12-month period, or the complete declared campaign when production is campaign-based."
+      evidence: "Dated meter, batch, inventory, and production records"
+    - id: dq_completeness
+      applies_to: "All included operations"
+      requirement: "Reconcile material, energy, water, chemical, waste, and release records; disclose missing meters, estimated shares, excluded operations, and residuals."
+      evidence: "Reconciliation worksheets; cut-off register; mass balance"
+    - id: dq_technology
+      applies_to: "Route-dependent operations"
+      requirement: "Declare forming sequence, machine type, heat-treatment and surface-treatment steps, powder route, recirculation, abatement, and outsourced steps."
+      evidence: "Process flow diagram; equipment list; operating log; supplier record"
+    - id: dq_geography
+      applies_to: "Upstream links and direct emissions"
+      requirement: "Record facility location, energy market, supplier geography, water context, waste destination, and elementary-flow compartment."
+      evidence: "Dataset metadata; invoices; permits; transfer manifests"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "Reference product"
+    rule: "Confirm one covered metal or magnesium powder, exact product state, mass property, and every required qualifier; reject semantic reuse of the titanium-plate UUID for another product."
+    source_ids:
+      - un-cpc-3-structure-2025
+  - rule_id: validate_route_boundary
+    applies_to: "Process map"
+    rule: "Confirm that exactly the applicable wrought or magnesium-powder route is active and that co-located casting, surface treatment, and powder operations follow the declared boundary."
+    source_ids:
+      - us-epa-nfmf-471
+      - us-epa-nfmf-guidance-1989
+  - rule_id: validate_atomic_inventory
+    applies_to: "Inventory"
+    rule: "Confirm that each row is one atomic exchange, every actual technology-specific flow is present, and generic utilities, fuels, metals, wastes, wastewater, or emissions are not substituted for exact identities."
+    source_ids: []
+  - rule_id: validate_mass_balance
+    applies_to: "Metal and product mass"
+    rule: "Require a documented feed, product, scrap, residue, and in-process inventory reconciliation; investigate material residuals and disclose unresolved losses."
+    source_ids: []
+  - rule_id: validate_energy_emissions
+    applies_to: "Energy and direct emissions"
+    rule: "Reconcile electricity and fuel to the production period; exclude upstream electricity emissions from direct rows; verify chemical form and compartment for each elementary flow."
+    source_ids: []
+  - rule_id: validate_foreground_quality
+    applies_to: "Data package"
+    rule: "Confirm temporal, site, technology, geography, measurement, uncertainty, allocation, and missing-data disclosures before publication."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Plant-gate foreground product dataset for one declared wrought special non-ferrous metal product or magnesium metal powder"
+  downstream_use: "secondary_dataset; background_dataset when reviewed for representativeness"
+  allowed_use: "Product-footprint, process, and lifecycle-model studies that match the declared metal, grade, form, route, geography, technology period, and plant-gate state"
+  excluded_use: "Proxying another metal, alloy, product form, powder chemistry, particle-size class, route, geography, or use-phase function without explicit review"
+  required_metadata: "PCR id and version; exact product identity and UUID; grade or composition; geometry or particle size; temper or condition; surface finish; facility geography; technology and period; process map; included and outsourced operations; upstream links; recycled-content method; allocation; data quality; uncertainty"
+  required_quality_disclosure: "Metering and estimation shares; mass-balance residual; temporal and technological representativeness; unresolved UUIDs and ranges; excluded operations; waste and emission characterization; allocation and cut-off decisions"
+  update_trigger: "Change in principal metal or alloy, grade, product form, powder route, major equipment, heat or surface treatment, energy supply, abatement, supplier mix, recycled-content accounting, allocation, or a material change in normalized inventory"
+data_sources:
+  - id: "un-cpc-3-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv, retrieved 2026-09-04"
+    used_for: "Official CPC 41602 identity and covered product wording"
+  - id: "us-epa-nfmf-471"
+    type: "official_guidance"
+    reference: "U.S. EPA, Nonferrous Metals Forming and Metal Powders Effluent Guidelines, 40 CFR Part 471 program page, https://www.epa.gov/eg/nonferrous-metals-forming-and-metal-powders-effluent-guidelines, retrieved 2026-09-04"
+    used_for: "Category and route boundary, mechanical powder routes, on-site casting, surface treatment, and wastewater scope"
+  - id: "us-epa-nfmf-guidance-1989"
+    type: "official_guidance"
+    reference: "U.S. EPA, Aluminum, Copper, and Nonferrous Metals Forming and Metal Powders Pretreatment Standards: A Guidance Manual, EPA 800-B-89-001, December 1989, https://www.epa.gov/sites/default/files/2016-08/documents/aluminum-copper-nonferrous-forming_pretreat-guidance_1989.pdf, retrieved 2026-09-04"
+    used_for: "Process decomposition, titanium forming and etching, powder production, lubricants, water, wastewater, and ancillary operations"
+  - id: "niosh-metalworking-fluids-1998"
+    type: "official_guidance"
+    reference: "NIOSH, Criteria for a Recommended Standard: Occupational Exposure to Metalworking Fluids, DHHS (NIOSH) Publication No. 98-102, 1998, https://www.cdc.gov/niosh/media/pdfs/2026/06/98-102_1.pdf, retrieved 2026-09-04"
+    used_for: "Cutting-fluid input, machining and grinding roles, chips, swarf, fluid aerosols, and spent-fluid management"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:e62a916f831dc8459ca63e05ef5ef61f98c3f1bbbe749a7a48930d494efdc3bf"
+  generated_content_sha256: "sha256:34b4c293ca88d4de81a400ecebfcfcc9b5dca7a412f87608e55c42d0dcb12296"

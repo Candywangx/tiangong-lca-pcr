@@ -1,10 +1,546 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "45142"
-  title: "Point-of-sale terminals, ATMs and similar machines"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.office-accounting-and-computing-machinery.point-of-sale-terminals-atms-and-similar-machines"
+  classification_refs: "CPC 3.0: 45142, Point-of-sale terminals, ATMs and similar machines (exact)"
+  covered_products: "Finished network-connectable POS terminals; connected cash registers; automated teller machines; completed machines with equivalent calculating and transaction-processing function"
+  excluded_products: "Unconnected cash registers; ticket-issuing machines; postage-franking machines; totalisator machines; stand-alone magnetic-card validation/control systems; loose parts and accessories"
+  representative_product: "A finished, configured, functionally tested and packed POS terminal or ATM at the reporting factory gate"
+  production_route: "Assembly of purchased electronic, display, power-supply, enclosure and packaging components; configuration; functional/security testing; packing"
+  market_state: "Finished new equipment at factory gate, packed when the declared product is sold packed"
+functional_unit:
+  what: "Provide a finished machine capable of the declared POS, cash-dispensing and/or comparable transaction-processing function"
+  how_much: "1 kg of finished reference product at the factory gate"
+  how_well: "Conforms to the declared model configuration and has passed the manufacturer's release, functional and security tests"
+  how_long_or_cycle: "One reported production period; service life and use-phase duty cycle are declared separately and are outside this factory-gate functional unit"
+  reference_flow_link: "The normalized output row finished_terminal_output provides the reference product"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The default boundary is cradle-to-factory-gate for the completed machine: foreground operations begin when purchased components, packaging and energy cross the reporting factory boundary and end when conforming finished products and segregated wastes leave it. Upstream production of purchased components must be represented by suitable upstream datasets. Installation, use, maintenance and end-of-life are excluded unless a separately identified extension is reported. Regulatory sources are conformance and scenario rules, not empirical amount ranges."
+      source_ids: []
+    - rule_id: sb_factory_gate
+      applies_to: "default_system_boundary"
+      rule: "Include final assembly, configuration, functional/security testing and packing at the reporting factory; connect every purchased component, material and electricity flow to an upstream dataset."
+      source_ids: []
+    - rule_id: sb_product_scope
+      applies_to: "product_identity"
+      rule: "Apply this PCR only to CPC 45142 products within the reviewed inclusions and exclusions; do not use it for excluded office machines or loose parts."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+        - un-cpc-2-1-2013
+    - rule_id: sb_rohs_disclosure
+      applies_to: "regulated_hazardous_substances"
+      rule: "Where the declared market is subject to Directive 2011/65/EU, retain supplier declarations or test evidence at homogeneous-material level and disclose applicable exemptions; this is a conformance disclosure, not an inventory range."
+      source_ids:
+        - eu-rohs-2011-65
+    - rule_id: sb_downstream_extension
+      applies_to: "optional_use_and_end_of_life"
+      rule: "Report use electricity, maintenance, collection and treatment only in separate extension scenarios. Where Directive 2012/19/EU applies, keep separate collection and treatment/reuse/recycling routes explicit and do not merge them into factory production waste."
+      source_ids:
+        - eu-weee-2012-19
+boundary_abstraction:
+  declared_starting_condition: "Purchased components, packaging and energy delivered to the reporting factory with supplier identity and mass/energy records"
+  starting_condition_role: "Foreground gate for final equipment assembly; upstream component manufacture remains represented by linked upstream datasets"
+  product_classification_scope: "Finished CPC 45142 machines only; parts, accessories and excluded office machines remain outside the reference-product identity"
+  recursive_input_rule: "A same-category finished machine used as an input must be recorded as a distinct reused/remanufactured input with its own upstream dataset; do not recursively apply this PCR to it inside the same process"
+  upstream_dataset_requirement: "Use technology-, geography- and product-state-appropriate datasets for purchased PCB assemblies, display modules, power supplies, enclosures, packaging and electricity; disclose proxy use"
+  disclosure: "Declare product configuration, unit mass, packing state, factory operations, excluded onsite operations, upstream proxies, regulated-market assumptions, and any optional downstream extension"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Point-of-sale terminals, ATMs and similar machines"
+    uuid: "2c387020-8faf-4bc5-bdc3-a3111560c91b"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product family (POS terminal"
+    - "connected cash register"
+    - ATM
+    - "or similar machine)"
+    - "model and hardware configuration"
+    - "unit mass"
+    - "display type"
+    - "enclosure material"
+    - "power-supply type"
+    - "integrated printer"
+    - "card reader"
+    - keypad
+    - "cash dispenser and safe presence"
+    - "software/firmware release"
+    - "test coverage"
+    - "packing included or excluded"
+    - "production geography"
+    - "reporting period"
+    - "factory-gate boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: mu_reference_mass
+    applies_to: "Reference product and all mass-normalized rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net finished-product mass consistently with the packing declaration. Normalize batch totals by released product mass; do not use item count without a measured model-specific count-to-mass conversion."
+  - id: mu_electricity_conversion
+    applies_to: "Assembly and test electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve the meter's original energy record and convert kWh to MJ using 1 kWh = 3.6 MJ. Do not treat electricity as a mass flow."
+  - id: mu_scrap_mass
+    applies_to: "Production waste outputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record wet/contaminated state where relevant and keep steel, ABS plastic, populated-board and cardboard wastes segregated; subtract only documented returns that never become waste."
+process_map:
+  - id: terminal_final_assembly
+    name: "Final assembly, configuration, functional testing and packing"
+    inclusion: "required"
+    inclusion_condition: "Always included; product-specific components absent from the verified BOM are reported as not applicable rather than substituted with another material"
+    role: "Foreground production of the finished reference product"
+    quantitative_reference: "1 kg of released finished terminal at factory gate"
+process_inventory:
+  - id: terminal_final_assembly
+    label: "Final assembly, configuration, functional testing and packing"
+    inputs:
+      product:
+        - row_id: populated_pcb_assembly_input
+          role: "Populated printed-circuit-board assembly"
+          name: "Populated printed-circuit-board assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of the populated PCB assembly installed in the finished machine from BOM and receiving records. Keep the UUID empty because the audited candidates did not establish one exact populated assembly identity."
+          amount:
+            expression: "Measured net installed mass plus documented assembly loss"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released finished terminal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_packaging_mass
+              source_ids: []
+            ranges: []
+        - row_id: lcd_display_module_input
+          role: "LCD display module"
+          name: "LCD display module"
+          flow_type: "product"
+          flow_ref:
+            uuid: "264605c6-41b8-4baa-82b0-e27e815063a0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the mass of each LCD display module installed in products that contain one. Use not applicable only when the verified model BOM contains no LCD module."
+          amount:
+            expression: "Measured net installed mass plus documented assembly loss"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released finished terminal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_packaging_mass
+              source_ids: []
+            ranges: []
+        - row_id: ac_dc_power_supply_input
+          role: "AC/DC power-supply unit"
+          name: "AC/DC power-supply unit"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of the internal or bundled AC/DC power-supply unit. Keep the UUID empty because no audited candidate exactly represented one complete power-supply unit."
+          amount:
+            expression: "Measured net installed or bundled mass plus documented assembly loss"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released finished terminal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_packaging_mass
+              source_ids: []
+            ranges: []
+        - row_id: painted_steel_enclosure_input
+          role: "Painted steel terminal enclosure"
+          name: "Painted steel terminal enclosure"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of the painted steel enclosure or safe body installed in the declared model. Use not applicable only when the verified BOM shows no steel enclosure."
+          amount:
+            expression: "Measured net installed mass plus documented fabrication or fitting loss"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released finished terminal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_packaging_mass
+              source_ids: []
+            ranges: []
+        - row_id: moulded_abs_enclosure_input
+          role: "Injection-moulded ABS terminal enclosure"
+          name: "Injection-moulded ABS terminal enclosure"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of the injection-moulded ABS enclosure installed in the declared model. Do not substitute ABS granulate unless moulding is actually inside the foreground boundary."
+          amount:
+            expression: "Measured net installed mass plus documented fitting loss"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released finished terminal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_packaging_mass
+              source_ids: []
+            ranges: []
+        - row_id: assembly_test_electricity_input
+          role: "Assembly and test electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200b9a66 / MJ"
+          description: "Record purchased electricity metered for assembly, configuration, functional/security testing and packing, with justified allocation where the meter is shared."
+          amount:
+            expression: "Metered electricity attributable to the reporting period, converted to MJ and normalized by released product mass"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released finished terminal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_electricity_metering
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_board_box_input
+          role: "Corrugated board box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record corrugated board boxes consumed for products whose factory-gate reference state includes packing. Use not applicable when packing is explicitly outside the declared reference state."
+          amount:
+            expression: "Measured box mass issued to conforming products, net of documented unused returns"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released finished terminal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_packaging_mass
+              source_ids: []
+            ranges: []
+        - row_id: expanded_pe_foam_insert_input
+          role: "Expanded polyethylene foam packaging insert"
+          name: "Expanded polyethylene foam packaging insert"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of expanded polyethylene foam inserts used to protect the finished product. Keep the UUID empty because audited candidates did not establish both polyethylene chemistry and formed-insert state."
+          amount:
+            expression: "Measured insert mass issued to conforming products, net of documented unused returns"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released finished terminal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_packaging_mass
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_terminal_output
+          role: "Released finished terminal"
+          name: "Point-of-sale terminals, ATMs and similar machines"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2c387020-8faf-4bc5-bdc3-a3111560c91b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only conforming finished products released at the factory gate. The exact Tiangong state-100 reference-product flow is used."
+          amount:
+            expression: "Measured released product mass normalized to exactly 1 kg"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg released finished terminal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_output_mass
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: populated_pcb_waste_output
+          role: "Waste populated printed wiring board"
+          name: "Waste populated printed wiring board"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "eb5ffe4a-49af-450c-9a31-3efdfd343f8a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record rejected or damaged populated boards that become waste at the reporting factory. Do not include supplier returns that never enter waste management."
+          amount:
+            expression: "Weighed segregated populated-board waste sent to storage or treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released finished terminal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_segregated_waste_mass
+              source_ids: []
+            ranges: []
+        - row_id: steel_offcut_scrap_output
+          role: "Steel scrap offcuts"
+          name: "Steel scrap, offcuts"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "ae44c4ac-bcd5-4a16-b0a5-d674ffeaab6b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record steel offcuts generated by enclosure fitting or onsite fabrication. Use not applicable where no steel cutting or fitting loss occurs onsite."
+          amount:
+            expression: "Weighed segregated steel offcuts leaving the process as waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released finished terminal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_segregated_waste_mass
+              source_ids: []
+            ranges: []
+        - row_id: abs_plastic_scrap_output
+          role: "Segregated ABS plastic production scrap"
+          name: "Segregated ABS plastic production scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record ABS enclosure trimming, fitting or breakage waste as one segregated polymer stream. Keep the UUID empty because no exact ABS production-scrap identity was confirmed."
+          amount:
+            expression: "Weighed segregated ABS scrap leaving the process as waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released finished terminal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_segregated_waste_mass
+              source_ids: []
+            ranges: []
+        - row_id: cardboard_packaging_waste_output
+          role: "Cardboard packaging waste"
+          name: "Packaging waste, cardboard"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "72270223-04b1-4986-a546-94e5a0821317"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record damaged boxes and cardboard offcuts that become waste at the reporting factory. Do not include boxes shipped with conforming products."
+          amount:
+            expression: "Weighed cardboard packaging waste leaving the process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released finished terminal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_segregated_waste_mass
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: al_subdivide_first
+    applies_to: "shared_assembly_and_test_operations"
+    rule: "Subdivide by production line, model, test programme or reporting period wherever records allow direct attribution."
+    source_ids: []
+  - rule_id: al_mass_energy_driver
+    applies_to: "residual_shared_inputs_and_wastes"
+    rule: "Allocate component and packaging masses by BOM/issue records, electricity by metered test time or another documented causal energy driver, and segregated waste by measured source records; use finished-product mass only when no more causal verified driver exists."
+    source_ids: []
+  - rule_id: al_no_avoided_burden
+    applies_to: "recyclable_production_waste"
+    rule: "Report waste at the factory gate without avoided-burden credit. Any downstream recycling substitution belongs in a separately declared scenario and must not reduce foreground assembly inventory."
+    source_ids:
+      - eu-weee-2012-19
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_component_packaging_mass
+      process_id: "terminal_final_assembly"
+      flow_role: "installed components and shipped packaging"
+      record_type: "BOM, goods issue, receiving record, calibrated scale record"
+      raw_fields: "model id; component id; quantity issued; quantity returned; measured unit mass; reject mass; packing inclusion"
+      collection_method: "Reconcile released-model BOM with warehouse issues/returns and model-specific scale checks"
+      unit: "kg"
+      frequency: "Each model/revision and reporting period"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "All reporting-site assembly and packing lines"
+      aggregation_rule: "Sum net issued mass attributable to released products; add documented onsite loss only once"
+      quality_evidence: "Approved BOM revision, issue/return reconciliation, scale calibration, variance investigation"
+    - protocol_id: cp_electricity_metering
+      process_id: "terminal_final_assembly"
+      flow_role: "assembly and test electricity"
+      record_type: "electricity meter and equipment runtime record"
+      raw_fields: "meter start/end; multiplier; line/test station; runtime; model; released mass; allocation driver"
+      collection_method: "Read dedicated meters where available; otherwise reconcile shared meters and documented causal allocation drivers"
+      unit: "kWh and MJ"
+      frequency: "At least monthly and at model/test-programme change"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "All included assembly, configuration, test and packing equipment"
+      aggregation_rule: "Convert kWh to MJ, subtract documented excluded loads, allocate residual shared use, divide by released mass"
+      quality_evidence: "Meter identifier and calibration, bill reconciliation, load boundary diagram, allocation record"
+    - protocol_id: cp_product_output_mass
+      process_id: "terminal_final_assembly"
+      flow_role: "released finished product"
+      record_type: "release record and calibrated scale record"
+      raw_fields: "model; serial/batch; released quantity; unpacked mass; packed mass; packing declaration"
+      collection_method: "Reconcile release records with model-specific measured mass and reject records"
+      unit: "kg"
+      frequency: "Each model/revision and reporting period"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "All included production lines"
+      aggregation_rule: "Sum only conforming released mass in the declared packing state"
+      quality_evidence: "Release authorization, scale calibration, packed/unpacked mass reconciliation"
+    - protocol_id: cp_segregated_waste_mass
+      process_id: "terminal_final_assembly"
+      flow_role: "PCB, steel, ABS and cardboard waste"
+      record_type: "waste-container scale ticket and transfer manifest"
+      raw_fields: "waste identity; container tare/gross; contamination; date; source line; destination; supplier return flag"
+      collection_method: "Weigh each segregated stream and reconcile internal storage change and outbound manifests"
+      unit: "kg"
+      frequency: "Each transfer; aggregate monthly"
+      temporal_coverage: "Complete reporting period including opening and closing stock"
+      site_scope: "All included production and waste-storage areas"
+      aggregation_rule: "Net generated waste = outbound + closing stock - opening stock; exclude documented non-waste supplier returns"
+      quality_evidence: "Scale calibration, photographs/labels, manifests, stock reconciliation, contamination notes"
+  calculation_rules:
+    - id: calc_mass_normalization
+      applies_to: "mass inventory rows"
+      rule: "normalized kg/kg = attributable row mass in kg / released finished-product mass in kg"
+      inputs:
+        - "reconciled row mass"
+        - "released finished-product mass"
+      output: "kg per kg reference product"
+      source_ids: []
+    - id: calc_electricity_normalization
+      applies_to: "assembly_test_electricity_input"
+      rule: "normalized MJ/kg = attributable metered kWh × 3.6 / released finished-product mass in kg"
+      inputs:
+        - "metered kWh"
+        - "excluded loads"
+        - "allocation driver"
+        - "released mass"
+      output: "MJ per kg reference product"
+      source_ids: []
+    - id: calc_waste_stock_balance
+      applies_to: "waste outputs"
+      rule: "generated waste = outbound transferred mass + closing onsite stock - opening onsite stock, excluding documented supplier returns"
+      inputs:
+        - "scale tickets"
+        - manifests
+        - "stock records"
+        - "return records"
+      output: "kg waste per reporting period before normalization"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "product and component identity"
+      requirement: "Tie product model, hardware/firmware revision, component identities and packing state to an approved BOM and release record; disclose every UUID-empty flow and proxy dataset."
+      evidence: "BOM revision, configuration record, release authorization, supplier specification"
+    - id: dq_temporal
+      applies_to: "all foreground rows"
+      requirement: "Cover one representative continuous reporting period and disclose shutdowns, rework campaigns, new-model ramp-up and missing intervals."
+      evidence: "dated meter, warehouse, production and waste records"
+    - id: dq_completeness
+      applies_to: "mass and energy balance"
+      requirement: "Reconcile component issues, released product, rejects, supplier returns and segregated wastes; explain material variances and excluded shared loads."
+      evidence: "signed reconciliation and variance log"
+    - id: dq_measurement
+      applies_to: "scales and electricity meters"
+      requirement: "Use identified calibrated instruments and preserve raw readings, multipliers, conversion and allocation calculations."
+      evidence: "calibration certificates, raw exports and calculation workbook"
+    - id: dq_regulatory
+      applies_to: "regulated market declarations"
+      requirement: "Where applicable, retain homogeneous-material substance declarations/exemptions and separately document WEEE collection/treatment assumptions used in downstream extensions."
+      evidence: "supplier declarations or test evidence; applicable compliance records; scenario documentation"
+validation_rules:
+  - rule_id: val_reference_flow
+    applies_to: "reference_product"
+    rule: "Confirm that finished_terminal_output uses the exact reference UUID, Mass property, kg unit, and equals 1 kg after normalization."
+    source_ids: []
+  - rule_id: val_scope_identity
+    applies_to: "product_scope"
+    rule: "Reject a package for an excluded office machine, loose component, or unconnected cash register; verify the declared POS/ATM/similar-machine function and network capability."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - un-cpc-2-1-2013
+  - rule_id: val_inventory_atomicity
+    applies_to: "process_inventory"
+    rule: "Confirm every row is one atomic exchange and that absent product-specific components are marked not applicable rather than replaced with an umbrella flow."
+    source_ids: []
+  - rule_id: val_reconciliation
+    applies_to: "foreground_records"
+    rule: "Recalculate mass and electricity normalization, check released-product denominator, reconcile waste stocks and returns, and flag unexplained negative or duplicate quantities."
+    source_ids: []
+  - rule_id: val_boundary_disclosure
+    applies_to: "system_boundary"
+    rule: "Confirm the factory-gate boundary, packing state, included onsite operations, upstream dataset links, excluded use/end-of-life stages and any regulatory extension scenario are explicit."
+    source_ids:
+      - eu-rohs-2011-65
+      - eu-weee-2012-19
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset after review of representativeness and upstream links"
+  downstream_use: "Product-footprint and lifecycle-model foreground/background modules for declared POS terminal, ATM or similar-machine configurations"
+  allowed_use: "Factory-gate comparison or modelling when product configuration, mass, geography, reporting period, packing state and foreground boundary are compatible"
+  excluded_use: "Direct substitution for excluded CPC products; use-phase or end-of-life claims without separate scenarios; comparison of unlike POS/ATM configurations without functional adjustment"
+  required_metadata: "PCR id and version; product/model configuration; reference UUID; unit mass; packing state; production site/geography; reporting period; included operations; upstream dataset identities; allocation; unresolved UUIDs; regulatory-market assumptions"
+  required_quality_disclosure: "Data coverage and gaps; meter/scale calibration; BOM and mass reconciliation; shared-energy allocation; waste stock balance; upstream proxy use; component and packaging not-applicable decisions"
+  update_trigger: "Hardware, enclosure, display, power-supply, packaging, software/test programme, production site, energy supply, allocation driver or regulatory scope changes that materially alter the inventory"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-07)"
+    used_for: "Official CPC 45142 title and classification identity"
+  - id: "un-cpc-2-1-2013"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 2.1, https://unstats.un.org/unsd/statcom/doc13/BG-CPC-Version21.pdf (retrieved 2026-09-07)"
+    used_for: "Original explanatory-note inclusions and exclusions for subclass 45142"
+  - id: "eu-rohs-2011-65"
+    type: "standard"
+    reference: "Directive 2011/65/EU on the restriction of hazardous substances in electrical and electronic equipment, https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32011L0065 (retrieved 2026-09-07)"
+    used_for: "Conditional homogeneous-material compliance evidence and disclosure rule; not an empirical range"
+  - id: "eu-weee-2012-19"
+    type: "standard"
+    reference: "Directive 2012/19/EU on waste electrical and electronic equipment, https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32012L0019 (retrieved 2026-09-07)"
+    used_for: "Conditional separate-collection and treatment/reuse/recycling scenario rules; not an empirical range"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:74a40c2120971ed23278852e302cca866a00f3b7e4f35f0e12c528bf4f5fbc2b"
+  generated_content_sha256: "sha256:7cdb47739d587d70c0712868481e0ee8e4b38528f4fc35b7b352e78a217ac4b5"

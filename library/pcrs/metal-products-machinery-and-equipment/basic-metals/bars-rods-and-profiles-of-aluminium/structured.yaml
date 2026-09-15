@@ -1,10 +1,509 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41532"
-  title: "Bars, rods and profiles, of aluminium"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.bars-rods-and-profiles-of-aluminium"
+  classification_refs: "CPC 3.0: 41532, Bars, rods and profiles, of aluminium"
+  covered_products: "Mill-finished solid aluminium or aluminium-alloy bars and rods; open or hollow constant-cross-section aluminium profiles other than products sold as tubes or pipes"
+  excluded_products: "Tubes and pipes; wire; rolled plate, sheet and strip; foil; powders and flakes; unwrought aluminium; coated or anodized products unless the finishing process is separately disaggregated"
+  representative_product: "Mill-finished hot-extruded aluminium profile cut to sale length"
+  production_route: "Homogenized extrusion billet preheating, hot extrusion, cooling or quenching, straightening, cutting, and conditional age hardening"
+  market_state: "Semi-finished, mill-finished, saleable length at extrusion-plant gate"
+functional_unit:
+  what: "Supply a saleable mill-finished aluminium bar, rod, or profile with declared alloy, geometry, temper, and surface condition"
+  how_much: "1 m3 net solid-metal volume of saleable product"
+  how_well: "Conforms to the declared alloy designation, dimensional tolerance, temper, surface condition, and acceptance specification"
+  how_long_or_cycle: "One production lot through the extrusion and thermal-finishing route; no use-stage duration is assigned"
+  reference_flow_link: "The reference flow is the net solid-metal volume of conforming product after cropping, cutting, rejection, and process-scrap separation, determined from accepted cross-section and length or from net mass and verified alloy density"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "foreground extrusion dataset"
+      rule: "Begin with received homogenized extrusion billet and end with net saleable mill-finished bars, rods, or profiles at the extrusion-plant gate. Include billet preheating, shearing at the plant, extrusion, cooling or quenching, stretching or straightening, cutting, and route-applicable age hardening."
+      source_ids:
+        - european-aluminium-environmental-profile-2018
+        - aluminum-association-extruded-aluminum-epd-2022
+    - rule_id: boundary_excluded_operations
+      applies_to: "operations outside the declared product state"
+      rule: "Exclude billet manufacture, transport, packaging, anodizing, painting, lacquering, downstream fabrication or assembly, installation, use, and end-of-life. If collected for a broader study, keep each operation separately disaggregated."
+      source_ids:
+        - aluminum-association-extruded-aluminum-epd-2022
+    - rule_id: boundary_scrap_loop
+      applies_to: "extrusion process scrap"
+      rule: "Record all aluminium cropping, discard, cutting, trimming, and rejected-length scrap leaving the process. Internal return is not a zero-burden input: disclose the loop and avoid counting the same metal both as billet input and recovered output."
+      source_ids:
+        - european-aluminium-environmental-profile-2018
+        - aluminum-association-extruded-aluminum-epd-2022
+boundary_abstraction:
+  declared_starting_condition: "Homogenized aluminium extrusion billet received at the extrusion-plant gate, identified by alloy, billet dimensions, supplier, recycled-content basis, and upstream dataset"
+  starting_condition_role: "Purchased or transferred semi-finished metal input to the foreground extrusion process"
+  product_classification_scope: "Mill-finished aluminium or aluminium-alloy bars, rods, and constant-cross-section profiles; excludes tubes, pipes, wire, rolled products, foil, powder, flake, and unwrought metal"
+  recursive_input_rule: "A purchased bar, rod, or profile used as an input is recorded as an upstream same-category product flow with its own dataset and is not re-created inside this foreground process"
+  upstream_dataset_requirement: "Each billet input must link to a geographically, technologically, compositionally, and temporally representative upstream billet dataset and disclose primary/recycled metal accounting"
+  disclosure: "Declare alloy, product form, dimensions, temper, cooling route, press and heating technology, mill-finish state, site geography, reporting period, yield basis, scrap destination, internal-return treatment, and every excluded or separately reported operation"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Section bar extrusion, aluminium"
+    uuid: "779eeee0-048a-4559-aa19-cf246c835580"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a3c8-12da-a746-0800200c9a66"
+  reference_unit: "m3"
+  required_qualifiers:
+    - "product form (bar"
+    - rod
+    - "or profile)"
+    - "alloy designation"
+    - "primary and recycled content basis of the billet"
+    - "nominal cross-section and dimensions"
+    - "solid-metal volume method"
+    - "verified alloy density and mass equivalent"
+    - "temper and heat-treatment state"
+    - "cooling or quenching route"
+    - "surface condition"
+    - "production geography"
+    - "technology and press class"
+    - "reporting period"
+    - "whether any excluded finishing operation is separately reported"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_volume
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Use net solid-metal volume, excluding hollow voids, packaging, and non-product attachments. Determine volume from accepted cross-section and length or divide verified net mass by documented alloy density. Normalize inventory quantities to 1 m3."
+  - id: metal_mass
+    applies_to: "billet input and aluminium scrap output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use verified net mass. Exclude pallets, wraps, racks, and other packaging, and preserve the mass records used for metal-balance validation."
+  - id: electricity_energy
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electricity and convert kWh to MJ using exactly 3.6 MJ per kWh; disclose voltage level, grid geography, contractual instrument treatment, and whether transformer losses are included."
+  - id: gas_volume
+    applies_to: "gaseous natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report volume at the supplier or meter reference temperature and pressure and retain those conditions; do not compare volumes with different reference conditions without conversion."
+  - id: water_mass
+    applies_to: "process water"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use measured delivered mass or convert a measured volume using a documented temperature-appropriate density; exclude recirculation that does not cross the foreground boundary."
+process_map:
+  - id: aluminium_extrusion_and_thermal_finishing
+    name: "Aluminium extrusion and thermal finishing"
+    inclusion: "required"
+    inclusion_condition: "Always included for the declared product"
+    role: "foreground production"
+    quantitative_reference: "1 m3 net solid-metal volume of saleable mill-finished aluminium bar, rod, or profile"
+process_inventory:
+  - id: aluminium_extrusion_and_thermal_finishing
+    label: "Aluminium extrusion and thermal finishing"
+    inputs:
+      product:
+        - row_id: homogenized_aluminium_ingot
+          role: "Homogenized aluminium extrusion billet"
+          name: "Homogenized aluminum ingot"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5f84bf23-8a6f-4816-98ec-cb358579250f"
+          property_unit: "Mass / kg"
+          description: "Record the mass of homogenized billet crossing the plant gate into the extrusion route, including billet pieces later cropped or rejected."
+          amount:
+            expression: "measured received billet mass assigned to the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 m3 net solid-volume reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_aluminium_billet_receipts
+              source_ids:
+                - european-aluminium-environmental-profile-2018
+                - aluminum-association-extruded-aluminum-epd-2022
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity imported across the site boundary for billet heating, press drives, cooling, handling, straightening, cutting, age-hardening equipment, and allocated auxiliaries."
+          amount:
+            expression: "metered imported electricity assigned to the production lot and converted according to electricity_energy"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 net solid-volume reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meter
+              source_ids:
+                - european-aluminium-environmental-profile-2018
+            ranges: []
+        - row_id: natural_gas
+          role: "Gaseous natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record purchased natural gas only when it crosses the foreground boundary for direct-fired billet or age-hardening furnaces; otherwise report the row as not applicable in the produced dataset."
+          amount:
+            expression: "reference-condition-corrected supplier or meter volume assigned to the production lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 m3 net solid-volume reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_natural_gas_meter
+              source_ids:
+                - european-aluminium-environmental-profile-2018
+            ranges: []
+        - row_id: process_water
+          role: "Direct process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record make-up or once-through water that crosses the process boundary for quenching or direct cooling. Do not count closed-loop recirculation as repeated input."
+          amount:
+            expression: "measured make-up and once-through water assigned to the production lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 m3 net solid-volume reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_water_meter
+              source_ids:
+                - aluminum-association-extruded-aluminum-epd-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: aluminium_bars_rods_profiles
+          role: "Net saleable aluminium bars, rods and profiles"
+          name: "Section bar extrusion, aluminium"
+          flow_type: "product"
+          flow_ref:
+            uuid: "779eeee0-048a-4559-aa19-cf246c835580"
+          property_unit: "Volume / m3"
+          description: "Record only conforming mill-finished product released for sale. The selected state-100 reference flow is the representative aluminium extrusion profile within CPC 41532; product-form qualifiers extend the PCR boundary to bars and rods without changing this reference identity."
+          amount:
+            expression: "exactly 1 m3 net solid-metal volume of saleable reference product after normalization"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "per 1 m3 net solid-volume reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - unsd-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: aluminium_process_scrap
+          role: "Aluminium process scrap"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass / kg"
+          description: "Record aluminium billet ends, extrusion discard, cutting and trimming scrap, and rejected lengths that leave the process for internal or external recovery. Keep contaminated scrap separately described in dataset metadata."
+          amount:
+            expression: "measured scrap mass assigned to the production lot before any recycling credit or substitution"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 m3 net solid-volume reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_aluminium_scrap_mass
+              source_ids:
+                - european-aluminium-environmental-profile-2018
+                - aluminum-association-extruded-aluminum-epd-2022
+            ranges: []
+      elementary:
+        - row_id: carbon_dioxide_fossil_to_air
+          role: "Direct fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil carbon dioxide emitted at the foreground site from combustion of natural gas included in this process. Do not add upstream electricity emissions here."
+          amount:
+            expression: "site-specific monitored value or documented fuel-carbon mass balance assigned to the production lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 net solid-volume reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_air_emissions
+              source_ids:
+                - european-aluminium-environmental-profile-2018
+            ranges: []
+        - row_id: nitrogen_oxides_to_air
+          role: "Direct nitrogen oxides to air"
+          name: "nitrogen oxides"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record nitrogen oxides from foreground fuel combustion as the facility reports them, including the declared NOx-as-NO2 convention. Keep the UUID unresolved because the audited candidates were nitrous oxide rather than nitrogen oxides. No external numerical ranges are prescribed. Each important flow remains a foreground collection requirement until at least two independent, boundary-compatible original sources or reviewed foreground datasets support an empirical range."
+          amount:
+            expression: "site-specific stack-monitoring or permit-report mass assigned to the production lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 net solid-volume reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_air_emissions
+              source_ids:
+                - european-aluminium-environmental-profile-2018
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "shared meters and multi-product extrusion lines"
+    rule: "Prefer subdivision by production lot, press, furnace, or measured operating interval. Where subdivision is not feasible, allocate shared material and energy by a documented causal parameter such as equipment time and load; use net conforming product mass only when no more causal parameter is available."
+    source_ids:
+      - aluminum-association-extruded-aluminum-epd-2022
+  - rule_id: allocation_scrap_no_credit
+    applies_to: "aluminium process scrap"
+    rule: "Report scrap mass and destination without assigning an avoided-primary-metal credit inside the foreground inventory. Keep any substitution, recycled-content, cut-off, or closed-loop convention explicit in the downstream model and prevent double counting between billet composition and scrap recovery."
+    source_ids:
+      - european-aluminium-environmental-profile-2018
+      - aluminum-association-extruded-aluminum-epd-2022
+  - rule_id: allocation_rework
+    applies_to: "internally reworked or re-extruded material"
+    rule: "Count all energy, water, emissions, and unrecovered losses of rework in the lot that yields the conforming product; do not count an internal transfer as a second external billet input or final product output."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_aluminium_billet_receipts
+      process_id: "aluminium_extrusion_and_thermal_finishing"
+      flow_role: "homogenized aluminium ingot input"
+      record_type: "receiving scale, ERP receipt, and lot genealogy"
+      raw_fields: "timestamp; supplier; billet lot; alloy; dimensions; gross mass; tare mass; recycled-content basis"
+      collection_method: "reconcile calibrated receiving-scale records to ERP issues and press lot"
+      unit: "kg"
+      frequency: "each receipt and production lot"
+      temporal_coverage: "full reporting period"
+      site_scope: "all billet entering the declared process"
+      aggregation_rule: "sum net billet mass assigned to conforming and rejected lot output; prevent double counting of internal returns"
+      quality_evidence: "scale calibration; receipt; ERP reconciliation; lot trace"
+    - protocol_id: cp_electricity_meter
+      process_id: "aluminium_extrusion_and_thermal_finishing"
+      flow_role: "purchased electricity input"
+      record_type: "revenue meter and submeters"
+      raw_fields: "opening reading; closing reading; interval use; unit; meter id; press/furnace assignment; loss boundary"
+      collection_method: "reconcile site imports to equipment submeters and allocate residual auxiliaries causally"
+      unit: "kWh and MJ"
+      frequency: "interval data aggregated by lot, at least monthly reconciliation"
+      temporal_coverage: "full reporting period"
+      site_scope: "all equipment inside the declared process"
+      aggregation_rule: "subtract exports, convert kWh to MJ, assign by measured interval or documented equipment load and time, normalize by net solid product volume"
+      quality_evidence: "meter calibration; utility invoice; submeter reconciliation; allocation worksheet"
+    - protocol_id: cp_natural_gas_meter
+      process_id: "aluminium_extrusion_and_thermal_finishing"
+      flow_role: "gaseous natural gas input"
+      record_type: "supplier invoice and furnace meter"
+      raw_fields: "volume; reference temperature; reference pressure; meter id; furnace; operating interval; lot assignment"
+      collection_method: "reconcile supplier volume to furnace meters"
+      unit: "m3"
+      frequency: "interval data aggregated by lot, at least monthly reconciliation"
+      temporal_coverage: "full reporting period"
+      site_scope: "direct-fired equipment inside the declared process"
+      aggregation_rule: "correct to declared reference conditions, subtract out-of-boundary uses, allocate by measured furnace interval, normalize by net solid product volume"
+      quality_evidence: "meter calibration; supplier statement; furnace log; reconciliation"
+    - protocol_id: cp_process_water_meter
+      process_id: "aluminium_extrusion_and_thermal_finishing"
+      flow_role: "direct process water input"
+      record_type: "make-up or once-through water meter"
+      raw_fields: "opening reading; closing reading; source; destination; recirculation status; discharge linkage; lot assignment"
+      collection_method: "meter boundary-crossing make-up and once-through water; exclude internal recirculation"
+      unit: "kg or m3"
+      frequency: "interval data aggregated by lot, at least monthly reconciliation"
+      temporal_coverage: "full reporting period"
+      site_scope: "quench and direct-cooling systems inside the declared process"
+      aggregation_rule: "convert volume with documented density when needed, subtract non-process uses, normalize by net solid product volume"
+      quality_evidence: "meter calibration; water balance; density basis; maintenance record"
+    - protocol_id: cp_product_mass
+      process_id: "aluminium_extrusion_and_thermal_finishing"
+      flow_role: "net saleable product output"
+      record_type: "final scale, geometry record, dispatch record, and quality release"
+      raw_fields: "lot; alloy; form; accepted cross-section; length; density; solid volume; gross mass; tare; rejected mass; release status"
+      collection_method: "determine solid-metal volume from accepted geometry or verified net mass and alloy density, then reconcile to dispatch and quality records"
+      unit: "m3 and kg"
+      frequency: "each lot"
+      temporal_coverage: "full reporting period"
+      site_scope: "all conforming output inside the declared process"
+      aggregation_rule: "sum net released solid-metal volume only; exclude voids, packaging, attachments, and rejected material"
+      quality_evidence: "scale and dimensional-equipment calibration; density basis; release certificate; dispatch reconciliation; dimensional and temper inspection"
+    - protocol_id: cp_aluminium_scrap_mass
+      process_id: "aluminium_extrusion_and_thermal_finishing"
+      flow_role: "aluminium process scrap output"
+      record_type: "scrap scale and container movement record"
+      raw_fields: "lot; scrap type; alloy; contamination state; gross mass; tare; destination; internal return flag"
+      collection_method: "weigh each scrap movement and reconcile to billet/product mass balance"
+      unit: "kg"
+      frequency: "each movement and production lot"
+      temporal_coverage: "full reporting period"
+      site_scope: "all process scrap generated inside the declared process"
+      aggregation_rule: "sum net scrap by state and destination; identify internal returns; normalize by net solid product volume"
+      quality_evidence: "scale calibration; movement ticket; destination receipt; mass-balance reconciliation"
+    - protocol_id: cp_direct_air_emissions
+      process_id: "aluminium_extrusion_and_thermal_finishing"
+      flow_role: "direct fossil carbon dioxide and nitrogen oxides outputs"
+      record_type: "stack monitoring, permit report, and fuel-carbon calculation records"
+      raw_fields: "pollutant; concentration; gas flow; operating time; fuel volume; fuel composition; oxidation factor; NOx reporting convention; stack; lot assignment"
+      collection_method: "use calibrated continuous or periodic monitoring where available; otherwise use a documented facility fuel-carbon balance for fossil CO2"
+      unit: "kg"
+      frequency: "monitoring interval or permit frequency with monthly lot reconciliation"
+      temporal_coverage: "full reporting period"
+      site_scope: "direct-fired equipment inside the declared process"
+      aggregation_rule: "subtract non-process sources, aggregate pollutant mass by stack and lot, normalize by net solid product volume; never include upstream electricity emissions"
+      quality_evidence: "analyzer calibration; laboratory certificate; permit report; fuel analysis; calculation worksheet"
+  calculation_rules:
+    - id: calc_normalize_reference_volume
+      applies_to: "every inventory row"
+      rule: "normalized amount = lot-assigned exchange amount / net solid-metal volume of conforming unpackaged product"
+      inputs:
+        - "exchange amount"
+        - "accepted cross-section and length or net mass and verified alloy density"
+      output: "exchange per 1 m3 reference product"
+      source_ids: []
+    - id: calc_metal_mass_balance
+      applies_to: "billet, product, scrap, and documented metal loss"
+      rule: "billet metal input = conforming product + aluminium scrap + separately measured unrecovered metal loss, after accounting for documented internal transfers"
+      inputs:
+        - "billet mass"
+        - "product mass"
+        - "scrap mass"
+        - "internal transfers"
+        - "measured metal loss"
+      output: "reconciled metal balance and closure percentage"
+      source_ids:
+        - european-aluminium-environmental-profile-2018
+    - id: calc_electricity_conversion
+      applies_to: "purchased electricity"
+      rule: "electricity in MJ = metered kWh × 3.6"
+      inputs:
+        - "metered electricity in kWh"
+      output: "purchased electricity in MJ"
+      source_ids: []
+    - id: calc_water_volume_to_mass
+      applies_to: "process water when recorded by volume"
+      rule: "water mass = metered volume × documented water density at the declared temperature"
+      inputs:
+        - "water volume"
+        - temperature
+        - density
+      output: "process-water mass in kg"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product and billet"
+      requirement: "Preserve lot-level alloy, form, dimensions, temper, surface condition, and billet genealogy; do not aggregate coated or anodized products into this mill-finished dataset."
+      evidence: "material certificates; lot genealogy; quality release; product specification"
+    - id: dq_measurement
+      applies_to: "mass, electricity, gas, water, and emissions"
+      requirement: "Use calibrated instruments or reconciled supplier records, retain units and reference conditions, and document conversions and allocation keys."
+      evidence: "calibration certificates; invoices; meter extracts; calculation worksheets"
+    - id: dq_temporal
+      applies_to: "all foreground exchanges"
+      requirement: "Cover one representative continuous 12-month period where practicable; disclose shutdowns, start-ups, abnormal campaigns, missing intervals, and substitutions."
+      evidence: "reporting-period register; production calendar; gap log"
+    - id: dq_completeness
+      applies_to: "process inventory"
+      requirement: "Reconcile billet, product and scrap mass and site-to-submeter energy. Explain every material or energy residual and every omitted direct emission relevant to permits or monitoring."
+      evidence: "mass and energy balance; reconciliation report; permit inventory; omission register"
+    - id: dq_representativeness
+      applies_to: "published dataset"
+      requirement: "Report production-weighted alloy, form, temper, press class, heating route, geography, and technology coverage; do not claim broader representativeness than the collected sites and period."
+      evidence: "production summary; site list; weighting file; representativeness statement"
+validation_rules:
+  - rule_id: validation_identity
+    applies_to: "reference flow and dataset metadata"
+    rule: "Fail validation when canonical PCR id, product form, alloy, temper, surface condition, production geography, reporting period, solid-volume method, alloy density, or mass equivalent is absent or inconsistent."
+    source_ids:
+      - unsd-cpc-3-0-structure-2025
+  - rule_id: validation_boundary
+    applies_to: "process map and inventory"
+    rule: "Fail validation when billet manufacture, packaging, coating, anodizing, downstream fabrication, transport, use, or end-of-life is aggregated into the foreground result without separate disaggregation."
+    source_ids:
+      - aluminum-association-extruded-aluminum-epd-2022
+  - rule_id: validation_mass_balance
+    applies_to: "billet, product, scrap, and metal loss"
+    rule: "Require a documented metal mass balance; flag unexplained imbalance and reject double counting of internal returns as both external input and recovered output."
+    source_ids:
+      - european-aluminium-environmental-profile-2018
+  - rule_id: validation_energy_and_emissions
+    applies_to: "electricity, natural gas, fossil carbon dioxide, and nitrogen oxides"
+    rule: "Require explicit applicability, measurement boundary, units, allocation, and direct-versus-upstream distinction. A not-applicable gas row requires evidence that no natural gas crosses the boundary."
+    source_ids:
+      - european-aluminium-environmental-profile-2018
+  - rule_id: validation_uuid_and_ranges
+    applies_to: "UUID-empty rows and important-flow ranges"
+    rule: "Treat the unresolved nitrogen-oxides UUID and the recorded independent-range evidence needs as review findings; never substitute a proxy UUID or an unsupported numerical range."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground production dataset suitable for publication as a secondary_dataset or background_dataset after review"
+  downstream_use: "gate-to-gate building block for product LCAs and lifecycle models of mill-finished aluminium bars, rods, and profiles"
+  allowed_use: "studies whose alloy, product form, temper, surface state, technology, geography, time period, billet supply, and allocation conventions are compatible or explicitly adjusted"
+  excluded_use: "unwrought aluminium, billet manufacture, rolled products, tubes and pipes, wire, coated or anodized product without added finishing processes, downstream fabrication, or cradle-to-gate claims lacking compatible upstream datasets"
+  required_metadata: "canonical PCR id; reference product and amount; alloy; form and dimensions; temper; surface condition; geography; technology and press class; reporting period; billet recycled-content basis; upstream dataset links; energy and water boundaries; scrap destination; allocation method; UUID resolution status"
+  required_quality_disclosure: "source coverage; measurement and calibration basis; temporal coverage; site weighting; mass and energy reconciliation; missing data; substitutions; direct-emission method; uncertainty; unresolved UUIDs and range-evidence needs"
+  update_trigger: "change in billet supply or recycled-content accounting, alloy/product mix, press or furnace technology, cooling route, temper mix, site coverage, energy supply, allocation method, direct-emission controls, reference-flow identity, or evidence that materially changes the inventory"
+data_sources:
+  - id: "unsd-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0 structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-04)"
+    used_for: "Official product-category identity for CPC 41532"
+  - id: "european-aluminium-environmental-profile-2018"
+    type: "dataset"
+    reference: "European Aluminium, Environmental Profile Report for the European Aluminium Industry, 2018, https://european-aluminium.eu/wp-content/uploads/2022/10/environmental-profile-report-for-the-european-aluminium-industry.pdf (retrieved 2026-09-04)"
+    used_for: "Extrusion starting material and process sequence, relevant direct material and energy exchanges, process-scrap generation and recycling boundary, and European technology context"
+  - id: "aluminum-association-extruded-aluminum-epd-2022"
+    type: "dataset"
+    reference: "The Aluminum Association, Environmental Product Declaration: Extruded Aluminum, 2022, https://www.aluminum.org/sites/default/files/2022-10/104.1_EPD_AA_Extrusion.pdf (retrieved 2026-09-04)"
+    used_for: "Delivered product state, extrusion/cooling/stretching/cutting/aging sequence, distinction of coating and packaging operations, foreground boundary, and scrap handling"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:a78ce7bd730c3913c1371647353d70269f2709895cd1639bde5ef8fdad56f128"
+  generated_content_sha256: "sha256:3f91c85c783bb5f8b668248ad871d16b561e10f4d41d498ba92d8a9b3d5b80da"

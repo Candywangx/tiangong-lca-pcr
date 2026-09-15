@@ -1,10 +1,919 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43151"
-  title: "Parts of spark-ignition reciprocating, compression ignition or rotary internal combustion piston engines"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.parts-of-spark-ignition-reciprocating-compression-ignition-or-rotary-internal-combustio-a011c638"
+  classification_refs: "CPC 3.0: 43151, exact"
+  covered_products: "New non-aircraft parts principally designed for spark-ignition reciprocating, compression-ignition, or rotary internal-combustion piston engines"
+  excluded_products: "Complete engines; aircraft-engine parts in CPC 43152; turbine parts; filters; generic vehicle parts; remanufactured parts; loose metal blanks sold without finished engine-part identity"
+  representative_product: "A conforming finished engine part produced from a purchased engine-part blank"
+  production_route: "Purchased blank receiving; machining and dimensional finishing; conditional heat or surface treatment; final cleaning, inspection, and packing"
+  market_state: "New, cleaned, inspected, conforming finished part at factory gate; packaging is recorded as a separate input"
+functional_unit:
+  what: "Provide a conforming finished non-aircraft part for a covered internal-combustion piston engine"
+  how_much: "1 kg net mass of finished conforming engine parts, excluding packaging"
+  how_well: "Meets the declared drawing, material grade, dimensions and tolerances, heat-treatment or coating state, cleanliness requirement, and acceptance-test specification"
+  how_long_or_cycle: "One completed manufacturing batch or reporting-period production lot at the factory gate; no use-phase service duration is credited"
+  reference_flow_link: "Net mass of accepted finished parts after final inspection, normalized to 1 kg"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary begins with purchased engine-part blanks as received at the manufacturing site and ends with accepted finished parts and their packing materials at the factory gate. Upstream production and delivery of blanks, electricity, fuels, water, chemicals, and packaging require linked upstream datasets. Direct site wastes and elementary emissions are recorded after internal recovery and before external treatment or release, with destinations and control systems disclosed."
+      source_ids: []
+    - rule_id: boundary_start_rule
+      applies_to: "foreground_start"
+      rule: "Start at measured receipt of purchased engine-part blanks; on-site casting or forging is an additional foreground process and may not be hidden in the blank input."
+      source_ids:
+        - us-epa-metal-products-machinery-2003
+    - rule_id: boundary_process_rule
+      applies_to: "foreground_processes"
+      rule: "Include machining, all on-site heat or surface treatment, final cleaning, inspection, and packing that are needed to meet the declared product specification."
+      source_ids:
+        - eu-sf-bat-2024
+        - us-epa-metal-products-machinery-2003
+    - rule_id: boundary_end_rule
+      applies_to: "foreground_end"
+      rule: "End at accepted finished-part mass and separately measured packaging at the factory gate; record direct wastes and elementary releases after internal recovery."
+      source_ids: []
+    - rule_id: boundary_exclusion_rule
+      applies_to: "excluded_life_cycle_stages"
+      rule: "Exclude use, maintenance, end-of-life, capital equipment, employee travel, and processes already represented in linked upstream datasets."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased engine-part blanks at site receipt, with part family, material grade, forming route, supplier, mass, and included upstream processing declared"
+  starting_condition_role: "Upstream product input and foreground manufacturing start"
+  product_classification_scope: "Finished non-aircraft parts in CPC 3.0 subclass 43151; CPC 43152 aircraft-engine parts remain outside this PCR"
+  recursive_input_rule: "A purchased flow already having finished CPC 43151 identity must be treated as an upstream component with its own dataset and must not be relabelled as a blank or counted again as the reference product; dataset-local intermediate transfers remain internal"
+  upstream_dataset_requirement: "Use geographically, technologically, and materially representative upstream datasets for each purchased blank, energy carrier, water, chemical, and packaging input"
+  disclosure: "Declare blank material and forming route, included upstream operations, site processes, outsourced treatments, internal recovery, abatement, waste destinations, packaging, exclusions, and allocation choices"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Parts of spark-ignition reciprocating, compression ignition or rotary internal combustion piston engines"
+    uuid: "1feb7c65-f70a-45fa-b290-0cdd5f7f56eb"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "part name and drawing or part number"
+    - "intended engine type"
+    - "material grade and blank-forming route"
+    - "incoming blank state"
+    - "machining route"
+    - "heat-treatment state"
+    - "surface-treatment or coating state"
+    - "net finished mass"
+    - "cleanliness and acceptance specification"
+    - "production site and geography"
+    - "reporting period"
+    - "packaging configuration"
+    - "allocation method"
+    - "wastewater and waste destinations"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "accepted finished reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh accepted finished parts after required cleaning and treatment; exclude pallets, corrugated board, removable protective packaging, gauges, fixtures, and rejected parts."
+  - id: batch_normalization
+    applies_to: "all process exchanges"
+    required_property_ref:
+      name: "Mass or the row-specific Tiangong property"
+      uuid: ""
+    required_unit: "row-specific reference unit"
+    rule: "Aggregate exchanges for the same site, route, product family, and reporting period, then divide by accepted net finished-part mass and express per 1 kg reference product."
+  - id: electricity_conversion
+    applies_to: "purchased electricity rows"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered kWh and convert to MJ using 3.6 MJ per kWh; disclose meter boundary, voltage level, grid geography, and losses included."
+  - id: water_mass_conversion
+    applies_to: "process-water rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer a mass measurement; when water is metered by volume, convert with measured or documented density at the stated reference conditions and retain the original volume record."
+  - id: packaging_reuse
+    applies_to: "reusable pallet input"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Allocate only the pallet mass attributable to the reported shipment using verified reuse cycles and load utilization; if reuse is unverified, record the full pallet input."
+process_map:
+  - id: machining
+    name: "Machining and dimensional finishing"
+    inclusion: "required"
+    inclusion_condition: "Always include for the purchased-blank route; if a finished part needs no machining, this PCR route is not applicable without review"
+    role: "Foreground conversion of purchased blank to machined part"
+    quantitative_reference: "Accepted net finished-part mass"
+  - id: heat_surface_treatment
+    name: "Heat treatment and surface treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include every on-site heat treatment, alkaline cleaning, pickling, coating preparation, or surface-finishing operation required by the declared part specification"
+    role: "Conditional foreground treatment"
+    quantitative_reference: "Treated intermediate mass linked to accepted output"
+  - id: final_inspection_packing
+    name: "Final cleaning, inspection and packing"
+    inclusion: "required"
+    inclusion_condition: "Always include final inspection and packing; include aqueous cleaning rows only when water crosses the process boundary"
+    role: "Foreground acceptance and factory-gate preparation"
+    quantitative_reference: "Accepted net finished-part mass"
+process_inventory:
+  - id: machining
+    label: "Machining and dimensional finishing"
+    inputs:
+      product:
+        - row_id: machining_blank_input
+          role: "Purchased engine-part blank"
+          name: "Engine part blanks"
+          flow_type: "product"
+          flow_ref:
+            uuid: "abde866d-f4f6-4226-8f7b-571ea254ec5f"
+          property_unit: "Mass / kg"
+          description: "The measured blank entering machining is recorded with material grade, forming route, supplier, and incoming condition."
+          amount:
+            expression: "measured as-received blank mass issued to the reported production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids: []
+            ranges: []
+        - row_id: machining_electricity
+          role: "Purchased machining electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record net electricity delivered to machine tools, coolant systems, extraction, and directly associated machining equipment within the meter boundary."
+          amount:
+            expression: "submetered electricity attributable to the reported machining lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids: []
+            ranges: []
+        - row_id: machining_process_water
+          role: "Process water used in machining"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water added to water-miscible coolant, chip handling, or machining rinses when it crosses the machining boundary."
+          amount:
+            expression: "measured process-water make-up and rinse water attributable to the machining lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids:
+                - us-epa-metal-products-machinery-2003
+            ranges: []
+        - row_id: machining_cutting_fluid
+          role: "Cutting fluid make-up"
+          name: "Cutting Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "576d250f-4f36-4385-939d-0f03b8f95a10"
+          property_unit: "Mass / kg"
+          description: "Record the as-supplied cutting-fluid product added to the machining system; declare formulation, concentrate fraction, and recycled-fluid boundary."
+          amount:
+            expression: "purchasing, issue, and sump make-up records attributable to the machining lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids:
+                - us-epa-metal-products-machinery-2003
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: machined_parts_output
+          role: "Machined engine parts"
+          name: "Machined engine parts"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a203f078-d7e0-4345-b18f-9785059b4419"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass transferred from machining before any conditional heat or surface treatment."
+          amount:
+            expression: "measured machined-part mass released from machining"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_machining_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: machining_metal_swarf
+          role: "Metal swarf and chips"
+          name: "Metal swarf and chips"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "97cead07-5379-4dc0-85a1-d53e89ad0cff"
+          property_unit: "Mass / kg"
+          description: "Record metal removed from workpieces and crossing the boundary as segregated swarf or chips after internal fluid drainage and metal recovery."
+          amount:
+            expression: "measured dispatched swarf and chip mass, corrected for documented retained fluid when material"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids:
+                - us-epa-metal-products-machinery-2003
+            ranges: []
+        - row_id: machining_spent_coolant
+          role: "Spent machining coolant"
+          name: "Spent coolant"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "62b6a738-fb6a-4570-a95a-9255ec0dcb2b"
+          property_unit: "Mass / kg"
+          description: "Record discarded coolant leaving the machining system for recovery, treatment, or disposal, separate from aqueous wastewater."
+          amount:
+            expression: "measured mass of spent coolant dispatched from the site"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids:
+                - us-epa-metal-products-machinery-2003
+            ranges: []
+        - row_id: machining_wastewater
+          role: "Machining wastewater"
+          name: "Machining wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the measured aqueous waste stream from machining-fluid bleed, chip drainage, or machining rinse operations; declare composition and destination."
+          amount:
+            expression: "measured aqueous machining wastewater crossing the site boundary or entering on-site treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_records
+              source_ids:
+                - us-epa-metal-products-machinery-2003
+            ranges: []
+      elementary:
+        - row_id: machining_particulate_air
+          role: "Residual particulate matter to air"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass / kg"
+          description: "Record measured residual particulate matter released to air after collection and abatement; do not record collected dust here as an elementary emission."
+          amount:
+            expression: "measured or site-calculated residual particulate release after controls"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_machining_records
+              source_ids:
+                - eu-sf-bat-2024
+            ranges: []
+  - id: heat_surface_treatment
+    label: "Heat treatment and surface treatment"
+    inputs:
+      product:
+        - row_id: treatment_machined_parts_input
+          role: "Machined parts entering treatment"
+          name: "Machined engine parts"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a203f078-d7e0-4345-b18f-9785059b4419"
+          property_unit: "Mass / kg"
+          description: "Record the machined-part mass entering on-site treatment and identify the required heat-treatment or surface-treatment route."
+          amount:
+            expression: "measured mass issued to the treatment route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_records
+              source_ids: []
+            ranges: []
+        - row_id: treatment_electricity
+          role: "Treatment electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity delivered to treatment furnaces, pumps, ventilation, rinsing, and directly associated equipment."
+          amount:
+            expression: "submetered electricity attributable to treated parts"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_records
+              source_ids:
+                - eu-sf-bat-2024
+            ranges: []
+        - row_id: treatment_natural_gas
+          role: "Natural gas for treatment heating"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas combusted in treatment furnaces or directly associated heating equipment when the route uses it."
+          amount:
+            expression: "metered natural-gas volume attributable to treated parts at declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_records
+              source_ids:
+                - eu-sf-bat-2024
+            ranges: []
+        - row_id: treatment_process_water
+          role: "Process water for treatment"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water used for bath make-up, quenching, cleaning, or rinsing within the declared treatment route."
+          amount:
+            expression: "measured treatment-water input attributable to treated parts"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_records
+              source_ids:
+                - us-epa-metal-products-machinery-2003
+            ranges: []
+        - row_id: treatment_sodium_hydroxide
+          role: "Sodium hydroxide for alkaline cleaning"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record the as-supplied sodium-hydroxide mass used for alkaline cleaning only when this chemistry is present."
+          amount:
+            expression: "purchasing and bath make-up records attributable to treated parts"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_records
+              source_ids:
+                - us-epa-metal-products-machinery-2003
+            ranges: []
+        - row_id: treatment_hydrochloric_acid
+          role: "Hydrochloric acid for pickling"
+          name: "Hydrochloric Acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "964d524a-87f5-4b63-a856-2e31a8f21b67"
+          property_unit: "Mass / kg"
+          description: "Record as-supplied hydrochloric acid only when the declared route uses it; retain acid concentration and bath make-up records."
+          amount:
+            expression: "as-supplied acid mass issued to treatment baths"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_records
+              source_ids:
+                - us-epa-metal-products-machinery-2003
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: treated_parts_output
+          role: "Treated engine-part intermediate"
+          name: "Treated engine-part intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass transferred from the declared heat-treatment or surface-treatment route to final acceptance."
+          amount:
+            expression: "measured treated-part mass released to final inspection"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_treatment_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: treatment_spent_pickling_acid
+          role: "Spent hydrochloric-acid pickling solution"
+          name: "Spent hydrochloric-acid pickling solution"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent hydrochloric-acid bath solution separately from rinse wastewater, with concentration, dissolved-metal content, and destination declared."
+          amount:
+            expression: "measured mass removed from the bath for recovery, treatment, or disposal"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_records
+              source_ids:
+                - us-epa-metal-products-machinery-2003
+            ranges: []
+        - row_id: treatment_wastewater
+          role: "Metal-finishing wastewater"
+          name: "Metal-finishing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the aqueous wastewater generated by the declared cleaning, rinsing, pickling, quenching, or surface-treatment sequence, excluding separately removed spent baths."
+          amount:
+            expression: "measured wastewater crossing the site boundary or entering on-site treatment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_records
+              source_ids:
+                - us-epa-metal-products-machinery-2003
+            ranges: []
+      elementary:
+        - row_id: treatment_fossil_co2_air
+          role: "Fossil carbon dioxide from treatment fuel"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil carbon dioxide released from treatment-furnace fuel combustion; exclude upstream electricity emissions."
+          amount:
+            expression: "calculate from metered fuel and site fuel carbon content or measure the direct release"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_treatment_records
+              source_ids: []
+            ranges: []
+  - id: final_inspection_packing
+    label: "Final cleaning, inspection and packing"
+    inputs:
+      product:
+        - row_id: final_part_input
+          role: "Inspection-ready engine-part intermediate"
+          name: "Inspection-ready engine-part intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal part mass entering final acceptance, whether directly machined or conditionally treated; identify the route and treatment state."
+          amount:
+            expression: "measured internal transfer mass entering final inspection"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_records
+              source_ids: []
+            ranges: []
+        - row_id: final_electricity
+          role: "Final inspection and packing electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity delivered to final cleaning, measurement, non-destructive testing, inspection, and packing equipment."
+          amount:
+            expression: "submetered or documented allocated electricity attributable to accepted and rejected parts"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_records
+              source_ids: []
+            ranges: []
+        - row_id: final_process_water
+          role: "Process water for final aqueous cleaning"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water only when a final aqueous-cleaning step is performed before acceptance."
+          amount:
+            expression: "measured final-cleaning water attributable to the production lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_records
+              source_ids:
+                - us-epa-metal-products-machinery-2003
+            ranges: []
+        - row_id: packing_corrugated_cardboard
+          role: "Corrugated cardboard packaging"
+          name: "Corrugated cardboard"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bde297e-98df-463f-bcb4-0db52bf6e0b5"
+          property_unit: "Mass / kg"
+          description: "Record corrugated cardboard crossing the factory gate with the product; omit only when demonstrably absent or replaced by a separately modelled reusable container."
+          amount:
+            expression: "measured packaging mass assigned to shipped accepted parts"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_records
+              source_ids: []
+            ranges: []
+        - row_id: packing_wooden_pallet
+          role: "Wooden pallet"
+          name: "Pallets, box pallets and other load boards, of wood, pallet collars of wood"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4b49871e-95be-4e0c-9223-9902f9eaa763"
+          property_unit: "Mass / kg"
+          description: "Record the attributable mass of wooden pallets used for shipment when this packing route applies."
+          amount:
+            expression: "measured pallet mass allocated using verified reuse cycles and load utilization"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_final_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_engine_part_output
+          role: "Accepted finished engine parts"
+          name: "Parts of spark-ignition reciprocating, compression ignition or rotary internal combustion piston engines"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1feb7c65-f70a-45fa-b290-0cdd5f7f56eb"
+          property_unit: "Mass / kg"
+          description: "This is the reference product after all specified processing, cleaning, and acceptance checks; packaging mass is excluded."
+          amount:
+            expression: "1.0 kg by reference-flow normalization from measured accepted net finished-part mass"
+            value_mode: "calculated_value"
+            specificity: "generic"
+            basis:
+              text: "1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_final_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: final_cleaning_wastewater
+          role: "Wastewater from final cleaning"
+          name: "Wastewater from cleaning"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f0402393-e82c-47e8-9cd8-a486c97f3e89"
+          property_unit: "Mass / kg"
+          description: "Record the conditional aqueous waste stream from final parts cleaning, with cleaning chemistry, contamination, treatment, and destination declared."
+          amount:
+            expression: "measured final-cleaning wastewater crossing the process boundary"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_records
+              source_ids:
+                - us-epa-metal-products-machinery-2003
+            ranges: []
+        - row_id: rejected_engine_part
+          role: "Rejected engine part"
+          name: "Rejected engine part"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record off-specification whole or partly completed engine parts leaving the foreground as waste, separate from machining swarf."
+          amount:
+            expression: "measured rejected-part mass dispatched to recovery, rework outside the boundary, treatment, or disposal"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished engine parts"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "shared foreground operations"
+    rule: "Prefer subdivision, submetering, machine-time records, and route-specific material issue records so exchanges are assigned directly to the reported part family."
+    source_ids: []
+  - rule_id: allocation_residual
+    applies_to: "inseparable shared utilities"
+    rule: "Allocate residual shared utilities using the most causal measured driver, such as machine time, treatment load, or occupied batch capacity; use mass only when no more causal record exists and disclose the sensitivity."
+    source_ids: []
+  - rule_id: allocation_internal_recovery
+    applies_to: "internally recovered coolant, metal, water, or heat"
+    rule: "Record only net make-up and net outputs crossing the process boundary; do not create a credit for internal recirculation and retain records proving the recovery loop."
+    source_ids:
+      - us-epa-metal-products-machinery-2003
+  - rule_id: allocation_exported_scrap
+    applies_to: "exported swarf and rejected parts"
+    rule: "Treat exported scrap and rejected parts as waste outputs without avoided-burden credit in the foreground result unless the study goal requires another recycling convention; disclose any alternative and test its effect."
+    source_ids: []
+  - rule_id: allocation_packaging_reuse
+    applies_to: "reusable pallets"
+    rule: "Allocate pallet mass by verified reuse cycles and actual load utilization; apply full pallet mass when those records are unavailable."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_machining_records
+      process_id: "machining"
+      flow_role: "all machining inputs and outputs"
+      record_type: "meter, scale, issue, maintenance, waste-transfer, and emission-control records"
+      raw_fields: "lot id; part number; blank mass; accepted mass; electricity; water; cutting-fluid make-up; machined transfer; swarf; spent coolant; wastewater; residual dust"
+      collection_method: "reconcile production, utility, sump, waste, and abatement records to the same lot or reporting period"
+      unit: "kg; MJ; m3 as applicable"
+      frequency: "each lot or meter interval, aggregated monthly at most"
+      temporal_coverage: "representative continuous 12-month period or full shorter campaign with justification"
+      site_scope: "all machining equipment and directly associated extraction serving the declared product"
+      aggregation_rule: "sum same-boundary records, subtract documented internal returns, then normalize by accepted net mass"
+      quality_evidence: "calibrated scales and meters; invoices; issue records; sump logs; waste manifests; abatement monitoring; mass-balance reconciliation"
+    - protocol_id: cp_treatment_records
+      process_id: "heat_surface_treatment"
+      flow_role: "all conditional treatment inputs and outputs"
+      record_type: "batch ticket, meter, bath log, scale, fuel, waste-transfer, and stack-calculation records"
+      raw_fields: "treatment route; batch id; input and output mass; electricity; natural gas; water; sodium hydroxide; hydrochloric acid and concentration; spent bath; wastewater; direct fossil CO2"
+      collection_method: "reconcile treatment tickets, meters, bath additions, waste dispatches, and fuel records by route"
+      unit: "kg; MJ; m3 as applicable"
+      frequency: "each batch or meter interval, aggregated monthly at most"
+      temporal_coverage: "representative continuous 12-month period or full shorter campaign with justification"
+      site_scope: "every on-site heat-treatment and surface-treatment line used for the declared product"
+      aggregation_rule: "aggregate by treatment route, avoid double counting internal bath recirculation, and normalize by accepted net mass"
+      quality_evidence: "calibrated meters; bath analyses; chemical invoices; fuel records; waste manifests; treatment specification; mass and carbon checks"
+    - protocol_id: cp_final_records
+      process_id: "final_inspection_packing"
+      flow_role: "final input, utilities, packaging, accepted product, cleaning wastewater, and rejects"
+      record_type: "scale, inspection, cleaning, packaging issue, shipment, and reject records"
+      raw_fields: "route state; input mass; electricity; water; cardboard; pallet mass and reuse cycles; accepted mass; cleaning wastewater; reject mass; acceptance result"
+      collection_method: "reconcile inspection, packing, shipment, and reject records to the same production lot"
+      unit: "kg; MJ as applicable"
+      frequency: "each lot or shipment, aggregated monthly at most"
+      temporal_coverage: "representative continuous 12-month period or full shorter campaign with justification"
+      site_scope: "all final cleaning, inspection, test, and packing operations for the declared product"
+      aggregation_rule: "sum accepted net mass separately from packaging and rejects; normalize all rows by accepted net mass"
+      quality_evidence: "calibrated scales and meters; inspection release; packaging issue; pallet reuse evidence; shipment records; reject disposition"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every inventory row"
+      rule: "normalized amount = reporting-period row quantity / reporting-period accepted net finished-part mass"
+      inputs:
+        - "row quantity"
+        - "accepted net finished-part mass"
+      output: "row amount per 1 kg reference product"
+      source_ids: []
+    - id: calc_electricity_mj
+      applies_to: "all electricity rows"
+      rule: "electricity MJ = metered kWh × 3.6 MJ/kWh"
+      inputs:
+        - "metered kWh"
+      output: "electricity in MJ"
+      source_ids: []
+    - id: calc_water_mass
+      applies_to: "water and wastewater measured by volume"
+      rule: "mass = measured volume × documented density at stated reference conditions"
+      inputs:
+        - volume
+        - density
+        - "temperature or reference condition"
+      output: "mass in kg"
+      source_ids: []
+    - id: calc_direct_fossil_co2
+      applies_to: "treatment_fossil_co2_air"
+      rule: "calculate direct fossil CO2 from metered fuel and documented carbon content or use a verified site emission calculation; do not include upstream electricity emissions"
+      inputs:
+        - "fuel quantity"
+        - "fuel composition or verified site factor"
+      output: "direct fossil CO2 mass"
+      source_ids: []
+    - id: calc_pallet_allocation
+      applies_to: "packing_wooden_pallet"
+      rule: "attributable pallet mass = pallet mass × shipment load share / verified reuse cycles"
+      inputs:
+        - "pallet mass"
+        - "load share"
+        - "reuse cycles"
+      output: "allocated pallet mass"
+      source_ids: []
+    - id: calc_mass_reconciliation
+      applies_to: "machining and final acceptance"
+      rule: "blank input mass = accepted output mass + exported swarf + rejected-part mass + documented inventory change + other individually identified mass outputs, within stated measurement uncertainty"
+      inputs:
+        - blank
+        - accepted
+        - swarf
+        - rejects
+        - "inventory change"
+        - "other identified outputs"
+      output: "mass-balance difference"
+      source_ids:
+        - us-epa-metal-products-machinery-2003
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and intermediates"
+      requirement: "Declare part number, engine type, drawing revision, material grade, forming route, treatment state, and acceptance specification."
+      evidence: "released drawing, bill of materials, route card, and inspection release"
+    - id: dq_boundary
+      applies_to: "all processes"
+      requirement: "Use the same site, process boundary, product family, and period for numerator and accepted-mass denominator; document outsourced and upstream processes."
+      evidence: "process map, meter map, supplier declarations, and boundary reconciliation"
+    - id: dq_measurement
+      applies_to: "mass, energy, water, chemical, waste, and emission records"
+      requirement: "Use calibrated or verified instruments and preserve original units, conversion factors, and uncertainty or estimation flags."
+      evidence: "calibration certificates, meter checks, scale tickets, and calculation workbook"
+    - id: dq_temporal
+      applies_to: "foreground inventory"
+      requirement: "Prefer a continuous 12-month period; justify shorter campaigns and show that start-up, shutdown, maintenance, and reject conditions are represented."
+      evidence: "dated production and utility records and representativeness statement"
+    - id: dq_completeness
+      applies_to: "atomic exchanges"
+      requirement: "Reconcile blank mass, accepted mass, swarf, spent fluids, wastewater, rejects, packaging, energy, and conditional treatment chemicals; explain every excluded applicable row."
+      evidence: "mass balance, utility reconciliation, waste manifests, and signed completeness review"
+    - id: dq_route_specificity
+      applies_to: "conditional treatment and packing rows"
+      requirement: "Mark each conditional row applicable or not applicable and retain evidence; a zero amount without an applicability statement is incomplete."
+      evidence: "route card, treatment specification, cleaning record, and packing instruction"
+validation_rules:
+  - rule_id: validation_identity
+    applies_to: "reference product"
+    rule: "Confirm the dataset describes a finished non-aircraft CPC 43151 engine part and that all required qualifiers and the exact reference-flow UUID are present."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validation_reference_amount
+    applies_to: "reference flow"
+    rule: "Confirm accepted net finished-part output equals 1 kg after normalization and excludes packaging and rejects."
+    source_ids: []
+  - rule_id: validation_inventory_accounting
+    applies_to: "process inventory"
+    rule: "Confirm every inventory card is one atomic exchange and each applicable row has a measured or calculated amount, unit, collection protocol, and disclosed destination or supply boundary."
+    source_ids: []
+  - rule_id: validation_mass_balance
+    applies_to: "machining and final acceptance"
+    rule: "Investigate mass-balance differences outside documented measurement uncertainty; do not force balance by inserting an unidentified waste flow."
+    source_ids:
+      - us-epa-metal-products-machinery-2003
+  - rule_id: validation_energy_water
+    applies_to: "electricity, fuel, water, and wastewater"
+    rule: "Reconcile meters to the same product period, verify kWh-to-MJ and volume-to-mass conversions, and prevent double counting between machining, treatment, and final cleaning."
+    source_ids: []
+  - rule_id: validation_treatment_route
+    applies_to: "conditional treatment"
+    rule: "Confirm treatment inputs, wastes, direct fuel emissions, and abatement outputs are present when the route applies and absent only with route evidence."
+    source_ids:
+      - eu-sf-bat-2024
+      - us-epa-metal-products-machinery-2003
+  - rule_id: validation_allocation
+    applies_to: "shared operations and reusable pallets"
+    rule: "Confirm the causal allocation driver, internal recovery treatment, scrap convention, pallet reuse evidence, and sensitivity are disclosed."
+    source_ids: []
+  - rule_id: validation_unresolved_identity
+    applies_to: "UUID-empty rows"
+    rule: "Retain the concrete row name and manifest unresolved entry until one exact public state-100 Tiangong flow is verified; do not substitute a proxy."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production package that may be published as a secondary_dataset or background_dataset after review"
+  downstream_use: "Product carbon footprint, process LCA, supplier comparison, and lifecyclemodel construction for a declared engine-part family and manufacturing route"
+  allowed_use: "Use where part identity, material, blank route, treatment state, geography, technology, allocation, and reporting period are representative"
+  excluded_use: "Complete engines, aircraft-engine parts, remanufactured parts, use-phase performance, end-of-life, or an unqualified average across materially different part families and routes"
+  required_metadata: "PCR id and version; reference-flow UUID; part and engine identity; material and blank route; site and geography; technology; treatment and packing route; reporting period; upstream dataset links; allocation; cut-offs; data quality; unresolved identities"
+  required_quality_disclosure: "Primary-data share; meter and scale coverage; temporal and geographic representativeness; mass-balance result; estimation share; wastewater and waste destinations; abatement; allocation sensitivity; pallet reuse evidence; uncertainty"
+  update_trigger: "Drawing, material, supplier blank route, machining technology, treatment chemistry, energy supply, wastewater treatment, allocation, packing configuration, site, or data age changes that materially affect the result"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv, retrieved 2026-09-05"
+    used_for: "Official CPC 43151 product identity, hierarchy, and separation from aircraft-engine parts in CPC 43152"
+  - id: "eu-sf-bat-2024"
+    type: "official_guidance"
+    reference: "Commission Implementing Decision (EU) 2024/2974 of 29 November 2024 establishing BAT conclusions for the smitheries and foundries industry, https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=OJ%3AL_202402974, retrieved 2026-09-05"
+    used_for: "Finishing and heat-treatment process definitions, treatment energy context, and dust collection from finishing"
+  - id: "us-epa-metal-products-machinery-2003"
+    type: "official_guidance"
+    reference: "U.S. EPA, Development Document for the Final Effluent Limitations Guidelines and Standards for the Metal Products & Machinery Point Source Category, EPA-821-B-03-001, February 2003, https://www.epa.gov/sites/default/files/2015-11/documents/mp-m_dd_2003.pdf, retrieved 2026-09-05"
+    used_for: "Machining operations, cutting fluids, metal chips, rinsing, cleaning, spent fluids, and machining wastewater process decomposition"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:bd20fa2e02168ef801bd24f34f100664d47f8f9946b7216af60f488d5a3fb426"
+  generated_content_sha256: "sha256:788e7ce93c7db688da1d054fbd2f3af0ed6725e9c20b02732cc049ce3e5b36cd"

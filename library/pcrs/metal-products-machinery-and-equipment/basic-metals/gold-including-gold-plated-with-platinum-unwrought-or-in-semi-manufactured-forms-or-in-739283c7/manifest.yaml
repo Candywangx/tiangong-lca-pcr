@@ -2,10 +2,10 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.basic-metals.gold-including-gold-plated-with-platinum-unwrought-or-in-semi-manufactured-forms-or-in-739283c7
 title:
   en-US: "Gold (including gold plated with platinum), unwrought or in semi-manufactured forms, or in powder form"
-  zh-CN: null
-status: scaffold
+  zh-CN: "金（包括镀铂的金），未锻造、半制成或粉末状"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
   - "metal-products-machinery-and-equipment"
 modules:
@@ -22,16 +22,49 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "41320"
     title: "Gold (including gold plated with platinum), unwrought or in semi-manufactured forms, or in powder form"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: feed_gold_scrap
+        reason_code: no_exact_candidate
+        explanation: "The five audited waste-flow candidates were non-gold precious-metal scrap, anode sludge, or generic metal scrap; none exactly represented waste and scrap of gold or gold-clad metal."
+      - row_id: input_hydrochloric_acid
+        reason_code: manual_review_required
+        explanation: "Audited candidates either fixed mutually different solution concentrations or carried a conflicting chemical classification; the foreground-supplied concentration must be known before selecting an exact flow."
+      - row_id: input_quicklime
+        reason_code: no_exact_candidate
+        explanation: "Audited candidates were generic lime, calcium oxide under a mineral classification, or volume-based loose quicklime; none exactly matched mass-accounted quicklime reagent."
+      - row_id: output_metal_hydroxide_sludge
+        reason_code: no_exact_candidate
+        explanation: "Audited waste candidates represented anode sludge, wastewater, or petroleum-refinery sludge, not metal-hydroxide sludge from gold-refinery wastewater neutralization."
+      - row_id: emission_chlorine_to_air
+        reason_code: manual_review_required
+        explanation: "Exact chlorine elementary-flow candidates were compartment-specific (urban air close to ground or non-urban air/high stack); the actual release compartment must be confirmed before UUID selection."
+      - row_id: emission_nitrogen_dioxide_to_air
+        reason_code: no_exact_candidate
+        explanation: "All five directly read candidates were nitrite rather than nitrogen dioxide."
+    range_evidence_needs:
+      - row_ids: [feed_dore_bullion, feed_gold_scrap, input_electricity, input_natural_gas, input_process_water, output_gold, output_wastewater, output_metal_hydroxide_sludge]
+        explanation: "No two mutually independent, original-text-verified sources with compatible gate-to-gate boundary, 1 kg gold basis, product state, geography, and technology were available to synthesize defensible empirical ranges. Foreground collection remains mandatory."
+      - row_ids: [input_hydrochloric_acid, input_nitric_acid, input_sodium_hydroxide, input_quicklime, input_sulfur_dioxide, input_chlorine, input_industrial_oxygen]
+        explanation: "Route-specific reagent intensities vary with feed assay and technology. The verified sources support inclusion and collection, but not a two-source compatible range synthesis."
+      - row_ids: [emission_carbon_dioxide_fossil, emission_hydrogen_chloride_to_air, emission_chlorine_to_air, emission_nitrogen_dioxide_to_air]
+        explanation: "The verified sources identify these direct releases or monitoring needs, but do not supply two independent boundary-compatible empirical ranges for this PCR."

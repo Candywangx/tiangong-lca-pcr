@@ -1,10 +1,722 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "47330"
-  title: "Microphones and stands therefor; loudspeakers; headphones, earphones and combined microphone/speaker sets; audio-frequency electric amplifiers; electric sound amplifier sets"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.radio-television-and-communication-equipment-and-apparatus.microphones-and-stands-therefor-loudspeakers-headphones-earphones-and-combined-micropho-e132c47e"
+  classification_refs: "CPC 3.0: 47330; semantic scope reference, pending central mapping acceptance"
+  covered_products: "Microphones and dedicated stands; loudspeakers; headphones, earphones and microphone/speaker sets; audio-frequency electric amplifiers and electric sound amplifier sets"
+  excluded_products: "Stored-media recording/playback apparatus; broadcast receivers; telecommunications devices; hearing aids; separately traded unfinished parts other than complete transducers"
+  representative_product: "Passive full-range loudspeaker in finished MDF enclosure"
+  production_route: "Purchased finished components; wiring and soldering; assembly; acoustic/electrical test; packing"
+  market_state: "New, tested, saleable factory-gate product; packaging separately inventoried"
+functional_unit:
+  what: "Supply the declared passive loudspeaker design for electrical-to-acoustic conversion"
+  how_much: "1 kg net released product, equivalent to 1 / m_unit units where m_unit is measured kg per unit"
+  how_well: "Declare bandwidth, rated impedance, sensitivity, distortion and test signal/level/distance/room; meet the documented model-specific acceptance specification"
+  how_long_or_cycle: "One completed production campaign to factory gate; downstream service life and use profile must be declared separately, with no default years"
+  reference_flow_link: "reference_product"
+system_boundary:
+  rules:
+    - rule_id: sb_production
+      applies_to: "foreground_boundary"
+      rule: "Include receipt, wiring, joining, mounting, damping installation, testing, retesting, rework and packing actually performed. Purchased cabinet manufacture remains in its supplier boundary; in-house cabinet manufacture requires an explicit additional process."
+      source_ids:
+        - visaton-solo-20-construction
+        - miljogiraff-transparent-light-speaker-2022
+    - rule_id: sb_lifecycle
+      applies_to: "downstream_use"
+      rule: "This PCR delivers a production module. Distribution, customer use, repairs and end of life must be linked before a complete life-cycle claim; identify every exclusion and its significance."
+      source_ids:
+        - ec-environmental-footprint-2021
+    - rule_id: sb_waste
+      applies_to: "waste_boundary"
+      rule: "Record production waste at the handover point and link appropriate treatment; distinguish waste disposal from saleable coproducts and from internal rework. Retain component separation information for downstream recovery."
+      source_ids:
+        - genelec-recycling-materials
+    - rule_id: sb_double_count
+      applies_to: "upstream_and_direct_flows"
+      rule: "Keep background supply emissions in their linked datasets; add only measured or calculated site emissions to foreground elementary flows. Keep upstream, factory-test and customer-use electricity separate."
+      source_ids:
+        - ec-environmental-footprint-2021
+boundary_abstraction:
+  declared_starting_condition: "Delivered complete driver and finished enclosure, wiring, fixing and filling items at the assembly site"
+  starting_condition_role: "foreground component-assembly entry state"
+  product_classification_scope: "Standalone transducers, microphone stands and audio amplification products; no stored-media playback or receiver substitution"
+  recursive_input_rule: "A purchased complete driver within the category is an input with a separate supplier dataset. Stop foreground recursion at that declared delivered state; do not link the final product dataset back to itself."
+  upstream_dataset_requirement: "Link each purchased exchange to cradle-to-delivered component/material/energy supply evidence, including component manufacture and transport. Inventory identity alone is not a supply dataset."
+  disclosure: "Declare outsourced versus site operations, all unlinked upstream stages, waste destinations, infrastructure treatment and exclusions. A foreground-only result is gate-to-gate, not cradle-to-gate or cradle-to-grave."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Passive loudspeaker in MDF enclosure"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Product subtype and model"
+    - "principal function"
+    - "active/passive"
+    - "standalone driver/enclosed unit"
+    - "mono/stereo/set composition"
+    - "net mass per unit"
+    - "supplied accessories"
+    - "driver count and type"
+    - "enclosure and magnet composition"
+    - "performance/test conditions"
+    - "assembly site and campaign"
+    - "purchased-component starting condition"
+    - "packaging scope"
+    - "supplier boundaries"
+    - "repair and intended service-life evidence"
+reference_flows:
+  []
+measurement_rules:
+  - id: mu_net_mass
+    applies_to: "reference_product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use M_good excluding packaging as the denominator; count-to-mass conversion is model-specific and must not mix pairs, sets and individual units."
+  - id: mu_energy
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert measured kWh to MJ by multiplication by 3.6. Rated amplifier watts are not consumed energy; use wall-meter energy over time, including standby during the recorded factory test."
+  - id: mu_components
+    applies_to: "component inputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use as-supplied component mass. Never add both a complete driver and its constituent magnet/coil upstream burdens; declare moisture for MDF and gross versus dry flux mass."
+  - id: mu_test_basis
+    applies_to: "performance records"
+    required_property_ref:
+      name: "Declared acoustic/electrical properties"
+      uuid: ""
+    required_unit: "declared test units"
+    rule: "Store stimulus, fixture, distance, environment and calibration alongside results. IEC 60268-21 public scope supports physical acoustic testing, not a universal sound-quality pass level."
+process_map:
+  - id: assembly
+    name: "Component assembly and joining"
+    inclusion: "required"
+    inclusion_condition: "Declared product uses the representative assembly route"
+    role: "foreground production"
+    quantitative_reference: "assembled product before final test"
+  - id: test_pack
+    name: "Acceptance testing and packing"
+    inclusion: "required"
+    inclusion_condition: "All released units; testing follows actual function"
+    role: "foreground testing and packing"
+    quantitative_reference: "1 kg net released product"
+process_inventory:
+  - id: assembly
+    label: "Component assembly and joining"
+    inputs:
+      product:
+        - row_id: driver
+          role: "Electrodynamic loudspeaker driver"
+          name: "Electrodynamic loudspeaker driver"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Weigh the supplied complete driver; include its magnet, coil, diaphragm and frame once."
+          amount:
+            expression: "Weigh the supplied complete driver; include its magnet, coil, diaphragm and frame once. Divide by M_good under calc_normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released loudspeaker"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom_assembly
+              source_ids: []
+            ranges: []
+        - row_id: enclosure
+          role: "Finished MDF loudspeaker enclosure with terminal cup"
+          name: "Finished MDF loudspeaker enclosure with terminal cup"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Weigh the finished enclosure including integral finish and terminal cup; obtain its supplier composition and processing boundary."
+          amount:
+            expression: "Weigh the finished enclosure including integral finish and terminal cup; obtain its supplier composition and processing boundary. Divide by M_good under calc_normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released loudspeaker"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom_assembly
+              source_ids: []
+            ranges: []
+        - row_id: connection_cable
+          role: "Insulated copper speaker cable"
+          name: "Insulated copper speaker cable"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record actual cut cable mass including insulation; length conversion requires measured mass per length."
+          amount:
+            expression: "Record actual cut cable mass including insulation; length conversion requires measured mass per length. Divide by M_good under calc_normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released loudspeaker"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom_assembly
+              source_ids: []
+            ranges: []
+        - row_id: steel_screws
+          role: "Steel screw"
+          name: "Steel screw"
+          flow_type: "product"
+          flow_ref:
+            uuid: "895204f6-6425-4814-afc5-cb97e530e892"
+          property_unit: "Mass / kg"
+          description: "Count issued screws minus returns and multiply by verified screw mass; declare grade and coating."
+          amount:
+            expression: "Count issued screws minus returns and multiply by verified screw mass; declare grade and coating. Divide by M_good under calc_normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released loudspeaker"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom_assembly
+              source_ids: []
+            ranges: []
+        - row_id: acoustic_wadding
+          role: "Polyester fibre acoustic wadding"
+          name: "Polyester fibre acoustic wadding"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Weigh the installed uncoated acoustic mat and separately reconcile cutting losses; record fibre and binder composition."
+          amount:
+            expression: "Weigh the installed uncoated acoustic mat and separately reconcile cutting losses; record fibre and binder composition. Divide by M_good under calc_normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released loudspeaker"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom_assembly
+              source_ids: []
+            ranges: []
+        - row_id: solder
+          role: "Flux-free tin-silver-copper solder"
+          name: "Flux-free tin-silver-copper solder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record flux-free tin-silver-copper solder consumed for terminal joints; require supplier alloy composition, without presuming SAC305."
+          amount:
+            expression: "Record flux-free tin-silver-copper solder consumed for terminal joints; require supplier alloy composition, without presuming SAC305. Divide by M_good under calc_normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released loudspeaker"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom_assembly
+              source_ids: []
+            ranges: []
+        - row_id: rosin_flux
+          role: "Solid rosin soldering flux"
+          name: "Solid rosin soldering flux"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Weigh separately supplied solid rosin flux consumed; solvent-containing formulations require separate constituent and emission accounting."
+          amount:
+            expression: "Weigh separately supplied solid rosin flux consumed; solvent-containing formulations require separate constituent and emission accounting. Divide by M_good under calc_normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released loudspeaker"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom_assembly
+              source_ids: []
+            ranges: []
+        - row_id: assembly_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter assembly tools, soldering and fume extraction plus the causally assigned share of facility electricity; exclude test_pack meters."
+          amount:
+            expression: "Meter assembly tools, soldering and fume extraction plus the causally assigned share of facility electricity; exclude test_pack meters. Divide by M_good under calc_normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released loudspeaker"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_assembly
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: assembled_output
+          role: "Assembled passive loudspeaker before final test"
+          name: "Assembled passive loudspeaker before final test"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record net mass transferred to test_pack; preserve lot identity and reconcile work in progress."
+          amount:
+            expression: "Record net mass transferred to test_pack; preserve lot identity and reconcile work in progress. Divide by M_good under calc_normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released loudspeaker"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_transfer
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: solder_dross
+          role: "Waste lead-free solder dross"
+          name: "Waste lead-free solder dross"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh separately collected solder dross sent to recovery; inclusion_condition: dross crosses the boundary; document absence otherwise."
+          amount:
+            expression: "Weigh separately collected solder dross sent to recovery; inclusion_condition: dross crosses the boundary; document absence otherwise. Divide by M_good under calc_normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released loudspeaker"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_assembly
+              source_ids: []
+            ranges: []
+        - row_id: rosin_residue
+          role: "Waste rosin soldering flux"
+          name: "Waste rosin soldering flux"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh separately collected rosin residue; inclusion_condition: residue leaves the process; flux remaining on the product belongs in product mass."
+          amount:
+            expression: "Weigh separately collected rosin residue; inclusion_condition: residue leaves the process; flux remaining on the product belongs in product mass. Divide by M_good under calc_normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released loudspeaker"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_assembly
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: test_pack
+    label: "Acceptance testing and packing"
+    inputs:
+      product:
+        - row_id: assembled_input
+          role: "Assembled passive loudspeaker before final test"
+          name: "Assembled passive loudspeaker before final test"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use exactly the matched assembled_output transfer mass; this is an internal link, not a second purchased input."
+          amount:
+            expression: "Use exactly the matched assembled_output transfer mass; this is an internal link, not a second purchased input. Divide by M_good under calc_normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released loudspeaker"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_transfer
+              source_ids: []
+            ranges: []
+        - row_id: test_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter test amplifier wall input, analyser, burn-in and packing equipment over the actual test schedule; include retests."
+          amount:
+            expression: "Meter test amplifier wall input, analyser, burn-in and packing equipment over the actual test schedule; include retests. Divide by M_good under calc_normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released loudspeaker"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_test_pack
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_carton
+          role: "corrugated board boxes"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Weigh cartons issued minus unused returns; distinguish delivered cartons from discarded damaged cartons."
+          amount:
+            expression: "Weigh cartons issued minus unused returns; distinguish delivered cartons from discarded damaged cartons. Divide by M_good under calc_normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released loudspeaker"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom_test_pack
+              source_ids: []
+            ranges: []
+        - row_id: ldpe_film
+          role: "Low-density polyethylene foil (PE-LD)"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass / kg"
+          description: "Weigh film issued minus returns; record film grade, thickness and recycled content from supplier evidence."
+          amount:
+            expression: "Weigh film issued minus returns; record film grade, thickness and recycled content from supplier evidence. Divide by M_good under calc_normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released loudspeaker"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_bom_test_pack
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Passive loudspeaker in MDF enclosure"
+          name: "Passive loudspeaker in MDF enclosure"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Normalize released net product mass M_good to 1 kg; exclude all packaging mass and include successful rework only once."
+          amount:
+            expression: "Normalize released net product mass M_good to 1 kg; exclude all packaging mass and include successful rework only once."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released loudspeaker"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_release
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: rejected_loudspeaker
+          role: "Discarded passive loudspeaker"
+          name: "Discarded passive loudspeaker"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Weigh irreparable complete units transferred to an identified treatment operator; repairable work in progress is not waste."
+          amount:
+            expression: "Weigh irreparable complete units transferred to an identified treatment operator; repairable work in progress is not waste. Divide by M_good under calc_normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released loudspeaker"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_test_pack
+              source_ids: []
+            ranges: []
+        - row_id: cardboard_waste
+          role: "Packaging waste, cardboard"
+          name: "Packaging waste, cardboard"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "72270223-04b1-4986-a546-94e5a0821317"
+          property_unit: "Mass / kg"
+          description: "Weigh the separately collected cardboard packaging waste; exclude product packaging dispatched with good units."
+          amount:
+            expression: "Weigh the separately collected cardboard packaging waste; exclude product packaging dispatched with good units. Divide by M_good under calc_normalize."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released loudspeaker"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_test_pack
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: al_hierarchy
+    applies_to: "shared_operations"
+    rule: "First assess subdivision or system expansion; otherwise use a demonstrated causal physical relationship, and document any fallback economic allocation and sensitivity."
+    source_ids:
+      - ec-environmental-footprint-2021
+  - rule_id: al_metering
+    applies_to: "shared_electricity"
+    rule: "Under cp_energy_assembly; cp_energy_test_pack, assign shared electricity with measured machine power-time or another validated causal driver; unit counts alone require evidence that the models impose equal loads. Reconcile allocated totals to the meter."
+    source_ids: []
+  - rule_id: al_rework
+    applies_to: "rejects_and_recovery"
+    rule: "Under cp_release and cp_waste_assembly; cp_waste_test_pack, retain failed-test and rework burdens in the campaign denominator of good output. Report recovery separately; do not credit full avoided virgin production merely because scrap has a sale price."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_bom_assembly
+      process_id: "assembly"
+      flow_role: "components and packaging"
+      record_type: "supplier records and weighing"
+      raw_fields: "model; batch; supplier part; material composition; unit count; sample unit masses; issued/returned mass; opening/closing stock; moisture; assembly boundary"
+      collection_method: "Reconcile store issues and returns with calibrated weighing and BOM revision"
+      unit: "kg; units; m"
+      frequency: "each batch and each supplier/design change"
+      temporal_coverage: "one declared representative production period including normal starts and rework"
+      site_scope: "actual assembly site and named suppliers"
+      aggregation_rule: "Net consumption by component divided by M_good; retain losses separately"
+      quality_evidence: "calibration; scale resolution; sample coverage; supplier declarations; signed stock reconciliation"
+    - protocol_id: cp_bom_test_pack
+      process_id: "test_pack"
+      flow_role: "components and packaging"
+      record_type: "supplier records and weighing"
+      raw_fields: "model; batch; supplier part; material composition; unit count; sample unit masses; issued/returned mass; opening/closing stock; moisture; assembly boundary"
+      collection_method: "Reconcile store issues and returns with calibrated weighing and BOM revision"
+      unit: "kg; units; m"
+      frequency: "each batch and each supplier/design change"
+      temporal_coverage: "one declared representative production period including normal starts and rework"
+      site_scope: "actual assembly site and named suppliers"
+      aggregation_rule: "Net consumption by component divided by M_good; retain losses separately"
+      quality_evidence: "calibration; scale resolution; sample coverage; supplier declarations; signed stock reconciliation"
+    - protocol_id: cp_energy_assembly
+      process_id: "assembly"
+      flow_role: "electricity"
+      record_type: "submeter and equipment log"
+      raw_fields: "meter id; boundary; start/end kWh; time; idle state; active/standby power; test duration; rework time; model throughput; allocation driver"
+      collection_method: "Submeter both processes; validate any power-time fallback against metering"
+      unit: "kWh; W; h"
+      frequency: "each campaign; timestamped test logs"
+      temporal_coverage: "same period as released product"
+      site_scope: "assembly, extraction and test stations; documented shared facility load"
+      aggregation_rule: "Convert kWh to MJ; reconcile process totals and allocated shared load to site meters; divide by M_good"
+      quality_evidence: "meter calibration; timestamp checks; allocation driver validation"
+    - protocol_id: cp_energy_test_pack
+      process_id: "test_pack"
+      flow_role: "electricity"
+      record_type: "submeter and equipment log"
+      raw_fields: "meter id; boundary; start/end kWh; time; idle state; active/standby power; test duration; rework time; model throughput; allocation driver"
+      collection_method: "Submeter both processes; validate any power-time fallback against metering"
+      unit: "kWh; W; h"
+      frequency: "each campaign; timestamped test logs"
+      temporal_coverage: "same period as released product"
+      site_scope: "assembly, extraction and test stations; documented shared facility load"
+      aggregation_rule: "Convert kWh to MJ; reconcile process totals and allocated shared load to site meters; divide by M_good"
+      quality_evidence: "meter calibration; timestamp checks; allocation driver validation"
+    - protocol_id: cp_transfer
+      process_id: "assembly"
+      flow_role: "internal loudspeaker transfer"
+      record_type: "batch transfer and WIP register"
+      raw_fields: "batch id; unit count; sampled mass; transfer time; opening/closing WIP; rework route"
+      collection_method: "Match output and input transfer slips and physically reconcile WIP"
+      unit: "kg; units"
+      frequency: "each transfer"
+      temporal_coverage: "same inventory period"
+      site_scope: "paired sending/receiving stations"
+      aggregation_rule: "Link equal transferred masses; account for period-boundary WIP; eliminate internal links from consolidated totals"
+      quality_evidence: "signed transfer records; WIP checks"
+    - protocol_id: cp_release
+      process_id: "test_pack"
+      flow_role: "reference product and performance"
+      record_type: "acceptance tests and release register"
+      raw_fields: "serial/model; signal; impedance; bandwidth; sensitivity; distortion; test level; distance; environment; calibration; pass/fail; retest; released count; net unit mass; included accessories"
+      collection_method: "Use documented model acceptance procedure and calibrated tests; weigh saleable product without packaging"
+      unit: "kg; units; declared test units"
+      frequency: "each released lot; test frequency specified by actual acceptance plan"
+      temporal_coverage: "same production campaign"
+      site_scope: "final test and packing line"
+      aggregation_rule: "M_good equals released count times verified net unit mass by model; include a repaired unit only once"
+      quality_evidence: "test logs; calibration; acceptance plan; release authorisation"
+    - protocol_id: cp_waste_assembly
+      process_id: "assembly"
+      flow_role: "each separate waste stream"
+      record_type: "waste weighing and transfer record"
+      raw_fields: "stream composition; container tare; gross/net mass; date; lot; destination; waste/product status; recovery or disposal; retained residues; capture evidence"
+      collection_method: "Weigh each segregated stream; reconcile receiver tickets; screen direct emissions and identify each substance"
+      unit: "kg"
+      frequency: "each removal and campaign balance"
+      temporal_coverage: "same period as material use"
+      site_scope: "production site to named receiving operator"
+      aggregation_rule: "Deduct tare and normalize each waste separately by M_good; disclose stock changes and any measured direct emissions"
+      quality_evidence: "transfer tickets; composition/SDS; calibrated weighing; treatment route evidence"
+    - protocol_id: cp_waste_test_pack
+      process_id: "test_pack"
+      flow_role: "each separate waste stream"
+      record_type: "waste weighing and transfer record"
+      raw_fields: "stream composition; container tare; gross/net mass; date; lot; destination; waste/product status; recovery or disposal; retained residues; capture evidence"
+      collection_method: "Weigh each segregated stream; reconcile receiver tickets; screen direct emissions and identify each substance"
+      unit: "kg"
+      frequency: "each removal and campaign balance"
+      temporal_coverage: "same period as material use"
+      site_scope: "production site to named receiving operator"
+      aggregation_rule: "Deduct tare and normalize each waste separately by M_good; disclose stock changes and any measured direct emissions"
+      quality_evidence: "transfer tickets; composition/SDS; calibrated weighing; treatment route evidence"
+  calculation_rules:
+    - id: calc_normalize
+      applies_to: "all external exchanges"
+      rule: "q_i = Q_i / M_good, with positive M_good and a common campaign; Q_i is stock-adjusted consumed or released quantity."
+      inputs:
+        - cp_bom_assembly
+        - cp_bom_test_pack
+        - cp_waste_assembly
+        - cp_waste_test_pack
+        - cp_release
+      output: "kg/kg or MJ/kg"
+      source_ids: []
+    - id: calc_good_mass
+      applies_to: "reference_product"
+      rule: "M_good = sum(N_released_model × m_unit_model), excluding packaging; confirm against direct aggregate weighing."
+      inputs:
+        - cp_release
+      output: "kg; normalized reference_product = 1"
+      source_ids: []
+    - id: calc_energy
+      applies_to: "electricity"
+      rule: "E_MJ = 3.6 × E_kWh; if power-time is used, E_kWh = sum(P_input_W × hours) / 1000, including measured standby and retest periods."
+      inputs:
+        - cp_energy_assembly
+        - cp_energy_test_pack
+      output: "MJ/kg"
+      source_ids: []
+    - id: calc_balance
+      applies_to: "mass flows"
+      rule: "Residual = external material inputs + opening stock - closing stock - good product - shipped packaging - external waste - measured mass emissions; internal transfers cancel. Investigate the residual against combined measurement uncertainty."
+      inputs:
+        - cp_bom_assembly
+        - cp_bom_test_pack
+        - cp_transfer
+        - cp_waste_assembly
+        - cp_waste_test_pack
+        - cp_release
+      output: "kg residual and explanation"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_design
+      applies_to: "reference and BOM"
+      requirement: "Keep one model/configuration per mass conversion; identify magnet type, electronic content and supplied accessories so unlike audio products cannot silently share a material profile."
+      evidence: "cp_bom_assembly; cp_bom_test_pack; cp_release"
+    - id: dq_primary
+      applies_to: "foreground amounts"
+      requirement: "Retain original measurements and uncertainty; report estimates separately and obtain measured factory energy rather than reusing the optical-mouse proxy from the source case."
+      evidence: "cp_energy_assembly; cp_energy_test_pack; miljogiraff-transparent-light-speaker-2022"
+    - id: dq_representativeness
+      applies_to: "linked supply datasets"
+      requirement: "Disclose geography, technology, year, recycled content, supplier boundary and any proxy substitution; a flow UUID alone does not supply these facts."
+      evidence: "ec-environmental-footprint-2021"
+    - id: dq_completeness
+      applies_to: "all processes"
+      requirement: "Close the bill of materials and waste balance; document genuinely absent routes. Add one concrete exchange for every newly identified component, process chemical, waste or emission."
+      evidence: "cp_bom_assembly; cp_bom_test_pack; cp_waste_assembly; cp_waste_test_pack"
+validation_rules:
+  - rule_id: val_identity
+    applies_to: "reference_definition"
+    rule: "All required qualifiers, a specific product object and a net unit mass are mandatory. Class membership and a general audio-equipment label do not prove flow identity or functional equivalence."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: val_trace
+    applies_to: "inventory"
+    rule: "Every active row must have raw records, amount basis, compatible property/unit and exactly one atomic exchange. A missing value differs from measured zero or documented non-applicability."
+    source_ids: []
+  - rule_id: val_balance
+    applies_to: "mass_and_internal_links"
+    rule: "Reconcile cp_transfer output/input by batch and period. Investigate nonzero mass residuals against weighing uncertainty and inventory changes; never force balance by adjusting good output. Packaging travels outside net product mass."
+    source_ids: []
+  - rule_id: val_energy
+    applies_to: "factory_test"
+    rule: "Verify disjoint assembly/test meters, kWh conversion, test duration and rework. Reject estimates obtained by multiplying rated acoustic or amplifier output watts by time without a validated electrical-input model."
+    source_ids: []
+  - rule_id: val_performance
+    applies_to: "test_pack"
+    rule: "Retain measured physical response and model-specific acceptance criteria under cp_release; scope-level IEC evidence does not establish conformity to unexamined clauses."
+    source_ids:
+      - iec-60268-21-2018-scope
+  - rule_id: val_coverage
+    applies_to: "dataset_use"
+    rule: "State stage coverage, unmatched supply links, geographic/technology/time relevance and uncertainty. No category-wide comparative claim is supported by this representative production inventory alone."
+    source_ids:
+      - ec-environmental-footprint-2021
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset after appropriate review and completion of supply links"
+  downstream_use: "Foreground data package projects to process and lifecyclemodel; supplier production input for a matching loudspeaker design"
+  allowed_use: "Declared site/model/campaign production inventory with explicit stage coverage and unit conversion"
+  excluded_use: "Unqualified average for all audio equipment; stand/headphone/amplifier substitution; customer-use electricity default; complete life-cycle or comparable EPD claim without remaining stages and review"
+  required_metadata: "Required qualifiers; geography; dates; BOM revision; supplier datasets; process map; boundaries; allocation; raw-record links; treatment routes"
+  required_quality_disclosure: "Measurement uncertainty; missing records and supply links; proxy datasets; completeness; site representativeness; translation/review state"
+  update_trigger: "Design/BOM, supplier, enclosure, magnet, electronics, assembly/test route, power mix or waste treatment changes; updated measurement evidence"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC 3.0 structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "47330 and neighbouring 47311, 47321 and 47323: category membership and exclusions"
+  - id: "china-rcep-tariff-japan-hs8518"
+    type: "official_guidance"
+    reference: "China tariff schedule, Annex I, Section 3: Japan; official Chinese text hosted by Fujian Department of Commerce. https://swt.fujian.gov.cn/xxgk/jgzn/jgcs/zcfgc/sbqyzymy/202012/W020201218620318530448.pdf"
+    used_for: "HS 8518 and subheadings: Chinese terminology only; no tariff or CPC equivalence claim"
+  - id: "ec-environmental-footprint-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279, Annex I, sections 3.2, 4.5 and 4.6. https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32021H2279"
+    used_for: "Function, explicit boundary, allocation hierarchy and representativeness; selected principles, not a claim of complete PEF compliance"
+  - id: "visaton-solo-20-construction"
+    type: "handbook"
+    reference: "VISATON SOLO 20, Building instruction, Assembly and Inner damping. https://www.visaton.de/en/products/fullrange-systems/solo-20/bauanleitung"
+    used_for: "MDF cabinet, driver opening, terminal connection and acoustic damping architecture; no dimensions or quantities transferred"
+  - id: "genelec-recycling-materials"
+    type: "handbook"
+    reference: "Genelec, Recycling and Materials. https://www.genelec.com/recycling-information-materials"
+    used_for: "Drivers, enclosure materials, acoustic filling, packaging and separable waste fractions; no recycled-content defaults"
+  - id: "miljogiraff-transparent-light-speaker-2022"
+    type: "literature"
+    reference: "Viktor Hakkarainen and Marcus Bernhard, Miljögiraff AB, Life Cycle Assessment of Light Speaker by Transparent, report 977, 11 May 2022. https://transpa.rent/site/assets/cms/pdf/Life%20Cycle%20Assessment%20report%20Transparent%20LS%20V3%202022-05-11.pdf"
+    used_for: "Sections 3.3 and 4.2–4.4, pp. 14–23: weighed component inventory and separation of upstream component processing from final assembly; its proxy assembly energy is not a measured benchmark"
+  - id: "iec-60268-21-2018-scope"
+    type: "standard"
+    reference: "IEC 60268-21:2018, Sound system equipment — Part 21: Acoustical (output-based) measurements; official scope page. https://webstore.iec.ch/en/publication/28687"
+    used_for: "Public scope only: physical input-to-acoustic-output testing of passive and active systems; no claim to have verified paid clauses or universal acceptance limits"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:cd8cc78a2811ea65b761f8cbeda5472e4e94c57a16b589d26a4e42402664f32c"
+  generated_content_sha256: "sha256:6091b89108ffde45884469c3570dcb9d210acf8c230281f50ed6f5d15db96c7e"

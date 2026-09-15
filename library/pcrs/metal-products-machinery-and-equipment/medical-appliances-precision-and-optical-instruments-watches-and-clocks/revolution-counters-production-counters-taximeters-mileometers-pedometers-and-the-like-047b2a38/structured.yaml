@@ -1,10 +1,490 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "48264"
-  title: "Revolution counters, production counters, taximeters, mileometers, pedometers and the like; speed indicators and tachometers, except hydrographic and meteorological instruments; stroboscopes"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.medical-appliances-precision-and-optical-instruments-watches-and-clocks.revolution-counters-production-counters-taximeters-mileometers-pedometers-and-the-like-047b2a38"
+  classification_refs: "CPC 3.0: 48264 (un-cpc-3-0-structure-2025)"
+  covered_products: "Finished revolution counters, production counters, taximeters, mileometers/odometers, pedometers, speed indicators, tachometers, and stroboscopes, including mechanical, electromechanical, and electronic variants"
+  excluded_products: "Hydrographic and meteorological instruments; supply or production meters for gas, liquids, or electricity; automatic control equipment; complete vehicles and machines; general-purpose computing devices; standalone components"
+  representative_product: "A finished, calibrated or functionally tested counter or indicator instrument with declared architecture and performance specification"
+  production_route: "Receipt of purchased materials/components; onsite forming or board installation when performed; mechanical/electronic assembly; programming/configuration when performed; calibration and functional testing; final packaging"
+  market_state: "Finished instrument at factory gate; product mass excludes separately reported packaging and accessories unless the dataset explicitly declares their inclusion"
+functional_unit:
+  what: "Provision of the declared counting, distance, speed, rotational-speed, or stroboscopic indication function by a finished instrument"
+  how_much: "1 kg of finished instrument, excluding separately reported packaging"
+  how_well: "Meets the declared measurement range, resolution, accuracy or indication tolerance, environmental class, interface, and conformity requirements; taximeter datasets additionally declare distance/time and fare functions (oiml-r21-2007-taximeters)"
+  how_long_or_cycle: "At factory-gate release after the declared calibration or functional-test cycle; design service life is metadata for downstream use-stage modelling"
+  reference_flow_link: "finished_instrument_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_manufacturing_gate
+      applies_to: "foreground manufacturing"
+      rule: "Include activities from materials/components entering the site through onsite forming or board installation, assembly, programming/configuration, calibration or functional testing, rework/rejects, and final packaging until factory-gate release."
+      source_ids:
+        - eu-pef-method-2021
+    - rule_id: boundary_purchased_inputs
+      applies_to: "upstream products and energy"
+      rule: "Represent each purchased material, component, electricity supply, and packaging item with a compatible upstream dataset; keep upstream production emissions outside the foreground process."
+      source_ids:
+        - eu-pef-method-2021
+    - rule_id: boundary_waste_and_emissions
+      applies_to: "manufacturing wastes and direct releases"
+      rule: "Include each manufacturing waste and directly measured elementary release generated inside the boundary. Model waste treatment using the declared destination; do not substitute a treatment-service identity for waste."
+      source_ids:
+        - eu-pef-method-2021
+    - rule_id: boundary_excluded_stages
+      applies_to: "distribution, use, maintenance, and end of life"
+      rule: "Exclude post-factory-gate stages; a cradle-to-grave study may add them as separate processes and scenarios."
+      source_ids:
+        - eu-pef-method-2021
+boundary_abstraction:
+  declared_starting_condition: "Purchased components, materials, energy, and packaging are received at the site gate with identity, state, quantity, supplier, and geography recorded."
+  starting_condition_role: "Gate-to-gate foreground start; upstream extraction, material/component production, and delivery use linked datasets."
+  product_classification_scope: "Finished products within Section 1 and CPC 3.0 code 48264; classification context does not replace product qualifiers."
+  recursive_input_rule: "If an input is itself a finished instrument in this category, record it once as a product input with a separate upstream dataset; do not recursively apply this PCR inside the same process."
+  upstream_dataset_requirement: "Every purchased input shall link to a technology-, geography-, time-, and state-compatible dataset or be disclosed as a data gap; do not silently use proxies."
+  disclosure: "Declare site, period, architecture, onsite/outsourced steps, component and packaging inclusion, product/reject mass, waste destinations, electricity mix/voltage, allocation, exclusions, and data gaps."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Revolution counters, production counters, taximeters, mileometers, pedometers and the like, speed indicators and tachometers, except hydrographic and meteorological instruments, stroboscopes"
+    uuid: "560acd9e-9e1a-4b2e-b304-5a17f8a4ba3c"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "instrument type"
+    - "sensing and indication principle"
+    - architecture
+    - "measurement range and resolution"
+    - "accuracy or indication tolerance"
+    - "power source and rated voltage"
+    - "housing material"
+    - "display technology"
+    - "firmware/configuration"
+    - "calibration or functional-test procedure and pass criterion"
+    - "legal-metrology or conformity regime"
+    - accessories
+    - "packaging inclusion"
+    - "product mass"
+    - "manufacturing site/geography"
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "reference product and mass-normalized exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize to 1 kg accepted finished instruments. Exclude packaging mass from the denominator and report packaging separately unless another market state is explicitly declared."
+  - id: batch_to_reference_mass
+    applies_to: "batch and annual records"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg/kg reference product"
+    rule: "Divide each exchange by conforming finished-product mass from the same boundary and period; do not include rejects in the denominator."
+  - id: electricity_energy_conversion
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve the metered basis and convert kWh to MJ using exactly 3.6 MJ/kWh. Do not combine electricity with fuel, steam, or heat."
+  - id: component_mass_consistency
+    applies_to: "purchased components/materials"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use net mass entering the process. For piece records, multiply verified count by measured or supplier-declared unit mass and retain evidence."
+process_map:
+  - id: instrument_manufacturing
+    name: "Instrument assembly, calibration/testing, and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always include; use not_applicable for a conditional row only when architecture or route evidence demonstrates absence."
+    role: "Foreground manufacturing from received inputs to accepted factory-gate product"
+    quantitative_reference: "1 kg accepted finished instrument output, packaging excluded from denominator"
+process_inventory:
+  - id: instrument_manufacturing
+    label: "Instrument assembly, calibration/testing, and packaging"
+    inputs:
+      product:
+        - row_id: aluminium_alloy_input
+          role: "Aluminium alloy used in onsite part forming"
+          name: "Aluminium alloy"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d2335464-e0fd-574c-b56f-83fdf8c65b0c"
+          property_unit: "Mass / kg"
+          description: "Record only when the site forms or machines aluminium parts; purchased finished parts require their own exact component flow."
+          amount:
+            expression: "measured net aluminium alloy issued less documented returns to stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished instrument output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_component_records
+              source_ids: []
+            ranges: []
+        - row_id: printed_wire_board_input
+          role: "Printed wire board installed onsite"
+          name: "Printed Wire Board"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a8bd954c-59b3-4317-b4de-02a17d6da5ca"
+          property_unit: "Mass / kg"
+          description: "Record the bare printed wire board only when installed or populated onsite; do not use it for purchased populated assemblies or electronic-component collections."
+          amount:
+            expression: "measured or count-to-mass converted printed wire board input"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished instrument output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_component_records
+              source_ids: []
+            ranges: []
+        - row_id: lcd_display_module_input
+          role: "LCD display module installed in the product"
+          name: "LCD display module"
+          flow_type: "product"
+          flow_ref:
+            uuid: "264605c6-41b8-4baa-82b0-e27e815063a0"
+          property_unit: "Mass / kg"
+          description: "Record only for products containing an LCD module; add another display technology as its own atomic flow."
+          amount:
+            expression: "measured or count-to-mass converted module input"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished instrument output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_component_records
+              source_ids: []
+            ranges: []
+        - row_id: electricity_input
+          role: "Purchased electrical energy"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity attributable to onsite forming, assembly, programming, calibration/testing, rework, production environmental control, and packaging."
+          amount:
+            expression: "metered electricity converted to MJ and allocated to the foreground process"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished instrument output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_electricity_records
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_board_boxes_input
+          role: "Corrugated board boxes used for shipping"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record finished corrugated boxes when included at the factory gate; add other packaging components separately."
+          amount:
+            expression: "measured or count-to-mass converted box mass issued to accepted products"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished instrument output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_component_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_instrument_output
+          role: "Accepted finished counter, indicator, or stroboscope"
+          name: "Revolution counters, production counters, taximeters, mileometers, pedometers and the like, speed indicators and tachometers, except hydrographic and meteorological instruments, stroboscopes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "560acd9e-9e1a-4b2e-b304-5a17f8a4ba3c"
+          property_unit: "Mass / kg"
+          description: "Record accepted calibrated or functionally tested product; packaging remains outside the 1 kg denominator."
+          amount:
+            expression: "exactly 1 kg accepted finished instrument output"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1 kg accepted finished instrument output"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: waste_populated_printed_wiring_board_output
+          role: "Waste populated printed wiring board"
+          name: "Waste populated printed wiring board"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "eb5ffe4a-49af-450c-9a31-3efdfd343f8a"
+          property_unit: "Mass / kg"
+          description: "Record rejected or irreparable populated boards generated onsite; declare hazardous classification and destination separately."
+          amount:
+            expression: "measured net mass transferred to the declared destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished instrument output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: aluminium_scrap_output
+          role: "Aluminium scrap from onsite forming"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass / kg"
+          description: "Record only when onsite forming or machining generates aluminium scrap; disclose alloy, contamination, and destination."
+          amount:
+            expression: "measured net aluminium scrap leaving the foreground process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished instrument output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "shared lines, utilities, and waste handling"
+    rule: "Avoid allocation by subdivision or direct metering whenever technically feasible."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_physical_relation
+    applies_to: "unavoidable shared burdens"
+    rule: "Otherwise allocate by a documented causal physical driver such as machine time, metered energy, processed mass, or tested unit-hours."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_economic_last_resort
+    applies_to: "multi-output operations without a physical relation"
+    rule: "Use economic allocation only as a last resort, with consistent prices and disclosed sensitivity."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_scrap_no_avoided_burden
+    applies_to: "manufacturing scrap"
+    rule: "Report scrap mass/destination without avoided-production credit inside this foreground package; apply recycling burdens or credits only in the downstream study method."
+    source_ids:
+      - eu-pef-method-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_component_records
+      process_id: "instrument_manufacturing"
+      flow_role: "each atomic material/component/packaging input"
+      record_type: "ERP issue/return, invoice, BOM, scale, or count-to-mass record"
+      raw_fields: "identity; supplier; grade/model; issued/returned mass; count; unit mass; batch; date"
+      collection_method: "Reconcile issue less return by batch; verify piece-to-mass factors"
+      unit: "kg"
+      frequency: "each batch, monthly aggregation"
+      temporal_coverage: "representative 12 months or complete shorter campaign"
+      site_scope: "every included site"
+      aggregation_rule: "Sum net input by exact flow and divide by accepted output mass"
+      quality_evidence: "calibrated scale; approved BOM; ERP/invoice reconciliation; unit-mass evidence"
+    - protocol_id: cp_electricity_records
+      process_id: "instrument_manufacturing"
+      flow_role: "purchased electrical energy"
+      record_type: "submeter or reconciled facility meter"
+      raw_fields: "readings; unit; meter id; voltage; grid mix; allocation driver; output mass; period"
+      collection_method: "Prefer submetering; otherwise allocate contemporaneous meter totals using Section 7"
+      unit: "kWh and MJ"
+      frequency: "monthly/campaign"
+      temporal_coverage: "same production period"
+      site_scope: "every included site"
+      aggregation_rule: "Convert kWh × 3.6, apply allocation share, divide by accepted output mass"
+      quality_evidence: "meter calibration/bill; allocation worksheet; grid evidence"
+    - protocol_id: cp_finished_product_records
+      process_id: "instrument_manufacturing"
+      flow_role: "accepted product and conformity"
+      record_type: "scale, release record, calibration certificate, test log"
+      raw_fields: "model; lot; accepted/reject mass; procedure; result; tolerance; pass/fail; configuration; date"
+      collection_method: "Weigh unpackaged conforming product and link to release evidence"
+      unit: "kg"
+      frequency: "each batch/lot"
+      temporal_coverage: "complete reporting period"
+      site_scope: "every included site"
+      aggregation_rule: "Sum conforming released mass only"
+      quality_evidence: "scale calibration; signed release; traceable test/conformity record"
+    - protocol_id: cp_waste_records
+      process_id: "instrument_manufacturing"
+      flow_role: "each atomic waste output"
+      record_type: "scale ticket, transfer note, stock reconciliation"
+      raw_fields: "identity; mass; state; hazard class; destination; treatment; date"
+      collection_method: "Weigh separately at transfer and subtract documented returns"
+      unit: "kg"
+      frequency: "each transfer, monthly aggregation"
+      temporal_coverage: "same production period"
+      site_scope: "every included site"
+      aggregation_rule: "Sum net waste by exact flow and divide by accepted output mass"
+      quality_evidence: "scale calibration; transfer/contractor receipt; hazard classification"
+  calculation_rules:
+    - id: calc_mass_normalization
+      applies_to: "each mass input/waste"
+      rule: "normalized amount = net exchange mass / accepted unpackaged output mass in the same period"
+      inputs:
+        - "net flow mass"
+        - "accepted output mass"
+      output: "kg/kg reference product"
+      source_ids: []
+    - id: calc_count_to_mass
+      applies_to: "piece-recorded inputs"
+      rule: "mass = verified count × measured or supplier unit mass, then apply calc_mass_normalization"
+      inputs:
+        - count
+        - "unit mass"
+        - "output mass"
+      output: "kg/kg reference product"
+      source_ids: []
+    - id: calc_electricity_normalization
+      applies_to: "electricity"
+      rule: "normalized electricity = net kWh × 3.6 MJ/kWh × allocation share / accepted output mass"
+      inputs:
+        - readings
+        - allocation
+        - "output mass"
+      output: "MJ/kg reference product"
+      source_ids: []
+    - id: calc_mass_reconciliation
+      applies_to: "completeness"
+      rule: "Reconcile accepted product + each waste + work-in-progress change against all material/component inputs; investigate/disclose residual rather than creating an unspecified balancing flow."
+      inputs:
+        - "atomic inputs"
+        - product
+        - wastes
+        - work-in-progress
+      output: "documented residual"
+      source_ids:
+        - eu-pef-method-2021
+  data_quality_requirements:
+    - id: dq_identity_and_architecture
+      applies_to: "product/components"
+      requirement: "Record model, instrument type, architecture, sensing/indication principle, grade/model, and state; add actual BOM exchanges atomically."
+      evidence: "BOM, product/supplier specification, Tiangong UUIDs"
+    - id: dq_measurement_traceability
+      applies_to: "mass, electricity, calibration, waste"
+      requirement: "Use calibrated or bill-reconciled instruments and link records to one production period."
+      evidence: "certificates, invoices, meter/scale logs, calculations"
+    - id: dq_temporal_and_site_coverage
+      applies_to: "reporting period"
+      requirement: "Cover all included sites for representative 12 months or disclose the complete shorter campaign and limitations."
+      evidence: "site list, calendar, reconciliation"
+    - id: dq_completeness
+      applies_to: "inventory"
+      requirement: "Reconcile materials/components, product, rejects, wastes, and work-in-progress; add every missing exchange atomically."
+      evidence: "mass balance, BOM/ERP, waste records"
+    - id: dq_functional_conformity
+      applies_to: "released product"
+      requirement: "Retain test/calibration procedure, criteria, results, and conformity status; taximeters retain distance/time and fare-function evidence."
+      evidence: "test/calibration/release records; oiml-r21-2007-taximeters; samr-compulsory-verification-catalogue-2020 where applicable"
+    - id: dq_background_compatibility
+      applies_to: "purchased input datasets"
+      requirement: "Check technology, geography, time, and state; disclose proxies/gaps."
+      evidence: "dataset metadata; eu-pef-method-2021"
+validation_rules:
+  - rule_id: validation_reference_flow
+    applies_to: "reference product"
+    rule: "Confirm exactly 1 kg accepted unpackaged product and matching reference UUID/property/unit group plus all qualifiers."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validation_process_coverage
+    applies_to: "foreground boundary"
+    rule: "Confirm onsite forming/board work, assembly, programming, testing/calibration, rework/rejects, and packaging coverage."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: validation_atomic_inventory
+    applies_to: "all exchanges"
+    rule: "Confirm each row is one concrete exchange with compatible UUID, property, unit, state, and route condition; reject umbrellas and treatment-service substitutions."
+    source_ids: []
+  - rule_id: validation_mass_and_energy
+    applies_to: "quantities"
+    rule: "Recalculate denominator, count-to-mass factors, electricity conversion, allocations, and residual."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: validation_conditional_rows
+    applies_to: "architecture/route"
+    rule: "Confirm absent common rows are not_applicable with evidence and every additional actual exchange is added atomically."
+    source_ids: []
+  - rule_id: validation_conformity_evidence
+    applies_to: "performance"
+    rule: "Confirm release records demonstrate declared performance and applicable conformity regime."
+    source_ids:
+      - oiml-r21-2007-taximeters
+      - samr-compulsory-verification-catalogue-2020
+  - rule_id: validation_boundary_and_allocation
+    applies_to: "exclusions/upstream/shared burdens"
+    rule: "Confirm upstream links, post-gate exclusions, waste destinations, allocation drivers, and gaps are disclosed."
+    source_ids:
+      - eu-pef-method-2021
+published_dataset_profile:
+  dataset_role: "Foreground manufacturing dataset for a declared counter, indicator, distance/speed instrument, tachometer, pedometer, taximeter, or stroboscope"
+  downstream_use: "May be a secondary_dataset and used as a background_dataset for systems consuming the declared instrument"
+  allowed_use: "LCA with compatible function, architecture, performance, geography, technology, market state, period, packaging, and upstream datasets"
+  excluded_use: "Comparative assertions without functional equivalence; excluded instruments/devices; unmodelled use/maintenance/end-of-life claims; silent proxies"
+  required_metadata: "PCR id/version; product model/type; function/performance; architecture; sensing/display; power source; product/packaging mass; sites/geography; period; onsite/outsourced steps; electricity; component/waste identities and destinations; allocation; sources/upstream versions"
+  required_quality_disclosure: "Calibration/measurement evidence; BOM/mass-balance completeness; temporal/site coverage; conformity evidence; allocations; proxy/gap register; uncertainty/exclusions; unresolved range-evidence status"
+  update_trigger: "Material change in architecture, BOM, site, supplier/upstream dataset, route, test procedure, electricity mix, allocation, packaging, waste destination, conformity, or reporting period"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, code 48264, 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-07)"
+    used_for: "Classification identity and category boundary"
+  - id: "eu-pef-method-2021"
+    type: "official_guidance"
+    reference: "European Commission, Commission Recommendation (EU) 2021/2279, Environmental Footprint methods. https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02021H2279-20211230 (retrieved 2026-09-07)"
+    used_for: "Manufacturing boundary, upstream inputs, waste, allocation, collection, quality, validation"
+  - id: "oiml-r21-2007-taximeters"
+    type: "standard"
+    reference: "International Organization of Legal Metrology, OIML R 21:2007, Taximeters. https://www.oiml.org/en/files/pdf_r/r021-e07.pdf/@@download/file/R021-e07.pdf (retrieved 2026-09-07)"
+    used_for: "Taximeter function, distance/time signal, calibration and testing"
+  - id: "samr-compulsory-verification-catalogue-2020"
+    type: "official_guidance"
+    reference: "State Administration for Market Regulation, Catalogue of Measuring Instruments Subject to Compulsory Administration, Announcement No. 42 of 2020. https://www.samr.gov.cn/cms_files/filemanager/samr/www/samrnew/samrgkml/nsjg/jls/202010/W020201027321582061939.pdf (retrieved 2026-09-07)"
+    used_for: "Chinese terminology and verification/conformity disclosure for vehicle speed instruments and taximeters"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:78eefe40a78849fcdd729f50fd583cf383c93a748060a270ccb6ef3a00c1dae5"
+  generated_content_sha256: "sha256:2d68d9b1f9d67fb3290a90cee0c1e908e535fb5e00c79cf2fc80395f114dd241"

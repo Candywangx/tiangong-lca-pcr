@@ -1,10 +1,596 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43219"
-  title: "Other hydraulic and pneumatic power engines and motors"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.other-hydraulic-and-pneumatic-power-engines-and-motors"
+  classification_refs: "CPC 3.0: 43219, exact classification context"
+  covered_products: "Complete non-linear-acting hydraulic and pneumatic power engines and motors, including continuous-rotation motors and limited-rotation fluid-power actuators"
+  excluded_products: "Linear hydraulic or pneumatic cylinders; hydraulic turbines and water wheels; pumps, compressors, valves, electric motors, internal-combustion engines; incomplete parts; separately sold manufacturing services"
+  representative_product: "A configuration-declared, accepted non-linear rotary hydraulic or pneumatic motor or actuator"
+  production_route: "Assembly and factory acceptance testing from inspected product-specific components; hydraulic-fluid and compressed-air test cards apply only to their respective routes"
+  market_state: "Complete, accepted, market-ready, unpackaged motor at the factory gate"
+functional_unit:
+  what: "Controlled rotary mechanical output from pressurized hydraulic liquid or compressed gas by a complete non-linear-acting motor or actuator"
+  how_much: "One accepted unit with declared rated torque, speed and power, or declared angular travel and torque for a limited-rotation actuator"
+  how_well: "Meets declared pressure, displacement or angular travel, torque, speed, power, efficiency or leakage, cleanliness, and acceptance criteria"
+  how_long_or_cycle: "Declared design service life in operating hours or cycles under the declared duty class and maintenance assumptions"
+  reference_flow_link: "One accepted market-ready output from motor_assembly_and_test"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "all datasets"
+      rule: "Include directly controlled assembly, finishing or adjustment, leak and function testing, attributable rework, and final acceptance through the unpackaged factory gate."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased inputs"
+      rule: "Keep each purchased component, electricity, hydraulic fluid, and compressed air as a visible atomic input linked to a compatible upstream dataset."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_route_test
+      applies_to: "test media"
+      rule: "Include hydraulic fluid only for hydraulic products and compressed air only for pneumatic products; declare the non-applicable route and never combine the flows."
+      source_ids:
+        - danfoss-orbital-motors-2021
+        - festo-drrd-1395606-2026
+    - rule_id: boundary_exclusions
+      applies_to: "downstream stages"
+      rule: "Exclude packaging, distribution, installation, use, maintenance, replacement, and end-of-life unless the study explicitly expands and discloses its boundary."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Inspected product-specific housings, shafts, rotors, seals, bearings, and other subassemblies received at the assembly site"
+  starting_condition_role: "Foreground gate-to-gate starting condition; purchased-component production remains an upstream dataset requirement"
+  product_classification_scope: "Complete configuration-declared CPC 43219 non-linear hydraulic and pneumatic power engines and motors"
+  recursive_input_rule: "Record a purchased same-category subassembly as a distinct product input and link its upstream dataset; do not absorb it into the reference product or recursively reapply this PCR within the same process."
+  upstream_dataset_requirement: "Link production datasets for purchased components, electricity, hydraulic fluid, and compressed air, preserving geography, technology, state, and delivery qualifiers."
+  disclosure: "Declare in-house operations, product route, meter coverage, rejected and reworked units, retained fill, recirculation, excluded packaging, and cut-offs."
+reference_flow_definition:
+  reference_amount: "1 Item(s)"
+  product_flow_ref:
+    name: "Other hydraulic or pneumatic power motor, non-linear acting"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "Item(s)"
+  required_qualifiers:
+    - "working medium"
+    - "motor or actuator principle"
+    - "fixed or variable displacement"
+    - "rated pressure or pressure differential"
+    - "displacement or angular travel"
+    - "rated torque"
+    - "rated speed"
+    - "rated mechanical output"
+    - "efficiency and leakage basis"
+    - "duty class"
+    - "design life or rated cycles"
+    - "finished mass and materials"
+    - "surface treatment"
+    - "included brake"
+    - sensor
+    - "or valve functions"
+    - "test procedure"
+    - geography
+    - technology
+    - "unpackaged factory-gate state"
+reference_flows:
+  []
+measurement_rules:
+  - id: accepted_unit_count
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "Item(s)"
+    rule: "Count only complete units passing final acceptance; normalize all exchanges to one accepted unit and disclose rejected or reworked units."
+  - id: component_mass
+    applies_to: "housing, shaft, rotor, seals, bearings"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use actual issued or BOM mass net of returned unused components and keep unlike components separate."
+  - id: electricity_energy
+    applies_to: "assembly and test electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Use allocated site-metered electricity; convert kWh using exactly 3.6 MJ/kWh and record the conversion."
+  - id: hydraulic_fluid_mass
+    applies_to: "hydraulic test fluid and spent fluid"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure issue, return, retention, spill, and dispatch mass by grade; volume conversion uses density at the recorded temperature."
+  - id: compressed_air_volume
+    applies_to: "pneumatic test air"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Declare pressure, temperature, humidity or base conditions and use one consistent reference condition."
+process_map:
+  - id: motor_assembly_and_test
+    name: "Motor assembly and factory acceptance testing"
+    inclusion: "required"
+    inclusion_condition: "Applies to every covered finished motor; activate route-specific test-medium cards according to the declared hydraulic or pneumatic configuration."
+    role: "foreground production"
+    quantitative_reference: "1 accepted unpackaged motor"
+process_inventory:
+  - id: motor_assembly_and_test
+    label: "Motor assembly and factory acceptance testing"
+    inputs:
+      product:
+        - row_id: steel_motor_housing
+          role: "Machined steel motor housing"
+          name: "Machined steel fluid-power motor housing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record a machined steel housing when the declared BOM uses steel."
+          amount:
+            expression: "issued or BOM mass attributable to accepted units, net of unused returns"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 accepted motor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - danfoss-orbital-motors-2021
+            ranges: []
+        - row_id: aluminium_motor_housing
+          role: "Machined aluminium-alloy motor housing"
+          name: "Machined aluminium-alloy fluid-power motor housing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record a machined aluminium-alloy housing only when the declared BOM uses aluminium."
+          amount:
+            expression: "issued or BOM mass attributable to accepted units, net of unused returns"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 accepted motor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - festo-drrd-1395606-2026
+            ranges: []
+        - row_id: motor_drive_shaft
+          role: "Hardened steel motor drive shaft"
+          name: "Hardened steel fluid-power motor drive shaft"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the finished drive-shaft mass issued to assembly."
+          amount:
+            expression: "issued or BOM mass attributable to accepted units"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 accepted motor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - danfoss-orbital-motors-2021
+                - festo-drrd-1395606-2026
+            ranges: []
+        - row_id: motor_rotor
+          role: "Fluid-power motor rotor"
+          name: "Fluid-power motor rotor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the configuration-specific rotor or rotating gear set and declare its metallurgy and principle."
+          amount:
+            expression: "issued or BOM mass attributable to accepted units"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 accepted motor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - danfoss-orbital-motors-2021
+            ranges: []
+        - row_id: elastomer_seal_set
+          role: "Elastomer seal set"
+          name: "Elastomer seal set for a fluid-power motor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the installed seal-set mass and declare elastomer family and included parts."
+          amount:
+            expression: "issued or BOM mass attributable to accepted units"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 accepted motor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - festo-drrd-1395606-2026
+            ranges: []
+        - row_id: rolling_bearing_set
+          role: "Rolling-bearing set"
+          name: "Rolling-bearing set for a fluid-power motor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the bearing-set mass installed in the declared configuration."
+          amount:
+            expression: "issued or BOM mass attributable to accepted units"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 accepted motor"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - danfoss-orbital-motors-2021
+            ranges: []
+        - row_id: electricity
+          role: "Assembly and test electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record purchased electricity for assembly equipment, test rigs, and attributable auxiliaries."
+          amount:
+            expression: "allocate site-metered electricity and normalize using calc_normalize_per_accepted_unit"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 accepted motor"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_meter
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: hydraulic_test_fluid
+          role: "Hydraulic test fluid"
+          name: "Hydraulic Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "eafff56c-3487-4345-9f24-00429f61c556"
+          property_unit: "Mass / kg"
+          description: "For hydraulic products, record net test-fluid input after reusable returns and recirculation; declare grade and retained fill."
+          amount:
+            expression: "issued mass minus returned reusable mass, normalized to accepted hydraulic motors"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 accepted hydraulic motor"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_hydraulic_test_fluid
+              source_ids:
+                - danfoss-orbital-motors-2021
+            ranges: []
+        - row_id: compressed_test_air
+          role: "Compressed air for pneumatic testing"
+          name: "Compressed air"
+          flow_type: "product"
+          flow_ref:
+            uuid: "46e2b1e4-5a4e-4579-b6a2-65b03f9ce825"
+          property_unit: "Volume / m3"
+          description: "For pneumatic products, record air delivered to leak and function testing at declared reference conditions."
+          amount:
+            expression: "metered test-rig volume normalized to accepted pneumatic motors at declared reference conditions"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 accepted pneumatic motor"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_compressed_air_meter
+              source_ids:
+                - festo-drrd-1395606-2026
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Accepted non-linear hydraulic or pneumatic motor"
+          name: "Other hydraulic or pneumatic power motor, non-linear acting"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "Record exactly one complete, accepted, market-ready, unpackaged motor."
+          amount:
+            expression: "1 accepted unit"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "one accepted motor"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_accepted_units
+              source_ids:
+                - un-cpc-3-0-structure-2025
+                - danfoss-orbital-motors-2021
+                - festo-drrd-1395606-2026
+            ranges: []
+      waste:
+        - row_id: spent_hydraulic_test_fluid
+          role: "Spent hydraulic motor test fluid"
+          name: "Spent hydraulic motor test fluid"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "For hydraulic products, record test fluid dispatched for treatment, separate from reusable or retained fluid."
+          amount:
+            expression: "measured dispatch mass or reconciled issue-return-retention balance per accepted hydraulic motor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 accepted hydraulic motor"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_spent_hydraulic_fluid
+              source_ids:
+                - danfoss-orbital-motors-2021
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "separable products, lines, and test routes"
+    rule: "Avoid allocation by subdividing routes, product families, batches, meters, and test rigs whenever records permit."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_shared_energy
+    applies_to: "shared assembly and test electricity"
+    rule: "If subdivision or direct metering is impossible, allocate with a documented physical driver such as measured machine energy, test-rig time, or accepted throughput and justify the driver."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_rework
+    applies_to: "rejected and reworked units"
+    rule: "Attribute traceable rework to the accepted configuration; allocate untraceable shared rework with the originating operation's physical driver and disclose rejection rates."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_waste_credit
+    applies_to: "spent fluid and component scrap"
+    rule: "Record waste and treatment links without avoided-production credit inside this factory-gate package; use substitution or system expansion only in an explicitly expanded study."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_component_bom
+      process_id: "motor_assembly_and_test"
+      flow_role: "housing, shaft, rotor, seal, bearing inputs"
+      record_type: "approved BOM and issue-return records"
+      raw_fields: "configuration; component; material; issued count; unit mass; returned count; accepted units"
+      collection_method: "reconcile BOM with stores issues and returns; verify unit mass"
+      unit: "kg"
+      frequency: "each configuration and lot"
+      temporal_coverage: "production representative period"
+      site_scope: "assembly site"
+      aggregation_rule: "sum net mass by atomic row and divide by accepted units"
+      quality_evidence: "BOM revision; ledger; weighing or supplier record"
+    - protocol_id: cp_energy_meter
+      process_id: "motor_assembly_and_test"
+      flow_role: "electricity"
+      record_type: "calibrated meter log"
+      raw_fields: "meter id; start; end; multiplier; coverage; allocation driver; accepted units"
+      collection_method: "calculate consumption, exclude uncovered loads, document allocation"
+      unit: "kWh or MJ"
+      frequency: "continuous or campaign"
+      temporal_coverage: "at least one representative year or disclosed shorter campaign"
+      site_scope: "assembly and test site"
+      aggregation_rule: "convert to MJ and divide allocated energy by accepted units"
+      quality_evidence: "calibration; meter export; schedule; worksheet"
+    - protocol_id: cp_hydraulic_test_fluid
+      process_id: "motor_assembly_and_test"
+      flow_role: "hydraulic test-fluid input"
+      record_type: "issue, return, and retained-fill records"
+      raw_fields: "grade; issue mass; reusable return; retained mass; temperature; density"
+      collection_method: "reconcile net fluid crossing the boundary"
+      unit: "kg"
+      frequency: "hydraulic campaign"
+      temporal_coverage: "hydraulic representative period"
+      site_scope: "hydraulic test rig and store"
+      aggregation_rule: "net issue divided by accepted hydraulic motors"
+      quality_evidence: "ledger; scale; density certificate; test log"
+    - protocol_id: cp_compressed_air_meter
+      process_id: "motor_assembly_and_test"
+      flow_role: "compressed test air"
+      record_type: "test-rig flowmeter log"
+      raw_fields: "volume; pressure; temperature; humidity or base condition; accepted units"
+      collection_method: "integrate delivered volume and normalize to one condition"
+      unit: "m3"
+      frequency: "pneumatic campaign"
+      temporal_coverage: "pneumatic representative period"
+      site_scope: "pneumatic test rig"
+      aggregation_rule: "normalized volume divided by accepted pneumatic motors"
+      quality_evidence: "calibration; test log; calculation"
+    - protocol_id: cp_accepted_units
+      process_id: "motor_assembly_and_test"
+      flow_role: "reference product"
+      record_type: "acceptance record"
+      raw_fields: "serial or lot; configuration; result; rework; time"
+      collection_method: "count only complete passing units"
+      unit: "Item(s)"
+      frequency: "each unit or lot"
+      temporal_coverage: "same period as inputs"
+      site_scope: "assembly site"
+      aggregation_rule: "accepted count is the denominator"
+      quality_evidence: "signed acceptance and rework logs"
+    - protocol_id: cp_spent_hydraulic_fluid
+      process_id: "motor_assembly_and_test"
+      flow_role: "spent hydraulic fluid"
+      record_type: "waste consignment and mass balance"
+      raw_fields: "waste mass; grade; issue; return; retention; spill; consignment"
+      collection_method: "weigh dispatch or reconcile balance and investigate loss"
+      unit: "kg"
+      frequency: "dispatch and campaign"
+      temporal_coverage: "hydraulic representative period"
+      site_scope: "test rig and waste store"
+      aggregation_rule: "waste mass divided by accepted hydraulic motors"
+      quality_evidence: "consignment; scale; signed balance"
+  calculation_rules:
+    - id: calc_normalize_per_accepted_unit
+      applies_to: "every row"
+      rule: "normalized amount = attributable foreground amount / accepted motor count"
+      inputs:
+        - "attributable amount"
+        - "accepted count"
+      output: "amount per accepted motor"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_electricity_conversion
+      applies_to: "electricity"
+      rule: "electricity MJ = metered kWh × 3.6 MJ/kWh"
+      inputs:
+        - "metered kWh"
+      output: "electricity MJ"
+      source_ids: []
+    - id: calc_component_net_issue
+      applies_to: "component inputs"
+      rule: "mass = issued count × unit mass − returned count × unit mass"
+      inputs:
+        - counts
+        - "unit mass"
+      output: "net component kg"
+      source_ids: []
+    - id: calc_hydraulic_fluid_balance
+      applies_to: "hydraulic input and waste"
+      rule: "net fluid = issue − reusable return; reconcile with retained fill, waste, spill, and stock change"
+      inputs:
+        - issue
+        - return
+        - retention
+        - waste
+        - spill
+        - stock
+      output: "input and waste kg per motor"
+      source_ids: []
+    - id: calc_compressed_air_reference
+      applies_to: "compressed air"
+      rule: "convert measured volume to one declared pressure, temperature, and humidity basis; never mix incompatible conditions"
+      inputs:
+        - volume
+        - pressure
+        - temperature
+        - humidity
+      output: "m3 at reference conditions per motor"
+      source_ids:
+        - festo-drrd-1395606-2026
+  data_quality_requirements:
+    - id: dq_completeness
+      applies_to: "all foreground rows"
+      requirement: "Reconcile the full period, including rejected and reworked units, and explain every omission."
+      evidence: "period reconciliation and cut-off register"
+    - id: dq_technology
+      applies_to: "product and route"
+      requirement: "Match principle, medium, pressure, displacement or angle, torque, speed, duty, and test technology."
+      evidence: "product specification and test plan"
+    - id: dq_geography
+      applies_to: "site and upstream links"
+      requirement: "State the site, match supplier geography where possible, and document proxies."
+      evidence: "site and supplier records; selection log"
+    - id: dq_time
+      applies_to: "all activity data"
+      requirement: "Use one representative period and disclose abnormal operations and mix changes."
+      evidence: "meter logs; production ledger; statement"
+    - id: dq_precision
+      applies_to: "meters and mass records"
+      requirement: "Retain calibration, resolution, conversions, and data-limit notes."
+      evidence: "certificates; raw exports; workbook"
+    - id: dq_consistency
+      applies_to: "normalization and allocation"
+      requirement: "Use one accepted-unit denominator, one air reference condition, and one allocation method."
+      evidence: "calculation audit and review"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "product category"
+    rule: "The product shall be a complete CPC 43219 non-linear hydraulic or pneumatic motor or actuator, not a CPC 43211 linear cylinder or excluded product."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_reference
+    applies_to: "reference flow"
+    rule: "Output shall equal exactly 1 accepted Item(s), with all required product, performance, life, geography, technology, and state qualifiers."
+    source_ids:
+      - danfoss-orbital-motors-2021
+      - festo-drrd-1395606-2026
+  - rule_id: validate_atomic_inventory
+    applies_to: "inventory"
+    rule: "Every exchange shall be atomic; hydraulic fluid and compressed air remain separate, and UUID-empty rows remain explicitly unresolved."
+    source_ids: []
+  - rule_id: validate_route
+    applies_to: "test media"
+    rule: "A hydraulic dataset includes or justifies zero hydraulic fluid and marks compressed air non-applicable; a pneumatic dataset does the converse unless both are separately metered."
+    source_ids:
+      - danfoss-orbital-motors-2021
+      - festo-drrd-1395606-2026
+  - rule_id: validate_balance
+    applies_to: "units, components, fluid"
+    rule: "Reconcile accepted counts, component net issues, and hydraulic-fluid issue-return-retention-waste balance or document investigated residuals."
+    source_ids: []
+  - rule_id: validate_energy
+    applies_to: "electricity"
+    rule: "Meter coverage, conversion, allocation, and accepted-unit normalization shall be reproducible."
+    source_ids: []
+  - rule_id: validate_boundary_allocation
+    applies_to: "boundary and allocation"
+    rule: "Disclose the starting condition, upstream links, exclusions, allocation hierarchy, and system expansion consistently."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_bilingual_alignment
+    applies_to: "bilingual use"
+    rule: "English and Chinese process ids, row ids, UUIDs, ordered rule ids, functional unit, rows, and source ids shall align."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Configuration-specific foreground dataset for assembly and factory acceptance testing of one complete CPC 43219 motor"
+  downstream_use: "TianGong flow, process, lifecyclemodel, and foreground package projections for product footprint or LCA"
+  allowed_use: "Factory-gate comparison only when function, performance, life, boundary, route, geography, technology, and allocation are compatible"
+  excluded_use: "Direct comparison with linear cylinders, turbines, pumps, compressors, valves, electric motors, incomplete parts, or incompatible boundaries"
+  required_metadata: "PCR id; CPC context; manufacturer and model; medium; principle; pressure; displacement or angle; torque; speed; power; efficiency or leakage; duty and life; mass and materials; surface treatment; included functions; site; period; test route; meter coverage; allocation; cut-offs; state"
+  required_quality_disclosure: "completeness; rejection and rework; BOM reconciliation; calibration and coverage; air conditions; fluid recirculation and retention; allocation driver; upstream proxies; unresolved UUIDs; absent external ranges"
+  update_trigger: "Change in principle, materials, performance class, test route, site, supplier geography, meter boundary, allocation, acceptance criteria, or period"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *CPC Version 3.0 Structure*, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Subclass 43219 identity and distinction from linear-acting subclass 43211"
+  - id: "danfoss-orbital-motors-2021"
+    type: "handbook"
+    reference: "Danfoss, *Technical Information: General, Orbital Motors*, BC152886483554en-000401, 2021, https://assets.danfoss.com/documents/latest/195953/BC152886483554en-000401.pdf"
+    used_for: "Hydraulic energy conversion, orbital-motor architecture, components, and performance qualifiers"
+  - id: "festo-drrd-1395606-2026"
+    type: "handbook"
+    reference: "Festo, *Rotary actuator DRRD-20-180-FH-PA data sheet*, part 1395606, generated 4 September 2026, https://ftp.festo.com/public/PNEUMATIC/SOFTWARE_SERVICE/DataSheet/EN_US/1395606.pdf"
+    used_for: "Pneumatic rotary-actuator identity, compressed-air medium, rack-and-pinion principle, fields, and materials"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission, *Commission Recommendation (EU) 2021/2279, Annex I Product Environmental Footprint Method*, consolidated 30 December 2021, https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX%3A02021H2279-20211230"
+    used_for: "Functional unit, reference flow, boundary, allocation hierarchy, and data-quality dimensions"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:018373769830e3820f49c9b743cb0bbbd9bb89480524de43e0a198e80a865224"
+  generated_content_sha256: "sha256:12e0d21cc5f1e4b292ba01f5d8a3e12a4bbd8e4d0b09ea48d57389738162f26e"

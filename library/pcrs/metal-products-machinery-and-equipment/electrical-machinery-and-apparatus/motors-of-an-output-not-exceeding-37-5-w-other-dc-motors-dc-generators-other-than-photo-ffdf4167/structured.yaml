@@ -1,10 +1,819 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "46111"
-  title: "Motors of an output not exceeding 37.5 W; other DC motors; DC generators other than photovoltaic generators"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.electrical-machinery-and-apparatus.motors-of-an-output-not-exceeding-37-5-w-other-dc-motors-dc-generators-other-than-photo-ffdf4167"
+  classification_refs: "CPC 3.0: 46111 (exact classification context; mapping acceptance remains separately governed)"
+  covered_products: "complete motors of rated output not exceeding 37.5 W; other complete DC motors; complete DC generators other than photovoltaic generators"
+  excluded_products: "photovoltaic generators; AC-only motors and generators; generating sets; rotary converters; standalone parts; products whose electrical machine is not the saleable reference product"
+  representative_product: "a packed, factory-tested complete DC motor or DC generator ready for dispatch"
+  production_route: "purchased-material and component preparation, magnetic-core and shaft fabrication where performed, winding and insulation, rotor/commutation assembly, impregnation and curing where used, final assembly, testing, finishing, and packing"
+  market_state: "new complete product at the manufacturing facility gate, with rated output, motor/generator function, commutation technology, magnet technology, cooling arrangement, enclosure, mass, and packing state declared"
+functional_unit:
+  what: "a complete CPC 46111 electric motor or DC generator meeting the declared technical specification"
+  how_much: "1 kg of packed finished product at the factory gate"
+  how_well: "passed the manufacturer's declared final electrical, mechanical, and safety inspection, with tested characteristics and test basis retained"
+  how_long_or_cycle: "one production reporting period; service life and use-stage output are not part of this reference flow"
+  reference_flow_link: "finished_motor_generator"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary is gate-to-gate manufacture. Purchased materials and components cross the starting gate; component preparation, winding, rotor and stator assembly, impregnation or curing where performed, final assembly, testing, finishing, and packing remain foreground operations. The manufacturing-chain decomposition and the need to link gate-to-gate records to upstream datasets are supported by nordelof-tillman-2018-motor-manufacturing."
+      source_ids: []
+    - rule_id: boundary_factory_gate
+      applies_to: "all foreground processes"
+      rule: "Include all operations under the reporting manufacturer's operational control from receipt of purchased materials or components through release of the packed finished motor or generator; disclose outsourced steps and do not silently omit them."
+      source_ids:
+        - nordelof-tillman-2018-motor-manufacturing
+    - rule_id: boundary_upstream_inputs
+      applies_to: "purchased product inputs"
+      rule: "Link each purchased material, component, electricity supply, and fuel to an upstream dataset matching material grade, product state, technology, geography, and delivery boundary; do not count upstream emissions as direct factory emissions."
+      source_ids:
+        - nordelof-tillman-2018-motor-manufacturing
+    - rule_id: boundary_route_condition
+      applies_to: "conditional technologies"
+      rule: "Include permanent magnets only for the declared permanent-magnet route, carbon brushes only for a brushed commutated route, and direct-fired curing gas and its direct fossil carbon dioxide only when those operations occur at the reporting site."
+      source_ids: []
+    - rule_id: boundary_additional_exchanges
+      applies_to: "facility inventory completeness"
+      rule: "Add any additional crossing exchange as a separate substance- or product-specific row with its own identity, property, amount method, and evidence; never replace missing detail with a collective material, utility, waste, or emissions label."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "purchased materials and components received at the reporting manufacturing facility gate, with the in-house versus purchased-subassembly split declared"
+  starting_condition_role: "foreground gate-to-gate starting condition; upstream production remains represented by linked datasets"
+  product_classification_scope: "complete products meeting the semantic CPC 46111 boundary, independent of any one route or nameplate rating within the three covered branches"
+  recursive_input_rule: "a purchased motor or generator incorporated into another covered product is recorded as a separate same-category product input with its own upstream dataset and is not recursively re-expanded inside this foreground package"
+  upstream_dataset_requirement: "every purchased material, component, packaging item, electricity supply, and fuel requires a geography-, technology-, grade-, and product-state-compatible upstream dataset"
+  disclosure: "disclose the product branch, technology, rated output, production geography, reporting period, operations performed in-house, outsourced operations, packaging inclusion, cut-offs, allocation, and all missing upstream datasets"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Electric motors"
+    uuid: "a17dfc74-85fa-4cdc-bd1f-61c543d349f2"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "motor or generator function"
+    - "rated output and rating basis"
+    - "DC or universal supply characteristic where relevant"
+    - brushed
+    - brushless
+    - "or other commutation technology"
+    - "permanent-magnet chemistry or wound-field design"
+    - "pole count"
+    - "rated voltage"
+    - "duty and duty type"
+    - "efficiency or loss test method when reported"
+    - "cooling arrangement"
+    - "enclosure and protection class"
+    - "embedded controller inclusion"
+    - "product mass basis"
+    - "packing state"
+    - "production geography"
+    - "reporting period"
+    - "factory gate"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product and all mass-normalized exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure net finished-machine mass and included dispatch packaging separately, then report their sum as the packed reference product; normalize every exchange to exactly 1 kg packed product and disclose both masses."
+  - id: energy_conversion
+    applies_to: "purchased electricity and natural gas"
+    required_property_ref:
+      name: "energy for electricity; volume for gaseous natural gas"
+      uuid: ""
+    required_unit: "MJ for electricity; m3 for natural gas"
+    rule: "Preserve metered source units and reference conditions. Convert electricity to MJ using 1 kWh = 3.6 MJ; disclose the temperature and pressure basis for gas volume and do not infer it from mass without a documented composition and conversion."
+  - id: rated_output_basis
+    applies_to: "category eligibility and product metadata"
+    required_property_ref:
+      name: "rated mechanical output for motors or rated electrical output for generators"
+      uuid: ""
+    required_unit: "W or kW"
+    rule: "Record the nameplate rating and rating basis. Apply the 37.5 W threshold only to the first category branch; do not apply it to the separate “other DC motors” or “DC generators” branches."
+  - id: scrap_mass_balance
+    applies_to: "steel, copper, and aluminium inputs and scrap outputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile input mass to incorporated material, saleable co-product if any, waste scrap, and measured stock change over the reporting period without netting recycled scrap from virgin or purchased input."
+process_map:
+  - id: component_fabrication
+    name: "Component preparation and mechanical fabrication"
+    inclusion: "required"
+    inclusion_condition: "Record purchased finished components as inputs and set unperformed in-house fabrication exchanges to not applicable with evidence."
+    role: "foreground material preparation, lamination cutting or stacking, shaft and housing preparation"
+    quantitative_reference: "kg of accepted components transferred to electromagnetic assembly per 1 kg packed finished product"
+  - id: electromagnetic_assembly
+    name: "Winding, insulation, rotor/stator assembly, and curing"
+    inclusion: "required"
+    inclusion_condition: "Magnet, brush, and direct-fired curing rows apply only to the declared technology."
+    role: "foreground electrical and magnetic assembly"
+    quantitative_reference: "kg of accepted electromagnetic assembly transferred to final assembly per 1 kg packed finished product"
+  - id: final_assembly_testing_packing
+    name: "Final assembly, testing, and packing"
+    inclusion: "required"
+    inclusion_condition: "All saleable products require final assembly and release inspection; packing reflects the declared dispatch state."
+    role: "foreground completion and reference-product output"
+    quantitative_reference: "1 kg packed finished reference product"
+process_inventory:
+  - id: component_fabrication
+    label: "Component preparation and mechanical fabrication"
+    inputs:
+      product:
+        - row_id: electrical_steel_sheet
+          role: "Electrical steel sheet for laminations"
+          name: "Electrical steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record silicon electrical-steel sheet crossing the factory boundary for stator or rotor laminations; grade, coating, thickness, and purchased-lamination status are foreground qualifiers."
+          amount:
+            expression: "measured mass received and consumed, reconciled to stock change and returned material"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packed finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_materials
+              source_ids: []
+            ranges: []
+        - row_id: shaft_steel_bar
+          role: "Steel bar for the shaft"
+          name: "Steel bar for motor shaft"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the specific alloy-steel or non-alloy-steel bar consumed for an in-house machined shaft; purchased finished shafts must be recorded separately in the foreground package."
+          amount:
+            expression: "measured bar mass issued to shaft machining, adjusted for stock return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packed finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_materials
+              source_ids: []
+            ranges: []
+        - row_id: aluminum_motor_housing
+          role: "Die-cast aluminium motor housing"
+          name: "Die-cast aluminium motor housing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased or internally cast aluminium housing bodies and end-bells that enter the product; alloy and purchased-versus-cast state are required qualifiers."
+          amount:
+            expression: "measured accepted housing mass consumed, including parts later rejected within the reporting period"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packed finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_materials
+              source_ids: []
+            ranges: []
+        - row_id: component_electricity
+          role: "Component-fabrication electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity for lamination cutting or stacking, shaft and housing machining, compressed air, and allocated technical building services within this process."
+          amount:
+            expression: "metered or submetered electricity attributed to component fabrication"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: electrical_steel_scrap
+          role: "Ferrous lamination and machining scrap"
+          name: "Steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "b82f6725-9112-4121-abe1-f94420e7c684"
+          property_unit: "Mass / kg"
+          description: "Record segregated electrical-steel and other ferrous offcuts leaving the process as one steel-scrap stream only when they share the same downstream handling."
+          amount:
+            expression: "measured outgoing ferrous scrap plus inventory change, before any avoided-burden credit"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_scrap
+              source_ids: []
+            ranges: []
+        - row_id: aluminum_scrap
+          role: "Aluminium housing machining scrap"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass / kg"
+          description: "Record aluminium chips and offcuts from housing preparation as a mass-based scrap stream; keep dross or contaminated swarf separate when present."
+          amount:
+            expression: "measured outgoing aluminium scrap plus inventory change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_scrap
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: electromagnetic_assembly
+    label: "Winding, insulation, rotor/stator assembly, and curing"
+    inputs:
+      product:
+        - row_id: ndfeb_magnet
+          role: "NdFeB permanent magnets"
+          name: "NdFeB magnet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a598b760-108c-4d70-93f9-59098959141e"
+          property_unit: "Mass / kg"
+          description: "Include only when an NdFeB permanent-magnet rotor is manufactured or assembled within the declared product route."
+          amount:
+            expression: "measured installed and rejected NdFeB magnet mass issued to the production route"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg packed finished product for the NdFeB route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electromagnetic_materials
+              source_ids: []
+            ranges: []
+        - row_id: ferrite_magnet
+          role: "Ferrite permanent magnets"
+          name: "Permanent ceramic or ferrite magnets"
+          flow_type: "product"
+          flow_ref:
+            uuid: "59fbfc86-a725-413c-b3df-d6f7683036d5"
+          property_unit: "Mass / kg"
+          description: "Include only when a ceramic or ferrite permanent-magnet rotor is manufactured or assembled within the declared product route."
+          amount:
+            expression: "measured installed and rejected ferrite magnet mass issued to the production route"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg packed finished product for the ferrite route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electromagnetic_materials
+              source_ids: []
+            ranges: []
+        - row_id: magnet_wire
+          role: "Insulated copper winding wire"
+          name: "Magnet wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2bf8a4db-b29e-404a-ae6c-402adbb77af4"
+          property_unit: "Mass / kg"
+          description: "Record magnet wire consumed in stator or rotor windings, including wire in rejected windings and subtracting verified stock returns."
+          amount:
+            expression: "measured magnet-wire mass issued less returned stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packed finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electromagnetic_materials
+              source_ids: []
+            ranges: []
+        - row_id: pet_insulation_film
+          role: "PET electrical-insulation film"
+          name: "Polyethylene terephthalate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1ce0d026-923b-4339-a8ca-31e228475c75"
+          property_unit: "Mass / kg"
+          description: "Record polyethylene-terephthalate slot, phase, or winding insulation film where used; thickness, grade, and laminate composition must be declared."
+          amount:
+            expression: "measured PET insulation-film mass consumed"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg packed finished product for routes using PET film"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electromagnetic_materials
+              source_ids: []
+            ranges: []
+        - row_id: epoxy_impregnation_resin
+          role: "Epoxy winding impregnation resin"
+          name: "Epoxy resin"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e2bab6ae-d42f-4fca-bab5-ae9c6692f105"
+          property_unit: "Mass / kg"
+          description: "Record epoxy resin retained in the winding and production losses when epoxy impregnation is performed; formulation, solvent content, and curing system must be declared."
+          amount:
+            expression: "measured epoxy resin issued less recovered reusable resin and stock return"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg packed finished product for epoxy-impregnated routes"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electromagnetic_materials
+              source_ids: []
+            ranges: []
+        - row_id: electromagnetic_electricity
+          role: "Electromagnetic-assembly electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity used for winding, insertion, joining, impregnation, curing, rotor assembly, balancing, compressed air, and allocated technical building services."
+          amount:
+            expression: "metered or submetered electricity attributed to electromagnetic assembly"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electromagnetic_energy
+              source_ids: []
+            ranges: []
+        - row_id: curing_natural_gas
+          role: "Natural gas for direct-fired curing"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Include only when gaseous natural gas crosses the foreground boundary to supply direct-fired curing heat; exclude upstream gas-supply emissions from direct factory emissions."
+          amount:
+            expression: "metered natural-gas volume at declared reference conditions attributed to curing"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg packed finished product for direct-fired natural-gas curing"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electromagnetic_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: copper_scrap
+          role: "Copper winding scrap"
+          name: "Copper Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "4fbbb5f1-560a-4052-ba0c-652c5dfc282e"
+          property_unit: "Mass / kg"
+          description: "Record clean copper winding offcuts and rejected copper wire leaving as copper scrap; mixed or insulated waste wire must be reported separately if its treatment differs."
+          amount:
+            expression: "measured outgoing copper scrap plus inventory change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electromagnetic_scrap_emissions
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: curing_fossil_co2
+          role: "Direct fossil carbon dioxide from curing"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Include only direct fossil carbon dioxide emitted by on-site natural-gas curing. Do not include power-grid or upstream fuel emissions in this row."
+          amount:
+            expression: "measured stack emission or calculated direct combustion emission from metered gas using a documented site-specific carbon factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed finished product for direct-fired natural-gas curing"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_electromagnetic_scrap_emissions
+              source_ids: []
+            ranges: []
+  - id: final_assembly_testing_packing
+    label: "Final assembly, testing, and packing"
+    inputs:
+      product:
+        - row_id: motor_bearing
+          role: "Ball or roller bearings"
+          name: "Ball or roller bearings"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9b10184f-db9d-4cc7-94b5-02ab19ca370d"
+          property_unit: "Mass / kg"
+          description: "Record complete bearings installed in the motor or generator; bearing type, material, sealing, and size remain product qualifiers."
+          amount:
+            expression: "measured mass of accepted and rejected bearings issued to assembly less stock return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packed finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_components_packaging
+              source_ids: []
+            ranges: []
+        - row_id: carbon_brush
+          role: "Electrical carbon brushes"
+          name: "Electrical carbon brush"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only for a brushed commutated DC route and record the concrete brush grade and holder inclusion; do not use household-brush or electrolysis-anode identities."
+          amount:
+            expression: "measured mass of carbon brushes installed and rejected less stock return"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg packed finished product for brushed routes"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_components_packaging
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_board_box
+          role: "Corrugated board dispatch box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record corrugated board boxes included in the declared packed product; reusable transport packaging outside the saleable dispatch unit must be modelled separately."
+          amount:
+            expression: "measured corrugated-box mass consumed for dispatched conforming products"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packed finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_components_packaging
+              source_ids: []
+            ranges: []
+        - row_id: final_assembly_electricity
+          role: "Final assembly and test electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for presses and tools, final electrical and mechanical tests, finishing equipment, packing, compressed air, and allocated technical building services."
+          amount:
+            expression: "metered or submetered electricity attributed to final assembly, testing, finishing, and packing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_motor_generator
+          role: "Packed finished motor or DC generator"
+          name: "Electric motors"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a17dfc74-85fa-4cdc-bd1f-61c543d349f2"
+          property_unit: "Mass / kg"
+          description: "This is the quantitative reference output. Rejects and rework do not enter the reference-product mass until they pass the declared release inspection."
+          amount:
+            expression: "normalized mass of conforming packed finished product released at the factory gate"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "exactly 1 kg packed finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finished_output
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "mixed products, routes, or production lines"
+    rule: "First subdivide metered processes, batches, and material issues by product family, technology route, and reporting period wherever physically separate records exist."
+    source_ids: []
+  - rule_id: allocation_causal
+    applies_to: "remaining shared energy and auxiliary operations"
+    rule: "Allocate remaining shared burdens using a documented causal driver such as machine time, metered energy, throughput mass, or test time; mass allocation is permitted only when it reasonably represents the physical cause."
+    source_ids: []
+  - rule_id: allocation_scrap
+    applies_to: "steel, copper, and aluminium scrap"
+    rule: "Report scrap mass and destination explicitly. Do not subtract scrap revenue, recycled-content credit, or avoided primary production from foreground inputs or direct emissions; any end-of-life or substitution credit must be a separately disclosed scenario."
+    source_ids: []
+  - rule_id: allocation_no_double_count
+    applies_to: "purchased subassemblies and outsourced operations"
+    rule: "Do not include both an upstream purchased-subassembly dataset and the same subassembly's fabrication burdens inside the foreground system unless the boundary split and non-overlap are demonstrated."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_component_materials
+      process_id: "component_fabrication"
+      flow_role: "electrical steel, shaft bar, and aluminium housing inputs"
+      record_type: "purchase, receiving, issue, return, stock, and bill-of-material records"
+      raw_fields: "product code; material grade; product state; mass received; mass issued; mass returned; opening stock; closing stock; batch; date"
+      collection_method: "calibrated scale records reconciled to enterprise material records"
+      unit: "kg"
+      frequency: "per receipt and issue; aggregate monthly"
+      temporal_coverage: "at least 12 consecutive representative months or the full production campaign"
+      site_scope: "all reporting-site component operations and relevant outsourced steps"
+      aggregation_rule: "consumed mass = opening stock + receipts - closing stock - verified returns; normalize by conforming packed output mass"
+      quality_evidence: "scale calibration; invoice or delivery record; stock reconciliation; bill of materials; batch trace"
+    - protocol_id: cp_component_energy
+      process_id: "component_fabrication"
+      flow_role: "electricity"
+      record_type: "utility meter and submeter records"
+      raw_fields: "meter id; opening reading; closing reading; multiplier; process assignment; downtime; reporting dates"
+      collection_method: "calibrated meter or documented facility allocation"
+      unit: "kWh, converted to MJ"
+      frequency: "continuous or shift readings; aggregate monthly"
+      temporal_coverage: "same period as output"
+      site_scope: "component-fabrication equipment and allocated services"
+      aggregation_rule: "sum verified meter increments, remove documented non-production loads, allocate residual shared loads causally, convert to MJ, divide by packed output kg"
+      quality_evidence: "meter calibration; utility invoice reconciliation; allocation worksheet"
+    - protocol_id: cp_component_scrap
+      process_id: "component_fabrication"
+      flow_role: "ferrous and aluminium scrap"
+      record_type: "weigh ticket, scrap-bin, and stock records"
+      raw_fields: "material identity; contamination state; mass; destination; opening stock; closing stock; date"
+      collection_method: "calibrated scale and destination documentation"
+      unit: "kg"
+      frequency: "each shipment or bin clearance; aggregate monthly"
+      temporal_coverage: "same period as output"
+      site_scope: "all component-fabrication scrap points"
+      aggregation_rule: "outgoing mass + closing stock - opening stock, separated by metal and treatment route, divided by packed output kg"
+      quality_evidence: "weigh ticket; scale calibration; recycler receipt; mass-balance reconciliation"
+    - protocol_id: cp_electromagnetic_materials
+      process_id: "electromagnetic_assembly"
+      flow_role: "magnets, magnet wire, PET film, and epoxy resin"
+      record_type: "issue, return, formulation, batch, and bill-of-material records"
+      raw_fields: "product code; chemistry or grade; mass issued; mass returned; recovered reusable material; rejected amount; batch; route"
+      collection_method: "calibrated weighing and production issue reconciliation"
+      unit: "kg"
+      frequency: "per batch or material issue; aggregate monthly"
+      temporal_coverage: "same period as output"
+      site_scope: "winding, insulation, rotor/stator assembly, and impregnation areas"
+      aggregation_rule: "net consumed mass = issued - verified return - recovered reusable material; keep route-specific totals; divide by packed output kg"
+      quality_evidence: "scale calibration; batch traveller; formulation record; stock reconciliation"
+    - protocol_id: cp_electromagnetic_energy
+      process_id: "electromagnetic_assembly"
+      flow_role: "electricity and natural gas"
+      record_type: "electricity and gas meter records"
+      raw_fields: "meter id; readings; electricity multiplier; gas volume; gas reference temperature and pressure; process assignment; reporting dates"
+      collection_method: "calibrated meter or documented facility allocation"
+      unit: "kWh and m3"
+      frequency: "continuous or shift readings; aggregate monthly"
+      temporal_coverage: "same period as output"
+      site_scope: "electromagnetic assembly and curing equipment plus allocated services"
+      aggregation_rule: "sum verified increments by carrier and route; convert electricity to MJ; retain gas in m3 at declared reference conditions; divide each by packed output kg"
+      quality_evidence: "meter calibration; invoice reconciliation; route and oven log; allocation worksheet"
+    - protocol_id: cp_electromagnetic_scrap_emissions
+      process_id: "electromagnetic_assembly"
+      flow_role: "copper scrap and direct curing carbon dioxide"
+      record_type: "scrap weigh records, stack measurements, and fuel-carbon calculation records"
+      raw_fields: "copper scrap mass; destination; stack CO2 mass; metered gas; carbon factor; oxidation factor; calculation version; reporting dates"
+      collection_method: "calibrated scale; direct stack measurement where available; otherwise documented calculation from metered fuel"
+      unit: "kg"
+      frequency: "each scrap shipment and each emissions reporting interval; aggregate monthly"
+      temporal_coverage: "same period as output"
+      site_scope: "winding and on-site curing operations only"
+      aggregation_rule: "calculate copper scrap by stock balance; use measured direct CO2 or metered fuel multiplied by documented site factor; exclude upstream emissions; divide by packed output kg"
+      quality_evidence: "weigh tickets; analyser calibration; gas meter record; factor provenance; calculation audit trail"
+    - protocol_id: cp_final_components_packaging
+      process_id: "final_assembly_testing_packing"
+      flow_role: "bearings, carbon brushes, and corrugated boxes"
+      record_type: "component issue, return, bill-of-material, and packaging records"
+      raw_fields: "product code; component type; brush route; mass issued; mass returned; rejects; packed unit count; packaging mass"
+      collection_method: "calibrated weighing and traceable material issues"
+      unit: "kg"
+      frequency: "per batch or issue; aggregate monthly"
+      temporal_coverage: "same period as output"
+      site_scope: "final assembly and packing areas"
+      aggregation_rule: "net consumed mass by atomic component = issued - verified return; divide by packed output kg and retain technology applicability"
+      quality_evidence: "bill of materials; route traveller; scale calibration; packaging specification"
+    - protocol_id: cp_final_energy
+      process_id: "final_assembly_testing_packing"
+      flow_role: "final assembly and test electricity"
+      record_type: "utility meter, test-rig, and equipment runtime records"
+      raw_fields: "meter readings; test-rig energy; runtime; product family; rejected test; reporting dates"
+      collection_method: "calibrated submeter or documented causal allocation"
+      unit: "kWh, converted to MJ"
+      frequency: "per test where available and monthly meter reconciliation"
+      temporal_coverage: "same period as output"
+      site_scope: "final assembly, finishing, test, and packing equipment plus allocated services"
+      aggregation_rule: "sum direct readings and causally allocated shared load; include failed tests; convert to MJ; divide by packed output kg"
+      quality_evidence: "meter calibration; test log; invoice reconciliation; allocation worksheet"
+    - protocol_id: cp_finished_output
+      process_id: "final_assembly_testing_packing"
+      flow_role: "packed finished reference product"
+      record_type: "final inspection, release, packing, and dispatch records"
+      raw_fields: "product id; branch; rating; technology; net product mass; packaging mass; accepted quantity; reject quantity; release date"
+      collection_method: "calibrated weighing linked to release inspection"
+      unit: "kg"
+      frequency: "each released batch; aggregate monthly"
+      temporal_coverage: "same period as all inputs"
+      site_scope: "all conforming product released from the reporting factory"
+      aggregation_rule: "packed output mass = accepted net product mass + included dispatch packaging mass; normalize the package to exactly 1 kg"
+      quality_evidence: "scale calibration; signed inspection record; nameplate record; packing specification; dispatch record"
+  calculation_rules:
+    - id: calc_material_normalization
+      applies_to: "every mass-based product input and scrap output"
+      rule: "normalized exchange = reconciled net exchange mass / conforming packed output mass"
+      inputs:
+        - "applicable material or scrap protocol"
+        - cp_finished_output
+      output: "kg exchange per 1 kg packed finished product"
+      source_ids: []
+    - id: calc_electricity_normalization
+      applies_to: "each electricity row"
+      rule: "normalized electricity = reconciled kWh × 3.6 / conforming packed output mass"
+      inputs:
+        - "applicable energy protocol"
+        - cp_finished_output
+      output: "MJ electricity per 1 kg packed finished product"
+      source_ids: []
+    - id: calc_gas_normalization
+      applies_to: "curing_natural_gas"
+      rule: "normalized gas = metered m3 at declared reference conditions / conforming packed output mass"
+      inputs:
+        - cp_electromagnetic_energy
+        - cp_finished_output
+      output: "m3 natural gas per 1 kg packed finished product"
+      source_ids: []
+    - id: calc_direct_co2
+      applies_to: "curing_fossil_co2"
+      rule: "use measured direct stack CO2 where valid; otherwise multiply metered gas by a documented site-specific fossil-carbon factor and oxidation basis, then divide by conforming packed output mass"
+      inputs:
+        - cp_electromagnetic_scrap_emissions
+        - cp_finished_output
+      output: "kg direct fossil CO2 per 1 kg packed finished product"
+      source_ids: []
+    - id: calc_reference_output
+      applies_to: "finished_motor_generator"
+      rule: "divide every exchange by conforming packed output mass so the quantitative reference output equals exactly 1 kg"
+      inputs:
+        - cp_finished_output
+      output: "1 kg packed finished product"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and route-conditional rows"
+      requirement: "Retain product branch, nameplate rated output and basis, commutation and magnet technology, duty, rated voltage, cooling, enclosure, embedded-controller inclusion, product mass, packing state, and factory gate."
+      evidence: "nameplate, product specification, bill of materials, route traveller, and release record; motor terminology and test context may be checked against iea-4e-peet-motor-regulations-2022"
+    - id: dq_temporal
+      applies_to: "all foreground records"
+      requirement: "Use one common representative period, normally at least 12 consecutive months; if a shorter campaign is used, justify seasonality, start-up, shutdown, maintenance, and product-mix effects."
+      evidence: "dated meter, stock, production, inspection, and dispatch records"
+    - id: dq_completeness
+      applies_to: "all crossing exchanges"
+      requirement: "Reconcile material, energy, scrap, direct-emission, reject, and output records. Report every additional exchange atomically and disclose missing upstream datasets or records."
+      evidence: "mass-balance worksheet, energy reconciliation, emissions register, and completeness checklist"
+    - id: dq_measurement
+      applies_to: "metered and weighed values"
+      requirement: "Identify instrument, unit, calibration state, coverage, estimation or allocation, and any conversion factor; do not replace missing foreground records with the unresolved external ranges listed in review metadata."
+      evidence: "calibration certificates, meter logs, weigh tickets, and calculation audit trail"
+    - id: dq_geography_technology
+      applies_to: "foreground and linked upstream datasets"
+      requirement: "Match production geography, electricity supply, material grade, product state, component technology, and delivery boundary; justify every proxy."
+      evidence: "supplier declarations, dataset metadata, procurement records, and proxy-justification record"
+validation_rules:
+  - rule_id: validate_identity_scope
+    applies_to: "reference product"
+    rule: "Confirm that the saleable reference product is a complete product within one of the three covered branches and is not a photovoltaic generator, AC-only machine, generating set, rotary converter, standalone part, or larger host equipment."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_reference_mass
+    applies_to: "quantitative reference"
+    rule: "Confirm that accepted net product mass plus included dispatch packaging mass equals the denominator used to normalize all rows to exactly 1 kg; report both component masses."
+    source_ids: []
+  - rule_id: validate_route_applicability
+    applies_to: "conditional rows"
+    rule: "Confirm that NdFeB and ferrite magnet rows, carbon brushes, natural-gas curing, and direct fossil CO2 are present only for applicable declared routes, and that mutually exclusive magnet rows are not both populated unless the product actually contains both chemistries."
+    source_ids: []
+  - rule_id: validate_atomic_inventory
+    applies_to: "process inventory"
+    rule: "Confirm that every additional material, component, energy carrier, waste, and elementary emission is represented by one concrete atomic exchange with its own property, unit, amount method, and identity resolution status."
+    source_ids: []
+  - rule_id: validate_mass_energy_reconciliation
+    applies_to: "foreground records"
+    rule: "Reconcile material issues, stock changes, incorporated mass, scrap, rejects, packed output, electricity, and gas to the common reporting period; investigate and document residuals."
+    source_ids: []
+  - rule_id: validate_uuid_semantics
+    applies_to: "UUID-bearing rows"
+    rule: "Confirm public state-100 identity, English and Chinese baseName, flow type, classification, reference property, unit group, product state, geography, technology, and generalComment before reuse; blank UUID rows remain unresolved rather than proxied."
+    source_ids: []
+  - rule_id: validate_allocation
+    applies_to: "shared processes and scrap"
+    rule: "Confirm subdivision was attempted first, every residual allocation has a causal driver and disclosed fraction, scrap is reported gross, and no upstream or recycling burden is double-counted."
+    source_ids: []
+  - rule_id: validate_source_boundary
+    applies_to: "direct and upstream emissions"
+    rule: "Confirm that only on-site emissions are direct foreground elementary flows and that grid and fuel-supply emissions remain in linked upstream datasets."
+    source_ids:
+      - nordelof-tillman-2018-motor-manufacturing
+published_dataset_profile:
+  dataset_role: "unit_process"
+  downstream_use: "secondary_dataset; background_dataset; foreground component in a lifecyclemodel"
+  allowed_use: "factory-gate production of complete CPC 46111 products with matching branch, technology, rating basis, geography, reporting period, boundary, product mass, and packing state"
+  excluded_use: "photovoltaic generators; AC-only machines; generating sets; rotary converters; standalone parts; use-stage electricity or lifetime performance; products or geographies represented only by an undisclosed proxy"
+  required_metadata: "canonical PCR id; reference UUID; product branch; rated output and basis; motor/generator function; commutation and magnet technology; duty; rated voltage; cooling; enclosure; embedded-controller inclusion; net and packed masses; geography; reporting period; operations in-house and outsourced; packaging state; allocation; cut-offs; data-quality rating"
+  required_quality_disclosure: "foreground record coverage; instrument calibration; temporal representativeness; material and energy reconciliation; route applicability; upstream dataset matches and proxies; unresolved UUIDs; unresolved range evidence; direct-versus-upstream emissions split"
+  update_trigger: "material change in product branch, design or bill of materials, magnet or commutation technology, rated output basis, production route, site, electricity or fuel supply, allocation, packaging, reporting period, or data quality"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "official CPC 3.0 category identity, neighbouring exclusions, and the photovoltaic-generator exclusion"
+  - id: "un-cpc-v1-1-chinese-2004"
+    type: "official_guidance"
+    reference: "https://unstats.un.org/unsd/publication/SeriesM/M_77ver1_1c.pdf"
+    used_for: "established official Chinese CPC terminology for the 46111 category; the CPC 3.0 photovoltaic exclusion is translated from the current English source"
+  - id: "nordelof-tillman-2018-motor-manufacturing"
+    type: "literature"
+    reference: "https://doi.org/10.1007/s11367-017-1309-8"
+    used_for: "peer-reviewed full-text evidence for motor-factory process decomposition, component fabrication, winding, impregnation, assembly, testing, and gate-to-gate/upstream-linking logic; route and scale differences require foreground qualification"
+  - id: "iea-4e-peet-motor-regulations-2022"
+    type: "official_guidance"
+    reference: "https://www.iea-4e.org/peet/publications/4e-peet-status-of-electric-motor-regulations-2022/"
+    used_for: "institutional terminology for DC motors, duty and duty type, technology scope, and the need to retain test and performance bases"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:cd6690bfdb883b31024107e77389701e1eb562b867fc67aba96ea3fee65ecaa6"
+  generated_content_sha256: "sha256:de4625e0c08803c887624cc4ce0ac6a498d54fc3a6418c37b66b13a668c54d19"

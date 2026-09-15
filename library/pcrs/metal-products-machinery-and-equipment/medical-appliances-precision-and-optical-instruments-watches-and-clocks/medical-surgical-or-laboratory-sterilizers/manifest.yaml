@@ -2,10 +2,10 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.medical-appliances-precision-and-optical-instruments-watches-and-clocks.medical-surgical-or-laboratory-sterilizers
 title:
   en-US: "Medical, surgical or laboratory sterilizers"
-  zh-CN: null
-status: scaffold
+  zh-CN: "医疗、外科或实验室用灭菌器"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
   - "metal-products-machinery-and-equipment"
 modules:
@@ -22,16 +22,50 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "48140"
     title: "Medical, surgical or laboratory sterilizers"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  translation_verification:
+    zh-CN_title: "The professional term 灭菌器 was verified against the official SAMR standard record; 医疗、外科或实验室用 preserves all three use contexts in the CPC title."
+  unresolved_flow_identities:
+    - finished_sterilizer
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: stainless_steel_sheet
+        reason_code: no_exact_candidate
+        explanation: "The bounded search returned steel-sheet identities without verified stainless composition and one internally inconsistent stainless candidate. Receipt: 427a6310-f0e7-4ac2-8026-2ba2d32cfb31."
+      - row_id: finished_sterilizer
+        reason_code: no_exact_candidate
+        explanation: "The bounded reference-product search returned composite-autoclave parts, vacuum bag film and a tyre casing, not sterilization equipment. Receipt: 0f013522-47a4-46f8-bd1b-469ee8ec46a4."
+    range_evidence_needs:
+      - range_id: finished_product_and_material_mass
+        row_ids: [finished_sterilizer, stainless_steel_sheet, aluminium_sheet, abs_granulate, printed_wire_board, low_voltage_cable]
+        explanation: "Two independent, boundary-compatible manufacturing BOM sources were not available; collect model-specific BOM quantities and finished net mass."
+      - range_id: factory_energy_and_water
+        row_ids: [electricity, process_water]
+        explanation: "The verified PEP provides one technology/site case only; collect metered factory energy and water because a single case cannot define a range."
+      - range_id: conditional_fabrication_gases
+        row_ids: [industrial_oxygen, carbon_dioxide_shielding_gas]
+        explanation: "No two independent, route-compatible sources were verified; collect purchased gas quantities when the relevant fabrication operation is inside the foreground boundary."
+      - range_id: shipping_packaging
+        row_ids: [wooden_pallet, corrugated_board_boxes]
+        explanation: "The verified PEP provides one packaging composition only; collect the shipped configuration and reuse allocation rather than infer a range."
+      - range_id: manufacturing_wastes
+        row_ids: [stainless_steel_scrap, aluminium_scrap, cleaning_wastewater]
+        explanation: "No two independent, boundary-compatible waste-generation ranges were verified; collect weighed dispatch and wastewater records."

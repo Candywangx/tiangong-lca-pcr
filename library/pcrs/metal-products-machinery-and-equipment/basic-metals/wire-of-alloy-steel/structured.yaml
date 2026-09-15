@@ -1,10 +1,1292 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41267"
-  title: "Wire of alloy steel"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.wire-of-alloy-steel"
+  classification_refs: "CPC 3.0: 41267, Wire of alloy steel"
+  covered_products: "Cold-drawn wire of stainless steel, silico-manganese steel or other alloy steel, whether as-drawn, heat-treated, oiled or continuously zinc-coated, when sold as wire"
+  excluded_products: "Iron or non-alloy steel wire; hot-rolled wire rod sold without drawing; stranded wire and rope; insulated wire; welding wire products formulated as consumables; mesh, fasteners, springs and other fabricated articles"
+  representative_product: "Alloy-steel wire in coil or on a spool, meeting a declared grade, nominal diameter, mechanical condition and surface condition"
+  production_route: "Surface preparation followed by dry or wet die drawing; conditional thermal treatment; conditional continuous wire galvanising; finishing, inspection, coiling and dispatch packing"
+  market_state: "Finished alloy-steel wire at the producing facility dispatch gate, with packaging separately inventoried and excluded from reference-product mass"
+functional_unit:
+  what: "Provision of alloy-steel wire meeting the declared chemical grade, dimensional tolerance, mechanical condition and surface specification at the producing facility dispatch gate"
+  how_much: "1,000 kg net mass of conforming alloy-steel wire"
+  how_well: "Meets the declared purchaser or product specification for alloy grade, nominal diameter and tolerance, tensile or heat-treatment condition, surface or coating condition, and coil or spool form"
+  how_long_or_cycle: "One production lot accepted at final inspection; no service life is modelled"
+  reference_flow_link: "The net weighed output in row reference_product_alloy_steel_wire"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "Foreground conversion boundary"
+      rule: "Include all on-site material and energy inputs, direct emissions, wastes and internal transfers from receipt of the declared wire input through final weighing and dispatch preparation."
+      source_ids:
+        - eu-jrc-fmp-bref-2022
+    - rule_id: boundary_route_conditionals
+      applies_to: "Heat treatment and continuous galvanising"
+      rule: "Include thermal treatment or continuous wire galvanising only when performed by the reporting facility for the declared product state; otherwise mark the process and its atomic exchanges not applicable."
+      source_ids:
+        - eu-jrc-fmp-bref-2022
+        - eu-bat-ferrous-2022-2110
+    - rule_id: boundary_upstream_downstream
+      applies_to: "Processes outside the foreground facility"
+      rule: "Keep steelmaking, wire-rod production, transport, customer fabrication, use and end-of-life outside this foreground system and link them through separate representative datasets when the study scope requires them."
+      source_ids:
+        - eu-jrc-fmp-bref-2022
+    - rule_id: boundary_actual_chemicals_and_streams
+      applies_to: "Process chemicals, waste water and waste gas"
+      rule: "Identify and inventory each process chemical and each relevant waste-water or waste-gas stream actually present; do not use aggregated chemical, utility, waste or emission placeholders."
+      source_ids:
+        - eu-bat-ferrous-2022-2110
+boundary_abstraction:
+  declared_starting_condition: "Alloy-steel wire rod or partly drawn alloy-steel wire received at the reporting facility, with grade, mass, diameter, surface scale or coating state and upstream dataset identity declared"
+  starting_condition_role: "Upstream product input to the foreground conversion system"
+  product_classification_scope: "Alloy-steel wire sold as wire, including stainless, silico-manganese and other alloy grades; excludes non-alloy steel wire and downstream fabricated wire products"
+  recursive_input_rule: "If partly drawn alloy-steel wire in the same product category enters the facility, record it once as an upstream product input with its own upstream dataset and model only the additional on-site drawing and finishing; do not recursively recreate its prior production inside this foreground system."
+  upstream_dataset_requirement: "Use a supplier-, grade-, geography- and technology-representative dataset for wire rod or partly drawn wire; disclose recycled-content and steelmaking-route assumptions."
+  disclosure: "Declare starting diameter, final diameter, total section reduction, drawing medium, thermal-treatment route, coating route and mass, facility geography, production period, yield, packaging and every excluded operation."
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Wire of alloy steel"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "alloy grade and applicable specification"
+    - stainless
+    - "silico-manganese or other alloy family"
+    - "nominal diameter and tolerance"
+    - "tensile or heat-treatment condition"
+    - uncoated
+    - "oiled or continuously zinc-coated surface state"
+    - "zinc coating mass where applicable"
+    - "dry or wet drawing route"
+    - "facility geography"
+    - "production period"
+    - coil
+    - "spool or straight-length form"
+    - "packaging configuration"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "Reference product and metal mass balance"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net dry product mass on calibrated scales after final inspection; exclude pallets, spools, strapping and film from the reference-product mass and report those materials separately."
+  - id: metal_mass_balance
+    applies_to: "Alloy-steel inputs, internal transfers, saleable wire and metal-bearing wastes"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Reconcile batch opening and closing work-in-process so input metal equals saleable wire plus metal-bearing waste and inventory change, with coating metal tracked separately."
+  - id: electricity_conversion
+    applies_to: "Alternating-current inputs"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered kWh and convert to MJ using 1 kWh = 3.6 MJ; do not substitute a consumption-mix UUID unless its supplier, geography, voltage and delivery boundary match the site."
+  - id: natural_gas_volume
+    applies_to: "Gaseous natural-gas inputs"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report metered gas volume at the stated reference temperature, pressure and moisture condition; retain the supplier net calorific value used for energy and CO2 calculations."
+  - id: coating_mass
+    applies_to: "Zinc-coated wire"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine deposited zinc from measured wire mass and coating test records or a documented coating-area calculation; do not include zinc in the alloy-steel reference mass balance."
+process_map:
+  - id: surface_preparation
+    name: "Wire-rod receipt and surface preparation"
+    inclusion: "required"
+    inclusion_condition: "Always include receipt and preparation; acid, water and scale exchanges apply only to the declared mechanical-descaling or hydrochloric-pickling route."
+    role: "Foreground feed preparation"
+    quantitative_reference: "Mass of prepared wire rod transferred to drawing"
+  - id: wire_drawing
+    name: "Dry or wet wire drawing"
+    inclusion: "required"
+    inclusion_condition: "Include the actual dry or wet die-drawing route; lubricant rows are route-conditional."
+    role: "Foreground section reduction"
+    quantitative_reference: "Mass of drawn wire transferred from drawing"
+  - id: thermal_treatment
+    name: "Wire thermal treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when electric- or natural-gas-heated annealing is performed after drawing; lead-bath patenting and oil hardening require methodology extension."
+    role: "Foreground metallurgical conditioning"
+    quantitative_reference: "Mass of heat-treated wire output"
+  - id: continuous_galvanising
+    name: "Continuous zinc coating of wire"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when the reporting facility continuously zinc-coats the declared wire; other metallic, electrolytic or organic coatings require methodology extension."
+    role: "Foreground surface coating"
+    quantitative_reference: "Mass of galvanised wire output"
+  - id: finishing_and_dispatch
+    name: "Finishing, inspection, coiling and dispatch packing"
+    inclusion: "required"
+    inclusion_condition: "Include the one applicable incoming wire-state row and every actual finishing and packing exchange."
+    role: "Foreground final product preparation"
+    quantitative_reference: "Net mass of accepted alloy-steel wire"
+process_inventory:
+  - id: surface_preparation
+    label: "Wire-rod receipt and surface preparation"
+    inputs:
+      product:
+        - row_id: alloy_steel_wire_rod
+          role: "Alloy-steel wire-rod feedstock"
+          name: "Alloy-steel wire rod"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the weighed alloy-steel wire rod or partly drawn wire entering the facility, with grade and upstream dataset."
+          amount:
+            expression: "measured batch input mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metal_mass_balance
+              source_ids:
+                - un-cpc-3-structure-2025
+            ranges: []
+        - row_id: surface_prep_water
+          role: "Surface-preparation water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Include make-up water entering pickling, rinsing or wet mechanical descaling; exclude internally recycled water from gross input."
+          amount:
+            expression: "measured make-up-water mass consumed by surface preparation; when only volume is metered, convert with the measured batch density and retain the volume reference conditions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg prepared wire rod"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_preparation
+              source_ids:
+                - eu-bat-ferrous-2022-2110
+            ranges: []
+        - row_id: hydrochloric_acid_pickling
+          role: "Hydrochloric acid for pickling"
+          name: "Hydrochloric acid solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when hydrochloric-acid pickling is used; record delivered solution mass and concentration."
+          amount:
+            expression: "measured delivered solution consumed, accompanied by mass fraction HCl"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg pickled wire rod"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_preparation
+              source_ids:
+                - eu-bat-ferrous-2022-2110
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_alloy_steel_wire_rod
+          role: "Prepared alloy-steel wire rod"
+          name: "Prepared alloy-steel wire rod"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured internal transfer after scale removal and rinsing, before die drawing."
+          amount:
+            expression: "measured internal transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per surface-preparation batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metal_mass_balance
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        - row_id: iron_oxide_scale
+          role: "Iron-oxide scale"
+          name: "Mill scale"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "aad763e2-78ab-4fcb-8a3b-8d8525c9e6ca"
+          property_unit: "Mass / kg"
+          description: "Include scale collected by mechanical descaling or removed from bath cleaning as a separately weighed waste."
+          amount:
+            expression: "measured wet or dry waste mass with moisture basis declared"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg prepared wire rod"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_preparation
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: spent_hydrochloric_pickling_liquor
+          role: "Spent hydrochloric pickling liquor"
+          name: "Spent hydrochloric-acid pickling liquor"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include only for hydrochloric pickling and report the waste solution mass, acid concentration, dissolved metals and destination."
+          amount:
+            expression: "measured waste solution sent to recovery or treatment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg pickled wire rod"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_preparation
+              source_ids:
+                - eu-bat-ferrous-2022-2110
+            ranges: []
+      elementary:
+        []
+  - id: wire_drawing
+    label: "Dry or wet wire drawing"
+    inputs:
+      product:
+        - row_id: prepared_wire_rod_input
+          role: "Prepared wire-rod input"
+          name: "Prepared alloy-steel wire rod"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal prepared wire-rod mass entering the drawing machines."
+          amount:
+            expression: "measured internal input mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per wire-drawing batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metal_mass_balance
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: drawing_electricity
+          role: "Wire-drawing electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value / MJ"
+          description: "Record alternating-current electricity metered to drawing machines and directly associated extraction and lubricant circulation."
+          amount:
+            expression: "submetered electricity converted from kWh to MJ"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg drawn wire"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity
+              source_ids:
+                - eu-bat-ferrous-2022-2110
+            ranges: []
+        - row_id: calcium_stearate_lubricant
+          role: "Calcium-stearate dry-drawing lubricant"
+          name: "Calcium stearate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only for dry drawing that consumes calcium-stearate lubricant."
+          amount:
+            expression: "measured fresh lubricant charged minus separately recovered unused lubricant"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg dry-drawn wire"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drawing_lubricant
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: wire_drawing_emulsion
+          role: "Oil-in-water wire-drawing emulsion"
+          name: "Oil-in-water wire-drawing emulsion"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only for wet drawing using an oil-in-water emulsion; report concentrate and make-up water consistently."
+          amount:
+            expression: "measured fresh emulsion concentrate and make-up entering the drawing circuit"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg wet-drawn wire"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drawing_lubricant
+              source_ids:
+                - eu-bat-ferrous-2022-2110
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: drawn_alloy_steel_wire
+          role: "Drawn alloy-steel wire"
+          name: "Drawn alloy-steel wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal drawn-wire mass before conditional thermal treatment, coating or finishing."
+          amount:
+            expression: "measured internal transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per wire-drawing batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metal_mass_balance
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        - row_id: wire_drawing_scrap
+          role: "Alloy-steel wire-drawing scrap"
+          name: "Alloy-steel wire-drawing scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record cropped ends, broken wire and other separately collected alloy-steel scrap from drawing."
+          amount:
+            expression: "measured scrap mass by batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg drawn wire"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metal_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: spent_wire_drawing_emulsion
+          role: "Spent wire-drawing emulsion"
+          name: "Spent oil-in-water wire-drawing emulsion"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include only when wet-drawing emulsion is purged from the circuit; exclude the fraction cleaned and reused internally."
+          amount:
+            expression: "measured purge sent to off-site recovery or treatment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg wet-drawn wire"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drawing_lubricant
+              source_ids:
+                - eu-bat-ferrous-2022-2110
+            ranges: []
+      elementary:
+        []
+  - id: thermal_treatment
+    label: "Wire thermal treatment"
+    inputs:
+      product:
+        - row_id: drawn_wire_heat_input
+          role: "Drawn wire entering thermal treatment"
+          name: "Drawn alloy-steel wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include when the declared product receives an in-scope post-drawing thermal treatment."
+          amount:
+            expression: "measured internal mass entering the furnace"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per thermal-treatment batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metal_mass_balance
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: thermal_natural_gas
+          role: "Natural gas for wire heating"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Include only for natural-gas-heated furnaces and declare gas supply geography and reference-volume conditions."
+          amount:
+            expression: "metered furnace natural-gas consumption"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg heat-treated wire"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_thermal_energy
+              source_ids:
+                - eu-bat-ferrous-2022-2110
+            ranges: []
+        - row_id: thermal_electricity
+          role: "Electricity for wire heating"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value / MJ"
+          description: "Include only for electric heating and associated treatment equipment."
+          amount:
+            expression: "submetered thermal-treatment electricity converted from kWh to MJ"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg heat-treated wire"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity
+              source_ids:
+                - eu-bat-ferrous-2022-2110
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: heat_treated_alloy_steel_wire
+          role: "Heat-treated alloy-steel wire"
+          name: "Heat-treated alloy-steel wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal mass transferred after the declared thermal treatment and before coating or finishing."
+          amount:
+            expression: "measured internal transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per thermal-treatment batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metal_mass_balance
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: thermal_fossil_co2_air
+          role: "Fossil carbon dioxide from wire heating"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Include only for natural-gas combustion; use site measurement or the documented fuel-energy and fossil-carbon calculation."
+          amount:
+            expression: "measured stack mass or calculated fossil CO2 from metered fuel energy and a documented factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg heat-treated wire"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_co2
+              source_ids:
+                - ipcc-2006-stationary-combustion
+            ranges: []
+  - id: continuous_galvanising
+    label: "Continuous zinc coating of wire"
+    inputs:
+      product:
+        - row_id: wire_for_galvanising
+          role: "Wire entering continuous galvanising"
+          name: "Alloy-steel wire for continuous galvanising"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the one route-qualified drawn or heat-treated internal wire stream entering the coating line."
+          amount:
+            expression: "measured internal input mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per galvanising campaign"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metal_mass_balance
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: galvanising_hydrochloric_acid
+          role: "Hydrochloric acid for galvanising-line pickling"
+          name: "Hydrochloric acid solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include when hydrochloric pickling is performed on the continuous galvanising line."
+          amount:
+            expression: "measured delivered solution consumed, accompanied by mass fraction HCl"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg galvanised wire"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_galvanising_materials
+              source_ids:
+                - eu-bat-ferrous-2022-2110
+            ranges: []
+        - row_id: zinc_metal_input
+          role: "Refined zinc for coating bath"
+          name: "Refined zinc metal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record zinc added to the continuous coating bath, with purity, supplier and recycled-content information."
+          amount:
+            expression: "measured zinc additions adjusted for opening and closing bath inventory"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg galvanised wire"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_galvanising_materials
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: zinc_ammonium_chloride_flux
+          role: "Zinc-ammonium-chloride flux"
+          name: "Zinc-ammonium-chloride galvanising flux"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when this declared flux formulation is used before zinc immersion."
+          amount:
+            expression: "measured fresh flux consumed, with formulation declared"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg galvanised wire"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_galvanising_materials
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: galvanising_natural_gas
+          role: "Natural gas for galvanising-line heating"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Include only for natural-gas-fired coating-bath or directly associated feedstock heating."
+          amount:
+            expression: "metered galvanising-line natural-gas consumption"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg galvanised wire"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_thermal_energy
+              source_ids:
+                - eu-bat-ferrous-2022-2110
+            ranges: []
+        - row_id: galvanising_electricity
+          role: "Electricity for continuous galvanising"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity metered to the coating line, bath equipment, extraction and finishing equipment."
+          amount:
+            expression: "submetered galvanising electricity converted from kWh to MJ"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg galvanised wire"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity
+              source_ids:
+                - eu-bat-ferrous-2022-2110
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: galvanised_alloy_steel_wire
+          role: "Galvanised alloy-steel wire"
+          name: "Continuously zinc-coated alloy-steel wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record coated wire mass after the zinc bath and before final finishing."
+          amount:
+            expression: "measured internal transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per galvanising campaign"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metal_mass_balance
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        - row_id: galvanising_spent_pickling_liquor
+          role: "Spent galvanising pickling liquor"
+          name: "Spent hydrochloric-acid galvanising pickling liquor"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include discharged pickling liquor from the coating line, with acid and dissolved-metal composition."
+          amount:
+            expression: "measured waste solution sent to recovery or treatment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg galvanised wire"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_galvanising_wastes
+              source_ids:
+                - eu-bat-ferrous-2022-2110
+            ranges: []
+        - row_id: zinc_dross
+          role: "Zinc dross"
+          name: "Zinc dross from continuous wire galvanising"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record dross removed from the zinc bath separately from saleable coated wire."
+          amount:
+            expression: "measured dross mass and zinc content"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg galvanised wire"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_galvanising_wastes
+              source_ids:
+                - eu-bat-ferrous-2022-2110
+            ranges: []
+        - row_id: acidic_galvanising_wastewater
+          role: "Acidic galvanising wastewater"
+          name: "Acidic wastewater from continuous wire galvanising"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record the discharged acidic wastewater after internal reuse, with treatment destination and composition."
+          amount:
+            expression: "measured discharge volume after internal recycle"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg galvanised wire"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_galvanising_wastes
+              source_ids:
+                - eu-bat-ferrous-2022-2110
+            ranges: []
+      elementary:
+        - row_id: galvanising_fossil_co2_air
+          role: "Fossil carbon dioxide from galvanising heating"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Include only for on-site natural-gas combustion serving the continuous galvanising line."
+          amount:
+            expression: "measured stack mass or calculated fossil CO2 from metered fuel energy and a documented factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg galvanised wire"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_co2
+              source_ids:
+                - ipcc-2006-stationary-combustion
+            ranges: []
+  - id: finishing_and_dispatch
+    label: "Finishing, inspection, coiling and dispatch packing"
+    inputs:
+      product:
+        - row_id: drawn_wire_finishing_input
+          role: "Unheated uncoated drawn-wire input"
+          name: "Drawn alloy-steel wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use only when the finished product is drawn wire without in-scope heat treatment or continuous galvanising."
+          amount:
+            expression: "measured internal input mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per finishing batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metal_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: heat_treated_wire_finishing_input
+          role: "Heat-treated uncoated wire input"
+          name: "Heat-treated alloy-steel wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use only when thermal treatment is included and continuous galvanising is not included."
+          amount:
+            expression: "measured internal input mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per finishing batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metal_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: galvanised_wire_finishing_input
+          role: "Galvanised-wire input"
+          name: "Continuously zinc-coated alloy-steel wire"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use only when continuous galvanising is included."
+          amount:
+            expression: "measured internal input mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per finishing batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metal_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: finishing_electricity
+          role: "Finishing electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for straightening where applicable, coiling, inspection and packing equipment."
+          amount:
+            expression: "submetered finishing electricity converted from kWh to MJ"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity
+              source_ids: []
+            ranges: []
+        - row_id: rust_preventive_mineral_oil
+          role: "Rust-preventive mineral oil"
+          name: "Rust-preventive mineral oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when mineral oil is intentionally applied and remains on the sold wire."
+          amount:
+            expression: "measured fresh oil applied minus captured return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg oiled wire"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_materials
+              source_ids: []
+            ranges: []
+        - row_id: steel_strapping
+          role: "Steel strapping"
+          name: "Steel baling band"
+          flow_type: "product"
+          flow_ref:
+            uuid: "56fe4f71-b594-4b55-8553-c87f2516737d"
+          property_unit: "Mass / kg"
+          description: "Include the measured steel strapping that leaves the facility with the reference product."
+          amount:
+            expression: "measured strapping mass shipped with the product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: wood_pallet
+          role: "Wooden pallet"
+          name: "Pallets, box pallets and other load boards, of wood, pallet collars of wood"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4b49871e-95be-4e0c-9223-9902f9eaa763"
+          property_unit: "Mass / kg"
+          description: "Include only when a pallet leaves the facility with the product; declare reuse status."
+          amount:
+            expression: "pallet count multiplied by measured or supplier-declared unit mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: ldpe_stretch_film
+          role: "Low-density-polyethylene stretch film"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass / kg"
+          description: "Include only when LDPE film leaves the facility with the product."
+          amount:
+            expression: "measured film mass shipped with the product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_alloy_steel_wire
+          role: "Accepted alloy-steel wire"
+          name: "Wire of alloy steel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This is the reference product after final inspection and weighing; packaging mass is excluded."
+          amount:
+            expression: "1,000 kg net accepted product mass"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_final_product
+              source_ids:
+                - un-cpc-3-structure-2025
+            ranges: []
+      waste:
+        - row_id: steel_strapping_offcuts
+          role: "Steel-strapping offcuts"
+          name: "Steel packaging-strapping offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record on-site strapping offcuts separately from strapping shipped with the product."
+          amount:
+            expression: "measured offcut mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: ldpe_film_offcuts
+          role: "LDPE-film offcuts"
+          name: "Low-density-polyethylene film offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record on-site film offcuts separately from film shipped with the product."
+          amount:
+            expression: "measured offcut mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "Shared equipment and services"
+    rule: "First subdivide meters, batch records and process time so only burdens attributable to the declared alloy-steel wire are assigned to it."
+    source_ids:
+      - ec-pef-2021-2279
+  - rule_id: allocation_physical_relation
+    applies_to: "Residual shared burdens"
+    rule: "When subdivision is not feasible, allocate using a documented causal physical relation such as machine time, metered energy or processed mass; disclose the rationale, input data and sensitivity."
+    source_ids:
+      - ec-pef-2021-2279
+  - rule_id: allocation_no_avoided_burden
+    applies_to: "Scrap, scale, spent liquor, dross and packaging offcuts"
+    rule: "Report wastes and recovered materials at the foreground boundary without avoided-burden credits; any recycling or substitution model belongs to the receiving downstream system and must be reported separately."
+    source_ids:
+      - ec-pef-2021-2279
+  - rule_id: allocation_mass_reconciliation
+    applies_to: "Metal-bearing outputs"
+    rule: "Keep physical metal accounting independent from environmental-burden allocation and reconcile alloy-steel input, saleable wire, metal-bearing wastes and inventory change."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_metal_mass_balance
+      process_id: "surface_preparation_wire_drawing_thermal_treatment_continuous_galvanising_finishing_and_dispatch"
+      flow_role: "Alloy-steel input, internal transfers, product and metal waste"
+      record_type: "Scale ticket, batch traveller and inventory log"
+      raw_fields: "batch id; alloy grade; opening and closing work-in-process; input mass; transfer mass; product mass; scrap mass; moisture basis"
+      collection_method: "Read calibrated scales and reconcile each production lot across process boundaries."
+      unit: "kg"
+      frequency: "Each lot, reconciled monthly"
+      temporal_coverage: "Representative continuous 12-month period or every campaign for campaign production"
+      site_scope: "All equipment and storage locations inside the foreground facility"
+      aggregation_rule: "Sum accepted flows and inventory changes, then normalize to 1,000 kg accepted product."
+      quality_evidence: "Calibration certificates, signed batch records and documented reconciliation"
+    - protocol_id: cp_surface_preparation
+      process_id: "surface_preparation"
+      flow_role: "Water, acid, scale and spent liquor"
+      record_type: "Meter, purchase issue, bath log and waste manifest"
+      raw_fields: "route; water meter; solution mass; HCl fraction; bath opening and closing inventory; scale mass; spent-liquor mass; moisture; destination"
+      collection_method: "Use process submeters and tank or scale records; subtract internal reuse and inventory change."
+      unit: "m3; kg"
+      frequency: "Each batch or daily meter reading"
+      temporal_coverage: "Same production period as reference product"
+      site_scope: "Surface-preparation line only"
+      aggregation_rule: "Allocate shared daily totals by processed mass only when no causal submeter exists, and disclose allocation."
+      quality_evidence: "Meter checks, supplier certificates, bath analyses and waste manifests"
+    - protocol_id: cp_electricity
+      process_id: "wire_drawing_thermal_treatment_continuous_galvanising_finishing_and_dispatch"
+      flow_role: "Alternating-current electricity"
+      record_type: "Revenue meter and process submeter"
+      raw_fields: "meter id; voltage; supplier; geography; opening and closing kWh; production mass; downtime"
+      collection_method: "Difference calibrated meter readings; exclude non-production loads unless causally allocated and disclosed."
+      unit: "kWh and MJ"
+      frequency: "Each shift or batch"
+      temporal_coverage: "Same production period as reference product"
+      site_scope: "Each included process and directly associated control equipment"
+      aggregation_rule: "Convert kWh to MJ and normalize by the applicable process output."
+      quality_evidence: "Meter calibration, invoice reconciliation and load-allocation record"
+    - protocol_id: cp_drawing_lubricant
+      process_id: "wire_drawing"
+      flow_role: "Calcium stearate, fresh emulsion and spent emulsion"
+      record_type: "Stores issue, tank balance and waste manifest"
+      raw_fields: "formulation; fresh charge; returned unused mass; circuit opening and closing inventory; purge mass; recovery destination"
+      collection_method: "Complete dry-lubricant or wet-emulsion material balance for each route."
+      unit: "kg"
+      frequency: "Each batch, reconciled monthly"
+      temporal_coverage: "Same production period as reference product"
+      site_scope: "Drawing machines and lubricant treatment circuit"
+      aggregation_rule: "Fresh input minus return and inventory increase; report cleaned and internally reused lubricant as an internal loop."
+      quality_evidence: "Supplier formulation, tank measurements and recovery records"
+    - protocol_id: cp_thermal_energy
+      process_id: "thermal_treatment_continuous_galvanising"
+      flow_role: "Natural gas"
+      record_type: "Gas meter and supplier certificate"
+      raw_fields: "meter id; volume; temperature; pressure; moisture basis; net calorific value; furnace assignment; production mass"
+      collection_method: "Difference calibrated meter readings and assign only to included furnaces or coating-bath heating."
+      unit: "m3 and MJ"
+      frequency: "Each shift or campaign"
+      temporal_coverage: "Same production period as reference product"
+      site_scope: "Included thermal equipment only"
+      aggregation_rule: "Normalize reference-condition volume and energy to the applicable process output."
+      quality_evidence: "Meter calibration and supplier gas-quality certificate"
+    - protocol_id: cp_combustion_co2
+      process_id: "thermal_treatment_continuous_galvanising"
+      flow_role: "Fossil carbon dioxide"
+      record_type: "Stack test or fuel-carbon calculation worksheet"
+      raw_fields: "fuel energy; carbon or CO2 factor; oxidation factor; stack measurement where used; furnace assignment"
+      collection_method: "Prefer representative measured mass; otherwise calculate from collected fuel activity and documented site-specific or IPCC-consistent factors."
+      unit: "kg CO2"
+      frequency: "Each reporting period and after fuel change"
+      temporal_coverage: "Same production period as fuel input"
+      site_scope: "Included natural-gas combustion sources"
+      aggregation_rule: "Sum source-specific CO2 and normalize to the applicable process output without double counting supplier upstream emissions."
+      quality_evidence: "Stack report or signed calculation with factor provenance"
+    - protocol_id: cp_galvanising_materials
+      process_id: "continuous_galvanising"
+      flow_role: "Acid, zinc and flux"
+      record_type: "Purchase issue, tank balance and coating test"
+      raw_fields: "solution mass and concentration; zinc additions; bath inventory; flux formulation and additions; coating mass"
+      collection_method: "Complete chemical and metal balances for the continuous coating line."
+      unit: "kg"
+      frequency: "Each campaign, reconciled monthly"
+      temporal_coverage: "Same production period as galvanised output"
+      site_scope: "Continuous wire-galvanising line only"
+      aggregation_rule: "Subtract closing inventory increase and internal returns; reconcile deposited zinc and dross."
+      quality_evidence: "Supplier certificates, bath analyses and coating test records"
+    - protocol_id: cp_galvanising_wastes
+      process_id: "continuous_galvanising"
+      flow_role: "Spent liquor, zinc dross and acidic wastewater"
+      record_type: "Waste manifest, tank record and effluent meter"
+      raw_fields: "stream identity; mass or volume; pH; acid; suspended solids; zinc and relevant alloy metals; destination"
+      collection_method: "Measure each stream after internal reuse and before it crosses the facility boundary."
+      unit: "kg; m3"
+      frequency: "Each shipment and continuous or daily discharge reading"
+      temporal_coverage: "Same production period as galvanised output"
+      site_scope: "Continuous wire-galvanising line and its treatment equipment"
+      aggregation_rule: "Sum separately by stream and destination; do not aggregate hazardous and non-hazardous streams."
+      quality_evidence: "Accredited analyses, meter checks and waste transfer records"
+    - protocol_id: cp_finishing_materials
+      process_id: "finishing_and_dispatch"
+      flow_role: "Rust-preventive oil"
+      record_type: "Stores issue and application balance"
+      raw_fields: "oil identity; fresh issue; recovered return; opening and closing inventory; product mass"
+      collection_method: "Complete an application-system material balance for oiled products."
+      unit: "kg"
+      frequency: "Each lot, reconciled monthly"
+      temporal_coverage: "Same production period as oiled output"
+      site_scope: "Finishing line only"
+      aggregation_rule: "Fresh issue minus return and inventory increase, normalized to oiled-wire mass."
+      quality_evidence: "Supplier safety data, issue records and tank measurements"
+    - protocol_id: cp_packaging
+      process_id: "finishing_and_dispatch"
+      flow_role: "Steel strapping, pallet, LDPE film and offcuts"
+      record_type: "Bill of materials, count record and scale record"
+      raw_fields: "material identity; unit mass; units used; shipped mass; offcut mass; pallet reuse status"
+      collection_method: "Weigh representative packaging components and record counts for each shipment configuration."
+      unit: "kg; item"
+      frequency: "Each shipment configuration"
+      temporal_coverage: "Same production period as reference product"
+      site_scope: "Dispatch packing area"
+      aggregation_rule: "Calculate count-based mass from verified unit mass; separate shipped material from on-site offcuts."
+      quality_evidence: "Supplier specifications, scale records and packaging bill of materials"
+    - protocol_id: cp_final_product
+      process_id: "finishing_and_dispatch"
+      flow_role: "Accepted reference product"
+      record_type: "Final scale ticket and inspection record"
+      raw_fields: "lot id; alloy grade; diameter; tolerance; mechanical condition; surface state; coating mass; net wire mass; packaging tare; disposition"
+      collection_method: "Weigh accepted wire after inspection and deduct verified packaging tare."
+      unit: "kg"
+      frequency: "Each lot"
+      temporal_coverage: "Same production period as all foreground inputs"
+      site_scope: "Facility dispatch gate"
+      aggregation_rule: "Sum only conforming net wire mass and normalize the inventory to 1,000 kg."
+      quality_evidence: "Calibrated scale record, inspection certificate and tare record"
+  calculation_rules:
+    - id: calc_normalized_exchange
+      applies_to: "Every foreground exchange"
+      rule: "normalized amount = reporting-period exchange amount / accepted wire mass × 1,000 kg"
+      inputs:
+        - "collected exchange amount"
+        - "accepted reference-product mass"
+      output: "exchange per 1,000 kg accepted wire"
+      source_ids: []
+    - id: calc_electricity_mj
+      applies_to: "Electricity rows"
+      rule: "electricity MJ = metered kWh × 3.6"
+      inputs:
+        - "metered kWh"
+      output: "MJ electricity"
+      source_ids: []
+    - id: calc_metal_balance
+      applies_to: "Alloy-steel mass reconciliation"
+      rule: "balance closure = alloy-steel input + opening work-in-process - accepted product - metal-bearing wastes - closing work-in-process"
+      inputs:
+        - "mass records for metal inputs"
+        - product
+        - "wastes and work-in-process"
+      output: "absolute and percentage closure"
+      source_ids: []
+    - id: calc_zinc_deposition
+      applies_to: "Continuous galvanising"
+      rule: "deposited zinc = coated wire mass - incoming uncoated wire mass after correcting for other measured material changes; cross-check against surface-area and coating-test records"
+      inputs:
+        - "incoming wire mass"
+        - "coated wire mass"
+        - "coating test"
+        - "wire geometry"
+      output: "deposited zinc mass"
+      source_ids:
+        - eu-jrc-fmp-bref-2022
+    - id: calc_fossil_co2
+      applies_to: "Natural-gas combustion"
+      rule: "fossil CO2 = fuel energy × documented CO2 emission factor; use site-specific carbon content and oxidation data where available and retain the factor basis"
+      inputs:
+        - "normalized fuel energy"
+        - "CO2 factor"
+        - "oxidation basis"
+      output: "kg fossil CO2"
+      source_ids:
+        - ipcc-2006-stationary-combustion
+    - id: calc_packaging_mass
+      applies_to: "Counted packaging"
+      rule: "packaging mass = verified unit mass × units shipped; subtract separately weighed offcuts from material issued only when both measurements share the same boundary"
+      inputs:
+        - "component count"
+        - "verified unit mass"
+        - "offcut mass"
+      output: "kg packaging shipped and kg offcuts"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product and wire inputs"
+      requirement: "Declare alloy family and grade, governing specification, diameter and tolerance, mechanical or heat-treatment condition, surface or coating condition and product form."
+      evidence: "Mill certificate, purchase specification and final inspection certificate"
+    - id: dq_representativeness
+      applies_to: "Foreground inventory"
+      requirement: "Cover a representative continuous 12-month period; for campaign production, cover every campaign in the reporting year and disclose production-weighting."
+      evidence: "Production schedule, meter coverage and campaign reconciliation"
+    - id: dq_metering
+      applies_to: "Mass, electricity, gas and water"
+      requirement: "Use calibrated or verified instruments and reconcile process submeters to facility totals; disclose any allocation of shared totals."
+      evidence: "Calibration records, invoices and reconciliation worksheets"
+    - id: dq_completeness
+      applies_to: "Chemicals, wastes and emissions"
+      requirement: "Maintain a process-flow, chemical, wastewater and waste-gas inventory; justify each zero or not-applicable atomic exchange by route evidence."
+      evidence: "Process flow sheet, chemical register, waste manifests and emissions inventory"
+    - id: dq_upstream_inputs
+      applies_to: "Wire rod, electricity, natural gas, zinc and packaging"
+      requirement: "Select supplier and geography representative upstream datasets and disclose substitutions or proxies."
+      evidence: "Supplier records and dataset-selection log"
+    - id: dq_uncertainty
+      applies_to: "Important flows without approved external ranges"
+      requirement: "Report measured variability, missing-data treatment and uncertainty from foreground records; do not present BAT conformance levels as generic empirical defaults."
+      evidence: "Batch statistics and uncertainty worksheet"
+validation_rules:
+  - rule_id: validation_reference_mass
+    applies_to: "Reference flow"
+    rule: "Confirm exactly 1,000 kg net accepted alloy-steel wire and exclude all packaging tare from reference-product mass."
+    source_ids: []
+  - rule_id: validation_identity_qualifiers
+    applies_to: "Product identity"
+    rule: "Reject a foreground package missing alloy grade, diameter, mechanical condition, surface state, production route, facility geography or production period."
+    source_ids:
+      - un-cpc-3-structure-2025
+      - china-state-council-tariff-list-2019
+  - rule_id: validation_process_alignment
+    applies_to: "Process map and inventory"
+    rule: "Require surface preparation, drawing and finishing; require thermal-treatment and galvanising rows only when those routes are declared, and reject route exchanges without their matching process."
+    source_ids:
+      - eu-jrc-fmp-bref-2022
+  - rule_id: validation_atomic_inventory
+    applies_to: "All inventory rows"
+    rule: "Reject aggregated electricity, fuel, chemical, packaging, waste, wastewater or emission labels; every exchange must identify one physical product, waste or elementary flow."
+    source_ids:
+      - eu-bat-ferrous-2022-2110
+  - rule_id: validation_metal_balance
+    applies_to: "Alloy-steel and zinc balances"
+    rule: "Require documented alloy-steel mass-balance closure and, for coated wire, a separate zinc balance; investigate and disclose material discrepancies before publication."
+    source_ids: []
+  - rule_id: validation_energy_identity
+    applies_to: "Electricity and gas"
+    rule: "Require actual supplier, geography, voltage and delivery boundary for electricity and reference volume, supplier and net calorific value for natural gas; do not accept the UUID alone as representativeness evidence."
+    source_ids:
+      - eu-bat-ferrous-2022-2110
+  - rule_id: validation_no_unapproved_ranges
+    applies_to: "Quantitative checks"
+    rule: "Use foreground variability for QA until independently verified compatible range evidence is approved; do not convert single-source BAT levels, limits or case values into empirical default ranges."
+    source_ids:
+      - eu-bat-ferrous-2022-2110
+published_dataset_profile:
+  dataset_role: "Foreground gate-to-gate production dataset for alloy-steel wire"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product and supply-chain LCA when alloy family, grade, diameter, mechanical condition, surface state, drawing and treatment route, geography, period and dispatch boundary match the modelled wire"
+  excluded_use: "Generic crude-steel or wire-rod production; non-alloy steel wire; fabricated wire products; unqualified global averages; cradle-to-grave claims without linked upstream and downstream datasets"
+  required_metadata: "Canonical PCR id; product and flow identifiers; alloy specification; diameter; mechanical state; surface and coating state; process routes; facility geography; technology; production period; data-owner role; upstream dataset identities; allocation method; packaging configuration"
+  required_quality_disclosure: "Temporal, geographical and technological representativeness; meter coverage; metal and zinc balance closure; shared-load allocation; missing data; foreground variability; unresolved UUIDs; source versions; exclusions and deviations"
+  update_trigger: "Change in alloy family, drawing reduction, drawing medium, furnace or coating technology, principal energy supplier, upstream steel route, packaging configuration, facility boundary, allocation method, or a material change in annual energy, water, chemical, yield, waste or emission intensity"
+data_sources:
+  - id: "un-cpc-3-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Official CPC 41267 identity and English title"
+  - id: "china-state-council-tariff-list-2019"
+    type: "official_guidance"
+    reference: "State Council of the People's Republic of China, official tariff list, https://www.gov.cn/xinwen/2019-05/13/5391208/files/6d352f9e9ae6449ca6ba2c73947b6e35.pdf"
+    used_for: "Professional Chinese alloy-steel-wire terminology and illustrative stainless, silico-manganese and other alloy-steel wire nomenclature"
+  - id: "eu-jrc-fmp-bref-2022"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Ferrous Metals Processing Industry, adopted December 2022, https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/ferrous-metals-processing-industry"
+    used_for: "Wire-drawing definition, process decomposition and conditional continuous wire galvanising"
+  - id: "eu-bat-ferrous-2022-2110"
+    type: "official_guidance"
+    reference: "Commission Implementing Decision (EU) 2022/2110 of 11 October 2022, CELEX 32022D2110, https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022D2110"
+    used_for: "Chemical, water, energy, wastewater and waste-gas inventory rules; lubricant reuse; conditional heating, pickling and coating controls"
+  - id: "ec-pef-2021-2279"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 of 15 December 2021 on the use of Environmental Footprint methods, https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng"
+    used_for: "Allocation hierarchy and disclosure"
+  - id: "ipcc-2006-stationary-combustion"
+    type: "method_factor"
+    reference: "IPCC, 2006 Guidelines for National Greenhouse Gas Inventories, Volume 2, Chapter 2: Stationary Combustion, https://www.ipcc-nggip.iges.or.jp/public/2006gl/pdf/2_Volume2/V2_2_Ch2_Stationary_Combustion.pdf"
+    used_for: "Fossil CO2 calculation from collected stationary-combustion fuel activity"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:8c6774913c0b624861c2841e8b5d7de0dfbb5e85bd57c2f08c47ccb42cb61dea"
+  generated_content_sha256: "sha256:f7b5e7f6d023d9f74f122e98acc24e7e6524951e6e5e2889644462e1174042d3"

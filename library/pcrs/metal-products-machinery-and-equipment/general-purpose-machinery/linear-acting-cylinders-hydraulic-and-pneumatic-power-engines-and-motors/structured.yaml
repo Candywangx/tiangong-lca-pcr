@@ -1,10 +1,771 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43211"
-  title: "Linear acting (cylinders) hydraulic and pneumatic power engines and motors"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.linear-acting-cylinders-hydraulic-and-pneumatic-power-engines-and-motors"
+  classification_refs: "CPC 3.0: 43211 (exact context; mapping acceptance is governed separately)"
+  covered_products: "Finished hydraulic or pneumatic linear cylinders, including single-acting or double-acting and single-rod or double-rod designs"
+  excluded_products: "Rotary fluid-power motors; pumps; compressors; valves; complete fluid-power systems; separately supplied cylinder parts; electric linear actuators"
+  representative_product: "One factory-gate finished and acceptance-tested hydraulic or pneumatic linear cylinder"
+  production_route: "Receipt of formed blanks and purchased parts; machining and applicable finishing; assembly; hydraulic acceptance testing or pneumatic function testing; packaging"
+  market_state: "Saleable finished cylinder, dry or with declared residual test medium, packaged as supplied at the factory gate"
+functional_unit:
+  what: "A finished hydraulic or pneumatic cylinder providing reciprocating linear force and motion at the declared rated pressure"
+  how_much: "1 kg of accepted cylinder product at the factory gate"
+  how_well: "Meets the declared bore, stroke, mounting, pressure rating, leakage or function acceptance criteria, material specification, and supplied accessory configuration"
+  how_long_or_cycle: "Declared design service life or rated duty-cycle basis; if unavailable, disclose that service-life performance is not represented by the mass-based functional unit"
+  reference_flow_link: "reference_product_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_cradle_to_gate
+      applies_to: "foreground and upstream boundary"
+      rule: "Include purchased-input production and delivery, on-site component manufacture and applicable finishing, assembly, acceptance or function testing, and packaging through factory-gate release."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+        - iso-6020-2-2015
+        - iso-15552-2018
+        - iso-10100-2020
+    - rule_id: boundary_make_or_buy
+      applies_to: "purchased versus internally produced parts"
+      rule: "Record the actual make-or-buy split. Do not count the same finished part both as a purchased input and as the output of on-site machining."
+      source_ids:
+        - festo-dnc-standard-cylinders-2017
+        - skf-hydraulic-seals-general-technical-information
+    - rule_id: boundary_route_specific_exchanges
+      applies_to: "machining, cleaning, coating, and testing routes"
+      rule: "Add each material, chemical, utility, waste, and direct elementary emission actually crossing the process boundary as its own atomic exchange; a route not used is omitted with documented evidence."
+      source_ids:
+        - skf-hydraulic-seals-general-technical-information
+        - iso-10100-2020
+    - rule_id: boundary_use_and_end_of_life
+      applies_to: "downstream stages"
+      rule: "Exclude installation, use-phase hydraulic-fluid or compressed-air supply, maintenance, and end-of-life from the default factory-gate dataset; include them only in a separately declared expanded system boundary."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Formed cylinder-part blanks, purchased finished parts, seals, process chemicals, utilities, and packaging delivered to the reporting manufacturing site"
+  starting_condition_role: "The first foreground condition; upstream production and delivery of every purchased input remain represented by linked upstream datasets"
+  product_classification_scope: "Finished hydraulic and pneumatic linear cylinders only; separately supplied parts and non-linear fluid-power engines or motors are outside the product identity"
+  recursive_input_rule: "A purchased CPC 43211 cylinder used as an input must be recorded as an upstream product input and must not be recursively re-expanded inside this PCR; separately purchased CPC 43251 parts remain parts inputs"
+  upstream_dataset_requirement: "Link every purchased product and utility input to a geography-, technology-, and product-state-compatible upstream dataset; disclose proxies and any missing upstream dataset"
+  disclosure: "Declare make-or-buy shares, material and surface-treatment routes, hydraulic or pneumatic product mix, rejected-product treatment, on-site treatment, packaging basis, test-medium recovery, temporal coverage, and cut-offs"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Linear acting (cylinders) hydraulic and pneumatic power engines and motors"
+    uuid: "aea61250-788d-4a2b-9c63-ff24b8113469"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "hydraulic or pneumatic medium"
+    - "single-acting or double-acting"
+    - "single-rod or double-rod"
+    - bore
+    - stroke
+    - "rated pressure"
+    - "mounting and cushioning configuration"
+    - "sensing provisions"
+    - "principal barrel"
+    - rod
+    - end-cap
+    - piston
+    - "and seal materials"
+    - "net product mass"
+    - "acceptance-test standard or procedure"
+    - "residual test medium"
+    - "production geography and reference year"
+    - "manufacturing and surface-finishing route"
+    - "supplied packaging"
+    - "declared design life or cycle rating"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass_basis
+    applies_to: "reference product and all normalized inventory"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize inventory to 1 kg of accepted, packaged cylinder product. Exclude pallets and returnable transport packaging unless supplied as part of the declared product system."
+  - id: energy_conversion
+    applies_to: "electricity rows"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the metered electricity quantity and convert kWh to MJ with 1 kWh = 3.6 MJ; do not add upstream generation emissions as direct foreground emissions."
+  - id: gas_volume_basis
+    applies_to: "industrial oxygen and compressed-air rows"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report volume at the metering reference pressure and temperature and disclose those conditions; do not mix normal, standard, and actual cubic metres without conversion."
+  - id: water_mass_basis
+    applies_to: "process-water and cleaning-wastewater rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer direct mass records; when volume is metered, document water density and reference conditions used for conversion."
+  - id: test_fluid_volume_basis
+    applies_to: "hydraulic test fluid"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Record only net fresh make-up crossing the foreground boundary; separately disclose recirculated test-loop inventory and any fluid shipped in the product."
+process_map:
+  - id: component_manufacture
+    name: "Component forming, machining, cleaning, and applicable surface finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Include for the production-weighted share made or finished at the reporting site; purchased finished parts are represented as upstream inputs to assembly"
+    role: "foreground component production"
+    quantitative_reference: "per kg accepted cylinder product"
+  - id: assembly_test_packaging
+    name: "Assembly, acceptance or function testing, and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always include; apply hydraulic and pneumatic test-medium cards only to the represented product route"
+    role: "foreground final production"
+    quantitative_reference: "1 kg accepted packaged cylinder product"
+process_inventory:
+  - id: component_manufacture
+    label: "Component forming, machining, cleaning, and applicable surface finishing"
+    inputs:
+      product:
+        - row_id: formed_parts_input
+          role: "Formed cylinder-part blanks"
+          name: "Formed cylinder major parts, blanks"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d49e36f8-d7ec-4e9d-aa51-0705a64c2b39"
+          property_unit: "Mass / kg"
+          description: "Record formed major-part blanks entering on-site machining. Alloy, component mix, supplier, and forming route are required foreground qualifiers."
+          amount:
+            expression: "purchased and internally transferred blank mass consumed, net of documented reusable returns"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted cylinder product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_materials
+              source_ids:
+                - festo-dnc-standard-cylinders-2017
+            ranges: []
+        - row_id: machining_electricity
+          role: "Electricity for component manufacture"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity for forming, machining, honing or burnishing, grinding, polishing, cleaning, and in-scope finishing equipment."
+          amount:
+            expression: "metered or defensibly allocated electricity consumed by in-scope component operations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted cylinder product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_utilities
+              source_ids:
+                - skf-hydraulic-seals-general-technical-information
+            ranges: []
+        - row_id: machining_process_water
+          role: "Process water for wet machining and cleaning"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record water supplied to wet machining or cleaning only when it crosses the site process boundary."
+          amount:
+            expression: "measured fresh process-water input; exclude recirculated internal water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted cylinder product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_utilities
+              source_ids: []
+            ranges: []
+        - row_id: metalworking_fluid
+          role: "Water-miscible metalworking fluid"
+          name: "Water-miscible metalworking fluid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the formulated water-miscible machining-fluid concentrate or ready-to-use fluid that is consumed by the foreground operation; do not substitute a constituent chemical."
+          amount:
+            expression: "purchased make-up fluid consumed, adjusted for opening and closing stock and off-site returns"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg accepted cylinder product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_materials
+              source_ids:
+                - skf-hydraulic-seals-general-technical-information
+            ranges: []
+        - row_id: alkaline_cleaning_sodium_hydroxide
+          role: "Sodium hydroxide for alkaline cleaning"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide only when the declared cleaning or surface-preparation route consumes it."
+          amount:
+            expression: "neat-equivalent sodium hydroxide consumed, calculated from solution mass and verified concentration"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg accepted cylinder product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_component_chemicals
+              source_ids: []
+            ranges: []
+        - row_id: hvof_oxygen
+          role: "Industrial oxygen for HVOF coating"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume / m3"
+          description: "Record industrial oxygen only when high-velocity oxygen-fuel coating is performed within the foreground boundary."
+          amount:
+            expression: "metered industrial oxygen supplied to in-scope HVOF coating"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg accepted cylinder product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_utilities
+              source_ids:
+                - skf-hydraulic-seals-general-technical-information
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_parts_output
+          role: "Machined and finished cylinder parts"
+          name: "Machined and finished cylinder parts"
+          flow_type: "product"
+          flow_ref:
+            uuid: "10c2da25-4cfe-4d11-a8a2-cc05ab9ef994"
+          property_unit: "Mass / kg"
+          description: "Record accepted component mass leaving on-site component manufacture for assembly."
+          amount:
+            expression: "measured accepted finished-part mass transferred to assembly"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted cylinder product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_outputs
+              source_ids:
+                - festo-dnc-standard-cylinders-2017
+                - skf-hydraulic-seals-general-technical-information
+            ranges: []
+      waste:
+        - row_id: steel_swarf
+          role: "Steel swarf"
+          name: "Steel swarf"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "6a16eab5-8097-4e37-8d28-aa1e81b8bb5c"
+          property_unit: "Mass / kg"
+          description: "Record steel machining swarf leaving the process for recycling, recovery, or disposal; disclose retained metalworking-fluid contamination."
+          amount:
+            expression: "measured wet or dry swarf mass, with moisture and adhering-fluid basis declared"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted cylinder product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_outputs
+              source_ids: []
+            ranges: []
+        - row_id: cleaning_wastewater
+          role: "Cleaning wastewater"
+          name: "Wastewater from cleaning"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f0402393-e82c-47e8-9cd8-a486c97f3e89"
+          property_unit: "Mass / kg"
+          description: "Record cleaning wastewater sent to on-site treatment, sewer, or off-site treatment before any allocation of treatment burdens."
+          amount:
+            expression: "measured wastewater leaving cleaning operations; exclude internally recirculated water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted cylinder product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_outputs
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: assembly_test_packaging
+    label: "Assembly, acceptance or function testing, and packaging"
+    inputs:
+      product:
+        - row_id: finished_parts_input
+          role: "Machined and finished cylinder parts for assembly"
+          name: "Machined and finished cylinder parts"
+          flow_type: "product"
+          flow_ref:
+            uuid: "10c2da25-4cfe-4d11-a8a2-cc05ab9ef994"
+          property_unit: "Mass / kg"
+          description: "Record the total mass of internally transferred and purchased finished cylinder parts entering assembly without double counting."
+          amount:
+            expression: "measured finished-part mass entering assembly, reconciled to the make-or-buy split"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted cylinder product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_materials
+              source_ids:
+                - festo-dnc-standard-cylinders-2017
+            ranges: []
+        - row_id: elastomer_seal_sets
+          role: "Elastomer cylinder seal sets"
+          name: "Elastomer cylinder seal sets"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record finished rod, piston, wiper, and static seal elements supplied for assembly as one mass-measured seal-set exchange; disclose material families and do not use raw nitrile-rubber identity as a proxy."
+          amount:
+            expression: "measured seal-set mass installed plus production losses"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted cylinder product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_materials
+              source_ids:
+                - festo-dnc-standard-cylinders-2017
+            ranges: []
+        - row_id: hydraulic_test_fluid
+          role: "Hydraulic fluid for acceptance testing"
+          name: "Hydraulic Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "30691a38-a947-4b41-991e-194f6c9aa88f"
+          property_unit: "Volume / m3"
+          description: "Record only net fresh hydraulic-fluid make-up for hydraulic-cylinder testing; do not record recirculated loop inventory as a new input."
+          amount:
+            expression: "opening inventory plus purchases minus closing inventory, off-site returns, and recovered fluid, apportioned to accepted hydraulic cylinders"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg accepted hydraulic cylinder product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_acceptance_testing
+              source_ids:
+                - iso-10100-2020
+            ranges: []
+        - row_id: pneumatic_test_air
+          role: "Compressed air for pneumatic function testing"
+          name: "Compressed air"
+          flow_type: "product"
+          flow_ref:
+            uuid: "46e2b1e4-5a4e-4579-b6a2-65b03f9ce825"
+          property_unit: "Volume / m3"
+          description: "Record compressed air delivered to the test bench for accepted and rejected pneumatic cylinders."
+          amount:
+            expression: "metered test-air volume at declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg accepted pneumatic cylinder product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance_testing
+              source_ids:
+                - iso-15552-2018
+            ranges: []
+        - row_id: assembly_electricity
+          role: "Electricity for assembly, testing, and packaging"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity consumed by assembly tools, test benches, handling, and packaging equipment."
+          amount:
+            expression: "metered or defensibly allocated electricity consumed by the process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted cylinder product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_utilities
+              source_ids:
+                - iso-10100-2020
+            ranges: []
+        - row_id: corrugated_box
+          role: "Corrugated board box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record finished corrugated boxes supplied with the cylinder. Other actual packaging components must be added as separate atomic exchanges."
+          amount:
+            expression: "measured corrugated-box mass supplied with accepted product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted cylinder product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Accepted packaged cylinder product"
+          name: "Linear acting (cylinders) hydraulic and pneumatic power engines and motors"
+          flow_type: "product"
+          flow_ref:
+            uuid: "aea61250-788d-4a2b-9c63-ff24b8113469"
+          property_unit: "Mass / kg"
+          description: "This row is the reference product output after acceptance or function testing and packaging."
+          amount:
+            expression: "fixed reference output of 1 kg accepted packaged cylinder product"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1 kg accepted packaged cylinder product"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "shared production lines and utilities"
+    rule: "Prefer subdivision, sub-metering, batch records, machine time, or another causal driver before allocation. Document the driver and the production quantities to which it applies."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_recycled_metal
+    applies_to: "steel swarf and other recoverable metal"
+    rule: "Report waste mass and destination separately. Do not subtract an avoided-primary-metal credit inside the foreground inventory; any recycling credit belongs to the declared downstream modelling method."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_rejected_products
+    applies_to: "rejected cylinders and reworked parts"
+    rule: "Assign the burdens of rejects and rework to accepted output unless a documented physical causal model supports a different treatment; disclose internal recycling loops."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_multi_product_site
+    applies_to: "residual shared burdens"
+    rule: "If subdivision and causal allocation are impracticable, allocate residual shared burdens by production mass for the same reporting period and disclose the sensitivity to an alternative driver such as machine hours."
+    source_ids:
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_component_materials
+      process_id: "component_manufacture"
+      flow_role: "formed blanks and metalworking fluid"
+      record_type: "purchase, stock, and transfer records"
+      raw_fields: "item identity; supplier; alloy or formulation; opening stock; receipts; closing stock; returns; transferred mass"
+      collection_method: "reconcile procurement and inventory records to production lots"
+      unit: "kg"
+      frequency: "monthly with annual reconciliation"
+      temporal_coverage: "representative continuous 12-month period"
+      site_scope: "all in-scope component operations"
+      aggregation_rule: "consumption = opening + receipts - closing - returns; normalize by accepted product mass"
+      quality_evidence: "supplier specification, invoices, calibrated scales, stock reconciliation"
+    - protocol_id: cp_component_chemicals
+      process_id: "component_manufacture"
+      flow_role: "cleaning and finishing chemicals"
+      record_type: "batch sheets and concentration records"
+      raw_fields: "solution mass or volume; density; active concentration; opening and closing stock; off-site returns"
+      collection_method: "record each concrete chemical separately and calculate neat-equivalent mass"
+      unit: "kg"
+      frequency: "per bath make-up with monthly aggregation"
+      temporal_coverage: "representative continuous 12-month period"
+      site_scope: "every in-scope wet-treatment line"
+      aggregation_rule: "sum neat-equivalent consumption and normalize by accepted product mass"
+      quality_evidence: "formulation certificate, concentration test, calibrated meter or scale"
+    - protocol_id: cp_component_utilities
+      process_id: "component_manufacture"
+      flow_role: "electricity, process water, and industrial oxygen"
+      record_type: "meter and invoice records"
+      raw_fields: "meter id; opening and closing reading; reference conditions; shared-load driver; downtime"
+      collection_method: "direct sub-metering preferred; documented machine-hour allocation permitted"
+      unit: "MJ, kg, or m3 as applicable"
+      frequency: "per batch or monthly"
+      temporal_coverage: "representative continuous 12-month period"
+      site_scope: "all in-scope component operations"
+      aggregation_rule: "subtract excluded loads, allocate shared loads by causal driver, normalize by accepted product mass"
+      quality_evidence: "meter calibration, invoices, allocation worksheet"
+    - protocol_id: cp_component_outputs
+      process_id: "component_manufacture"
+      flow_role: "finished parts, steel swarf, and cleaning wastewater"
+      record_type: "transfer, scale, and waste records"
+      raw_fields: "output mass; reject mass; swarf mass; contamination basis; wastewater mass; destination"
+      collection_method: "weigh accepted parts and outgoing wastes; document wet or dry basis"
+      unit: "kg"
+      frequency: "per batch with monthly reconciliation"
+      temporal_coverage: "representative continuous 12-month period"
+      site_scope: "all in-scope component operations"
+      aggregation_rule: "aggregate accepted output and each waste separately; normalize by accepted cylinder mass"
+      quality_evidence: "calibrated scales, transfer tickets, waste manifests, water balance"
+    - protocol_id: cp_assembly_materials
+      process_id: "assembly_test_packaging"
+      flow_role: "finished parts and seal sets"
+      record_type: "bills of material, issue, and loss records"
+      raw_fields: "component identity; material; quantity; unit mass; issued mass; returned mass; scrap"
+      collection_method: "reconcile lot-level bill of material to actual issue and loss records"
+      unit: "kg"
+      frequency: "per product family and batch"
+      temporal_coverage: "representative continuous 12-month period"
+      site_scope: "all assembly lines in scope"
+      aggregation_rule: "installed plus loss mass, excluding returned reusable stock, normalized by accepted product mass"
+      quality_evidence: "controlled bill of material, supplier specifications, calibrated scales"
+    - protocol_id: cp_acceptance_testing
+      process_id: "assembly_test_packaging"
+      flow_role: "hydraulic fluid and compressed air"
+      record_type: "test-bench logs and utility records"
+      raw_fields: "product route; accepted and rejected units; test procedure; fluid purchases and stock; recovered fluid; air meter readings; pressure; temperature"
+      collection_method: "meter test air and reconcile hydraulic-fluid make-up to test batches"
+      unit: "m3"
+      frequency: "per test batch with monthly reconciliation"
+      temporal_coverage: "representative continuous 12-month period"
+      site_scope: "all hydraulic and pneumatic test benches in scope"
+      aggregation_rule: "include accepted and rejected tests; allocate only by documented batch records; normalize to accepted route-specific product mass"
+      quality_evidence: "controlled test procedure, meter calibration, stock reconciliation, acceptance records"
+    - protocol_id: cp_assembly_utilities
+      process_id: "assembly_test_packaging"
+      flow_role: "electricity"
+      record_type: "meter and production records"
+      raw_fields: "meter id; readings; operating hours; accepted product mass; excluded loads"
+      collection_method: "direct sub-metering preferred; documented equipment-hour allocation permitted"
+      unit: "MJ"
+      frequency: "monthly"
+      temporal_coverage: "representative continuous 12-month period"
+      site_scope: "assembly, testing, handling, and packaging equipment"
+      aggregation_rule: "subtract excluded loads and normalize by accepted product mass"
+      quality_evidence: "meter calibration, invoice reconciliation, allocation worksheet"
+    - protocol_id: cp_packaging
+      process_id: "assembly_test_packaging"
+      flow_role: "corrugated boxes"
+      record_type: "packaging issue and product dispatch records"
+      raw_fields: "packaging identity; unit mass; issued quantity; returns; accepted shipped mass"
+      collection_method: "weigh representative packaging and reconcile issued quantity to dispatch"
+      unit: "kg"
+      frequency: "per packaging specification with monthly aggregation"
+      temporal_coverage: "representative continuous 12-month period"
+      site_scope: "all supplied factory-gate packaging"
+      aggregation_rule: "net supplied packaging mass normalized by accepted product mass"
+      quality_evidence: "packaging specification, calibrated scale, issue and dispatch records"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every collected inventory row"
+      rule: "normalized amount = reporting-period exchange amount / accepted packaged cylinder mass"
+      inputs:
+        - "exchange amount"
+        - "accepted packaged product mass"
+      output: "amount per kg reference product"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_solution_active_mass
+      applies_to: "alkaline_cleaning_sodium_hydroxide"
+      rule: "neat NaOH mass = solution mass × verified NaOH mass fraction"
+      inputs:
+        - "solution mass"
+        - "concentration result"
+      output: "kg NaOH"
+      source_ids: []
+    - id: calc_electricity_mj
+      applies_to: "electricity rows"
+      rule: "MJ = metered kWh × 3.6"
+      inputs:
+        - "metered kWh"
+      output: "MJ"
+      source_ids: []
+    - id: calc_hydraulic_makeup
+      applies_to: "hydraulic_test_fluid"
+      rule: "net fresh make-up = opening inventory + purchases - closing inventory - recovered off-site returns"
+      inputs:
+        - "stock and purchase records"
+      output: "m3 hydraulic fluid"
+      source_ids:
+        - iso-10100-2020
+    - id: calc_make_or_buy_reconciliation
+      applies_to: "finished_parts_input"
+      rule: "total finished-parts input = internal accepted transfer + purchased finished-parts input; exclude any purchased blank already counted in internal output"
+      inputs:
+        - "transfer and purchase records"
+      output: "kg finished parts"
+      source_ids:
+        - festo-dnc-standard-cylinders-2017
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Report hydraulic or pneumatic route, action type, rod configuration, bore, stroke, rated pressure, materials, mass, acceptance criteria, and supplied accessories."
+      evidence: "controlled product specification and accepted bill of material"
+    - id: dq_temporal_representativeness
+      applies_to: "all foreground data"
+      requirement: "Use a continuous 12-month period representative of normal production, or explain shorter coverage, start-up, shutdown, and abnormal batches."
+      evidence: "dated meter, production, procurement, and waste records"
+    - id: dq_mass_balance
+      applies_to: "component manufacture and assembly"
+      requirement: "Reconcile material inputs to accepted product, rejects, internal returns, wastes, and inventory change; investigate unexplained imbalance."
+      evidence: "signed mass-balance worksheet and stock reconciliation"
+    - id: dq_route_separation
+      applies_to: "hydraulic and pneumatic products"
+      requirement: "Keep route-specific bills of material and test media separate; a combined dataset requires a documented production-weighted mix."
+      evidence: "production quantities and route-specific records"
+    - id: dq_measurement
+      applies_to: "meters and scales"
+      requirement: "Use calibrated or verified instruments and retain unit, reference-condition, and allocation metadata."
+      evidence: "calibration certificate, meter id, and data-extraction record"
+    - id: dq_completeness
+      applies_to: "process inventory"
+      requirement: "Record every actual atomic material, chemical, utility, packaging component, waste, and direct elementary emission above the declared cut-off; explain exclusions and proxies."
+      evidence: "completeness checklist, purchase ledger, waste register, permits, and process walk-through"
+    - id: dq_upstream_compatibility
+      applies_to: "linked upstream datasets"
+      requirement: "Match product state, geography, technology, recycled content, treatment route, and reference period as closely as practicable; disclose mismatch."
+      evidence: "dataset-selection log and supplier specification"
+validation_rules:
+  - rule_id: validation_reference_flow
+    applies_to: "reference output"
+    rule: "Confirm exactly 1 kg of accepted packaged cylinder output and all required qualifiers are declared."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validation_process_coverage
+    applies_to: "process map"
+    rule: "Confirm assembly, acceptance or function testing, and packaging are included; confirm component manufacture is included for the actual make share."
+    source_ids:
+      - iso-10100-2020
+      - skf-hydraulic-seals-general-technical-information
+  - rule_id: validation_route_consistency
+    applies_to: "route-conditional rows"
+    rule: "Hydraulic test fluid may apply only to hydraulic products, compressed air only to pneumatic testing, sodium hydroxide only to alkaline cleaning, and industrial oxygen only to HVOF coating."
+    source_ids:
+      - iso-10100-2020
+      - iso-15552-2018
+      - skf-hydraulic-seals-general-technical-information
+  - rule_id: validation_atomic_exchanges
+    applies_to: "all inventory"
+    rule: "Reject umbrella or combined flow labels; every selected flow must be one physical, chemical, energy, waste, or elementary exchange."
+    source_ids: []
+  - rule_id: validation_make_or_buy
+    applies_to: "finished parts"
+    rule: "Confirm purchased blanks, internal finished-part output, and purchased finished parts are reconciled without double counting."
+    source_ids:
+      - festo-dnc-standard-cylinders-2017
+  - rule_id: validation_mass_balance
+    applies_to: "material balance"
+    rule: "Confirm inputs, accepted output, rejects, internal returns, wastes, and stock change reconcile within the site's documented measurement uncertainty."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validation_uuid_and_units
+    applies_to: "UUID-bearing rows"
+    rule: "Confirm every UUID is public state 100 and the selected property and unit group match the row; unresolved rows remain explicitly identified."
+    source_ids: []
+  - rule_id: validation_range_status
+    applies_to: "important flows"
+    rule: "Confirm foreground records are collected. Do not apply external empirical ranges until at least two independent, boundary-compatible original sources have been verified."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Factory-gate foreground production dataset for finished hydraulic or pneumatic linear cylinders"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product-footprint, supply-chain, equipment, and lifecycle models whose product specification, geography, technology, time, and factory-gate boundary match the dataset"
+  excluded_use: "Direct substitution for rotary motors, pumps, valves, complete fluid-power systems, separately supplied parts, use-phase energy modelling, or an undeclared hydraulic/pneumatic average"
+  required_metadata: "All Required qualifiers; CPC context; site and geography; reference year; data owner; make-or-buy share; production mix; process routes; allocation; cut-offs; upstream datasets; packaging; acceptance procedure; unresolved UUIDs and proxies"
+  required_quality_disclosure: "Temporal coverage; meter and scale quality; mass-balance result; production representativeness; route separation; rejected-product treatment; test-medium recovery; upstream dataset mismatch; missing exchanges; uncertainty and range-evidence gaps"
+  update_trigger: "Material change in product design, mass, bill of material, surface treatment, hydraulic/pneumatic mix, production technology, test procedure, packaging, supplier geography, allocation, or data older than the reporting program's validity period"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "dataset"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-05)"
+    used_for: "Official product classification identity"
+  - id: "un-cpc-3-0-explanatory-notes-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Explanatory Notes, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-09-05)"
+    used_for: "Official hierarchy and distinction between finished cylinders and parts"
+  - id: "china-mof-2024-tariff-adjustment-annex"
+    type: "official_guidance"
+    reference: "Ministry of Finance of the People's Republic of China, 2024 tariff adjustment annex. https://gss.mof.gov.cn/gzdt/zhengcefabu/202405/P020240531308646828162.pdf (retrieved 2026-09-05)"
+    used_for: "Professional Chinese terminology for straight-line hydraulic and pneumatic power devices"
+  - id: "iso-6020-2-2015"
+    type: "standard"
+    reference: "ISO 6020-2:2015, Hydraulic fluid power — Mounting dimensions for single rod cylinders, 16 MPa (160 bar) series — Part 2: Compact series. https://committee.iso.org/standard/61339.html (retrieved 2026-09-05)"
+    used_for: "Hydraulic-cylinder applicability and required design qualifiers"
+  - id: "iso-15552-2018"
+    type: "standard"
+    reference: "ISO 15552:2018, Pneumatic fluid power — Cylinders with detachable mountings, 1 000 kPa (10 bar) series, bores from 32 mm to 320 mm — Basic, mounting and accessories dimensions. https://committee.iso.org/standard/66921.html (retrieved 2026-09-05)"
+    used_for: "Pneumatic-cylinder applicability and required design qualifiers"
+  - id: "iso-10100-2020"
+    type: "standard"
+    reference: "ISO 10100:2020, Hydraulic fluid power — Cylinders — Acceptance tests. https://committee.iso.org/standard/75271.html (retrieved 2026-09-05)"
+    used_for: "Inclusion and documentation of hydraulic-cylinder acceptance testing"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines. https://committee.iso.org/standard/38498.html (retrieved 2026-09-05)"
+    used_for: "LCI calculation, allocation, reporting, and validation framework"
+  - id: "festo-dnc-standard-cylinders-2017"
+    type: "handbook"
+    reference: "Festo, Standard cylinders DNC, ISO 15552, technical data, 2017/11. https://ftp.festo.com/Public/PNEUMATIC/SOFTWARE_SERVICE/Documentation/2018/EN/DNC_EN.PDF (retrieved 2026-09-05)"
+    used_for: "Representative pneumatic-cylinder components and materials"
+  - id: "skf-hydraulic-seals-general-technical-information"
+    type: "handbook"
+    reference: "SKF, Hydraulic seals — general technical information. https://cdn.skfmediahub.skf.com/api/public/09d1d840c2d1f94d/pdf_preview_medium/HydraulicSeals_SKF_12393_3_EN_screen_pdf_preview_medium.pdf (retrieved 2026-09-05)"
+    used_for: "Cylinder-bore honing or burnishing, rod hardening, grinding, hard-chromium plating, polishing, and alternative coating routes"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:aaf0851178c5419515d8447f5300bae792ebdd2ecfaa38747334640652b665f4"
+  generated_content_sha256: "sha256:10c0794197a6067a5a1f87ec8dc45d60b7d854e2ff1b51f440b0bec92394d001"

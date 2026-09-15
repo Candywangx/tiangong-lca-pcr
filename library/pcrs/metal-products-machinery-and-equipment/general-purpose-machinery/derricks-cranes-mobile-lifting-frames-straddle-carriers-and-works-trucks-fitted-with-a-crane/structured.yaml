@@ -1,10 +1,1033 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43520"
-  title: "Derricks; cranes; mobile lifting frames, straddle carriers and works trucks fitted with a crane"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.derricks-cranes-mobile-lifting-frames-straddle-carriers-and-works-trucks-fitted-with-a-crane"
+  classification_refs: "CPC 3.0: 43520 (un-cpc-3-0-2025)"
+  covered_products: "Complete derricks; fixed, mobile, bridge, gantry, tower and other cranes; mobile lifting frames; straddle carriers; non-road works trucks fitted with a crane"
+  excluded_products: "Crane lorries as complete road vehicles; forklifts and works trucks without a crane; separately sold crane parts; lifting-equipment manufacturing services; installation, repair and rental services"
+  representative_product: "A completed load-lifting or handling equipment item accepted after factory testing"
+  production_route: "Received metal products and purchased systems -> cutting/forming/machining -> structural joining -> surface preparation/coating when applicable -> final assembly and factory acceptance testing"
+  market_state: "Completed equipment at the manufacturer's gate, with included attachments and factory-supplied fluids declared"
+functional_unit:
+  what: "Manufacture of completed equipment that provides the declared load-lifting or load-handling function"
+  how_much: "1,000 kg of completed equipment at the manufacturer's gate"
+  how_well: "Conforms to the declared product family, structural configuration, rated capacity, duty class, mobility and drive system, and has passed the manufacturer's acceptance criteria"
+  how_long_or_cycle: "One completed factory-gate product; no operating life or lifting cycle is represented"
+  reference_flow_link: "p04_reference_product"
+system_boundary:
+  rules:
+    - rule_id: sb_foreground_gate
+      applies_to: "all foreground processes"
+      rule: "Include directly controlled cutting, forming, machining, joining, surface treatment performed by the manufacturer, final assembly, testing, on-site utilities, direct emissions, and generated wastes through factory-gate release."
+      source_ids:
+        - jrc-fabricated-metal-products-2015
+        - uctug-et-al-heavy-machinery-2025
+    - rule_id: sb_purchased_inputs
+      applies_to: "purchased materials, components, energy and treatment services"
+      rule: "Record every purchased input as an atomic product or service link and require an upstream dataset matching material grade, component state, energy geography, and supplier technology."
+      source_ids:
+        - uctug-et-al-heavy-machinery-2025
+    - rule_id: sb_outsourced_operations
+      applies_to: "outsourced fabrication, coating or treatment"
+      rule: "Keep outsourced operations visible: record the intermediate sent and received plus the contracted operation dataset; do not treat outsourced burdens as zero."
+      source_ids:
+        - jrc-fabricated-metal-products-2015
+    - rule_id: sb_excluded_life_cycle
+      applies_to: "installation, use, maintenance and end-of-life"
+      rule: "Exclude post-gate installation, operation, maintenance and end-of-life from this manufacturing-gate package and disclose that exclusion; add them only in a separately declared lifecycle model."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "received metal products and purchased components at the manufacturing site"
+  starting_condition_role: "foreground manufacturing input gate"
+  product_classification_scope: "complete lifting equipment within the semantic boundary associated with CPC 3.0 43520"
+  recursive_input_rule: "a purchased complete CPC 43520 product used as an input remains a separately quantified product input with its own upstream dataset; it is not absorbed into the foreground reference product"
+  upstream_dataset_requirement: "supplier- and geography-matched datasets for received metal products, components, electricity, fuels, chemicals and external treatment services"
+  disclosure: "declare product family, included components and attachments, material grades, purchased-versus-made component split, coating route, drive system, outsourced steps, factory-supplied fluids and gate condition"
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Derricks, cranes, mobile lifting frames, straddle carriers and works trucks fitted with a crane"
+    uuid: "dc26f89f-da63-4bc3-bf19-8585b187a85d"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product family and model"
+    - "structural configuration"
+    - "rated lifting capacity and duty class"
+    - fixed
+    - rail
+    - "tyre or crawler mobility"
+    - electric
+    - "hydraulic or internal-combustion drive"
+    - "attachments included"
+    - "factory-supplied fluid state"
+    - "coating system"
+    - "manufacturing site and geography"
+    - "production year"
+    - "factory gate"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product and mass-normalized exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all inventory results to 1,000 kg of completed accepted product; exclude temporary lifting fixtures and reusable factory tooling from product mass."
+  - id: internal_mass_link
+    applies_to: "internal fabricated, welded and coated structures"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure each internal intermediate consistently at transfer; the receiving process quantity must equal the supplying process quantity after any explicitly recorded storage change."
+  - id: energy_conversion
+    applies_to: "electricity and fuels"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered units and document conversion factors; report electrical-energy MJ separately from fuel-energy or fuel-mass records."
+  - id: engine_count
+    applies_to: "diesel engines"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "Item(s)"
+    rule: "Record engine item count and separately retain engine mass, rated power and model in the foreground evidence so product variants are not averaged without disclosure."
+process_map:
+  - id: p01_metal_preparation
+    name: "Metal cutting, forming and machining"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground fabrication"
+    quantitative_reference: "kg fabricated steel components transferred"
+  - id: p02_structural_joining
+    name: "Structural joining"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground fabrication"
+    quantitative_reference: "kg welded steel structure transferred"
+  - id: p03_surface_treatment
+    name: "Surface preparation and coating"
+    inclusion: "conditional"
+    inclusion_condition: "Include when blasting, chemical pretreatment, painting, galvanizing or another coating is performed within the declared foreground or by a contracted supplier."
+    role: "foreground finishing"
+    quantitative_reference: "kg coated steel structure transferred"
+  - id: p04_assembly_testing
+    name: "Final assembly and factory acceptance testing"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground assembly and testing"
+    quantitative_reference: "1,000 kg accepted reference product"
+process_inventory:
+  - id: p01_metal_preparation
+    label: "Metal cutting, forming and machining"
+    inputs:
+      product:
+        - row_id: p01_steel_plate
+          role: "Steel plate"
+          name: "Steel Plate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "421db3a5-394d-410b-8ebf-af23a37fc878"
+          property_unit: "Mass / kg"
+          description: "Steel plate crosses the foreground boundary as the principal load-bearing material input."
+          amount:
+            expression: "measured received mass consumed, by steel grade and plate specification"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - uctug-et-al-heavy-machinery-2025
+            ranges: []
+        - row_id: p01_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Electrical energy operates the cutting, forming and machining equipment assigned to this process."
+          amount:
+            expression: "submetered cutting, forming and machining electricity, with allocation from shared meters when necessary"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - jrc-fabricated-metal-products-2015
+                - uctug-et-al-heavy-machinery-2025
+            ranges: []
+        - row_id: p01_process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Process water crosses the boundary only for a declared wet-machining or aqueous-cooling route."
+          amount:
+            expression: "measured process-water input only when wet machining or aqueous cooling crosses the process boundary"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_water
+              source_ids:
+                - jrc-fabricated-metal-products-2015
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: p01_fabricated_steel_components
+          role: "Fabricated steel components"
+          name: "Fabricated steel components"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Accepted fabricated components leave metal preparation as an internal product transferred to joining."
+          amount:
+            expression: "measured transfer mass by component batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_internal_transfer_mass
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: p01_steel_scrap
+          role: "Post-industrial steel scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Segregated offcuts, chips and rejected components leave metal preparation as post-industrial steel scrap."
+          amount:
+            expression: "measured segregated plate offcuts, machining chips and rejected steel components leaving the process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids:
+                - jrc-fabricated-metal-products-2015
+                - uctug-et-al-heavy-machinery-2025
+            ranges: []
+      elementary:
+        []
+  - id: p02_structural_joining
+    label: "Structural joining"
+    inputs:
+      product:
+        - row_id: p02_fabricated_steel_components
+          role: "Fabricated steel components"
+          name: "Fabricated steel components"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Fabricated steel components enter joining as the internal product received from metal preparation."
+          amount:
+            expression: "measured input mass linked to p01_fabricated_steel_components"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_internal_transfer_mass
+              source_ids: []
+            ranges: []
+        - row_id: p02_flux_cored_wire
+          role: "Flux-cored wire"
+          name: "Flux Cored Wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1b74a576-06e0-4764-97ce-11a73f8a4752"
+          property_unit: "Mass / kg"
+          description: "Flux-cored wire crosses the process boundary as a welding consumable when that welding procedure applies."
+          amount:
+            expression: "measured wire issued minus returned wire when the declared welding procedure uses flux-cored wire"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - uctug-et-al-heavy-machinery-2025
+            ranges: []
+        - row_id: p02_industrial_oxygen
+          role: "Industrial oxygen"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume / m3"
+          description: "Industrial oxygen enters only when it is consumed in a declared cutting or joining operation."
+          amount:
+            expression: "metered oxygen at declared reference conditions when oxygen is used for cutting or joining"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_gas
+              source_ids: []
+            ranges: []
+        - row_id: p02_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Electrical energy operates welding equipment and the process-specific extraction assigned to joining."
+          amount:
+            expression: "submetered welding and joining electricity, including extraction assigned to this process"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - jrc-fabricated-metal-products-2015
+                - uctug-et-al-heavy-machinery-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: p02_welded_steel_structure
+          role: "Welded steel structure"
+          name: "Welded steel structure"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The accepted welded load-bearing structure leaves joining as an internal product."
+          amount:
+            expression: "measured transfer mass of accepted welded structure"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_internal_transfer_mass
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: p02_welding_particulate
+          role: "Welding particulate matter to air"
+          name: "Particulate matter from welding, emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Particulate matter generated by welding crosses the process boundary as a direct air emission after accounting for capture."
+          amount:
+            expression: "measured stack plus estimated uncaptured welding particulate, with capture efficiency and estimation method disclosed"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emission
+              source_ids:
+                - jrc-fabricated-metal-products-2015
+            ranges: []
+  - id: p03_surface_treatment
+    label: "Surface preparation and coating"
+    inputs:
+      product:
+        - row_id: p03_welded_steel_structure
+          role: "Welded steel structure"
+          name: "Welded steel structure"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The welded structure enters the conditional surface-treatment process from structural joining."
+          amount:
+            expression: "measured input mass linked to p02_welded_steel_structure"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_internal_transfer_mass
+              source_ids: []
+            ranges: []
+        - row_id: p03_primer
+          role: "Primer"
+          name: "Primer"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e7084225-82a6-42d7-90e1-580a59a708cd"
+          property_unit: "Mass / kg"
+          description: "Primer crosses the boundary as one specific coating product applied to the declared structure."
+          amount:
+            expression: "measured mixed primer consumed, net of returned unused material; declare chemistry and solids content"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_material
+              source_ids:
+                - uctug-et-al-heavy-machinery-2025
+            ranges: []
+        - row_id: p03_process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Process water enters aqueous cleaning, rinsing or coating preparation when those operations apply."
+          amount:
+            expression: "measured water entering aqueous cleaning, rinsing or coating preparation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_water
+              source_ids:
+                - jrc-fabricated-metal-products-2015
+            ranges: []
+        - row_id: p03_sodium_hydroxide
+          role: "Sodium hydroxide"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Sodium hydroxide enters as the active substance in an applicable alkaline-cleaning route."
+          amount:
+            expression: "active sodium-hydroxide mass in alkaline cleaning solution added to the process"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_coating_material
+              source_ids:
+                - jrc-fabricated-metal-products-2015
+            ranges: []
+        - row_id: p03_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Electrical energy operates the applicable preparation, ventilation, coating and curing equipment."
+          amount:
+            expression: "submetered blasting, ventilation, coating and curing electricity"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - jrc-fabricated-metal-products-2015
+            ranges: []
+        - row_id: p03_natural_gas
+          role: "Natural gas in the gaseous state"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Gaseous natural gas enters when directly burned for booth make-up air or coating cure."
+          amount:
+            expression: "metered natural gas at declared reference conditions used for booth make-up air or coating cure"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_gas
+              source_ids:
+                - jrc-fabricated-metal-products-2015
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: p03_coated_steel_structure
+          role: "Coated steel structure"
+          name: "Coated steel structure"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The accepted coated structure leaves surface treatment as an internal product transferred to assembly."
+          amount:
+            expression: "measured transfer mass of accepted coated structure"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_internal_transfer_mass
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: p03_waste_paint
+          role: "Waste paint"
+          name: "Waste paint"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "877e5a04-76c8-4c5b-ac4c-062f5beeb2bd"
+          property_unit: "Mass / kg"
+          description: "Uncured paint residue and coating-contaminated material leave the process as one waste-paint exchange."
+          amount:
+            expression: "measured uncured paint residue and contaminated coating material leaving the process as waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids:
+                - jrc-fabricated-metal-products-2015
+                - uctug-et-al-heavy-machinery-2025
+            ranges: []
+      elementary:
+        - row_id: p03_fossil_co2
+          role: "Fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide from direct on-site natural-gas combustion crosses the boundary as an air emission."
+          amount:
+            expression: "calculate direct fossil carbon dioxide from on-site natural-gas combustion using recorded fuel composition and carbon balance; exclude upstream fuel emissions"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emission
+              source_ids: []
+            ranges: []
+  - id: p04_assembly_testing
+    label: "Final assembly and factory acceptance testing"
+    inputs:
+      product:
+        - row_id: p04_coated_steel_structure
+          role: "Coated steel structure"
+          name: "Coated steel structure"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The coated structure enters final assembly only when the declared surface-treatment route applies."
+          amount:
+            expression: "measured input linked to p03_coated_steel_structure when foreground surface treatment is included"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_internal_transfer_mass
+              source_ids: []
+            ranges: []
+        - row_id: p04_uncoated_welded_structure
+          role: "Uncoated welded steel structure"
+          name: "Welded steel structure"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The welded structure enters final assembly directly only when foreground surface treatment is absent."
+          amount:
+            expression: "measured input linked directly to p02_welded_steel_structure only when foreground surface treatment is not performed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_internal_transfer_mass
+              source_ids: []
+            ranges: []
+        - row_id: p04_electric_motor
+          role: "Electric motor"
+          name: "Electric motor"
+          flow_type: "product"
+          flow_ref:
+            uuid: "014f80a3-c257-425b-9b75-3e5a18573695"
+          property_unit: "Mass / kg"
+          description: "One installed electric-motor product crosses the assembly boundary for an applicable electric drive."
+          amount:
+            expression: "measured mass of purchased AC lifting or travel motors installed; declare rated power and motor class"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_purchased_component
+              source_ids:
+                - uctug-et-al-heavy-machinery-2025
+            ranges: []
+        - row_id: p04_hydraulic_power_unit
+          role: "Hydraulic power unit"
+          name: "Hydraulic power unit"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One hydraulic power-unit product crosses the assembly boundary when hydraulic actuation applies."
+          amount:
+            expression: "measured mass of purchased hydraulic power units installed when the declared product uses hydraulic actuation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_purchased_component
+              source_ids: []
+            ranges: []
+        - row_id: p04_diesel_engine
+          role: "Diesel engine"
+          name: "Diesel engine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d3ac8612-80b9-4283-9439-62aa4986fce2"
+          property_unit: "Number of items / Item(s)"
+          description: "One non-road diesel-engine product crosses the assembly boundary for an applicable internal-combustion drive."
+          amount:
+            expression: "counted non-road diesel engines installed when the declared product uses an internal-combustion drive"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_purchased_component
+              source_ids:
+                - uctug-et-al-heavy-machinery-2025
+            ranges: []
+        - row_id: p04_diesel_fuel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "Diesel fuel crosses the process boundary only when it is consumed during factory acceptance testing."
+          amount:
+            expression: "measured diesel issued and consumed only during factory acceptance testing; exclude post-gate operating fuel"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_factory_test
+              source_ids: []
+            ranges: []
+        - row_id: p04_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Electrical energy operates final assembly, commissioning and electrical acceptance testing."
+          amount:
+            expression: "submetered final assembly, control commissioning and electrical acceptance-test energy"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_process_energy
+              source_ids:
+                - uctug-et-al-heavy-machinery-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: p04_reference_product
+          role: "Completed accepted lifting equipment"
+          name: "Derricks, cranes, mobile lifting frames, straddle carriers and works trucks fitted with a crane"
+          flow_type: "product"
+          flow_ref:
+            uuid: "dc26f89f-da63-4bc3-bf19-8585b187a85d"
+          property_unit: "Mass / kg"
+          description: "The accepted complete equipment leaves final assembly as the PCR reference product."
+          amount:
+            expression: "fixed normalization output after acceptance testing, including declared attachments and factory-supplied fluids"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - un-cpc-3-0-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: p04_fossil_co2
+          role: "Fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide from diesel burned during factory testing crosses the boundary as a direct air emission."
+          amount:
+            expression: "calculate direct fossil carbon dioxide from diesel burned during factory testing using recorded fuel carbon content; exclude upstream fuel emissions"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg completed accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emission
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: al_subdivide_first
+    applies_to: "processes producing multiple equipment models or components"
+    rule: "Subdivide by production order, work centre, batch, meter or operating time before allocating shared burdens."
+    source_ids: []
+  - rule_id: al_physical_fallback
+    applies_to: "residual shared energy, water and consumables"
+    rule: "When subdivision is infeasible, allocate by the causal physical driver documented for that resource, such as machine time, treated surface area, weld length, coating mass or accepted product mass."
+    source_ids:
+      - jrc-fabricated-metal-products-2015
+  - rule_id: al_scrap_no_avoided_burden
+    applies_to: "steel scrap and other recovered material leaving the gate"
+    rule: "Record recovered material as a waste output with mass, quality and destination; do not subtract avoided primary production inside the foreground inventory."
+    source_ids: []
+  - rule_id: al_economic_last_resort
+    applies_to: "inseparable co-products without a defensible physical relationship"
+    rule: "Use economic allocation only as a last resort and disclose prices, currency, reference period, sensitivity and affected rows."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass
+      process_id: "p01_metal_preparation_p02_structural_joining"
+      flow_role: "plate and welding-consumable input"
+      record_type: "purchase, issue and return records"
+      raw_fields: "order; material id; grade; gross mass; returned mass; batch; product order"
+      collection_method: "calibrated scale plus traceable material ledger"
+      unit: "kg"
+      frequency: "per receipt and issue"
+      temporal_coverage: "representative continuous 12-month period or complete production campaign"
+      site_scope: "all foreground work centres"
+      aggregation_rule: "consumed mass = issued mass - returned usable mass; normalize by accepted product mass"
+      quality_evidence: "calibration record; material certificate; batch-to-order reconciliation"
+    - protocol_id: cp_process_energy
+      process_id: "p01_metal_preparation_p02_structural_joining_p03_surface_treatment_p04_assembly_testing"
+      flow_role: "process electricity"
+      record_type: "submeter and machine log"
+      raw_fields: "meter id; start/end reading; machine power; run time; idle time; product order"
+      collection_method: "submetering; where unavailable, rated power multiplied by logged operating time with load factor documented"
+      unit: "MJ"
+      frequency: "per batch or monthly meter period"
+      temporal_coverage: "representative continuous 12-month period or complete production campaign"
+      site_scope: "all included foreground work centres"
+      aggregation_rule: "subtract documented non-production load, assign shared use by causal driver, convert to MJ and normalize"
+      quality_evidence: "meter calibration; machine log; reconciliation to site bill"
+    - protocol_id: cp_process_water
+      process_id: "p01_metal_preparation_p03_surface_treatment"
+      flow_role: "process-water input"
+      record_type: "meter and bath record"
+      raw_fields: "meter id; volume or mass; source; bath id; make-up; discharge"
+      collection_method: "submeter or calibrated tank change"
+      unit: "kg"
+      frequency: "per batch or monthly"
+      temporal_coverage: "representative continuous 12-month period or complete production campaign"
+      site_scope: "included wet processes"
+      aggregation_rule: "sum net water crossing each process boundary; document density conversion"
+      quality_evidence: "meter calibration; bath ledger; water balance"
+    - protocol_id: cp_internal_transfer_mass
+      process_id: "p01_metal_preparation_p02_structural_joining_p03_surface_treatment_p04_assembly_testing"
+      flow_role: "internal intermediate"
+      record_type: "transfer and production-order record"
+      raw_fields: "order; component or structure id; sending process; receiving process; mass; time"
+      collection_method: "calibrated scale or engineering mass verified by periodic weighing"
+      unit: "kg"
+      frequency: "each transfer batch"
+      temporal_coverage: "complete production campaign"
+      site_scope: "all linked foreground processes"
+      aggregation_rule: "reconcile sending and receiving quantities before normalization"
+      quality_evidence: "scale calibration; order traveller; reconciliation report"
+    - protocol_id: cp_waste_mass
+      process_id: "p01_metal_preparation_p03_surface_treatment"
+      flow_role: "steel scrap and waste paint"
+      record_type: "waste container and dispatch record"
+      raw_fields: "waste id; container tare; gross mass; composition; hazard class; destination; date"
+      collection_method: "calibrated scale at container closure or dispatch"
+      unit: "kg"
+      frequency: "each dispatch"
+      temporal_coverage: "representative continuous 12-month period or complete production campaign"
+      site_scope: "all included work centres and waste stores"
+      aggregation_rule: "net mass = gross - tare; assign by labelled source or documented mass balance"
+      quality_evidence: "calibration; consignment note; waste classification"
+    - protocol_id: cp_process_gas
+      process_id: "p02_structural_joining_p03_surface_treatment"
+      flow_role: "oxygen and natural gas"
+      record_type: "meter or cylinder record"
+      raw_fields: "gas id; volume; pressure; temperature; opening/closing meter; returned cylinder"
+      collection_method: "calibrated meter or cylinder mass/volume reconciliation"
+      unit: "m3"
+      frequency: "per batch or monthly"
+      temporal_coverage: "representative continuous 12-month period or complete production campaign"
+      site_scope: "included gas-consuming processes"
+      aggregation_rule: "convert to declared reference conditions and normalize"
+      quality_evidence: "meter calibration; supplier record; reference-condition calculation"
+    - protocol_id: cp_coating_material
+      process_id: "p03_surface_treatment"
+      flow_role: "primer and alkaline cleaner"
+      record_type: "mixing and issue record"
+      raw_fields: "product id; batch; supplied mass; concentration; solids; mixed mass; returned mass; treated order"
+      collection_method: "calibrated scale and formulation ledger"
+      unit: "kg"
+      frequency: "each mix and coating batch"
+      temporal_coverage: "representative continuous 12-month period or complete production campaign"
+      site_scope: "all included coating lines"
+      aggregation_rule: "calculate consumed product or active substance from issued-minus-returned mass and concentration"
+      quality_evidence: "scale calibration; SDS; formulation; batch reconciliation"
+    - protocol_id: cp_purchased_component
+      process_id: "p04_assembly_testing"
+      flow_role: "installed motor, hydraulic unit and engine"
+      record_type: "bill of materials and installation record"
+      raw_fields: "component id; supplier; model; count; mass; rated capacity; product order"
+      collection_method: "purchase/BOM reconciliation with periodic weighing"
+      unit: "kg or Item(s)"
+      frequency: "each product order"
+      temporal_coverage: "complete production campaign"
+      site_scope: "final assembly and included suppliers"
+      aggregation_rule: "sum installed quantities by exact component identity and normalize"
+      quality_evidence: "supplier declaration; BOM; installation sign-off"
+    - protocol_id: cp_factory_test
+      process_id: "p04_assembly_testing"
+      flow_role: "acceptance-test diesel"
+      record_type: "issue and test log"
+      raw_fields: "product order; fuel batch; issued mass; returned mass; test start/end; test result"
+      collection_method: "calibrated fuel issue meter or scale"
+      unit: "kg"
+      frequency: "each test"
+      temporal_coverage: "complete production campaign"
+      site_scope: "factory acceptance-test area"
+      aggregation_rule: "consumed mass = issued - recovered/returned fuel; exclude fuel remaining in declared product state"
+      quality_evidence: "calibration; test record; fuel ledger"
+    - protocol_id: cp_direct_emission
+      process_id: "p02_structural_joining_p03_surface_treatment_p04_assembly_testing"
+      flow_role: "direct air emissions"
+      record_type: "monitoring and calculation record"
+      raw_fields: "source id; operating period; measured concentration and flow or fuel quantity/composition; capture efficiency; method"
+      collection_method: "stack measurement or transparent mass-balance calculation from collected activity data"
+      unit: "kg"
+      frequency: "each test campaign and reporting period"
+      temporal_coverage: "representative continuous 12-month period or complete production campaign"
+      site_scope: "all direct foreground emission points"
+      aggregation_rule: "sum measured and calculated direct releases; exclude upstream emissions; normalize"
+      quality_evidence: "accredited report or calculation sheet; instrument calibration; activity-data reconciliation"
+  calculation_rules:
+    - id: calc_normalize_mass
+      applies_to: "every non-reference inventory row"
+      rule: "normalized quantity = process quantity / accepted product mass * 1,000 kg"
+      inputs:
+        - "collected process quantity"
+        - "accepted product mass"
+      output: "row quantity per 1,000 kg reference product"
+      source_ids: []
+    - id: calc_shared_energy
+      applies_to: "shared process electricity"
+      rule: "assigned energy = metered period energy * documented causal driver for the product order / total driver in the meter period"
+      inputs:
+        - "meter readings"
+        - "operating time"
+        - "machine time or another justified driver"
+      output: "MJ assigned to the product order"
+      source_ids:
+        - uctug-et-al-heavy-machinery-2025
+    - id: calc_active_naoh
+      applies_to: "sodium-hydroxide input"
+      rule: "active NaOH mass = solution mass added * measured or supplier-declared NaOH mass fraction"
+      inputs:
+        - "solution mass"
+        - concentration
+      output: "kg active sodium hydroxide"
+      source_ids: []
+    - id: calc_fossil_co2
+      applies_to: "direct fuel combustion"
+      rule: "fossil CO2 = fuel mass or reference-condition volume * fossil carbon content * oxidation fraction * 44/12; disclose every factor and exclude upstream emissions"
+      inputs:
+        - "fuel record"
+        - composition
+        - "oxidation factor"
+      output: "kg fossil carbon dioxide to air"
+      source_ids: []
+    - id: calc_mass_reconciliation
+      applies_to: "fabrication and assembly mass balance"
+      rule: "received materials and components = accepted product + internal inventory change + wastes + quantified direct material losses, within documented measurement uncertainty"
+      inputs:
+        - material
+        - component
+        - internal-transfer
+        - "waste and product mass records"
+      output: "reconciliation difference and completeness finding"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and components"
+      requirement: "Retain product model, configuration, rated capacity, drive type, attachments, BOM revision and accepted serial/order identifiers."
+      evidence: "product specification; BOM; acceptance certificate"
+    - id: dq_temporal
+      applies_to: "foreground records"
+      requirement: "Use a representative continuous 12-month period or the complete production campaign; disclose shutdowns, prototypes and abnormal batches."
+      evidence: "dated ledgers, meter series and production schedule"
+    - id: dq_completeness
+      applies_to: "all process rows"
+      requirement: "Reconcile mass, energy meters, purchased components, waste dispatches and direct emissions; explain every omitted applicable exchange."
+      evidence: "reconciliation report and omission register"
+    - id: dq_geography_technology
+      applies_to: "upstream links"
+      requirement: "Match supplier geography, material grade, recycled content, electricity grid, fuel supply and component technology; disclose proxies."
+      evidence: "supplier declarations and dataset metadata"
+    - id: dq_measurement
+      applies_to: "foreground measurements"
+      requirement: "Use calibrated instruments and retain unit conversions, meter coverage, allocation drivers, detection limits and uncertainty."
+      evidence: "calibration certificates and calculation workbooks"
+    - id: dq_conditional_routes
+      applies_to: "coating, hydraulic and diesel routes"
+      requirement: "Mark each conditional process and exchange applicable or not applicable using documented product and routing evidence; never average absent routes into a product record."
+      evidence: "routing sheet; product specification; process traveller"
+validation_rules:
+  - rule_id: vr_reference_flow
+    applies_to: "reference product"
+    rule: "Confirm exactly 1,000 kg of accepted factory-gate product and all required qualifiers; the UUID, mass property and kg unit must match the reference-flow definition."
+    source_ids: []
+  - rule_id: vr_process_linkage
+    applies_to: "internal intermediates"
+    rule: "Confirm every internal supplying row has an equal receiving row after declared inventory change and that only one coated or uncoated structural route feeds final assembly."
+    source_ids: []
+  - rule_id: vr_atomic_inventory
+    applies_to: "all inventory rows"
+    rule: "Confirm every selected flow is one physical, chemical, waste, energy or elementary exchange and that conditional applicability is explicit."
+    source_ids: []
+  - rule_id: vr_mass_balance
+    applies_to: "fabrication and assembly"
+    rule: "Run calc_mass_reconciliation; investigate differences outside documented measurement uncertainty and prohibit unexplained negative waste or material values."
+    source_ids: []
+  - rule_id: vr_energy_boundary
+    applies_to: "electricity and fuels"
+    rule: "Reconcile process energy to site bills, exclude post-gate operating energy, and keep electricity, natural gas and diesel as separate exchanges."
+    source_ids:
+      - jrc-fabricated-metal-products-2015
+      - uctug-et-al-heavy-machinery-2025
+  - rule_id: vr_direct_emissions
+    applies_to: "fossil CO2 and welding particulate"
+    rule: "Confirm only direct foreground releases are reported; retain monitoring or carbon-balance evidence and exclude upstream supply-chain emissions."
+    source_ids: []
+  - rule_id: vr_unresolved_evidence
+    applies_to: "UUID and range review gaps"
+    rule: "Before publication, resolve each manifest UUID gap and either add a compliant two-source empirical range or retain a reviewed, explicit evidence need without inventing a range."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "unit_process"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Manufacturing-gate datasets for complete lifting equipment matching the declared product family, configuration, capacity, drive, coating route, geography, year and included components"
+  excluded_use: "Comparative claims between unlike crane types or capacities without functional equivalence; crane-lorry manufacture as a road vehicle; installation, operation, maintenance or end-of-life modelling without added lifecycle processes"
+  required_metadata: "canonical PCR id; reference-flow UUID; product family/model; rated capacity and duty class; mobility and drive; attachments; factory-supplied fluids; BOM revision; coating route; manufacturing site/geography/year; outsourced steps; allocation; data coverage"
+  required_quality_disclosure: "foreground period and coverage; instrument calibration; meter allocation; mass reconciliation; conditional-route decisions; upstream proxies; unresolved UUID/range evidence; uncertainty and data-quality assessment"
+  update_trigger: "material change in product design, capacity class, drive system, bill of materials, steel grade, coating route, manufacturing technology, supplier geography, energy mix, allocation method or foreground data period"
+data_sources:
+  - id: "un-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *Central Product Classification Version 3.0 structure*, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-06-23; SHA-256 5cd2c1c4890dd6be16af48e9bb940fed48efff9865f39ff15edaa921da25fb7c)"
+    used_for: "Official CPC 43520 product-category identity and hierarchy only"
+  - id: "jrc-fabricated-metal-products-2015"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, *Background document on best environmental management practice in the Fabricated Metal Products sector*, December 2015, https://susproc.jrc.ec.europa.eu/product-bureau/sites/default/files/inline-files/BEMP_FabMetProd_BackgroundReport.pdf (retrieved 2026-09-05)"
+    used_for: "Forming, removing, joining, finishing and assembly process decomposition; utilities, water, consumables, emissions and waste collection scope"
+  - id: "uctug-et-al-heavy-machinery-2025"
+    type: "literature"
+    reference: "Üçtuğ, F.G. et al., *Cradle-to-gate life cycle assessment of heavy machinery manufacturing: a case study in Türkiye*, The International Journal of Life Cycle Assessment 30 (2025), https://doi.org/10.1007/s11367-025-02462-7 (retrieved 2026-09-05)"
+    used_for: "Original-text manufacturing sequence for cutting, bending, welding, blasting, painting, drying, purchased-component assembly, testing, steel scrap and waste paint; no quantitative range adopted"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:bb4f82b8724ce30d2b9515ae580f4cebcd4302905854334376f13f38dad34513"
+  generated_content_sha256: "sha256:c44fce794c95891bf6e6f215117bebb58bf67429b61585b6ddf00d8b2b6ec7bc"

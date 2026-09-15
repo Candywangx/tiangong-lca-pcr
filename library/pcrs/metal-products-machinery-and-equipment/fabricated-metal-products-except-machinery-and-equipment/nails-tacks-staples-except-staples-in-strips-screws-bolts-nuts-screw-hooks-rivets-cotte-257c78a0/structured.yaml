@@ -1,10 +1,903 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "42944"
-  title: "Nails, tacks, staples (except staples in strips), screws, bolts, nuts, screw hooks, rivets, cotters, cotter-pins, washers and similar articles, of iron, steel, copper or aluminium"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.nails-tacks-staples-except-staples-in-strips-screws-bolts-nuts-screw-hooks-rivets-cotte-257c78a0"
+  classification_refs: "CPC 3.0: 42944 (exact classification context)"
+  covered_products: "Nails; tacks; staples not supplied in strips; screws; bolts; nuts; screw hooks; rivets; cotters; cotter-pins; washers; and similar fastening articles of iron, steel, copper or aluminium."
+  excluded_products: "Staples in strips; tubular or bifurcated rivets; springs; cables; fastening assemblies whose dominant function or material is outside this category; installation and use services."
+  representative_product: "A saleable batch of one declared fastener or similar article meeting its specified material, dimensions, mechanical properties and surface condition."
+  production_route: "Wire or rod receipt and conditioning; heading, forming, stamping or machining; thread production when applicable; conditional heat treatment; cleaning and conditional finishing; inspection; packaging."
+  market_state: "Conforming, inspected and packaged product at the manufacturing-site gate; article type, metal/alloy, grade, dimensions, coating and heat-treatment state declared."
+functional_unit:
+  what: "Production of a conforming, saleable metal fastener or similar article with declared fastening function and specification."
+  how_much: "1 kg net mass of conforming product, excluding separately declared transport packaging."
+  how_well: "Meets the declared article standard or customer specification for material/alloy, dimensions and tolerances, mechanical property class, thread where applicable, heat-treatment state, surface finish or coating and acceptance test."
+  how_long_or_cycle: "One production batch ending at the manufacturing-site gate; no service-life claim is included."
+  reference_flow_link: "reference_fastener_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "foreground production boundary"
+      rule: "Include all on-site forming, machining or threading, conditional heat treatment, washing or cleaning, conditional surface finishing, inspection and packaging through release of the packaged product at the manufacturing-site gate."
+      source_ids:
+        - us-epa-metal-fastener-pollution-prevention-1995
+    - rule_id: boundary_conditional_routes
+      applies_to: "heat treatment and surface finishing"
+      rule: "Include heat treatment, pickling, galvanising or other finishing only when performed for the declared product. If outsourced, include the supplier-specific upstream process dataset and the transport embedded in that purchased service or delivered input boundary."
+      source_ids:
+        - us-epa-metal-fastener-pollution-prevention-1995
+        - ec-jrc-ferrous-metals-processing-bref-2022
+        - ec-jrc-metal-surface-treatment-2022
+    - rule_id: boundary_upstream_inputs
+      applies_to: "purchased inputs"
+      rule: "Represent production and delivery of metal feedstock, energy, water, chemicals and packaging with geographically and technologically appropriate upstream datasets; do not duplicate those upstream processes in the foreground inventory."
+      source_ids:
+        - "—"
+    - rule_id: boundary_exclusions
+      applies_to: "downstream and infrastructure"
+      rule: "Exclude installation, use, maintenance and product end-of-life. Exclude capital goods and factory infrastructure unless the study goal requires them or a documented screening shows they are material."
+      source_ids:
+        - "—"
+boundary_abstraction:
+  declared_starting_condition: "Declared metal wire or rod, process consumables, energy and packaging delivered at the manufacturing-site gate, with supplier and upstream dataset boundaries identified."
+  starting_condition_role: "Upstream products entering the foreground fastener manufacturing system."
+  product_classification_scope: "One declared CPC 42944 article family and metal/alloy route per foreground data package."
+  recursive_input_rule: "If a purchased fastener within this same category enters assembly, tooling, packaging or rework, record it once as an atomic product input linked to an upstream dataset; do not recursively recreate its manufacturing inventory inside this foreground package."
+  upstream_dataset_requirement: "Use supplier-specific data where available; otherwise use a geography-, technology-, material-grade- and product-state-compatible upstream dataset and disclose substitutions."
+  disclosure: "Declare article type, alloy and grade, feedstock form, production technology, heat treatment, surface finish, outsourced operations, scrap recovery route, packaging and all upstream dataset substitutions."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Fasteners, unspecified"
+    uuid: "0eddfdee-c657-4086-b39d-aa60466b6970"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "article type"
+    - iron
+    - steel
+    - "copper or aluminium material and alloy/grade"
+    - "feedstock form"
+    - "nominal dimensions and mass-per-piece or piece count"
+    - "thread and tolerance when applicable"
+    - "mechanical property class"
+    - "forming and machining route"
+    - "heat-treatment state"
+    - "surface treatment or coating and coating mass/thickness"
+    - "inspection standard and acceptance rate"
+    - "packaging configuration"
+    - "manufacturing geography and reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "Reference product and all mass-normalized inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use net dry or as-sold metal-product mass consistently. Exclude corrugated boxes and pallets from the 1 kg product reference mass and record them as separate inputs."
+  - id: piece_to_mass_conversion
+    applies_to: "Production or sales records available only as piece counts"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert count to mass with a batch-specific verified average mass per conforming piece; retain the count, sample size, weighing method and uncertainty."
+  - id: electricity_energy_conversion
+    applies_to: "Electricity inputs"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electrical energy and convert kWh to MJ using 1 kWh = 3.6 MJ; do not apply a fuel calorific-value factor to electricity."
+  - id: gas_volume_reference
+    applies_to: "Gaseous natural gas input"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report metered volume at the supplier or meter reference conditions and declare temperature, pressure, correction basis and lower-heating-value data used for any energy conversion."
+process_map:
+  - id: forming_and_machining
+    name: "Stock conditioning, forming, heading, threading and machining"
+    inclusion: "required"
+    inclusion_condition: "Include the operations actually used; non-applicable secondary machining or threading has no row rather than a zero-valued combined route."
+    role: "foreground production"
+    quantitative_reference: "1 kg conforming product"
+  - id: heat_treatment
+    name: "Heat treatment and quenching"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared material grade and mechanical-property specification require thermal treatment."
+    role: "foreground production"
+    quantitative_reference: "1 kg heat-treated product"
+  - id: cleaning_and_surface_finishing
+    name: "Washing, pickling, polishing and surface finishing"
+    inclusion: "required"
+    inclusion_condition: "Include actual cleaning; include acid pickling and zinc coating rows only when those specific routes are used."
+    role: "foreground production"
+    quantitative_reference: "1 kg cleaned or finished product"
+  - id: inspection_and_packaging
+    name: "Final inspection and packaging"
+    inclusion: "required"
+    inclusion_condition: "Include release inspection and the actual packaging supplied at the manufacturing-site gate."
+    role: "foreground production"
+    quantitative_reference: "1 kg conforming packaged product, packaging reported separately"
+process_inventory:
+  - id: forming_and_machining
+    label: "Stock conditioning, forming, heading, threading and machining"
+    inputs:
+      product:
+        - row_id: steel_wire_input
+          role: "Non-alloy steel wire feedstock"
+          name: "Steel Wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "62bb3717-f62c-43e0-baca-46a1e6f847c4"
+          property_unit: "Mass / kg"
+          description: "Record this input only for the declared non-alloy steel wire route; other steel grades or feedstock forms require their own atomic foreground row."
+          amount:
+            expression: "measured net steel wire issued to the batch, including measured returns and stock change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_records
+              source_ids:
+                - us-epa-metal-fastener-pollution-prevention-1995
+            ranges: []
+        - row_id: copper_wire_rod_input
+          role: "Copper wire-rod feedstock"
+          name: "Copper wire rod"
+          flow_type: "product"
+          flow_ref:
+            uuid: "99715c69-4245-44ff-a438-0e0d68377386"
+          property_unit: "Mass / kg"
+          description: "Record this input only for a declared copper or copper-alloy wire-rod route."
+          amount:
+            expression: "measured net copper wire rod issued to the batch, including measured returns and stock change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_records
+              source_ids:
+                - us-epa-metal-fastener-pollution-prevention-1995
+            ranges: []
+        - row_id: aluminium_wire_input
+          role: "Aluminium wire feedstock"
+          name: "Aluminum wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "89db8507-09bd-45f8-ba96-4e459058412c"
+          property_unit: "Mass / kg"
+          description: "Record this input only for a declared aluminium or aluminium-alloy wire route."
+          amount:
+            expression: "measured net aluminium wire issued to the batch, including measured returns and stock change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_records
+              source_ids:
+                - us-epa-metal-fastener-pollution-prevention-1995
+            ranges: []
+        - row_id: forming_electricity
+          role: "Forming and machining electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity metered or allocated to wire drawing or sizing, heading, forming, stamping, machining and thread production."
+          amount:
+            expression: "measured electricity attributable to the included forming and machining operations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_records
+              source_ids: []
+            ranges: []
+        - row_id: cutting_fluid_input
+          role: "Cutting fluid for secondary machining"
+          name: "Cutting Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "576d250f-4f36-4385-939d-0f03b8f95a10"
+          property_unit: "Mass / kg"
+          description: "Record fresh cutting fluid make-up crossing the process boundary when drilling, turning, tapping or comparable machining is used."
+          amount:
+            expression: "purchases plus opening stock minus closing stock and recovered fluid sent off-site, assigned to the declared batch"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_records
+              source_ids:
+                - us-epa-metal-fastener-pollution-prevention-1995
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: post_industrial_steel_scrap
+          role: "Post-industrial steel scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Record steel offcuts, chips and rejected steel parts leaving forming and machining for recovery or treatment."
+          amount:
+            expression: "measured net mass leaving the process, excluding internal recirculation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_records
+              source_ids:
+                - us-epa-metal-fastener-pollution-prevention-1995
+            ranges: []
+        - row_id: copper_scrap
+          role: "Copper scrap"
+          name: "Copper Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "4fbbb5f1-560a-4052-ba0c-652c5dfc282e"
+          property_unit: "Mass / kg"
+          description: "Record copper or copper-alloy offcuts, chips and rejected parts leaving the process for recovery or treatment."
+          amount:
+            expression: "measured net mass leaving the process, excluding internal recirculation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_records
+              source_ids:
+                - us-epa-metal-fastener-pollution-prevention-1995
+            ranges: []
+        - row_id: aluminium_scrap
+          role: "Aluminium scrap"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass / kg"
+          description: "Record aluminium or aluminium-alloy offcuts, chips and rejected parts leaving the process for recovery or treatment."
+          amount:
+            expression: "measured net mass leaving the process, excluding internal recirculation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_records
+              source_ids:
+                - us-epa-metal-fastener-pollution-prevention-1995
+            ranges: []
+      elementary:
+        []
+  - id: heat_treatment
+    label: "Heat treatment and quenching"
+    inputs:
+      product:
+        - row_id: heat_treatment_natural_gas
+          role: "Gaseous natural gas for heat treatment"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas combusted in the heat-treatment oven or draw furnace when that route applies."
+          amount:
+            expression: "metered natural-gas volume attributable to heat treatment at declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_records
+              source_ids:
+                - us-epa-metal-fastener-pollution-prevention-1995
+            ranges: []
+        - row_id: heat_treatment_electricity
+          role: "Heat-treatment electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity used by furnaces, controls, circulation, quench handling and stress-relief equipment."
+          amount:
+            expression: "measured electricity attributable to heat treatment"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_records
+              source_ids: []
+            ranges: []
+        - row_id: quenching_oil_input
+          role: "Quenching-oil make-up"
+          name: "Quenching Oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "02f62137-e204-46e6-8e72-e88b450fbdc4"
+          property_unit: "Mass / kg"
+          description: "Record fresh quenching oil make-up when an oil-quench route applies; do not record total bath inventory as consumption."
+          amount:
+            expression: "fresh make-up plus stock loss minus recovered oil, assigned to the declared batch"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_records
+              source_ids:
+                - us-epa-metal-fastener-pollution-prevention-1995
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: heat_treatment_fossil_co2
+          role: "Fossil carbon dioxide from on-site natural-gas combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil carbon dioxide released from on-site heat-treatment combustion; exclude upstream electricity emissions."
+          amount:
+            expression: "measured stack emission or value calculated from metered fuel, documented carbon content and oxidation factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_heat_treatment_records
+              source_ids: []
+            ranges: []
+  - id: cleaning_and_surface_finishing
+    label: "Washing, pickling, polishing and surface finishing"
+    inputs:
+      product:
+        - row_id: cleaning_process_water
+          role: "Process water for parts cleaning and rinsing"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water supplied to parts washing, rinsing and finishing baths, net of internally recycled water."
+          amount:
+            expression: "metered or tank-balance water entering the foreground process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - us-epa-metal-fastener-pollution-prevention-1995
+                - ec-jrc-metal-surface-treatment-2022
+            ranges: []
+        - row_id: cleaning_sodium_hydroxide
+          role: "Sodium hydroxide for alkaline cleaning"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide product mass entering alkaline cleaning only when that chemistry is used; declare concentration and delivered solution state."
+          amount:
+            expression: "measured delivered product mass charged or replenished to the cleaning bath"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - ec-jrc-metal-surface-treatment-2022
+            ranges: []
+        - row_id: pickling_hydrochloric_acid_30pct
+          role: "Hydrochloric acid solution for pickling"
+          name: "Hydrochloric acid (30%)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "56414d25-a353-4d67-b362-87212ce6011d"
+          property_unit: "Mass / kg"
+          description: "Record delivered 30% hydrochloric acid solution only when hydrochloric-acid pickling is used; other concentrations require a separately identified product row and declared conversion."
+          amount:
+            expression: "measured delivered solution mass charged or replenished to the pickling bath"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - ec-jrc-metal-surface-treatment-2022
+            ranges: []
+        - row_id: coating_shg_zinc_metal
+          role: "Special High Grade zinc metal for coating"
+          name: "Special High Grade zinc metal"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2d8ff1bd-e128-4c74-a99d-b8734c99bbd2"
+          property_unit: "Mass / kg"
+          description: "Record Special High Grade zinc metal only when that declared zinc grade is consumed in the coating route."
+          amount:
+            expression: "purchases plus opening stock minus closing stock, recovered dross and unused returns, assigned to the declared product"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - ec-jrc-ferrous-metals-processing-bref-2022
+                - ec-jrc-metal-surface-treatment-2022
+            ranges: []
+        - row_id: finishing_electricity
+          role: "Cleaning and surface-finishing electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity used by washers, pumps, bath heating auxiliaries, polishing and on-site coating equipment."
+          amount:
+            expression: "measured electricity attributable to cleaning and finishing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: metal_finishing_wastewater
+          role: "Metal-finishing wastewater"
+          name: "Metal-finishing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the aqueous waste stream leaving washing, rinsing or surface treatment for on-site or off-site treatment, with composition and destination declared."
+          amount:
+            expression: "measured wastewater mass or volume converted with measured density, net of internal recycle"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - us-epa-metal-fastener-pollution-prevention-1995
+                - ec-jrc-ferrous-metals-processing-bref-2022
+            ranges: []
+        - row_id: oil_sludge_output
+          role: "Oily sludge from parts washing"
+          name: "Oil Sludge"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "956abaf8-8049-4aad-bf6b-a06713de97a6"
+          property_unit: "Mass / kg"
+          description: "Record separated oily sludge leaving parts washing or wastewater treatment as one waste stream."
+          amount:
+            expression: "measured wet mass leaving the process, with water and oil content disclosed"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - us-epa-metal-fastener-pollution-prevention-1995
+            ranges: []
+        - row_id: spent_hydrochloric_pickling_liquor
+          role: "Spent hydrochloric-acid pickling liquor"
+          name: "Spent hydrochloric-acid pickling liquor"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent hydrochloric-acid liquor leaving the pickling bath, including residual free acid and dissolved metal salts; do not replace it with generic waste acid."
+          amount:
+            expression: "measured mass removed from the bath minus any internal regeneration return"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - ec-jrc-metal-surface-treatment-2022
+            ranges: []
+      elementary:
+        []
+  - id: inspection_and_packaging
+    label: "Final inspection and packaging"
+    inputs:
+      product:
+        - row_id: corrugated_box_input
+          role: "Corrugated-board boxes"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record the mass of corrugated-board boxes supplied with the released product when this packaging is used."
+          amount:
+            expression: "measured new box mass consumed for the declared shipment batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - us-epa-metal-fastener-pollution-prevention-1995
+            ranges: []
+        - row_id: wooden_pallet_input
+          role: "Wooden pallets"
+          name: "Pallets, box pallets and other load boards, of wood, pallet collars of wood"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4b49871e-95be-4e0c-9223-9902f9eaa763"
+          property_unit: "Mass / kg"
+          description: "Record the effective mass of wooden pallets supplied with the product, adjusted for documented reuse or return when applicable."
+          amount:
+            expression: "new pallet mass allocated by documented trips or net pallet purchases and stock change for the declared shipment batch"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_electricity
+          role: "Inspection and packaging electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity used by inspection, sorting, counting, labelling and packaging equipment."
+          amount:
+            expression: "measured or submeter-allocated electricity attributable to inspection and packaging"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_fastener_output
+          role: "Conforming fastener or similar article"
+          name: "Fasteners, unspecified"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0eddfdee-c657-4086-b39d-aa60466b6970"
+          property_unit: "Mass / kg"
+          description: "Record the net mass of accepted product released at the factory gate; packaging is excluded from this mass."
+          amount:
+            expression: "measured net mass of conforming released product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "shared lines and utilities"
+    rule: "Prefer physical subdivision, submeters and batch records. Allocate only the residual shared consumption that cannot be directly assigned."
+    source_ids:
+      - "—"
+  - rule_id: allocation_shared_operations
+    applies_to: "residual shared electricity, water and consumables"
+    rule: "Allocate residual shared inputs by a documented causal driver such as machine time, treated mass, bath throughput or metered load; mass allocation is allowed only when it reasonably represents the causal relationship."
+    source_ids:
+      - "—"
+  - rule_id: allocation_scrap_outputs
+    applies_to: "metal scrap and rejected parts"
+    rule: "Record scrap leaving the foreground system as waste with its measured mass and destination. Do not credit avoided primary metal production inside this foreground inventory; any recycling substitution belongs to a separately declared downstream scenario."
+    source_ids:
+      - "—"
+  - rule_id: allocation_no_double_counting
+    applies_to: "internal recycle and outsourced treatment"
+    rule: "Exclude internally recirculated material from both input consumption and waste output. For outsourced operations, include either the supplier process dataset or its disaggregated inventory, never both."
+    source_ids:
+      - "—"
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_forming_records
+      process_id: "forming_and_machining"
+      flow_role: "metal feedstocks, electricity, cutting fluid and metal scrap"
+      record_type: "purchase, inventory, meter, batch and weighbridge records"
+      raw_fields: "batch_id; article_id; alloy_grade; feedstock_form; opening_stock; receipts; closing_stock; returned_material; electricity; cutting_fluid_makeup; scrap_mass; conforming_output_mass"
+      collection_method: "reconcile material stores to batch issue/return records; read dedicated meters or allocate documented shared meters; weigh each scrap stream by metal"
+      unit: "kg; MJ"
+      frequency: "each batch with monthly reconciliation"
+      temporal_coverage: "representative continuous 12-month period including product mix"
+      site_scope: "all included forming and machining lines at the declared site"
+      aggregation_rule: "sum net flows by article route and divide by conforming output mass"
+      quality_evidence: "calibrated scales and meters; stock reconciliation; batch traveller; scrap tickets"
+    - protocol_id: cp_heat_treatment_records
+      process_id: "heat_treatment"
+      flow_role: "natural gas, electricity, quenching oil and direct fossil CO2"
+      record_type: "meter, fuel-quality, bath-maintenance and stack records"
+      raw_fields: "batch_id; furnace_id; treated_mass; gas_volume; gas_reference_conditions; electricity; quench_makeup; recovered_oil; fuel_carbon_content; oxidation_factor; measured_co2"
+      collection_method: "read furnace meters; reconcile quench-oil make-up; use stack measurement or documented fuel-carbon calculation"
+      unit: "m3; MJ; kg"
+      frequency: "each heat-treatment batch with monthly meter reconciliation"
+      temporal_coverage: "representative continuous 12-month period covering furnace loads"
+      site_scope: "all on-site heat-treatment equipment used for the product"
+      aggregation_rule: "assign metered flows to treated batches by measured load or operating time, then normalize to conforming output"
+      quality_evidence: "meter calibration; fuel certificate; bath log; calculation sheet; stack report when available"
+    - protocol_id: cp_finishing_records
+      process_id: "cleaning_and_surface_finishing"
+      flow_role: "water, cleaning chemicals, pickling acid, zinc, electricity, wastewater, oil sludge and spent pickling liquor"
+      record_type: "meter, bath log, purchase, inventory, laboratory and waste-transfer records"
+      raw_fields: "batch_id; treated_mass; water_input; recycle_water; chemical_product; concentration; bath_charge; bath_makeup; zinc_stock; electricity; wastewater_mass_or_volume; density; oil_sludge_mass; sludge_water_content; spent_liquor_mass; free_acid; dissolved_metals; destination"
+      collection_method: "meter water and electricity; reconcile bath additions and zinc inventory; weigh wastes or convert measured volume with measured density; retain analytical composition"
+      unit: "kg; MJ"
+      frequency: "each bath charge and product batch with monthly reconciliation"
+      temporal_coverage: "representative continuous 12-month period covering finishing routes"
+      site_scope: "all on-site and contracted finishing routes attributed to the product"
+      aggregation_rule: "subtract internal recycle and stock returns; normalize net inputs and outputs to conforming product mass"
+      quality_evidence: "calibrated meters and scales; bath analyses; chemical certificates; waste manifests; supplier finishing data"
+    - protocol_id: cp_packaging_records
+      process_id: "inspection_and_packaging"
+      flow_role: "accepted product, corrugated boxes, wooden pallets and electricity"
+      record_type: "release, scale, packaging bill, pallet-loop and meter records"
+      raw_fields: "batch_id; accepted_piece_count; sampled_piece_mass; accepted_product_mass; rejected_mass; box_mass; box_count; pallet_mass; pallet_count; pallet_trips; returned_pallets; electricity"
+      collection_method: "weigh released product and packaging; verify count-to-mass conversion; reconcile pallet reuse; read or allocate packaging meter"
+      unit: "kg; MJ"
+      frequency: "each released shipment batch with monthly reconciliation"
+      temporal_coverage: "representative continuous 12-month period covering package formats"
+      site_scope: "all inspection and packaging operations at the declared site"
+      aggregation_rule: "divide net packaging consumption and electricity by accepted product mass; exclude rejected product and packaging mass from reference output"
+      quality_evidence: "calibrated scales; acceptance records; packaging specifications; pallet-return records; meter allocation"
+  calculation_rules:
+    - id: calc_normalize_to_reference_mass
+      applies_to: "all inventory rows"
+      rule: "normalized amount = net flow assigned to the declared product / net conforming product mass; the denominator excludes transport packaging"
+      inputs:
+        - "net batch or reporting-period flow"
+        - "conforming product mass"
+      output: "amount per 1 kg reference product"
+      source_ids:
+        - "—"
+    - id: calc_piece_count_to_mass
+      applies_to: "piece-count records"
+      rule: "product mass = accepted piece count × verified batch-average mass per piece; use direct batch weighing when available"
+      inputs:
+        - "accepted count"
+        - "sampled or directly measured mass per piece"
+      output: "conforming product mass"
+      source_ids:
+        - "—"
+    - id: calc_direct_fossil_co2
+      applies_to: "heat_treatment_fossil_co2"
+      rule: "use measured direct stack CO2; otherwise calculate from metered fuel quantity × documented fuel carbon content × oxidation factor × 44/12, with consistent volume-to-mass conversion"
+      inputs:
+        - "gas volume and reference conditions or gas mass"
+        - "carbon content"
+        - "oxidation factor"
+      output: "kg fossil CO2"
+      source_ids:
+        - "—"
+    - id: calc_reusable_pallet
+      applies_to: "wooden_pallet_input"
+      rule: "effective pallet input = new pallet mass / documented lifetime trips for closed reuse loops; otherwise use net pallet purchases plus opening stock minus closing stock and verified returns"
+      inputs:
+        - "new pallet mass"
+        - trips
+        - purchases
+        - stocks
+        - returns
+      output: "kg wooden pallet input"
+      source_ids:
+        - "—"
+    - id: calc_mass_balance_check
+      applies_to: "metal feedstocks, product and metal scrap"
+      rule: "compare metal-bearing inputs with conforming output, metal scrap, inventory change and measured treatment losses for each declared metal; investigate unexplained imbalance rather than forcing closure"
+      inputs:
+        - "metal input"
+        - "product output"
+        - "metal-specific scrap"
+        - "stock change"
+        - "measured losses"
+      output: "disclosed mass-balance residual"
+      source_ids:
+        - "—"
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Identify article type, alloy/grade, dimensions, thread, mechanical class, heat treatment, coating and applicable acceptance standard for every represented product family."
+      evidence: "product specification; certificate of conformity; batch traveller"
+    - id: dq_temporal_coverage
+      applies_to: "foreground records"
+      requirement: "Use a representative continuous 12-month period or justify a shorter period that captures product mix, furnace loads, bath cycles, maintenance and seasonal effects."
+      evidence: "dated meter, production, inventory and waste records"
+    - id: dq_mass_completeness
+      applies_to: "metal inputs and outputs"
+      requirement: "Reconcile each metal route to conforming product, metal-specific scrap, stock change and measured loss; disclose the residual and corrective investigation."
+      evidence: "signed mass-balance worksheet; scale calibration; scrap tickets"
+    - id: dq_route_separation
+      applies_to: "conditional heat treatment and finishing"
+      requirement: "Do not average absent and present operations without reporting route shares and allocation drivers. Supplier finishing data must match the declared coating and geography."
+      evidence: "route-specific batch records; supplier dataset and specification"
+    - id: dq_measurement_traceability
+      applies_to: "all collected rows"
+      requirement: "Retain meter or scale identifier, calibration status, raw unit, conversion, allocation driver and responsible record owner."
+      evidence: "calibration certificates; raw exports; calculation workbook"
+    - id: dq_uuid_qualifiers
+      applies_to: "UUID-bearing flows"
+      requirement: "Confirm that foreground product state, concentration, grade, geography and technology remain compatible with the selected Tiangong identity; UUID identity does not replace these qualifiers."
+      evidence: "supplier certificate; flow direct-read audit; process note"
+validation_rules:
+  - rule_id: validate_identity_and_reference
+    applies_to: "product and reference flow"
+    rule: "Fail validation if the article is outside the covered list, the material is not iron, steel, copper or aluminium, required qualifiers are missing, or the reference output is not exactly 1 kg net conforming product."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_inventory_atomicity
+    applies_to: "process inventory"
+    rule: "Each inventory row must identify one product, waste or elementary exchange. Reject umbrella utilities, combined fuels, combined packaging, combined wastes or unspecified emissions."
+    source_ids:
+      - "—"
+  - rule_id: validate_process_applicability
+    applies_to: "process map"
+    rule: "Required processes must have foreground records. Conditional heat-treatment, pickling and zinc-coating rows must be present only when the declared route applies; absent routes require an explicit not-applicable statement outside amount totals."
+    source_ids:
+      - us-epa-metal-fastener-pollution-prevention-1995
+      - ec-jrc-metal-surface-treatment-2022
+  - rule_id: validate_mass_and_units
+    applies_to: "measurements and calculations"
+    rule: "Check kg reference mass, kWh-to-MJ conversion, gas reference conditions, count-to-mass evidence, package-mass exclusion and metal-specific mass-balance residuals."
+    source_ids:
+      - "—"
+  - rule_id: validate_waste_and_recycling
+    applies_to: "scrap, wastewater, sludge and spent liquor"
+    rule: "Require measured mass, composition where material, destination and internal-recycle exclusion. Do not apply avoided-burden credits in the foreground inventory."
+    source_ids:
+      - us-epa-metal-fastener-pollution-prevention-1995
+      - ec-jrc-metal-surface-treatment-2022
+  - rule_id: validate_source_and_dataset_fit
+    applies_to: "evidence and upstream datasets"
+    rule: "Confirm source identifiers resolve, external evidence is used only for the supported rule, and every upstream dataset is compatible in geography, technology, material grade, product state and delivery boundary."
+    source_ids:
+      - "—"
+published_dataset_profile:
+  dataset_role: "Foreground factory-gate production dataset for one declared metal fastener or similar article route."
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product carbon footprints, LCA process datasets and lifecycle models requiring a factory-gate inventory for a declared CPC 42944 article with compatible material, process and finishing qualifiers."
+  excluded_use: "Undeclared averages across metals or article types; staples in strips; springs; tubular or bifurcated rivets; installation, use or end-of-life claims; comparison of products with incompatible specifications or system boundaries."
+  required_metadata: "PCR id and version; article type; material/alloy and grade; dimensions and mass per piece; mechanical class; forming and machining route; heat treatment; coating/finish; site and geography; reporting period; allocation; scrap and waste destinations; packaging; upstream dataset identifiers and substitutions."
+  required_quality_disclosure: "Completeness by process and flow; meter and scale coverage; count-to-mass method; mass-balance residual; allocation shares; route shares; bath and waste composition; supplier-data coverage; temporal representativeness; unresolved UUID and range-evidence needs."
+  update_trigger: "Material change in article mix, alloy, feedstock form, forming technology, furnace or fuel, coating route, wastewater treatment, packaging, allocation method, site geography, upstream datasets, or an updated representative reporting period."
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division. CPC Version 3.0 Structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-05)."
+    used_for: "Official category identity and covered product wording."
+  - id: "us-epa-metal-fastener-pollution-prevention-1995"
+    type: "official_guidance"
+    reference: "U.S. Environmental Protection Agency. *Pollution Prevention Assessment for a Manufacturer of Metal Fasteners*. EPA/600/S-95/016, August 1995. https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=30003VJO.TXT (retrieved 2026-09-05)."
+    used_for: "Fastener feedstocks, process decomposition, cleaning, heat treatment, finishing, packaging and named waste streams."
+  - id: "ec-jrc-ferrous-metals-processing-bref-2022"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre. *Best Available Techniques (BAT) Reference Document for the Ferrous Metals Processing Industry*. JRC131649, EUR 31321 EN, DOI 10.2760/196475, 2022. https://publications.jrc.ec.europa.eu/repository/handle/JRC131649 (retrieved 2026-09-05)."
+    used_for: "Conditional galvanising, chemical/electrolytic surface treatment and associated wastewater-treatment boundary."
+  - id: "ec-jrc-metal-surface-treatment-2022"
+    type: "official_guidance"
+    reference: "Huygens, D. and Saveyn, H.G.M. *Technical proposals for by-products and high purity materials as component materials for EU Fertilising Products*. JRC128459, EUR 31035 EN, DOI 10.2760/185544, 2022, section 19.2.8. https://publications.jrc.ec.europa.eu/repository/bitstream/JRC128459/JRC128459_01.pdf (retrieved 2026-09-05)."
+    used_for: "Metal cleaning, hydroxide cleaning, hydrochloric-acid pickling, spent pickling liquor and zinc galvanising process decomposition."
+  - id: "china-state-council-fastener-tariff-terms-2010"
+    type: "official_guidance"
+    reference: "State Council of the People's Republic of China, official tariff terminology table, 2010. https://www.gov.cn/gzdt/att/att/site1/20100302/001e3741a2cc0cf6c6d301.pdf (retrieved 2026-09-05)."
+    used_for: "Professional Chinese terminology for screws, bolts, nuts, screw hooks, rivets, pins, cotter-pins and washers."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:6f98ad50989f4b51780b28e4abe69ffafb316f7541258f44e4fb2eb3fd457b8d"
+  generated_content_sha256: "sha256:e3af2e7d3bb21aa5db18dd41c43373690ca70515aacadfe7280884755bd76a06"

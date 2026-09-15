@@ -2,10 +2,11 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.office-accounting-and-computing-machinery.point-of-sale-terminals-atms-and-similar-machines
 title:
   en-US: "Point-of-sale terminals, ATMs and similar machines"
-  zh-CN: null
-status: scaffold
+  zh-CN: "销售终端、自动取款机和类似机器"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
+updated_at_utc: "2026-09-08T10:07:37Z"
 domains:
   - "metal-products-machinery-and-equipment"
 modules:
@@ -22,16 +23,70 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "45142"
     title: "Point-of-sale terminals, ATMs and similar machines"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  semantic_boundary_review:
+    result: distinct_material_pcr_required
+    explanation: "The boundary covers network-connectable point-of-sale terminals and automated teller machines as finished calculating machines; official CPC explanatory notes exclude unconnected cash registers, ticket-issuing machines, postage-franking machines, totalisators, and stand-alone card validation/control systems. No other canonical material PCR manifest matched this reviewed boundary."
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: populated_pcb_assembly_input
+        reason_code: no_exact_candidate
+        explanation: "Receipt 8d2918fe-dd7f-4c8c-a93d-2528523dbc7f returned an unpopulated board, a combined electronic-components/PCB identity, and unrelated subassemblies; no exact populated PCB assembly was confirmed."
+      - row_id: ac_dc_power_supply_input
+        reason_code: no_exact_candidate
+        explanation: "Receipt 5976423d-fe59-41fa-ad1f-f381159b4b68 returned photovoltaic modules, unrelated equipment, an umbrella electronic-subassembly flow, and a capacitor; no exact AC/DC power-supply unit was confirmed."
+      - row_id: painted_steel_enclosure_input
+        reason_code: no_exact_candidate
+        explanation: "Receipt f8ea99ab-3420-4c7d-b6d6-b112c3f7e29f returned unrelated or umbrella metal structures and parts; no exact painted steel terminal enclosure was confirmed."
+      - row_id: moulded_abs_enclosure_input
+        reason_code: product_state_mismatch
+        explanation: "Receipt 0352aff6-ea4f-4301-8f84-d91c92d356a2 returned ABS primary polymer flows, not an injection-moulded terminal enclosure."
+      - row_id: expanded_pe_foam_insert_input
+        reason_code: product_state_mismatch
+        explanation: "Receipt b42b9507-d7f1-446f-b54c-f9a41fbfc00b returned generic plastic foams without confirmed polyethylene chemistry or formed-insert state."
+      - row_id: abs_plastic_scrap_output
+        reason_code: no_exact_candidate
+        explanation: "Receipt 53bfbfd1-d1a6-44e7-92f2-bd0d5b11a1e7 returned plastic packaging waste or mixed metal-plastic scrap; no exact segregated ABS production scrap was confirmed."
+    range_evidence_needs:
+      - range_id: major_component_mass_intensity
+        row_ids:
+          - populated_pcb_assembly_input
+          - lcd_display_module_input
+          - ac_dc_power_supply_input
+          - painted_steel_enclosure_input
+          - moulded_abs_enclosure_input
+        explanation: "No two mutually independent, original-text-verified sources with compatible terminal configuration, factory-gate boundary, mass functional unit, geography, and technology were available; collect product-specific BOM masses and omit an external range."
+      - range_id: assembly_electricity_intensity
+        row_ids:
+          - assembly_test_electricity_input
+        explanation: "No two independent, boundary-compatible original sources were verified for assembly, configuration, test, and packing electricity per kg of finished terminal; collect metered foreground electricity and omit an external range."
+      - range_id: packaging_mass_intensity
+        row_ids:
+          - corrugated_board_box_input
+          - expanded_pe_foam_insert_input
+        explanation: "Packaging configuration is product- and shipping-specific and no compatible two-source empirical range was verified; collect packing-list and scale records."
+      - range_id: production_scrap_intensity
+        row_ids:
+          - populated_pcb_waste_output
+          - steel_offcut_scrap_output
+          - abs_plastic_scrap_output
+          - cardboard_packaging_waste_output
+        explanation: "No compatible two-source empirical range was verified for the selected factory operations and scrap states; collect segregated waste records and omit an external range."

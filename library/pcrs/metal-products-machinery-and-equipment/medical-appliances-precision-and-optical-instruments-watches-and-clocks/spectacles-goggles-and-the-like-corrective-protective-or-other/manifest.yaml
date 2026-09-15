@@ -2,12 +2,12 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.medical-appliances-precision-and-optical-instruments-watches-and-clocks.spectacles-goggles-and-the-like-corrective-protective-or-other
 title:
   en-US: "Spectacles, goggles and the like, corrective, protective or other"
-  zh-CN: null
-status: scaffold
+  zh-CN: "矫正、防护或其他用途的眼镜、护目镜及类似品"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +22,79 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "48312"
     title: "Spectacles, goggles and the like, corrective, protective or other"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  semantic_boundary_review:
+    decision: promote_legacy
+    rationale: "The finished-eyewear boundary is distinct from retained component identities for frames and unworked spectacle glass, and no existing material PCR title or path covers finished corrective, protective, sun, sports, or analogous eyewear."
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: cellulose_acetate_sheet
+        reason_code: no_exact_candidate
+        explanation: "The bounded search returned no public state-100 cellulose-acetate sheet flow; all candidates were different materials or products."
+      - row_id: cellulose_acetate_frame_offcuts
+        reason_code: no_exact_candidate
+        explanation: "The waste-plastic search returned packaging, mixed, hazardous, or composition-unspecified waste rather than cellulose-acetate frame offcuts."
+      - row_id: polycarbonate_frame_offcuts
+        reason_code: no_exact_candidate
+        explanation: "The waste-plastic search did not establish polycarbonate frame offcuts as a distinct atomic waste flow."
+      - row_id: finished_spectacle_lens_output
+        reason_code: no_exact_candidate
+        explanation: "The finished-lens search returned broad optical subassemblies, polymer granulate, or unworked glass, not a finished spectacle lens ready for mounting."
+      - row_id: polycarbonate_lens_grinding_waste
+        reason_code: no_exact_candidate
+        explanation: "The waste-plastic search did not establish polycarbonate lens-grinding swarf as a distinct atomic waste flow."
+      - row_id: lens_grinding_wastewater
+        reason_code: no_exact_candidate
+        explanation: "The wastewater search returned generic or unrelated wastewaters without the lens-grinding origin and suspended-solids composition needed for an exact identity."
+      - row_id: finished_spectacle_lens_input
+        reason_code: no_exact_candidate
+        explanation: "The finished-lens search returned no exact spectacle-lens product flow for the assembly input."
+    range_evidence_needs:
+      - need_id: reference_product_mass_and_yield
+        row_ids:
+          - finished_eyewear_output
+        explanation: "Collect item mass and production yield by declared eyewear family; verified publications provide individual cases, not two independent boundary-compatible empirical ranges."
+      - need_id: frame_material_and_scrap_intensity
+        row_ids:
+          - cellulose_acetate_sheet
+          - stainless_steel
+          - polycarbonate_frame_granulate
+          - cellulose_acetate_frame_offcuts
+          - post_industrial_steel_scrap
+          - polycarbonate_frame_offcuts
+        explanation: "Collect gross input and segregated scrap by material and route; published case values were not synthesized into a category range."
+      - need_id: lens_material_water_energy_and_waste_intensity
+        row_ids:
+          - optical_glass_pressing_blank
+          - polycarbonate_lens_granulate
+          - cerium_oxide
+          - process_water
+          - lens_finishing_electricity
+          - polycarbonate_lens_grinding_waste
+          - optical_glass_production_waste
+          - lens_grinding_wastewater
+        explanation: "Collect route-specific lens inputs, utilities, and outputs; available original sources differ in lens state, technology, and boundary and do not support an inferred empirical range."
+      - need_id: assembly_packaging_intensity
+        row_ids:
+          - assembly_electricity
+          - corrugated_board_box
+          - ldpe_packaging_film
+        explanation: "Collect per-saleable-unit assembly electricity and packaging mass by product configuration; no compatible two-source range was verified."

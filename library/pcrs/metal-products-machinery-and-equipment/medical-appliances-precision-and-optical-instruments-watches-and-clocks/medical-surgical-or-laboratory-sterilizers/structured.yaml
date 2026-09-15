@@ -1,10 +1,681 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "48140"
-  title: "Medical, surgical or laboratory sterilizers"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.medical-appliances-precision-and-optical-instruments-watches-and-clocks.medical-surgical-or-laboratory-sterilizers"
+  classification_refs: "CPC 3.0: 48140, exact contextual reference"
+  covered_products: "Finished medical, surgical and laboratory sterilizers using steam, dry heat or low-temperature sterilizing agents"
+  excluded_products: "Washer-disinfectors without sterilization; household sterilizers; sterilization services; separately sold use consumables; non-medical industrial thermal-treatment equipment"
+  representative_product: "Configurable laboratory steam sterilizer with stainless-steel chamber, electronic controls and optional integral steam generator"
+  production_route: "BOM-based component supply, on-site metal fabrication where applicable, assembly, factory functional and safety testing, cleaning, and shipping packaging"
+  market_state: "Finished, tested and packaged capital equipment at the manufacturer factory gate"
+functional_unit:
+  what: "Production of a finished medical, surgical or laboratory sterilizer ready to leave the manufacturer factory gate"
+  how_much: "1 kg net finished sterilizer, excluding detachable shipping packaging"
+  how_well: "Conforming to the declared intended use, sterilization technology, validated factory test plan and applicable market requirements"
+  how_long_or_cycle: "One factory-gate product delivery; design life and rated cycle capability are metadata and are not amortized into this reference flow"
+  reference_flow_link: "Reference product output row finished_sterilizer"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The cradle-to-gate system includes raw-material extraction and component production through upstream datasets, inbound component supply, manufacturer-controlled fabrication, assembly, factory testing, cleaning and final packaging. The verified Getinge PEP uses a BOM-based material model and separates supplier production from factory and final packaging; the FDA record supports stainless pressure-vessel construction for the representative steam route."
+      source_ids: []
+    - rule_id: system_boundary_rule_2
+      applies_to: "foreground_system_boundary"
+      rule: "Distribution after the factory gate, operation, on-site utilities consumed by customers, service, maintenance and end-of-life are outside this PCR. Factory test cycles remain inside the boundary."
+      source_ids: []
+    - rule_id: boundary_cradle_to_gate
+      applies_to: "product_system"
+      rule: "Include upstream BOM/component production, manufacturer operations, factory tests and final packaging through the factory gate; exclude downstream distribution, use, service and end-of-life."
+      source_ids:
+        - getinge-lancer-lss-pep-2025
+    - rule_id: boundary_route_disclosure
+      applies_to: "technology_route"
+      rule: "Declare technology, intended load, chamber capacity, integrated utilities and included fabrication because configuration changes BOM and factory requirements."
+      source_ids:
+        - getinge-lancer-lss-pep-2025
+        - fda-getinge-k122071-2013
+    - rule_id: boundary_test_utilities
+      applies_to: "factory_testing"
+      rule: "Include utilities consumed by factory acceptance, safety and leak tests; exclude customer sterilization cycles."
+      source_ids:
+        - fda-getinge-k122071-2013
+boundary_abstraction:
+  declared_starting_condition: "Purchased raw materials, components and packaging received at the reporting factory gate, with linked upstream cradle-to-supplier datasets"
+  starting_condition_role: "Foreground entry condition for fabrication, assembly, testing, cleaning and packaging"
+  product_classification_scope: "Finished equipment that performs sterilization for medical, surgical or laboratory loads"
+  recursive_input_rule: "If an input is a complete or near-complete sterilizer, stop recursion at that transfer and link a separately documented upstream sterilizer dataset."
+  upstream_dataset_requirement: "Prefer supplier-specific datasets for metals, electronics, cables, plastics and packaging; otherwise use representative background datasets and disclose substitutions."
+  disclosure: "Declare factory geography/year, model, net mass, technology, included fabrication, supplier-data coverage, test boundary, packaging, recycled content and allocation."
+reference_flow_definition:
+  reference_amount: "1 kg net finished sterilizer"
+  product_flow_ref:
+    name: "Medical, surgical or laboratory sterilizer (Tiangong UUID unresolved)"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "sterilization technology and agent"
+    - "intended application and validated loads"
+    - "model and usable chamber volume"
+    - "pressure-vessel and principal materials"
+    - "integrated or external utility generation"
+    - "installed options and shipped accessories"
+    - "net mass"
+    - "factory geography and year"
+    - "packaging inclusion and reuse basis"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_product_mass
+    applies_to: "reference product and BOM normalization"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh or reconcile the net finished sterilizer without detachable shipping packaging; normalize amounts to 1 kg net finished product."
+  - id: packaging_separation
+    applies_to: "shipping packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record each packaging exchange separately and exclude it from net product mass; reused pallets use net consumption per shipment after documented turns."
+  - id: electricity_conversion
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve meter records in kWh and convert using 1 kWh = 3.6 MJ; do not mix factory and customer-use electricity."
+  - id: water_mass_conversion
+    applies_to: "process water and cleaning wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer direct mass records; when only volume is available, use measured or supplier-declared density and retain the conversion record."
+process_map:
+  - id: sterilizer_manufacturing
+    name: "Sterilizer fabrication, assembly, factory testing and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always included; conditional exchanges apply only when the stated operation occurs inside the foreground boundary."
+    role: "foreground production"
+    quantitative_reference: "1 kg net finished sterilizer"
+process_inventory:
+  - id: sterilizer_manufacturing
+    label: "Sterilizer fabrication, assembly, factory testing and packaging"
+    inputs:
+      product:
+        - row_id: stainless_steel_sheet
+          role: "Stainless-steel sheet for chamber and casing"
+          name: "Stainless-steel sheet (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record stainless sheet entering manufacturer-controlled forming or assembly. Use the actual alloy and thickness; the representative vessel uses a 316-family grade."
+          amount:
+            expression: "purchased mass issued to the product, including measured fabrication scrap"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished sterilizer"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_mass
+              source_ids:
+                - getinge-lancer-lss-pep-2025
+                - fda-getinge-k122071-2013
+            ranges: []
+        - row_id: aluminium_sheet
+          role: "Aluminium sheet"
+          name: "aluminium sheet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197be4-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record aluminium sheet entering product-specific fabrication or assembly, retaining the alloy, temper and thickness in foreground records."
+          amount:
+            expression: "purchased mass issued to the product, including measured aluminium scrap"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished sterilizer"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_mass
+              source_ids:
+                - getinge-lancer-lss-pep-2025
+            ranges: []
+        - row_id: abs_granulate
+          role: "ABS granulate for in-house moulding"
+          name: "Acrylonitrile butadiene styrene (ABS) granulate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b895c3a1-076e-4a42-a2c0-6088890c0bd9"
+          property_unit: "Mass / kg"
+          description: "Include only when ABS parts are moulded in the foreground factory; purchased parts of another resin are separate instantiated product rows."
+          amount:
+            expression: "purchased ABS issued to in-house moulding"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net finished sterilizer; zero with documented non-applicability when absent"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_mass
+              source_ids:
+                - getinge-lancer-lss-pep-2025
+            ranges: []
+        - row_id: printed_wire_board
+          role: "Printed wire board"
+          name: "Printed Wire Board"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a8bd954c-59b3-4317-b4de-02a17d6da5ca"
+          property_unit: "Mass / kg"
+          description: "Record the installed printed wire boards for the declared control-system configuration by measured or BOM mass."
+          amount:
+            expression: "BOM mass installed in the declared control configuration"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished sterilizer"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_mass
+              source_ids:
+                - getinge-lancer-lss-pep-2025
+            ranges: []
+        - row_id: low_voltage_cable
+          role: "Low-voltage cable"
+          name: "Low-voltage cable"
+          flow_type: "product"
+          flow_ref:
+            uuid: "49101b44-20cc-46a0-adfb-af07e4cc8908"
+          property_unit: "Length / m"
+          description: "Record installed low-voltage cable length from the approved cut list, preserving conductor and insulation specifications."
+          amount:
+            expression: "installed cut-list or BOM length; retain conductor and insulation specification"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished sterilizer"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cable_length
+              source_ids:
+                - getinge-lancer-lss-pep-2025
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record purchased electrical energy attributable to included fabrication, assembly, factory testing and packaging operations."
+          amount:
+            expression: "metered or causally allocated factory electricity converted from kWh"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished sterilizer"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_factory_electricity
+              source_ids:
+                - getinge-lancer-lss-pep-2025
+            ranges: []
+        - row_id: process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water consumed in included fabrication, cleaning and factory testing, with source, quality and conversion basis retained."
+          amount:
+            expression: "metered water for included fabrication, cleaning and factory testing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished sterilizer"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_factory_water
+              source_ids:
+                - getinge-lancer-lss-pep-2025
+            ranges: []
+        - row_id: industrial_oxygen
+          role: "Industrial oxygen for on-site fabrication"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume / m3"
+          description: "Include industrial oxygen only when cutting, brazing or another oxygen-consuming fabrication operation occurs inside the foreground boundary."
+          amount:
+            expression: "purchased or metered oxygen used by an included cutting or brazing operation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net finished sterilizer; zero with documented non-applicability when absent"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_gases
+              source_ids: []
+            ranges: []
+        - row_id: carbon_dioxide_shielding_gas
+          role: "Carbon dioxide shielding gas for on-site welding"
+          name: "Carbon dioxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "27f41c1c-535e-4d2a-bce9-2c7f4de11549"
+          property_unit: "Mass / kg"
+          description: "Include carbon dioxide only when it is consumed as shielding gas by welding inside the foreground boundary."
+          amount:
+            expression: "purchased cylinder or bulk mass consumed as welding shielding gas"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net finished sterilizer; zero with documented non-applicability when absent"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_gases
+              source_ids: []
+            ranges: []
+        - row_id: wooden_pallet
+          role: "Wooden shipping pallet"
+          name: "Wooden pallet (EURO)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "96b2b9ac-cfb6-46bf-8ad1-c056e338950a"
+          property_unit: "Mass / kg"
+          description: "Record wooden pallet mass shipped with the product and account explicitly for documented reuse and losses."
+          amount:
+            expression: "pallet dry mass divided by documented reuse turns, adjusted for losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished sterilizer"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_mass
+              source_ids:
+                - getinge-lancer-lss-pep-2025
+            ranges: []
+        - row_id: corrugated_board_boxes
+          role: "Corrugated board shipping boxes"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record the mass of corrugated board boxes shipped with the finished sterilizer under the declared packaging configuration."
+          amount:
+            expression: "measured or specification-derived box mass shipped with the product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished sterilizer"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_mass
+              source_ids:
+                - getinge-lancer-lss-pep-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_sterilizer
+          role: "Finished sterilizer at factory gate"
+          name: "Medical, surgical or laboratory sterilizer (Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The reference product is the net mass of a complete sterilizer released at the factory gate, excluding removable transport packaging."
+          amount:
+            expression: "1 kg net finished sterilizer by reference-flow definition"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1 kg net finished sterilizer"
+              kind: "reference_flow"
+            evidence:
+              kind: "source_rule"
+              source_ids:
+                - un-cpc-3-0-structure-2025
+                - getinge-lancer-lss-pep-2025
+                - fda-getinge-k122071-2013
+            ranges: []
+      waste:
+        - row_id: stainless_steel_scrap
+          role: "316-family stainless-steel fabrication scrap"
+          name: "stainless steel scrap (316, from external supply)"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f20af980-11c6-4a6b-8dbc-4aa7683bfd98"
+          property_unit: "Mass / kg"
+          description: "Record segregated 316-family stainless-steel scrap leaving included foreground fabrication, without an avoided-primary-metal credit unless the background model requires it."
+          amount:
+            expression: "weighed segregated scrap dispatched for recovery"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net finished sterilizer; zero with documented non-applicability when fabrication is off-site"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_factory_waste
+              source_ids:
+                - fda-getinge-k122071-2013
+            ranges: []
+        - row_id: aluminium_scrap
+          role: "Aluminium fabrication scrap"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass / kg"
+          description: "Record segregated aluminium scrap leaving included foreground fabrication and retain its measured destination."
+          amount:
+            expression: "weighed segregated aluminium scrap dispatched from the factory"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net finished sterilizer; zero with documented non-applicability when fabrication is off-site"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_factory_waste
+              source_ids:
+                - getinge-lancer-lss-pep-2025
+            ranges: []
+        - row_id: cleaning_wastewater
+          role: "Wastewater from equipment cleaning"
+          name: "Wastewater from cleaning"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f0402393-e82c-47e8-9cd8-a486c97f3e89"
+          property_unit: "Mass / kg"
+          description: "Record wastewater discharged from included equipment-cleaning operations, reconciled to process-water input and separately measured losses."
+          amount:
+            expression: "metered discharge or water-balance result for included cleaning"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished sterilizer; zero with documented non-applicability when no wet cleaning discharge occurs"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_wastewater
+              source_ids:
+                - getinge-lancer-lss-pep-2025
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "shared_factory_processes"
+    rule: "Subdivide product-specific fabrication, assembly and tests before allocating shared burdens."
+    source_ids: []
+  - rule_id: allocation_shared_utilities
+    applies_to: "shared_electricity_water_and_gases"
+    rule: "Use dedicated records first; otherwise allocate by a causal driver such as machine time, test-cycle duration or line throughput. Use mass only when no better driver exists and disclose it."
+    source_ids: []
+  - rule_id: allocation_scrap
+    applies_to: "metal_scrap_and_recovery"
+    rule: "Report scrap mass and route at the factory boundary. Do not credit avoided primary metal unless the chosen background model explicitly applies and discloses that convention."
+    source_ids: []
+  - rule_id: allocation_reusable_packaging
+    applies_to: "wooden_pallet"
+    rule: "Divide pallet mass by documented expected turns adjusted for losses; if turns are unknown, assign the full pallet to the shipment."
+    source_ids:
+      - getinge-lancer-lss-pep-2025
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_bom_mass
+      process_id: "sterilizer_manufacturing"
+      flow_role: "mass-based BOM inputs and finished product"
+      record_type: "approved BOM and issue record"
+      raw_fields: "model; revision; material; purchased, issued and installed mass; net product mass; units"
+      collection_method: "reconcile BOM, purchasing, issue records and product weighing"
+      unit: "kg"
+      frequency: "each revision and batch"
+      temporal_coverage: "representative year"
+      site_scope: "factory and declared suppliers"
+      aggregation_rule: "atomic mass divided by total net finished mass"
+      quality_evidence: "approved BOM, invoices, weigh tickets, calibration"
+    - protocol_id: cp_cable_length
+      process_id: "sterilizer_manufacturing"
+      flow_role: "low-voltage cable"
+      record_type: "cable cut list and BOM"
+      raw_fields: "specification; conductor; insulation; voltage; installed length; units"
+      collection_method: "reconcile cut list and installed length"
+      unit: "m"
+      frequency: "each revision and batch"
+      temporal_coverage: "representative year"
+      site_scope: "factory"
+      aggregation_rule: "installed length divided by net finished mass"
+      quality_evidence: "approved cut list and issue record"
+    - protocol_id: cp_factory_electricity
+      process_id: "sterilizer_manufacturing"
+      flow_role: "electricity"
+      record_type: "meter and production record"
+      raw_fields: "meter readings; kWh; area; test cycles; units; net mass"
+      collection_method: "dedicated meter or reconciled site meter with causal allocation"
+      unit: "kWh"
+      frequency: "monthly"
+      temporal_coverage: "one complete representative production year"
+      site_scope: "included factory operations"
+      aggregation_rule: "subtract excluded loads, allocate, convert to MJ and normalize"
+      quality_evidence: "calibration, invoices, allocation reconciliation"
+    - protocol_id: cp_factory_water
+      process_id: "sterilizer_manufacturing"
+      flow_role: "process water"
+      record_type: "meter, batch and test record"
+      raw_fields: "volume or mass; source; quality; operation; density; net mass"
+      collection_method: "meter or reconcile invoices and batch records"
+      unit: "kg or m3"
+      frequency: "monthly and test campaign"
+      temporal_coverage: "one complete representative production year"
+      site_scope: "included factory operations"
+      aggregation_rule: "allocate included water, convert to mass and normalize"
+      quality_evidence: "calibration, invoices, batch logs, density evidence"
+    - protocol_id: cp_process_gases
+      process_id: "sterilizer_manufacturing"
+      flow_role: "oxygen and shielding carbon dioxide"
+      record_type: "cylinder/bulk and job record"
+      raw_fields: "gas; purity; delivery; inventory change; job; reference conditions"
+      collection_method: "reconcile supply and inventory change to jobs"
+      unit: "kg or m3"
+      frequency: "each delivery and batch"
+      temporal_coverage: "representative year"
+      site_scope: "on-site fabrication"
+      aggregation_rule: "attributable consumption divided by net product mass"
+      quality_evidence: "certificates, invoices, cylinder logs"
+    - protocol_id: cp_packaging_mass
+      process_id: "sterilizer_manufacturing"
+      flow_role: "pallet and corrugated boxes"
+      record_type: "specification and dispatch record"
+      raw_fields: "identity; dry mass; model; units; turns; loss"
+      collection_method: "weigh or verified packaging specification"
+      unit: "kg"
+      frequency: "each design revision and sample"
+      temporal_coverage: "representative year"
+      site_scope: "final packaging"
+      aggregation_rule: "net consumed mass divided by net product mass"
+      quality_evidence: "drawing, calibration, dispatch and reuse evidence"
+    - protocol_id: cp_factory_waste
+      process_id: "sterilizer_manufacturing"
+      flow_role: "metal scrap"
+      record_type: "segregated dispatch record"
+      raw_fields: "alloy; gross/tare mass; destination; batch; net mass"
+      collection_method: "weighbridge or container weights reconciled to transfer documents"
+      unit: "kg"
+      frequency: "each dispatch"
+      temporal_coverage: "one complete representative production year"
+      site_scope: "factory"
+      aggregation_rule: "included atomic waste divided by net product mass"
+      quality_evidence: "weigh tickets, transfer records, segregation"
+    - protocol_id: cp_cleaning_wastewater
+      process_id: "sterilizer_manufacturing"
+      flow_role: "cleaning wastewater"
+      record_type: "discharge and cleaning record"
+      raw_fields: "water input; discharge; retained water; losses; chemistry; route; net mass"
+      collection_method: "meter or calculated water balance"
+      unit: "kg or m3"
+      frequency: "each campaign, monthly aggregate"
+      temporal_coverage: "one complete representative production year"
+      site_scope: "cleaning operations"
+      aggregation_rule: "reconcile wastewater to water input and normalize"
+      quality_evidence: "calibration, balance, analysis, treatment receipt"
+  calculation_rules:
+    - id: calc_mass_normalization
+      applies_to: "mass-based rows"
+      rule: "normalized amount = included row mass / total net finished sterilizer mass"
+      inputs:
+        - "row mass"
+        - "net product mass"
+      output: "kg/kg net product"
+      source_ids:
+        - getinge-lancer-lss-pep-2025
+    - id: calc_cable_normalization
+      applies_to: "low_voltage_cable"
+      rule: "installed cable length / total net finished sterilizer mass"
+      inputs:
+        - "cable length"
+        - "net mass"
+      output: "m/kg net product"
+      source_ids:
+        - getinge-lancer-lss-pep-2025
+    - id: calc_electricity
+      applies_to: "electricity"
+      rule: "included kWh × 3.6 / total net finished sterilizer mass"
+      inputs:
+        - kWh
+        - "net mass"
+      output: "MJ/kg net product"
+      source_ids:
+        - getinge-lancer-lss-pep-2025
+    - id: calc_reusable_pallet
+      applies_to: "wooden_pallet"
+      rule: "dry mass × (1 + loss allowance) / expected turns / net product mass"
+      inputs:
+        - "pallet mass"
+        - turns
+        - loss
+        - "net mass"
+      output: "kg/kg net product"
+      source_ids:
+        - getinge-lancer-lss-pep-2025
+    - id: calc_cleaning_wastewater
+      applies_to: "cleaning_wastewater"
+      rule: "water input − retained water − separately measured losses"
+      inputs:
+        - "water records"
+        - "net mass"
+      output: "kg/kg net product"
+      source_ids:
+        - getinge-lancer-lss-pep-2025
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Identify model, technology, intended loads, chamber volume, utilities, options and conformity basis."
+      evidence: "technical file, conformity declaration, model BOM"
+    - id: dq_bom_completeness
+      applies_to: "material and component rows"
+      requirement: "Reconcile all materially significant net product mass to atomic BOM inputs; explain every excluded or unquantified remainder with named rows, never an umbrella flow."
+      evidence: "BOM reconciliation and completeness review"
+    - id: dq_temporal
+      applies_to: "utilities and wastes"
+      requirement: "Use one complete representative production year or justify a shorter campaign that captures production and test variability."
+      evidence: "dated meters, production and dispatch records"
+    - id: dq_supplier_coverage
+      applies_to: "upstream datasets"
+      requirement: "Report supplier-specific mass coverage and every generic background substitution."
+      evidence: "supplier data register and dataset mapping"
+    - id: dq_mass_balance
+      applies_to: "materials, product and wastes"
+      requirement: "Reconcile issued material to installed product, scrap, returned stock and losses without counting supplier scrap twice."
+      evidence: "batch material balance"
+validation_rules:
+  - rule_id: validation_reference_flow
+    applies_to: "reference_product"
+    rule: "Confirm output is exactly 1 kg net finished sterilizer and detachable shipping packaging is excluded."
+    source_ids:
+      - getinge-lancer-lss-pep-2025
+  - rule_id: validation_required_qualifiers
+    applies_to: "dataset_metadata"
+    rule: "Reject a package missing technology, intended load, model, chamber volume, utility configuration, net mass, factory geography/year or packaging basis."
+    source_ids:
+      - getinge-lancer-lss-pep-2025
+      - fda-getinge-k122071-2013
+  - rule_id: validation_atomic_inventory
+    applies_to: "process_inventory"
+    rule: "Confirm each row is one physical, chemical, waste or energy exchange; reject umbrellas and route selectors."
+    source_ids: []
+  - rule_id: validation_uuid_and_unit
+    applies_to: "tiangong_references"
+    rule: "Verify public state 100, flow type, baseName, property and unit group for UUID rows; register every blank UUID in manifest unresolved metadata."
+    source_ids: []
+  - rule_id: validation_boundary
+    applies_to: "product_system"
+    rule: "Confirm upstream BOM production and factory tests are included and customer operation, downstream distribution, service and end-of-life are excluded."
+    source_ids:
+      - getinge-lancer-lss-pep-2025
+  - rule_id: validation_balance
+    applies_to: "mass_and_water_balance"
+    rule: "Reconcile net product, issued materials, segregated scrap, packaging separation and cleaning-water balance; investigate gaps."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset or background_dataset after review and publication"
+  downstream_use: "Cradle-to-gate inventories for procurement, product LCAs and lifecycle models that add downstream stages separately"
+  allowed_use: "Declared configurations whose technology, model, chamber volume, BOM coverage, factory geography/year and packaging basis match or are transparently adapted"
+  excluded_use: "Comparing sterilization-cycle performance, claiming use-phase impacts, representing washer-disinfectors, or applying to an undisclosed materially different technology"
+  required_metadata: "PCR/version; model; technology/agent; intended loads; chamber volume; utilities; options/accessories; net mass; factory geography/year; supplier coverage; packaging; allocation"
+  required_quality_disclosure: "BOM coverage; temporal coverage; metering/allocation; unresolved UUIDs; background substitutions; recycled content; scrap routes; water balance; verification"
+  update_trigger: "Model or technology change; BOM/chamber redesign; factory or supplier change; utility change; packaging redesign; new exact reference UUID; stale foreground period"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (hash-verified original; retrieved 2026-09-06)"
+    used_for: "Official CPC 48140 identity"
+  - id: "getinge-lancer-lss-pep-2025"
+    type: "literature"
+    reference: "Getinge, Product Environmental Profile: Getinge Lancer LSS Laboratory Steam Sterilizer, DMS-0011032, 2025, https://www.getinge.com/dam/life-science/documents/english/getinge-lancer-lss-pep-107396-en.pdf (original PDF verified; retrieved 2026-09-06)"
+    used_for: "Representative product, BOM-based cradle-to-gate model, material/component families, packaging, factory energy and water"
+  - id: "fda-getinge-k122071-2013"
+    type: "official_guidance"
+    reference: "U.S. FDA, 510(k) Summary K122071, Getinge 400HC-E/500HC-E Series Steam Sterilizer, 2013, https://www.accessdata.fda.gov/cdrh_docs/pdf12/k122071.pdf (original PDF verified; retrieved 2026-09-06)"
+    used_for: "Intended use, steam principle, stainless pressure vessel and factory test context"
+  - id: "samr-sterilizer-terminology"
+    type: "official_guidance"
+    reference: "State Administration for Market Regulation, national-standard record for safety requirements for sterilizers and washer-disinfectors used to treat medical materials, https://std.samr.gov.cn/gb/search/gbDetailed?id=bThFnEWwh9Q%3D&mode=p (official page verified; retrieved 2026-09-06)"
+    used_for: "Professional Chinese term 灭菌器 and washer-disinfector distinction"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:4fb06dc7b694c24619896758d5d3c6906f01466be83870401036e1e8bf076338"
+  generated_content_sha256: "sha256:03be10b14c2bfb51c1fde0a6a10382f7d410195e0404276bfc0513236b868996"

@@ -1,10 +1,668 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41531"
-  title: "Powders and flakes of aluminium"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.powders-and-flakes-of-aluminium"
+  classification_refs: "CPC 3.0: 41531, Powders and flakes of aluminium"
+  covered_products: "Dry metallic aluminium and aluminium-alloy powders; dry aluminium and aluminium-alloy flake powders"
+  excluded_products: "Aluminium pastes and slurries; aluminium compounds; coarse granules; formulated mixtures; consolidated or downstream-processed products"
+  representative_product: "One declared dry aluminium powder or flake grade meeting its composition, particle-size, morphology, surface-condition, and moisture specification"
+  production_route: "Gas atomization with compressed air, nitrogen, or argon; or dry milling of atomized powder or clean aluminium foil scrap, followed by classification and packing"
+  market_state: "Dry powder or dry flake in declared packaging at the manufacturing factory gate"
+functional_unit:
+  what: "Dry metallic aluminium powder or dry aluminium flake powder meeting the declared saleable-product specification at the manufacturing factory gate"
+  how_much: "1 kg net product, excluding packaging mass"
+  how_well: "Conforming to declared grade/composition, particle-size distribution, morphology, surface treatment or lubricant content, moisture, and contamination limits"
+  how_long_or_cycle: "One representative production campaign within the dataset reference period"
+  reference_flow_link: "reference_product output of powder_flake_manufacture"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "Include on-site feed receipt and preparation, melting and atomization when used, dry milling when used, classification or sieving, homogenization, internal recycling and dust collection, cooling make-up, and packing through factory-gate saleable product."
+      source_ids: []
+    - rule_id: system_boundary_rule_2
+      applies_to: "foreground_system_boundary"
+      rule: "Model compressed air, nitrogen, and argon as separate route-conditional inputs and never aggregate them as one atomizing-gas choice."
+      source_ids: []
+    - rule_id: system_boundary_rule_3
+      applies_to: "foreground_system_boundary"
+      rule: "Keep purchased aluminium powder used to make flakes visible as a same-category input, stop recursive tracing at its receipt, and link it to a disclosed upstream dataset."
+      source_ids: []
+    - rule_id: system_boundary_rule_4
+      applies_to: "foreground_system_boundary"
+      rule: "Do not report internal returns, oversize, or collected powder as waste outputs while they remain inside the campaign; retain their effects through gross feed, energy, yield, and exported-waste records."
+      source_ids: []
+    - rule_id: system_boundary_rule_5
+      applies_to: "foreground_system_boundary"
+      rule: "Exclude upstream aluminium and input production, capital equipment, employee travel, downstream transport, use, and end-of-life from the foreground process; disclose linked datasets separately."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Aluminium feed, purchased aluminium powder, or clean aluminium foil scrap received at the site"
+  starting_condition_role: "Foreground starting input whose upstream production is represented separately"
+  product_classification_scope: "Dry metallic products classified under CPC 3.0 code 41531"
+  recursive_input_rule: "Purchased powder used as flake feed remains explicit aluminium_powder_feed; tracing stops at receipt and the upstream dataset is disclosed"
+  upstream_dataset_requirement: "Link every purchased material, energy, gas, water, and packaging flow to a geography-, technology-, and state-appropriate dataset"
+  disclosure: "Declare route, alloy and grade, feed origin, internal recycle convention, atomizing gas, packaging, geography, period, and exclusions"
+reference_flow_definition:
+  reference_amount: "1 kg net dry product"
+  product_flow_ref:
+    name: "Powders and flakes of aluminium"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "powder or flake"
+    - "aluminium or alloy grade and composition"
+    - "particle-size distribution"
+    - morphology
+    - "surface coating"
+    - passivation
+    - "or lubricant content"
+    - moisture
+    - "production route and atomizing gas"
+    - "feed origin and recycled content"
+    - packaging
+    - geography
+    - "reference period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "reference product and normalized exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine conforming product mass on the declared moisture basis, exclude packaging, and normalize exchanges to 1 kg net dry product."
+  - id: material_mass
+    applies_to: "solid feed, additive, packaging, and waste"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use calibrated scale records on a consistent dry or as-received basis and disclose moisture correction."
+  - id: gas_reference_volume
+    applies_to: "nitrogen, argon, compressed air, and natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report reference pressure and temperature and apply one documented conversion basis across the campaign."
+  - id: electricity_energy
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Convert native meter readings to MJ using a declared exact unit conversion; disclose voltage, grid geography, and upstream loss boundary."
+  - id: cooling_makeup_mass
+    applies_to: "process-water input"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record boundary-crossing make-up or once-through water, not recirculating throughput; document any volume-to-mass conversion."
+process_map:
+  - id: powder_flake_manufacture
+    name: "Aluminium powder or flake manufacture"
+    inclusion: "required"
+    inclusion_condition: "Always include; select route-dependent rows without duplicating shared exchanges"
+    role: "reference_process"
+    quantitative_reference: "1 kg net dry conforming product"
+process_inventory:
+  - id: powder_flake_manufacture
+    label: "Aluminium powder or flake manufacture"
+    inputs:
+      product:
+        - row_id: aluminium_feed
+          role: "Aluminium feed for atomization"
+          name: "Aluminium material"
+          flow_type: "product"
+          flow_ref:
+            uuid: "269bf9df-c7d0-4621-ac7b-71ce409cfb9a"
+          property_unit: "Mass / kg"
+          description: "Record unwrought aluminium or alloy feed only for melting and atomization; identify grade and recycled content."
+          amount:
+            expression: "measured accepted feed charged to the campaign, net of stock change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solid_mass_records
+              source_ids:
+                - gopienko-aluminium-powders-2009
+            ranges: []
+        - row_id: aluminium_powder_feed
+          role: "Purchased aluminium powder feed for dry flake milling"
+          name: "Aluminium powder feed"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record one specified dry powder feed only when making flakes from purchased or separately produced powder; stop recursive category tracing at receipt."
+          amount:
+            expression: "measured powder issued to the campaign, net of stock change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry conforming flake product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solid_mass_records
+              source_ids:
+                - gopienko-aluminium-powders-2009
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record site-metered electricity for all included operations."
+          amount:
+            expression: "metered or equipment-rated consumption reconciled to campaign hours and allocated under section 7"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_gas_records
+              source_ids:
+                - ehmsen-gas-atomization-2025
+            ranges: []
+        - row_id: nitrogen_gas
+          role: "Nitrogen gas"
+          name: "Nitrogen gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "96ba4c16-fd7c-424e-b318-d87484d3d7c0"
+          property_unit: "Volume / m3"
+          description: "Record gaseous nitrogen only for atomization, inerting, or closed-cycle dry milling; disclose purity and supply state."
+          amount:
+            expression: "metered supply at declared reference conditions, net of stock change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry conforming product for the nitrogen route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_gas_records
+              source_ids:
+                - gopienko-aluminium-powders-2009
+                - ehmsen-gas-atomization-2025
+            ranges: []
+        - row_id: argon_gas
+          role: "Argon gas"
+          name: "Argon gas"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record gaseous argon only for the documented atomization or inerting route; disclose purity and supply state."
+          amount:
+            expression: "metered supply at declared reference conditions, net of stock change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry conforming product for the argon route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_gas_records
+              source_ids:
+                - ehmsen-gas-atomization-2025
+            ranges: []
+        - row_id: compressed_air
+          role: "Compressed air"
+          name: "Compressed air"
+          flow_type: "product"
+          flow_ref:
+            uuid: "46e2b1e4-5a4e-4579-b6a2-65b03f9ce825"
+          property_unit: "Volume / m3"
+          description: "Record compressed air only for air atomization or directly metered process service; avoid double counting compressor electricity."
+          amount:
+            expression: "metered delivery at declared conditions, or compressor electricity when volume is unavailable, without double counting"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry conforming product for the air route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_gas_records
+              source_ids:
+                - gopienko-aluminium-powders-2009
+            ranges: []
+        - row_id: natural_gas
+          role: "Natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas only when burned on site, for example for tundish preheating."
+          amount:
+            expression: "metered site consumption assigned to the campaign at declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry conforming product when direct gas firing is used"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_gas_records
+              source_ids:
+                - ehmsen-gas-atomization-2025
+            ranges: []
+        - row_id: process_water
+          role: "Process-water make-up"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record boundary-crossing cooling make-up or once-through water, not recirculating throughput."
+          amount:
+            expression: "metered make-up or once-through water less separately metered non-process uses"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - ehmsen-gas-atomization-2025
+            ranges: []
+        - row_id: stearic_acid
+          role: "Stearic acid milling additive"
+          name: "Stearic acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record stearic acid only when added as a process-control agent in dry flake milling; other agents require separate rows."
+          amount:
+            expression: "weighed quantity issued to the campaign, corrected for returned stock"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry conforming flake product when used"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solid_mass_records
+              source_ids:
+                - gopienko-aluminium-powders-2009
+            ranges: []
+        - row_id: polyethylene_bag
+          role: "Polyethylene product bag"
+          name: "Polyethylene bag"
+          flow_type: "product"
+          flow_ref:
+            uuid: "10647902-9822-4b06-bc95-f1f30f10c261"
+          property_unit: "Mass / kg"
+          description: "Record the polyethylene bag transferred with the product; add other packaging components as separate exchanges."
+          amount:
+            expression: "bag mass multiplied by bags supplied, excluding reusable packaging not transferred"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry conforming bagged product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solid_mass_records
+              source_ids:
+                - ehmsen-gas-atomization-2025
+            ranges: []
+      waste:
+        - row_id: aluminium_foil_scrap
+          role: "Clean aluminium foil scrap feed"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass / kg"
+          description: "Record clean foil scrap only when it crosses the site boundary as dry-flake feed; disclose composition and contamination."
+          amount:
+            expression: "weighed accepted scrap charged, net of rejected deliveries and stock change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry conforming flake product for the scrap route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solid_mass_records
+              source_ids:
+                - gopienko-aluminium-powders-2009
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Reference dry aluminium powder or flake"
+          name: "Powders and flakes of aluminium"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This is net saleable dry product conforming to the declared specification; its category-level UUID remains unresolved."
+          amount:
+            expression: "exactly 1 kg net dry conforming product after normalization; packaging is excluded"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "reference flow identity"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - mass-balance-identity
+            ranges: []
+      waste:
+        - row_id: offspec_aluminium_powder_waste
+          role: "Off-spec aluminium powder sent off site"
+          name: "Off-spec aluminium powder waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record off-spec powder only when it leaves for treatment or disposal; internal recycle is not an output."
+          amount:
+            expression: "weighed mass dispatched off site and reconciled to transfer records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry conforming product when exported"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solid_mass_records
+              source_ids:
+                - mass-balance-identity
+            ranges: []
+        - row_id: spent_refractory_waste
+          role: "Spent refractory sent off site"
+          name: "refractory"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "7eb01b83-1b1d-43e4-a5bc-258755063c11"
+          property_unit: "Mass / kg"
+          description: "Record spent refractory only when removed from included equipment and dispatched off site."
+          amount:
+            expression: "weighed dispatched mass assigned by documented service life or operating time"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry conforming atomized product when applicable"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_solid_mass_records
+              source_ids:
+                - ehmsen-gas-atomization-2025
+            ranges: []
+      elementary:
+        - row_id: fossil_carbon_dioxide_air
+          role: "Direct fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct on-site fossil carbon dioxide from natural-gas combustion; exclude upstream emissions."
+          amount:
+            expression: "stack measurement or verified site emission record assigned to the campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry conforming product when fossil fuel is burned"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: aluminium_particulate_air
+          role: "Aluminium particulate to ambient air"
+          name: "Aluminium particulate to ambient air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record aluminium-bearing particulate released to ambient air after controls, not captured and recycled dust."
+          amount:
+            expression: "stack test, continuous monitor, or control-system mass balance for net release after controls"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net dry conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emission_records
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: avoid_allocation
+    applies_to: "route-separated campaigns and metered operations"
+    rule: "Subdivide records by route, campaign, or equipment before allocating shared burdens."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: internal_recycle
+    applies_to: "internally returned powder, oversize, and captured aluminium"
+    rule: "Keep internal returns inside the boundary, give no co-product credit, and reconcile gross feed to product, exported waste, loss, and stock change."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: shared_grade_allocation
+    applies_to: "multiple saleable grades from one inseparable campaign"
+    rule: "Directly assign grade-specific operations, then allocate shared burdens by net dry mass; perform an economic sensitivity check when prices differ materially."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: exported_material
+    applies_to: "aluminium-bearing material leaving the site"
+    rule: "Use the actual contractual destination to classify it as co-product, recyclable material, or waste; disclose the burden or credit convention."
+    source_ids:
+      - mass-balance-identity
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_solid_mass_records
+      process_id: "powder_flake_manufacture"
+      flow_role: "solid inputs and outputs"
+      record_type: "scale, stock, production, and dispatch records"
+      raw_fields: "timestamp; material; grade; lot; gross; tare; moisture; opening stock; closing stock; destination; instrument"
+      collection_method: "Reconcile receipts, issues, stock change, product, and dispatch by campaign"
+      unit: "kg"
+      frequency: "each transaction and campaign close"
+      temporal_coverage: "representative consecutive campaigns"
+      site_scope: "declared line and storage"
+      aggregation_rule: "sum net mass by material and campaign, then normalize"
+      quality_evidence: "calibration; stock reconciliation; lot and transfer records"
+    - protocol_id: cp_energy_and_gas_records
+      process_id: "powder_flake_manufacture"
+      flow_role: "electricity and each supplied gas"
+      record_type: "meter, invoice, tank, and equipment records"
+      raw_fields: "timestamp; meter; opening; closing; native unit; gas pressure; gas temperature; equipment; hours; allocation key"
+      collection_method: "Prefer dedicated meters; reconcile shared totals and use documented causal allocation"
+      unit: "native unit; MJ; m3"
+      frequency: "continuous or each shift, monthly reconciliation"
+      temporal_coverage: "same campaigns as product"
+      site_scope: "line plus documented shared utilities"
+      aggregation_rule: "subtract non-production use, assign campaign, normalize"
+      quality_evidence: "calibration; invoices; historian; allocation worksheet"
+    - protocol_id: cp_water_records
+      process_id: "powder_flake_manufacture"
+      flow_role: "process-water make-up"
+      record_type: "make-up or once-through meter"
+      raw_fields: "timestamp; meter; opening; closing; unit; density basis; discharge; hours"
+      collection_method: "Meter boundary-crossing water and exclude recirculation"
+      unit: "kg"
+      frequency: "continuous or each shift, monthly reconciliation"
+      temporal_coverage: "same campaigns as product"
+      site_scope: "water connections serving the line"
+      aggregation_rule: "subtract non-process use and normalize"
+      quality_evidence: "calibration; water balance; invoice"
+    - protocol_id: cp_direct_emission_records
+      process_id: "powder_flake_manufacture"
+      flow_role: "direct carbon dioxide and aluminium particulate"
+      record_type: "stack, verified emission, or control mass balance"
+      raw_fields: "time; pollutant; concentration; exhaust flow; duration; detection limit; control status; method; uncertainty"
+      collection_method: "Match net releases after controls to operating campaigns"
+      unit: "kg"
+      frequency: "per monitoring plan and material change"
+      temporal_coverage: "representative operation in dataset period"
+      site_scope: "all direct release points"
+      aggregation_rule: "integrate campaign release and normalize"
+      quality_evidence: "laboratory; calibration; stack test; reconciliation"
+  calculation_rules:
+    - id: normalize_to_reference_product
+      applies_to: "every non-reference exchange"
+      rule: "campaign exchange amount divided by net dry conforming product mass"
+      inputs:
+        - "exchange amount"
+        - "product mass"
+        - "moisture correction"
+      output: "amount per 1 kg reference product"
+      source_ids:
+        - mass-balance-identity
+    - id: reconcile_material_mass
+      applies_to: "aluminium-bearing inputs and outputs"
+      rule: "feed equals product plus exported aluminium waste plus measured loss plus closing-minus-opening in-process stock, on one moisture basis"
+      inputs:
+        - feed
+        - product
+        - waste
+        - particulate
+        - "stock change"
+      output: "mass-balance difference and closure"
+      source_ids:
+        - mass-balance-identity
+    - id: assign_shared_utility
+      applies_to: "shared utilities and emissions"
+      rule: "Assign dedicated meters first, then residual shared quantity using documented operating time or another causal driver; reconcile to site total."
+      inputs:
+        - "dedicated readings"
+        - "shared total"
+        - "causal driver"
+        - output
+      output: "campaign-assigned amount"
+      source_ids:
+        - mass-balance-identity
+    - id: convert_gas_volume
+      applies_to: "supplied gases"
+      rule: "Convert native quantity to m3 at one declared pressure and temperature and retain native readings and inputs."
+      inputs:
+        - "native quantity"
+        - pressure
+        - temperature
+        - convention
+      output: "m3 at declared conditions"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_temporal
+      applies_to: "all records"
+      requirement: "Cover representative consecutive campaigns and a normal maintenance or changeover cycle when material."
+      evidence: "campaign and maintenance logs"
+    - id: dq_technology
+      applies_to: "route and equipment"
+      requirement: "Identify atomizer or mill, atomizing gas, melting, classifier, dust control, and packaging represented."
+      evidence: "equipment list, process flow diagram, procedure"
+    - id: dq_geography
+      applies_to: "site and upstream links"
+      requirement: "State site geography and use upstream datasets consistent with supply geography and state."
+      evidence: "site metadata, supplier records, link review"
+    - id: dq_product
+      applies_to: "reference product"
+      requirement: "Report grade, composition, powder or flake, particle size, morphology, moisture, surface treatment or lubricant, and packaging."
+      evidence: "specification and certificate of analysis"
+    - id: dq_completeness
+      applies_to: "inventory"
+      requirement: "Mark prescribed rows present, zero with evidence, or not applicable with route reason; add other material exchanges atomically."
+      evidence: "signed checklist and balance"
+    - id: dq_uncertainty
+      applies_to: "measured and allocated amounts"
+      requirement: "Record resolution, calibration, sampling uncertainty, allocation share, and missing-data treatment."
+      evidence: "calibration, laboratory, and calculation records"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "foreground_dataset_conformance"
+    rule: "the reference output is exactly 1 kg net dry conforming product after normalization and excludes packaging mass;"
+    source_ids: []
+  - rule_id: validation_rule_2
+    applies_to: "foreground_dataset_conformance"
+    rule: "all required product qualifiers and the actual atomization or dry-milling route are declared;"
+    source_ids: []
+  - rule_id: validation_rule_3
+    applies_to: "foreground_dataset_conformance"
+    rule: "each prescribed row is one atomic exchange and is present, zero with evidence, or not applicable with a route reason;"
+    source_ids: []
+  - rule_id: validation_rule_4
+    applies_to: "foreground_dataset_conformance"
+    rule: "aluminium inputs, product, exported waste, particulate, and stock change pass the disclosed mass-balance check or the residual is investigated;"
+    source_ids: []
+  - rule_id: validation_rule_5
+    applies_to: "foreground_dataset_conformance"
+    rule: "gas volumes share declared pressure and temperature conditions and electricity conversion to MJ is reproducible;"
+    source_ids: []
+  - rule_id: validation_rule_6
+    applies_to: "foreground_dataset_conformance"
+    rule: "compressed air, nitrogen, and argon are not aggregated or simultaneously counted unless records show distinct uses;"
+    source_ids: []
+  - rule_id: validation_rule_7
+    applies_to: "foreground_dataset_conformance"
+    rule: "direct fossil carbon dioxide excludes upstream emissions and aluminium particulate is net ambient release after controls;"
+    source_ids: []
+  - rule_id: validation_rule_8
+    applies_to: "foreground_dataset_conformance"
+    rule: "internal recycle is not reported as external waste or co-product and every off-site waste has a documented destination;"
+    source_ids: []
+  - rule_id: validation_rule_9
+    applies_to: "foreground_dataset_conformance"
+    rule: "allocation follows section 7, reconciles to shared totals, and includes the required grade sensitivity;"
+    source_ids: []
+  - rule_id: validation_rule_10
+    applies_to: "foreground_dataset_conformance"
+    rule: "source identifiers, protocols, inputs, UUID identities, unresolved UUIDs, and quality evidence are reviewable."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Publishing a manufacturing process and linking lifecycle models for products using dry aluminium powder or flake"
+  allowed_use: "Declared grade, route, geography, technology, packaging, and period, or a justified close analogue with limitations"
+  excluded_use: "Paste, aluminium compounds, granules, downstream powder use, or undisclosed market-average route"
+  required_metadata: "PCR id; qualifiers; geography; period; route; equipment; feed origin; recycled content; atomizing gas; packaging; allocation; boundary; upstream links"
+  required_quality_disclosure: "Representativeness; meter and sampling quality; mass-balance closure; applicability; missing data; allocation; UUID and range-evidence gaps"
+  update_trigger: "Material change in grade, route, gas, equipment, energy, feed, controls, packaging, allocation, or three-year dataset age"
+data_sources:
+  - id: "src_unsd_cpc_3_0_2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv, verified 2026-09-04"
+    used_for: "Official CPC 41531 identity"
+  - id: "china-nbs-statistical-products-2010"
+    type: "official_guidance"
+    reference: "National Bureau of Statistics of China, Statistical Products Classification 3336, https://www.stats.gov.cn/sj/tjbz/tjypflml/2010/33/3336.html, verified 2026-09-04"
+    used_for: "Chinese product-name corroboration: 铝粉及片状粉末"
+  - id: "gopienko-aluminium-powders-2009"
+    type: "literature"
+    reference: "V. G. Gopienko, Production of Aluminum and Aluminum Alloy Powders, Handbook of Non-Ferrous Metal Powders, Elsevier, 2009, pp. 267–283; book DOI 10.1016/B978-1-85617-422-0.X0001-8"
+    used_for: "Aluminium-specific forms, atomization, dry flake milling, protective gas, classification, and packing"
+  - id: "ehmsen-gas-atomization-2025"
+    type: "literature"
+    reference: "S. Ehmsen, J. Conrads, M. Klar, and J. C. Aurich, Environmental Impact of Powder Production for Additive Manufacturing: Carbon Footprint and Cumulative Energy Demand of Gas Atomization, 2025, DOI 10.21203/rs.3.rs-6202700/v1"
+    used_for: "Transferable atomization operations and candidate exchanges; stainless-steel quantities are not used as aluminium ranges"
+  - id: "mass-balance-identity"
+    type: "method_factor"
+    reference: "Mass conservation and reference-flow normalization identity over the declared campaign boundary"
+    used_for: "Normalization, internal-recycle treatment, dry-mass allocation, calculation, and validation"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b3110f3e7f9aee7a6899b4de9d9a913fbe1b66053b1c3f1daf88971c0f201ec1"
+  generated_content_sha256: "sha256:200c5b5b4d2cd8074a6e0fea7bd9b1041e269906375076814239c39e867a22ee"

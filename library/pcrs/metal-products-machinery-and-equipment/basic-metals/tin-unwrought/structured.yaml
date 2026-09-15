@@ -1,10 +1,695 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41443"
-  title: "Tin, unwrought"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.tin-unwrought"
+  classification_refs: "CPC 3.0: 41443, Tin, unwrought (un-cpc-3-0-structure-2025)"
+  covered_products: "Non-alloyed tin and tin alloys sold in declared unwrought forms, including ingots, blocks, slabs, billets, pigs, cakes or granules, when these forms are the direct facility-gate product rather than a semi-finished article."
+  excluded_products: "Tin ores and concentrates sold as such; waste and scrap sold without recovery; semi-finished tin products; powders and flakes; fabricated articles; products whose tin grade, alloy composition or unwrought form is not declared."
+  representative_product: "Refined non-alloyed tin in cast ingot form; the International Tin Association study uses refined tin at 99.95% as its representative functional-unit product (international-tin-association-refined-tin-lca)."
+  production_route: "Declared primary pyrometallurgical reduction of oxidic tin concentrate, declared secondary recovery from tin-bearing scrap or residues, or a measured combination, followed by route-specific refining and unwrought-form production."
+  market_state: "Saleable solid unwrought tin at the producing facility gate, with grade or alloy composition, physical form, primary/secondary feed share, geography and technology declared."
+functional_unit:
+  what: "Saleable tin in the declared unwrought grade and physical form at the producing facility gate."
+  how_much: "1 kg net mass of saleable unwrought tin."
+  how_well: "Conforms to the producer's declared grade or alloy specification; free of production packaging and excluding returned, internally recycled or off-specification material."
+  how_long_or_cycle: "One production reporting period normalized to one released product batch; no use duration is assigned."
+  reference_flow_link: "tin_unwrought_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_feed_gate
+      applies_to: "foreground starting boundary"
+      rule: "Start at measured receipt of specifically identified tin-bearing feed; do not silently include or exclude upstream mining, beneficiation, scrap preparation or transport."
+      source_ids:
+        - ec-jrc-nfm-bref-2017
+    - rule_id: boundary_route_condition
+      applies_to: "primary and secondary route applicability"
+      rule: "Declare at least one actual production route. Record tin_concentrate only for primary concentrate reduction and tin_scrap only for the secondary-feed route; a mixed route records each independently."
+      source_ids:
+        - ec-jrc-nfm-bref-2017
+        - international-tin-association-refined-tin-lca
+    - rule_id: boundary_internal_recycle
+      applies_to: "returned dust, dross, slag and metal"
+      rule: "Track internal return quantities for mass balance but do not count the same material as both an external output and an internal recycle."
+      source_ids:
+        - ec-jrc-nfm-bref-2017
+    - rule_id: boundary_facility_gate
+      applies_to: "reference product ending boundary"
+      rule: "End when conforming unwrought tin is weighed and released at the producing facility gate; downstream working, fabrication, use and end-of-life are excluded."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+        - international-tin-association-refined-tin-lca
+boundary_abstraction:
+  declared_starting_condition: "Tin-bearing concentrate, tin waste and scrap, or another specifically declared tin-bearing secondary feed is received at the foreground facility gate with measured wet or dry mass, representative assay, moisture, source and product-or-waste status."
+  starting_condition_role: "Gate-to-gate foreground starting condition for unwrought tin production; upstream mining, beneficiation, scrap collection, pre-treatment outside the facility and transport are linked as upstream systems."
+  product_classification_scope: "The reference output is CPC 3.0 subclass 41443; input classifications do not redefine canonical PCR identity."
+  recursive_input_rule: "Any purchased unwrought tin in the same product category is recorded as a separate input with its own upstream dataset and is not recursively remodelled under this foreground production system. Internal return tin is recorded as an internal loop and excluded from purchased input totals."
+  upstream_dataset_requirement: "Every purchased feed, energy carrier, utility and chemical requires a geography-, technology-, state- and delivery-boundary-appropriate upstream dataset or an explicit data gap; secondary feed also requires the declared recycling or cut-off model."
+  disclosure: "Declare feed routes and shares, contained-tin assay basis, preprocessing ownership, technology, internal recycle loops, refining sequence, alloy additions, product grade and form, abatement configuration, water recirculation, residue destinations, allocation method and temporal/geographic coverage."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Tin, unwrought"
+    uuid: "07de00e1-3c49-4ce8-9ca2-effb07762623"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "grade or alloy designation and composition"
+    - "unwrought physical form"
+    - "primary and secondary feed shares on a tin-content basis"
+    - "feed types and supplier boundaries"
+    - "production technology"
+    - "facility geography"
+    - "reporting period"
+    - "product moisture or surface-condition convention"
+    - "allocation and recycling model"
+    - "direct-emission and residue-treatment boundaries"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "reference product and solid material exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use calibrated net mass. Exclude pallets, moulds, return metal and production packaging; state the moisture and surface-condition convention for feed and product."
+  - id: tin_content_basis
+    applies_to: "primary/secondary feed shares and tin recovery"
+    required_property_ref:
+      name: "Mass of contained tin"
+      uuid: ""
+    required_unit: "kg Sn"
+    rule: "Determine contained tin from representative sampling and assay for each feed and output lot; never substitute gross material mass for contained-tin mass in recovery or route-share calculations."
+  - id: electricity_energy
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electricity before conversion. When records are in kWh, multiply by 3.6 MJ/kWh and disclose voltage, grid or contractual mix, and the delivery-loss boundary."
+  - id: gas_reference_conditions
+    applies_to: "natural gas and industrial oxygen"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Record metered volume and the reference temperature, pressure and dry/wet convention; convert supplier-normal or standard cubic metres only with the declared reference conditions."
+  - id: water_mass_conversion
+    applies_to: "process water"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer direct mass or convert a calibrated volume record using measured or documented density at the stated temperature; count only fresh make-up or net transferred water and disclose recirculation."
+  - id: direct_air_emissions
+    applies_to: "fossil carbon dioxide, sulfur dioxide and particulate matter"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report direct post-abatement releases from the foreground facility. Do not add upstream electricity or purchased-fuel supply-chain emissions to these rows."
+process_map:
+  - id: tin_unwrought_production
+    name: "Feed preparation, tin recovery, refining, casting and emission control"
+    inclusion: "required"
+    inclusion_condition: "Always include the measured foreground production system; at least one declared primary or secondary feed route must be active, while route-specific exchanges are recorded only when their conditions apply."
+    role: "Foreground production from received tin-bearing feed through saleable unwrought tin, including internal recovery and direct abatement."
+    quantitative_reference: "1 kg net saleable unwrought tin output"
+process_inventory:
+  - id: tin_unwrought_production
+    label: "Feed preparation, tin recovery, refining, casting and emission control"
+    inputs:
+      product:
+        - row_id: tin_concentrate
+          role: "Primary-route tin concentrate"
+          name: "Tin concentrate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "134347e0-d564-42f8-a82c-328a2b6f9618"
+          property_unit: "Mass / kg"
+          description: "Record this exchange only when oxidic tin concentrate crosses the facility boundary for primary pyrometallurgical production. Keep each supplier lot's gross mass, dry mass, moisture and tin assay linked."
+          amount:
+            expression: "measured dry mass of received tin concentrate consumed by the reporting-period product system"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg net saleable unwrought tin output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_assay
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: tin_scrap
+          role: "Secondary-route tin scrap"
+          name: "Waste and scrap of tin"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e7221683-4cdd-4aa4-ab05-95a830757c21"
+          property_unit: "Mass / kg"
+          description: "Record separately received tin waste and scrap only when it has crossed the facility boundary for recovery. Declare legal product-or-waste status, contamination, pre-treatment and contained-tin assay."
+          amount:
+            expression: "measured dry mass of received tin scrap consumed by the reporting-period product system"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg net saleable unwrought tin output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_assay
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: metallurgical_coke
+          role: "Primary-route metallurgical coke"
+          name: "metallurgical coke"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a94c42b1-7fa9-42f3-a9d1-1e7353e8490d"
+          property_unit: "Mass / kg"
+          description: "Record metallurgical coke only when it is actually charged as the carbonaceous reductant for oxidic tin feed. Other carbon materials are different exchanges and require their own rows in the foreground implementation."
+          amount:
+            expression: "measured charged mass of metallurgical coke"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg net saleable unwrought tin output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_assay
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electrical energy consumed by feed preparation, furnaces, refining, casting, ventilation, abatement, water treatment and directly supporting on-site equipment within the declared boundary."
+          amount:
+            expression: "metered purchased electricity allocated to the foreground product system and converted to MJ"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable unwrought tin output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_electricity_meter
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: natural_gas
+          role: "Gaseous natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record only natural gas consumed on site for drying, furnace firing, refining kettles, casting or afterburners. Keep other fuels as separate implementation rows."
+          amount:
+            expression: "metered natural-gas volume at declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable unwrought tin output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas_and_oxygen_meter
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: industrial_oxygen
+          role: "Industrial oxygen"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume / m3"
+          description: "Record only purchased or separately metered industrial oxygen used for oxygen enrichment or oxidation. Do not count ambient combustion air as this product input."
+          amount:
+            expression: "metered industrial-oxygen volume at declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable unwrought tin output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas_and_oxygen_meter
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: process_water
+          role: "Process-water make-up"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record fresh process-water make-up that crosses the facility boundary or a separately modelled on-site supply boundary. Internal recirculation is disclosed but not repeatedly counted as input."
+          amount:
+            expression: "measured net process-water make-up after subtracting returned or recirculated water"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable unwrought tin output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_balance
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: sodium_hydroxide
+          role: "Sodium hydroxide"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide only when it is consumed in a declared leaching, impurity-removal, gas-treatment or wastewater-treatment step inside the foreground boundary. Other alkalis remain separate exchanges."
+          amount:
+            expression: "measured mass of 100% sodium-hydroxide equivalent consumed, with solution concentration retained"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable unwrought tin output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_assay
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: tin_unwrought_output
+          role: "Net saleable unwrought tin"
+          name: "Tin, unwrought"
+          flow_type: "product"
+          flow_ref:
+            uuid: "07de00e1-3c49-4ce8-9ca2-effb07762623"
+          property_unit: "Mass / kg"
+          description: "This is the reference product after any declared refining, alloy adjustment and casting or granulation. Use the exact Tiangong Chinese baseName in the aligned Chinese rendering while retaining the professional PCR title separately."
+          amount:
+            expression: "measured net conforming output divided by itself to establish exactly 1 kg reference output; report gross output, returns and off-specification deductions separately"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "exactly 1 kg net saleable unwrought tin output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_release_mass
+              source_ids:
+                - un-cpc-3-0-structure-2025
+                - international-tin-association-refined-tin-lca
+            ranges: []
+      waste:
+        - row_id: tin_smelting_slag
+          role: "Net exported tin-smelting slag"
+          name: "Tin-smelting slag"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass of tin-smelting slag only when it leaves the foreground system for recovery, treatment or disposal. Slag returned to a furnace is an internal loop and is not an external waste output."
+          amount:
+            expression: "measured net mass leaving the foreground boundary, classified by destination and hazardous status"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg net saleable unwrought tin output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_dispatch
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: tin_baghouse_dust
+          role: "Net exported tin-production baghouse dust"
+          name: "Baghouse dust from tin production"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record captured dust from tin-production bag filters only when it leaves the foreground system. Dust returned internally is recorded in the internal-recycle ledger and excluded from this net output."
+          amount:
+            expression: "measured net captured-dust mass dispatched outside the foreground boundary"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable unwrought tin output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_dispatch
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: tin_refining_dross
+          role: "Net exported tin-refining dross"
+          name: "Tin-refining dross"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record dross produced by the declared tin-refining operation only when it leaves the foreground system. Preserve impurity composition and recovery or disposal destination."
+          amount:
+            expression: "measured net dross mass dispatched outside the foreground boundary"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable unwrought tin output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_dispatch
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+      elementary:
+        - row_id: fossil_carbon_dioxide_to_air
+          role: "Direct fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil carbon dioxide from carbonaceous reduction and on-site fossil-fuel combustion inside the foreground boundary. Exclude upstream electricity and fuel-supply emissions."
+          amount:
+            expression: "measured continuous-emission total or calculated direct fossil CO2 from reconciled fuel and reductant carbon records using the declared calculation method"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable unwrought tin output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_air_emissions
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: sulfur_dioxide_to_air
+          role: "Direct sulfur dioxide to air"
+          name: "Sulfur dioxide to air, unspecified"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record post-abatement sulfur dioxide released directly to outdoor air when sulfur-bearing feed, fuels or treatment steps make it applicable. The exact unspecified-air Tiangong UUID remains unresolved."
+          amount:
+            expression: "measured post-abatement stack and quantified fugitive sulfur-dioxide mass released from the foreground facility"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable unwrought tin output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_air_emissions
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: particulate_matter_to_air
+          role: "Direct particulate matter to air"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass / kg"
+          description: "Record total post-abatement particulate matter released directly to air when particle-size-specific measurements are unavailable. Do not add captured baghouse dust to this emitted elementary flow."
+          amount:
+            expression: "measured post-abatement stack and quantified fugitive particulate mass released from the foreground facility"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable unwrought tin output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_air_emissions
+              source_ids:
+                - ec-jrc-nfm-bref-2017
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "route, refining and recovery subprocesses"
+    rule: "Avoid allocation by separately metering primary and secondary feed campaigns, recovery steps and independently measured co-product operations."
+    source_ids: []
+  - rule_id: allocation_internal_returns
+    applies_to: "internally returned tin metal, slag, dross and dust"
+    rule: "Treat a material returned within the declared foreground boundary as an internal loop: retain its quantity for process control and mass balance, but assign neither an external output credit nor a second upstream burden."
+    source_ids:
+      - ec-jrc-nfm-bref-2017
+  - rule_id: allocation_external_coproducts
+    applies_to: "marketable metals, alloys or recovered compounds leaving the system"
+    rule: "Report each external co-product's mass, contained metals, quality, destination and revenue. If subdivision cannot avoid allocation, the dataset is incomplete until the chosen physical, economic or substitution method and its justification are reviewed and disclosed; do not silently allocate by gross mass."
+    source_ids: []
+  - rule_id: allocation_secondary_feed
+    applies_to: "tin scrap and other secondary feed"
+    rule: "Apply one declared recycling model consistently in the linked upstream dataset and the foreground product system; disclose burden-free cut-off, recycled-content, end-of-life or substitution choices and prevent duplicate avoided-burden credits."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass_assay
+      process_id: "tin_unwrought_production"
+      flow_role: "concentrate, scrap, coke and sodium-hydroxide inputs"
+      record_type: "weighbridge, batch ticket, supplier certificate and laboratory assay"
+      raw_fields: "timestamp; material identity; supplier; gross, tare and net mass; moisture; tin assay where applicable; solution concentration; batch; destination"
+      collection_method: "Calibrated weighing linked to representative sampling and laboratory or supplier assay; reconcile receipts, stock changes and returns."
+      unit: "kg; mass fraction"
+      frequency: "each receipt and batch"
+      temporal_coverage: "complete reporting period including opening and closing stock"
+      site_scope: "all foreground receiving and storage points"
+      aggregation_rule: "consumption = receipts + opening stock - closing stock - dispatches; convert solutions to 100% active mass and wet solids to declared dry basis"
+      quality_evidence: "calibration records; chain of custody; sampling plan; assay method; certificates; stock reconciliation"
+    - protocol_id: cp_electricity_meter
+      process_id: "tin_unwrought_production"
+      flow_role: "purchased electricity input"
+      record_type: "revenue and submeters"
+      raw_fields: "timestamp; meter id; reading; unit; process area; voltage; grid or contract; import/export"
+      collection_method: "Read calibrated meters and allocate shared loads only with documented operating-hour or engineering evidence."
+      unit: "kWh"
+      frequency: "hourly or finer, aggregated monthly"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all in-boundary process and directly supporting areas"
+      aggregation_rule: "net imported kWh minus separately modelled exports, converted at 3.6 MJ/kWh and normalized to net product"
+      quality_evidence: "meter calibration; bills; missing-data log; allocation worksheet"
+    - protocol_id: cp_gas_and_oxygen_meter
+      process_id: "tin_unwrought_production"
+      flow_role: "natural gas and industrial oxygen inputs"
+      record_type: "custody-transfer or process meter"
+      raw_fields: "timestamp; gas identity; volume; temperature; pressure; dry/wet convention; meter id; process area"
+      collection_method: "Use calibrated meters or reconciled supplier deliveries and tanks; keep gases separate."
+      unit: "m3 at declared conditions"
+      frequency: "continuous or each delivery"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all in-boundary users"
+      aggregation_rule: "reconcile opening/closing storage and purchases, then normalize each gas independently"
+      quality_evidence: "calibration; supplier statement; reference-condition calculation; balance closure"
+    - protocol_id: cp_water_balance
+      process_id: "tin_unwrought_production"
+      flow_role: "process-water make-up"
+      record_type: "water meter and tank balance"
+      raw_fields: "timestamp; source; make-up; discharge; recycle; evaporation estimate; storage change; unit; density basis"
+      collection_method: "Meter make-up and discharge separately; quantify recirculation for disclosure without counting it again as external input."
+      unit: "kg or m3 with density"
+      frequency: "daily or finer"
+      temporal_coverage: "complete reporting period and representative operating states"
+      site_scope: "all process, cooling, gas-cleaning and treatment systems in boundary"
+      aggregation_rule: "net external make-up = inflow + opening storage - closing storage - exported unused water; convert volume to mass under water_mass_conversion"
+      quality_evidence: "calibrated meters; water-balance closure; density record; maintenance and leak log"
+    - protocol_id: cp_product_release_mass
+      process_id: "tin_unwrought_production"
+      flow_role: "reference product output"
+      record_type: "certified product scale and release record"
+      raw_fields: "batch; grade/alloy; composition; form; gross, tare and net mass; off-spec mass; return mass; release status"
+      collection_method: "Weigh each released lot and link laboratory release to the same batch."
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all product casting, granulation, storage and dispatch points"
+      aggregation_rule: "net saleable output = released conforming mass - returned mass; normalize all exchanges by this output"
+      quality_evidence: "calibration; release certificate; assay; inventory reconciliation"
+    - protocol_id: cp_residue_dispatch
+      process_id: "tin_unwrought_production"
+      flow_role: "slag, baghouse dust and refining dross outputs"
+      record_type: "container scale, manifest and destination record"
+      raw_fields: "residue identity; origin; mass; moisture; composition; hazardous status; internal return; consignee; treatment route"
+      collection_method: "Weigh each residue movement and distinguish internal return from external dispatch."
+      unit: "kg"
+      frequency: "each movement"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all residue generation, storage, return and dispatch points"
+      aggregation_rule: "net external output = dispatch outside boundary - material returned from external processing when included; never include internal recycle"
+      quality_evidence: "scale calibration; waste manifest; assay; chain of custody; destination acceptance"
+    - protocol_id: cp_direct_air_emissions
+      process_id: "tin_unwrought_production"
+      flow_role: "direct CO2, SO2 and particulate outputs"
+      record_type: "continuous monitor, stack test, fuel/reductant record and fugitive estimate"
+      raw_fields: "source; pollutant; concentration; flow; operating time; fuel/reductant quantity and carbon; abatement status; uncertainty; detection limit"
+      collection_method: "Use valid continuous monitoring or representative stack testing; calculate only where measurement is unavailable and document factors and oxidation assumptions."
+      unit: "kg and source measurement units"
+      frequency: "continuous where installed; otherwise each representative campaign"
+      temporal_coverage: "covers normal operation, start-up, shutdown and material variability"
+      site_scope: "every in-boundary point and quantified fugitive source"
+      aggregation_rule: "integrate concentration × dry gas flow over time, reconcile with calculation method, subtract no captured residue from an already post-abatement measurement, normalize to net product"
+      quality_evidence: "monitor QA/QC; test report; calibration gas; operating log; uncertainty and data-gap record"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "normalized amount = reporting-period exchange amount / reporting-period net saleable unwrought tin mass"
+      inputs:
+        - "exchange amount"
+        - "cp_product_release_mass net output"
+      output: "exchange per 1 kg reference product"
+      source_ids: []
+    - id: calc_dry_feed
+      applies_to: "moist concentrate, scrap and residues"
+      rule: "dry mass = net wet mass × (1 - measured moisture mass fraction)"
+      inputs:
+        - "calibrated mass"
+        - "representative moisture"
+      output: "kg dry material"
+      source_ids: []
+    - id: calc_contained_tin
+      applies_to: "feed, product, residue and co-product"
+      rule: "contained tin = dry material mass × representative tin mass fraction"
+      inputs:
+        - "dry mass"
+        - assay
+      output: "kg Sn and tin recovery reconciliation"
+      source_ids: []
+    - id: calc_route_share
+      applies_to: "mixed primary/secondary production"
+      rule: "route share = contained tin entering from the declared route / total contained tin entering from all external tin-bearing feed"
+      inputs:
+        - "contained tin by feed lot and route"
+      output: "primary and secondary tin-input shares"
+      source_ids: []
+    - id: calc_electricity_mj
+      applies_to: "purchased electricity"
+      rule: "electricity (MJ) = metered electricity (kWh) × 3.6"
+      inputs:
+        - "net imported kWh"
+      output: "MJ electricity"
+      source_ids: []
+    - id: calc_solution_active_mass
+      applies_to: "sodium hydroxide solution"
+      rule: "active NaOH mass = solution mass × certified or measured NaOH mass fraction"
+      inputs:
+        - "solution mass"
+        - concentration
+      output: "kg 100% NaOH equivalent"
+      source_ids: []
+    - id: calc_direct_co2
+      applies_to: "direct fossil CO2 when not continuously measured"
+      rule: "apply the declared carbon-balance or accepted jurisdictional method separately to each fossil fuel and reductant; retain carbon content, oxidation and non-energy-use assumptions"
+      inputs:
+        - "fuel and coke use"
+        - "carbon analyses"
+        - "accepted factors"
+        - "measured carbon retained in products/residues"
+      output: "kg direct fossil CO2"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity_and_route
+      applies_to: "product and tin-bearing feed"
+      requirement: "Link every batch to an exact material identity, product-or-waste status, grade/composition, route and boundary; do not merge primary and secondary feed into an unassayed umbrella total."
+      evidence: "batch genealogy; supplier documents; assays; route ledger"
+    - id: dq_measurement
+      applies_to: "mass, energy, gas and water records"
+      requirement: "Use calibrated instruments with units, reference conditions, missing-data treatment and conversion records retained."
+      evidence: "calibration certificates; meter logs; conversion worksheet"
+    - id: dq_temporal
+      applies_to: "reporting period"
+      requirement: "Cover a representative continuous period including planned and unplanned operating states; disclose exclusions, shutdowns, stock changes and campaign changes."
+      evidence: "production calendar; downtime log; stock reconciliation"
+    - id: dq_completeness
+      applies_to: "inventory"
+      requirement: "Reconcile purchased feed, contained tin, product, residues, internal returns, energy, water and direct emissions; investigate material gaps rather than balancing with an unspecified exchange."
+      evidence: "signed mass/energy/water balances; gap log; corrective actions"
+    - id: dq_abatement_and_destination
+      applies_to: "direct emissions and residues"
+      requirement: "Identify measurement as pre- or post-abatement and retain the actual residue destination, internal return status and treatment evidence."
+      evidence: "stack schematic; abatement operating log; manifests; treatment receipts"
+    - id: dq_representativeness
+      applies_to: "published dataset"
+      requirement: "State facility geography, furnace and refining technologies, feed mix, grade/form, year and allocation/recycling model; do not claim industry-average representativeness from a single facility without a reviewed aggregation design."
+      evidence: "dataset metadata; technology description; sampling and aggregation record"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "The reference flow UUID, Mass property, mass unit group and 1 kg reference amount must match; the data package must declare grade/alloy, form, route shares, geography, technology and reporting period."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_route_applicability
+    applies_to: "conditional feed and utility rows"
+    rule: "A primary-route concentrate or coke amount is invalid without a declared primary reduction route; a tin-scrap amount is invalid without a declared secondary route; conditional utilities and chemicals require a named consuming operation."
+    source_ids:
+      - ec-jrc-nfm-bref-2017
+  - rule_id: validate_tin_balance
+    applies_to: "feed, product, co-product, residue and internal return"
+    rule: "Calculate a contained-tin balance using compatible dry-mass and assay bases. An unexplained imbalance or use of gross feed mass as tin content is an error."
+    source_ids: []
+  - rule_id: validate_no_double_counting
+    applies_to: "internal recycle and external outputs"
+    rule: "The same slag, dust, dross or returned metal quantity must not be both an internal return and an external output, and secondary-feed credits must not be counted twice."
+    source_ids:
+      - ec-jrc-nfm-bref-2017
+  - rule_id: validate_direct_emissions
+    applies_to: "CO2, SO2 and particulate matter"
+    rule: "Direct-emission rows must represent the foreground facility only, state post-abatement status and source coverage, and exclude upstream electricity and fuel-supply emissions."
+    source_ids:
+      - ec-jrc-nfm-bref-2017
+  - rule_id: validate_atomic_exchanges
+    applies_to: "process inventory"
+    rule: "Each selected flow must be one concrete material, waste or emission. Unlisted fuels, fluxes, alloy additions, treatment reagents, wastes or pollutants used by the actual route require separate rows rather than aggregation into an umbrella exchange."
+    source_ids: []
+  - rule_id: validate_unresolved_uuids
+    applies_to: "slag, dust, dross and sulfur dioxide rows"
+    rule: "UUID-empty rows may be collected by their exact declared physical identity but cannot be represented by a generic or wrong-compartment proxy; keep them flagged for UUID resolution."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for saleable unwrought tin at a producing facility gate."
+  downstream_use: "May serve as a secondary_dataset or background_dataset after methodology and data-quality review."
+  allowed_use: "Product carbon-footprint and LCA models requiring declared facility or aggregated unwrought-tin production; supply-chain modelling where grade, form, route mix, geography, technology, allocation and recycling model are compatible."
+  excluded_use: "Mining concentrate, semi-finished or fabricated tin products; undeclared alloy grades; generic global or national averages derived from one site; consequential recycling claims without an explicit model; substitution for route- or grade-incompatible production."
+  required_metadata: "PCR id and version; flow UUID; grade/alloy composition; unwrought form; facility geography; technology; feed identities; primary/secondary contained-tin shares; upstream boundaries; reporting period; allocation and recycling model; abatement and water systems; residue destinations."
+  required_quality_disclosure: "Primary data share; temporal, geographical and technological representativeness; meter and assay coverage; contained-tin balance; missing-data treatment; uncertainty; allocation sensitivity; unresolved UUID rows; deviations from this PCR."
+  update_trigger: "Material change in feed route or share, furnace/refining/casting technology, energy supply, product grade or form, abatement, water system, residue destination, allocation/recycling model, facility geography, or when data age no longer represents current operation."
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *Central Product Classification Version 3.0 Structure*, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-04)."
+    used_for: "Official CPC 41443 product identity and classification boundary."
+  - id: "ec-jrc-nfm-bref-2017"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, *Best Available Techniques (BAT) Reference Document for the Non-Ferrous Metals Industries*, 2017, DOI 10.2760/8224, https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2020-01/JRC107041_NFM_bref2017.pdf (retrieved 2026-09-04)."
+    used_for: "Primary oxidic-feed reduction with carbon or coke; secondary tin-bearing feed; refining routes; material, energy, oxygen, gas, water, residue and direct-emission inventory structure; abatement, internal recovery and water-management boundary rules."
+  - id: "international-tin-association-refined-tin-lca"
+    type: "literature"
+    reference: "International Tin Association, *Life Cycle Assessment of tin production*, https://www.internationaltin.org/reports/lifecycle-assessment-of-tin-production/ (retrieved 2026-09-04)."
+    used_for: "Representative refined-tin product, primary and secondary production coverage, functional-unit context and cradle-to-gate boundary comparison."
+  - id: "china-customs-hs-8001-terminology-2011"
+    type: "official_guidance"
+    reference: "General Administration of Customs of the People's Republic of China, Announcement No. 49 of 2011, attachment to the China-Costa Rica Free Trade Agreement rules of origin, heading 8001 “未锻轧锡”, reproduced in *China Foreign Trade and Economic Cooperation Gazette*, 2011 Issue 53, https://zjjcmspublic.oss-cn-hangzhou-zwynet-d01-a.internet.cloud.zj.gov.cn/jcms_files/jcms1/web2757/site/picture/zcom/upload/20111130/U201111301322643543135.pdf (retrieved 2026-09-04)."
+    used_for: "Professional Chinese product-category title and official tariff terminology."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:c1d4a0300d3da366f732ba069318f09a42654dc2538487e43fc851d85ba87097"
+  generated_content_sha256: "sha256:834a5355737bee7dd3b0f89421500356c40684dd018577852856a90e1d6dee77"

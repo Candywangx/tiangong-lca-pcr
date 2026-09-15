@@ -1,10 +1,744 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "42998"
-  title: "Ships' propellers and blades therefor"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.ships-propellers-and-blades-therefor"
+  classification_refs: "CPC 3.0: 42998, Ships' propellers and blades therefor (exact classification context)"
+  covered_products: "Finished metallic ship screw propellers; separately supplied finished ship-propeller blades"
+  excluded_products: "Aircraft turbo-propellers; pumps; propeller shafts; stand-alone pitch-control hubs and actuators; composite propellers; unfinished castings sold as another product; repaired propellers"
+  representative_product: "A drawing-specific, sand-cast and machined ship propeller or separately supplied blade released at the manufacturing site gate"
+  production_route: "Pattern and sand-mould preparation; alloy melting and casting; knock-out and cleaning; machining, grinding and polishing; balancing, inspection and release"
+  market_state: "Finished, inspected, uninstalled product at the manufacturer gate; unpackaged unless packaging is explicitly added by the foreground data package"
+functional_unit:
+  what: "Provide a finished ship propeller or separately supplied propeller blade capable of transmitting the specified shaft power as hydrodynamic thrust"
+  how_much: "1 kg net mass of finished product at the manufacturer gate"
+  how_well: "Conforms to the declared drawing, propeller type, alloy specification, dimensional and geometrical tolerance class, balance criterion, surface-finish criterion, and inspection acceptance status"
+  how_long_or_cycle: "One released manufacturing output; service life and vessel operation are not part of the normalization"
+  reference_flow_link: "Exactly 1 kg of the released reference product described by the reference-flow object and all required qualifiers below"
+system_boundary:
+  rules:
+    - rule_id: boundary_rule_1
+      applies_to: "foreground cradle-to-gate production"
+      rule: "Include pattern and mould preparation, melting and casting, knock-out and cleaning, machining, grinding, polishing, balancing, inspection, and release through the manufacturer gate. Link upstream supply datasets for all purchased inputs."
+      source_ids:
+        - saai-et-al-2025-propeller-lca
+        - iacs-ur-w24-2024
+    - rule_id: boundary_rule_2
+      applies_to: "manufacturing route"
+      rule: "Use this process inventory only for the declared sand-cast metallic route. Keep additive manufacture, subtractive-only manufacture, composite moulding, and repair as separate route-specific systems."
+      source_ids:
+        - saai-et-al-2025-propeller-lca
+    - rule_id: boundary_rule_3
+      applies_to: "exclusions"
+      rule: "Exclude design activities, capital equipment, factory buildings, vessel installation, use, maintenance, repair, and end-of-life unless the study goal explicitly adds and separately reports them."
+      source_ids:
+        - saai-et-al-2025-propeller-lca
+    - rule_id: boundary_rule_4
+      applies_to: "foreground completeness"
+      rule: "Record each purchased material, energy carrier, water input, externally transferred waste or recyclable material, and direct elementary emission as an individual exchange; disclose measured exclusions and cut-offs rather than hiding them in an umbrella row."
+      source_ids:
+        - saai-et-al-2025-propeller-lca
+boundary_abstraction:
+  declared_starting_condition: "Specification-controlled alloy charge, pattern and mould materials, purchased energy, water, and machining consumables as received at the manufacturing-site boundary"
+  starting_condition_role: "Upstream-supplied products entering a foreground sand-cast propeller or blade manufacturing system"
+  product_classification_scope: "Finished metallic ship screw propellers and separately supplied finished propeller blades; CPC 3.0 code 42998 is mapping context, not the canonical product identity"
+  recursive_input_rule: "Internally returned propeller-alloy metal remains inside the foreground loop and is not a new product input. An externally purchased propeller, blade, or category-equivalent unfinished item shall be recorded once as a disclosed upstream product with its own dataset and shall not recursively invoke this PCR without a declared stopping condition."
+  upstream_dataset_requirement: "Use material-, product-state-, technology-, and geography-representative upstream datasets for alloy charge, wood, silica sand, cement or other declared binder, electricity, natural gas, water, cutting fluid, and any additional foreground input crossing the site boundary."
+  disclosure: "Declare complete-propeller versus blade product form, pitch application, alloy grade and recycled content, blade count and principal dimensions, tolerance and inspection specification, mould/binder route, melting technology, energy supply, internal sand and metal recovery, scrap destinations, site geography, production period, packaging inclusion, and all exclusions."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Ships' propellers and blades therefor"
+    uuid: "8f01d846-f812-4209-a4c1-9f2daa531e79"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product form (complete propeller or separate blade)"
+    - "fixed-pitch or controllable-pitch application"
+    - "alloy designation and primary/secondary content"
+    - "net product mass"
+    - "diameter or blade principal dimensions"
+    - "blade count where applicable"
+    - "drawing or design identifier"
+    - "tolerance class"
+    - "balance criterion"
+    - "inspection and acceptance standard"
+    - "surface finish"
+    - "manufacturing route"
+    - "site geography"
+    - "production period"
+    - "packaging inclusion"
+    - "factory-gate boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: measurement_reference_mass
+    applies_to: "reference product and solid material or waste rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all inventory to 1 kg net accepted product mass after final balancing and inspection. Exclude packaging mass and record gross-to-net conversions separately."
+  - id: measurement_electricity
+    applies_to: "purchased electricity rows"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electrical energy and convert kWh to MJ using exactly 1 kWh = 3.6 MJ. Declare grid geography, voltage level, on-site generation treatment, and loss boundary."
+  - id: measurement_natural_gas
+    applies_to: "gaseous natural-gas input"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report volume at declared pressure, temperature, and gas-quality reference conditions; retain the meter conversion or supplier statement used to align differing reference conditions."
+  - id: measurement_internal_metal
+    applies_to: "alloy charge, rough casting, returns and swarf"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure composition-controlled metal streams by batch. Reconcile charge, rough casting, internally remelted returns, externally transferred scrap, machining swarf, other metal losses, and accepted product without counting an internal loop as a new upstream input."
+  - id: measurement_water_and_fluid
+    applies_to: "process water and cutting-fluid rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record net make-up crossing the foreground boundary after on-site recirculation. If volume is metered, retain density, concentration, temperature, and conversion evidence."
+process_map:
+  - id: p_mould_and_cast
+    name: "Pattern, mould, melting, casting and knock-out"
+    inclusion: "required"
+    inclusion_condition: "Always for the sand-cast metallic route; individual wood, cement and natural-gas rows remain conditional on the declared tooling, binder and heating systems"
+    role: "Foreground formation of the rough propeller or blade casting"
+    quantitative_reference: "kg rough casting transferred to finishing and kg accepted final product"
+  - id: p_finish_and_release
+    name: "Machining, grinding, polishing, balancing, inspection and release"
+    inclusion: "required"
+    inclusion_condition: "Always for the sand-cast metallic route; cutting fluid and process water are conditional on wet-machining and aqueous-cleaning practice"
+    role: "Foreground conversion of rough casting to accepted factory-gate product"
+    quantitative_reference: "1 kg net accepted reference product"
+process_inventory:
+  - id: p_mould_and_cast
+    label: "Pattern, mould, melting, casting and knock-out"
+    inputs:
+      product:
+        - row_id: alloy_charge_input
+          role: "Propeller-alloy melting charge"
+          name: "Propeller-alloy melting charge"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each composition-controlled batch of purchased primary and secondary alloy feed crossing the foundry boundary. The row covers nickel-aluminium-bronze or another approved cast propeller alloy only after its designation is declared."
+          amount:
+            expression: "measured net external alloy charge assigned to the production order after excluding internal same-batch returns"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted propeller or blade output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metal_mass_balance
+              source_ids:
+                - iacs-ur-w24-2024
+                - saai-et-al-2025-propeller-lca
+            ranges: []
+        - row_id: wood_pattern_material_input
+          role: "Net wooden pattern material"
+          name: "Wooden pattern material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record wood that is consumed to make or maintain the production pattern when a wooden pattern is used. Allocate reusable-pattern consumption over the actual conforming output produced during its documented life."
+          amount:
+            expression: "purchased wood plus inventory decrease and documented replacement, less reusable pattern remaining, allocated to the production order"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net accepted propeller or blade output for the wooden-pattern route"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_mould_materials
+              source_ids:
+                - saai-et-al-2025-propeller-lca
+            ranges: []
+        - row_id: silica_sand_input
+          role: "Virgin silica sand"
+          name: "silica sand"
+          flow_type: "product"
+          flow_ref:
+            uuid: "854527a0-1a8f-43af-b7c5-8c20d22e61ff"
+          property_unit: "Mass / kg"
+          description: "Record the virgin silica-sand fraction added to the mould system after any internally reclaimed sand is returned to use."
+          amount:
+            expression: "measured virgin silica sand entering mould preparation, net of unopened returns to supplier"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net accepted propeller or blade output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mould_materials
+              source_ids:
+                - saai-et-al-2025-propeller-lca
+            ranges: []
+        - row_id: cement_input
+          role: "Cement binder"
+          name: "Cement"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e2e868d7-d816-43a5-88eb-8db34e119525"
+          property_unit: "Mass / kg"
+          description: "Record cement separately when it is incorporated in the declared mould recipe. Do not use this row for resin, clay, sodium-silicate, or another binder."
+          amount:
+            expression: "measured cement added to mould batches assigned to the production order"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net accepted propeller or blade output for a cement-bound mould"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mould_materials
+              source_ids:
+                - saai-et-al-2025-propeller-lca
+            ranges: []
+        - row_id: mould_cast_electricity_input
+          role: "Electricity for moulding and casting"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity used for pattern and mould preparation, mould drying, induction melting when applicable, pouring support, knock-out, cleaning, and directly assigned foundry auxiliaries."
+          amount:
+            expression: "submetered electricity or allocated site-meter electricity for the production order, converted to MJ"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted propeller or blade output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_mould_cast_energy
+              source_ids:
+                - saai-et-al-2025-propeller-lca
+            ranges: []
+        - row_id: natural_gas_input
+          role: "Natural gas for preheating"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas when gas burners preheat a melting pot, ladle, or other casting equipment. Do not use this row for a different fuel."
+          amount:
+            expression: "metered or supplier-accounted natural-gas volume at declared reference conditions assigned to the production order"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net accepted propeller or blade output for the gas-fired preheating route"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_mould_cast_energy
+              source_ids:
+                - saai-et-al-2025-propeller-lca
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: rough_propeller_casting_output
+          role: "Rough propeller or blade casting"
+          name: "Rough cast ship propeller or blade blank"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the cleaned but unfinished casting transferred from foundry operations to machining and finishing. This internal intermediate remains distinct from the accepted reference product."
+          amount:
+            expression: "measured mass of cleaned rough castings transferred to finishing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted propeller or blade output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metal_mass_balance
+              source_ids:
+                - saai-et-al-2025-propeller-lca
+            ranges: []
+      waste:
+        - row_id: spent_moulding_sand_output
+          role: "Spent moulding sand"
+          name: "Spent foundry moulding sand"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent sand and its retained binder as the concrete moulding-material waste stream leaving reclamation or knock-out for external treatment. Keep separately recovered metal out of this row."
+          amount:
+            expression: "weighed outgoing spent moulding sand assigned to the production order after internal sand reclamation"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net accepted propeller or blade output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_mould_materials
+              source_ids:
+                - saai-et-al-2025-propeller-lca
+            ranges: []
+        - row_id: casting_alloy_scrap_output
+          role: "Segregated casting-alloy scrap"
+          name: "Segregated propeller-alloy casting scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record gates, risers, rejected casting metal, and other composition-controlled casting returns only when they leave the foreground system for recycling or disposal. Internal remelt remains inside the metal balance."
+          amount:
+            expression: "weighed alloy scrap crossing the site boundary, separated by alloy and destination"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted propeller or blade output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_metal_mass_balance
+              source_ids:
+                - saai-et-al-2025-propeller-lca
+            ranges: []
+      elementary:
+        - row_id: fossil_carbon_dioxide_output
+          role: "Direct fossil carbon dioxide"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil carbon dioxide released by natural-gas combustion or another declared fossil-energy source inside this process. Exclude upstream electricity-generation emissions."
+          amount:
+            expression: "measured stack emission or verified facility direct-emissions ledger amount allocated to the production order"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted propeller or blade output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - saai-et-al-2025-propeller-lca
+            ranges: []
+  - id: p_finish_and_release
+    label: "Machining, grinding, polishing, balancing, inspection and release"
+    inputs:
+      product:
+        - row_id: rough_propeller_casting_input
+          role: "Rough casting received for finishing"
+          name: "Rough cast ship propeller or blade blank"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the unfinished casting received from p_mould_and_cast; its mass and batch identifier shall reconcile with the foundry output."
+          amount:
+            expression: "measured mass of cleaned rough castings received for machining"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted propeller or blade output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metal_mass_balance
+              source_ids:
+                - saai-et-al-2025-propeller-lca
+            ranges: []
+        - row_id: finish_electricity_input
+          role: "Electricity for finishing and release"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for machining, grinding, polishing, balancing, dimensional measurement, non-destructive testing equipment, and directly assigned release operations."
+          amount:
+            expression: "submetered electricity or allocated site-meter electricity for the production order, converted to MJ"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted propeller or blade output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finish_energy
+              source_ids:
+                - saai-et-al-2025-propeller-lca
+                - iacs-ur-w24-2024
+            ranges: []
+        - row_id: cutting_fluid_input
+          role: "Cutting-fluid make-up"
+          name: "Cutting Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "576d250f-4f36-4385-939d-0f03b8f95a10"
+          property_unit: "Mass / kg"
+          description: "Record the formulated cutting fluid supplied to wet machining after accounting for recirculation. Declare whether the product is neat oil, water-miscible concentrate, or another formulation."
+          amount:
+            expression: "measured cutting-fluid make-up crossing the foreground boundary, reported as supplied product mass"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net accepted propeller or blade output for wet machining"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_cutting_fluid
+              source_ids: []
+            ranges: []
+        - row_id: process_water_input
+          role: "Process water for wet machining or cleaning"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water when it is added to cutting-fluid preparation, wet machining, or aqueous cleaning. Exclude once-through cooling water unless it crosses the declared foreground boundary as this same process-water product."
+          amount:
+            expression: "metered or weighed net process-water make-up after recirculation"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net accepted propeller or blade output for the applicable wet route"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_and_cutting_fluid
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Accepted reference product"
+          name: "Ships' propellers and blades therefor"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8f01d846-f812-4209-a4c1-9f2daa531e79"
+          property_unit: "Mass / kg"
+          description: "Record only the net mass that passes final dimensional, balance, surface, material, and inspection acceptance and crosses the manufacturer gate as the declared product."
+          amount:
+            expression: "exactly 1 kg after normalization from the measured accepted product mass"
+            value_mode: "calculated_value"
+            specificity: "generic"
+            basis:
+              text: "exactly 1 kg net accepted propeller or blade output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_release
+              source_ids:
+                - iacs-ur-w24-2024
+            ranges: []
+      waste:
+        - row_id: machining_swarf_output
+          role: "Propeller-alloy machining swarf"
+          name: "Propeller-alloy machining swarf"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record chips, swarf, grinding removals, and balancing removals that leave finishing for recycling or disposal, separated by alloy and contamination state."
+          amount:
+            expression: "weighed or metal-balance-derived machining removals crossing the foreground boundary"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted propeller or blade output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_metal_mass_balance
+              source_ids:
+                - saai-et-al-2025-propeller-lca
+            ranges: []
+        - row_id: spent_cutting_fluid_output
+          role: "Spent cutting fluid"
+          name: "Spent cutting fluid"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the composition-declared cutting-fluid waste purged from wet machining and sent to external treatment. Keep free oil, aqueous cleaning wastewater, and solid swarf as separate exchanges when present."
+          amount:
+            expression: "measured spent cutting-fluid mass leaving the foreground system after recirculation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net accepted propeller or blade output for wet machining"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_cutting_fluid
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "foreground operations"
+    rule: "Avoid allocation by separately metering or engineering-allocation of pattern/mould, foundry, machining, balancing, and inspection operations to the production order."
+    source_ids:
+      - saai-et-al-2025-propeller-lca
+  - rule_id: allocation_rule_2
+    applies_to: "reusable patterns and shared tooling"
+    rule: "Allocate net pattern and shared-tooling consumption over actual conforming output during the documented service life; disclose lifetime output, replacement, residual inventory, and allocation basis. Do not charge the full reusable pattern to every product."
+    source_ids:
+      - saai-et-al-2025-propeller-lca
+  - rule_id: allocation_rule_3
+    applies_to: "internal sand and alloy loops"
+    rule: "Keep internally reclaimed sand and internally remelted alloy inside the foreground system. Report only virgin or externally purchased make-up and material that crosses the boundary, and reconcile the internal-loop quantities without applying an avoided-production credit."
+    source_ids:
+      - saai-et-al-2025-propeller-lca
+  - rule_id: allocation_rule_4
+    applies_to: "externally transferred recyclable metal"
+    rule: "State whether externally transferred metal is treated by cut-off, substitution, or another study-required allocation method. The default dataset profile uses cut-off: no avoided-primary-metal credit is assigned to the propeller dataset, and recycling burdens belong to the subsequent product system."
+    source_ids:
+      - saai-et-al-2025-propeller-lca
+  - rule_id: allocation_rule_5
+    applies_to: "multiple propellers, blades, or alloy grades in one batch"
+    rule: "Prefer batch-specific mass and energy records. If a shared measured total cannot be subdivided, allocate by a documented causal parameter; use processed metal mass only when no better driver exists and disclose the affected rows and sensitivity."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_metal_mass_balance
+      process_id: "p_mould_and_cast_p_finish_and_release"
+      flow_role: "alloy charge, rough casting, internal returns, external scrap and swarf"
+      record_type: "batch weigh tickets and inventory movements"
+      raw_fields: "batch id; alloy designation; charge mass; rough-casting mass; internal-return mass; external-scrap mass; swarf mass; other metal loss; destination"
+      collection_method: "calibrated scales linked to production and waste-transfer records"
+      unit: "kg"
+      frequency: "each batch and transfer"
+      temporal_coverage: "complete reporting period, normally at least 12 consecutive months or all production when shorter"
+      site_scope: "all in-scope foundry and finishing operations"
+      aggregation_rule: "reconcile by alloy and batch, allocate only documented shared streams, then divide by accepted product mass"
+      quality_evidence: "calibration certificates; batch heat records; weigh tickets; recycler receipts; signed reconciliation"
+    - protocol_id: cp_mould_materials
+      process_id: "p_mould_and_cast"
+      flow_role: "wood, silica sand, cement and spent moulding sand"
+      record_type: "purchase, issue, recipe, inventory and waste records"
+      raw_fields: "material identity; supplier; received mass; batch issue; reclaimed sand; pattern life output; closing inventory; spent-sand mass; binder system"
+      collection_method: "weigh incoming and issued materials; reconcile pattern inventory and sand reclamation"
+      unit: "kg"
+      frequency: "each receipt, mould batch and waste transfer"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all in-scope mould preparation, reclamation and knock-out"
+      aggregation_rule: "net external input or output divided by accepted product mass; reusable wood is amortized over documented lifetime output"
+      quality_evidence: "scale calibration; recipe sheets; stock counts; pattern register; waste manifests"
+    - protocol_id: cp_mould_cast_energy
+      process_id: "p_mould_and_cast"
+      flow_role: "electricity and natural gas"
+      record_type: "submeters, production logs and supplier invoices"
+      raw_fields: "meter id; opening and closing reading; unit; reference conditions; furnace or burner id; batch id; operating hours; allocation driver"
+      collection_method: "direct submetering preferred; reconcile to invoice totals"
+      unit: "MJ for electricity; m3 for natural gas"
+      frequency: "each batch or meter interval"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all in-scope pattern, mould and casting equipment"
+      aggregation_rule: "convert electricity using 3.6 MJ/kWh; allocate verified shared meter totals causally; divide by accepted product mass"
+      quality_evidence: "meter calibration; invoices; production logs; reconciliation statement"
+    - protocol_id: cp_finish_energy
+      process_id: "p_finish_and_release"
+      flow_role: "electricity"
+      record_type: "submeters, machine logs and supplier invoices"
+      raw_fields: "meter id; readings; machine id; production order; operating hours; accepted output"
+      collection_method: "direct machine or cell submetering preferred"
+      unit: "MJ"
+      frequency: "each production order or meter interval"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all in-scope machining, grinding, polishing, balancing and inspection equipment"
+      aggregation_rule: "convert using 3.6 MJ/kWh, reconcile shared totals and divide by accepted product mass"
+      quality_evidence: "meter calibration; invoices; machine logs; allocation workbook"
+    - protocol_id: cp_water_and_cutting_fluid
+      process_id: "p_finish_and_release"
+      flow_role: "process water, cutting-fluid make-up and spent cutting fluid"
+      record_type: "meters, purchase/issue records, tank inventory and waste manifests"
+      raw_fields: "formulation; concentration; received mass; water volume; density; tank opening and closing stock; make-up; purge; waste mass; treatment route"
+      collection_method: "meter or weigh net make-up and outgoing purge after recirculation"
+      unit: "kg"
+      frequency: "each make-up, purge or reporting interval"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all in-scope wet machining and aqueous cleaning"
+      aggregation_rule: "reconcile formulation-specific input, retained inventory and output; divide net boundary crossings by accepted product mass"
+      quality_evidence: "meter calibration; safety data sheet; density/concentration tests; stock reconciliation; waste manifest"
+    - protocol_id: cp_direct_emissions
+      process_id: "p_mould_and_cast"
+      flow_role: "direct fossil carbon dioxide"
+      record_type: "stack monitoring or verified facility emissions ledger"
+      raw_fields: "source id; fuel type; monitoring result; production order; allocation driver; excluded upstream emissions"
+      collection_method: "direct measurement preferred; otherwise use a facility ledger already verified under the declared reporting method"
+      unit: "kg"
+      frequency: "each monitored campaign or reporting interval"
+      temporal_coverage: "complete reporting period"
+      site_scope: "in-scope on-site combustion sources only"
+      aggregation_rule: "remove out-of-boundary sources, allocate by documented causal driver and divide by accepted product mass"
+      quality_evidence: "monitoring QA; instrument calibration; verified ledger; source-boundary reconciliation"
+    - protocol_id: cp_product_release
+      process_id: "p_finish_and_release"
+      flow_role: "accepted reference product"
+      record_type: "final inspection and dispatch records"
+      raw_fields: "serial/order id; product form; alloy; drawing; net mass; dimensions; blade count; tolerance class; balance result; NDT result; surface finish; acceptance; dispatch date"
+      collection_method: "calibrated final weighing linked to approved inspection dossier"
+      unit: "kg"
+      frequency: "each released product"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all in-scope accepted output"
+      aggregation_rule: "sum accepted net mass only; exclude rejects, packaging and unaccepted work in progress; normalize inventory to 1 kg"
+      quality_evidence: "scale calibration; dimensional report; balance report; material certificate; NDT report; release certificate"
+  calculation_rules:
+    - id: calculation_rule_1
+      applies_to: "all inventory rows"
+      rule: "Normalized amount = attributable boundary-crossing amount / net accepted product mass."
+      inputs:
+        - "protocol-specific attributable amount"
+        - "accepted net mass from cp_product_release"
+      output: "amount per 1 kg reference product"
+      source_ids: []
+    - id: calculation_rule_2
+      applies_to: "electricity rows"
+      rule: "Electricity (MJ) = metered electricity (kWh) × 3.6; retain unrounded source reading and report conversion precision."
+      inputs:
+        - "kWh meter reading"
+      output: "MJ electricity"
+      source_ids: []
+    - id: calculation_rule_3
+      applies_to: "metal balance"
+      rule: "External alloy charge + opening in-process metal = accepted product + external scrap + measured other metal losses + closing in-process metal; internal remelt cancels inside the boundary. Investigate and disclose any residual."
+      inputs:
+        - "cp_metal_mass_balance fields"
+      output: "reconciled metal balance and normalized metal rows"
+      source_ids:
+        - saai-et-al-2025-propeller-lca
+    - id: calculation_rule_4
+      applies_to: "reusable wooden pattern"
+      rule: "Allocated pattern wood = net wood consumption during documented pattern life × production-order accepted output / total accepted output from that pattern, unless a stronger causal driver is documented."
+      inputs:
+        - "wood purchases and inventory"
+        - "pattern register"
+        - "accepted output"
+      output: "kg wood assigned to the production order"
+      source_ids:
+        - saai-et-al-2025-propeller-lca
+    - id: calculation_rule_5
+      applies_to: "natural-gas reference conditions"
+      rule: "Convert only with a documented gas-law or supplier factor that states source and target pressure, temperature and compressibility basis; do not mix standard and actual cubic metres."
+      inputs:
+        - "metered volume and reference conditions"
+      output: "m3 at declared reference conditions"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_requirement_1
+      applies_to: "product identity"
+      requirement: "Link every production order to the drawing, product form, alloy heat, dimensional and balance requirements, inspection plan, and release status."
+      evidence: "material certificate, heat record, drawing revision, dimensional report, balance report, NDT report and release certificate"
+    - id: quality_requirement_2
+      applies_to: "temporal representativeness"
+      requirement: "Use a continuous period that captures normal campaigns, rework, rejects and shutdown-related consumption; normally at least 12 months, or all production when the product is made less frequently."
+      evidence: "period coverage table and explanation of missing or abnormal intervals"
+    - id: quality_requirement_3
+      applies_to: "completeness"
+      requirement: "Reconcile purchased materials and energy with invoices, meters and stock movement; account for internal sand and metal recovery, external wastes, and direct emissions; quantify every exclusion."
+      evidence: "signed mass/energy reconciliation and cut-off register"
+    - id: quality_requirement_4
+      applies_to: "measurement"
+      requirement: "Use calibrated instruments appropriate to the quantity and retain units, conversion factors, uncertainty or resolution, and calibration status."
+      evidence: "calibration certificates, meter specifications and conversion workbook"
+    - id: quality_requirement_5
+      applies_to: "technology and geography"
+      requirement: "Identify mould/binder system, melting equipment, finishing technology, energy mix, supplier geography, foundry site and scrap-treatment destinations."
+      evidence: "process description, supplier records, meter boundary map and waste manifests"
+    - id: quality_requirement_6
+      applies_to: "source and UUID gaps"
+      requirement: "Do not substitute broader, narrower, wrong-state or wrong-property Tiangong flows for unresolved rows. Preserve the concrete row identity and resolve it before publication when an exact state-100 identity becomes available."
+      evidence: "finalized UUID-search receipts and review metadata"
+    - id: quality_requirement_7
+      applies_to: "quantitative ranges"
+      requirement: "Treat the case values in a single publication as process-decomposition evidence, not as a range. Add an external range only after two independent original sources with compatible boundary, unit, product state, geography and technology have been reviewed."
+      evidence: "range synthesis record with independence keys or unresolved range-evidence entry"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "reference flow"
+    rule: "Fail if the output is not exactly 1 kg net accepted product after normalization, or if product form, alloy, route, drawing/tolerance, balance, inspection status, geography, period, packaging treatment, or factory-gate boundary is missing."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - iacs-ur-w24-2024
+  - rule_id: validation_rule_2
+    applies_to: "process coverage"
+    rule: "Fail if either required process is absent or if the sand-cast route omits applicable mould preparation, melting/casting, knock-out/cleaning, machining/grinding/polishing, balancing, inspection, or release operations without a quantified exclusion."
+    source_ids:
+      - saai-et-al-2025-propeller-lca
+      - iacs-ur-w24-2024
+  - rule_id: validation_rule_3
+    applies_to: "metal mass balance"
+    rule: "Fail if rough-casting output and input do not reconcile by batch, if internal remelt is counted as new external input, or if the metal-balance residual is neither corrected nor quantified and explained."
+    source_ids:
+      - saai-et-al-2025-propeller-lca
+  - rule_id: validation_rule_4
+    applies_to: "conditional rows"
+    rule: "Fail if a declared wooden-pattern, cement-bound mould, gas-preheating, wet-machining, or aqueous-cleaning route lacks its corresponding atomic input and output rows; require explicit not-applicable evidence when a conditional row is absent."
+    source_ids:
+      - saai-et-al-2025-propeller-lca
+  - rule_id: validation_rule_5
+    applies_to: "energy and direct emissions"
+    rule: "Fail if electricity and on-site fuel meters do not reconcile to the site boundary or if upstream electricity emissions are reported as direct elementary emissions."
+    source_ids:
+      - saai-et-al-2025-propeller-lca
+  - rule_id: validation_rule_6
+    applies_to: "alloy quality and release"
+    rule: "Fail if the declared alloy lacks its chemical/mechanical test evidence, if required dimensional or geometrical checks are missing, or if balancing and specified non-destructive testing are incomplete."
+    source_ids:
+      - iacs-ur-w24-2024
+  - rule_id: validation_rule_7
+    applies_to: "waste and recycling"
+    rule: "Fail if spent moulding sand, externally transferred casting scrap, machining swarf, or spent cutting fluid is merged into an umbrella row or if destination and allocation method are undisclosed."
+    source_ids:
+      - saai-et-al-2025-propeller-lca
+  - rule_id: validation_rule_8
+    applies_to: "evidence completeness"
+    rule: "Mark validation inconclusive when an unresolved UUID is silently replaced, a numeric external range lacks two independent compatible original sources, or a required collection protocol has no retained evidence."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production dataset suitable, after review, for use as a secondary_dataset or background_dataset"
+  downstream_use: "Cradle-to-gate modelling of ships, propulsion systems, shipbuilding and replacement-component supply chains requiring a mass-based finished propeller or blade input"
+  allowed_use: "Use for the declared alloy, product form, sand-cast route, foundry technology, geography, production period, and quality class; aggregate to a larger ship system only after preserving these qualifiers"
+  excluded_use: "Aircraft propellers, pumps, shafts, stand-alone pitch mechanisms, composite or additively manufactured propellers, repaired propellers, installation, vessel operation, maintenance, and end-of-life unless separately modelled"
+  required_metadata: "PCR id and version; product form; pitch application; alloy and recycled content; mass and dimensions; blade count; drawing/tolerance; balance and inspection status; mould/binder and melting route; finishing route; site and supplier geography; period; allocation; cut-offs; scrap and waste destinations; packaging treatment; data-owner and review status"
+  required_quality_disclosure: "Coverage period and completeness; primary-data share; meter and scale calibration; metal and energy reconciliation; allocation and pattern amortization; internal recovery; unresolved UUID and range evidence; source versions; deviations from IACS or purchaser requirements"
+  update_trigger: "Change in alloy or recycled content, product form, mould/binder or melting technology, material recovery, machining route, energy mix, site geography, supplier structure, allocation method, quality standard, or a material shift in normalized inputs, wastes, emissions, or product yield"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "dataset"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0 structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-05)"
+    used_for: "Official CPC 42998 product-classification identity only"
+  - id: "iacs-ur-w24-2024"
+    type: "standard"
+    reference: "International Association of Classification Societies, UR W24 Rev.5 Corr.1, Cast Copper Alloy Propellers, December 2024, https://iacs.org.uk/resolutions/unified-requirements/ur-w/ur-w24-rev4-cln (retrieved 2026-09-05)"
+    used_for: "Scope of cast copper-alloy propellers and blades; foundry approval; moulding and casting controls; alloy tests; dimensions, balancing, inspection and release requirements"
+  - id: "saai-et-al-2025-propeller-lca"
+    type: "literature"
+    reference: "Saai, A. et al., Comparative life cycle assessments of greenhouse gas emissions associated with directed energy deposition repairing and sand-casting replacement of a ship propeller, Progress in Additive Manufacturing 10, 11781-11799 (2025), https://doi.org/10.1007/s40964-025-01316-w"
+    used_for: "Original-text process chain and foreground evidence for pattern and mould production, melting/casting, electricity and gas use, knock-out waste, recyclable metal, machining/grinding, balancing, quality checks, system-boundary separation and cut-off recycling treatment"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:999c35bddbd28ad473a47c00f0ef2c1d5aecd9f38892a6d91f1239bf70615b49"
+  generated_content_sha256: "sha256:8382935c266adb21b63d4e47152fb977442eec6f32b782faca0a968955c37b26"

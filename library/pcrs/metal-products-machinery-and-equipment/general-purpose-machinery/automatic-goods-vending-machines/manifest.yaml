@@ -2,10 +2,11 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.general-purpose-machinery.automatic-goods-vending-machines
 title:
   en-US: "Automatic goods vending machines"
-  zh-CN: null
-status: scaffold
+  zh-CN: "自动售货机"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
+updated_at_utc: "2026-09-06T11:05:00Z"
 domains:
   - "metal-products-machinery-and-equipment"
 modules:
@@ -22,16 +23,64 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "43934"
     title: "Automatic goods vending machines"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  semantic_boundary_review:
+    result: new_material_boundary_confirmed
+    summary: "No other PCR manifest identifies the complete automatic goods vending machine boundary. This record covers new finished machines at the factory gate and distinguishes cabinets, frames and other parts from the complete product."
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: refrigeration_condensing_unit
+        reason_code: no_exact_candidate
+        explanation: "Two bounded hybrid searches returned only alternating-current flows; no public state-100 product flow exactly identified a refrigeration condensing unit."
+      - row_id: dispensing_mechanism
+        reason_code: no_exact_candidate
+        explanation: "The bounded hybrid search returned only the complete vending machine and a cabinet/frame part, not the dispensing mechanism assembly."
+      - row_id: payment_module
+        reason_code: no_exact_candidate
+        explanation: "Two bounded hybrid searches returned complete machines, POS/ATM equipment and electronic parts, but no exact embedded vending-machine payment module."
+      - row_id: r404a_charging_loss
+        reason_code: no_exact_candidate
+        explanation: "Two bounded hybrid searches returned unrelated elementary substances; no public state-100 R404A emission-to-air flow was established."
+      - row_id: propane_charging_loss
+        reason_code: no_exact_candidate
+        explanation: "Two bounded hybrid searches returned cypermethrin and nitropropane records; no public state-100 propane emission-to-air flow was established."
+    range_evidence_needs:
+      - range_id: finished_machine_mass_external_range
+        row_ids: [finished_vending_machine]
+        explanation: "Model-specific net mass must be measured. The verified JRC base case is one publication and cannot independently support an empirical category range."
+      - range_id: major_component_mass_external_ranges
+        row_ids: [cabinet_frame, refrigeration_condensing_unit, electric_motor, printed_wire_board, lcd_module, dispensing_mechanism, payment_module]
+        explanation: "Collect supplier and bill-of-material masses. No two independent original sources with compatible complete-machine boundary, configuration and product state were verified."
+      - range_id: manufacturing_electricity_external_range
+        row_ids: [assembly_electricity]
+        explanation: "Collect metered assembly and acceptance-test electricity. Available use-phase energy specifications are boundary-incompatible with factory manufacturing energy."
+      - range_id: process_water_external_range
+        row_ids: [assembly_process_water, assembly_wastewater]
+        explanation: "Collect site cleaning-water and wastewater records. No compatible two-source empirical manufacturing range was verified."
+      - range_id: refrigerant_charge_external_ranges
+        row_ids: [r404a_charge, r134a_charge, propane_r290_charge]
+        explanation: "Collect nameplate, cylinder and charge-station mass records by refrigerant species. Product specifications identify refrigerants but do not provide two independent, compatible charge ranges."
+      - range_id: refrigerant_loss_external_ranges
+        row_ids: [r404a_charging_loss, r134a_charging_loss, propane_charging_loss]
+        explanation: "Calculate species-specific losses from foreground mass balance. No two independent, boundary-compatible original sources were verified for charging-loss ranges."
+      - range_id: packaging_mass_external_ranges
+        row_ids: [euro_wooden_pallet, corrugated_board_boxes]
+        explanation: "Collect packed-unit packaging masses and reuse state. The single JRC base case cannot independently establish an empirical range."

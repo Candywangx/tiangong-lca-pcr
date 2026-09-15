@@ -1,10 +1,644 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "46921"
-  title: "Burglar or fire alarms and similar apparatus"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.electrical-machinery-and-apparatus.burglar-or-fire-alarms-and-similar-apparatus"
+  classification_refs: "CPC 3.0: 46921, exact classification context"
+  covered_products: "Complete burglar or intrusion alarms; fire, smoke, heat, flame, or multi-criteria detectors and alarms; manual fire-alarm call points; alarm control and indicating equipment; purpose-built alarm sounders or visual alarm devices supplied as alarm apparatus"
+  excluded_products: "Parts sold separately; generic signalling apparatus; vehicle or cycle alarms; traffic-control equipment; installation, monitoring, maintenance, and disposal services; gas-measurement equipment whose principal function is quantitative measurement rather than alarm signalling"
+  representative_product: "A packaged, electrically powered alarm apparatus with a populated printed circuit board, declared enclosure, alarm sensing/signalling elements, labels, instructions, and any prescribed battery or accessories"
+  production_route: "Receipt of materials and purchased subassemblies; enclosure forming when performed on site; electronic and mechanical assembly; firmware loading or configuration; calibration and functional/safety testing; labelling and packaging"
+  market_state: "Conforming finished and packaged apparatus at the factory gate or manufacturer's last logistics platform, with declared function, configuration, power mode, supplied accessories, and reference service life"
+functional_unit:
+  what: "Provide the declared burglar/intrusion-detection, fire-detection, and/or alarm signalling function of the selected apparatus configuration"
+  how_much: "The documented quantity and configuration of apparatus represented by 1 kg of conforming packaged product at the manufacturing gate"
+  how_well: "Meet the declared applicable product standard, sensing or signalling performance, reliability, autonomy, environmental class, and alarm-interface requirements"
+  how_long_or_cycle: "The manufacturer-declared reference service life; the manufacturing dataset itself is normalized to the factory-gate reference flow and does not include use-stage replacements unless they are supplied or prescribed with the product"
+  reference_flow_link: "finished_alarm_apparatus"
+system_boundary:
+  rules:
+    - rule_id: boundary_manufacturing_gate
+      applies_to: "Foreground manufacturing dataset"
+      rule: "Include received materials and components, their on-site transformation, electronic and mechanical assembly, firmware loading or configuration, calibration and testing, labels, instructions, packaging, manufacturing energy, and treatment-bound manufacturing wastes through the factory gate or manufacturer's last logistics platform."
+      source_ids:
+        - pep-pcr-ed4-2021
+        - pep-psr-0019-ed1-2023
+    - rule_id: boundary_complete_bom
+      applies_to: "Material and component completeness"
+      rule: "Identify every material, component, packaging item, prescribed consumable, and manufacturer-supplied accessory needed for the declared function. Add any product-specific exchange not represented by the common rows below as a separate atomic inventory row."
+      source_ids:
+        - pep-pcr-ed4-2021
+        - pep-psr-0019-ed1-2023
+    - rule_id: boundary_stage_exclusions
+      applies_to: "Downstream and non-product activities"
+      rule: "Exclude distribution beyond the last logistics platform, installation and building work, use electricity, maintenance visits, alarm events or drills, end-of-life operations, capital goods not proportional to output, administration, R&D, marketing, and employee services; disclose any downstream module added by the study."
+      source_ids:
+        - pep-pcr-ed4-2021
+        - pep-psr-0019-ed1-2023
+boundary_abstraction:
+  declared_starting_condition: "Materials, purchased subassemblies, packaging, prescribed consumables, and supplied accessories as received at the alarm-apparatus manufacturing site"
+  starting_condition_role: "purchased_input"
+  product_classification_scope: "Complete burglar or fire alarm apparatus within the semantic boundary of CPC 46921; parts and services remain outside this PCR identity"
+  recursive_input_rule: "If a purchased input is itself complete alarm apparatus in this category, record it once as a product input and link its supplier dataset; do not recursively reproduce its manufacturing inventory inside the foreground process"
+  upstream_dataset_requirement: "Use geographically, temporally, technologically, and product-state representative upstream datasets for each material, component, energy, packaging, and waste-treatment exchange; identify proxies and their limitations"
+  disclosure: "Declare the manufacturing site, reporting period, alarm family and performance class, power mode, bill-of-materials coverage, product-only and packaging masses, supplied consumables/accessories, allocation method, excluded flows, and downstream stages omitted or added"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Burglar or fire alarms and similar apparatus"
+    uuid: "2f2aac87-87f8-49da-bb7f-87bb4a532eba"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "alarm function and product family"
+    - "detector or signalling principle"
+    - "model and hardware/firmware configuration"
+    - "applicable standard and performance class"
+    - wired
+    - mains
+    - battery
+    - "or hybrid power mode"
+    - "prescribed battery chemistry"
+    - capacity
+    - "and replacements"
+    - "supplied accessories and mounting parts"
+    - "packaged and product-only mass"
+    - "reference service life"
+    - "manufacturing site"
+    - geography
+    - technology
+    - "and reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Finished packaged apparatus and mass-based inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all material, component, packaging, product, and waste masses to 1 kg of conforming packaged reference product. Report product-only and packaging masses separately before normalization."
+  - id: electricity_energy
+    applies_to: "Purchased manufacturing electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electrical energy and convert kWh to MJ using 1 kWh = 3.6 MJ; do not include upstream power-plant emissions as foreground elementary flows."
+  - id: item_to_mass
+    applies_to: "Batteries, assembled boards, accessories, and other item-count records"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert item counts to mass only from product-specific measured net mass and documented count; retain both count and mass evidence."
+process_map:
+  - id: alarm_apparatus_manufacturing
+    name: "Alarm apparatus manufacture, test, and packaging"
+    inclusion: "required"
+    inclusion_condition: "Applies to every foreground package; individual material, component, battery, scrap, and packaging rows apply only when the declared BOM or site records show that exchange"
+    role: "foreground manufacturing"
+    quantitative_reference: "1 kg conforming packaged alarm apparatus"
+process_inventory:
+  - id: alarm_apparatus_manufacturing
+    label: "Alarm apparatus manufacture, test, and packaging"
+    inputs:
+      product:
+        - row_id: purchased_populated_pcb
+          role: "Purchased populated printed circuit board"
+          name: "Populated printed circuit board assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of each purchased populated printed circuit board that enters the apparatus. Use this row only when the assembled board crosses the site boundary as one physical subassembly; boards assembled on site require separate atomic component and bare-board rows in the foreground package."
+          amount:
+            expression: "Measured net mass of populated printed circuit board assemblies consumed in conforming production, adjusted for inventory change and segregated rejects"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming packaged alarm apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_material_inputs
+              source_ids:
+                - pep-pcr-ed4-2021
+            ranges: []
+        - row_id: abs_granulate
+          role: "ABS enclosure resin"
+          name: "Acrylonitrile-butadiene-styrene (ABS) copolymer, granulate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8f1317c1-aa51-4524-8692-74079c923e2c"
+          property_unit: "Mass / kg"
+          description: "Record ABS granulate when the enclosure or another ABS part is moulded at the reporting site. Do not use this row for a purchased finished enclosure or for another polymer."
+          amount:
+            expression: "Measured ABS granulate issued to product-specific moulding, less documented return to stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming packaged alarm apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_material_inputs
+              source_ids:
+                - pep-pcr-ed4-2021
+            ranges: []
+        - row_id: cold_rolled_steel_sheet
+          role: "Cold-rolled steel sheet"
+          name: "Cold-rolled carbon steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record cold-rolled steel sheet used for an enclosure, bracket, shield, or mounting part when sheet forming occurs within the foreground site."
+          amount:
+            expression: "Measured cold-rolled steel sheet issued to the product, less documented return to stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming packaged alarm apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_material_inputs
+              source_ids:
+                - pep-pcr-ed4-2021
+            ranges: []
+        - row_id: aluminium_sheet
+          role: "Aluminium sheet"
+          name: "aluminium sheet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197be4-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record aluminium sheet used for an enclosure, bracket, heat spreader, or mounting part when it crosses the foreground boundary in sheet form."
+          amount:
+            expression: "Measured aluminium sheet issued to the product, less documented return to stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming packaged alarm apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_material_inputs
+              source_ids:
+                - pep-pcr-ed4-2021
+            ranges: []
+        - row_id: copper_wire
+          role: "Copper wire"
+          name: "copper wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "da2d966d-fe62-44dc-ba0f-b1cd7c7cf33e"
+          property_unit: "Mass / kg"
+          description: "Record uninsulated copper wire used in internal conductors, coils, or terminals when it crosses the foreground boundary as copper wire. Insulated cable must be represented by its own exact product flow."
+          amount:
+            expression: "Measured copper-wire mass issued to the product, less documented return to stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming packaged alarm apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_material_inputs
+              source_ids:
+                - pep-pcr-ed4-2021
+            ranges: []
+        - row_id: lithium_primary_battery
+          role: "Prescribed lithium primary battery"
+          name: "Lithium primary battery"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each lithium primary battery shipped with the product or prescribed as an original consumable. Other battery chemistries and replacement batteries require separate atomic rows."
+          amount:
+            expression: "Product-specific measured mass of lithium primary batteries supplied or prescribed for the declared reference service life"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming packaged alarm apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_material_inputs
+              source_ids:
+                - pep-psr-0019-ed1-2023
+            ranges: []
+        - row_id: manufacturing_electricity
+          role: "Manufacturing electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record purchased electricity consumed by on-site forming, assembly, firmware loading, calibration, functional testing, labelling, packaging, and directly attributable support equipment."
+          amount:
+            expression: "Metered or invoice-reconciled manufacturing electricity allocated to the reference product and converted to MJ"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming packaged alarm apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_manufacturing_electricity
+              source_ids:
+                - pep-pcr-ed4-2021
+            ranges: []
+        - row_id: corrugated_board_box
+          role: "Corrugated-board shipping box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record the corrugated-board box delivered with the product as primary or secondary packaging. Paper inserts and wooden pallets, when used, require separate atomic rows."
+          amount:
+            expression: "Measured mass of corrugated-board boxes consumed for conforming packaged product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming packaged alarm apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_material_inputs
+              source_ids:
+                - pep-psr-0019-ed1-2023
+            ranges: []
+        - row_id: ldpe_packaging_film
+          role: "Low-density polyethylene packaging film"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass / kg"
+          description: "Record low-density polyethylene film used to wrap, bag, or group the finished product. Do not combine it with other plastic packaging."
+          amount:
+            expression: "Measured mass of PE-LD film consumed for conforming packaged product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming packaged alarm apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_material_inputs
+              source_ids:
+                - pep-psr-0019-ed1-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_alarm_apparatus
+          role: "Conforming packaged alarm apparatus"
+          name: "Burglar or fire alarms and similar apparatus"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2f2aac87-87f8-49da-bb7f-87bb4a532eba"
+          property_unit: "Mass / kg"
+          description: "This is the quantitative reference output after final inspection and packaging. Product-only mass and packaging mass must also be retained as separate raw records."
+          amount:
+            expression: "1 kg of conforming packaged reference product by definition"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1 kg conforming packaged alarm apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: waste_populated_pcb
+          role: "Rejected populated printed circuit board"
+          name: "Waste populated printed wiring board"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "eb5ffe4a-49af-450c-9a31-3efdfd343f8a"
+          property_unit: "Mass / kg"
+          description: "Record populated printed circuit boards rejected or damaged at the manufacturing site and transferred for treatment; do not mix bare-board scrap or general electronic waste into this row."
+          amount:
+            expression: "Measured mass of segregated rejected populated boards leaving the foreground site"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming packaged alarm apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_and_waste_mass
+              source_ids:
+                - pep-psr-0019-ed1-2023
+            ranges: []
+        - row_id: abs_manufacturing_scrap
+          role: "ABS manufacturing scrap"
+          name: "Waste ABS plastic"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record segregated ABS sprues, runners, offcuts, and rejected ABS parts leaving the site as one ABS waste stream; internally reground material returned to the same process is not an output."
+          amount:
+            expression: "Measured mass of segregated ABS waste transferred off site, net of documented internal regrind returned to production"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming packaged alarm apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_and_waste_mass
+              source_ids:
+                - pep-psr-0019-ed1-2023
+            ranges: []
+        - row_id: post_industrial_steel_scrap
+          role: "Post-industrial steel scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Record segregated steel offcuts and rejected steel parts generated by the declared manufacturing process."
+          amount:
+            expression: "Measured mass of segregated post-industrial steel scrap leaving the foreground site"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming packaged alarm apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_and_waste_mass
+              source_ids:
+                - pep-psr-0019-ed1-2023
+            ranges: []
+        - row_id: aluminium_scrap
+          role: "Aluminium scrap"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass / kg"
+          description: "Record segregated aluminium sheet offcuts and rejected aluminium parts generated by the declared manufacturing process."
+          amount:
+            expression: "Measured mass of segregated aluminium scrap leaving the foreground site"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming packaged alarm apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_and_waste_mass
+              source_ids:
+                - pep-psr-0019-ed1-2023
+            ranges: []
+        - row_id: copper_scrap
+          role: "Copper scrap"
+          name: "Copper Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "4fbbb5f1-560a-4052-ba0c-652c5dfc282e"
+          property_unit: "Mass / kg"
+          description: "Record segregated uninsulated copper-wire offcuts and rejected copper parts generated by the declared manufacturing process."
+          amount:
+            expression: "Measured mass of segregated copper scrap leaving the foreground site"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming packaged alarm apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_and_waste_mass
+              source_ids:
+                - pep-psr-0019-ed1-2023
+            ranges: []
+        - row_id: cardboard_packaging_waste
+          role: "Cardboard packaging waste"
+          name: "Packaging waste, cardboard"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "72270223-04b1-4986-a546-94e5a0821317"
+          property_unit: "Mass / kg"
+          description: "Record corrugated-cardboard packaging waste generated before the finished product leaves the manufacturing boundary, such as damaged boxes and incoming component packaging managed by the manufacturer."
+          amount:
+            expression: "Measured mass of segregated cardboard packaging waste leaving the foreground site"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming packaged alarm apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_and_waste_mass
+              source_ids:
+                - pep-psr-0019-ed1-2023
+            ranges: []
+        - row_id: ldpe_film_waste
+          role: "Low-density polyethylene film waste"
+          name: "Waste low-density polyethylene film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record segregated low-density polyethylene film waste generated from incoming component packaging or damaged finished-product film within the manufacturing boundary."
+          amount:
+            expression: "Measured mass of segregated PE-LD film waste leaving the foreground site"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming packaged alarm apparatus"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_and_waste_mass
+              source_ids:
+                - pep-psr-0019-ed1-2023
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "Product-specific foreground records"
+    rule: "Avoid allocation by using product-specific BOM issues, meters, work orders, and segregated waste measurements whenever technically feasible."
+    source_ids:
+      - pep-pcr-ed4-2021
+  - rule_id: allocation_shared_assembly_mass
+    applies_to: "Shared assembly, test, packaging, energy, and waste records"
+    rule: "When shared primary data cannot be subdivided, allocate in proportion to the mass of conforming devices manufactured during the same reporting period. Any different physical or economic driver must better represent causality and be justified and disclosed."
+    source_ids:
+      - pep-psr-0019-ed1-2023
+  - rule_id: allocation_scrap_boundary
+    applies_to: "Manufacturing scrap and recycling"
+    rule: "Record each segregated scrap output and its treatment route without crediting avoided primary production inside the foreground manufacturing dataset; report any beyond-boundary recycling benefit separately."
+    source_ids:
+      - pep-pcr-ed4-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_bom_material_inputs
+      process_id: "alarm_apparatus_manufacturing"
+      flow_role: "Material, purchased-subassembly, battery, accessory, and packaging inputs"
+      record_type: "BOM, purchase/issue records, supplier declarations, and verified mass measurements"
+      raw_fields: "model; revision; lot; flow identity; supplier; material or component specification; gross issue; return to stock; item count; measured net mass; recycled content; supplied or prescribed status"
+      collection_method: "Reconcile current product BOM with warehouse issues and returns; weigh representative items when records are count-based; retain supplier evidence"
+      unit: "kg and item count before conversion"
+      frequency: "Per production lot with at least annual reconciliation"
+      temporal_coverage: "Prefer a continuous 12-month representative period; justify shorter or abnormal periods"
+      site_scope: "Every manufacturing and packaging site contributing to the reference flow"
+      aggregation_rule: "Sum net consumed mass by exact flow and allocate only shared records according to section 7, then divide by conforming packaged output mass"
+      quality_evidence: "Approved BOM revision; calibrated scale records; stock reconciliation; supplier specification; exception log"
+    - protocol_id: cp_manufacturing_electricity
+      process_id: "alarm_apparatus_manufacturing"
+      flow_role: "Manufacturing electricity"
+      record_type: "Submeter, machine meter, or invoice-reconciled energy record"
+      raw_fields: "meter id; reading start/end; kWh; production line; operating period; product mix; downtime; allocation driver; renewable contract attributes"
+      collection_method: "Prefer product-line or equipment submetering; otherwise reconcile facility invoices to attributable manufacturing loads and documented allocation"
+      unit: "kWh and MJ"
+      frequency: "Monthly or finer"
+      temporal_coverage: "Representative 12-month period where available"
+      site_scope: "All sites performing included forming, assembly, testing, and packaging"
+      aggregation_rule: "Sum attributable kWh, allocate shared use under section 7, multiply by 3.6 MJ/kWh, and divide by conforming packaged output mass"
+      quality_evidence: "Meter calibration; invoice reconciliation; production log; allocation worksheet"
+    - protocol_id: cp_output_and_waste_mass
+      process_id: "alarm_apparatus_manufacturing"
+      flow_role: "Conforming output and segregated manufacturing waste"
+      record_type: "Production count and mass records, reject logs, waste transfer notes, and weigh tickets"
+      raw_fields: "model; lot; conforming count; product-only mass; packaging mass; waste type; hazardous status; gross/tare/net mass; internal rework or regrind; destination; treatment route"
+      collection_method: "Weigh conforming products and each segregated waste stream; exclude documented internal loops from external waste outputs"
+      unit: "kg"
+      frequency: "Per lot for output and at each waste transfer"
+      temporal_coverage: "Same reporting period as material and electricity records"
+      site_scope: "Every included manufacturing site and contracted treatment-bound transfer"
+      aggregation_rule: "Sum conforming packaged mass and each external waste flow separately; normalize to 1 kg conforming packaged output"
+      quality_evidence: "Calibrated scale; reject disposition; waste-transfer certificate; mass-balance reconciliation"
+  calculation_rules:
+    - id: calc_material_normalization
+      applies_to: "Each material, component, battery, and packaging input"
+      rule: "normalized input = (gross issue − return to stock − documented internal-loop return) / conforming packaged output mass"
+      inputs:
+        - "Flow-specific issue"
+        - return
+        - internal-loop
+        - "and output-mass records from cp_bom_material_inputs and cp_output_and_waste_mass"
+      output: "kg input per kg reference product"
+      source_ids: []
+    - id: calc_electricity_normalization
+      applies_to: "Manufacturing electricity"
+      rule: "normalized electricity = allocated electricity in kWh × 3.6 / conforming packaged output mass"
+      inputs:
+        - "Metered or invoice-reconciled kWh"
+        - "allocation driver"
+        - "and output mass"
+      output: "MJ electricity per kg reference product"
+      source_ids: []
+    - id: calc_waste_normalization
+      applies_to: "Each manufacturing waste output"
+      rule: "normalized waste = external transferred net waste mass / conforming packaged output mass; exclude documented material returned to the same process"
+      inputs:
+        - "Flow-specific transfer mass"
+        - "internal-loop return"
+        - "and output mass"
+      output: "kg waste per kg reference product"
+      source_ids:
+        - pep-psr-0019-ed1-2023
+    - id: calc_mass_balance
+      applies_to: "Manufacturing-period completeness check"
+      rule: "Compare total recorded material, component, battery, and packaging inputs with conforming product, external waste, documented internal inventory change, and measured process losses; investigate and disclose the residual"
+      inputs:
+        - "All mass records for the common reporting period"
+      output: "Mass-balance residual and reconciliation statement"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Product and every exchange"
+      requirement: "Use the declared product revision and one chemically or physically specific flow per row. Preserve supplier grade, product state, recycled content, battery chemistry, waste contamination, and treatment-route qualifiers."
+      evidence: "BOM, drawings, specifications, supplier declarations, Tiangong identity audit, waste records"
+    - id: dq_temporal
+      applies_to: "Foreground activity data"
+      requirement: "Use a representative period, preferably 12 consecutive months, and document shutdowns, abnormal production, missing months, and any shorter-period justification."
+      evidence: "Dated meter, production, stock, and waste records; pep-pcr-ed4-2021"
+    - id: dq_completeness
+      applies_to: "Manufacturing inventory"
+      requirement: "Reconcile the current BOM and packaging list to inventory rows; quantify and justify exclusions; do not hide unrepresented materials, prescribed consumables, accessories, energy, or manufacturing waste in collection rows."
+      evidence: "BOM-to-inventory reconciliation, mass balance, exclusion register; pep-pcr-ed4-2021"
+    - id: dq_representativeness
+      applies_to: "Multi-site and upstream data"
+      requirement: "Match geography, technology, product state, and time to the declared product; document site aggregation and every secondary-data proxy or adaptation."
+      evidence: "Site-selection rationale, dataset metadata, proxy register; pep-pcr-ed4-2021"
+    - id: dq_functional_qualifiers
+      applies_to: "Reference flow"
+      requirement: "Document alarm family, sensing/signalling principle, applicable standard and performance class, power mode, prescribed consumables, supplied accessories, and reference service life so downstream use-stage modelling is reproducible."
+      evidence: "Product certificate, declaration of conformity, technical data sheet, service-life statement; iec-tc79-sbp-2026; pep-psr-0019-ed1-2023"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "Dataset identity and quantitative reference"
+    rule: "Confirm that the output is exactly 1 kg of conforming packaged apparatus and that product-only mass, packaging mass, model/configuration, alarm function, performance class, power mode, supplied accessories, and reference service life are declared."
+    source_ids:
+      - pep-psr-0019-ed1-2023
+  - rule_id: validate_atomic_inventory
+    applies_to: "Every inventory exchange"
+    rule: "Reject collection labels, combined materials, combined utilities, combined wastes, unverified UUID proxies, and Chinese UUID-bearing flow names that differ from the public Tiangong baseName."
+    source_ids: []
+  - rule_id: validate_bom_and_mass_balance
+    applies_to: "Material completeness"
+    rule: "Require BOM-to-inventory reconciliation and investigate the mass-balance residual; every omitted assessable material, component, package, energy flow, and waste stream must be quantified and justified."
+    source_ids:
+      - pep-pcr-ed4-2021
+  - rule_id: validate_energy_boundary
+    applies_to: "Electricity and emissions"
+    rule: "Confirm the 3.6 MJ/kWh conversion, common reporting period, documented allocation, and exclusion of upstream electricity emissions from foreground elementary outputs."
+    source_ids: []
+  - rule_id: validate_allocation
+    applies_to: "Shared records"
+    rule: "Confirm subdivision was attempted first; otherwise verify the mass allocation calculation or documented causal alternative and retain a sensitivity statement for material alternatives."
+    source_ids:
+      - pep-pcr-ed4-2021
+      - pep-psr-0019-ed1-2023
+  - rule_id: validate_waste_routes
+    applies_to: "Manufacturing waste"
+    rule: "Confirm that each waste is physically specific, segregated or defensibly measured, net of internal loops, linked to a documented destination/treatment route, and not credited with beyond-boundary recycling inside the foreground result."
+    source_ids:
+      - pep-psr-0019-ed1-2023
+published_dataset_profile:
+  dataset_role: "secondary_dataset"
+  downstream_use: "background_dataset"
+  allowed_use: "Product- and site-specific factory-gate inventories for burglar or fire alarm apparatus; building-product LCAs and cradle-to-grave models that add compatible distribution, installation, use, maintenance, and end-of-life scenarios"
+  excluded_use: "Direct comparison of apparatus with different alarm functions, performance classes, power modes, system configurations, service lives, or geographic requirements without functional equivalence and harmonized downstream scenarios"
+  required_metadata: "PCR id and version; product model/revision; alarm family and function; sensing/signalling principle; applicable standard and performance class; power mode; battery and accessory scope; product-only and packaging masses; reference service life; manufacturing geography, technology, sites, reporting period, allocation, BOM coverage, upstream dataset identifiers, and exclusions"
+  required_quality_disclosure: "Primary-data coverage; temporal, geographic, and technological representativeness; BOM and packaging completeness; mass-balance residual; meter and scale quality; supplier data quality; UUID gaps; secondary-data proxies; waste destinations; allocation sensitivity; unresolved empirical range needs"
+  update_trigger: "Product hardware, firmware function, sensing/signalling principle, enclosure material, PCB design, battery or power mode, supplied accessory, packaging, manufacturing site/technology, energy mix, allocation basis, applicable standard, or reference service life changes materially; or representative foreground data become older than the declared update policy"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (accessed 2026-09-05)"
+    used_for: "Official product classification identity and hierarchy context"
+  - id: "iec-tc79-sbp-2026"
+    type: "official_guidance"
+    reference: "IEC Technical Committee 79, Strategic Business Plan, SMB/6268/R, https://assets.iec.ch/public/miscfiles/sbp/79.pdf (accessed 2026-09-05)"
+    used_for: "Alarm-system scope, local/remote alarm functions, performance, reliability, environmental, and interface qualifiers"
+  - id: "pep-pcr-ed4-2021"
+    type: "standard"
+    reference: "PEP ecopassport Programme, Product Category Rules for electrical, electronic and HVAC-R products, edition 4, 6 September 2021, https://pep-ecopassport.org/site/wp-content/uploads/2026/06/PCR-4-ed4-EN-2021-09-06-PCR-edition-4.pdf (accessed 2026-09-05)"
+    used_for: "Manufacturing boundary, component and packaging inclusion, allocation hierarchy, foreground collection, representativeness, completeness, and reporting rules"
+  - id: "pep-psr-0019-ed1-2023"
+    type: "standard"
+    reference: "PEP ecopassport Programme, PSR-0019 Fire Safety System, edition 1, 6 June 2023, https://register.pep-ecopassport.org/documents/public/PSR-0019-EN (accessed 2026-09-05)"
+    used_for: "Fire-alarm functions and qualifiers; prescribed consumables and accessories; manufacturing waste; shared-assembly mass allocation; supporting-record expectations"
+  - id: "cnca-gacc-2020-ccc-hs-reference"
+    type: "official_guidance"
+    reference: "Certification and Accreditation Administration of China and General Administration of Customs, reference table linking the compulsory product certification catalogue with 2020 commodity codes, https://www.cnca.gov.cn/zwxx/gg/lhfb/art/2023/art_0508b85ba88a452193a0f19f8d5eb68a.html (accessed 2026-09-05)"
+    used_for: "Professional Chinese category terminology for HS 8531100000 corresponding to burglar or fire alarm apparatus"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:1184c8c94a9524150728cd4ffd06e329cb350d6da16c4fdbadc766ba22ca3faa"
+  generated_content_sha256: "sha256:efe8bbe08376831eec6d605907e2a00a3b23de061474615606c092ff5b429841"

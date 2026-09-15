@@ -1,10 +1,535 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41221"
-  title: "Flat-rolled products of non-alloy steel, not further worked than cold-rolled, of a width of 600 mm or more"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.flat-rolled-products-of-non-alloy-steel-not-further-worked-than-cold-rolled-of-a-width-649bcce4"
+  classification_refs: "CPC 3.0: 41221 (exact)"
+  covered_products: "Uncoated non-alloy steel cold-rolled coil or cut sheet, width >= 600 mm, not further worked than cold-rolled"
+  excluded_products: "Width < 600 mm; alloy, stainless, silicon-electrical or high-speed steel; hot-rolled-only, clad, plated, coated or otherwise further-worked products"
+  representative_product: "Saleable uncoated non-alloy cold-rolled steel coil at the steelworks or cold-rolling gate"
+  production_route: "BOF or EAF steelmaking followed by casting, hot-strip production, pickling, cold reduction and declared applicable annealing, temper/skin-pass and finishing"
+  market_state: "Dry saleable coil or cut sheet; uncoated; grade, width, thickness, temper, surface, edge and packaging state declared"
+functional_unit:
+  what: "Supply of saleable uncoated non-alloy steel flat product in the cold-rolled state"
+  how_much: "1,000 kg net saleable product"
+  how_well: "Declared grade and dimensions, width >= 600 mm, uncoated and not further worked beyond the declared cold-rolled state"
+  how_long_or_cycle: "One production batch or reporting-period aggregate; no use-stage duration"
+  reference_flow_link: "cold_rolled_product"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The required result is cradle-to-gate. Purchased materials, energy and steel intermediates require compatible upstream datasets. Foreground begins at the first reporting-organization-controlled process and ends with dispatch-ready qualifying product."
+      source_ids: []
+    - rule_id: boundary_cradle_to_gate
+      applies_to: "reference dataset"
+      rule: "Include upstream production and all controlled steelmaking, casting, hot-strip, pickling, cold reduction, applicable annealing and finishing, utilities, abatement, internal transport and waste management through the gate."
+      source_ids:
+        - worldsteel-2021-lci-study
+        - worldsteel-2017-lci-methodology
+        - ec-jrc-2022-fmp-bref
+    - rule_id: boundary_purchased_intermediate
+      applies_to: "purchased slab or hot-rolled coil"
+      rule: "Record the purchased intermediate once with a compatible cradle-to-gate upstream dataset; do not duplicate supplier stages."
+      source_ids:
+        - worldsteel-2021-lci-study
+        - worldsteel-2017-lci-methodology
+    - rule_id: boundary_product_exclusions
+      applies_to: "product identity"
+      rule: "Exclude coating, plating, cladding, downstream fabrication, use and embedded end-of-life credits."
+      source_ids:
+        - un-cpc-v3-41221
+        - china-mof-2024-tariff-7209
+        - worldsteel-2023-cold-rolled-coil-global
+boundary_abstraction:
+  declared_starting_condition: "Raw materials, scrap or purchased steel intermediate received at the first controlled process, with upstream cradle-to-gate datasets"
+  starting_condition_role: "Foreground control boundary within a cradle-to-gate product system"
+  product_classification_scope: "Uncoated non-alloy steel flat product, cold-rolled terminal state, width >= 600 mm"
+  recursive_input_rule: "Record a same-category or upstream steel intermediate once and omit processes represented by its upstream dataset"
+  upstream_dataset_requirement: "Geography-, technology-, grade-, time- and allocation-compatible cradle-to-gate datasets for purchased inputs"
+  disclosure: "BOF/EAF shares; controlled stages; intermediates; electricity; gas conditions; grade and dimensions; annealing and finishing; allocation; internal scrap; packaging; geography; technology; period"
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Flat-rolled non-alloy steel product, cold-rolled, width >= 600 mm"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "non-alloy steel grade"
+    - "BOF/EAF route share"
+    - width
+    - thickness
+    - "coil or sheet form"
+    - "annealed state"
+    - "temper/skin-pass state"
+    - "surface and edge"
+    - "uncoated status"
+    - geography
+    - technology
+    - "reference year"
+    - "packaging inclusion"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product and mass rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use net dry saleable mass and normalize every inventory quantity to 1,000 kg of cold_rolled_product."
+  - id: electricity_measurement
+    applies_to: "electricity rows"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Preserve purchased and self-generated electricity separately; report reconciled net consumption."
+  - id: gas_volume_basis
+    applies_to: "natural gas and oxygen"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Declare temperature and pressure basis; do not combine incompatible normal-volume conditions."
+  - id: mass_balance_basis
+    applies_to: "intermediate, product and waste mass"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile inputs, outputs, internal returns, stock change and losses on consistent bases."
+process_map:
+  - id: steelmaking_and_casting
+    name: "Ironmaking, steelmaking, refining and casting"
+    inclusion: "conditional"
+    inclusion_condition: "Foreground when site-controlled; otherwise represented upstream. Route rows apply only to the declared BOF/EAF configuration."
+    role: "non-alloy steel slab production"
+    quantitative_reference: "kg slab"
+  - id: hot_strip_production
+    name: "Slab reheating and hot-strip production"
+    inclusion: "conditional"
+    inclusion_condition: "Foreground when site-controlled; otherwise use a compatible upstream hot-rolled-coil dataset."
+    role: "hot-rolled feed coil production"
+    quantitative_reference: "kg hot-rolled coil"
+  - id: cold_rolling_and_finishing
+    name: "Pickling, cold reduction and applicable finishing"
+    inclusion: "required"
+    inclusion_condition: "Pickling and cold reduction required; annealing, temper/skin-pass and finishing only when performed before the gate."
+    role: "qualifying product production"
+    quantitative_reference: "1,000 kg saleable product"
+process_inventory:
+  - id: steelmaking_and_casting
+    label: "Ironmaking, steelmaking, refining and casting"
+    inputs:
+      product:
+        - row_id: sinter_ignition_natural_gas
+          role: "Natural gas for sinter ignition"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3; unit group 93a60a57-a3c8-12da-a746-0800200c9a66"
+          description: "Record only when consumed to ignite an in-scope sinter strand."
+          amount:
+            expression: "metered volume at declared conditions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steelmaking_inventory
+              source_ids:
+                - worldsteel-2017-lci-methodology
+            ranges: []
+        - row_id: industrial_oxygen
+          role: "Industrial oxygen for refining"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3; unit group 93a60a57-a3c8-12da-a746-0800200c9a66"
+          description: "Record only when oxygen-blown refining applies."
+          amount:
+            expression: "metered volume at declared normal conditions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steelmaking_inventory
+              source_ids:
+                - worldsteel-2017-lci-methodology
+            ranges: []
+        - row_id: steelmaking_electricity
+          role: "Electricity for steelmaking and casting"
+          name: "Steelworks electricity at point of use"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record reconciled electricity for included production, utilities and abatement."
+          amount:
+            expression: "reconciled meter consumption"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steelmaking_inventory
+              source_ids:
+                - worldsteel-2021-lci-study
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: fossil_carbon_dioxide
+          role: "Fossil carbon dioxide from refining"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record direct refining emissions only; exclude upstream electricity emissions."
+          amount:
+            expression: "direct measurement or documented carbon balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_steelmaking_inventory
+              source_ids:
+                - worldsteel-2021-lci-study
+            ranges: []
+  - id: hot_strip_production
+    label: "Slab reheating and hot-strip production"
+    inputs:
+      product:
+        - row_id: hot_strip_electricity
+          role: "Electricity for hot-strip production"
+          name: "Steelworks electricity at point of use"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for descaling, rolling, cooling, coiling, utilities and abatement."
+          amount:
+            expression: "reconciled meter consumption"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_hot_strip_inventory
+              source_ids:
+                - ec-jrc-2022-fmp-bref
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: hot_rolled_coil
+          role: "Uncoated hot-rolled coil"
+          name: "steel hot rolled coil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f1a1835-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record feed coil released to pickling."
+          amount:
+            expression: "measured released coil mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_hot_strip_inventory
+              source_ids:
+                - worldsteel-2017-lci-methodology
+                - ec-jrc-2022-fmp-bref
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: cold_rolling_and_finishing
+    label: "Pickling, cold reduction and applicable finishing"
+    inputs:
+      product:
+        - row_id: pickling_feed_coil
+          role: "Hot-rolled coil entering pickling"
+          name: "steel hot rolled coil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f1a1835-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record uncoated feed coil at the cold-rolling boundary."
+          amount:
+            expression: "weighed feed-coil mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_rolling_inventory
+              source_ids:
+                - worldsteel-2023-cold-rolled-coil-global
+                - ec-jrc-2022-fmp-bref
+            ranges: []
+        - row_id: cold_rolling_electricity
+          role: "Electricity for cold rolling and finishing"
+          name: "Steelworks electricity at point of use"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record pickling, cold reduction and declared applicable finishing electricity."
+          amount:
+            expression: "reconciled meter consumption"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_rolling_inventory
+              source_ids:
+                - ec-jrc-2022-fmp-bref
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cold_rolled_product
+          role: "Qualifying cold-rolled product"
+          name: "Flat-rolled non-alloy steel product, cold-rolled, width >= 600 mm"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This is the product output matching the Reference Flow Definition. Its TianGong product-flow UUID is explicitly unresolved; record only net saleable product meeting the declared boundary."
+          amount:
+            expression: "net saleable mass normalized to exactly 1,000 kg"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold_rolling_inventory
+              source_ids:
+                - un-cpc-v3-41221
+                - worldsteel-2023-cold-rolled-coil-global
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "foreground burdens"
+    rule: "Use direct metering, process subdivision and internal-transfer tracing before allocation."
+    source_ids:
+      - worldsteel-2017-lci-methodology
+  - rule_id: allocation_internal_scrap
+    applies_to: "internal scrap"
+    rule: "Treat internal returns as transfers, not external input, final waste or recycling credit."
+    source_ids:
+      - worldsteel-2023-cold-rolled-coil-global
+  - rule_id: allocation_co_products
+    applies_to: "exported co-products"
+    rule: "Use system expansion only with a defensible substitute and displacement ratio; disclose assumptions and sensitivity."
+    source_ids:
+      - worldsteel-2023-cold-rolled-coil-global
+      - worldsteel-2017-lci-methodology
+  - rule_id: allocation_end_of_life
+    applies_to: "recycling"
+    rule: "Report end-of-life recycling separately and prevent double counting."
+    source_ids:
+      - worldsteel-2021-lci-study
+      - worldsteel-2023-cold-rolled-coil-global
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_steelmaking_inventory
+      process_id: "steelmaking_and_casting"
+      flow_role: "listed rows"
+      record_type: "meters, stack data, production records"
+      raw_fields: "quantity; unit; time; route; gas condition; boundary"
+      collection_method: "reconcile process and meter records"
+      unit: "row-specific"
+      frequency: "monthly"
+      temporal_coverage: ">= 12 representative months"
+      site_scope: "controlled steelmaking and abatement"
+      aggregation_rule: "normalize after stock and transfer reconciliation"
+      quality_evidence: "calibration; route balance"
+    - protocol_id: cp_hot_strip_inventory
+      process_id: "hot_strip_production"
+      flow_role: "listed rows"
+      record_type: "coil scales and meters"
+      raw_fields: "quantity; unit; time; coil; boundary"
+      collection_method: "reconcile campaigns to released coil"
+      unit: "row-specific"
+      frequency: "monthly"
+      temporal_coverage: ">= 12 representative months"
+      site_scope: "controlled hot-strip operations"
+      aggregation_rule: "normalize after transfer reconciliation"
+      quality_evidence: "calibration; genealogy"
+    - protocol_id: cp_cold_rolling_inventory
+      process_id: "cold_rolling_and_finishing"
+      flow_role: "listed rows"
+      record_type: "feed/product scales and meters"
+      raw_fields: "quantity; unit; time; coil; grade; dimensions; finishing flags"
+      collection_method: "trace feed through saleable output"
+      unit: "row-specific"
+      frequency: "monthly"
+      temporal_coverage: ">= 12 representative months"
+      site_scope: "cold rolling and applicable finishing"
+      aggregation_rule: "normalize to net saleable output"
+      quality_evidence: "genealogy; calibration; inspection"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every row"
+      rule: "normalized quantity = verified row quantity / net saleable product mass x 1,000 kg"
+      inputs:
+        - "row quantity"
+        - "product mass"
+      output: "quantity per 1,000 kg"
+      source_ids: []
+    - id: calc_gas_basis
+      applies_to: "gas rows"
+      rule: "Convert after recording actual and target temperature, pressure and factor; retain original reading."
+      inputs:
+        - volume
+        - conditions
+        - factor
+      output: "m3 at declared conditions"
+      source_ids: []
+    - id: calc_route_weighting
+      applies_to: "multi-route dataset"
+      rule: "Aggregate separately complete BOF and EAF inventories using verified saleable-mass shares."
+      inputs:
+        - "route inventories"
+        - shares
+      output: "weighted inventory"
+      source_ids:
+        - worldsteel-2021-lci-study
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product"
+      requirement: "Retain grade, dimensions, form, surface, temper, uncoated status and genealogy."
+      evidence: "specification; inspection"
+    - id: dq_route
+      applies_to: "route"
+      requirement: "Report BOF/EAF shares and controlled stages versus purchased intermediates."
+      evidence: "production ledger; dataset map"
+    - id: dq_temporal
+      applies_to: "foreground"
+      requirement: "Use >= 12 representative months or justify a shorter campaign."
+      evidence: "dated meters and logs"
+    - id: dq_completeness
+      applies_to: "all processes"
+      requirement: "Account for listed rows and add every significant actual atomic exchange without umbrella labels."
+      evidence: "balances; signed checklist"
+    - id: dq_upstream
+      applies_to: "purchased inputs"
+      requirement: "Select upstream datasets compatible with geography, technology, state, time and allocation."
+      evidence: "metadata and rationale"
+validation_rules:
+  - rule_id: validation_identity
+    applies_to: "reference product"
+    rule: "Fail for alloy steel, width < 600 mm, coating, further working beyond cold rolling, or missing qualifiers."
+    source_ids:
+      - un-cpc-v3-41221
+      - china-mof-2024-tariff-7209
+  - rule_id: validation_reference_amount
+    applies_to: "reference flow"
+    rule: "Require one cold_rolled_product output normalized to 1,000 kg."
+    source_ids:
+      - worldsteel-2023-cold-rolled-coil-global
+  - rule_id: validation_route_boundary
+    applies_to: "boundary"
+    rule: "Require a complete cradle-to-gate chain without duplicated stages."
+    source_ids:
+      - worldsteel-2021-lci-study
+      - worldsteel-2017-lci-methodology
+  - rule_id: validation_process_sequence
+    applies_to: "cold rolling"
+    rule: "Require pickling and cold reduction plus applicable/not-applicable finishing declarations."
+    source_ids:
+      - ec-jrc-2022-fmp-bref
+  - rule_id: validation_inventory_atomicity
+    applies_to: "inventory"
+    rule: "Require one exchange, direction, flow type, amount rule, unit, basis, evidence and protocol per row."
+    source_ids: []
+  - rule_id: validation_allocation
+    applies_to: "co-products"
+    rule: "Require documented system expansion and separate end-of-life reporting."
+    source_ids:
+      - worldsteel-2017-lci-methodology
+      - worldsteel-2023-cold-rolled-coil-global
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Cradle-to-gate LCA for uncoated non-alloy cold-rolled flat steel, width >= 600 mm"
+  allowed_use: "Studies compatible with declared grade, dimensions, route, geography, technology, period and allocation"
+  excluded_use: "Coated, alloy or stainless products; width < 600 mm; downstream fabrication; undisclosed route mixing"
+  required_metadata: "PCR id; CPC; grade; dimensions; form; surface; temper; route shares; stages; intermediates; geography; technology; period; allocation; packaging"
+  required_quality_disclosure: "data coverage; calibration; balance; upstream selection; missing UUIDs; gaps; allocation; recycling; representativeness"
+  update_trigger: "Change in grade, width, coating/further working, route, technology, energy, allocation, upstream data or period"
+data_sources:
+  - id: "un-cpc-v3-41221"
+    type: "official_guidance"
+    reference: "UNSD, CPC Version 3.0 structure, code 41221, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-03)"
+    used_for: "classification identity and boundary"
+  - id: "china-mof-2024-tariff-7209"
+    type: "official_guidance"
+    reference: "Ministry of Finance of China, 2024 tariff schedule, heading 72.09, https://gss.mof.gov.cn/gzdt/zhengcefabu/202312/P020231221537512029907.pdf (retrieved 2026-09-03)"
+    used_for: "Chinese terminology and uncoated boundary"
+  - id: "worldsteel-2017-lci-methodology"
+    type: "method_factor"
+    reference: "World Steel Association, Life Cycle Inventory Methodology Report, 2017, https://worldsteel.org/wp-content/uploads/Life-cycle-inventory-methodology-report.pdf (retrieved 2026-09-03)"
+    used_for: "routes, process chain, boundary and allocation"
+  - id: "worldsteel-2021-lci-study"
+    type: "dataset"
+    reference: "World Steel Association, Life Cycle Inventory Study: 2020 Data Release, May 2021, https://worldsteel.org/wp-content/uploads/Life-Cycle-Inventory-study-report-2020-data-release.pdf (retrieved 2026-09-03)"
+    used_for: "boundary, route coverage, collection and quality"
+  - id: "worldsteel-2023-cold-rolled-coil-global"
+    type: "dataset"
+    reference: "World Steel Association, Global Cold Rolled Coil LCA Eco-profile, June 2023, https://worldsteel.org/wp-content/uploads/Cold-rolled-coil-Global-Other.pdf (retrieved 2026-09-03)"
+    used_for: "product state, declared unit, routes and allocation"
+  - id: "ec-jrc-2022-fmp-bref"
+    type: "official_guidance"
+    reference: "European Commission JRC, Ferrous Metals Processing Industry BREF, 2022, https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/ferrous-metals-processing-industry (retrieved 2026-09-03)"
+    used_for: "hot-strip steps and cold-rolling sequence"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:9dc16f68ca551a03ffb727aca4a6fabb36f28b1b54ecc3f9bf70dd2ef1a3a7c8"
+  generated_content_sha256: "sha256:3d07d7efb570c1c05cf9e53c0c460b7e151f322cc8994c09a674a35a69916ead"

@@ -1,10 +1,731 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43934"
-  title: "Automatic goods vending machines"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.automatic-goods-vending-machines"
+  classification_refs: "CPC 3.0: 43934, Automatic goods vending machines (un-cpc-3-0-structure-2025)"
+  covered_products: "New complete automatic goods vending machines for packaged food, beverages or non-food goods; ambient, heated, refrigerated and combination configurations"
+  excluded_products: "Cash dispensers and ATMs; ticket-only or service-only terminals; attended cabinets; principal-function food-processing machines; parts sold separately; rebuilt, repaired or refurbished machines"
+  representative_product: "One accepted production model of a complete automatic goods vending machine"
+  production_route: "Modular receipt of purchased cabinet, mechanical, electrical and optional refrigeration assemblies; final assembly; testing; optional refrigerant charging; dispatch packaging"
+  market_state: "New, functional, acceptance-tested machine at the factory gate, with dispatch packaging declared separately from net machine mass"
+functional_unit:
+  what: "Provide one complete automatic machine capable of accepting the declared payment or authorization method and dispensing the declared packaged goods without on-site labour intervention"
+  how_much: "One accepted finished machine of the declared model"
+  how_well: "Meets the manufacturer's declared vendible capacity, dispensing reliability, electrical safety, temperature function where applicable, and final acceptance criteria"
+  how_long_or_cycle: "One machine with a declared design service life; this declaration describes function and durability, while this PCR quantifies factory-gate production only"
+  reference_flow_link: "Output row finished_vending_machine from process machine_assembly_testing_packaging"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary begins when purchased cabinet, mechanical, electronic, refrigeration and packaging items and factory utilities cross into final machine assembly. It ends when the accepted machine and its separately recorded dispatch packaging are ready at the factory gate. Supplier production of purchased items is upstream; use and end-of-life are downstream and excluded from the core result."
+      source_ids: []
+    - rule_id: sb_complete_machine
+      applies_to: "product identity"
+      rule: "Include only a complete accepted machine in the reference output; cabinet, frame, dispensing, payment, refrigeration and display items remain component inputs."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+    - rule_id: sb_factory_gate
+      applies_to: "core product system"
+      rule: "Include final assembly, wiring, firmware loading when performed at the site, acceptance testing, conditional refrigerant charging and dispatch packaging up to factory-gate readiness."
+      source_ids:
+        - ec-jrc-eup-lot12-2007
+    - rule_id: sb_refrigerated_route
+      applies_to: "refrigerated and combination configurations"
+      rule: "Include condensing equipment, declared refrigerant input and species-specific charging loss only when the machine contains that refrigeration route; disclose compartment temperatures and energy-test method."
+      source_ids:
+        - eu-2019-2024-direct-sales-refrigeration
+        - us-epa-energy-star-vending-v4-2019
+    - rule_id: sb_downstream_modules
+      applies_to: "distribution, use, maintenance and end-of-life"
+      rule: "Exclude these stages from the core factory-gate result. If added, report them as separate modules with service life, vendible capacity, operating mode, daily energy, refrigerant leakage, repair and recovery assumptions."
+      source_ids:
+        - eu-2019-2024-direct-sales-refrigeration
+boundary_abstraction:
+  declared_starting_condition: "Purchased cabinet/frame, mechanical and electronic assemblies, optional refrigeration equipment and refrigerant, packaging, electricity and conditional cleaning water are received at the final assembly site"
+  starting_condition_role: "Factory-gate modular assembly starting point"
+  product_classification_scope: "Complete new automatic goods vending machine; parts and rebuilt machines are outside this product identity"
+  recursive_input_rule: "A complete used vending machine entering rebuilding is not recursively treated as a purchased new-machine input; model that route in a separately disclosed remanufacturing dataset"
+  upstream_dataset_requirement: "Use supplier- and geography-specific upstream datasets for every purchased component, refrigerant, utility and packaging item; disclose proxies and missing supplier data"
+  disclosure: "Declare component supply state, in-house versus purchased operations, configuration, refrigerant species and charge, test boundary, rejected units, packaging state, geography, year and exclusions"
+reference_flow_definition:
+  reference_amount: "Measured net mass in kg of one accepted finished machine, excluding dispatch packaging"
+  product_flow_ref:
+    name: "Automatic goods vending machines"
+    uuid: "0b858929-f07a-4c83-b3f7-fa69f1fa8e0d"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "model identifier"
+    - "manufacturing geography and reference year"
+    - "net machine mass"
+    - "cabinet and dispensing configuration"
+    - "packaged-goods type"
+    - "vendible capacity"
+    - "payment or authorization technology"
+    - ambient
+    - heated
+    - "refrigerated or combination configuration"
+    - "compartment temperatures"
+    - "rated voltage and frequency"
+    - "measured acceptance-test energy"
+    - "refrigerant species and factory charge when applicable"
+    - "design service life"
+    - "dispatch packaging"
+    - "allocation method"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "reference product and all mass-normalized inventory"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh or otherwise verify the net mass of one accepted machine without dispatch packaging; report packaging as separate input rows and do not substitute shipping mass for reference mass."
+  - id: batch_to_machine
+    applies_to: "batch production records"
+    required_property_ref:
+      name: "Mass, energy or item count as recorded"
+      uuid: ""
+    required_unit: "kg, MJ or item"
+    rule: "Use model-specific batches. Divide batch totals only by accepted machines of the same declared model and retain rejected-unit and work-in-progress reconciliation."
+  - id: electricity_conversion
+    applies_to: "assembly and acceptance-test electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the meter reading in kWh and convert to MJ with 1 kWh = 3.6 MJ; state voltage, grid geography and meter boundary."
+  - id: refrigerant_species_mass
+    applies_to: "refrigerant charge and charging loss"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Keep each refrigerant species in a separate row. Reconcile purchased, returned, recovered, inventory-change, installed-charge and measured-release masses; never report a combined refrigerant amount."
+process_map:
+  - id: machine_assembly_testing_packaging
+    name: "Machine assembly, acceptance testing, refrigerant charging and packaging"
+    inclusion: "required"
+    inclusion_condition: "All records; refrigeration and water rows apply only when their stated route condition is met"
+    role: "foreground production"
+    quantitative_reference: "One accepted finished machine represented by its measured net mass"
+process_inventory:
+  - id: machine_assembly_testing_packaging
+    label: "Machine assembly, acceptance testing, refrigerant charging and packaging"
+    inputs:
+      product:
+        - row_id: cabinet_frame
+          role: "Purchased cabinet and frame"
+          name: "Vending machine cabinet and frame"
+          flow_type: "product"
+          flow_ref:
+            uuid: "14ae5c6a-36b0-4dbd-933f-8021dc4242bf"
+          property_unit: "Mass / kg"
+          description: "Record the mass of the purchased cabinet-and-frame assembly crossing into final assembly."
+          amount:
+            expression: "measured received mass attributable to accepted machines of the declared model"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_and_packaging_mass
+              source_ids:
+                - ec-jrc-eup-lot12-2007
+            ranges: []
+        - row_id: refrigeration_condensing_unit
+          role: "Refrigeration condensing unit"
+          name: "Refrigeration condensing unit"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record one purchased condensing-unit assembly only for a refrigerated or combination model; its UUID remains unresolved."
+          amount:
+            expression: "measured received mass when an integral condensing unit is installed; otherwise document not applicable"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per one accepted refrigerated or combination machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_and_packaging_mass
+              source_ids:
+                - eu-2019-2024-direct-sales-refrigeration
+            ranges: []
+        - row_id: electric_motor
+          role: "Dispensing drive motor"
+          name: "Electric motor"
+          flow_type: "product"
+          flow_ref:
+            uuid: "014f80a3-c257-425b-9b75-3e5a18573695"
+          property_unit: "Mass / kg"
+          description: "Record the mass of the declared electric motor installed for dispensing or fan duty; distinguish multiple motors in the raw bill of materials before aggregation to this identical-flow row."
+          amount:
+            expression: "summed installed mass of electric motors in the accepted machine"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_and_packaging_mass
+              source_ids:
+                - ec-jrc-eup-lot12-2007
+            ranges: []
+        - row_id: printed_wire_board
+          role: "Main printed wiring board"
+          name: "Printed Wire Board"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a8bd954c-59b3-4317-b4de-02a17d6da5ca"
+          property_unit: "Mass / kg"
+          description: "Record the installed mass of the main printed wiring board; declare populated or unpopulated supply state in component metadata."
+          amount:
+            expression: "summed installed board mass in the accepted machine"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_and_packaging_mass
+              source_ids:
+                - ec-jrc-eup-lot12-2007
+            ranges: []
+        - row_id: lcd_module
+          role: "User display module"
+          name: "LCD module, assembled"
+          flow_type: "product"
+          flow_ref:
+            uuid: "daedcb7b-760e-4acf-9a1c-3adb472c4eba"
+          property_unit: "Mass / kg"
+          description: "Record an assembled LCD module only when the declared model contains this display technology."
+          amount:
+            expression: "measured installed mass when an LCD module is fitted; otherwise document not applicable"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_and_packaging_mass
+              source_ids:
+                - ec-jrc-eup-lot12-2007
+            ranges: []
+        - row_id: dispensing_mechanism
+          role: "Dispensing mechanism assembly"
+          name: "Vending machine dispensing mechanism assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the model-specific spiral, conveyor, locker or other single dispensing-mechanism assembly; its UUID remains unresolved."
+          amount:
+            expression: "measured installed assembly mass in the accepted machine"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_and_packaging_mass
+              source_ids:
+                - ec-jrc-eup-lot12-2007
+            ranges: []
+        - row_id: payment_module
+          role: "Payment module assembly"
+          name: "Vending machine payment module assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the single embedded payment or authorization module installed in the declared model; its UUID remains unresolved."
+          amount:
+            expression: "measured installed module mass in the accepted machine"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_and_packaging_mass
+              source_ids:
+                - ec-jrc-eup-lot12-2007
+            ranges: []
+        - row_id: assembly_electricity
+          role: "Assembly and acceptance-test electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity metered for final assembly, firmware loading and factory acceptance testing; upstream grid emissions are not direct elementary outputs of this process."
+          amount:
+            expression: "metered kWh attributable to the model-specific batch multiplied by 3.6 MJ/kWh and divided by accepted machines"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_and_test_records
+              source_ids: []
+            ranges: []
+        - row_id: assembly_process_water
+          role: "Assembly cleaning water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record water only when it crosses the foreground boundary for machine or test-fixture cleaning."
+          amount:
+            expression: "measured delivered water attributable to the model-specific batch; otherwise document not applicable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_balance
+              source_ids: []
+            ranges: []
+        - row_id: r404a_charge
+          role: "R404A refrigerant charge"
+          name: "Refrigerant, R404A"
+          flow_type: "product"
+          flow_ref:
+            uuid: "33db0143-ba65-4036-a57b-e32dcdecb779"
+          property_unit: "Mass / kg"
+          description: "Record only when the accepted machine is charged with R404A; do not combine with another refrigerant species."
+          amount:
+            expression: "cylinder-mass decrease attributable to accepted R404A machines, reconciled to installed charge, recovery and inventory change"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per one accepted R404A machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_mass_balance
+              source_ids:
+                - us-epa-energy-star-vending-v4-2019
+            ranges: []
+        - row_id: r134a_charge
+          role: "R134a refrigerant charge"
+          name: "Refrigerant R134a"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1ed335ef-341f-46cc-be90-6bf805244f28"
+          property_unit: "Mass / kg"
+          description: "Record only when the accepted machine is charged with R134a; do not combine with another refrigerant species."
+          amount:
+            expression: "cylinder-mass decrease attributable to accepted R134a machines, reconciled to installed charge, recovery and inventory change"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per one accepted R134a machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_mass_balance
+              source_ids:
+                - us-epa-energy-star-vending-v4-2019
+            ranges: []
+        - row_id: propane_r290_charge
+          role: "Propane R290 refrigerant charge"
+          name: "Propane"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9c0d706a-c414-4afb-ad0c-4777c4072311"
+          property_unit: "Mass / kg"
+          description: "Record propane only when refrigerant-grade R290 is charged; retain purity and safety classification in foreground records."
+          amount:
+            expression: "cylinder-mass decrease attributable to accepted R290 machines, reconciled to installed charge, recovery and inventory change"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per one accepted R290 machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_mass_balance
+              source_ids:
+                - us-epa-energy-star-vending-v4-2019
+            ranges: []
+        - row_id: euro_wooden_pallet
+          role: "EURO wooden dispatch pallet"
+          name: "Wooden pallet (EURO)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "96b2b9ac-cfb6-46bf-8ad1-c056e338950a"
+          property_unit: "Mass / kg"
+          description: "Record a EURO wooden pallet only when supplied with the machine; state whether it is new, reused or returnable."
+          amount:
+            expression: "measured pallet mass multiplied by the attributable pallet fraction per packed machine; otherwise document not applicable"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted packed machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_component_and_packaging_mass
+              source_ids:
+                - ec-jrc-eup-lot12-2007
+            ranges: []
+        - row_id: corrugated_board_boxes
+          role: "Corrugated-board dispatch boxes"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record the mass of formed corrugated-board boxes supplied with the packed machine, including accessory cartons."
+          amount:
+            expression: "measured corrugated-box mass attributable to one accepted packed machine"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per one accepted packed machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_and_packaging_mass
+              source_ids:
+                - ec-jrc-eup-lot12-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_vending_machine
+          role: "Accepted finished automatic goods vending machine"
+          name: "Automatic goods vending machines"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0b858929-f07a-4c83-b3f7-fa69f1fa8e0d"
+          property_unit: "Mass / kg"
+          description: "Record the accepted complete machine at net mass before dispatch packaging."
+          amount:
+            expression: "measured net mass of one accepted finished machine"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finished_machine_acceptance
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: assembly_wastewater
+          role: "Assembly cleaning wastewater"
+          name: "Wastewater"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "d2d44ce1-c0f4-461d-9413-f4b33e0d200f"
+          property_unit: "Mass / kg"
+          description: "Record wastewater sent to on-site or off-site treatment only when process water is used; retain composition and treatment destination."
+          amount:
+            expression: "measured wastewater mass attributable to the model-specific batch; otherwise document not applicable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted finished machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_balance
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: r404a_charging_loss
+          role: "R404A charging loss to air"
+          name: "Refrigerant R404A emission to air, unspecified"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record a direct R404A release only for the R404A route; the elementary-flow UUID remains unresolved."
+          amount:
+            expression: "positive unaccounted R404A mass from the species-specific charging balance after excluding captured material; otherwise document not applicable"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted R404A machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_mass_balance
+              source_ids:
+                - eu-2019-2024-direct-sales-refrigeration
+            ranges: []
+        - row_id: r134a_charging_loss
+          role: "HFC-134a charging loss to air"
+          name: "HFC-134a"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a6d2-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record a direct HFC-134a release only for the R134a route. TianGong provides no Chinese baseName for this UUID."
+          amount:
+            expression: "positive unaccounted R134a mass from the species-specific charging balance after excluding captured material; otherwise document not applicable"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted R134a machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_mass_balance
+              source_ids:
+                - eu-2019-2024-direct-sales-refrigeration
+            ranges: []
+        - row_id: propane_charging_loss
+          role: "Propane R290 charging loss to air"
+          name: "Propane R290 emission to air, unspecified"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record a direct propane release only for the R290 route; the elementary-flow UUID remains unresolved."
+          amount:
+            expression: "positive unaccounted propane mass from the species-specific charging balance after excluding captured material; otherwise document not applicable"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per one accepted R290 machine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_mass_balance
+              source_ids:
+                - eu-2019-2024-direct-sales-refrigeration
+            ranges: []
+allocation_rules:
+  - rule_id: al_subdivide_models
+    applies_to: "mixed-model production"
+    rule: "Prefer model-specific production orders, meters, work centres and bills of material so unlike machines are not pooled before normalization."
+    source_ids: []
+  - rule_id: al_shared_operations
+    applies_to: "shared assembly, test and packaging burdens"
+    rule: "Allocate a shared burden by a documented physical causal driver such as machine-specific cycle time, measured test energy, component mass or packaging count. Accepted-unit count may be used only when models consume materially equivalent operations."
+    source_ids: []
+  - rule_id: al_rejected_units
+    applies_to: "rejected and reworked machines"
+    rule: "Attribute rework and rejected-unit burdens to the production batch that caused them; do not remove those burdens from accepted output without disclosure."
+    source_ids: []
+  - rule_id: al_no_recycling_credit
+    applies_to: "scrap, returnable packaging and recovered refrigerant"
+    rule: "Report recovered material crossing the boundary separately when present. Do not assign avoided-burden or recycling credit inside the core factory-gate dataset unless a separately declared study method requires it."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_component_and_packaging_mass
+      process_id: "machine_assembly_testing_packaging"
+      flow_role: "purchased components and dispatch packaging"
+      record_type: "bill of material, receipt, scale record"
+      raw_fields: "model_id; component_id; flow_name; supplier; supply_state; quantity; unit_mass; total_mass; pallet_share; reuse_state"
+      collection_method: "Reconcile approved bill of material to receipts and weigh representative components or packed units"
+      unit: "kg and item"
+      frequency: "each model revision; reconcile monthly"
+      temporal_coverage: "current model revision and reporting year"
+      site_scope: "final assembly site and declared suppliers"
+      aggregation_rule: "Sum identical-flow masses for accepted model units; keep different component identities separate"
+      quality_evidence: "calibrated-scale record, supplier specification, receipt and revision-controlled bill of material"
+    - protocol_id: cp_utility_and_test_records
+      process_id: "machine_assembly_testing_packaging"
+      flow_role: "assembly and test electricity"
+      record_type: "submeter and test log"
+      raw_fields: "meter_id; start_kWh; end_kWh; model_id; accepted_units; rejected_units; test_mode; voltage; timestamp"
+      collection_method: "Read dedicated meter or allocate a shared meter by logged machine-specific cycle time"
+      unit: "kWh"
+      frequency: "each production batch"
+      temporal_coverage: "representative production period, normally at least 12 consecutive months"
+      site_scope: "final assembly and acceptance-test boundary"
+      aggregation_rule: "Subtract verified non-production loads, convert kWh to MJ and divide by accepted model units"
+      quality_evidence: "meter calibration, time log, production order and reconciliation"
+    - protocol_id: cp_water_balance
+      process_id: "machine_assembly_testing_packaging"
+      flow_role: "process water and wastewater"
+      record_type: "meter, invoice and discharge record"
+      raw_fields: "inlet_mass_or_volume; wastewater_mass_or_volume; density; batch_id; model_id; treatment_destination; composition"
+      collection_method: "Meter process-only water and wastewater or reconcile calibrated tank/weight records; keep sanitary water outside the boundary"
+      unit: "kg, with measured density for volume conversion"
+      frequency: "each batch or monthly"
+      temporal_coverage: "same period as production inventory"
+      site_scope: "final assembly and test-fixture cleaning boundary"
+      aggregation_rule: "Attribute only assembly or test-fixture cleaning records to the model-specific batch"
+      quality_evidence: "meter calibration, invoices, sampling results and discharge manifest"
+    - protocol_id: cp_refrigerant_mass_balance
+      process_id: "machine_assembly_testing_packaging"
+      flow_role: "refrigerant charge and release"
+      record_type: "cylinder scale, charge station and recovery log"
+      raw_fields: "species; cylinder_open_mass; cylinder_close_mass; purchased_mass; returned_mass; recovered_mass; inventory_change; accepted_installed_charge; rejected_unit_charge; captured_loss; measured_release"
+      collection_method: "Perform a closed mass balance separately for R404A, R134a and propane R290 using calibrated scales and charge-station records"
+      unit: "kg"
+      frequency: "each cylinder and production batch"
+      temporal_coverage: "same period as refrigerated-model production"
+      site_scope: "final refrigerant charging and recovery boundary"
+      aggregation_rule: "Reconcile each species; assign installed charge to accepted units and positive uncaptured imbalance to the matching elementary-emission row"
+      quality_evidence: "scale calibration, cylinder IDs, machine serial numbers, leak check and recovery record"
+    - protocol_id: cp_finished_machine_acceptance
+      process_id: "machine_assembly_testing_packaging"
+      flow_role: "accepted reference product"
+      record_type: "scale, serial-number and acceptance record"
+      raw_fields: "model_id; serial_number; net_mass; packaged_mass; vendible_capacity; configuration; temperature_class; voltage; frequency; test_energy; refrigerant; charge; acceptance_result"
+      collection_method: "Weigh each unit or a justified model sample and link acceptance results to the production order"
+      unit: "kg and declared performance units"
+      frequency: "each accepted unit or statistically controlled lot"
+      temporal_coverage: "current model revision and reporting year"
+      site_scope: "final assembly and acceptance-test boundary"
+      aggregation_rule: "Average net mass only within one materially unchanged model; reference amount is the declared model value"
+      quality_evidence: "calibrated scale, acceptance checklist, safety test and model specification"
+  calculation_rules:
+    - id: calc_batch_normalization
+      applies_to: "batch component, utility, water and waste totals"
+      rule: "normalized amount = attributable batch amount / accepted machines of the same model; retain rejected-unit and work-in-progress reconciliation"
+      inputs:
+        - "attributable batch amount"
+        - "accepted model units"
+        - "rejected units"
+        - "work in progress"
+      output: "amount per accepted finished machine"
+      source_ids: []
+    - id: calc_electricity_mj
+      applies_to: "assembly_electricity"
+      rule: "electricity_MJ = net metered kWh × 3.6 / accepted machines of the same model"
+      inputs:
+        - "start and end kWh"
+        - "excluded loads"
+        - "accepted model units"
+      output: "MJ per accepted finished machine"
+      source_ids: []
+    - id: calc_refrigerant_charge_and_loss
+      applies_to: "refrigerant input and species-specific charging-loss rows"
+      rule: "net refrigerant used = opening inventory + purchases - closing inventory - returns; uncaptured loss = net used - accepted installed charge - rejected-unit charge - recovered or captured mass. Investigate negative or materially unbalanced results."
+      inputs:
+        - "species-specific cylinder"
+        - inventory
+        - installed-charge
+        - "recovery and release records"
+      output: "installed charge and uncaptured loss in kg per accepted machine"
+      source_ids:
+        - eu-2019-2024-direct-sales-refrigeration
+    - id: calc_reference_mass_reconciliation
+      applies_to: "reference output and packaging"
+      rule: "packaged mass check = net machine mass + wooden pallet share + corrugated-board boxes + any separately declared packaging; unexplained difference requires correction or disclosure"
+      inputs:
+        - "net and packaged scale records"
+        - "each packaging row"
+      output: "reconciled reference mass and packaging disclosure"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product"
+      requirement: "Link product name, model identifier, serial or lot, vendible capacity, configuration and acceptance result to the weighed reference output."
+      evidence: "model specification, production order and acceptance record"
+    - id: dq_completeness
+      applies_to: "foreground inventory"
+      requirement: "Reconcile all received component, utility, refrigerant, packaging and waste records to the model-specific production order; explain exclusions and data gaps."
+      evidence: "bill-of-material reconciliation and mass/energy balances"
+    - id: dq_temporal
+      applies_to: "reporting period"
+      requirement: "Use data representative of the declared production year and current model revision; disclose shutdowns, prototypes and abnormal rework periods."
+      evidence: "dated meters, orders and revision history"
+    - id: dq_geography_technology
+      applies_to: "upstream inputs"
+      requirement: "Match supplier geography, component supply state, electricity grid, refrigeration technology and packaging reuse state; disclose every proxy."
+      evidence: "supplier declarations and dataset metadata"
+    - id: dq_refrigerant
+      applies_to: "refrigerated routes"
+      requirement: "Preserve refrigerant species, purity/grade, cylinder identity, installed charge and direct charging loss without aggregation across species."
+      evidence: "charge-station and calibrated-scale reconciliation"
+validation_rules:
+  - rule_id: vr_reference_identity
+    applies_to: "reference flow"
+    rule: "Confirm the output UUID is the complete CPC 43934 machine, not a cabinet, frame or machinery part, and confirm the reference amount equals the declared model's measured net mass."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: vr_atomic_inventory
+    applies_to: "every inventory row"
+    rule: "Reject collection labels and combined utilities, components, refrigerants, wastes or emissions; each row must identify one physical exchange and one applicable property/unit."
+    source_ids: []
+  - rule_id: vr_component_completeness
+    applies_to: "purchased assemblies"
+    rule: "Reconcile the cabinet, condensing unit when applicable, motors, board, display, dispensing mechanism and payment module to the model bill of material; disclose additional material components rather than hiding them in a combined row."
+    source_ids:
+      - ec-jrc-eup-lot12-2007
+  - rule_id: vr_energy
+    applies_to: "assembly_electricity"
+    rule: "Verify meter boundary, kWh-to-MJ conversion, model-specific allocation and exclusion of use-phase electricity."
+    source_ids:
+      - eu-2019-2024-direct-sales-refrigeration
+  - rule_id: vr_refrigerant_route
+    applies_to: "refrigerant inputs and outputs"
+    rule: "Require exactly the declared refrigerant species rows for each refrigerated model, reconcile charge and loss, and reject a combined refrigerant row or an emission assigned to the wrong air compartment."
+    source_ids:
+      - us-epa-energy-star-vending-v4-2019
+  - rule_id: vr_bilingual_uuid
+    applies_to: "UUID-bearing rows"
+    rule: "Confirm English and Chinese use the same UUID and that Chinese uses the direct-read TianGong baseName; for HFC-134a retain the English baseName because TianGong provides no Chinese baseName."
+    source_ids: []
+  - rule_id: vr_range_evidence
+    applies_to: "amount ranges"
+    rule: "Reject an externally inferred range unless at least two independent original sources have compatible boundary, functional unit and product state; specification limits are not empirical ranges."
+    source_ids: []
+  - rule_id: vr_boundary_disclosure
+    applies_to: "dataset profile"
+    rule: "Confirm the core result ends at factory-gate readiness and that any distribution, use, maintenance or end-of-life scenario is a separate disclosed module."
+    source_ids:
+      - eu-2019-2024-direct-sales-refrigeration
+published_dataset_profile:
+  dataset_role: "Product-specific factory-gate secondary dataset derived from verified foreground production records"
+  downstream_use: "Background dataset for manufacture of the declared automatic goods vending machine; input to separately parameterized distribution, use, maintenance and end-of-life lifecycle models"
+  allowed_use: "Comparisons within the same complete-machine scope, model configuration, reference mass, geography, year, allocation rule and packaging boundary; scenario modelling with separately disclosed downstream modules"
+  excluded_use: "Generic use-energy claims; attribution to rebuilt machines or parts; comparison of unlike dispensing, capacity or temperature functions without normalization; substitution for supplier component data when supply state differs"
+  required_metadata: "PCR id and version; model and configuration; geography and year; net and packaged mass; vendible capacity; dispensing and payment technology; temperature function; voltage/frequency; test energy; refrigerant and charge; design life; upstream dataset list; allocation; exclusions; data owner"
+  required_quality_disclosure: "primary-data coverage; meter and scale calibration; model/batch reconciliation; supplier-data share; proxies; refrigerant balance; rejected units; missing ranges; uncertainty and reviewer status"
+  update_trigger: "model or bill-of-material revision; new dispensing/payment/refrigeration technology; refrigerant substitution; more than 10% change in net mass, manufacturing electricity or major component mass; supplier geography change; packaging change; new reviewed UUID; or new independent range evidence"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-06)"
+    used_for: "Official CPC 43934 product identity and complete-machine classification wording"
+  - id: "samr-gbt-4706-72-2024"
+    type: "standard"
+    reference: "State Administration for Market Regulation, GB/T 4706.72-2024, Safety of household and similar electrical appliances - Part 72: Particular requirements for commercial dispensing appliances and vending machines. https://openstd.samr.gov.cn/bzgk/std/newGbInfo?hcno=4BD2A369B6E03605A53E8E812ECE4B1E (retrieved 2026-09-06)"
+    used_for: "Professional Chinese vending-machine terminology and commercial vending-machine scope context"
+  - id: "eu-2019-2024-direct-sales-refrigeration"
+    type: "standard"
+    reference: "European Commission, Commission Regulation (EU) 2019/2024 laying down ecodesign requirements for refrigerating appliances with a direct sales function. https://eur-lex.europa.eu/eli/reg/2019/2024/oj/eng (retrieved 2026-09-06)"
+    used_for: "Refrigerated-vending-machine definition, use-energy significance, refrigerant disclosure, repair/recovery context and daily-energy fields"
+  - id: "ec-jrc-eup-lot12-2007"
+    type: "official_guidance"
+    reference: "European Commission preparatory study, Lot 12: Commercial refrigerators and freezers, Final Report, December 2007. https://susproc.jrc.ec.europa.eu/product-bureau/sites/default/files/contentype/product_group_documents/1581682650/BIO_EuP_Lot_12_Final_Report.pdf (retrieved 2026-09-06)"
+    used_for: "Modular vending-machine component decomposition, bill-of-material record fields, packaging and production/use separation; not used as an empirical range"
+  - id: "us-epa-energy-star-vending-v4-2019"
+    type: "standard"
+    reference: "U.S. EPA ENERGY STAR, Product Specification for Refrigerated Beverage Vending Machines, Version 4.0, 30 July 2019. https://www.energystar.gov/sites/default/files/ENERGY%20STAR%20Refrigerated%20Beverage%20Vending%20Machines%20Version%204.0%20Final_1.pdf (retrieved 2026-09-06)"
+    used_for: "Refrigerated and combination configuration qualifiers, vendible-capacity and test fields, and R404A, R290 and R134a refrigerant examples; not used as an empirical range"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f9287e56595407f2d4dc7b80ca36dc00239b8df02c0833e86862aeccf40685b4"
+  generated_content_sha256: "sha256:e0f3e03e1a027bd70bfd6557be3b48bfcc750058f7215aed35ef9dec71559a54"

@@ -1,10 +1,640 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "45160"
-  title: "Other office machines"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.office-accounting-and-computing-machinery.other-office-machines"
+  classification_refs: "CPC 3.0: 45160 Other office machines"
+  covered_products: "Office machines within the official CPC 45160 inclusion note, including paper shredders, non-calculating mail-handling and ticket machines, coin-counting machines, pencil-sharpening machines, and perforating or stapling machines"
+  excluded_products: "Products classified as photocopiers, printers, facsimile machines, computing peripherals, calculating-device machines in CPC 45141, network-connectable ATMs or cash registers in CPC 45142, and separately supplied parts or accessories"
+  representative_product: "Electric paper shredder, used only to organize conditional electrical and plastic-component rules and not to narrow the category"
+  production_route: "Receipt of purchased materials and components; conditional mechanical component fabrication; conditional electrical component integration; final assembly, acceptance testing, and packaging"
+  market_state: "Finished, tested, packaged machine at the manufacturing site gate, identified by model and configuration"
+functional_unit:
+  what: "Production of a declared CPC 45160 office-machine model that performs its stated office function"
+  how_much: "1 kg net mass of finished machine, excluding transport packaging"
+  how_well: "The declared model passes the manufacturer's documented functional, safety, and quality acceptance criteria"
+  how_long_or_cycle: "One completed production lot; use-stage service life is outside this cradle-to-gate unit and must be declared separately in a lifecycle model"
+  reference_flow_link: "finished_other_office_machine"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary begins when purchased materials and components are received at each declared manufacturing site and ends with the conforming, packaged machine at the site gate. Upstream production of purchased inputs is represented by linked upstream datasets. Include on-site component fabrication, electrical integration, assembly, testing, rework, and packaging when performed for the declared model. Use and end-of-life stages are outside this cradle-to-gate data package, although a downstream lifecycle model may add them using separately declared scenarios."
+      source_ids: []
+    - rule_id: boundary_site_gate
+      applies_to: "declared manufacturing sites"
+      rule: "Include all material, component, energy, waste, and direct elementary exchanges from receipt at the manufacturing site through release of the packaged conforming machine; identify outsourced stages and link their datasets rather than silently excluding them."
+      source_ids:
+        - un-cpc-3-0-detail-45160
+    - rule_id: boundary_conditional_routes
+      applies_to: "model-specific production route"
+      rule: "Include mechanical fabrication only when performed within the declared foreground, and include electrical integration only when the declared model contains electrical or electronic components; otherwise mark the process not applicable and explain the purchased-component boundary."
+      source_ids:
+        - hk-green-procurement-paper-shredder-2022
+        - japan-green-procurement-2020
+    - rule_id: boundary_specific_exchanges
+      applies_to: "bills of materials and waste registers"
+      rule: "Extend the inventory with additional model-specific exchanges as separate atomic rows; do not aggregate unnamed materials, utilities, packaging, or wastes into an umbrella flow."
+      source_ids: []
+    - rule_id: boundary_use_stage
+      applies_to: "downstream lifecycle model"
+      rule: "Do not include use electricity, consumables, maintenance, or end-of-life treatment in the manufacturing data package; declare them as separate processes when constructing a lifecycle model."
+      source_ids:
+        - japan-green-procurement-2020
+boundary_abstraction:
+  declared_starting_condition: "Purchased materials and components received at the gate of each declared manufacturing site"
+  starting_condition_role: "Foreground manufacturing entry condition"
+  product_classification_scope: "CPC 3.0 subclass 45160 only, interpreted by its official inclusion and exclusion note"
+  recursive_input_rule: "A purchased CPC 45160 machine incorporated into another covered machine is recorded as a product input with its own upstream dataset and model identifier; its manufacture is not recursively expanded inside the receiving process."
+  upstream_dataset_requirement: "Every purchased material, component, electricity, and packaging input requires a geographically and technologically representative upstream dataset or an explicit documented data gap."
+  disclosure: "Declare sites, outsourced stages, purchased-versus-made components, model configuration, production period, net output mass, allocation, cut-offs, and every omitted or not-applicable process."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Other office machine"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "model identifier"
+    - "office function"
+    - "rated capacity or throughput"
+    - "power architecture"
+    - "net product mass"
+    - "manufacturing sites and geography"
+    - "included production stages"
+    - "packaging configuration"
+    - "acceptance-test basis"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "finished reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure finished machine mass after acceptance testing and before transport packaging; exclude manuals, loose consumables, and packaging unless they are integral to the saleable machine configuration, and disclose every inclusion."
+  - id: lot_normalization
+    applies_to: "all inventory exchanges"
+    required_property_ref:
+      name: "row-specific property"
+      uuid: ""
+    required_unit: "row-specific unit"
+    rule: "Sum exchanges for the same production lot and divide by conforming finished-product net mass in kg; exclude rejected units from the denominator and record their materials and treatment separately."
+  - id: electricity_conversion
+    applies_to: "electricity rows"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve the meter's energy basis and convert kWh to MJ using 1 kWh = 3.6 MJ; disclose whether auxiliary loads and line losses are included."
+  - id: component_mass_accounting
+    applies_to: "purchased and fabricated components"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use receipt, issue, return, and measured scrap records to reconcile material incorporated into conforming output; do not substitute item counts without a documented model-specific mass conversion."
+process_map:
+  - id: mechanical_component_fabrication
+    name: "Mechanical component fabrication"
+    inclusion: "conditional"
+    inclusion_condition: "Include when steel forming or ABS moulding for the declared model occurs within the reporting foreground."
+    role: "Manufacture structural, housing, cutting, or mechanism components."
+    quantitative_reference: "kg conforming fabricated components transferred to assembly"
+  - id: electrical_component_integration
+    name: "Electrical component integration and test"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared model contains a motor or printed wire board and integration or electrical testing occurs within the reporting foreground."
+    role: "Integrate and test electrical or electronic functional components."
+    quantitative_reference: "kg accepted electrical assemblies transferred to final assembly"
+  - id: final_assembly_testing_packaging
+    name: "Final assembly, acceptance testing, and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always include for the declared finished model."
+    role: "Assemble components, perform acceptance tests, package conforming output, and release it at the site gate."
+    quantitative_reference: "1 kg net finished machine output"
+process_inventory:
+  - id: mechanical_component_fabrication
+    label: "Mechanical component fabrication"
+    inputs:
+      product:
+        - row_id: cold_rolled_steel_sheet
+          role: "Cold-rolled steel sheet for formed parts"
+          name: "Cold-rolled steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record cold-rolled steel sheet issued to cutting, stamping, bending, or forming when those operations are inside the declared foreground. The TianGong UUID remains unresolved because the highest-ranked bilingual identity is inconsistent."
+          amount:
+            expression: "measured steel-sheet issues minus documented unused returns for the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished machine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: abs_granulate
+          role: "ABS molding resin"
+          name: "Acrylonitrile butadiene styrene (ABS) granulate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b895c3a1-076e-4a42-a2c0-6088890c0bd9"
+          property_unit: "Mass / kg"
+          description: "Record ABS granulate issued to molding only when ABS component molding occurs inside the declared foreground; retain grade and recycled-content records."
+          amount:
+            expression: "measured ABS granulate issues minus documented unused resin returns for the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished machine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_mass_balance
+              source_ids:
+                - hk-green-procurement-paper-shredder-2022
+                - japan-green-procurement-2020
+            ranges: []
+        - row_id: component_fabrication_electricity
+          role: "Fabrication electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record purchased electricity consumed by in-boundary metal forming and ABS molding equipment, including assigned auxiliary loads."
+          amount:
+            expression: "submetered electricity or a documented allocation from a calibrated site meter for the production lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net finished machine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_fabrication_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: post_industrial_steel_scrap
+          role: "Post-industrial steel scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Record segregated ferrous offcuts and rejected formed steel parts leaving the process for reuse, recycling, or treatment; disclose destination and contamination."
+          amount:
+            expression: "measured net mass transferred out as ferrous manufacturing scrap"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished machine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: abs_moulding_scrap
+          role: "ABS molding scrap"
+          name: "ABS molding scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record segregated ABS sprues, runners, purge, and rejected ABS parts that leave the process. Do not combine them with other polymers or packaging waste."
+          amount:
+            expression: "measured net ABS scrap transferred out after any documented in-process regrind return"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished machine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_mass_balance
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: electrical_component_integration
+    label: "Electrical component integration and test"
+    inputs:
+      product:
+        - row_id: printed_wire_board
+          role: "Printed wire board"
+          name: "Printed Wire Board"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a8bd954c-59b3-4317-b4de-02a17d6da5ca"
+          property_unit: "Mass / kg"
+          description: "Record each printed wire board incorporated into the declared model when the electrical integration process applies; preserve board specification and supplier identity."
+          amount:
+            expression: "measured mass of printed wire boards issued minus unused returns for the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished machine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrical_component_mass_balance
+              source_ids:
+                - hk-green-procurement-paper-shredder-2022
+            ranges: []
+        - row_id: electric_motor
+          role: "Electric motor"
+          name: "Electric motor"
+          flow_type: "product"
+          flow_ref:
+            uuid: "014f80a3-c257-425b-9b75-3e5a18573695"
+          property_unit: "Mass / kg"
+          description: "Record the motor incorporated into motorized models; declare motor type, rated output, voltage, and supplier."
+          amount:
+            expression: "measured mass of motors issued minus unused returns for the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished machine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrical_component_mass_balance
+              source_ids:
+                - japan-green-procurement-2020
+            ranges: []
+        - row_id: electrical_integration_electricity
+          role: "Electrical integration and test electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record purchased electricity used for board population or connection, motor integration, firmware loading when applicable, and electrical testing within the declared foreground."
+          amount:
+            expression: "submetered electricity or a documented allocation from a calibrated site meter for the production lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net finished machine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrical_integration_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: waste_populated_printed_wiring_board
+          role: "Rejected populated printed wiring board"
+          name: "Waste populated printed wiring board"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "eb5ffe4a-49af-450c-9a31-3efdfd343f8a"
+          property_unit: "Mass / kg"
+          description: "Record populated boards rejected from integration or testing and transferred as waste; declare hazardous characteristics and destination."
+          amount:
+            expression: "measured net mass of rejected populated boards transferred to waste management"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished machine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrical_component_mass_balance
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: final_assembly_testing_packaging
+    label: "Final assembly, acceptance testing, and packaging"
+    inputs:
+      product:
+        - row_id: final_assembly_electricity
+          role: "Final assembly and acceptance-test electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record purchased electricity consumed by final assembly tools, functional acceptance tests, and allocated line auxiliaries. Use-stage testing beyond release criteria is not included."
+          amount:
+            expression: "submetered electricity or a documented allocation from a calibrated site meter for the production lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished machine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_assembly_electricity
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_board_box
+          role: "Corrugated board box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record the corrugated board box delivered with the declared model; dimensions, recycled content, and packaging configuration must match the foreground product."
+          amount:
+            expression: "measured mass of corrugated board boxes consumed for conforming finished units"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished machine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_mass
+              source_ids:
+                - japan-green-procurement-2020
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_other_office_machine
+          role: "Finished other office machine"
+          name: "Other office machine"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only conforming machines released after acceptance testing. The selected flow remains without a TianGong UUID until an exact CPC 45160 state-100 identity is available."
+          amount:
+            expression: "measured net mass of conforming finished machines before transport packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net finished machine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finished_product_mass
+              source_ids:
+                - un-cpc-3-0-structure-2025
+                - un-cpc-3-0-detail-45160
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "shared manufacturing lines"
+    rule: "Prefer process subdivision, submeters, production-order records, and direct material issue records so the declared model receives its measured exchanges."
+    source_ids: []
+  - rule_id: allocation_physical_driver
+    applies_to: "unavoidable shared loads"
+    rule: "When direct measurement is unavailable, allocate shared electricity and auxiliaries by a documented causal physical driver such as machine time multiplied by rated load; use mass only when causality cannot be established and disclose sensitivity."
+    source_ids: []
+  - rule_id: allocation_scrap_treatment
+    applies_to: "scrap and rejected components"
+    rule: "Record gross input and measured waste outputs without netting scrap revenue or avoided-production credits inside the foreground process; document any recycling substitution only in a separately declared downstream scenario."
+    source_ids:
+      - japan-green-procurement-2020
+  - rule_id: allocation_no_category_average
+    applies_to: "multiple CPC 45160 models"
+    rule: "Do not average mechanically different models unless the represented product mix, production volume weights, functional differences, and all allocation steps are disclosed."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_component_mass_balance
+      process_id: "mechanical_component_fabrication"
+      flow_role: "steel and ABS inputs; steel and ABS scrap outputs"
+      record_type: "material issue, return, production, and waste-transfer records"
+      raw_fields: "material_id; grade; lot; issued_mass; returned_mass; conforming_part_mass; scrap_mass; destination"
+      collection_method: "Reconcile calibrated scale records, warehouse transactions, and waste-transfer tickets by material and production order."
+      unit: "kg"
+      frequency: "each production lot"
+      temporal_coverage: "all lots in the declared reporting period"
+      site_scope: "every in-boundary fabrication site"
+      aggregation_rule: "Sum net issues and outbound scrap by material, then normalize to conforming finished-product net mass."
+      quality_evidence: "scale calibration; transaction reconciliation; signed waste-transfer record"
+    - protocol_id: cp_component_fabrication_electricity
+      process_id: "mechanical_component_fabrication"
+      flow_role: "fabrication electricity"
+      record_type: "submeter or site-meter interval record"
+      raw_fields: "meter_id; start_reading; end_reading; production_order; operating_time; allocation_driver"
+      collection_method: "Read dedicated submeters or allocate a calibrated site meter using documented equipment time and load."
+      unit: "MJ"
+      frequency: "each lot or monthly with lot allocation"
+      temporal_coverage: "representative consecutive reporting period"
+      site_scope: "every in-boundary fabrication site"
+      aggregation_rule: "Sum energy for the process and normalize to conforming finished-product net mass."
+      quality_evidence: "meter calibration; bill reconciliation; allocation worksheet"
+    - protocol_id: cp_electrical_component_mass_balance
+      process_id: "electrical_component_integration"
+      flow_role: "printed wire board and motor inputs; rejected populated-board output"
+      record_type: "bill of materials, issue, return, rejection, and waste-transfer records"
+      raw_fields: "component_id; specification; supplier; issued_mass; returned_mass; accepted_mass; rejected_mass; waste_destination"
+      collection_method: "Reconcile production-order component transactions and calibrated mass measurements."
+      unit: "kg"
+      frequency: "each production lot"
+      temporal_coverage: "all lots in the declared reporting period"
+      site_scope: "every in-boundary electrical integration site"
+      aggregation_rule: "Sum net component issues and rejected-board waste, then normalize to conforming finished-product net mass."
+      quality_evidence: "approved bill of materials; scale calibration; rejection disposition"
+    - protocol_id: cp_electrical_integration_electricity
+      process_id: "electrical_component_integration"
+      flow_role: "integration and test electricity"
+      record_type: "submeter or site-meter interval record"
+      raw_fields: "meter_id; start_reading; end_reading; production_order; test_cycles; allocation_driver"
+      collection_method: "Read dedicated submeters or allocate a calibrated site meter using documented equipment time and load."
+      unit: "MJ"
+      frequency: "each lot or monthly with lot allocation"
+      temporal_coverage: "representative consecutive reporting period"
+      site_scope: "every in-boundary electrical integration site"
+      aggregation_rule: "Sum energy for the process and normalize to conforming finished-product net mass."
+      quality_evidence: "meter calibration; bill reconciliation; allocation worksheet"
+    - protocol_id: cp_final_assembly_electricity
+      process_id: "final_assembly_testing_packaging"
+      flow_role: "assembly and acceptance-test electricity"
+      record_type: "submeter or site-meter interval record"
+      raw_fields: "meter_id; start_reading; end_reading; production_order; accepted_units; test_cycles; allocation_driver"
+      collection_method: "Read dedicated submeters or allocate a calibrated site meter using documented line time and load."
+      unit: "MJ"
+      frequency: "each lot or monthly with lot allocation"
+      temporal_coverage: "representative consecutive reporting period"
+      site_scope: "every final assembly site"
+      aggregation_rule: "Sum energy for assembly and release testing and normalize to conforming finished-product net mass."
+      quality_evidence: "meter calibration; bill reconciliation; acceptance-test log"
+    - protocol_id: cp_packaging_mass
+      process_id: "final_assembly_testing_packaging"
+      flow_role: "corrugated board box input"
+      record_type: "packaging specification, purchase, issue, and return records"
+      raw_fields: "packaging_id; material; supplier; issued_mass; returned_mass; packed_units"
+      collection_method: "Reconcile approved packaging specifications with warehouse transactions and calibrated sample masses."
+      unit: "kg"
+      frequency: "each packaging configuration and lot"
+      temporal_coverage: "all configurations in the declared reporting period"
+      site_scope: "every final assembly site"
+      aggregation_rule: "Sum net box mass consumed and normalize to conforming finished-product net mass."
+      quality_evidence: "approved packaging specification; scale calibration; stock reconciliation"
+    - protocol_id: cp_finished_product_mass
+      process_id: "final_assembly_testing_packaging"
+      flow_role: "conforming finished product output"
+      record_type: "acceptance and calibrated mass records"
+      raw_fields: "model_id; serial_or_lot; configuration; accepted_quantity; net_mass; excluded_accessories; test_status"
+      collection_method: "Weigh a documented representative sample or every unit after acceptance testing and before transport packaging."
+      unit: "kg"
+      frequency: "each model and configuration; each lot"
+      temporal_coverage: "all conforming output in the declared reporting period"
+      site_scope: "every final assembly site"
+      aggregation_rule: "Sum accepted net product mass; retain sample design and expansion calculations when not every unit is weighed."
+      quality_evidence: "scale calibration; acceptance record; sampling record"
+  calculation_rules:
+    - id: calc_net_material_input
+      applies_to: "material and component inputs"
+      rule: "net input = issued mass - unused returned mass"
+      inputs:
+        - issued_mass
+        - returned_mass
+      output: "kg net input by row and lot"
+      source_ids: []
+    - id: calc_reference_normalization
+      applies_to: "all mass exchanges"
+      rule: "normalized amount = row net mass / conforming finished-product net mass"
+      inputs:
+        - "row net mass"
+        - "accepted net product mass"
+      output: "kg per kg reference flow"
+      source_ids: []
+    - id: calc_energy_normalization
+      applies_to: "electricity rows"
+      rule: "normalized electricity = process electricity in MJ / conforming finished-product net mass in kg"
+      inputs:
+        - "meter difference"
+        - "conversion factor"
+        - "allocation driver when used"
+        - "accepted net product mass"
+      output: "MJ per kg reference flow"
+      source_ids: []
+    - id: calc_component_mass_check
+      applies_to: "mechanical component fabrication"
+      rule: "net material input - outbound scrap - measured conforming component transfer = documented inventory change plus measured process loss"
+      inputs:
+        - issue
+        - return
+        - scrap
+        - "component transfer"
+        - "inventory change"
+      output: "material-specific mass-balance residual"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_model_identity
+      applies_to: "reference product"
+      requirement: "Record model, configuration, rated office function or throughput, motor rating when applicable, power architecture, and acceptance criteria."
+      evidence: "approved product specification and acceptance-test record"
+    - id: dq_temporal_coverage
+      applies_to: "all foreground exchanges"
+      requirement: "Use a consecutive period representative of normal production, identify startup, shutdown, rework, and abnormal lots, and disclose exclusions."
+      evidence: "dated production, meter, warehouse, and waste records"
+    - id: dq_mass_balance
+      applies_to: "material-bearing processes"
+      requirement: "Reconcile net inputs, conforming output, inventory change, and each separately recorded waste stream; investigate material-specific residuals."
+      evidence: "signed reconciliation worksheet and calibrated measurements"
+    - id: dq_electricity_identity
+      applies_to: "electricity inputs"
+      requirement: "Declare grid or supplier mix, voltage, geography, delivery boundary, meter coverage, and any loss treatment."
+      evidence: "invoice, supply contract, meter map, and allocation worksheet"
+    - id: dq_substance_and_recyclability
+      applies_to: "electrical or plastic-bearing models"
+      requirement: "Declare applicable restricted-substance compliance evidence, recycled-plastic claims, separability information, and waste destinations without converting regulatory limits into empirical inventory ranges."
+      evidence: "supplier declarations and product compliance records; hk-green-procurement-paper-shredder-2022; japan-green-procurement-2020"
+    - id: dq_completeness
+      applies_to: "model-specific inventory"
+      requirement: "Compare the approved bill of materials, energy-meter map, packaging specification, rejection register, and waste register with inventory rows; add every omitted exchange as one atomic flow or document it as a quantified data gap."
+      evidence: "completeness reconciliation signed by the data owner"
+validation_rules:
+  - rule_id: validate_identity_scope
+    applies_to: "product identity"
+    rule: "Confirm the declared product is within the official CPC 45160 inclusion note and is not a printer, photocopier, computing peripheral, calculating-device machine in 45141, network-connectable ATM or cash register in 45142, or separately supplied part."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - un-cpc-3-0-detail-45160
+  - rule_id: validate_reference_mass
+    applies_to: "reference flow"
+    rule: "Confirm the normalized finished output equals 1 kg net product mass and that packaging and excluded accessories are consistently treated."
+    source_ids: []
+  - rule_id: validate_process_applicability
+    applies_to: "conditional process map"
+    rule: "Confirm each conditional process is either populated with foreground rows and records or explicitly marked not applicable with the purchased-component boundary disclosed."
+    source_ids: []
+  - rule_id: validate_uuid_resolution
+    applies_to: "TianGong identities"
+    rule: "Reject substitution of printers, photocopiers, ink, mixed plastic waste, or other proxy UUIDs for the three unresolved rows; require state-100 direct-read identity before resolution."
+    source_ids: []
+  - rule_id: validate_inventory_balance
+    applies_to: "each production lot"
+    rule: "Confirm material issues, returns, conforming transfers, separately recorded wastes, and inventory changes reconcile; report residuals and corrective actions."
+    source_ids: []
+  - rule_id: validate_energy_records
+    applies_to: "electricity rows"
+    rule: "Reconcile process meters to invoices or site meters, prevent overlap among the three electricity rows, and verify the kWh-to-MJ conversion and allocation driver."
+    source_ids: []
+  - rule_id: validate_bilingual_flow_names
+    applies_to: "Chinese rendering"
+    rule: "Confirm every UUID-bearing Chinese selected flow exactly matches the TianGong state-100 Chinese baseName and that UUID-empty atomic flows remain accurately translated."
+    source_ids: []
+  - rule_id: validate_range_status
+    applies_to: "amount metadata"
+    rule: "Confirm no externally inferred range is added without two independent, original-text-verified, boundary-compatible sources; retain the manifest evidence need when that condition is unmet."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground cradle-to-gate manufacturing dataset for one declared CPC 45160 office-machine model"
+  downstream_use: "May be used as a secondary_dataset or background_dataset after review, and as the manufacturing stage of a lifecyclemodel with separately modelled use and end-of-life stages"
+  allowed_use: "Model-specific product comparison, supply-chain assessment, and lifecycle modelling when reference mass, function, configuration, geography, technology, and data period are compatible"
+  excluded_use: "Unqualified category-average claims, comparison of unlike office functions, use-stage claims without a declared duty cycle and service life, or proxy substitution for unresolved flow UUIDs"
+  required_metadata: "model and configuration; CPC scope; rated function or throughput; net mass; sites and geography; reporting period; purchased-versus-made boundary; electricity supply; packaging; allocation; cut-offs; unresolved identities"
+  required_quality_disclosure: "primary-data share; meter and scale coverage; allocation drivers; sampling; mass-balance residuals; rejected units; data gaps; supplier-data age; substance-compliance evidence where applicable"
+  update_trigger: "material design or supplier change; production-route or site change; electricity-supply change; packaging redesign; changed acceptance test; new exact TianGong UUID; or foreground records no longer representative"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-08)"
+    used_for: "Official classification identity and hierarchy for CPC 45160"
+  - id: "un-cpc-3-0-detail-45160"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 classification detail, code 45160. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/45160 (retrieved 2026-09-08)"
+    used_for: "Official included and excluded products and semantic category boundary"
+  - id: "japan-green-procurement-2020"
+    type: "official_guidance"
+    reference: "Ministry of the Environment, Government of Japan, Basic Policy on Promoting Green Procurement, provisional translation, February 2020. https://www.env.go.jp/policy/hozen/green/g-law/archive/bp/r1bp_en.pdf (retrieved 2026-09-08)"
+    used_for: "Paper-shredder and digital-duplicator evidence for motorized variants, electricity relevance, plastic components, packaging, dismantling, and waste disclosure"
+  - id: "hk-green-procurement-paper-shredder-2022"
+    type: "official_guidance"
+    reference: "Environment and Ecology Bureau, Hong Kong SAR Government, Green Procurement: Office equipment M04 Paper shredder, last reviewed 10 February 2022. https://www.eeb.gov.hk/en/susdev/green_procure/pdf/M04.pdf (retrieved 2026-09-08)"
+    used_for: "Paper-shredder evidence for circuit boards, electrical or electronic components, plastic components, and restricted-substance compliance records"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:bd51e3b84827435da3a25565bd43e714a060fcabc3eb6702d25624ee8c619baa"
+  generated_content_sha256: "sha256:100ac70cb1b76430c684174e8993938f67efc71954c2c3f3f82bc5d324c511ab"

@@ -1,10 +1,772 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "46542"
-  title: "Parts of portable electric lamps designed to function by their own source of energy (except those of cycles or motor vehicles); parts n.e.c. of lamps and lighting fittings; parts n.e.c. of illuminated signs, illuminated name-plates and the like"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.electrical-machinery-and-apparatus.parts-of-portable-electric-lamps-designed-to-function-by-their-own-source-of-energy-exc-21bad56b"
+  classification_refs: "CPC 3.0: 46542 (exact)"
+  covered_products: "Saleable metal or metal-and-minor-component parts dedicated to portable self-powered electric lamps, lamps and lighting fittings, illuminated signs, illuminated name-plates, and like illuminated articles, when not classified as a complete lamp, light source, glass-only part, or plastics-only part"
+  excluded_products: "Complete lamps and fittings; cycle or motor-vehicle lighting parts; filament, discharge, arc, or LED light sources sold as such; glass-only parts; plastics-only parts; generic metal articles without a documented lighting-equipment function"
+  representative_product: "Powder-coated fabricated aluminium housing, bracket, reflector, frame, or comparable metal part for a lighting fitting, supplied as one saleable part"
+  production_route: "Receipt of aluminium sheet; cutting, stamping and/or machining; optional cutting-fluid use; conditional alkaline cleaning and rinsing; conditional powder coating and electric curing; inspection and factory-gate release"
+  market_state: "Finished, dry, inspected saleable part at the manufacturing factory gate; not installed in a complete lamp or sign"
+functional_unit:
+  what: "Supply a finished part that performs its declared mechanical, optical-support, protective, mounting, contact-support, or enclosure function in the specified lighting or illuminated-sign product"
+  how_much: "1 kg net mass of saleable parts, excluding transport packaging"
+  how_well: "Conforms to the declared drawing, material/alloy, dimensions and tolerances, finish/coating, host-product interface, electrical-content declaration, and release inspection criteria"
+  how_long_or_cycle: "One factory-gate delivery; no use-stage service duration is credited at part level, and any required durability or cycle rating shall be declared as a product qualifier"
+  reference_flow_link: "One kilogram of finished lighting-equipment part output finished_lighting_part"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "Foreground production"
+      rule: "Include material receipt, cutting/stamping/machining, associated cleaning, conditional surface preparation and coating, inspection, internal transfers, saleable output, aluminium scrap, spent coolant, cleaning wastewater, and powder-coating waste through factory-gate release."
+      source_ids:
+        - us-epa-mpm-development-document-2003
+        - eu-jrc-stm-bref-2006
+    - rule_id: boundary_conditional_finish
+      applies_to: "Surface preparation and coating"
+      rule: "Include surface_preparation_and_coating only when alkaline cleaning and powder coating are performed for the declared product. If omitted or replaced, identify the actual finish route and author separate atomic inputs and outputs for it."
+      source_ids:
+        - us-epa-mpm-development-document-2003
+        - eu-jrc-stm-bref-2006
+    - rule_id: boundary_upstream_linkage
+      applies_to: "Purchased inputs and outsourced operations"
+      rule: "Keep upstream production and outsourced operations outside the foreground unit process but require traceable linked datasets with consistent geography, technology and product state; no purchased input may disappear under a cut-off solely because its UUID is unresolved."
+      source_ids:
+        - eu-pef-recommendation-2021-2279
+    - rule_id: boundary_exclusions
+      applies_to: "Downstream and infrastructure"
+      rule: "Exclude transport packaging from the reference mass and exclude distribution, installation, complete-lamp assembly, use, maintenance, end-of-life, buildings, capital equipment and employee travel unless the study goal explicitly includes and reports them as separate processes."
+      source_ids:
+        - eu-pef-recommendation-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Purchased aluminium sheet and other declared process inputs received at the part-manufacturing site"
+  starting_condition_role: "Factory-gate input to foreground part fabrication; upstream production is represented by linked datasets"
+  product_classification_scope: "Lighting-equipment parts with the semantic boundary stated in section 1; CPC 46542 is classification context and does not replace the declared product qualifiers"
+  recursive_input_rule: "If an input is itself a saleable part within this PCR boundary, record that concrete part as a purchased product input with its supplier dataset; do not recreate its fabrication inside the consuming process or aggregate it with other parts"
+  upstream_dataset_requirement: "Link geography-, technology-, material-state-, recycled-content-, and supplier-appropriate upstream datasets for aluminium sheet, electricity, water, chemicals, coating, cutting fluid, and treatment services"
+  disclosure: "Declare included operations, omitted conditional operations, outsourced steps, allocation, scrap ownership and destination, wastewater treatment, powder recovery, electricity mix, geography, period, and all substitutions from the representative route"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Finished lighting-equipment part"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "part number and function"
+    - "host lamp"
+    - fitting
+    - "sign or name-plate type"
+    - "material and alloy"
+    - "net mass"
+    - "dimensions and tolerances"
+    - "forming and machining route"
+    - "surface preparation"
+    - "coating or uncoated state"
+    - "electrical content"
+    - "factory-gate geography"
+    - "production period"
+    - "recycled-content claim and method if reported"
+    - "release criteria"
+    - "transport-packaging exclusion"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product and all mass-normalized exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize to the measured net mass of accepted saleable parts at factory-gate release. Exclude pallets, cartons, protective film, and other transport packaging from the reference mass."
+  - id: batch_to_reference_mass
+    applies_to: "Batch records"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg/kg reference flow"
+    rule: "Divide each batch exchange by accepted net product mass from the same batch or a documented representative aggregation period. Keep reject and rework mass separate from accepted output."
+  - id: electricity_energy_conversion
+    applies_to: "Electricity rows"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electrical energy and convert kWh to MJ using 1 kWh = 3.6 MJ. Do not convert electricity to a mass basis."
+  - id: water_mass_conversion
+    applies_to: "Process-water and cleaning-wastewater rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer direct mass measurement. If volume is metered, record temperature and density source and document the volume-to-mass conversion."
+process_map:
+  - id: metal_part_fabrication
+    name: "Metal-part cutting, forming and machining"
+    inclusion: "required"
+    inclusion_condition: "Always include for the representative fabricated aluminium part; adapt the atomic stock input and operations to the declared part"
+    role: "Foreground material shaping"
+    quantitative_reference: "Mass of fabricated parts awaiting the next applicable operation"
+  - id: surface_preparation_and_coating
+    name: "Alkaline surface preparation and powder coating"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when the declared part is alkaline-cleaned/rinsed and powder-coated; use a separately declared technology-specific process for another finish"
+    role: "Foreground cleaning and organic coating"
+    quantitative_reference: "Mass of coated parts awaiting release inspection"
+  - id: inspection_and_release
+    name: "Final inspection and factory-gate release"
+    inclusion: "required"
+    inclusion_condition: "Always include; identify the applicable fabricated-part input from the preceding route"
+    role: "Foreground quality release"
+    quantitative_reference: "1 kg accepted saleable part"
+process_inventory:
+  - id: metal_part_fabrication
+    label: "Metal-part cutting, forming and machining"
+    inputs:
+      product:
+        - row_id: aluminium_sheet_input
+          role: "Aluminium sheet stock"
+          name: "aluminium sheet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197be4-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Purchased aluminium sheet crosses the site boundary as the representative metal stock. The state-100 identity is sheet above 0.2 mm; alloy, temper, thickness, recycled content and supplier state remain foreground qualifiers."
+          amount:
+            expression: "Record delivered sheet mass charged to the production batch, net of stock returned unused to inventory"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished lighting-equipment part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_batch_records
+              source_ids:
+                - us-epa-mpm-development-document-2003
+            ranges: []
+        - row_id: forming_electricity
+          role: "Forming and machining electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Metered electricity for cutting, stamping, forming, machining and local extraction crosses the process boundary as electrical energy."
+          amount:
+            expression: "Record submetered electricity or allocate a reconciled production-area meter by documented machine time for the declared batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished lighting-equipment part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - us-epa-mpm-development-document-2003
+            ranges: []
+        - row_id: cutting_fluid_input
+          role: "Cutting fluid"
+          name: "Cutting Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "576d250f-4f36-4385-939d-0f03b8f95a10"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Cutting fluid is recorded when machining uses a supplied coolant or lubricant. Formulation, dilution and recirculation shall be disclosed."
+          amount:
+            expression: "Record fresh concentrate plus make-up fluid charged to the batch, excluding internally recirculated fluid"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished lighting-equipment part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_fluid_records
+              source_ids:
+                - us-epa-mpm-development-document-2003
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: formed_part_release_output
+          role: "Fabricated part awaiting the next operation"
+          name: "Fabricated lighting part awaiting next operation"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "The shaped part leaves fabrication for the declared next operation. This is a product-specific internal flow and shall receive a foreground flow identity rather than a proxy public UUID."
+          amount:
+            expression: "Record measured conforming and nonconforming part mass transferred out of fabrication; tag the accepted transfer separately"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished lighting-equipment part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_intermediate_transfer_records
+              source_ids:
+                - us-epa-mpm-development-document-2003
+            ranges: []
+      waste:
+        - row_id: aluminium_scrap_output
+          role: "Segregated aluminium fabrication scrap"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Aluminium offcuts, punchings and separated chips leaving fabrication as scrap are recorded independently from the finished part and other wastes."
+          amount:
+            expression: "Record weighed aluminium scrap leaving the process, net of clean material returned directly to the same batch; disclose contamination and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished lighting-equipment part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_waste_records
+              source_ids:
+                - us-epa-mpm-development-document-2003
+            ranges: []
+        - row_id: spent_coolant_output
+          role: "Spent cutting coolant"
+          name: "Spent coolant"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "62b6a738-fb6a-4570-a95a-9255ec0dcb2b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Spent coolant removed from the recirculating system or batch is recorded when it leaves the process for recovery or treatment."
+          amount:
+            expression: "Record mass removed from service and transferred off process, excluding coolant retained in active recirculation inventory"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished lighting-equipment part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fabrication_waste_records
+              source_ids:
+                - us-epa-mpm-development-document-2003
+            ranges: []
+      elementary:
+        []
+  - id: surface_preparation_and_coating
+    label: "Alkaline surface preparation and powder coating"
+    inputs:
+      product:
+        - row_id: formed_part_surface_input
+          role: "Fabricated part entering surface treatment"
+          name: "Fabricated lighting part awaiting surface treatment"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "The product-specific fabricated part enters the conditional surface process as an internal product flow."
+          amount:
+            expression: "Record measured part mass accepted into the surface-treatment batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished lighting-equipment part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_intermediate_transfer_records
+              source_ids:
+                - us-epa-mpm-development-document-2003
+            ranges: []
+        - row_id: process_water_input
+          role: "Alkaline-cleaning process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Water supplied to cleaning baths, rinses and make-up crosses the process boundary as a product input; internally recycled water is not counted again."
+          amount:
+            expression: "Record metered fresh and make-up process water entering the surface-treatment process, excluding recirculated internal water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished lighting-equipment part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_material_records
+              source_ids:
+                - us-epa-mpm-development-document-2003
+                - eu-jrc-stm-bref-2006
+            ranges: []
+        - row_id: sodium_hydroxide_input
+          role: "Sodium hydroxide cleaner"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Sodium hydroxide is recorded as one concrete alkaline-cleaning chemical when used in the declared bath; concentration and solution mass basis shall be disclosed."
+          amount:
+            expression: "Record 100% sodium-hydroxide-equivalent mass added to the bath from purchase and replenishment records; separately retain supplied solution mass and concentration"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished lighting-equipment part"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_surface_material_records
+              source_ids:
+                - us-epa-mpm-development-document-2003
+                - eu-jrc-stm-bref-2006
+            ranges: []
+        - row_id: powder_coating_input
+          role: "Powder coating material"
+          name: "Powder Coating"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6e3010f9-fbd3-48f6-95fc-c1b38d2800d2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Fresh powder coating crossing into the booth is recorded separately from recovered internal overspray."
+          amount:
+            expression: "Record fresh powder charged from inventory, excluding recovered powder recirculated within the same foreground process; disclose resin and pigment system"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished lighting-equipment part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_material_records
+              source_ids:
+                - us-epa-mpm-development-document-2003
+            ranges: []
+        - row_id: surface_electricity
+          role: "Surface-treatment and coating electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Electricity for pumps, ventilation, drying, powder application, recovery equipment and electric curing is recorded for the conditional process."
+          amount:
+            expression: "Record submetered electricity or allocate a reconciled line meter by documented operating time and throughput"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished lighting-equipment part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - us-epa-mpm-development-document-2003
+                - eu-jrc-stm-bref-2006
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_part_surface_output
+          role: "Coated part awaiting release inspection"
+          name: "Powder-coated lighting part awaiting release inspection"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "The coated product leaves the conditional surface process as a product-specific internal flow."
+          amount:
+            expression: "Record dry part mass transferred from the coating line after cure and cooling"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished lighting-equipment part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_intermediate_transfer_records
+              source_ids:
+                - us-epa-mpm-development-document-2003
+            ranges: []
+      waste:
+        - row_id: cleaning_wastewater_output
+          role: "Cleaning and rinse wastewater"
+          name: "Wastewater from cleaning"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f0402393-e82c-47e8-9cd8-a486c97f3e89"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Wastewater leaving alkaline cleaning and rinsing is recorded as one concrete process-wastewater flow before on-site or off-site treatment. Bath dumps and rinses may be tracked separately in raw records but are aggregated only when composition and destination are compatible."
+          amount:
+            expression: "Record measured wastewater mass leaving the process after internal reuse, with pH, dissolved-metal information and treatment destination retained"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished lighting-equipment part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_output_records
+              source_ids:
+                - us-epa-mpm-development-document-2003
+                - eu-jrc-stm-bref-2006
+            ranges: []
+        - row_id: powder_coating_waste_output
+          role: "Powder-coating waste"
+          name: "Powder coating waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "9aa53a82-5462-400e-9096-efab7718201f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Unrecovered overspray and booth clean-out powder leaving the process is recorded separately from internally recovered powder."
+          amount:
+            expression: "Record weighed powder-coating waste transferred for treatment or disposal, net of powder returned to the coating feed"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished lighting-equipment part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_output_records
+              source_ids:
+                - us-epa-mpm-development-document-2003
+            ranges: []
+      elementary:
+        []
+  - id: inspection_and_release
+    label: "Final inspection and factory-gate release"
+    inputs:
+      product:
+        - row_id: finished_part_inspection_input
+          role: "Fabricated part awaiting release"
+          name: "Fabricated lighting part awaiting release inspection"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "The last applicable fabrication or finishing step supplies the product-specific part to release inspection."
+          amount:
+            expression: "Record net dry mass entering final inspection and reconcile it to accepted, rework and rejected outcomes"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished lighting-equipment part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_release_records
+              source_ids:
+                - us-epa-mpm-development-document-2003
+            ranges: []
+        - row_id: inspection_electricity
+          role: "Inspection electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Electricity for dimensional, optical, coating, continuity or other declared release equipment is recorded separately from fabrication electricity."
+          amount:
+            expression: "Record submetered inspection electricity or allocate a reconciled test-area meter by documented inspection time"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished lighting-equipment part"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - us-epa-mpm-development-document-2003
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_lighting_part
+          role: "Finished lighting-equipment part"
+          name: "Finished lighting-equipment part"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Accepted parts leave the foreground system at factory gate. No exact public state-100 reference-product UUID was confirmed, so the final dataset shall create or resolve the product-specific flow before publication."
+          amount:
+            expression: "Exactly 1 kg accepted net product mass as the reference-flow normalization output"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg accepted finished lighting-equipment part"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - eu-pef-recommendation-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "Shared fabrication, finishing and inspection processes"
+    rule: "First subdivide meters, batch records and waste records by process, line, batch or part family so that the declared product receives directly measured burdens wherever technically feasible."
+    source_ids:
+      - eu-pef-recommendation-2021-2279
+  - rule_id: allocation_physical_driver
+    applies_to: "Residual shared foreground burdens"
+    rule: "When subdivision is not feasible, allocate electricity by machine or line time and rated/measured load, cleaning and coating burdens by treated surface area or bath throughput, and other mass-driven burdens by accepted plus rejected processed mass. Document the causal driver and sensitivity."
+    source_ids:
+      - eu-pef-recommendation-2021-2279
+  - rule_id: allocation_scrap_and_recovery
+    applies_to: "Aluminium scrap, recovered powder and internally recirculated fluids"
+    rule: "Record quantities, ownership and destinations. Do not count internal recirculation as a new input or assign an avoided-primary-material credit inside this gate-to-gate process. Apply any recycling or substitution credit only in the downstream lifecycle model under its declared method."
+    source_ids:
+      - eu-pef-recommendation-2021-2279
+  - rule_id: allocation_economic_last_resort
+    applies_to: "Multi-product operations without a defensible physical driver"
+    rule: "Use economic allocation only when subdivision and a causal physical relationship are demonstrably unavailable; use contemporaneous net prices, report the allocation share, and test sensitivity to price variability."
+    source_ids:
+      - eu-pef-recommendation-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_batch_records
+      process_id: "metal_part_fabrication"
+      flow_role: "aluminium sheet input"
+      record_type: "purchase receipt plus batch issue/return record"
+      raw_fields: "material UUID; alloy; temper; thickness; recycled-content basis; supplier; issued mass; returned mass; batch id; timestamp"
+      collection_method: "Reconcile calibrated receiving or inventory scales with production issue and return records"
+      unit: "kg"
+      frequency: "Each receipt and production batch"
+      temporal_coverage: "At least 12 representative months or the full campaign when shorter"
+      site_scope: "Each manufacturing site and declared part family"
+      aggregation_rule: "Sum net issued mass for accepted reference-product batches, then normalize by accepted net output mass"
+      quality_evidence: "Scale calibration; material certificate; supplier lot; inventory reconciliation; exception log"
+    - protocol_id: cp_energy_records
+      process_id: "metal_part_fabrication_surface_preparation_and_coating_inspection_and_release"
+      flow_role: "electricity inputs"
+      record_type: "production electricity meter and allocation records"
+      raw_fields: "meter id; opening and closing reading; multiplier; operating time; line state; batch id; electricity supplier and grid geography"
+      collection_method: "Prefer submetering; otherwise reconcile the site meter and allocate with documented machine/line/test time and load"
+      unit: "kWh and MJ"
+      frequency: "Each batch or shift; meter reconciliation monthly"
+      temporal_coverage: "At least 12 representative months or the full campaign when shorter"
+      site_scope: "Each site and process area"
+      aggregation_rule: "Subtract idle/non-production loads when measured, allocate only residual shared load, convert kWh to MJ, normalize by accepted mass"
+      quality_evidence: "Meter calibration; invoices; meter reconciliation; downtime log; allocation worksheet"
+    - protocol_id: cp_cutting_fluid_records
+      process_id: "metal_part_fabrication"
+      flow_role: "cutting-fluid input"
+      record_type: "purchase, issue and inventory records"
+      raw_fields: "product identity; concentrate mass; make-up mass; dilution water; opening and closing inventory; recirculation status; batch id"
+      collection_method: "Reconcile purchase, issue and inventory records; exclude fluid still in internal circulation"
+      unit: "kg"
+      frequency: "Each charge and disposal event"
+      temporal_coverage: "At least 12 representative months or the full campaign when shorter"
+      site_scope: "Each machining system"
+      aggregation_rule: "Net fresh fluid charged divided by accepted reference-product mass"
+      quality_evidence: "Product safety/technical sheet; inventory reconciliation; batch log"
+    - protocol_id: cp_intermediate_transfer_records
+      process_id: "metal_part_fabrication_surface_preparation_and_coating"
+      flow_role: "internal part outputs and inputs"
+      record_type: "transfer tickets and work-order records"
+      raw_fields: "part id; source process; destination process; accepted mass; rejected mass; rework mass; timestamp"
+      collection_method: "Weigh or count with a validated count-to-mass conversion at every process transfer"
+      unit: "kg"
+      frequency: "Each batch transfer"
+      temporal_coverage: "Full production campaign"
+      site_scope: "Each foreground process boundary"
+      aggregation_rule: "Reconcile source output to destination input and explain timing or inventory differences"
+      quality_evidence: "Scale calibration; transfer ticket; work-order reconciliation; rework log"
+    - protocol_id: cp_fabrication_waste_records
+      process_id: "metal_part_fabrication"
+      flow_role: "aluminium scrap and spent coolant"
+      record_type: "dispatch, manifest and storage records"
+      raw_fields: "waste UUID; container tare/gross/net mass; alloy/contamination; coolant type; destination; manifest/receipt; batch link"
+      collection_method: "Weigh each dispatched container and reconcile temporary storage change"
+      unit: "kg"
+      frequency: "Each container movement and monthly stocktake"
+      temporal_coverage: "At least 12 representative months or the full campaign when shorter"
+      site_scope: "Each site and waste destination"
+      aggregation_rule: "Opening stock plus generation minus closing stock and returns, normalized by accepted product mass"
+      quality_evidence: "Scale calibration; waste manifest; recycler/treatment receipt; storage reconciliation"
+    - protocol_id: cp_surface_material_records
+      process_id: "surface_preparation_and_coating"
+      flow_role: "process water, sodium hydroxide, powder coating"
+      record_type: "meter, purchase, issue and bath records"
+      raw_fields: "meter readings; chemical product mass; active concentration; powder issue/return; recovered powder; bath id; batch id"
+      collection_method: "Meter water and reconcile chemical/coating purchase, issue, return and bath records"
+      unit: "kg and concentration fraction"
+      frequency: "Each batch or bath addition; water meter each shift"
+      temporal_coverage: "At least 12 representative months or the full campaign when shorter"
+      site_scope: "Each treatment and coating line"
+      aggregation_rule: "Count only fresh boundary inputs; calculate active NaOH mass as supplied solution mass times verified mass fraction; normalize by accepted output mass"
+      quality_evidence: "Meter/scale calibration; chemical certificate; concentration test; inventory and bath logs"
+    - protocol_id: cp_surface_output_records
+      process_id: "surface_preparation_and_coating"
+      flow_role: "cleaning wastewater and powder-coating waste"
+      record_type: "discharge, waste transfer and recovery records"
+      raw_fields: "wastewater mass/volume; density; pH; dissolved-metal indicator; treatment destination; powder waste net mass; recovered powder; batch/date"
+      collection_method: "Meter wastewater or document tank transfer; weigh powder waste; reconcile internal reuse and recovery"
+      unit: "kg"
+      frequency: "Each discharge or waste transfer; reconcile monthly"
+      temporal_coverage: "At least 12 representative months or the full campaign when shorter"
+      site_scope: "Each line, treatment route and destination"
+      aggregation_rule: "Net external waste output after internal reuse/recovery, normalized by accepted output mass"
+      quality_evidence: "Meter/scale calibration; laboratory result; waste manifest; treatment receipt; recovery reconciliation"
+    - protocol_id: cp_release_records
+      process_id: "inspection_and_release"
+      flow_role: "inspection input and accepted reference product"
+      record_type: "production and release-inspection records"
+      raw_fields: "part id; input mass/count; inspected count; accepted count/mass; rework; reject; drawing revision; inspection criteria; timestamp"
+      collection_method: "Use calibrated scales or validated count-to-mass conversion and controlled inspection records"
+      unit: "kg and item count"
+      frequency: "Each production batch"
+      temporal_coverage: "Full production campaign"
+      site_scope: "Each site and part number"
+      aggregation_rule: "Reconcile input to accepted, rework and rejected outcomes; normalize all exchanges by accepted net mass"
+      quality_evidence: "Scale calibration; inspection plan; signed release record; nonconformance and rework log"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Every foreground exchange"
+      rule: "normalized amount = period- or batch-matched exchange / accepted net mass of finished_lighting_part; preserve the raw amount and common time/batch boundary"
+      inputs:
+        - "Exchange record"
+        - "accepted net product mass"
+      output: "Exchange per 1 kg reference flow"
+      source_ids:
+        - eu-pef-recommendation-2021-2279
+    - id: calc_net_material_input
+      applies_to: "aluminium_sheet_input"
+      rule: "net sheet input = issued sheet mass - unused sheet returned to inventory; do not subtract generated scrap"
+      inputs:
+        - "Issued mass"
+        - "returned unused mass"
+      output: "Net aluminium sheet input"
+      source_ids:
+        - us-epa-mpm-development-document-2003
+    - id: calc_active_naoh
+      applies_to: "sodium_hydroxide_input"
+      rule: "100% NaOH-equivalent mass = supplied cleaning-solution mass × verified NaOH mass fraction"
+      inputs:
+        - "Supplied solution mass"
+        - "certificate or measured mass fraction"
+      output: "Active sodium hydroxide mass"
+      source_ids:
+        - eu-jrc-stm-bref-2006
+    - id: calc_electricity_mj
+      applies_to: "All electricity rows"
+      rule: "electricity (MJ) = metered electricity (kWh) × 3.6"
+      inputs:
+        - "Metered or allocated kWh"
+      output: "Electricity in MJ"
+      source_ids: []
+    - id: calc_mass_reconciliation
+      applies_to: "Fabrication, surface process and inspection"
+      rule: "input part/material mass shall reconcile to accepted output, internal transfer, scrap/waste, retained inventory and documented mass change over the same boundary; investigate rather than force-close unexplained differences"
+      inputs:
+        - "Material and intermediate inputs"
+        - "accepted outputs"
+        - wastes
+        - "inventory change"
+      output: "Mass-balance residual and completeness finding"
+      source_ids:
+        - us-epa-mpm-development-document-2003
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Reference product and material flows"
+      requirement: "Preserve part number, host-product function, drawing revision, material/alloy, dimensions, finish, UUID decision, and product state; do not use the representative aluminium route for an undeclared alternative material."
+      evidence: "Product drawing and bill of materials; material certificate; Tiangong state-100 direct-read audit"
+    - id: dq_measurement
+      applies_to: "Meters and scales"
+      requirement: "Use calibrated meters/scales or document a validated conversion; retain raw readings, multipliers, density/concentration data, downtime and allocation worksheets."
+      evidence: "Calibration certificates; meter logs; weigh tickets; laboratory or supplier certificates"
+    - id: dq_temporal
+      applies_to: "Foreground annual or campaign data"
+      requirement: "Cover at least 12 representative months unless the production campaign is shorter; disclose campaign dates, shutdowns, abnormal batches and representativeness."
+      evidence: "Production calendar; batch register; exception log"
+    - id: dq_completeness
+      applies_to: "All required and applicable conditional processes"
+      requirement: "Reconcile inputs, internal transfers, accepted outputs, rejects, wastes and inventory change. Report zero only when the exchange is demonstrably absent, not when the UUID or meter is missing."
+      evidence: "Mass and energy reconciliation; applicability checklist; unresolved-flow register"
+    - id: dq_geography_technology
+      applies_to: "Foreground and linked upstream datasets"
+      requirement: "Match site geography, electricity supply, material state, finishing technology, waste treatment and reference period; document any proxy and its effect."
+      evidence: "Dataset metadata; supplier records; process specification; data-quality assessment following eu-pef-recommendation-2021-2279"
+validation_rules:
+  - rule_id: validate_identity_and_reference
+    applies_to: "Product identity and reference flow"
+    rule: "Fail validation if the canonical PCR id, part function, host product, material/alloy, finish, net reference mass, factory-gate state or required qualifiers are missing or internally inconsistent."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - eu-pef-recommendation-2021-2279
+  - rule_id: validate_process_applicability
+    applies_to: "Process map"
+    rule: "Require both required processes and evaluate the conditional surface process against the declared route. If another finishing route is used, require a technology-specific process with concrete atomic flows and disclose the substitution."
+    source_ids:
+      - us-epa-mpm-development-document-2003
+      - eu-jrc-stm-bref-2006
+  - rule_id: validate_atomic_inventory
+    applies_to: "Inventory rows"
+    rule: "Require one physical, chemical, waste or energy exchange per row; require a verified state-100 UUID or the matching manifest unresolved entry; reject combined utilities, materials, wastes, emissions or route-choice labels."
+    source_ids: []
+  - rule_id: validate_units_and_normalization
+    applies_to: "Amounts and units"
+    rule: "Require mass rows in kg, electricity in MJ, documented conversions, one common accepted-product denominator, and collection protocols for every collected or calculated foreground row."
+    source_ids:
+      - eu-pef-recommendation-2021-2279
+  - rule_id: validate_reconciliation
+    applies_to: "Material, intermediate, waste and energy records"
+    rule: "Report accepted checks, skipped checks and residuals; fail when batch/time boundaries differ without reconciliation or when unexplained material losses, double-counted recirculation, or missing waste destinations make completeness inconclusive."
+    source_ids:
+      - us-epa-mpm-development-document-2003
+  - rule_id: validate_range_evidence
+    applies_to: "Quantitative QA ranges"
+    rule: "Treat all external range needs in the manifest as unresolved until at least two independent original-text sources with compatible boundary, functional unit and product state support a reasoned synthesis. Do not create a range from a single case, repeated value or regulatory limit."
+    source_ids: []
+  - rule_id: validate_allocation
+    applies_to: "Shared burdens and recovery"
+    rule: "Require subdivision first, a documented causal physical driver for residual allocation, separate recovery quantities and destinations, and sensitivity evidence for any last-resort economic allocation."
+    source_ids:
+      - eu-pef-recommendation-2021-2279
+published_dataset_profile:
+  dataset_role: "Foreground factory-gate production dataset for a declared lighting-equipment part"
+  downstream_use: "secondary_dataset; background_dataset after review and publication"
+  allowed_use: "Link into complete lamp, lighting fitting, illuminated-sign, construction-product or other lifecycle models when the part function, material, finish, geography, technology, time and factory-gate boundary are compatible"
+  excluded_use: "Direct comparison of unlike parts; use as a complete lamp or lighting fitting; substitution for a glass-only, plastics-only, vehicle-lighting or light-source dataset; use when material or finish is unknown; use as a published default while UUID or range-evidence blockers remain unresolved"
+  required_metadata: "PCR id and version; part number/function; host product; drawing revision; material/alloy; net mass; dimensions; forming and finishing route; coating; electrical content; included/outsourced processes; site/geography; period; electricity supply; recycled content method; allocation; scrap and waste destinations; UUID status"
+  required_quality_disclosure: "Primary-data share; measurement and calibration methods; temporal coverage; missing data and proxies; process applicability; material/energy reconciliation; allocation sensitivity; unresolved UUIDs; unresolved external range evidence; representativeness and reviewer status"
+  update_trigger: "Change in part design or material, mass by more than the study significance threshold, forming or finishing technology, coating chemistry, supplier/recycled-content basis, electricity supply, site/geography, waste treatment, allocation method, or availability of exact Tiangong UUID/range evidence"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *Central Product Classification Version 3.0 Structure*, 30 June 2025, [official CSV](https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv)"
+    used_for: "Exact CPC 46542 classification identity and English title; source bytes verified against SHA-256 5cd2c1c4890dd6be16af48e9bb940fed48efff9865f39ff15edaa921da25fb7c"
+  - id: "us-epa-mpm-development-document-2003"
+    type: "official_guidance"
+    reference: "US Environmental Protection Agency, *Development Document for the Final Effluent Limitations Guidelines and Standards for the Metal Products & Machinery Point Source Category*, EPA-821-B-03-001, 2003, [official PDF](https://www.epa.gov/sites/default/files/2015-11/documents/mp-m_dd_2003.pdf)"
+    used_for: "Original pages 4-12 to 4-14 verified for shaping, machining, cleaning, surface preparation, organic coating, assembly/inspection, process ordering, wastes and wastewater"
+  - id: "eu-jrc-stm-bref-2006"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, *Reference Document on Best Available Techniques for the Surface Treatment of Metals and Plastics*, adopted August 2006, [official BREF page](https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/surface-treatment-metals-and-plastics)"
+    used_for: "Original official page verified for aqueous electrolytic/chemical surface treatment and associated activities; supports the conditional surface-treatment boundary and collection focus"
+  - id: "eu-pef-recommendation-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission, *Commission Recommendation (EU) 2021/2279 of 15 December 2021 on the use of the Environmental Footprint methods*, [official consolidated text](https://eur-lex.europa.eu/eli/reco/2021/2279/oj/eng)"
+    used_for: "Original official text verified for functional unit/reference flow, system boundary, multifunctionality hierarchy, company-specific data, data quality, normalization and validation principles"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:557d6f718b9d7ce116ddcd22c64c89bc08b01dceeee3017c0c0fd3c058b261b3"
+  generated_content_sha256: "sha256:cae36c4a8844a4f282025d317e4d51dbfbe3c57a8c7d243c056dffdd1d343d30"

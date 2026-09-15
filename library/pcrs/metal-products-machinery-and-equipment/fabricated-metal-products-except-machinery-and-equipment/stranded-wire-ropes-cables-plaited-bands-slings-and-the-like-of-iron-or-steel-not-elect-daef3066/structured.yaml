@@ -1,10 +1,562 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "42941"
-  title: "Stranded wire, ropes, cables, plaited bands, slings and the like, of iron or steel, not electrically insulated"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.stranded-wire-ropes-cables-plaited-bands-slings-and-the-like-of-iron-or-steel-not-elect-daef3066"
+  classification_refs: "CPC 3.0: 42941 (exact classification context; mapping remains separately governed)"
+  covered_products: "Non-electrically-insulated iron or steel stranded wire, ropes, cables, plaited bands, slings, and like products, including bright, zinc-coated, or Zn-Al-coated wire constructions when the coating state is declared"
+  excluded_products: "Electrically insulated conductors; copper or aluminium stranded products; barbed or fencing wire; chains; springs; wire cloth, grill, netting, or fencing; lifting products outside the declared product specification"
+  representative_product: "Factory-gate steel wire rope or sling of declared construction, wire finish, core, nominal diameter, length, mass, strength grade, termination, lubricant state, and packing state"
+  production_route: "Received steel wire and components; stranding and closing or braiding; conditional lubrication and sling termination; production testing, marking, and packing"
+  market_state: "Finished, non-electrically-insulated product supplied at the factory gate, either in bulk length/coils/reels or as a fabricated sling assembly, as declared"
+functional_unit:
+  what: "A conforming non-electrically-insulated stranded iron-or-steel wire product that transmits tensile load or provides the declared rope, cable, band, or sling function"
+  how_much: "1 kg net product mass, excluding separately reported transport packaging"
+  how_well: "The declared construction, nominal diameter and length, wire finish, core type, rope or wire grade, minimum breaking-force or working-load specification where applicable, termination, lubrication state, and production-test status"
+  how_long_or_cycle: "One factory-gate delivery of the declared finished product; service life and use cycles are outside this cradle-to-gate reference flow"
+  reference_flow_link: "The reference product output row reference_product from integrated_fabrication"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "foreground fabrication"
+      rule: "Include stranding, closing or braiding, in-process lubrication, cutting, applicable sling termination, production testing, marking, and packing from received-component gate to finished-product factory gate."
+      source_ids:
+        - iso-2408-2017
+        - iso-7531-1987
+    - rule_id: boundary_upstream_wire_processing
+      applies_to: "received steel wire"
+      rule: "Treat steelmaking, wire-rod production, wire drawing, heat treatment, pickling, and metallic coating as upstream unless their separately metered processes are intentionally brought into the study boundary; disclose and link the applicable datasets."
+      source_ids:
+        - eu-ferrous-metals-processing-bat-2022
+    - rule_id: boundary_no_electrical_insulation
+      applies_to: "product identity"
+      rule: "Exclude electrically insulated conductors and prevent classification similarity from broadening the material or insulation boundary."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+    - rule_id: boundary_direct_exchanges
+      applies_to: "site operations"
+      rule: "Report all product, waste, and elementary exchanges that actually cross the declared foreground boundary; do not add upstream electricity emissions as direct site emissions."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Received steel wire and separately received core, lubricant, termination, and packing components at the foreground site"
+  starting_condition_role: "Gate-to-gate fabrication start for the stranded product; upstream material production remains represented by linked supplier or background datasets"
+  product_classification_scope: "Non-electrically-insulated iron-or-steel stranded products described by the semantic boundary and referenced by CPC 3.0 code 42941"
+  recursive_input_rule: "A purchased input already within this same stranded-product category is recorded as one product input with its supplier dataset and is not recursively decomposed inside this PCR; disclose its mass and processing state"
+  upstream_dataset_requirement: "Link geography-, technology-, grade-, and coating-representative datasets for received steel wire, core material, lubricant, termination components, packing components, and delivered electricity"
+  disclosure: "Declare whether wire drawing, heat treatment, pickling, coating, core manufacture, lubricant manufacture, termination manufacture, and packing manufacture occur upstream or inside another linked foreground dataset; identify exclusions and shared-meter allocation"
+reference_flow_definition:
+  reference_amount: "1 kg net finished product"
+  product_flow_ref:
+    name: "Stranded wire, ropes, cables, plaited bands, slings and the like, of iron or steel, not electrically insulated"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product form"
+    - "steel or iron grade"
+    - "wire finish or coating"
+    - "construction and lay"
+    - "core type"
+    - "nominal diameter"
+    - "supplied length"
+    - "net product mass"
+    - "rope or wire grade"
+    - "declared mechanical specification"
+    - "sling configuration and termination when applicable"
+    - "lubricant state"
+    - "production-test status"
+    - "packing state"
+    - "production site and geography"
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh or calculate net finished-product mass excluding separately reported reels, drums, pallets, strapping, and other transport packaging. Record the weighing basis and tare method."
+  - id: component_mass_consistency
+    applies_to: "steel wire, core, terminations, lubricant, and packing inputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert component receipts, issues, returns, and count-based records to kg using measured batch mass or documented supplier mass; retain the conversion record."
+  - id: electricity_energy_conversion
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered kWh and convert to MJ using 1 kWh = 3.6 MJ; disclose the meter boundary and any allocated shared load."
+  - id: length_mass_reconciliation
+    applies_to: "products also sold by length"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report measured net mass as the reference amount and retain supplied length and measured or declared mass per unit length as product qualifiers for reconciliation."
+process_map:
+  - id: integrated_fabrication
+    name: "Integrated stranding, closing or braiding, finishing, testing, and packing"
+    inclusion: "required"
+    inclusion_condition: "Always included for production of a finished reference product; flow-level conditions distinguish fibre-core, lubricated, sling-termination, reel-packed, and strapped variants"
+    role: "Foreground fabrication and factory-gate preparation"
+    quantitative_reference: "1 kg net finished reference product"
+process_inventory:
+  - id: integrated_fabrication
+    label: "Integrated stranding, closing or braiding, finishing, testing, and packing"
+    inputs:
+      product:
+        - row_id: steel_wire_input
+          role: "Steel wire feed"
+          name: "Steel Wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "62bb3717-f62c-43e0-baca-46a1e6f847c4"
+          property_unit: "Mass / kg"
+          description: "Received steel wire is the metallic feed assembled into strands and the finished product. Record only wire crossing the site boundary and retain grade, coating, diameter, tensile strength, and supplier-dataset qualifiers."
+          amount:
+            expression: "Measured net steel-wire mass issued to conforming production, reconciled with returns, work in progress, product, and segregated waste"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_component_records
+              source_ids:
+                - iso-2408-2017
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Electricity drives stranding, closing or braiding, cutting, termination equipment, test equipment, ventilation, and packing within the declared meter boundary."
+          amount:
+            expression: "Metered electricity attributable to the reporting-period production, converted from kWh and normalized to conforming net product mass"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_electricity_meter_records
+              source_ids: []
+            ranges: []
+        - row_id: rope_lubricant
+          role: "Steel-wire-rope lubricant"
+          name: "Steel-wire-rope lubricant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record lubricant applied during stranding, closing, finishing, or preservation only when the declared product or process uses it. Subtract documented recoverable returns from issued mass."
+          amount:
+            expression: "Measured lubricant issued minus measured reusable return for the production batch; zero only with documented no-lubricant construction"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_component_records
+              source_ids:
+                - iso-2408-2017
+            ranges: []
+        - row_id: fibre_core
+          role: "Fibre rope core"
+          name: "Fibre core for steel wire rope"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the specific fibre core supplied for a fibre-core construction. This row is not applicable to wire-strand-core, independent-wire-rope-core, or coreless products."
+          amount:
+            expression: "Measured received or issued fibre-core mass incorporated in conforming product, net of returned offcuts"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_component_records
+              source_ids:
+                - iso-2408-2017
+            ranges: []
+        - row_id: aluminium_ferrule
+          role: "Aluminium termination ferrule"
+          name: "Aluminium ferrule for steel-wire-rope eye termination"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record aluminium ferrules only for ferrule-secured sling eye terminations made within the foreground boundary. Other termination materials require their own concrete rows in the produced dataset."
+          amount:
+            expression: "Ferrule count multiplied by measured or supplier-declared mass per ferrule, reconciled with rejects"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_component_records
+              source_ids:
+                - iso-8793-1986
+            ranges: []
+        - row_id: steel_rope_thimble
+          role: "Steel wire-rope thimble"
+          name: "Steel wire-rope thimble"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record steel thimbles only when installed in sling eyes inside the foreground boundary. Retain the thimble specification and compatibility with the declared rope diameter."
+          amount:
+            expression: "Thimble count multiplied by measured or supplier-declared mass per thimble, reconciled with rejects"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_component_records
+              source_ids:
+                - iso-2262-1984
+            ranges: []
+        - row_id: wooden_cable_drum
+          role: "Wooden cable drum or reel"
+          name: "Packing cases, boxes, crates, drums and similar packings, of wood, cable-drums of wood"
+          flow_type: "product"
+          flow_ref:
+            uuid: "39feb4f9-43da-4106-aa3c-f52afb654078"
+          property_unit: "Mass / kg"
+          description: "Record a wooden cable drum or reel only when it crosses the factory gate with the product. State whether it is single-use, returnable, or pooled, and apply the declared reuse allocation rule."
+          amount:
+            expression: "Measured allocated drum or reel mass delivered with the reporting-period product"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packing_records
+              source_ids:
+                - iso-2408-2017
+            ranges: []
+        - row_id: steel_baling_band
+          role: "Steel packing band"
+          name: "Steel baling band"
+          flow_type: "product"
+          flow_ref:
+            uuid: "56fe4f71-b594-4b55-8553-c87f2516737d"
+          property_unit: "Mass / kg"
+          description: "Record steel packing band only when used to secure the supplied coil, reel, or package and delivered with the product."
+          amount:
+            expression: "Measured steel-band mass issued to shipped product, net of unused return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_records
+              source_ids:
+                - iso-2408-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Finished reference product"
+          name: "Stranded wire, ropes, cables, plaited bands, slings and the like, of iron or steel, not electrically insulated"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This output is the conforming net finished product at the factory gate. Packaging mass is reported separately and is excluded from the 1 kg reference amount."
+          amount:
+            expression: "Exactly 1 kg net finished reference product by definition after normalization"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1 kg net finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "source_rule"
+              source_ids:
+                - un-cpc-3-0-structure-2025
+                - iso-2408-2017
+                - iso-7531-1987
+            ranges: []
+      waste:
+        - row_id: waste_steel_wire
+          role: "Segregated waste steel wire"
+          name: "Segregated waste steel wire"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record trimmed wire ends, rejected wire, and irrecoverable steel-wire offcuts leaving the foreground process as segregated waste. Do not combine contaminated composite waste with this row."
+          amount:
+            expression: "Measured segregated waste-steel-wire mass leaving the process, by declared recovery or disposal route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_wire_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "shared production lines and meters"
+    rule: "Subdivide by product run, machine, or meter where records permit before applying allocation."
+    source_ids: []
+  - rule_id: allocation_shared_energy
+    applies_to: "shared electricity and services"
+    rule: "Allocate residual shared consumption using recorded machine operating time multiplied by rated or measured load; if unavailable, use a documented mass-throughput basis and disclose the sensitivity."
+    source_ids: []
+  - rule_id: allocation_no_avoided_scrap_credit
+    applies_to: "waste steel wire"
+    rule: "Report waste at the foreground boundary without an avoided-primary-steel credit. Any recycling substitution belongs to the downstream system model and must not be embedded in the foreground amount."
+    source_ids: []
+  - rule_id: allocation_reusable_packing
+    applies_to: "returnable or pooled drums and reels"
+    rule: "Allocate measured packing production burden over documented expected uses, include return logistics in the applicable system model, and disclose losses and the allocation denominator; do not assume reuse without records."
+    source_ids: []
+  - rule_id: allocation_no_co_product_default
+    applies_to: "normal fabrication output"
+    rule: "Treat the declared stranded product as the reference product and production rejects as waste. If another saleable co-product is intentionally produced, report it separately and document the physical or economic allocation selected for that dataset."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_component_records
+      process_id: "integrated_fabrication"
+      flow_role: "steel wire, lubricant, fibre core, ferrule, and thimble inputs"
+      record_type: "purchase receipt, stores issue/return, batch traveller, component count, supplier specification"
+      raw_fields: "material identity; batch; quantity issued; quantity returned; unit; count; unit mass; product construction; supplier; coating or material grade"
+      collection_method: "Reconcile receiving, stores, and batch records to conforming production; weigh representative count-based components when supplier mass is unavailable"
+      unit: "kg and count"
+      frequency: "each batch; aggregate monthly"
+      temporal_coverage: "full reporting period, normally at least 12 consecutive months or the complete production campaign"
+      site_scope: "all foreground lines producing the declared product"
+      aggregation_rule: "Sum net issues by concrete material and normalize to conforming net product mass; retain each material as a separate exchange"
+      quality_evidence: "calibrated scale records; purchase documents; batch traveller; supplier certificate; reconciliation log"
+    - protocol_id: cp_electricity_meter_records
+      process_id: "integrated_fabrication"
+      flow_role: "purchased electricity"
+      record_type: "revenue meter, submeter, machine log, production log"
+      raw_fields: "meter start; meter end; kWh; meter boundary; downtime; machine hours; product mass; allocation key"
+      collection_method: "Prefer dedicated submeters; otherwise reconcile site meter to included equipment and allocate documented shared load"
+      unit: "kWh, converted to MJ"
+      frequency: "continuous or each shift; aggregate monthly"
+      temporal_coverage: "same reporting period as product output"
+      site_scope: "included fabrication, testing, ventilation, and packing equipment"
+      aggregation_rule: "Net kWh multiplied by 3.6 and divided by conforming net product kg"
+      quality_evidence: "meter calibration or utility invoice; reading log; allocation worksheet"
+    - protocol_id: cp_packing_records
+      process_id: "integrated_fabrication"
+      flow_role: "wooden drum and steel band delivered with product"
+      record_type: "packing bill, stores issue/return, shipment record, tare measurement, reuse register"
+      raw_fields: "packing identity; mass issued; mass returned; tare mass; shipment; product mass; ownership; expected uses; actual returns; losses"
+      collection_method: "Weigh or use verified supplier mass; link each packing item to shipment and reuse status"
+      unit: "kg and count"
+      frequency: "each shipment; aggregate monthly"
+      temporal_coverage: "same reporting period as product output"
+      site_scope: "all factory-gate packing included in the data package"
+      aggregation_rule: "Sum single-use packing; for reusable packing apply the documented use denominator and normalize to net product kg"
+      quality_evidence: "scale record; packing bill; shipment record; reuse ledger"
+    - protocol_id: cp_output_batch_records
+      process_id: "integrated_fabrication"
+      flow_role: "conforming finished output and qualifiers"
+      record_type: "production order, weigh ticket, test certificate, release record, packing list"
+      raw_fields: "product identity; construction; coating; core; diameter; length; net mass; strength grade; termination; lubrication; test status; rejects; packing state"
+      collection_method: "Reconcile released output to weigh tickets and production/test records; subtract packaging tare"
+      unit: "kg and m"
+      frequency: "each batch and shipment"
+      temporal_coverage: "full reporting period"
+      site_scope: "all included production lines"
+      aggregation_rule: "Sum released net product mass; use it as the denominator for normalized inventory"
+      quality_evidence: "calibrated scale; test certificate; release authorization; traceable batch identifier"
+    - protocol_id: cp_waste_wire_records
+      process_id: "integrated_fabrication"
+      flow_role: "segregated waste steel wire"
+      record_type: "waste container weight, transfer note, recovery receipt, batch scrap log"
+      raw_fields: "gross mass; tare; net mass; wire identity; contamination; source batch; destination; treatment route"
+      collection_method: "Weigh segregated containers and reconcile internal scrap logs with outbound transfer records"
+      unit: "kg"
+      frequency: "each container movement; aggregate monthly"
+      temporal_coverage: "same reporting period as product output"
+      site_scope: "all included lines and trimming/termination stations"
+      aggregation_rule: "Sum net outbound waste steel wire by route and normalize to net product kg"
+      quality_evidence: "scale record; transfer note; recovery receipt; mass-balance reconciliation"
+  calculation_rules:
+    - id: calc_normalize_mass
+      applies_to: "every non-reference inventory row"
+      rule: "normalized amount = reporting-period exchange amount / reporting-period conforming net finished-product mass"
+      inputs:
+        - "exchange mass or energy"
+        - "conforming net product mass"
+      output: "exchange per 1 kg reference product"
+      source_ids: []
+    - id: calc_electricity_mj
+      applies_to: "electricity"
+      rule: "electricity (MJ) = metered electricity (kWh) × 3.6; normalized electricity = electricity (MJ) / conforming net product mass (kg)"
+      inputs:
+        - "metered kWh"
+        - "conforming net product mass"
+      output: "MJ/kg reference product"
+      source_ids: []
+    - id: calc_count_to_mass
+      applies_to: "ferrules, thimbles, drums, or other count-recorded components"
+      rule: "component mass = accepted component count × measured or verified supplier unit mass; reconcile rejects and returns separately"
+      inputs:
+        - "accepted count"
+        - "unit mass"
+        - "rejected count"
+        - "returned count"
+      output: "kg of each concrete component"
+      source_ids: []
+    - id: calc_wire_mass_balance
+      applies_to: "steel-bearing material"
+      rule: "steel-wire input = net steel mass in conforming product + segregated waste steel wire + closing work-in-progress change + documented steel loss or other separately identified steel output"
+      inputs:
+        - "wire issues and returns"
+        - "product composition"
+        - "waste mass"
+        - work-in-progress
+      output: "mass-balance residual and completeness finding"
+      source_ids: []
+    - id: calc_reusable_packing
+      applies_to: "returnable wooden drum or reel"
+      rule: "allocated packing mass per shipment = measured drum mass / documented expected uses, adjusted for recorded loss where the adopted system model requires it"
+      inputs:
+        - "drum mass"
+        - "expected uses"
+        - "return and loss records"
+        - "shipped product mass"
+      output: "allocated kg packing per kg reference product"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity_traceability
+      applies_to: "product and material rows"
+      requirement: "Maintain batch-level linkage between the declared product construction and each steel-wire, core, lubricant, termination, and packing input; do not substitute a broader UUID for an unresolved exact flow."
+      evidence: "batch traveller, supplier certificate, stores record, UUID audit status"
+    - id: dq_mass_completeness
+      applies_to: "reference product and steel-bearing flows"
+      requirement: "Reconcile steel-bearing inputs, product, waste, and work-in-progress; investigate and disclose the residual and excluded steel-containing exchanges."
+      evidence: "signed mass-balance worksheet and inventory reconciliation"
+    - id: dq_meter_coverage
+      applies_to: "electricity"
+      requirement: "Cover all included operating, test, ventilation, and packing loads for the same temporal and site boundary as output; disclose shared-load allocation and unmetered equipment."
+      evidence: "meter map, invoices or readings, machine logs, allocation worksheet"
+    - id: dq_temporal_representativeness
+      applies_to: "all foreground rows"
+      requirement: "Use the same representative reporting period, normally at least 12 consecutive months; for campaign production use the complete campaign and disclose why it is representative."
+      evidence: "reporting-period statement and production schedule"
+    - id: dq_conditional_rows
+      applies_to: "core, lubricant, terminations, and packing"
+      requirement: "Mark each conditional atomic row as measured, calculated, or demonstrably not applicable for the declared product; omission without a product specification is not acceptable."
+      evidence: "product specification, bill of materials, packing instruction, termination drawing"
+    - id: dq_test_and_release
+      applies_to: "reference product"
+      requirement: "Retain the applicable production-test, acceptance, marking, and release evidence for the declared product specification."
+      evidence: "test certificate, inspection record, release authorization, marking record"
+validation_rules:
+  - rule_id: validate_reference_amount
+    applies_to: "reference flow"
+    rule: "Confirm that the reference output equals exactly 1 kg net finished product and that separately reported packaging is excluded from net product mass."
+    source_ids: []
+  - rule_id: validate_required_qualifiers
+    applies_to: "product identity"
+    rule: "Fail completeness when product form, material grade, wire finish, construction, core, size, supplied length, mechanical specification, termination where applicable, lubricant state, test status, packing state, site, geography, or reporting period is missing without an explicit not-applicable statement."
+    source_ids:
+      - iso-2408-2017
+      - iso-7531-1987
+  - rule_id: validate_atomic_inventory
+    applies_to: "process inventory"
+    rule: "Confirm that each row is one concrete product, waste, or elementary exchange and that conditional construction variants did not create umbrella or Cartesian rows."
+    source_ids: []
+  - rule_id: validate_uuid_semantics
+    applies_to: "Tiangong references"
+    rule: "Confirm public state_code 100, base name, flow type, classification, property, unit group, and product state for every UUID; leave unresolved identities blank rather than selecting a proxy."
+    source_ids: []
+  - rule_id: validate_mass_balance
+    applies_to: "steel-bearing flows"
+    rule: "Recalculate the steel-wire mass balance and flag an unexplained residual or a missing steel-containing waste/output disclosure."
+    source_ids: []
+  - rule_id: validate_electricity_conversion
+    applies_to: "electricity"
+    rule: "Verify the kWh meter record, meter boundary, shared-load allocation, conversion by 3.6 MJ/kWh, and normalization denominator."
+    source_ids: []
+  - rule_id: validate_boundary_disclosure
+    applies_to: "upstream processing"
+    rule: "Confirm whether wire drawing, heat treatment, pickling, coating, component manufacture, and packing manufacture are upstream or separately included; verify that upstream electricity emissions are not reported as direct site emissions."
+    source_ids:
+      - eu-ferrous-metals-processing-bat-2022
+  - rule_id: validate_sling_components
+    applies_to: "sling products"
+    rule: "For fabricated slings, verify declared sling type, working-load or breaking-force basis, termination type, ferrule or thimble applicability, and production-test evidence."
+    source_ids:
+      - iso-7531-1987
+      - iso-8793-1986
+      - iso-2262-1984
+published_dataset_profile:
+  dataset_role: "Factory-gate foreground production dataset for a declared non-electrically-insulated iron-or-steel stranded wire product"
+  downstream_use: "secondary_dataset; background_dataset after review of representativeness and unresolved identities"
+  allowed_use: "Product-footprint, process, and lifecycle-model studies whose product construction, geography, technology, boundary, and reporting period are compatible with the declared dataset"
+  excluded_use: "Electrically insulated conductors; copper or aluminium stranded products; use-stage safety or service-life claims; substitution among materially different rope, cable, band, or sling constructions without adjustment; datasets that silently include upstream wire processing"
+  required_metadata: "canonical PCR id; product form; steel grade; wire finish; construction and lay; core; diameter; length; net mass; strength or load specification; termination; lubrication; test and release status; packing; site; geography; technology; reporting period; boundary; upstream datasets; allocation; unresolved UUIDs"
+  required_quality_disclosure: "coverage of material and energy records; mass-balance residual; meter coverage and shared-load allocation; count-to-mass factors; packing reuse denominator; waste routes; data gaps; exact-UUID status; source and collection-protocol versions"
+  update_trigger: "Change in product construction, material or coating, core, termination, lubrication, production route, equipment, energy supply, packing or reuse system, allocation method, site boundary, reporting period, applicable product standard, or resolution of a previously unresolved exact flow identity"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, code 42941, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-05)"
+    used_for: "English classification identity and the iron-or-steel, non-electrically-insulated product boundary"
+  - id: "un-cpc-1-1-chinese-2002"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 1.1, Chinese edition, code 42941, https://unstats.un.org/unsd/publication/SeriesM/M_77ver1_1c.pdf (retrieved 2026-09-05)"
+    used_for: "Verified professional Chinese product title for the unchanged classification identity"
+  - id: "iso-2408-2017"
+    type: "standard"
+    reference: "ISO 2408:2017, Steel wire ropes — Requirements, https://committee.iso.org/cms/live/live/en/sites/isoorg/contents/data/standard/06/66/66635.html (retrieved 2026-09-05)"
+    used_for: "Wire-rope scope, bright/zinc/Zn-Al product states, manufacture, testing, packing, marking, qualifiers, cores, and lubricant context"
+  - id: "iso-7531-1987"
+    type: "standard"
+    reference: "ISO 7531:1987, Wire rope slings for general purposes — Characteristics and specifications, https://committee.iso.org/cms/live/live/en/sites/isoorg/contents/data/standard/01/43/14308.html (retrieved 2026-09-05)"
+    used_for: "Sling and sling-assembly scope, type, working-load context, and manufacture"
+  - id: "iso-8793-1986"
+    type: "standard"
+    reference: "ISO 8793:1986, Steel wire ropes — Ferrule-secured eye terminations, https://committee.iso.org/cms/live/live/en/sites/isoorg/contents/data/standard/01/62/16220.html (retrieved 2026-09-05)"
+    used_for: "Conditional aluminium ferrule and eye-termination process context and quality control"
+  - id: "iso-2262-1984"
+    type: "standard"
+    reference: "ISO 2262:1984, General purpose thimbles for use with steel wire ropes — Specification, https://committee.iso.org/cms/live/live/en/sites/isoorg/contents/data/standard/00/70/7079.html (retrieved 2026-09-05)"
+    used_for: "Conditional steel thimble identity and compatibility qualifier"
+  - id: "eu-ferrous-metals-processing-bat-2022"
+    type: "official_guidance"
+    reference: "Commission Implementing Decision (EU) 2022/2110 of 11 October 2022 establishing BAT conclusions for the ferrous metals processing industry, https://eur-lex.europa.eu/eli/dec_impl/2022/2110/oj/eng (retrieved 2026-09-05)"
+    used_for: "Upstream wire drawing, lubricant handling, drawing dust, heat-treatment residues, and hot-dip wire coating process context used for boundary separation and disclosure"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:58051e950b67f272500c88791b60d99294fdf8c36df0063b1fbf85e1ccb4fb99"
+  generated_content_sha256: "sha256:946b51dbf52be8a426478f657bb7faaafe10910897e7b05704fe167eb919adc4"

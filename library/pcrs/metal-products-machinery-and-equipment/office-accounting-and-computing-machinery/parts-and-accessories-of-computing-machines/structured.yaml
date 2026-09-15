@@ -1,10 +1,612 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "45290"
-  title: "Parts and accessories of computing machines"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.office-accounting-and-computing-machinery.parts-and-accessories-of-computing-machines"
+  classification_refs: "CPC 3.0 45290; classification identity source un-cpc-3-0-structure-2025"
+  covered_products: "Separately supplied computer chassis and incomplete motherboards; other solely or principally computing-machine parts require a declared product-specific inventory extension"
+  excluded_products: "Complete computers; functioning processing units; storage units; input/output peripherals; sound/video/network cards; bare printed circuits; integrated circuits sold separately; carrying cases; repair services"
+  representative_product: "Bare steel computer chassis, declared model and net mass"
+  production_route: "Supplied formed shell to mechanical completion, or supplied populated incomplete motherboard to acceptance testing; packing in both routes"
+  market_state: "New accepted part for OEM integration or replacement; no complete-computer function"
+functional_unit:
+  what: "Supply a specified computing-machine part for mechanical enclosure or declared board interface function"
+  how_much: "1 kg net accepted parts of one model; declare corresponding item count"
+  how_well: "Meets the model drawing, mounting/interface requirements and documented acceptance test; unlike functions are not interchangeable"
+  how_long_or_cycle: "One production and acceptance cycle to the factory gate; service life and host-computer use profile are not inferred"
+  reference_flow_link: "chassis_product is the representative output; a board-specific package uses motherboard_product as its sole reference and updates the concrete reference identity"
+system_boundary:
+  rules:
+    - rule_id: gate_boundary
+      applies_to: "Product system"
+      rule: "Use a disclosed cradle-to-gate intermediate-part inventory when the host use profile is unknown; include upstream supply, inbound logistics, assembly, testing, packaging and production-waste treatment. Exclude host use and host end of life together; disclose any separate downstream study."
+      source_ids:
+        - ghg-protocol-product-standard-2011
+    - rule_id: supply_link
+      applies_to: "Purchased part inputs"
+      rule: "Attach boundary-compatible upstream datasets to the supplied shell and populated board. An onsite activity cannot be hidden in a purchased-input label. Reconcile supplier and foreground coverage to prevent gaps or double counting."
+      source_ids: []
+    - rule_id: test_boundary
+      applies_to: "Acceptance tests"
+      rule: "Count test-fixture electricity and rework in production. Test fixtures temporarily supplying CPU or BIOS are not shipped product inputs; consumptive replacements require their own inventory rows."
+      source_ids: []
+    - rule_id: extension_completeness
+      applies_to: "Additional operations"
+      rule: "A real fuel, chemical, refrigerant loss, wastewater, incoming packaging waste or extra BOM component requires a separate measured atomic exchange. The representative dry finalization route assumes none without confirming site records."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Supplier-produced formed and surface-finished chassis shell, or populated motherboard lacking CPU and BIOS ROM, awaiting final acceptance"
+  starting_condition_role: "Purchased intermediate; upstream fabrication remains linked background supply"
+  product_classification_scope: "Computing-machine parts; independently functioning machines and separately classified units remain outside this category"
+  recursive_input_rule: "Same-category input is recorded at its actual delivered state and linked once to a supplier dataset. Do not recursively instantiate this finishing process or count purchased and internally fabricated versions together."
+  upstream_dataset_requirement: "Supply-specific cradle-to-delivery data covering raw materials, fabrication, yield, component manufacture and transport; if only factory-gate data exist, add inbound transport from actual shipment records"
+  disclosure: "Model, route, make/buy split, included tests, supplier coverage, transport endpoints, omitted exchanges with evidence and system-boundary limitations"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Steel computer chassis"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "part model"
+    - "part function"
+    - "chassis or incomplete-board route"
+    - "net mass per item"
+    - "material composition"
+    - "supplier starting state"
+    - "CPU and BIOS presence"
+    - "interface/drawing revision"
+    - "acceptance test"
+    - "production site"
+    - "reporting period"
+    - "packaging specification"
+    - "upstream coverage"
+    - "factory-gate boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_mass
+    applies_to: "Reference part and material reconciliation"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use accepted net product mass; exclude packaging. Record item count and measured model-specific mass per item; do not convert across models with a generic coefficient."
+  - id: electrical_energy
+    applies_to: "Purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered energy; 1 kWh = 3.6 MJ is an exact unit identity. Declare voltage, supply mix, site and time coverage."
+  - id: yield_basis
+    applies_to: "All exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Divide batch exchanges by accepted net output of the same model and period; record rejects and rework separately so test failures remain burden-bearing."
+process_map:
+  - id: chassis_completion
+    name: "Chassis mechanical completion"
+    inclusion: "conditional"
+    inclusion_condition: "The declared product is a steel computer chassis assembled from a supplied shell"
+    role: "foreground production"
+    quantitative_reference: "1 kg accepted net chassis"
+  - id: board_acceptance
+    name: "Incomplete motherboard acceptance"
+    inclusion: "conditional"
+    inclusion_condition: "The declared product is a supplied populated motherboard without CPU and BIOS ROM awaiting acceptance testing"
+    role: "foreground production"
+    quantitative_reference: "1 kg accepted net motherboard"
+  - id: packing
+    name: "Packing"
+    inclusion: "required"
+    inclusion_condition: "Applies to the selected part model; each packaging exchange requires evidence of use"
+    role: "foreground packing"
+    quantitative_reference: "1 kg accepted net part passing through packing"
+process_inventory:
+  - id: chassis_completion
+    label: "Chassis mechanical completion"
+    inputs:
+      product:
+        - row_id: chassis_shell
+          role: "Chassis shell supplied for final assembly"
+          name: "Formed steel computer chassis shell"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Chassis route only; purchased shell incorporates the declared forming and surface treatment. Record receipt mass and supplier coverage."
+          amount:
+            expression: "Collect the batch quantity in kg and divide by accepted net output mass for the same model and period; preserve raw records and route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net part of one declared model"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chassis_materials
+              source_ids: []
+            ranges: []
+        - row_id: screw
+          role: "Mechanical fastening"
+          name: "Steel screw"
+          flow_type: "product"
+          flow_ref:
+            uuid: "895204f6-6425-4814-afc5-cb97e530e892"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include when steel screws are installed; reconcile issued mass, unused returns and retained mass."
+          amount:
+            expression: "Collect the batch quantity in kg and divide by accepted net output mass for the same model and period; preserve raw records and route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net part of one declared model"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chassis_materials
+              source_ids: []
+            ranges: []
+        - row_id: chassis_electricity
+          role: "Chassis mechanical completion electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; unit group 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Meter chassis mechanical completion electricity and its attributable support demand separately. Include idle and fixture demand where present; do not duplicate another process meter."
+          amount:
+            expression: "Collect the batch quantity in MJ and divide by accepted net output mass for the same model and period; preserve raw records and route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net part of one declared model"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chassis_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: chassis_product
+          role: "Accepted chassis output"
+          name: "Steel computer chassis"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Chassis route only; weigh accepted net chassis and record count. This is the representative reference output, excluding packaging and complete-computer subassemblies."
+          amount:
+            expression: "Collect the batch quantity in kg and divide by accepted net output mass for the same model and period; preserve raw records and route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net part of one declared model"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chassis_output
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: steel_reject
+          role: "Rejected steel chassis"
+          name: "Steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "9fe08808-a497-4b3c-8f8f-a8f6bbcae980"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include discarded chassis from the mechanical route; exclude temporary rejects returned to the same batch. Record composition, mass and treatment destination."
+          amount:
+            expression: "Collect the batch quantity in kg and divide by accepted net output mass for the same model and period; preserve raw records and route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net part of one declared model"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chassis_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: board_acceptance
+    label: "Incomplete motherboard acceptance"
+    inputs:
+      product:
+        - row_id: untested_board
+          role: "Board awaiting acceptance testing"
+          name: "Populated computer motherboard without CPU and BIOS ROM, untested"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Board route only; supplier completes PCB fabrication and component assembly. Record configuration, mass and upstream burden."
+          amount:
+            expression: "Collect the batch quantity in kg and divide by accepted net output mass for the same model and period; preserve raw records and route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net part of one declared model"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_board_materials
+              source_ids: []
+            ranges: []
+        - row_id: board_electricity
+          role: "Incomplete motherboard acceptance electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; unit group 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Meter incomplete motherboard acceptance electricity and its attributable support demand separately. Include idle and fixture demand where present; do not duplicate another process meter."
+          amount:
+            expression: "Collect the batch quantity in MJ and divide by accepted net output mass for the same model and period; preserve raw records and route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net part of one declared model"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_board_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: motherboard_product
+          role: "Accepted motherboard output"
+          name: "Computer motherboard without CPU and BIOS ROM, acceptance tested"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Board route only; record accepted board count and net mass. This replaces the representative reference product in a board-specific data package; never sum different part functions into one reference product."
+          amount:
+            expression: "Collect the batch quantity in kg and divide by accepted net output mass for the same model and period; preserve raw records and route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net part of one declared model"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_board_output
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: board_reject
+          role: "Rejected populated board"
+          name: "Waste populated printed wiring board"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "eb5ffe4a-49af-450c-9a31-3efdfd343f8a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include irreparable populated-board rejects; retain hazardous-component and waste-transfer records. Treatment burdens belong to the product system."
+          amount:
+            expression: "Collect the batch quantity in kg and divide by accepted net output mass for the same model and period; preserve raw records and route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net part of one declared model"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_board_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: packing
+    label: "Packing"
+    inputs:
+      product:
+        - row_id: box
+          role: "Shipping carton"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include when corrugated boxes are supplied with the part; weigh cartons separately from net product."
+          amount:
+            expression: "Collect the batch quantity in kg and divide by accepted net output mass for the same model and period; preserve raw records and route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net part of one declared model"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_materials
+              source_ids: []
+            ranges: []
+        - row_id: bag
+          role: "Protective polyethylene bag"
+          name: "Low-density polyethylene protective bag"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include only when this specific bag is used; record polymer grade, additives and mass. Electronic parts require declared electrostatic protection; ordinary LDPE is not presumed suitable."
+          amount:
+            expression: "Collect the batch quantity in kg and divide by accepted net output mass for the same model and period; preserve raw records and route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net part of one declared model"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_materials
+              source_ids: []
+            ranges: []
+        - row_id: packing_electricity
+          role: "Packing electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; unit group 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Meter packing electricity and its attributable support demand separately. Include idle and fixture demand where present; do not duplicate another process meter."
+          amount:
+            expression: "Collect the batch quantity in MJ and divide by accepted net output mass for the same model and period; preserve raw records and route applicability."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net part of one declared model"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: separate_models
+    applies_to: "Shared finishing equipment"
+    rule: "Separate routes and meter dedicated operations first. For inseparable shared demand, use a justified physical driver such as occupied test time; use economic allocation only if physical causation cannot be established and document sensitivity."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: reject_burdens
+    applies_to: "Rework and scrap"
+    rule: "Retain rework and rejected-part production burdens in accepted output. Record waste treatment and any recycling allocation transparently; never deduct a presumed virgin-material credit from scrap mass alone."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_chassis_materials
+      process_id: "chassis_completion"
+      flow_role: "Chassis shell and steel screws"
+      record_type: "Material ledger"
+      raw_fields: "model, lot, item identity, quantity issued, unused returns, stock change, mass per item, supplier, route"
+      collection_method: "Weigh each material separately; reconcile issue records and BOM; retain upstream and shipment records"
+      unit: "kg"
+      frequency: "Each lot"
+      temporal_coverage: "Declared representative production period covering normal and rework operation"
+      site_scope: "Actual finalization site and named suppliers"
+      aggregation_rule: "Sum consumption by atomic flow and model; divide by accepted net model output"
+      quality_evidence: "Calibrated scales, BOM revision, delivery notes, supplier coverage and receiving checks"
+    - protocol_id: cp_chassis_energy
+      process_id: "chassis_completion"
+      flow_role: "Electricity"
+      record_type: "Meter and test logs"
+      raw_fields: "meter start/end, kWh, test time, fixture load, idle load, model, lot, accepted output, allocation driver"
+      collection_method: "Submeter or document an engineering allocation from measured loads and times"
+      unit: "kWh then MJ"
+      frequency: "Each batch or logged test interval"
+      temporal_coverage: "Same period as material and output records"
+      site_scope: "Chassis completion and its attributable support only"
+      aggregation_rule: "Convert kWh by 3.6; reconcile submeters to main meter before model allocation and normalization"
+      quality_evidence: "Meter calibration, load records and unallocated-energy reconciliation"
+    - protocol_id: cp_chassis_output
+      process_id: "chassis_completion"
+      flow_role: "Accepted part"
+      record_type: "Production and quality ledger"
+      raw_fields: "model, configuration, counts started/accepted/reworked/rejected, net mass, test criteria and outcome"
+      collection_method: "Weigh accepted units and reconcile lot disposition; document temporary test fixtures"
+      unit: "kg and item count"
+      frequency: "Each lot"
+      temporal_coverage: "Same reporting period"
+      site_scope: "Final acceptance gate"
+      aggregation_rule: "Accepted mass by model is the denominator; never pool chassis and board output"
+      quality_evidence: "Drawing, signed test acceptance, scale evidence and traceable count reconciliation"
+    - protocol_id: cp_chassis_waste
+      process_id: "chassis_completion"
+      flow_role: "Each reject stream"
+      record_type: "Waste transfer ledger"
+      raw_fields: "stream identity, composition, hazardous components, mass, rework return, stock, destination, treatment route"
+      collection_method: "Segregate and weigh each physical waste stream; reconcile transfers and storage change"
+      unit: "kg"
+      frequency: "Each transfer with lot attribution"
+      temporal_coverage: "Same reporting period plus documented storage lag"
+      site_scope: "Site and named waste receiver"
+      aggregation_rule: "Normalize net external discard by model accepted mass; attach treatment dataset without duplicating internal rework"
+      quality_evidence: "Weigh tickets, receiver evidence and treatment-boundary check"
+    - protocol_id: cp_board_materials
+      process_id: "board_acceptance"
+      flow_role: "Populated incomplete motherboard"
+      record_type: "Material ledger"
+      raw_fields: "model, lot, item identity, quantity issued, unused returns, stock change, mass per item, supplier, route"
+      collection_method: "Weigh each material separately; reconcile issue records and BOM; retain upstream and shipment records"
+      unit: "kg"
+      frequency: "Each lot"
+      temporal_coverage: "Declared representative production period covering normal and rework operation"
+      site_scope: "Actual finalization site and named suppliers"
+      aggregation_rule: "Sum consumption by atomic flow and model; divide by accepted net model output"
+      quality_evidence: "Calibrated scales, BOM revision, delivery notes, supplier coverage and receiving checks"
+    - protocol_id: cp_board_energy
+      process_id: "board_acceptance"
+      flow_role: "Electricity"
+      record_type: "Meter and test logs"
+      raw_fields: "meter start/end, kWh, test time, fixture load, idle load, model, lot, accepted output, allocation driver"
+      collection_method: "Submeter or document an engineering allocation from measured loads and times"
+      unit: "kWh then MJ"
+      frequency: "Each batch or logged test interval"
+      temporal_coverage: "Same period as material and output records"
+      site_scope: "Board acceptance testing and its attributable support only"
+      aggregation_rule: "Convert kWh by 3.6; reconcile submeters to main meter before model allocation and normalization"
+      quality_evidence: "Meter calibration, load records and unallocated-energy reconciliation"
+    - protocol_id: cp_board_output
+      process_id: "board_acceptance"
+      flow_role: "Accepted part"
+      record_type: "Production and quality ledger"
+      raw_fields: "model, configuration, counts started/accepted/reworked/rejected, net mass, test criteria and outcome"
+      collection_method: "Weigh accepted units and reconcile lot disposition; document temporary test fixtures"
+      unit: "kg and item count"
+      frequency: "Each lot"
+      temporal_coverage: "Same reporting period"
+      site_scope: "Final acceptance gate"
+      aggregation_rule: "Accepted mass by model is the denominator; never pool chassis and board output"
+      quality_evidence: "Drawing, signed test acceptance, scale evidence and traceable count reconciliation"
+    - protocol_id: cp_board_waste
+      process_id: "board_acceptance"
+      flow_role: "Each reject stream"
+      record_type: "Waste transfer ledger"
+      raw_fields: "stream identity, composition, hazardous components, mass, rework return, stock, destination, treatment route"
+      collection_method: "Segregate and weigh each physical waste stream; reconcile transfers and storage change"
+      unit: "kg"
+      frequency: "Each transfer with lot attribution"
+      temporal_coverage: "Same reporting period plus documented storage lag"
+      site_scope: "Site and named waste receiver"
+      aggregation_rule: "Normalize net external discard by model accepted mass; attach treatment dataset without duplicating internal rework"
+      quality_evidence: "Weigh tickets, receiver evidence and treatment-boundary check"
+    - protocol_id: cp_packing_materials
+      process_id: "packing"
+      flow_role: "Each supplied packaging component"
+      record_type: "Material ledger"
+      raw_fields: "model, lot, item identity, quantity issued, unused returns, stock change, mass per item, supplier, route"
+      collection_method: "Weigh each material separately; reconcile issue records and BOM; retain upstream and shipment records"
+      unit: "kg"
+      frequency: "Each lot"
+      temporal_coverage: "Declared representative production period covering normal and rework operation"
+      site_scope: "Actual finalization site and named suppliers"
+      aggregation_rule: "Sum consumption by atomic flow and model; divide by accepted net model output"
+      quality_evidence: "Calibrated scales, BOM revision, delivery notes, supplier coverage and receiving checks"
+    - protocol_id: cp_packing_energy
+      process_id: "packing"
+      flow_role: "Electricity"
+      record_type: "Meter and test logs"
+      raw_fields: "meter start/end, kWh, test time, fixture load, idle load, model, lot, accepted output, allocation driver"
+      collection_method: "Submeter or document an engineering allocation from measured loads and times"
+      unit: "kWh then MJ"
+      frequency: "Each batch or logged test interval"
+      temporal_coverage: "Same period as material and output records"
+      site_scope: "Packing and its attributable support only"
+      aggregation_rule: "Convert kWh by 3.6; reconcile submeters to main meter before model allocation and normalization"
+      quality_evidence: "Meter calibration, load records and unallocated-energy reconciliation"
+  calculation_rules:
+    - id: batch_normalization
+      applies_to: "Each atomic exchange"
+      rule: "q_i = Q_i / M_a; M_a is accepted net mass of the same model; reject zero or unknown denominators"
+      inputs:
+        - "Measured batch exchange Q_i and accepted mass M_a"
+      output: "Exchange per kg accepted part"
+      source_ids: []
+    - id: count_conversion
+      applies_to: "Item-count receipts"
+      rule: "M = N times measured mean item mass for the same model and lot; retain sampling and variability"
+      inputs:
+        - "Count N and measured item mass"
+      output: "kg"
+      source_ids: []
+    - id: material_check
+      applies_to: "Part material"
+      rule: "Issued material minus unused returns equals accepted retained material plus discarded material plus net work-in-progress change; investigate residuals against documented measurement uncertainty"
+      inputs:
+        - "Material ledger"
+        - "output and waste records"
+      output: "Reconciliation residual"
+      source_ids: []
+  data_quality_requirements:
+    - id: identity_quality
+      applies_to: "All part models"
+      requirement: "Record function, CPU/BIOS state, material and interface revision; do not infer a complete-computer service from a part mass"
+      evidence: "BOM, drawing, acceptance record; cbp-n304809-2019, cbp-n025223-2008"
+    - id: coverage_quality
+      applies_to: "Supplier and site linkage"
+      requirement: "Confirm where fabrication stops and finalization starts, including freight; quantify any missing coverage before using the package as a cradle-to-gate input"
+      evidence: "Supplier dataset scope, site process map and shipment records"
+    - id: range_quality
+      applies_to: "Exchange amounts"
+      requirement: "Use measured foreground quantities. No universal empirical consumption or yield range is prescribed for these heterogeneous parts; retain uncertainty from meters, sampling and allocation"
+      evidence: "Raw ledgers and uncertainty calculations"
+    - id: route_quality
+      applies_to: "Applicability"
+      requirement: "Distinguish measured zero, evidenced absence and missing data. Additional real components, process chemicals and waste streams require separate atomic rows"
+      evidence: "Site walkthrough, BOM, purchase and waste records"
+validation_rules:
+  - rule_id: one_reference
+    applies_to: "Reference flow"
+    rule: "Require one eligible part model, one reference output, 1 kg net basis and all qualifiers. Never sum chassis and motherboard outputs into an interchangeable product."
+    source_ids: []
+  - rule_id: ledger_validation
+    applies_to: "Quantities"
+    rule: "Require a positive accepted-output denominator; reconcile count, mass, rejects, rework and stock movement with documented uncertainty."
+    source_ids: []
+  - rule_id: boundary_validation
+    applies_to: "Completeness"
+    rule: "Verify every supplier/freight/treatment link and onsite exchange; reject a cradle-to-gate claim supported only by finalization electricity and purchased-part mass."
+    source_ids: []
+  - rule_id: identity_validation
+    applies_to: "UUIDs"
+    rule: "Adopt only exact public flow identities of the right state, type, property and unit. A blank UUID remains an explicit identity gap and never licenses a proxy or omitted exchange."
+    source_ids: []
+  - rule_id: comparability
+    applies_to: "Downstream claims"
+    rule: "Do not use mass-normalized parts for comparative assertions without matching function, interfaces, host use and lifetime."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+published_dataset_profile:
+  dataset_role: "Foreground production package; a reviewed complete package may become a secondary_dataset"
+  downstream_use: "background_dataset input to OEM computer assembly or replacement-part lifecycle models"
+  allowed_use: "Model-specific declared-boundary part supply; cradle-to-gate only when upstream, freight and treatment coverage are complete"
+  excluded_use: "Whole-computer footprint; universal part average; cross-function comparison; unqualified full life cycle claim"
+  required_metadata: "Model, route, configuration, item mass, period, site, supplier datasets, freight, tests, allocation, waste treatment and reference identity"
+  required_quality_disclosure: "Measured coverage, gaps, unit conversion, uncertainty, non-applicability evidence and upstream boundary reconciliation"
+  update_trigger: "BOM, material, supplier, test protocol, process location, yield, electricity supply or boundary changes"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations, CPC Version 3.0 structure, 30 June 2025; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv ; retrieved 2026-09-09"
+    used_for: "Product category identity and adjacent-category separation; no amount ranges"
+  - id: "cbp-n304809-2019"
+    type: "official_guidance"
+    reference: "US CBP ruling N304809, 27 June 2019; https://rulings.cbp.gov/api/getdoc/ny/2019/N304809"
+    used_for: "Concrete steel computer chassis boundary and declared installed-component state; no current tariff rule adopted"
+  - id: "cbp-n025223-2008"
+    type: "official_guidance"
+    reference: "US CBP ruling N025223, 24 April 2008; https://rulings.cbp.gov/api/getdoc/ny/2008/N025223"
+    used_for: "Motherboard without CPU/BIOS versus processing-machine state; no trade-agreement or tariff rule adopted"
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard, 2011, sections 7.3.7 and 9.3; https://ghgprotocol.org/sites/default/files/ghgp/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf ; retrieved 2026-09-09"
+    used_for: "Intermediate-product boundary disclosure and allocation hierarchy, adapted to inventory collection; not a claim of multi-impact certification"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:cbdfd2631cd4371a867fc5ca9b4467e10536f859fd5aa0030b0dbff7dcc45b42"
+  generated_content_sha256: "sha256:1c3cf360eb58eeb63cb4eb9f8bfd8c15dd94dfd4b39ba74fd17a0a772e292305"

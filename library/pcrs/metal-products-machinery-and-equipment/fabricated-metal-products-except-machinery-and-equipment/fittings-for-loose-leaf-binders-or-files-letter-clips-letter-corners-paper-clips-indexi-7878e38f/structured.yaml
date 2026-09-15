@@ -1,10 +1,1057 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "42995"
-  title: "Fittings for loose-leaf binders or files; letter clips, letter corners, paper clips, indexing tags and similar office articles, of base metal; staples in strips, of base metal"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.fittings-for-loose-leaf-binders-or-files-letter-clips-letter-corners-paper-clips-indexi-7878e38f"
+  classification_refs: "CPC 3.0: 42995 (exact category reference)"
+  covered_products: "Base-metal loose-leaf binder and file fittings; letter clips; letter corners; paper clips; indexing tags; similar base-metal office articles; base-metal staples supplied in strips"
+  excluded_products: "Plastic-only office articles; office furniture and filing cabinets; stapling machines; loose staples not supplied in strips; construction fasteners; upstream production of purchased metal stock"
+  representative_product: "One homogeneous market-ready SKU or production family, represented by a steel wire paper clip; the staple-strip branch is declared separately when applicable"
+  production_route: "Purchased steel wire or cold-rolled steel strip -> forming and cutting -> conditional surface finishing -> conditional staple-strip assembly -> inspection and packaging"
+  market_state: "Dry, finished, inspected and packaged article at the manufacturing-site gate"
+functional_unit:
+  what: "Supply a declared base-metal office article capable of its specified paper-fastening, filing or indexing function"
+  how_much: "1 kg of market-ready articles, including the packaging that is included in the declared sales unit only as a separately inventoried input"
+  how_well: "Conforming to the declared SKU, dimensions or wire gauge, metal grade, coating, article count per pack and applicable purchaser specification"
+  how_long_or_cycle: "One factory-gate supply event; product service life is disclosed when relevant but does not change the mass reference"
+  reference_flow_link: "One kilogram of the market-ready CPC 42995 product output described below"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "foreground_system_boundary"
+      rule: "Include controlled forming, cutting, conditional surface finishing, conditional staple-strip assembly, inspection and packaging through the manufacturing-site gate."
+      source_ids:
+        - un-cpc-3-0-2025
+    - rule_id: boundary_upstream_inputs
+      applies_to: "purchased_inputs"
+      rule: "Represent production of purchased metal stock, chemicals, energy and packaging with upstream datasets; do not duplicate those upstream processes in the foreground inventory."
+      source_ids: []
+    - rule_id: boundary_conditional_finishing
+      applies_to: "surface_finishing"
+      rule: "Include cleaning, pickling, coating, drying and associated wastewater treatment only when performed under facility control; otherwise model the purchased prefinished stock and disclose the outsourced route."
+      source_ids:
+        - ec-jrc-ferrous-metals-processing-bref-2022
+    - rule_id: boundary_staple_strip_branch
+      applies_to: "staple_strip_assembly"
+      rule: "Include adhesive, any tissue-paper carrier and assembly energy only for products supplied as staples in strips; do not apply this branch to paper clips or binder fittings."
+      source_ids:
+        - us-1665051-staple-strip-1928
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "downstream_life_cycle"
+      rule: "Exclude distribution beyond the factory gate, use, maintenance and end-of-life from the default dataset; add them only in a separately declared downstream study."
+      source_ids: []
+    - rule_id: boundary_direct_emissions
+      applies_to: "controlled_emissions_and_wastes"
+      rule: "Record each direct elementary emission and each waste crossing the facility boundary separately; never place upstream electricity emissions in the foreground."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased steel wire, cold-rolled steel strip or another explicitly identified base-metal stock delivered to the reporting facility, together with separately identified auxiliary materials"
+  starting_condition_role: "Upstream product inputs to foreground forming; upstream production burdens remain in supplier or background datasets"
+  product_classification_scope: "Office articles and staples in strips within CPC 3.0 code 42995; the canonical PCR identity remains independent of CPC"
+  recursive_input_rule: "If a purchased CPC 42995 article is assembled into another covered product, record it once as a purchased product input with its own upstream dataset and do not recursively recreate its manufacturing inventory inside the receiving process"
+  upstream_dataset_requirement: "Every purchased product or energy input requires a geographically and technologically appropriate upstream dataset or an explicit documented data gap"
+  disclosure: "Declare facility, period, product SKU or family, starting stock form and grade, forming technology, surface-treatment route, staple-strip route, packaging configuration, excluded operations and any outsourced process"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Fittings for loose-leaf binders or files, letter clips, letter corners, paper clips, indexing tags and similar office articles, of base metal, staples in strips, of base metal"
+    uuid: "336f70f3-7cc0-429e-9cde-b5df1fa7d4fd"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product subtype and SKU"
+    - "article dimensions or wire gauge"
+    - "base-metal grade"
+    - "wire or strip starting form"
+    - "coating or surface finish"
+    - "staple-strip adhesive and tissue-strip status when applicable"
+    - "articles per sales unit and count-to-mass factor"
+    - "included packaging"
+    - "facility geography"
+    - "production period"
+    - "factory-gate boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "Market-ready reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net article mass on calibrated scales; report packaging as its own input and state whether any packaging mass is included in a commercial gross-mass record."
+  - id: count_to_mass_conversion
+    applies_to: "Records available only as article or pack counts"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert count to mass with a contemporaneous measured mean mass for the same SKU and lot; retain sample count, scale result and uncertainty."
+  - id: material_mass_basis
+    applies_to: "Metal stock, chemicals, adhesive, paper strip, box, scrap, sludge and wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record mass as supplied. Do not silently convert solution mass to active-substance mass or use metal-content mass as total product mass."
+  - id: zinc_content_basis
+    applies_to: "Special High Grade zinc metal"
+    required_property_ref:
+      name: "Zinc content"
+      uuid: "7c367337-54f2-4fe9-8ee3-3f42681b0792"
+    required_unit: "kg"
+    rule: "Report kg of zinc content for the selected SHG zinc flow and separately retain supplier grade and total supplied-product mass when they differ."
+  - id: electricity_energy_basis
+    applies_to: "Purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the metered kWh record and convert to MJ using 1 kWh = 3.6 MJ; declare voltage, grid geography and meter boundary."
+  - id: gas_volume_basis
+    applies_to: "Gaseous natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report supplier-metered volume and declare reference temperature, pressure and whether the meter reports standard or operating volume."
+  - id: direct_emission_mass_basis
+    applies_to: "Direct fossil carbon dioxide"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use measured emissions or a documented calculation from foreground fuel records and a validated site factor; do not include upstream electricity emissions."
+process_map:
+  - id: metal_forming
+    name: "Metal stock forming and cutting"
+    inclusion: "required"
+    inclusion_condition: "Always include for manufacturing from purchased wire or strip; if finished articles are only repacked, document the deviation and purchased-article input."
+    role: "foreground production"
+    quantitative_reference: "Per 1 kg market-ready reference product"
+  - id: surface_finishing
+    name: "Cleaning and surface finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Include when cleaning, pickling, metallic coating, electroplating or thermal drying is controlled by the reporting facility."
+    role: "foreground conditioning"
+    quantitative_reference: "Per 1 kg market-ready reference product"
+  - id: staple_strip_assembly
+    name: "Staple-strip assembly"
+    inclusion: "conditional"
+    inclusion_condition: "Include only for staples supplied in strips."
+    role: "foreground assembly"
+    quantitative_reference: "Per 1 kg market-ready reference product"
+  - id: inspection_packaging
+    name: "Inspection and packaging"
+    inclusion: "required"
+    inclusion_condition: "Include inspection and all packaging performed before the factory-gate reference product is released."
+    role: "foreground finishing"
+    quantitative_reference: "Per 1 kg market-ready reference product"
+process_inventory:
+  - id: metal_forming
+    label: "Metal stock forming and cutting"
+    inputs:
+      product:
+        - row_id: steel_wire_input
+          role: "Non-alloy steel wire stock"
+          name: "Steel Wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "62bb3717-f62c-43e0-baca-46a1e6f847c4"
+          property_unit: "Mass / kg"
+          description: "Include purchased wire only for the wire-forming route and measure receipts attributable to the declared product."
+          amount:
+            expression: "Measured steel-wire mass issued to eligible production lots."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg market-ready reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_mass_balance
+              source_ids:
+                - us-1355587-paper-clip-machine-1920
+            ranges: []
+        - row_id: cold_rolled_steel_strip_input
+          role: "Cold-rolled carbon-steel strip stock"
+          name: "Cold-rolled carbon-steel strip"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this specific strip input only for stamped or bent strip routes; its Tiangong UUID remains unresolved."
+          amount:
+            expression: "Measured strip mass issued to eligible production lots; record not applicable with the declared wire route when absent."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg market-ready reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: forming_lubricating_oil
+          role: "Forming lubricating oil"
+          name: "Metal-forming lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include lubricating oil only when it is consumed in bending, stamping or cutting and is not fully recirculated outside the reporting period."
+          amount:
+            expression: "Measured oil make-up plus net inventory decrease allocated to eligible lots; document recovery and disposal separately."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg market-ready reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: forming_electricity
+          role: "Forming electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity crossing the forming-cell meter boundary for feeding, bending, stamping, cutting and local extraction."
+          amount:
+            expression: "Metered forming electricity, with justified allocation for shared equipment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg market-ready reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: formed_article_intermediate
+          role: "Formed office-article intermediate"
+          name: "Formed base-metal office-article intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure the formed and cut intermediate transferred to the next controlled process; this foreground intermediate has no public Tiangong UUID."
+          amount:
+            expression: "Measured or batch-mass-balanced output accepted after forming and cutting."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg market-ready reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_mass_balance
+              source_ids:
+                - us-1355587-paper-clip-machine-1920
+            ranges: []
+        - row_id: steel_scrap_output
+          role: "Segregated recyclable steel scrap"
+          name: "Scrap Steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6cb5e364-ba39-4009-8b40-a76fdc88bc42"
+          property_unit: "Mass / kg"
+          description: "Record ferrous offcuts and rejected steel physically leaving forming for recycling as an output product; do not combine non-ferrous metal or waste batteries."
+          amount:
+            expression: "Weighed segregated steel scrap leaving the forming process."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg market-ready reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_mass_balance
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: surface_finishing
+    label: "Cleaning and surface finishing"
+    inputs:
+      product:
+        - row_id: finishing_process_water
+          role: "Finishing process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Include supplied process water used in cleaning, rinsing, bath make-up or controlled finishing operations."
+          amount:
+            expression: "Metered or tank-balance water entering eligible finishing lots."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg market-ready reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_water
+              source_ids:
+                - ec-jrc-ferrous-metals-processing-bref-2022
+            ranges: []
+        - row_id: finishing_sodium_hydroxide
+          role: "Sodium hydroxide cleaner"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Include sodium hydroxide only when consumed as supplied in an alkaline cleaning or treatment bath."
+          amount:
+            expression: "Supplier mass plus bath make-up records attributable to eligible lots; retain supplied concentration."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg market-ready reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_mass_balance
+              source_ids:
+                - ec-jrc-ferrous-metals-processing-bref-2022
+            ranges: []
+        - row_id: finishing_hydrochloric_acid_30pct
+          role: "Hydrochloric acid solution, 30%"
+          name: "Hydrochloric acid (30%)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "56414d25-a353-4d67-b362-87212ce6011d"
+          property_unit: "Mass / kg"
+          description: "Include the 30% solution only when it is the purchased pickling or bath-adjustment product; do not substitute another concentration without a separate flow identity."
+          amount:
+            expression: "Measured delivered-solution mass charged or made up to eligible finishing lots."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg market-ready reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_mass_balance
+              source_ids:
+                - ec-jrc-ferrous-metals-processing-bref-2022
+            ranges: []
+        - row_id: finishing_shg_zinc_metal
+          role: "Special High Grade zinc metal"
+          name: "Special High Grade (SHG) zinc metal"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4719799f-8e90-4dce-83f6-55d932702228"
+          property_unit: "Zinc content / kg"
+          description: "Include SHG zinc only for a metallic-zinc coating route controlled by the facility."
+          amount:
+            expression: "Zinc-content mass charged plus net bath inventory decrease attributable to eligible product, less recovered metallic zinc documented separately."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg market-ready reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_mass_balance
+              source_ids:
+                - ec-jrc-ferrous-metals-processing-bref-2022
+            ranges: []
+        - row_id: finishing_nickel_metal
+          role: "Nickel metal for electroplating"
+          name: "Refined nickel metal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include refined nickel metal only when metallic nickel anodes are consumed; the exact Tiangong UUID remains unresolved and nickel salts must be separate rows if used."
+          amount:
+            expression: "Measured nickel-anode mass consumed by eligible electroplating lots."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg market-ready reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_mass_balance
+              source_ids:
+                - ec-jrc-ferrous-metals-processing-bref-2022
+            ranges: []
+        - row_id: finishing_electricity
+          role: "Finishing electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Include electricity for pumps, rectifiers, ventilation, treatment and drying within the finishing boundary."
+          amount:
+            expression: "Metered finishing electricity, including shared-load allocation documented by operating hours or submetering."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg market-ready reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_electricity
+              source_ids:
+                - ec-jrc-ferrous-metals-processing-bref-2022
+            ranges: []
+        - row_id: finishing_natural_gas
+          role: "Natural gas for finishing heat"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Include gaseous natural gas only when combusted onsite for bath heating, curing or drying."
+          amount:
+            expression: "Metered natural-gas volume attributable to eligible finishing lots, at declared reference conditions."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg market-ready reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_natural_gas
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_surface_intermediate
+          role: "Surface-finished office-article intermediate"
+          name: "Surface-finished base-metal office-article intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure accepted surface-finished articles transferred to staple assembly or packaging; this internal state has no public Tiangong UUID."
+          amount:
+            expression: "Measured accepted output after finishing, before staple-strip assembly or packaging."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg market-ready reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_mass_balance
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: metal_finishing_wastewater
+          role: "Metal-finishing wastewater"
+          name: "Metal-finishing wastewater containing dissolved metals"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the aqueous waste crossing the finishing boundary before offsite treatment; do not use condensate as a proxy."
+          amount:
+            expression: "Metered discharge volume converted with measured density or directly weighed mass, with composition and destination retained."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg market-ready reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_waste
+              source_ids:
+                - ec-jrc-ferrous-metals-processing-bref-2022
+            ranges: []
+        - row_id: metal_bearing_sludge
+          role: "Metal-bearing wastewater-treatment sludge"
+          name: "Metal-bearing wastewater-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record dewatered sludge from treatment of finishing wastewater separately from municipal or biological return sludge."
+          amount:
+            expression: "Weighed wet sludge leaving the facility, with dry-solids fraction, metals analysis and destination retained."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg market-ready reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_waste
+              source_ids:
+                - ec-jrc-ferrous-metals-processing-bref-2022
+            ranges: []
+      elementary:
+        - row_id: finishing_fossil_co2
+          role: "Direct fossil carbon dioxide from natural-gas combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Include only direct fossil carbon dioxide released by controlled natural-gas combustion; exclude upstream fuel and electricity emissions."
+          amount:
+            expression: "Measured emission or calculated value from foreground fuel volume and a documented validated site emission factor."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg market-ready reference product"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing_emissions
+              source_ids: []
+            ranges: []
+  - id: staple_strip_assembly
+    label: "Staple-strip assembly"
+    inputs:
+      product:
+        - row_id: formed_staple_intermediate
+          role: "Formed individual staple intermediate"
+          name: "Formed individual base-metal staple"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record formed staples transferred to the strip-assembly operation; this internal product state has no public Tiangong UUID."
+          amount:
+            expression: "Measured mass of accepted formed staples issued to strip assembly."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg market-ready reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_mass_balance
+              source_ids:
+                - us-1665051-staple-strip-1928
+            ranges: []
+        - row_id: water_based_adhesive
+          role: "Water-based staple-strip adhesive"
+          name: "Water-based adhesive"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9857328f-8b47-4ee5-99a6-e6c95b4d8dd0"
+          property_unit: "Mass / kg"
+          description: "Include only the water-based adhesive applied to hold staples in a separable strip; another adhesive family requires its own row."
+          amount:
+            expression: "Measured adhesive make-up plus net container and line inventory change attributable to eligible staple strips."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg market-ready reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_mass_balance
+              source_ids:
+                - us-1665051-staple-strip-1928
+            ranges: []
+        - row_id: tissue_paper_strip
+          role: "Tissue-paper assembly strip"
+          name: "Cut tissue-paper staple assembly strip"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include a cut tissue-paper carrier only when it remains part of the separable staple strip; its exact Tiangong UUID remains unresolved."
+          amount:
+            expression: "Measured tissue-paper strip mass issued to eligible staple strips; record not applicable when the adhesive-only route is used."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg market-ready reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_mass_balance
+              source_ids:
+                - us-1665051-staple-strip-1928
+            ranges: []
+        - row_id: assembly_electricity
+          role: "Staple-strip assembly electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for alignment, adhesive application, drying, cutting and transfer within the assembly cell."
+          amount:
+            expression: "Metered or justified shared-load electricity attributable to eligible staple-strip lots."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg market-ready reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: staple_strip_output
+          role: "Staples in strips"
+          name: "Fittings for loose-leaf binders or files, letter clips, letter corners, paper clips, indexing tags and similar office articles, of base metal, staples in strips, of base metal"
+          flow_type: "product"
+          flow_ref:
+            uuid: "336f70f3-7cc0-429e-9cde-b5df1fa7d4fd"
+          property_unit: "Mass / kg"
+          description: "Record accepted base-metal staples supplied in separable strips as a covered product output."
+          amount:
+            expression: "Measured accepted staple-strip output before final packaging."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg market-ready reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_mass_balance
+              source_ids:
+                - us-1665051-staple-strip-1928
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: inspection_packaging
+    label: "Inspection and packaging"
+    inputs:
+      product:
+        - row_id: packable_article_intermediate
+          role: "Inspected unpacked office article"
+          name: "Inspected unpacked base-metal office article"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record accepted unpacked articles transferred to final packing; this internal state has no public Tiangong UUID."
+          amount:
+            expression: "Measured accepted unpacked article mass issued to packaging."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg market-ready reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: paper_box_input
+          role: "Paperboard sales box"
+          name: "Paper box"
+          flow_type: "product"
+          flow_ref:
+            uuid: "12d5d744-7725-4dbc-b102-43c80547f777"
+          property_unit: "Mass / kg"
+          description: "Record each paper box used as the declared sales package by mass; other packaging components require separate atomic rows."
+          amount:
+            expression: "Supplier or sampled net box mass multiplied by boxes consumed for eligible production, adjusted for documented packing rejects."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg market-ready reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: packaging_electricity
+          role: "Packaging electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for counting, inspection, box forming, sealing and packing within the packaging-cell boundary."
+          amount:
+            expression: "Metered or justified shared-load packaging electricity attributable to eligible product."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg market-ready reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_office_article_output
+          role: "Market-ready reference office article"
+          name: "Fittings for loose-leaf binders or files, letter clips, letter corners, paper clips, indexing tags and similar office articles, of base metal, staples in strips, of base metal"
+          flow_type: "product"
+          flow_ref:
+            uuid: "336f70f3-7cc0-429e-9cde-b5df1fa7d4fd"
+          property_unit: "Mass / kg"
+          description: "This output realizes the reference flow after inspection and packaging."
+          amount:
+            expression: "Measured market-ready net article mass normalized to exactly 1 kg of reference product."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Exactly 1 kg market-ready reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_mass_balance
+              source_ids:
+                - un-cpc-3-0-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "shared_foreground_operations"
+    rule: "Avoid allocation by separately metering or batch-recording forming, finishing, assembly and packaging for the declared product family."
+    source_ids: []
+  - rule_id: allocation_internal_intermediates
+    applies_to: "internal_intermediates"
+    rule: "Internal intermediate transfers carry their measured burdens forward and receive no separate co-product credit or allocation."
+    source_ids: []
+  - rule_id: allocation_recycled_scrap
+    applies_to: "recyclable_steel_scrap"
+    rule: "Report segregated steel scrap as a separate product output. Do not apply avoided virgin-metal credit inside the foreground inventory; disclose the downstream recycling method used by any lifecycle model."
+    source_ids: []
+  - rule_id: allocation_multi_product_shared_loads
+    applies_to: "shared_energy_and_materials"
+    rule: "When subdivision is impracticable, allocate shared loads by a documented causal driver such as machine time, metered operating hours, bath throughput or treated surface area; use mass only when no better physical driver is available."
+    source_ids: []
+  - rule_id: allocation_economic_last_resort
+    applies_to: "valuable_co_products"
+    rule: "Use economic allocation only when physical subdivision or causal allocation cannot be supported; disclose prices, currency, period, geography and sensitivity."
+    source_ids: []
+  - rule_id: allocation_internal_rework
+    applies_to: "internally_reworked_rejects"
+    rule: "Material returned to the same production system is an internal loop, not a boundary output; count its additional energy and material use and prevent double counting of its mass."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_forming_mass_balance
+      process_id: "metal_forming"
+      flow_role: "Metal stock, lubricant, accepted intermediate and steel scrap"
+      record_type: "Weigh tickets, ERP issue/return records and batch traveller"
+      raw_fields: "lot_id; SKU; stock_grade; opening_inventory; issued_mass; returned_mass; accepted_output_mass; scrap_mass; oil_makeup_mass"
+      collection_method: "Reconcile calibrated scales and inventory movements by eligible lot"
+      unit: "kg"
+      frequency: "Each lot; monthly reconciliation"
+      temporal_coverage: "Representative continuous 12-month period or declared campaign"
+      site_scope: "All forming lines producing the declared product"
+      aggregation_rule: "Sum eligible net inputs and outputs, reconcile mass balance, then divide by market-ready reference output mass"
+      quality_evidence: "Scale calibration; signed weigh tickets; inventory reconciliation; unexplained mass-balance difference"
+    - protocol_id: cp_forming_electricity
+      process_id: "metal_forming"
+      flow_role: "Forming electricity"
+      record_type: "Submeter or equipment power log"
+      raw_fields: "meter_id; opening_reading; closing_reading; eligible_runtime; shared_load_driver"
+      collection_method: "Submeter preferred; otherwise allocate measured cell load by documented operating time"
+      unit: "kWh"
+      frequency: "Each lot or shift; monthly reconciliation"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Forming cell and local extraction only"
+      aggregation_rule: "Convert net kWh to MJ and divide by reference output mass"
+      quality_evidence: "Meter calibration; coverage check; shared-load allocation record"
+    - protocol_id: cp_finishing_mass_balance
+      process_id: "surface_finishing"
+      flow_role: "Chemicals, coating metals and accepted finished intermediate"
+      record_type: "Supplier tickets, bath logs, tank inventory and batch traveller"
+      raw_fields: "lot_id; chemical_identity; concentration; opening_inventory; additions; recoveries; closing_inventory; accepted_output_mass"
+      collection_method: "Reconcile each atomic chemical or metal separately across eligible finishing lots"
+      unit: "kg"
+      frequency: "Each addition and lot; monthly reconciliation"
+      temporal_coverage: "Same period as finished output"
+      site_scope: "Controlled finishing lines only"
+      aggregation_rule: "Net consumption equals opening plus additions minus closing, recovery and documented return; normalize by reference output mass"
+      quality_evidence: "Supplier certificate; bath log; calibrated scale; recovery record"
+    - protocol_id: cp_finishing_water
+      process_id: "surface_finishing"
+      flow_role: "Process water"
+      record_type: "Water submeter and tank log"
+      raw_fields: "meter_id; opening_reading; closing_reading; tank_change; density; eligible_lots"
+      collection_method: "Submeter direct use; convert volume to mass only with documented density"
+      unit: "kg"
+      frequency: "Daily or each lot; monthly reconciliation"
+      temporal_coverage: "Same period as finished output"
+      site_scope: "Finishing and rinsing boundary only"
+      aggregation_rule: "Net input minus returned water, divided by reference output mass"
+      quality_evidence: "Meter calibration; density record; leak and recirculation check"
+    - protocol_id: cp_finishing_electricity
+      process_id: "surface_finishing"
+      flow_role: "Finishing electricity"
+      record_type: "Submeter, rectifier and equipment log"
+      raw_fields: "meter_id; readings; rectifier_kWh; eligible_runtime; shared_load_driver"
+      collection_method: "Sum metered finishing loads and allocate shared loads causally"
+      unit: "kWh"
+      frequency: "Each shift or lot; monthly reconciliation"
+      temporal_coverage: "Same period as finished output"
+      site_scope: "Finishing, ventilation and controlled treatment equipment"
+      aggregation_rule: "Convert net kWh to MJ and divide by reference output mass"
+      quality_evidence: "Meter calibration; operating log; allocation record"
+    - protocol_id: cp_finishing_natural_gas
+      process_id: "surface_finishing"
+      flow_role: "Natural gas"
+      record_type: "Supplier meter and burner log"
+      raw_fields: "meter_id; opening_volume; closing_volume; temperature; pressure; standard_condition; eligible_runtime"
+      collection_method: "Read dedicated meter or allocate shared burner fuel by measured thermal duty or runtime"
+      unit: "m3"
+      frequency: "Each shift or lot; monthly reconciliation"
+      temporal_coverage: "Same period as finished output"
+      site_scope: "Controlled finishing heat only"
+      aggregation_rule: "Normalize declared-condition volume by reference output mass"
+      quality_evidence: "Meter calibration; supplier statement; reference-condition record"
+    - protocol_id: cp_finishing_waste
+      process_id: "surface_finishing"
+      flow_role: "Wastewater and metal-bearing sludge, recorded as separate exchanges"
+      record_type: "Discharge meter, waste manifest and laboratory report"
+      raw_fields: "stream_id; mass_or_volume; density; dry_solids; metals_analysis; treatment_destination; date"
+      collection_method: "Meter wastewater; weigh sludge; retain composition and destination for each stream"
+      unit: "kg"
+      frequency: "Each discharge or shipment; monthly reconciliation"
+      temporal_coverage: "Same period as finished output"
+      site_scope: "All controlled finishing discharges"
+      aggregation_rule: "Sum each atomic stream separately and divide by reference output mass"
+      quality_evidence: "Meter or scale calibration; waste manifest; laboratory chain of custody"
+    - protocol_id: cp_finishing_emissions
+      process_id: "surface_finishing"
+      flow_role: "Direct fossil carbon dioxide"
+      record_type: "Stack measurement or fuel-based calculation record"
+      raw_fields: "fuel_volume; reference_condition; emission_factor; factor_source; measured_co2; oxidation_basis; eligible_output_mass"
+      collection_method: "Prefer compliant stack measurement; otherwise multiply collected fuel activity by a validated documented site factor"
+      unit: "kg"
+      frequency: "Each reporting period; reconcile monthly"
+      temporal_coverage: "Same period as finished output"
+      site_scope: "Onsite controlled natural-gas combustion only"
+      aggregation_rule: "Use measured CO2 or fuel activity multiplied by the validated factor; divide by reference output mass"
+      quality_evidence: "Measurement QA; factor approval; fuel-to-emission reconciliation"
+    - protocol_id: cp_assembly_mass_balance
+      process_id: "staple_strip_assembly"
+      flow_role: "Formed staples, water-based adhesive, tissue strip and accepted staple strips"
+      record_type: "Batch traveller, scale, adhesive container log and paper issue record"
+      raw_fields: "lot_id; staple_mass; adhesive_opening; adhesive_additions; adhesive_closing; tissue_mass; accepted_strip_mass; rejects"
+      collection_method: "Weigh each atomic input and accepted output by staple-strip lot"
+      unit: "kg"
+      frequency: "Each lot; monthly reconciliation"
+      temporal_coverage: "Same period as staple-strip output"
+      site_scope: "All assembly lines for the declared staple SKU"
+      aggregation_rule: "Net input or output divided by market-ready reference output mass"
+      quality_evidence: "Scale calibration; material issue record; line-cleanout and reject record"
+    - protocol_id: cp_assembly_electricity
+      process_id: "staple_strip_assembly"
+      flow_role: "Assembly electricity"
+      record_type: "Cell submeter or runtime log"
+      raw_fields: "meter_id; readings; eligible_runtime; shared_load_driver"
+      collection_method: "Submeter preferred; otherwise allocate measured cell load by runtime"
+      unit: "kWh"
+      frequency: "Each lot or shift; monthly reconciliation"
+      temporal_coverage: "Same period as staple-strip output"
+      site_scope: "Alignment, adhesive application, drying and cutting cell"
+      aggregation_rule: "Convert kWh to MJ and divide by reference output mass"
+      quality_evidence: "Meter calibration; runtime log; allocation record"
+    - protocol_id: cp_packaging_mass_balance
+      process_id: "inspection_packaging"
+      flow_role: "Unpacked article, paper box and market-ready output"
+      record_type: "Packaging BOM, supplier specification, count record and calibrated scale"
+      raw_fields: "SKU; article_count; unpacked_mass; box_count; sampled_box_mass; packing_rejects; market_ready_net_mass"
+      collection_method: "Weigh representative same-SKU samples and reconcile packaging BOM and counts"
+      unit: "kg"
+      frequency: "Each packaging lot; monthly reconciliation"
+      temporal_coverage: "Same period as reference product output"
+      site_scope: "All factory-gate sales packaging for declared product"
+      aggregation_rule: "Sum paper-box mass and normalize all eligible flows by measured market-ready net article mass"
+      quality_evidence: "Scale calibration; BOM revision; sampling record; count-to-mass check"
+    - protocol_id: cp_packaging_electricity
+      process_id: "inspection_packaging"
+      flow_role: "Packaging electricity"
+      record_type: "Cell submeter or runtime log"
+      raw_fields: "meter_id; readings; eligible_runtime; shared_load_driver"
+      collection_method: "Submeter preferred; otherwise allocate measured packaging-cell load by runtime"
+      unit: "kWh"
+      frequency: "Each lot or shift; monthly reconciliation"
+      temporal_coverage: "Same period as reference product output"
+      site_scope: "Inspection and packaging cell"
+      aggregation_rule: "Convert kWh to MJ and divide by reference output mass"
+      quality_evidence: "Meter calibration; runtime log; allocation record"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "All inventory rows"
+      rule: "normalized amount = eligible exchange quantity / measured market-ready net article output mass"
+      inputs:
+        - "eligible exchange quantity"
+        - "market-ready net article output mass"
+      output: "Exchange per 1 kg reference product"
+      source_ids: []
+    - id: calc_count_to_mass
+      applies_to: "Count-only product or packaging records"
+      rule: "mass_kg = eligible count x contemporaneous mean same-SKU item mass_kg"
+      inputs:
+        - "eligible count"
+        - "sampled item masses"
+        - "sample size"
+      output: "kg of article or paper box"
+      source_ids: []
+    - id: calc_electricity_conversion
+      applies_to: "Electricity rows"
+      rule: "energy_MJ = metered_kWh x 3.6"
+      inputs:
+        - "metered kWh"
+      output: "MJ electricity"
+      source_ids: []
+    - id: calc_forming_mass_balance
+      applies_to: "Forming process"
+      rule: "unexplained difference = net metal stock input - accepted intermediate output - segregated scrap output - documented internal inventory change"
+      inputs:
+        - "metal stock"
+        - "accepted output"
+        - scrap
+        - "inventory change"
+      output: "Forming mass-balance difference"
+      source_ids: []
+    - id: calc_finishing_consumption
+      applies_to: "Bath chemicals and coating metals"
+      rule: "net consumption = opening inventory + additions - closing inventory - documented recovery - documented return"
+      inputs:
+        - "opening inventory"
+        - additions
+        - "closing inventory"
+        - recovery
+        - return
+      output: "Net consumed mass by atomic material"
+      source_ids:
+        - ec-jrc-ferrous-metals-processing-bref-2022
+    - id: calc_direct_fossil_co2
+      applies_to: "Natural-gas combustion"
+      rule: "direct fossil CO2 = measured stack CO2 or declared-condition fuel volume x validated documented site emission factor"
+      inputs:
+        - "measured CO2"
+        - "fuel volume"
+        - "reference condition"
+        - "site emission factor"
+      output: "kg direct fossil CO2"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product"
+      requirement: "Retain SKU, product subtype, dimensions or gauge, metal grade, coating, count per sales unit, staple-strip status and packaging configuration."
+      evidence: "Approved specification, drawing, label and batch traveller"
+    - id: dq_temporal_representativeness
+      applies_to: "Foreground inventory"
+      requirement: "Use a representative continuous 12-month period or a declared campaign that covers normal operating modes; disclose shutdowns, start-ups and excluded abnormal events."
+      evidence: "Production calendar, meter coverage and campaign rationale"
+    - id: dq_meter_quality
+      applies_to: "Mass, water, gas and electricity"
+      requirement: "Use calibrated instruments with traceable units and document estimates used to bridge data gaps."
+      evidence: "Calibration certificates, meter register and gap log"
+    - id: dq_completeness
+      applies_to: "All controlled processes"
+      requirement: "Reconcile purchased inputs, internal transfers, accepted output, scrap, wastewater, sludge and direct emissions; explain every excluded material exchange."
+      evidence: "Signed mass-balance review and completeness checklist"
+    - id: dq_route_specificity
+      applies_to: "Conditional finishing and staple assembly"
+      requirement: "Mark every conditional process and flow applicable or not applicable and retain evidence for the route decision."
+      evidence: "Process flow diagram, work instructions and supplier finish declaration"
+    - id: dq_upstream_matching
+      applies_to: "Purchased inputs"
+      requirement: "Match upstream datasets to actual flow identity, product state, geography and technology; disclose proxies."
+      evidence: "Supplier records and upstream dataset mapping table"
+    - id: dq_uncertainty_and_ranges
+      applies_to: "Important flows"
+      requirement: "Do not treat this PCR as supplying empirical consumption ranges; report foreground variability and uncertainty and flag missing range evidence."
+      evidence: "Lot-level statistics, uncertainty method and unresolved-evidence register"
+validation_rules:
+  - rule_id: validation_reference_flow
+    applies_to: "reference_product"
+    rule: "Confirm exactly 1 kg net market-ready article output, the adopted CPC 42995 product UUID and all required qualifiers."
+    source_ids:
+      - un-cpc-3-0-2025
+  - rule_id: validation_atomic_inventory
+    applies_to: "process_inventory"
+    rule: "Confirm every row is one atomic exchange; reject collection labels, mixed materials, combined utilities and combined wastes."
+    source_ids: []
+  - rule_id: validation_process_map
+    applies_to: "process_inventory"
+    rule: "Confirm every required process has a detailed inventory and every conditional process and row carries an evidenced applicability decision."
+    source_ids: []
+  - rule_id: validation_uuid_semantics
+    applies_to: "uuid_bearing_flows"
+    rule: "Confirm each UUID remains public state 100 and that English and Chinese baseNames, flow type, classification, property and unit match the selected row."
+    source_ids: []
+  - rule_id: validation_mass_balance
+    applies_to: "foreground_mass_balance"
+    rule: "Reconcile metal input with accepted internal and final product, steel scrap, rejects and inventory changes; investigate unexplained differences."
+    source_ids: []
+  - rule_id: validation_energy_boundary
+    applies_to: "electricity_and_natural_gas"
+    rule: "Confirm electricity and gas are separately metered or causally allocated, use declared units, and exclude upstream emissions from direct foreground emissions."
+    source_ids: []
+  - rule_id: validation_finishing_waste
+    applies_to: "surface_finishing"
+    rule: "When finishing applies, require separate records for each chemical, metal, wastewater, sludge and direct emission and retain treatment destinations."
+    source_ids:
+      - ec-jrc-ferrous-metals-processing-bref-2022
+  - rule_id: validation_staple_strip
+    applies_to: "staple_strip_assembly"
+    rule: "For staples in strips, require separate formed-staple, adhesive, optional tissue-strip, assembly-energy and accepted-strip records; mark the tissue route not applicable when absent."
+    source_ids:
+      - us-1665051-staple-strip-1928
+  - rule_id: validation_bilingual_alignment
+    applies_to: "bilingual_pcr"
+    rule: "Confirm the English and Chinese files contain the same ordered rule ids, process ids, row ids, UUIDs, controlled values and sources."
+    source_ids: []
+  - rule_id: validation_range_disclosure
+    applies_to: "quantitative_guidance"
+    rule: "Confirm no unsupported empirical range or default is inferred from the process sources; disclose the four unresolved range-evidence groups and use foreground values."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground factory-gate product manufacturing dataset"
+  downstream_use: "May be published as a secondary_dataset or background_dataset after review and used in process and lifecyclemodel projections"
+  allowed_use: "Comparative or attributional modelling of the declared base-metal office-article SKU or homogeneous family when reference-flow qualifiers, routes and geography match"
+  excluded_use: "Direct use for plastic-only office articles, stapling machines, office furniture, loose staples, construction fasteners, another metal represented by steel proxies, or cradle-to-grave claims without additional stages"
+  required_metadata: "PCR id and version state; product SKU and subtype; dimensions or gauge; metal grade and stock form; coating; route decisions; count-to-mass factor; packaging; facility geography; period; allocation; upstream dataset mapping; unresolved UUIDs"
+  required_quality_disclosure: "Temporal coverage; instrument calibration; shared-load allocation; mass-balance difference; data gaps; proxies; foreground variability; conditional-process applicability; wastewater and waste destinations; range-evidence limitations"
+  update_trigger: "Change in product family, metal grade or form, forming technology, coating or adhesive route, facility, packaging configuration, allocation method, upstream dataset identity, public UUID state, or evidence sufficient to replace unresolved ranges"
+data_sources:
+  - id: "un-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0 structure, 30 June 2025, CPC 42995; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-05)"
+    used_for: "Official product-category identity and explicit inclusion of staples in strips"
+  - id: "us-1355587-paper-clip-machine-1920"
+    type: "literature"
+    reference: "United States Patent US1355587A, Machine for making paper-clips, published 12 October 1920; https://patents.google.com/patent/US1355587A/en (retrieved 2026-09-05)"
+    used_for: "Original full-text evidence that wire is continuously shaped, cut and delivered in paper-clip manufacture"
+  - id: "us-1665051-staple-strip-1928"
+    type: "literature"
+    reference: "United States Patent US1665051A, Method of packaging staples or the like and package produced thereby, published 3 April 1928; https://patents.google.com/patent/US1665051A/en (retrieved 2026-09-05)"
+    used_for: "Original full-text process evidence for contiguous staple alignment, adhesive application, optional tissue strip, drying and separable strip output"
+  - id: "ec-jrc-ferrous-metals-processing-bref-2022"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Ferrous Metals Processing Industry, EUR 31321 EN, JRC131649, 2022, doi:10.2760/196475; https://publications.jrc.ec.europa.eu/repository/handle/JRC131649 (retrieved 2026-09-05)"
+    used_for: "Official process evidence for conditional protective coating, electrolytic or chemical surface treatment and associated wastewater treatment; not used as empirical amount-range evidence"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f30953f1341c06efba56f42387da2fe7e6bec8174938e5541358a5152b382434"
+  generated_content_sha256: "sha256:1402a1ed6c6c1d3e9d17bca9a19a3b8a1e9e697afbfcf2c94ae7de4fdfbf9449"

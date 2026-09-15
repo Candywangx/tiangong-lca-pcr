@@ -2,12 +2,13 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.table-kitchen-or-other-household-articles-and-parts-thereof-of-iron-steel-copper-or-alu-44fd82fb
 title:
   en-US: "Table, kitchen or other household articles and parts thereof, of iron, steel, copper or aluminium; cooking or heating apparatus of a kind used for domestic purposes, non-electric, of copper; pot scourers and scouring or polishing pads, gloves and the like, of iron or steel, copper or aluminium; iron or steel wool; hand-operated mechanical appliances, weighing 10 kg or less, used in the preparation, conditioning or serving of food or drink"
-  zh-CN: null
-status: scaffold
+  zh-CN: "铁、钢、铜或铝制餐桌、厨房或其他家用物品及其零件；家用非电热烹调或加热用铜制器具；铁、钢、铜或铝制刷锅器、擦洗或抛光垫、手套及类似品；铁棉或钢棉；用于食品或饮料的制备、调理或供应、重量不超过10千克的手动机械器具"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
+updated_at_utc: "2026-09-05T00:00:00Z"
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +23,138 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "42912"
     title: "Table, kitchen or other household articles and parts thereof, of iron, steel, copper or aluminium; cooking or heating apparatus of a kind used for domestic purposes, non-electric, of copper; pot scourers and scouring or polishing pads, gloves and the like, of iron or steel, copper or aluminium; iron or steel wool; hand-operated mechanical appliances, weighing 10 kg or less, used in the preparation, conditioning or serving of food or drink"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  semantic_boundary_review:
+    conclusion: promote_legacy
+    representative_route: formed and polished stainless-steel household article at factory gate
+    duplicate_identity_check: no existing material PCR was found for this complete semantic product boundary
+    breadth_control: one representative route with conditional thermal treatment and product-specific qualifiers; no product-variant Cartesian expansion
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved_flow_identities:
+    - row_id: reference_product_output
+      reason: No exact public TianGong product-flow identity was found for the declared finished metal household article; see the receipt-backed entry under unresolved.inventory_flow_uuids.
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: prepared_blank_output
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: The cut stainless-steel blank is an internal, route-specific intermediate without a reusable public product-flow identity.
+      - row_id: prepared_blank_input
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: The cut stainless-steel blank transferred into forming is an internal, route-specific intermediate without a reusable public product-flow identity.
+      - row_id: formed_body_output
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: The formed household-article body is an internal intermediate whose geometry and alloy depend on the declared product.
+      - row_id: formed_body_thermal_input
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: The formed body entering conditional thermal treatment is an internal intermediate requiring a foreground identity.
+      - row_id: heat_treated_body_output
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: The heat-treated body is an internal intermediate whose metallurgical state is product- and route-specific.
+      - row_id: surface_ready_body_input
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: The surface-ready formed body is an internal intermediate transferred from forming or thermal treatment.
+      - row_id: prepack_article_output
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: The inspected article before packaging is an internal intermediate distinguished from the declared factory-gate reference product.
+      - row_id: alkaline_finishing_wastewater
+        reason_code: no_exact_candidate
+        explanation: Receipt 5c52203b-1bf6-42a4-a4bd-a090b5623565 returned only evaporation condensate, which is not alkaline metal-finishing wastewater.
+      - row_id: pm10_air_output
+        reason_code: manual_review_required
+        explanation: Receipt 9e8eb4c9-58b1-4c39-8c02-1c237ca659fa returned compartment-specific PM10 flows; the actual stack height and urban or non-urban receiving compartment must be established from the foreground site.
+      - row_id: prepack_article_input
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: The inspected article entering packaging is an internal intermediate distinguished from the declared factory-gate reference product.
+      - row_id: reference_product_output
+        reason_code: no_exact_candidate
+        explanation: Receipt b98b6dcb-617b-40ba-b8e2-249d948415ea returned only upstream aluminium materials and sealing tape, not a finished metal household article.
+    range_evidence_needs:
+      - row_id: stock_stainless_flat_roll
+        reason_code: insufficient_independent_original_sources
+        explanation: No two independent, boundary-compatible original sources were verified for a mass-input QA range; collect bill-of-material and receipt records.
+      - row_id: stock_receipt_electricity
+        reason_code: insufficient_independent_original_sources
+        explanation: No two independent, boundary-compatible original sources were verified for receipt-stage electricity; collect submeter records.
+      - row_id: prepared_blank_output
+        reason_code: insufficient_independent_original_sources
+        explanation: No two independent, geometry- and yield-compatible original sources were verified for the prepared-blank transfer; calculate it from measured stock, receipt rejects and blanking scrap.
+      - row_id: stock_scrap_output
+        reason_code: insufficient_independent_original_sources
+        explanation: No two independent, boundary-compatible original sources were verified for receipt-stage reject scrap; collect weighed scrap records.
+      - row_id: forming_electricity
+        reason_code: insufficient_independent_original_sources
+        explanation: No two independent, boundary-compatible original sources were verified for cutting and forming electricity; collect submeter records.
+      - row_id: forming_cutting_fluid
+        reason_code: insufficient_independent_original_sources
+        explanation: No two independent, formulation-compatible original sources were verified for cutting-fluid consumption; collect issue and return records.
+      - row_id: forming_scrap_output
+        reason_code: insufficient_independent_original_sources
+        explanation: No two independent, geometry-compatible original sources were verified for forming scrap; collect weighed scrap by product lot.
+      - row_id: waste_cutting_oil_output
+        reason_code: insufficient_independent_original_sources
+        explanation: No two independent, formulation-compatible original sources were verified for waste cutting oil; collect waste-transfer records.
+      - row_id: thermal_natural_gas
+        reason_code: insufficient_independent_original_sources
+        explanation: No two independent, furnace- and alloy-compatible original sources were verified for thermal-treatment gas use; collect calibrated meter records.
+      - row_id: thermal_fossil_co2
+        reason_code: insufficient_independent_original_sources
+        explanation: No two independent, fuel-composition-compatible original sources were verified for a direct fossil CO2 QA range; calculate from collected fuel and facility-specific carbon data.
+      - row_id: finishing_electricity
+        reason_code: insufficient_independent_original_sources
+        explanation: No two independent, finish-compatible original sources were verified for finishing electricity; collect submeter records.
+      - row_id: surface_ready_body_input
+        reason_code: insufficient_independent_original_sources
+        explanation: No two independent, route-compatible original sources were verified for the surface-ready body transfer; calculate it from the foreground material balance.
+      - row_id: finishing_sodium_hydroxide
+        reason_code: insufficient_independent_original_sources
+        explanation: No two independent, bath-chemistry-compatible original sources were verified for sodium-hydroxide consumption; collect solution make-up and replenishment records.
+      - row_id: finishing_process_water
+        reason_code: insufficient_independent_original_sources
+        explanation: No two independent, line-configuration-compatible original sources were verified for total process-water use; collect inlet and bath records.
+      - row_id: finishing_white_fused_alumina
+        reason_code: insufficient_independent_original_sources
+        explanation: No two independent, finish-grade-compatible original sources were verified for abrasive consumption; collect issue, recovery and disposal records.
+      - row_id: prepack_article_output
+        reason_code: insufficient_independent_original_sources
+        explanation: No two independent, product- and rejection-compatible original sources were verified for the inspected prepack article transfer; calculate it from accepted production records.
+      - row_id: alkaline_finishing_wastewater
+        reason_code: insufficient_independent_original_sources
+        explanation: No two independent, chemistry- and discharge-boundary-compatible original sources were verified for wastewater output; collect discharge records.
+      - row_id: grinding_dust_output
+        reason_code: insufficient_independent_original_sources
+        explanation: No two independent, capture-system-compatible original sources were verified for collected grinding dust; collect container weights and filter-change records.
+      - row_id: pm10_air_output
+        reason_code: insufficient_independent_original_sources
+        explanation: No two independent, release-point-compatible original sources were verified for direct PM10; collect source-test or validated calculation records.
+      - row_id: packaging_electricity
+        reason_code: insufficient_independent_original_sources
+        explanation: No two independent, packaging-line-compatible original sources were verified for packaging electricity; collect submeter records.
+      - row_id: prepack_article_input
+        reason_code: insufficient_independent_original_sources
+        explanation: No two independent, product-compatible original sources were verified for the inspected-article packaging input; reconcile it to the preceding foreground transfer record.
+      - row_id: corrugated_box_input
+        reason_code: insufficient_independent_original_sources
+        explanation: No two independent, product-packaging-compatible original sources were verified for box mass; collect packaging bills of material and supplier specifications.
+      - row_id: ldpe_film_input
+        reason_code: insufficient_independent_original_sources
+        explanation: No two independent, product-packaging-compatible original sources were verified for LDPE film mass; collect packaging bills of material and supplier specifications.
+      - row_id: reference_product_output
+        reason_code: insufficient_independent_original_sources
+        explanation: The reference output is fixed by the declared unit rather than inferred as an external range; verify its 1 kg net mass through final product weighing and mass-balance records.

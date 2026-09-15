@@ -2,12 +2,12 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.basic-metals.flat-rolled-products-of-high-speed-steel-of-a-width-of-less-than-600-mm-not-further-wor-cb876d72
 title:
   en-US: "Flat-rolled products of high-speed steel of a width of less than 600 mm, not further worked than hot- or cold-rolled"
-  zh-CN: null
-status: scaffold
+  zh-CN: "宽度小于600毫米的高速钢平板轧材，仅经热轧或冷轧，未经进一步加工"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +22,99 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "41234"
     title: "Flat-rolled products of high-speed steel of a width of less than 600 mm, not further worked than hot- or cold-rolled"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved_flow_identities: []
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: high_speed_steel_feedstock
+        reason_code: no_exact_candidate
+        explanation: "Receipt-backed hybrid search and state-100 direct reads found hot-rolled strip, coil, plate, and rod candidates, but none identifies high-speed steel in the declared feedstock form."
+      - row_id: hydrochloric_acid_input
+        reason_code: product_state_mismatch
+        explanation: "Directly read hydrochloric-acid candidates fix 30%, 36%, or 0.2 N states, or omit the supplied solution state; the PCR requires the actual supplied concentration to remain explicit."
+      - row_id: sulfuric_acid_input
+        reason_code: product_state_mismatch
+        explanation: "The only directly read sulfuric-acid solution candidate fixes a 98% state; the PCR requires the actual supplied concentration and recovery state to remain explicit."
+      - row_id: demineralized_rinse_water
+        reason_code: property_or_unit_mismatch
+        explanation: "Directly read deionized or demineralized-water candidates use Mass/kg, while this metered rinse-water exchange is defined on a Volume/m3 basis."
+      - row_id: spent_pickling_solution
+        reason_code: no_exact_candidate
+        explanation: "The only acid-waste candidate is generic Waste Acid and does not preserve the site-specific pickling-acid and dissolved-metal state required for this row."
+      - row_id: acidic_rinse_wastewater
+        reason_code: no_exact_candidate
+        explanation: "Directly read candidates represent generic waste acid, generic cleaning wastewater, generic wastewater, or aggregated steel-production wastewater rather than acidic pickling-rinse wastewater."
+      - row_id: sulfur_dioxide_air
+        reason_code: classification_mismatch
+        explanation: "Directly read sulfur-dioxide candidates use upper-atmosphere, indoor-air, water, or soil compartments; the unspecified-air candidate is the broader sulfur-oxides substance rather than sulfur dioxide."
+      - row_id: rolling_oil_input
+        reason_code: product_state_mismatch
+        explanation: "Candidates fix cold-rolling, hot-rolling, or sheet-rolling oil identities, while this route-conditional row requires the actual oil or emulsion-concentrate formulation to be declared."
+      - row_id: cooling_water_input
+        reason_code: property_or_unit_mismatch
+        explanation: "The relevant process-water and demineralized-water candidates use Mass/kg and do not exactly match cooling-water make-up measured by Volume/m3 at the declared supplied quality."
+      - row_id: spent_rolling_emulsion
+        reason_code: no_exact_candidate
+        explanation: "Receipt-backed candidates represent mill scale, steel scrap, or unspecified steel feed materials; none identifies spent rolling oil emulsion."
+      - row_id: rolling_oily_sludge
+        reason_code: no_exact_candidate
+        explanation: "Oil Sludge is too generic to preserve the steel-rolling origin, while the other directly read candidates are refinery sludge or generic waste residue."
+      - row_id: protective_hydrogen
+        reason_code: no_exact_candidate
+        explanation: "Two ranked searches and state-100 direct reads found raw, converter, producer, biogas, and other non-hydrogen gases, but no exact gaseous-hydrogen product flow."
+      - row_id: corrosion_preventive_oil_input
+        reason_code: no_exact_candidate
+        explanation: "The ranked candidates are oil-palm fruit, fresh fruit bunches, and sulfonated kerosene; none identifies a corrosion-preventive oil for the finished steel surface."
+      - row_id: high_speed_steel_offcuts
+        reason_code: product_state_mismatch
+        explanation: "Directly read offcut candidates identify generic steel scrap and do not retain the high-speed-steel alloy-grade state required for segregated offcuts."
+    range_evidence_needs:
+      - row_ids:
+          - high_speed_steel_feedstock
+          - pickling_electricity
+          - rolling_electricity
+          - annealing_electricity
+          - natural_gas_input
+          - hydrochloric_acid_input
+          - sulfuric_acid_input
+          - demineralized_rinse_water
+          - cooling_water_input
+          - rolling_oil_input
+          - corrosion_preventive_oil_input
+          - protective_nitrogen
+          - protective_hydrogen
+        explanation: "Original technical guidance confirms these process exchanges, but only one boundary-compatible quantitative publication was verified; do not author an external empirical range until a second independent original source supports synthesis."
+      - row_ids:
+          - spent_pickling_solution
+          - acidic_rinse_wastewater
+          - iron_oxide_scale
+          - spent_rolling_emulsion
+          - rolling_oily_sludge
+          - high_speed_steel_offcuts
+          - fossil_co2_air
+          - nitrogen_dioxide_air
+          - carbon_monoxide_air
+          - hydrogen_chloride_air
+          - sulfur_dioxide_air
+        explanation: "Waste, yield-loss, and direct-emission amounts remain foreground collection requirements; no two independent, product-state- and boundary-compatible original sources were verified for an empirical range."
+      - row_ids:
+          - reference_product
+        explanation: "The 1,000 kg reference-product output is an exact declared-unit identity rather than an empirical range; a product-yield range remains deferred to reviewed multi-source evidence and foreground mass-balance records."

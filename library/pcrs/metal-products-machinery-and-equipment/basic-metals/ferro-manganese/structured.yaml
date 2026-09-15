@@ -1,10 +1,1142 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41112"
-  title: "Ferro-manganese"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.ferro-manganese"
+  classification_refs: "CPC 3.0: 41112, Ferro-manganese"
+  covered_products: "Solid ferro-manganese alloy in lump or sized form, including high-, medium-, and low-carbon grades"
+  excluded_products: "Silico-manganese; manganese metal; spiegeleisen; manganese ore or sinter sold as such; downstream steel products"
+  representative_product: "Solid lump ferro-manganese at the producing plant gate"
+  production_route: "Carbothermic manganese-ore reduction for high-carbon alloy; conditional oxygen decarburisation or silicothermic refining for medium- or low-carbon alloy"
+  market_state: "Solid, unpackaged bulk lump or customer-specified sized fraction; net mass excluding transport packaging"
+functional_unit:
+  what: "Ferro-manganese alloy supplied as an alloying and deoxidising material for iron and steel production"
+  how_much: "1 kg net mass of saleable ferro-manganese at the producing plant gate"
+  how_well: "Meets the declared carbon grade, manganese content, impurity limits, and particle-size specification"
+  how_long_or_cycle: "One production reporting period ending when the accepted solid product is ready for dispatch"
+  reference_flow_link: "Exactly 1 kg of the declared reference product flow represents the functional unit"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "foreground production"
+      rule: "Include all on-site preparation, smelting, tapping, grade-dependent refining, casting, crushing, screening, gas treatment, dust handling, and internal returns needed to make the saleable reference product."
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+        - us-epa-ap42-ferroalloy-production
+    - rule_id: boundary_route_conditions
+      applies_to: "conditional operations"
+      rule: "Include sintering only when fine ore is agglomerated on site and include refining only when the declared carbon grade requires oxygen decarburisation or silicothermic reduction."
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+    - rule_id: boundary_upstream_inputs
+      applies_to: "purchased inputs"
+      rule: "Link every purchased input to an upstream dataset and disclose supplier-specific substitutions; do not absorb upstream burdens into an unspecified aggregate input."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased manganese-bearing feed, iron-bearing feed, reductants, fluxes, electricity, water, oxygen, and route-specific alloying inputs at the producing plant gate"
+  starting_condition_role: "Upstream product inputs whose production burdens are supplied by external datasets; on-site preparation and all subsequent foreground operations are collected here"
+  product_classification_scope: "Solid ferro-manganese alloy across high-, medium-, and low-carbon grades; silico-manganese remains a separate product category even when used as an input"
+  recursive_input_rule: "Purchased ferro-manganese or internally returned alloy is recorded as an explicit product input; only internal returns generated inside the same reporting boundary may carry zero upstream burden, with the loop quantity disclosed"
+  upstream_dataset_requirement: "Use geographically and technologically representative upstream datasets for every purchased material, fuel, electricity, water, oxygen, and treatment service"
+  disclosure: "Declare included preparation, furnace type and enclosure, carbon grade, refining route, abatement configuration, internal recycles, recovered-gas use or flare, slag use or disposal, cut-offs, and excluded on-site operations"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Ferromanganese"
+    uuid: "2f5d9ece-fe82-4e6d-a12d-47366582ec48"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "carbon grade"
+    - "manganese content"
+    - "impurity specification"
+    - "particle-size range"
+    - "product state"
+    - "smelting route"
+    - "refining route or none"
+    - "furnace enclosure"
+    - "production site and geography"
+    - "reporting period"
+    - "slag destination"
+    - "recovered-gas destination"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "saleable ferro-manganese"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize every inventory amount to 1 kg net mass of accepted saleable ferro-manganese; exclude transport packaging and separately reported off-spec returns."
+  - id: mass_balance_basis
+    applies_to: "material inputs and outputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record wet or as-received mass and composition where relevant, then use one consistent reporting basis in the mass balance; disclose any dry-mass conversion."
+  - id: energy_conversion
+    applies_to: "electricity and fuels"
+    required_property_ref:
+      name: "Energy or mass, as metered"
+      uuid: ""
+    required_unit: "kWh, MJ, Nm3, or kg"
+    rule: "Preserve measured units and conversion factors; report electricity separately from each fuel and do not combine energy carriers."
+process_map:
+  - id: raw_material_preparation
+    name: "Raw-material preparation and manganese-ore sintering"
+    inclusion: "conditional"
+    inclusion_condition: "Include when manganese ore fines are agglomerated, pelletised, or sintered on site"
+    role: "foreground conditioning"
+    quantitative_reference: "mass of manganese sinter transferred to smelting"
+  - id: ferromanganese_smelting
+    name: "Ferro-manganese reduction smelting and tapping"
+    inclusion: "required"
+    inclusion_condition: "Always include the declared primary smelting route"
+    role: "foreground production"
+    quantitative_reference: "mass of crude alloy tapped"
+  - id: ferromanganese_refining
+    name: "Carbon-grade refining"
+    inclusion: "conditional"
+    inclusion_condition: "Include for medium- or low-carbon alloy and identify oxygen decarburisation or silicothermic reduction"
+    role: "foreground refining"
+    quantitative_reference: "mass of refined alloy transferred to finishing"
+  - id: casting_and_sizing
+    name: "Casting, solidification, crushing, and screening"
+    inclusion: "required"
+    inclusion_condition: "Include through acceptance of the solid saleable product"
+    role: "foreground finishing"
+    quantitative_reference: "1 kg accepted ferro-manganese"
+process_inventory:
+  - id: raw_material_preparation
+    label: "Raw-material preparation and manganese-ore sintering"
+    inputs:
+      product:
+        - row_id: prep_ore_fines
+          role: "Metallurgical manganese ore fines"
+          name: "Metallurgical manganese ore fines"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record manganese-bearing ore fines entering on-site agglomeration or sintering, with moisture and manganese grade retained in the raw record."
+          amount:
+            expression: "measured as-received mass entering preparation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: prep_coke_breeze
+          role: "Coke breeze for sintering"
+          name: "Coke breeze"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include coke breeze only when it is consumed as sinter fuel."
+          amount:
+            expression: "measured charged mass"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: prep_limestone
+          role: "Limestone for sintering"
+          name: "Limestone"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include limestone charged as a preparation-stage flux separately from smelting flux."
+          amount:
+            expression: "measured charged mass"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: prep_natural_gas
+          role: "Natural gas for sinter ignition"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3, Units of volume 93a60a57-a3c8-12da-a746-0800200c9a66"
+          description: "Include natural gas only when used by the on-site sinter ignition burners."
+          amount:
+            expression: "metered gas volume at the supplier's declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: prep_electricity
+          role: "Preparation electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity metered to crushing, screening, conveying, mixing, and sintering equipment."
+          amount:
+            expression: "submetered electricity or allocated equipment-meter electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prep_sinter
+          role: "Manganese sinter transferred to smelting"
+          name: "Manganese sinter"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Track the mass of prepared manganese sinter as an internal intermediate and do not double count its internally transferred burden."
+          amount:
+            expression: "measured transfer mass after screening"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: prep_pm_air
+          role: "Preparation particulate matter to air"
+          name: "Particulate matter to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured particulate matter released after preparation-stage controls; declare the size fraction and compartment."
+          amount:
+            expression: "stack measurement or approved monitored emission calculation"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preparation_emissions
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-production
+            ranges: []
+  - id: ferromanganese_smelting
+    label: "Ferro-manganese reduction smelting and tapping"
+    inputs:
+      product:
+        - row_id: smelt_manganese_ore
+          role: "Metallurgical manganese ore"
+          name: "Metallurgical manganese ore"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the manganese-bearing ore or purchased sinter charged to the furnace, with state, moisture, and manganese grade as qualifiers."
+          amount:
+            expression: "measured charged mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smelting_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-production
+            ranges: []
+        - row_id: smelt_iron_ore
+          role: "Iron ore"
+          name: "Iron ore"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record iron-bearing ore added to the furnace burden."
+          amount:
+            expression: "measured charged mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smelting_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: smelt_coke
+          role: "Metallurgical coke reductant"
+          name: "Metallurgical coke"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record metallurgical coke charged as a carbonaceous reducing agent."
+          amount:
+            expression: "measured charged mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smelting_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-production
+            ranges: []
+        - row_id: smelt_coal
+          role: "Low-volatile coal reductant"
+          name: "Low-volatile coal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include low-volatile coal when it is charged as a separate reducing agent."
+          amount:
+            expression: "measured charged mass"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smelting_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-production
+            ranges: []
+        - row_id: smelt_limestone
+          role: "Limestone smelting flux"
+          name: "Limestone"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record limestone charged directly to the smelting furnace."
+          amount:
+            expression: "measured charged mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smelting_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-production
+            ranges: []
+        - row_id: smelt_dolomite
+          role: "Dolomite smelting flux"
+          name: "Dolomite"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record dolomite charged directly to the smelting furnace."
+          amount:
+            expression: "measured charged mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smelting_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: smelt_electricity
+          role: "Smelting electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity delivered to the submerged electric arc furnace and its directly associated auxiliaries."
+          amount:
+            expression: "furnace and auxiliary meter reading"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smelting_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-production
+            ranges: []
+        - row_id: smelt_electrode_paste
+          role: "Soderberg electrode paste"
+          name: "Soderberg electrode paste"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record carbonaceous paste consumed in self-baking furnace electrodes."
+          amount:
+            expression: "stock-balance consumption"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_smelting_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: smelt_makeup_water
+          role: "Smelting cooling-water makeup"
+          name: "Cooling-water makeup"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record only freshwater or purchased water added to the furnace cooling circuit, excluding recirculated water."
+          amount:
+            expression: "metered makeup-water volume"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smelting_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-production
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: smelt_crude_femn
+          role: "Crude high-carbon ferro-manganese"
+          name: "Crude high-carbon ferro-manganese"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure crude alloy tapped from the reduction furnace before any grade-specific refining."
+          amount:
+            expression: "measured tapped alloy mass"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smelting_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-production
+            ranges: []
+        - row_id: smelt_rich_slag
+          role: "Manganese-rich smelting slag"
+          name: "Manganese-rich ferro-manganese slag"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record slag leaving the smelting process and declare whether it is sold, transferred to silico-manganese production, recycled, or disposed."
+          amount:
+            expression: "measured slag mass leaving the process"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smelting_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-production
+            ranges: []
+        - row_id: smelt_co_rich_gas
+          role: "Recovered carbon-monoxide-rich furnace gas"
+          name: "Carbon-monoxide-rich ferro-manganese furnace gas"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Include cleaned CO-rich gas as a co-product only when exported from the process for energy recovery or another industrial use; disclose composition and destination."
+          amount:
+            expression: "metered exported gas volume multiplied by measured net calorific value"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_smelting_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-production
+            ranges: []
+      waste:
+        - row_id: smelt_captured_dust
+          role: "Captured ferro-manganese furnace dust"
+          name: "Captured ferro-manganese furnace dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record captured dust only at the point it leaves internal recycling; keep internally returned dust in the mass balance without an external waste output."
+          amount:
+            expression: "measured mass sent to off-site recovery or disposal"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smelting_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-production
+            ranges: []
+      elementary:
+        - row_id: smelt_co_air
+          role: "Carbon monoxide emitted to air"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record residual carbon monoxide released after combustion, recovery, or flaring, excluding gas transferred as a co-product."
+          amount:
+            expression: "monitored stack amount or engineering calculation from measured gas flow and concentration"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_smelting_emissions
+              source_ids:
+                - us-epa-ap42-ferroalloy-production
+            ranges: []
+        - row_id: smelt_pm_air
+          role: "Smelting particulate matter to air"
+          name: "Particulate matter to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record controlled stack and quantified fugitive particulate matter separately in raw records, then aggregate only within the same declared size fraction."
+          amount:
+            expression: "monitored or permitted-calculation particulate release after controls"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_smelting_emissions
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-production
+            ranges: []
+  - id: ferromanganese_refining
+    label: "Carbon-grade refining"
+    inputs:
+      product:
+        - row_id: refine_crude_femn
+          role: "Crude high-carbon ferro-manganese for refining"
+          name: "Crude high-carbon ferro-manganese"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal crude alloy entering refining; include this row only when the declared product requires refining."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refining_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: refine_oxygen
+          role: "Oxygen for decarburisation"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3, Units of volume 93a60a57-a3c8-12da-a746-0800200c9a66"
+          description: "Include gaseous oxygen only for an oxygen-blown decarburisation route."
+          amount:
+            expression: "metered oxygen volume at declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refining_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: refine_silicomanganese
+          role: "Silico-manganese reductant"
+          name: "Silico-manganese"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include silico-manganese only for a declared silicothermic medium- or low-carbon refining route."
+          amount:
+            expression: "measured charged mass"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refining_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-production
+            ranges: []
+        - row_id: refine_electricity
+          role: "Refining electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity consumed by the refining furnace, converter auxiliaries, and directly associated capture equipment."
+          amount:
+            expression: "submetered electricity"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refining_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: refine_alloy
+          role: "Refined ferro-manganese alloy"
+          name: "Refined ferro-manganese alloy"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure medium- or low-carbon alloy transferred from refining to finishing and retain the laboratory carbon analysis."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refining_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        - row_id: refine_slag
+          role: "Ferro-manganese refining slag"
+          name: "Ferro-manganese refining slag"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record refining slag leaving the route and disclose recycle, sale, recovery, or disposal."
+          amount:
+            expression: "measured mass leaving the refining process"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refining_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: refine_captured_dust
+          role: "Captured ferro-manganese refining dust"
+          name: "Captured ferro-manganese refining dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record captured refining dust only when it leaves internal recycle for off-site recovery or disposal."
+          amount:
+            expression: "measured outgoing mass"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refining_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      elementary:
+        - row_id: refine_co2_air
+          role: "Refining carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record carbon dioxide released by oxygen decarburisation or refining-energy combustion and declare the carbon origin."
+          amount:
+            expression: "monitored amount or carbon-balance calculation from collected inputs and outputs"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refining_emissions
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: refine_pm_air
+          role: "Refining particulate matter to air"
+          name: "Particulate matter to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record particulate matter released after the refining fume-control system and declare the size fraction."
+          amount:
+            expression: "monitored stack amount or approved calculation"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refining_emissions
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-production
+            ranges: []
+  - id: casting_and_sizing
+    label: "Casting, solidification, crushing, and screening"
+    inputs:
+      product:
+        - row_id: finish_alloy_feed
+          role: "Ferro-manganese alloy entering finishing"
+          name: "Ferro-manganese alloy entering finishing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record crude high-carbon alloy or refined alloy entering casting and sizing as one declared internal state for the dataset."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-production
+            ranges: []
+        - row_id: finish_electricity
+          role: "Finishing electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity metered to casting-machine auxiliaries, crushing, screening, and product handling."
+          amount:
+            expression: "submetered electricity or equipment-meter allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-production
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_ferromanganese
+          role: "Saleable ferro-manganese reference product"
+          name: "Ferromanganese"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2f5d9ece-fe82-4e6d-a12d-47366582ec48"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "This is the accepted solid product matching the declared grade and sizing specification."
+          amount:
+            expression: "exactly 1 kg net accepted product"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+        - row_id: finish_undersize_return
+          role: "Undersize ferro-manganese returned internally"
+          name: "Undersize ferro-manganese"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Track undersize product returned to remelting or reprocessing as an internal loop; do not count it as saleable output."
+          amount:
+            expression: "measured internal return mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-production
+            ranges: []
+      waste:
+        - row_id: finish_captured_dust
+          role: "Captured ferro-manganese crushing dust"
+          name: "Captured ferro-manganese crushing dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record captured finishing dust only when it leaves internal recycle for recovery or disposal."
+          amount:
+            expression: "measured outgoing mass"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-production
+            ranges: []
+      elementary:
+        - row_id: finish_pm_air
+          role: "Finishing particulate matter to air"
+          name: "Particulate matter to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record particulate matter released after controls from casting, crushing, screening, and product handling; declare the size fraction."
+          amount:
+            expression: "monitored or approved-calculation release after controls"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable ferro-manganese"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing_emissions
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-production
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "multi-output foreground operations"
+    rule: "Use separately metered process subdivision for sintering, smelting, refining, gas treatment, slag handling, and finishing before applying allocation."
+    source_ids: []
+  - rule_id: allocation_internal_returns
+    applies_to: "internal sinter, alloy, dust, and undersize returns"
+    rule: "Carry internal returns without a second upstream burden and disclose gross and net quantities so the loop can be audited."
+    source_ids: []
+  - rule_id: allocation_exported_coproducts
+    applies_to: "manganese-rich slag and recovered CO-rich gas"
+    rule: "Record each exported co-product as a separate output. If allocation cannot be avoided, state and justify the chosen physical or economic relation, report unallocated results where practicable, and test sensitivity."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+      - us-epa-ap42-ferroalloy-production
+  - rule_id: allocation_waste_treatment
+    applies_to: "residues sent to treatment"
+    rule: "Assign treatment burdens and credits consistently with the declared waste ownership and recovery boundary; do not treat disposal and product sale as the same destination."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_preparation_records
+      process_id: "raw_material_preparation"
+      flow_role: "preparation inputs and sinter output"
+      record_type: "weighbridge, batch sheet, fuel meter, electricity meter"
+      raw_fields: "material id; as-received mass; moisture; Mn grade; fuel quantity; calorific value; electricity; sinter output"
+      collection_method: "reconcile batch records to inventory movements and meters"
+      unit: "kg, MJ, kWh"
+      frequency: "each batch and monthly close"
+      temporal_coverage: "same reporting period as reference product"
+      site_scope: "all on-site preparation lines"
+      aggregation_rule: "sum quantities and normalize to accepted product mass"
+      quality_evidence: "calibrated scales and meters; batch reconciliation; laboratory grade results"
+    - protocol_id: cp_preparation_emissions
+      process_id: "raw_material_preparation"
+      flow_role: "preparation particulate release"
+      record_type: "stack test or continuous/periodic monitor"
+      raw_fields: "gas flow; concentration; operating hours; size fraction; control downtime"
+      collection_method: "calculate pollutant mass from measured flow and concentration"
+      unit: "kg"
+      frequency: "monitoring interval and monthly close"
+      temporal_coverage: "representative operating period within reporting year"
+      site_scope: "every preparation emission point"
+      aggregation_rule: "sum point and quantified fugitive releases by size fraction"
+      quality_evidence: "calibration certificates; test reports; operating logs"
+    - protocol_id: cp_smelting_records
+      process_id: "ferromanganese_smelting"
+      flow_role: "furnace burden, energy, water, alloy, slag, gas, and dust"
+      record_type: "charge log, tap record, meters, stock balance"
+      raw_fields: "material id; mass; grade; electricity; water; gas flow; calorific value; tapped alloy; slag; dust destination"
+      collection_method: "reconcile furnace campaign inputs and outputs"
+      unit: "kg, kWh, m3, MJ"
+      frequency: "each charge or tap and monthly close"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all furnaces producing declared product"
+      aggregation_rule: "mass- and energy-balance aggregation by furnace campaign"
+      quality_evidence: "calibrated meters; stock reconciliation; laboratory analyses"
+    - protocol_id: cp_smelting_emissions
+      process_id: "ferromanganese_smelting"
+      flow_role: "CO and particulate releases"
+      record_type: "stack and fugitive monitoring"
+      raw_fields: "gas flow; CO concentration; particulate concentration; size fraction; operating time; capture status"
+      collection_method: "calculate releases from measured flow, concentration, and time"
+      unit: "kg"
+      frequency: "monitoring interval and monthly close"
+      temporal_coverage: "representative operating states including tapping"
+      site_scope: "all furnace, tapping, and handling emission points"
+      aggregation_rule: "sum only consistent pollutants and compartments"
+      quality_evidence: "monitoring QA records; control-device and flare logs"
+    - protocol_id: cp_refining_records
+      process_id: "ferromanganese_refining"
+      flow_role: "route inputs, alloy, slag, and captured dust"
+      record_type: "heat sheet, oxygen meter, electricity meter, weigh records"
+      raw_fields: "route; input alloy; oxygen; silico-manganese; electricity; output alloy; carbon analysis; slag; dust destination"
+      collection_method: "reconcile each refining heat"
+      unit: "kg, Nm3, kWh"
+      frequency: "each heat and monthly close"
+      temporal_coverage: "all refining campaigns in reporting period"
+      site_scope: "all refining vessels for declared product"
+      aggregation_rule: "aggregate by refining route before product-weighting"
+      quality_evidence: "calibrated meters; heat sheets; laboratory carbon results"
+    - protocol_id: cp_refining_emissions
+      process_id: "ferromanganese_refining"
+      flow_role: "refining CO2 and particulate releases"
+      record_type: "stack monitoring and carbon balance"
+      raw_fields: "gas flow; concentration; operating time; carbon in alloy inputs and outputs; size fraction"
+      collection_method: "monitored release or documented carbon-balance calculation"
+      unit: "kg"
+      frequency: "each campaign or monitoring interval"
+      temporal_coverage: "representative refining period"
+      site_scope: "all refining emission points"
+      aggregation_rule: "aggregate by route and control configuration"
+      quality_evidence: "stack-test report; carbon analyses; calculation audit trail"
+    - protocol_id: cp_finishing_records
+      process_id: "casting_and_sizing"
+      flow_role: "finishing inputs, product, returns, dust, and electricity"
+      record_type: "casting log, scale tickets, screen records, meter"
+      raw_fields: "alloy feed; accepted product; particle size; undersize return; dust destination; electricity"
+      collection_method: "reconcile finishing mass balance"
+      unit: "kg, kWh"
+      frequency: "each batch and monthly close"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all casting and sizing lines"
+      aggregation_rule: "sum accepted output and normalize all rows to its net mass"
+      quality_evidence: "calibrated scales; sieve or size test; inventory reconciliation"
+    - protocol_id: cp_finishing_emissions
+      process_id: "casting_and_sizing"
+      flow_role: "finishing particulate release"
+      record_type: "stack or workplace extraction monitoring"
+      raw_fields: "gas flow; concentration; operating time; size fraction; capture status"
+      collection_method: "calculate release after control"
+      unit: "kg"
+      frequency: "monitoring interval and monthly close"
+      temporal_coverage: "representative casting and sizing period"
+      site_scope: "all finishing emission points"
+      aggregation_rule: "sum releases by consistent size fraction and compartment"
+      quality_evidence: "monitoring QA records; control-device logs"
+  calculation_rules:
+    - id: calc_normalize_reference_mass
+      applies_to: "every inventory row"
+      rule: "normalized amount = reporting-period row quantity / reporting-period accepted reference-product mass"
+      inputs:
+        - "collected row quantity"
+        - "accepted saleable mass"
+      output: "amount per 1 kg saleable ferro-manganese"
+      source_ids: []
+    - id: calc_net_internal_returns
+      applies_to: "internal sinter, alloy, dust, and undersize loops"
+      rule: "disclose gross production and return; count only the net boundary crossing as an external input or output"
+      inputs:
+        - "gross transfer"
+        - "internal return"
+        - "external transfer"
+      output: "net boundary-crossing quantity"
+      source_ids: []
+    - id: calc_gas_energy
+      applies_to: "recovered CO-rich gas"
+      rule: "exported energy = metered standard-volume gas × measured net calorific value"
+      inputs:
+        - "gas volume"
+        - "pressure/temperature correction"
+        - "net calorific value"
+      output: "MJ exported gas"
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+    - id: calc_stack_release
+      applies_to: "monitored air emissions"
+      rule: "release mass = corrected dry gas flow × pollutant concentration × operating time, with consistent reference conditions"
+      inputs:
+        - "gas flow"
+        - concentration
+        - time
+        - "moisture and reference conditions"
+      output: "kg pollutant released"
+      source_ids: []
+    - id: calc_mass_balance
+      applies_to: "each process and reporting period"
+      rule: "mass-balance gap = total measured mass inputs - total measured mass outputs and quantified releases"
+      inputs:
+        - "all measured material rows"
+      output: "disclosed absolute and percentage gap"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Retain grade certificate showing carbon grade, manganese content, impurity limits, and particle-size result for every aggregated product campaign."
+      evidence: "laboratory certificates and product specification"
+    - id: dq_route_separation
+      applies_to: "process inventory"
+      requirement: "Keep high-carbon direct output, oxygen-decarburised, and silicothermic refining campaigns separable before aggregation."
+      evidence: "campaign and heat identifiers"
+    - id: dq_completeness
+      applies_to: "foreground boundary"
+      requirement: "Reconcile purchases, stocks, internal returns, products, slag, dust, gas, and reported releases; explain excluded or estimated rows."
+      evidence: "signed mass- and energy-balance review"
+    - id: dq_temporal
+      applies_to: "all records"
+      requirement: "Use one consistent reporting period and document shutdowns, abnormal campaigns, and control-device bypass."
+      evidence: "production calendar and operating logs"
+    - id: dq_upstream
+      applies_to: "purchased inputs"
+      requirement: "Record supplier, geography, product state, composition or grade, and matched upstream dataset version."
+      evidence: "purchase specification and dataset mapping record"
+    - id: dq_emissions
+      applies_to: "air releases"
+      requirement: "Identify stack versus fugitive release, receiving compartment, particulate size fraction, measurement method, and control configuration."
+      evidence: "monitoring report and abatement log"
+validation_rules:
+  - rule_id: validate_reference_amount
+    applies_to: "reference flow"
+    rule: "The accepted reference-product output shall equal exactly 1 kg after normalization and shall use the confirmed Ferromanganese flow UUID and mass support references."
+    source_ids: []
+  - rule_id: validate_identity_qualifiers
+    applies_to: "dataset metadata"
+    rule: "Carbon grade, manganese content, product state, size, smelting route, refining route, furnace enclosure, geography, reporting period, slag destination, and recovered-gas destination shall be present."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+      - gbt-3795-2014
+  - rule_id: validate_process_conditions
+    applies_to: "process map"
+    rule: "Sintering rows shall appear only when preparation occurs on site; refining rows shall appear only for the declared refining route; all required smelting and finishing rows shall be assessed."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: validate_atomic_flows
+    applies_to: "inventory"
+    rule: "Electricity, each fuel, each material, each residue, each co-product, and each elementary emission shall remain separate atomic rows."
+    source_ids: []
+  - rule_id: validate_mass_balance
+    applies_to: "process and reporting period"
+    rule: "Report the mass-balance gap for each included process and explain material discrepancies before publication."
+    source_ids: []
+  - rule_id: validate_no_unverified_defaults
+    applies_to: "UUIDs and ranges"
+    rule: "Do not publish a provisional UUID or an externally inferred range until direct public-state identity evidence or two independent boundary-compatible original sources, respectively, have been verified."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; eligible for background_dataset only after independent methodology, identity, and data-quality review"
+  downstream_use: "Product-flow, process, and lifecycle-model construction for ferro-manganese supply to iron and steel systems"
+  allowed_use: "Declared plant, technology, carbon grade, product state, geography, and reporting period represented by the collected foreground package"
+  excluded_use: "Silico-manganese or manganese-metal production; downstream steelmaking; a different carbon grade or refining route without documented representativeness"
+  required_metadata: "PCR id and version; product UUID; grade and composition; size; site and geography; reporting period; furnace and refining route; abatement; slag and gas destinations; allocation; upstream dataset versions"
+  required_quality_disclosure: "Primary-data share; meter and scale coverage; mass-balance gap; laboratory methods; temporal coverage; estimated rows; control downtime; UUID and range-evidence status"
+  update_trigger: "Change in ore blend or grade, carbon grade, furnace or refining technology, electricity mix, reductant, control system, slag or gas destination, allocation, product specification, or reporting period"
+data_sources:
+  - id: "cpc-3-0-official-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-02)"
+    used_for: "Official classification identity for CPC 41112"
+  - id: "eu-jrc-nfm-bref-2017"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Non-Ferrous Metals Industries, 2017, https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2020-01/JRC107041_NFM_bref2017.pdf (retrieved 2026-09-02)"
+    used_for: "Ferro-manganese grades, raw materials, preparation, smelting, refining, casting, slag, gas, dust, and control process decomposition"
+  - id: "us-epa-ap42-ferroalloy-production"
+    type: "official_guidance"
+    reference: "U.S. Environmental Protection Agency, AP-42 Section 12.4 Ferroalloy Production, October 1986 (reformatted January 1995), https://www.epa.gov/sites/production/files/2020-11/documents/c12s04.pdf (retrieved 2026-09-02)"
+    used_for: "Independent process and emissions-pathway evidence for submerged-arc production, tapping, sizing, slag, CO, and particulate matter"
+  - id: "gbt-3795-2014"
+    type: "standard"
+    reference: "GB/T 3795-2014, 锰铁 / Ferromanganese, National Standard Information Public Service Platform, https://openstd.samr.gov.cn/bzgk/std/newGbInfo?hcno=3A0EAAB85AC5FB0A324B83A300694EEA (retrieved 2026-09-02)"
+    used_for: "Professional Chinese product name and standard product identity"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:c55d798cd64d09f206a85dbf83e96b947c7e64a5b121f933bda0c39c57285107"
+  generated_content_sha256: "sha256:f3c5fafb37992d22a1c04742368f31ef8118452bfc976d059aaab491e7436334"

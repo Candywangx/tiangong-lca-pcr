@@ -1,10 +1,472 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "46929"
-  title: "Other electric sound or visual signalling apparatus, except for cycles or motor vehicles, and except electromechanical traffic control equipment for transport facilities"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.electrical-machinery-and-apparatus.other-electric-sound-or-visual-signalling-apparatus-except-for-cycles-or-motor-vehicles-d4a27639"
+  classification_refs: "CPC 3.0: 46929"
+  covered_products: "Complete electric sound-signalling or visual-signalling apparatus in CPC 46929, including single-mode and combined sound-and-light devices"
+  excluded_products: "Burglar or fire alarms and similar apparatus in CPC 46921; signalling equipment for cycles or motor vehicles; electromechanical traffic control equipment for transport facilities; components supplied separately; audio reproduction equipment"
+  representative_product: "A market-ready electric sound or visual signalling apparatus that has passed declared functional tests"
+  production_route: "Receipt of purchased components, device assembly, optional soldering or cleaning, functional testing, final preparation, and packaging; in-house component manufacture is added when performed"
+  market_state: "Complete, conforming, packaged where applicable, and ready to leave the manufacturing site"
+functional_unit:
+  what: "Provision of a complete electric apparatus that emits the declared sound or visual signal"
+  how_much: "1 kg of conforming apparatus at the factory gate, excluding separately reported transport packaging mass"
+  how_well: "Meets the declared signalling function, rated electrical characteristics, functional test, and applicable product conformity requirements"
+  how_long_or_cycle: "One production lot; service life is a required qualifier but is not embedded in this mass-based production reference"
+  reference_flow_link: "reference_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "product system"
+      rule: "Include receipt, assembly, optional soldering and cleaning, functional testing, rework attributable to the lot, final preparation, and packaging through release at the factory gate; link upstream datasets for every input."
+      source_ids:
+        - us-epa-electronics-sector-1995
+    - rule_id: boundary_variant_inventory
+      applies_to: "bill of materials and route"
+      rule: "Record each actual component, auxiliary, packaging item, waste, and direct emission separately; apply conditional common rows only when present and disclose omitted route steps."
+      source_ids:
+        - us-epa-electronics-sector-1995
+    - rule_id: boundary_exclusions
+      applies_to: "category identity"
+      rule: "Exclude CPC 46921 burglar or fire alarms, cycle or motor-vehicle signalling equipment, and electromechanical traffic control equipment for transport facilities from this PCR."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+        - un-cpc-3-0-explanatory-notes-2025
+boundary_abstraction:
+  declared_starting_condition: "Purchased components, auxiliaries, and packaging as received at the signalling-apparatus manufacturing site"
+  starting_condition_role: "Foreground gate at receiving; upstream production and inbound supply burdens remain represented by linked supplier or secondary datasets"
+  product_classification_scope: "Complete CPC 46929 apparatus only; separately supplied components and excluded signalling categories retain their own identities"
+  recursive_input_rule: "If an unfinished or subcontracted CPC 46929 apparatus enters the foreground, record it as one product input with an upstream dataset and exclude the already represented operations from the receiving site's foreground to prevent recursion and double counting."
+  upstream_dataset_requirement: "Every purchased component, material, auxiliary, energy carrier, water input, and packaging item requires a geographically and technologically appropriate upstream dataset or a documented data gap."
+  disclosure: "Declare purchased-versus-in-house component scope, soldering and cleaning route, product variant, rejects, packaging boundary, treatment destinations, geography, reference year, and all exclusions."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Other electric sound or visual signalling apparatus, except for cycles or motor vehicles, and except electromechanical traffic control equipment for transport facilities"
+    uuid: "a17e1609-603f-43f6-beec-b5a86d7d295a"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "apparatus model and signalling mode"
+    - "sound-output or luminous-output specification"
+    - "rated voltage and power supply"
+    - "enclosure material and ingress rating where relevant"
+    - "functional test criterion"
+    - "service-life assumption"
+    - "production geography and reference year"
+    - "packaging inclusion"
+    - "regulatory or conformity regime"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product and mass-based component, packaging, and waste rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use dry or as-received mass consistently, state the basis, exclude transport packaging from the 1 kg product denominator, and report that packaging as separate input rows."
+  - id: electricity_energy
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the meter basis and convert kWh to MJ using 1 kWh = 3.6 MJ; disclose voltage level, grid geography, contract mix, and whether transformer or internal distribution losses are included."
+  - id: water_mass
+    applies_to: "process water"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer mass measurement; if volume is metered, convert with a measured or documented density for the applicable temperature and state the conversion basis."
+process_map:
+  - id: apparatus_manufacture
+    name: "Signalling apparatus assembly, testing, and factory-gate preparation"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground manufacture"
+    quantitative_reference: "1 kg conforming apparatus at factory gate"
+process_inventory:
+  - id: apparatus_manufacture
+    label: "Signalling apparatus assembly, testing, and factory-gate preparation"
+    inputs:
+      product:
+        - row_id: assembled_pwb
+          role: "Populated printed wiring board"
+          name: "Populated printed wiring board assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the purchased populated board mass when a board assembly crosses the site boundary. The UUID remains unresolved because the state-100 candidates did not verify a populated delivery state."
+          amount:
+            expression: "Sum accepted populated-board mass issued to the production lot, including replacements consumed in rework"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming apparatus at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_and_packaging_records
+              source_ids:
+                - us-epa-electronics-sector-1995
+            ranges: []
+        - row_id: buzzer_siren_element
+          role: "Audible signalling element"
+          name: "Buzzer or siren element"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b511a29d-984d-4699-81c9-d04d779e2ac2"
+          property_unit: "Mass / kg"
+          description: "Record this component only for an apparatus using a buzzer or siren element; other sound-producing technologies must be added as their own atomic product rows."
+          amount:
+            expression: "Sum accepted buzzer-or-siren-element mass issued to the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming apparatus at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_and_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: led_module
+          role: "Visual signalling LED module"
+          name: "LED module"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f0e13a6e-6380-4372-98a0-899623339d91"
+          property_unit: "Mass / kg"
+          description: "Record this component only for a visual-signalling apparatus that contains an LED module; non-LED light sources must be added as their own atomic product rows."
+          amount:
+            expression: "Sum accepted LED-module mass issued to the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming apparatus at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_and_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: plastic_housing
+          role: "Plastic housing"
+          name: "Plastic housing"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8751d2f6-df48-47d3-ac51-d34f96fbec96"
+          property_unit: "Mass / kg"
+          description: "Record this component only when a complete plastic housing is purchased. A metal housing or in-house moulding route must be represented with separate, material-specific rows."
+          amount:
+            expression: "Sum accepted plastic-housing mass issued to the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming apparatus at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_and_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity delivered to assembly, cleaning, testing, rework, and factory-gate preparation equipment, allocating shared meters according to the calculation rule below."
+          amount:
+            expression: "Metered or allocated purchased electricity converted to MJ"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming apparatus at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: process_water
+          role: "Aqueous-cleaning process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water only when it is supplied to aqueous cleaning or rinsing within the foreground. Cooling water and sanitary water require separate identities and must not be merged into this row."
+          amount:
+            expression: "Metered or batch-recorded process water supplied to the applicable production lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming apparatus at factory gate for the aqueous-cleaning route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - us-epa-electronics-sector-1995
+            ranges: []
+        - row_id: corrugated_box
+          role: "Corrugated board box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record the mass of the converted corrugated box supplied with the factory-gate product. Other packaging components must be added as separate atomic rows."
+          amount:
+            expression: "Sum corrugated-box mass issued for conforming units in the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming apparatus at factory gate, with box mass excluded from the denominator"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_and_packaging_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Conforming reference apparatus"
+          name: "Other electric sound or visual signalling apparatus, except for cycles or motor vehicles, and except electromechanical traffic control equipment for transport facilities"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a17e1609-603f-43f6-beec-b5a86d7d295a"
+          property_unit: "Mass / kg"
+          description: "Record only units that pass the declared release test and satisfy the reference-product qualifiers."
+          amount:
+            expression: "Net measured mass of conforming apparatus released at the factory gate, excluding separately reported transport packaging"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg conforming apparatus at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output_and_reject_records
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: waste_populated_pwb
+          role: "Rejected populated printed wiring boards"
+          name: "Waste populated printed wiring board"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "eb5ffe4a-49af-450c-9a31-3efdfd343f8a"
+          property_unit: "Mass / kg"
+          description: "Record rejected or scrapped populated boards separately from bare-board scrap, solder dross, metal scrap, plastics, and complete rejected apparatus."
+          amount:
+            expression: "Measured mass handed to the declared internal or external treatment route, net of successfully reworked boards"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming apparatus at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_and_reject_records
+              source_ids:
+                - us-epa-electronics-sector-1995
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "shared operations"
+    rule: "Prefer meter, batch, work-order, machine-time, or mass-based subdivision that assigns actual activity to the studied model and production lot before applying allocation."
+    source_ids: []
+  - rule_id: allocation_shared_resources
+    applies_to: "utilities and shared consumables"
+    rule: "If subdivision is infeasible, allocate a shared resource using the closest documented causal driver, such as machine time for assembly electricity or cleaned board area for cleaning inputs; disclose the driver and sensitivity."
+    source_ids: []
+  - rule_id: allocation_recycling
+    applies_to: "production scrap and recycling"
+    rule: "Report waste mass and destination separately. Do not credit avoided primary production or subtract revenue from the foreground inventory unless the chosen LCA method explicitly requires it; document any downstream recycling convention outside the measured factory inventory."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_component_and_packaging_records
+      process_id: "apparatus_manufacture"
+      flow_role: "purchased component or packaging input"
+      record_type: "purchase receipt, bill of materials, issue record, specification"
+      raw_fields: "item identity; supplier; material or component state; received mass; issued quantity; unit mass; lot; rejects returned; packaging inclusion"
+      collection_method: "Reconcile approved bill of materials and stock issues to supplier receipts; measure representative unit mass when records are count-based."
+      unit: "kg and item count"
+      frequency: "each production lot, aggregated for the reference period"
+      temporal_coverage: "representative continuous 12-month period or disclosed campaign"
+      site_scope: "all manufacturing lines producing the declared model"
+      aggregation_rule: "Net issued mass = issued plus replacements minus unused returns; divide by conforming unpackaged product mass."
+      quality_evidence: "signed receiving records; calibrated balance records; bill-of-materials revision; reconciliation result"
+    - protocol_id: cp_energy_records
+      process_id: "apparatus_manufacture"
+      flow_role: "purchased electricity"
+      record_type: "utility meter, submeter, machine log"
+      raw_fields: "meter start and end; submeter coverage; machine time; production lot; downtime; conforming output mass; loss boundary"
+      collection_method: "Prefer line or equipment submeters; otherwise allocate facility-meter consumption using documented machine time after excluding non-production loads."
+      unit: "kWh"
+      frequency: "meter interval and each production lot, aggregated monthly"
+      temporal_coverage: "representative continuous 12-month period or disclosed campaign"
+      site_scope: "assembly, cleaning, testing, rework, and packaging equipment in scope"
+      aggregation_rule: "Convert allocated kWh to MJ by multiplying by 3.6; divide by conforming unpackaged product mass."
+      quality_evidence: "meter calibration; invoice reconciliation; allocation worksheet; downtime log"
+    - protocol_id: cp_water_records
+      process_id: "apparatus_manufacture"
+      flow_role: "aqueous-cleaning process water"
+      record_type: "water meter, batch sheet"
+      raw_fields: "meter start and end or batch volume; water identity; density basis; cleaning route; lot; conforming output mass"
+      collection_method: "Read a dedicated meter or sum batch additions for production cleaning only; exclude cooling and sanitary water."
+      unit: "kg or measured volume with density"
+      frequency: "each cleaning batch, aggregated monthly"
+      temporal_coverage: "representative continuous 12-month period or disclosed campaign"
+      site_scope: "all in-scope aqueous-cleaning equipment"
+      aggregation_rule: "Convert volume to mass using documented density when needed; divide by conforming unpackaged product mass."
+      quality_evidence: "meter calibration; batch-sheet sign-off; density source; water-balance reconciliation"
+    - protocol_id: cp_output_and_reject_records
+      process_id: "apparatus_manufacture"
+      flow_role: "conforming product and rejected populated-board output"
+      record_type: "release log, scale record, nonconformance and waste manifest"
+      raw_fields: "model; lot; passed units; net unit mass; packaging mass; failed units; rework outcome; waste identity; waste mass; destination"
+      collection_method: "Reconcile released units and measured net mass with production and nonconformance records; weigh segregated populated-board waste at hand-off."
+      unit: "kg and item count"
+      frequency: "each production lot and waste hand-off"
+      temporal_coverage: "representative continuous 12-month period or disclosed campaign"
+      site_scope: "all lines and waste collection points in scope"
+      aggregation_rule: "Conforming mass excludes separately reported packaging; waste mass excludes items successfully returned to production; normalize both to 1 kg conforming product."
+      quality_evidence: "calibrated scale; signed release record; nonconformance disposition; waste manifest"
+  calculation_rules:
+    - id: calc_mass_normalization
+      applies_to: "all mass-based rows"
+      rule: "normalized kg/kg = attributable exchange mass / conforming unpackaged apparatus mass"
+      inputs:
+        - "attributable exchange mass"
+        - "conforming unpackaged apparatus mass"
+      output: "kg exchange per kg reference product"
+      source_ids: []
+    - id: calc_count_to_mass
+      applies_to: "count-based components and boxes"
+      rule: "input mass = net issued item count × representative measured or supplier-declared unit mass"
+      inputs:
+        - "item count"
+        - "unit mass"
+        - "unused returns"
+      output: "kg input"
+      source_ids: []
+    - id: calc_electricity
+      applies_to: "purchased electricity"
+      rule: "MJ/kg = attributable metered kWh × 3.6 / conforming unpackaged apparatus mass"
+      inputs:
+        - "metered kWh"
+        - "allocation driver where required"
+        - "conforming unpackaged apparatus mass"
+      output: "MJ electricity per kg reference product"
+      source_ids: []
+    - id: calc_water_mass
+      applies_to: "volume-metered process water"
+      rule: "kg/kg = measured volume × documented density / conforming unpackaged apparatus mass"
+      inputs:
+        - volume
+        - density
+        - "conforming unpackaged apparatus mass"
+      output: "kg process water per kg reference product"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "product, components, packaging, and waste"
+      requirement: "Match each row to the actual model, delivered state, material or component identity, and treatment role; do not substitute an umbrella flow or an unpopulated board for a populated assembly."
+      evidence: "specification, bill of materials, supplier record, waste manifest, and UUID audit"
+    - id: dq_completeness
+      applies_to: "foreground inventory"
+      requirement: "Reconcile component issues, utilities, conforming output, rejects, and all route-specific auxiliaries, wastes, and direct emissions for the same time and site scope; explain every excluded operation."
+      evidence: "mass and energy reconciliation; completeness checklist; exclusion log"
+    - id: dq_temporal
+      applies_to: "foreground records"
+      requirement: "Use a representative continuous 12-month period where available; otherwise disclose the campaign, seasonality, utilisation, downtime, and representativeness limitation."
+      evidence: "dated meters, invoices, lot records, and production calendar"
+    - id: dq_hazardous_materials
+      applies_to: "homogeneous materials and technical documentation"
+      requirement: "Where the declared market regime applies, retain supplier declarations or analytical evidence for regulated substances at the applicable homogeneous-material level and identify exemptions used; this is a conformity disclosure, not an empirical inventory range."
+      evidence: "supplier material declarations, test reports, technical documentation, and eu-rohs-2011-65"
+    - id: dq_geography_technology
+      applies_to: "upstream datasets"
+      requirement: "Match supplier geography, component state, electricity voltage and mix, water delivery, and waste treatment technology; document proxies and their expected influence."
+      evidence: "supplier location, dataset metadata, utility contract, and treatment manifest"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference product"
+    rule: "Confirm CPC 46929 identity, the declared sound or visual signalling function, complete-product state, exclusions, and all required qualifiers before accepting the dataset."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - un-cpc-3-0-explanatory-notes-2025
+  - rule_id: validate_reference
+    applies_to: "normalization"
+    rule: "Confirm that every amount uses the same conforming unpackaged factory-gate product mass and that separately reported packaging is excluded from the 1 kg denominator."
+    source_ids: []
+  - rule_id: validate_routes
+    applies_to: "inventory completeness"
+    rule: "For each actual route, verify that all bill-of-materials inputs, auxiliaries, utilities, rejects, wastes, and direct emissions appear as atomic exchanges; justify every conditional row marked not applicable."
+    source_ids:
+      - us-epa-electronics-sector-1995
+  - rule_id: validate_reconciliation
+    applies_to: "foreground records"
+    rule: "Reconcile received or issued component mass, conforming output, rework, and waste over the same period; investigate material discrepancies and meter-allocation gaps before release."
+    source_ids: []
+  - rule_id: validate_uuid_property_unit
+    applies_to: "UUID-bearing rows"
+    rule: "Confirm state-code-100 UUID identity, flow type, product or waste state, property, unit group, and official Chinese base name; reject proxies or mismatched candidate states."
+    source_ids: []
+  - rule_id: validate_regulated_substances
+    applies_to: "declared conformity regime"
+    rule: "Treat substance thresholds as conformity limits only, retain applicable evidence and exemptions, and do not reinterpret them as production inventory ranges."
+    source_ids:
+      - eu-rohs-2011-65
+published_dataset_profile:
+  dataset_role: "Factory-gate foreground production dataset for a declared CPC 46929 apparatus model and manufacturing route"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product or component system models whose apparatus identity, route, geography, time, packaging boundary, and performance qualifiers are compatible with the published metadata"
+  excluded_use: "CPC 46921 alarm apparatus, vehicle signalling equipment, transport-facility electromechanical traffic control, component-only products, or a different technology represented without adjustment"
+  required_metadata: "canonical PCR id; CPC reference; model and signalling mode; performance and test criteria; rated electrical characteristics; service-life assumption; bill-of-materials revision; purchased-versus-in-house scope; site and geography; reference period; packaging boundary; allocation; waste destinations; conformity regime; unresolved data gaps"
+  required_quality_disclosure: "primary-data coverage; meter and mass reconciliation; conditional route decisions; proxies; UUID gaps; upstream dataset geography and technology; regulated-substance evidence where applicable; uncertainty and exclusions"
+  update_trigger: "Change in model or bill of materials, signalling or power technology, manufacturing or cleaning route, supplier or geography, electricity mix, packaging, waste treatment, conformity regime, allocation method, or a material shift in measured inputs, output, or rejects"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *CPC Version 3.0 Structure*, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-05)"
+    used_for: "Official CPC 46929 product-classification identity"
+  - id: "un-cpc-3-0-explanatory-notes-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *CPC Version 3.0 Explanatory Notes*, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-09-05)"
+    used_for: "Placement of CPC 46929 beside the separate CPC 46921 alarm subclass and category exclusions"
+  - id: "us-epa-electronics-sector-1995"
+    type: "official_guidance"
+    reference: "United States Environmental Protection Agency, *Profile of the Electronics and Computer Industry*, EPA/310-R-95-002, September 1995, https://archive.epa.gov/compliance/resources/publications/assistance/sectors/web/pdf/elecmpsn-2.pdf (retrieved 2026-09-05)"
+    used_for: "Electronics assembly, soldering, cleaning, testing, packaging, and waste process decomposition"
+  - id: "eu-rohs-2011-65"
+    type: "official_guidance"
+    reference: "Directive 2011/65/EU of the European Parliament and of the Council of 8 June 2011, Official Journal L 174, https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32011L0065 (retrieved 2026-09-05)"
+    used_for: "Homogeneous-material definition, regulated-substance conformity evidence, and technical-documentation disclosure"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:96f9c7e790a0cbbd945a4026feca9da9bbab84507358474205c4d47a3893c285"
+  generated_content_sha256: "sha256:6ff4e49f6f82f9041a2cfe1b5ccc272602be9e6002c462caf04b36f79b6da117"

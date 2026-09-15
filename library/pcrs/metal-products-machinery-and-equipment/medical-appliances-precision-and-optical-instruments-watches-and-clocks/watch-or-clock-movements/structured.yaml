@@ -1,10 +1,953 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "48440"
-  title: "Watch or clock movements"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.medical-appliances-precision-and-optical-instruments-watches-and-clocks.watch-or-clock-movements"
+  classification_refs: "CPC 3.0: 48440 — Watch or clock movements"
+  covered_products: "Complete assembled watch movements; complete assembled clock movements; electromechanical and electronic/quartz movements; complete movement sets supplied unassembled or partly assembled"
+  excluded_products: "Complete watches and clocks; cases, dials, hands, glasses, crowns, straps, bands, and other separately marketed parts; separately marketed batteries; time switches and time-recording apparatus; incomplete or rough component sets that cannot count time without missing functional parts"
+  representative_product: "A conforming complete movement at the factory gate, represented on a mass basis"
+  production_route: "Purchased or in-house component fabrication; conditional precision cleaning or finishing; mechanical, electromechanical, or electronic/quartz assembly; adjustment and functional testing; dispatch packaging"
+  market_state: "Factory-gate movement or declared complete movement set; assembly state, watch-versus-clock dimensional class, regulating system, display provision, battery inclusion, calibre, and packaging state declared"
+functional_unit:
+  what: "A marketable watch or clock movement capable of maintaining and counting time, or a declared complete movement set capable of becoming that device by assembly"
+  how_much: "1 kg net mass of conforming movement product, excluding returnable transport packaging"
+  how_well: "Meets the producer's declared calibre, dimensional class, regulating system, display interface, accuracy or functional test, assembly state, and component-completeness specification"
+  how_long_or_cycle: "One factory-gate production lot; the use-phase service duration is outside this cradle-to-gate reference"
+  reference_flow_link: "reference_movement"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary begins with purchased metals, finished movement components, electronic components, lubricants, cleaning media, electricity, water, batteries supplied with the movement, and packaging at the manufacturing site gate. It includes in-house component fabrication when performed, precision cleaning or finishing when performed, movement assembly, adjustment and functional testing, reject handling up to the first waste-treatment handoff, and dispatch packaging. Upstream production is represented by supplier-specific or geographically and technologically representative datasets. Capital equipment, employee travel, retail, installation into complete watches or clocks, use, repair, and end of life are outside the default foreground boundary unless the study goal explicitly includes them."
+      source_ids: []
+    - rule_id: sb_product_boundary
+      applies_to: "product identity"
+      rule: "Include only the time-counting movement or complete movement set; exclude finished watches or clocks, cases, separately marketed external parts, and time-recording apparatus. Declare watch-versus-clock class and assembly state."
+      source_ids:
+        - usitc-hts-chapter-91-2013
+        - un-cpc-3-0-structure-2025
+    - rule_id: sb_route_boundary
+      applies_to: "foreground manufacturing"
+      rule: "Include the actual in-house component, cleaning, assembly, testing, and packaging operations; mark a conditional operation not applicable only with site records showing it was not performed for the reported product."
+      source_ids:
+        - eta-movement-production-sites
+        - us-epa-snap-precision-cleaning
+        - eta-quartz-overview-2017
+    - rule_id: sb_upstream_boundary
+      applies_to: "purchased inputs"
+      rule: "Link every purchased atomic input to a supplier-specific or representative upstream dataset that matches material grade or component specification, geography, technology, and delivered state."
+      source_ids:
+        - eu-pef-recommendation-2021-2279
+    - rule_id: sb_no_silent_cutoff
+      applies_to: "inventory completeness"
+      rule: "Record every measured material, energy, water, waste, and direct elementary exchange within the declared foreground processes. Any exclusion requires a quantitative materiality check and disclosure; absence of a UUID is not a cut-off reason."
+      source_ids:
+        - eu-pef-recommendation-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Purchased raw metals and components at the factory gate, with supplier, material or component specification, delivered mass, geography, and upstream dataset identity declared"
+  starting_condition_role: "upstream product inputs to the movement-manufacturing foreground system"
+  product_classification_scope: "Watch or clock movements and complete movement sets; individual parts and finished watches or clocks are outside the canonical product boundary"
+  recursive_input_rule: "If a purchased complete movement or complete movement set in this same product category crosses the boundary, record it once as a supplied product input with its upstream dataset and do not recursively decompose it; disclose the mass share and role in the final output."
+  upstream_dataset_requirement: "Use supplier-specific datasets when available; otherwise use geographically, technologically, compositionally, and temporally representative datasets for every purchased input."
+  disclosure: "Declare component make-or-buy share; movement class; regulating system; calibre; assembly and completeness state; battery, display, dial, and hands inclusion; in-house cleaning or finishing; test specification; reject treatment; packaging; geography; technology; and reporting period."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Watch or clock movement"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "movement class (watch or clock)"
+    - "regulating system (mechanical"
+    - electromechanical
+    - "electronic/quartz"
+    - "or other declared)"
+    - "calibre and principal dimensions"
+    - "assembly state and completeness"
+    - "display interface or display included"
+    - "battery included or excluded"
+    - "accuracy and test specification"
+    - "net product mass"
+    - "factory geography"
+    - "technology and reporting period"
+    - "primary and transport packaging inclusion"
+reference_flows:
+  []
+measurement_rules:
+  - id: mu_reference_mass
+    applies_to: "reference product and all mass-normalized inventory"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net movement mass after final acceptance and before adding returnable transport packaging. Normalize all process exchanges to 1 kg of conforming reference output."
+  - id: mu_item_to_mass
+    applies_to: "item-count records for movements, batteries, and packages"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert item counts using measured lot-average mass for the exact calibre, battery specification, or package; retain count, sample size, measured mass, and conversion factor. Do not use a generic count-to-mass factor."
+  - id: mu_electricity_energy
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve the metered electricity quantity and conversion provenance. When source records are in kWh, convert to MJ using 1 kWh = 3.6 MJ without changing the supplier mix, voltage, geography, or loss boundary."
+  - id: mu_water_mass
+    applies_to: "process water"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer measured mass. If volume is metered, record temperature or the declared density factor and convert volume to mass; do not assume density silently."
+process_map:
+  - id: component_fabrication
+    name: "Movement component fabrication"
+    inclusion: "conditional"
+    inclusion_condition: "Include when plates, bridges, gears, shafts, springs, or comparable movement parts are fabricated at the reporting site."
+    role: "foreground component production"
+    quantitative_reference: "kg accepted fabricated components"
+  - id: precision_cleaning
+    name: "Precision cleaning of movement components"
+    inclusion: "conditional"
+    inclusion_condition: "Include when aqueous or solvent cleaning crosses the reporting boundary before assembly or finishing."
+    role: "foreground component cleaning"
+    quantitative_reference: "kg cleaned components"
+  - id: movement_assembly
+    name: "Movement or complete-set assembly"
+    inclusion: "conditional"
+    inclusion_condition: "Include for assembled or partly assembled products; for an unassembled complete set, record component completeness and omit only operations not performed."
+    role: "foreground product assembly"
+    quantitative_reference: "kg assembled movement or complete set"
+  - id: adjustment_testing
+    name: "Adjustment, inspection, and functional testing"
+    inclusion: "required"
+    inclusion_condition: "Applies to each marketable movement or complete movement set using the declared acceptance specification."
+    role: "foreground quality assurance"
+    quantitative_reference: "kg conforming accepted movements or sets"
+  - id: dispatch_packaging
+    name: "Dispatch packaging"
+    inclusion: "required"
+    inclusion_condition: "Applies to the product state leaving the factory gate; individual packaging inputs are conditional on actual use."
+    role: "foreground dispatch preparation"
+    quantitative_reference: "1 kg reference movement output"
+process_inventory:
+  - id: component_fabrication
+    label: "Movement component fabrication"
+    inputs:
+      product:
+        - row_id: component_stainless_steel
+          role: "Stainless-steel feedstock"
+          name: "Stainless steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "84c2403f-5062-5d68-8276-838384d32b89"
+          property_unit: "Mass / kg"
+          description: "Record stainless steel only when it is physically consumed in in-house movement component fabrication; declare alloy grade and delivered form."
+          amount:
+            expression: "measured net receipts issued to movement component fabrication, adjusted for stock change and returned offcuts"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming reference movement output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_fabrication_records
+              source_ids: []
+            ranges: []
+        - row_id: component_brass
+          role: "Brass feedstock"
+          name: "Brass"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e422cfbf-5444-43ab-a68a-22be82e2ad47"
+          property_unit: "Mass / kg"
+          description: "Record brass consumed for plates, wheels, bridges, or other in-house components; declare alloy grade and delivered form."
+          amount:
+            expression: "measured net receipts issued to movement component fabrication, adjusted for stock change and returned offcuts"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming reference movement output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_fabrication_records
+              source_ids: []
+            ranges: []
+        - row_id: component_electricity
+          role: "Fabrication electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity delivered to machining, stamping, forming, deburring, polishing, and directly attributable local support equipment."
+          amount:
+            expression: "submetered electricity or allocated meter total for the component-fabrication work centre"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference movement output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_fabrication_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: component_output_parts
+          role: "Fabricated movement components"
+          name: "Manufactured precision movement components (plates, bridges, gears, and shafts)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b22494b2-5115-4392-9850-51e046ce6d91"
+          property_unit: "Mass / kg"
+          description: "Record accepted plates, bridges, gears, and shafts transferred to cleaning or assembly."
+          amount:
+            expression: "measured accepted component mass transferred from fabrication"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming reference movement output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_fabrication_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: component_metal_scrap
+          role: "Machining scrap"
+          name: "Metal scrap, shavings and turnings"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "2a5ca712-1e70-48bf-b665-e6d49a55f3cb"
+          property_unit: "Mass / kg"
+          description: "Record segregated shavings, turnings, and offcuts leaving component fabrication; disclose alloy segregation and destination."
+          amount:
+            expression: "measured waste mass at handoff, reconciled with input, accepted output, stock change, and other documented losses"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference movement output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_component_fabrication_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: precision_cleaning
+    label: "Precision cleaning of movement components"
+    inputs:
+      product:
+        - row_id: cleaning_input_components
+          role: "Components entering cleaning"
+          name: "Manufactured precision movement components (plates, bridges, gears, and shafts)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b22494b2-5115-4392-9850-51e046ce6d91"
+          property_unit: "Mass / kg"
+          description: "Record fabricated or purchased movement components entering the declared cleaning operation."
+          amount:
+            expression: "measured component mass entering precision cleaning"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming reference movement output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_precision_cleaning_records
+              source_ids: []
+            ranges: []
+        - row_id: cleaning_process_water
+          role: "Cleaning process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water delivered to aqueous cleaning or rinsing; declare source, quality, and any recirculation."
+          amount:
+            expression: "metered make-up water less separately metered water returned without entering the cleaning system"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference movement output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_precision_cleaning_records
+              source_ids: []
+            ranges: []
+        - row_id: cleaning_isopropanol
+          role: "Isopropanol cleaning solvent"
+          name: "Isopropanol"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a4a75541-e156-4e30-947c-ba067a682afd"
+          property_unit: "Mass / kg"
+          description: "Record isopropanol make-up entering precision cleaning; declare purity and recovered-solvent fraction."
+          amount:
+            expression: "purchases plus opening stock minus closing stock, off-site returns, and recovered solvent transferred out"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference movement output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_precision_cleaning_records
+              source_ids: []
+            ranges: []
+        - row_id: cleaning_electricity
+          role: "Cleaning electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for aqueous cleaning, ultrasonic equipment, solvent systems, drying, and directly attributable extraction."
+          amount:
+            expression: "submetered electricity or allocated cleaning work-centre meter total"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference movement output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_precision_cleaning_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cleaning_output_components
+          role: "Cleaned movement components"
+          name: "Cleaned precision movement components"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the foreground intermediate transferred from cleaning to assembly with its cleanliness specification."
+          amount:
+            expression: "measured dry mass of accepted components leaving cleaning"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming reference movement output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_precision_cleaning_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: cleaning_wastewater
+          role: "Metal-bearing cleaning wastewater"
+          name: "Metal-bearing process wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record the aqueous waste leaving cleaning before on-site or off-site treatment; declare measured metals, oil, and solvent indicators used for treatment routing."
+          amount:
+            expression: "metered discharge volume or verified cleaning-system water balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference movement output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_precision_cleaning_records
+              source_ids: []
+            ranges: []
+        - row_id: cleaning_spent_isopropanol
+          role: "Spent isopropanol cleaning solvent"
+          name: "Spent isopropanol cleaning solvent"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent isopropanol transferred to solvent recovery or waste treatment separately from aqueous wastewater."
+          amount:
+            expression: "measured container mass at waste handoff, net of tare"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference movement output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_precision_cleaning_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: movement_assembly
+    label: "Movement or complete-set assembly"
+    inputs:
+      product:
+        - row_id: assembly_input_cleaned_components
+          role: "Cleaned components entering assembly"
+          name: "Cleaned precision movement components"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record cleaned plates, bridges, gears, shafts, springs, escapement parts, and other components as one defined foreground component-set intermediate, not as a substitute for separately purchased components."
+          amount:
+            expression: "measured dry component-set mass issued to assembly"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming reference movement output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_movement_assembly_records
+              source_ids: []
+            ranges: []
+        - row_id: assembly_quartz_resonator
+          role: "Quartz crystal resonator"
+          name: "Quartz crystal resonator"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the fabricated resonator only for electronic or quartz movement routes; raw quartz is not an acceptable substitute."
+          amount:
+            expression: "measured received mass issued to conforming electronic or quartz movement lots, adjusted for stock change"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming electronic or quartz reference movement output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_movement_assembly_records
+              source_ids:
+                - eta-quartz-overview-2017
+            ranges: []
+        - row_id: assembly_integrated_circuit
+          role: "Movement-control integrated circuit"
+          name: "Integrated circuit for quartz movement control"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the integrated circuit only for electronic or quartz routes that use it; declare package and control function."
+          amount:
+            expression: "measured received mass issued to conforming electronic or quartz movement lots, adjusted for stock change"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming electronic or quartz reference movement output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_movement_assembly_records
+              source_ids:
+                - eta-quartz-overview-2017
+            ranges: []
+        - row_id: assembly_lubricant
+          role: "Precision movement lubricant"
+          name: "Synthetic watch or clock movement lubricating oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the specific synthetic oil or grease applied to movement contact points; identify formulation and supplier."
+          amount:
+            expression: "measured dispenser issue plus opening stock minus closing stock and recovered unused lubricant"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming reference movement output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_movement_assembly_records
+              source_ids: []
+            ranges: []
+        - row_id: assembly_button_cell
+          role: "Button-cell battery supplied with movement"
+          name: "Button-cell battery for quartz movement"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record one specified button-cell chemistry only when the battery is included with the movement; otherwise mark this atomic row not applicable and disclose the exclusion."
+          amount:
+            expression: "item count multiplied by measured lot-average mass for the declared battery chemistry and size"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming battery-included reference movement output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_movement_assembly_records
+              source_ids:
+                - eta-quartz-overview-2017
+                - usitc-hts-chapter-91-2013
+            ranges: []
+        - row_id: assembly_electricity
+          role: "Assembly electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for assembly workstations, controlled environments, joining, lubrication dispensing, and directly attributable local support equipment."
+          amount:
+            expression: "submetered electricity or allocated assembly work-centre meter total"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference movement output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_movement_assembly_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: assembly_output_movement
+          role: "Assembled movement awaiting testing"
+          name: "Assembled watch or clock movement awaiting testing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the assembled or partly assembled movement transferred to adjustment and testing as a foreground intermediate."
+          amount:
+            expression: "measured assembled movement mass transferred to testing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming reference movement output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_movement_assembly_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: adjustment_testing
+    label: "Adjustment, inspection, and functional testing"
+    inputs:
+      product:
+        - row_id: testing_input_movement
+          role: "Assembled movement entering testing"
+          name: "Assembled watch or clock movement awaiting testing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record assembled movements entering adjustment, rate or functional testing, and final inspection."
+          amount:
+            expression: "measured mass entering the acceptance process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming reference movement output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_adjustment_testing_records
+              source_ids: []
+            ranges: []
+        - row_id: testing_electricity
+          role: "Testing electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for adjustment benches, timing equipment, electronic test stands, environmental control directly attributable to testing, and inspection equipment."
+          amount:
+            expression: "submetered electricity or allocated testing work-centre meter total"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference movement output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_adjustment_testing_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: testing_accepted_movement
+          role: "Accepted movement awaiting dispatch packaging"
+          name: "Conforming watch or clock movement awaiting dispatch packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only movements or complete sets that pass the declared acceptance specification."
+          amount:
+            expression: "measured net mass of accepted movements transferred to packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming reference movement output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_adjustment_testing_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: testing_rejected_movement
+          role: "Rejected movement"
+          name: "Rejected watch or clock movement"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record movements rejected from the product stream when they leave for recycling or treatment; reworked units remain in the process balance and are not double-counted as waste."
+          amount:
+            expression: "measured net rejected mass at final disposition after subtracting successfully reworked units"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference movement output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_adjustment_testing_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: dispatch_packaging
+    label: "Dispatch packaging"
+    inputs:
+      product:
+        - row_id: packaging_input_movement
+          role: "Accepted movement entering packaging"
+          name: "Conforming watch or clock movement awaiting dispatch packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the accepted movement or complete set entering dispatch preparation."
+          amount:
+            expression: "measured net movement mass entering packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming reference movement output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dispatch_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_corrugated_box
+          role: "Corrugated dispatch box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record corrugated board boxes supplied with the reference product; declare recycled content, reuse, and whether the box is primary or transport packaging."
+          amount:
+            expression: "package count multiplied by measured empty-box mass, less documented reusable transport boxes returned within the declared boundary"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming reference movement output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_dispatch_packaging_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_movement
+          role: "Reference movement output"
+          name: "Watch or clock movement"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the conforming factory-gate movement or complete movement set. Packaging mass is not included in the 1 kg net reference amount and is reported separately."
+          amount:
+            expression: "fixed normalization identity of 1 kg net conforming movement output, derived from measured accepted lot mass"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1 kg net conforming reference movement output"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - mass-balance-identity
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: al_subdivide_first
+    applies_to: "shared fabrication, cleaning, assembly, testing, and site services"
+    rule: "Avoid allocation by separately metering or otherwise subdividing product-specific work centres and lots. If subdivision is not feasible, document why before selecting another relationship."
+    source_ids:
+      - eu-pef-recommendation-2021-2279
+  - rule_id: al_physical_relation
+    applies_to: "shared processes producing several movement families"
+    rule: "Allocate remaining shared exchanges using a causal physical relationship such as machine time, cleaning load, tested unit time, or net processed mass that matches the exchange driver; document the factor and source records."
+    source_ids:
+      - eu-pef-recommendation-2021-2279
+  - rule_id: al_other_relation
+    applies_to: "shared processes lacking a defensible physical relation"
+    rule: "Economic or another relationship may be used only after subdivision, system expansion, and physical allocation are shown infeasible; disclose prices, period, currency, factor, and sensitivity."
+    source_ids:
+      - eu-pef-recommendation-2021-2279
+  - rule_id: al_scrap_treatment
+    applies_to: "machining scrap and rejected movements"
+    rule: "Keep scrap and rejected movements as waste outputs through the first treatment handoff. Do not add an avoided-primary-material credit inside the foreground inventory unless the downstream study explicitly applies and discloses a consistent recycling allocation method."
+    source_ids:
+      - eu-pef-recommendation-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_component_fabrication_records
+      process_id: "component_fabrication"
+      flow_role: "Each listed material, electricity, accepted-component, and scrap exchange"
+      record_type: "purchase and issue records; stock counts; scales; electricity meters; waste transfer records"
+      raw_fields: "calibre; material grade; opening and closing stock; receipts; returns; accepted output mass; scrap mass; meter reading; meter allocation driver; timestamps"
+      collection_method: "reconcile each atomic material and output by lot and reporting period; retain meter and scale identifiers"
+      unit: "kg; MJ"
+      frequency: "each lot with monthly reconciliation"
+      temporal_coverage: "representative continuous 12-month period or declared campaign"
+      site_scope: "all in-scope component-fabrication work centres"
+      aggregation_rule: "sum net atomic inputs and outputs, allocate shared meters by documented causal driver, then normalize to accepted reference output"
+      quality_evidence: "calibrated scale and meter records; stock reconciliation; waste transfer receipts; material balance"
+    - protocol_id: cp_precision_cleaning_records
+      process_id: "precision_cleaning"
+      flow_role: "Each listed component, water, isopropanol, electricity, wastewater, and spent-solvent exchange"
+      record_type: "batch tickets; chemical issues; tank inventories; water and electricity meters; discharge meters; waste manifests"
+      raw_fields: "cleaning route; component mass; water; isopropanol purchases, recovery, stock and transfer; electricity; wastewater volume; spent-solvent gross and tare mass; chemistry indicators"
+      collection_method: "reconcile each cleaning campaign, segregating aqueous and solvent routes and recovery loops"
+      unit: "kg; m3; MJ"
+      frequency: "each cleaning campaign with monthly reconciliation"
+      temporal_coverage: "representative continuous 12-month period or declared campaign"
+      site_scope: "all in-scope cleaning equipment and local extraction"
+      aggregation_rule: "sum by atomic exchange and route, subtract documented recovery transfers, and normalize to accepted reference output"
+      quality_evidence: "calibrated meter records; chemical inventory reconciliation; discharge analysis; waste manifests"
+    - protocol_id: cp_movement_assembly_records
+      process_id: "movement_assembly"
+      flow_role: "Each listed component, electronic part, lubricant, battery, electricity, and assembled-intermediate exchange"
+      record_type: "bills of material; goods issues; stock counts; dispenser logs; assembly counters; scales; electricity meters"
+      raw_fields: "calibre; route; component identifier; quantity; measured unit mass; lubricant issue and stock; battery chemistry and size; electricity; assembled output mass; timestamps"
+      collection_method: "reconcile component and consumable issues to each movement lot; convert counts only with measured lot-average masses"
+      unit: "kg; MJ"
+      frequency: "each assembly lot with monthly reconciliation"
+      temporal_coverage: "representative continuous 12-month period or declared campaign"
+      site_scope: "all in-scope assembly lines and clean areas"
+      aggregation_rule: "sum by atomic exchange and route, subtract returned unused input, and normalize to accepted reference output"
+      quality_evidence: "controlled bill of material; calibrated scales; inventory reconciliation; meter records; lot traceability"
+    - protocol_id: cp_adjustment_testing_records
+      process_id: "adjustment_testing"
+      flow_role: "Assembled input, electricity, accepted output, and rejected movement"
+      record_type: "test-system logs; inspection records; rework logs; scales; electricity meters; waste disposition records"
+      raw_fields: "calibre; input count and mass; test specification; pass, fail, and rework status; accepted mass; final rejected mass; electricity; timestamps"
+      collection_method: "link each serial or lot result to the declared acceptance specification and final disposition"
+      unit: "kg; MJ"
+      frequency: "each test lot with monthly reconciliation"
+      temporal_coverage: "representative continuous 12-month period or declared campaign"
+      site_scope: "all in-scope adjustment and test stations"
+      aggregation_rule: "accepted output plus final rejects must reconcile with input, stock change, and documented rework losses; normalize to accepted output"
+      quality_evidence: "test-equipment calibration; signed acceptance records; rework trace; scale and meter calibration"
+    - protocol_id: cp_dispatch_packaging_records
+      process_id: "dispatch_packaging"
+      flow_role: "Accepted movement, corrugated box, and reference output"
+      record_type: "packing lists; package issue records; package tare measurements; accepted movement scale records"
+      raw_fields: "calibre; assembly state; accepted net mass; package type; count; empty mass; reuse or return status; final shipped net mass; timestamps"
+      collection_method: "weigh representative empty packages and reconcile issued packages to shipped movements"
+      unit: "kg"
+      frequency: "each dispatch lot with monthly reconciliation"
+      temporal_coverage: "representative continuous 12-month period or declared campaign"
+      site_scope: "all in-scope dispatch packing areas"
+      aggregation_rule: "report packaging separately; normalize atomic packaging mass to 1 kg net conforming movement output"
+      quality_evidence: "packing list reconciliation; calibrated scales; package specification; return records"
+  calculation_rules:
+    - id: calc_net_material_input
+      applies_to: "stainless steel, brass, isopropanol, electronic parts, lubricant, and batteries"
+      rule: "net consumed mass = opening stock + receipts - closing stock - documented returns - recovered unused material transferred out"
+      inputs:
+        - stock
+        - receipt
+        - return
+        - recovery
+        - "and measured unit-mass records"
+      output: "kg atomic input per 1 kg reference output"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_energy_normalization
+      applies_to: "electricity rows"
+      rule: "normalized electricity = metered process electricity × declared allocation share ÷ net conforming reference output mass; convert kWh to MJ with 3.6 MJ/kWh when needed"
+      inputs:
+        - "meter readings"
+        - "allocation driver"
+        - "output mass"
+        - "energy unit"
+      output: "MJ per 1 kg reference output"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_process_mass_balance
+      applies_to: "each foreground process"
+      rule: "input mass + opening work in progress = product output + waste output + closing work in progress + quantified direct mass releases; investigate unexplained remainder"
+      inputs:
+        - "atomic input"
+        - output
+        - waste
+        - stock
+        - "and direct-release records"
+      output: "process mass-balance residual and completeness flag"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_reject_mass
+      applies_to: "rejected movements"
+      rule: "final rejected mass = failed-test mass - mass of units successfully reworked and returned to accepted output"
+      inputs:
+        - "test disposition"
+        - rework
+        - "and scale records"
+      output: "kg rejected movement per 1 kg reference output"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_reference_output
+      applies_to: "reference movement"
+      rule: "normalized amount = measured net conforming movement mass ÷ the same measured net conforming movement mass"
+      inputs:
+        - "accepted lot mass"
+      output: "1 kg reference movement"
+      source_ids:
+        - mass-balance-identity
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and purchased components"
+      requirement: "Maintain calibre, movement class, regulating system, assembly state, component completeness, battery inclusion, material or component specification, supplier, and lot traceability."
+      evidence: "product specification; bill of material; supplier declaration; lot record"
+    - id: dq_measurement
+      applies_to: "all quantitative rows"
+      requirement: "Use calibrated meters or scales, record units and conversions, retain raw readings, and document any shared-meter allocation driver."
+      evidence: "calibration certificates; meter exports; scale tickets; calculation workbook"
+    - id: dq_temporal
+      applies_to: "foreground reporting period"
+      requirement: "Use a representative continuous 12-month period where available; otherwise disclose campaign dates, seasonality, shutdowns, abnormal production, and representativeness limits."
+      evidence: "production calendar; monthly reconciliations; campaign log"
+    - id: dq_completeness
+      applies_to: "each foreground process"
+      requirement: "Reconcile atomic inputs, outputs, wastes, stock change, rework loops, and direct releases. Investigate and disclose material residuals and missing meters."
+      evidence: "process mass balance; exception log; waste manifests"
+    - id: dq_upstream
+      applies_to: "upstream datasets"
+      requirement: "Document supplier specificity or the reason for selecting a proxy, including geography, technology, temporal period, composition, and delivered state."
+      evidence: "supplier dataset; dataset metadata; representativeness assessment"
+    - id: dq_route
+      applies_to: "conditional processes and rows"
+      requirement: "Mark a process or row not applicable only with evidence that the route, material, battery, cleaning medium, or packaging component was absent from the reported product."
+      evidence: "bill of material; route sheet; purchase and issue records"
+validation_rules:
+  - rule_id: vr_reference_identity
+    applies_to: "reference flow"
+    rule: "Confirm that the reference output is a movement or complete movement set, not a complete watch or clock, case, individual part, time switch, or time-recording apparatus; verify every required qualifier."
+    source_ids:
+      - usitc-hts-chapter-91-2013
+      - un-cpc-3-0-structure-2025
+  - rule_id: vr_reference_amount
+    applies_to: "reference amount"
+    rule: "Confirm that the normalized output equals 1 kg net conforming movement mass and that packaging mass is reported separately."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: vr_process_coverage
+    applies_to: "process map"
+    rule: "Confirm that every performed in-house process is included, every omitted conditional process has route evidence, and each required process has a detailed inventory section."
+    source_ids:
+      - eta-movement-production-sites
+      - us-epa-snap-precision-cleaning
+  - rule_id: vr_inventory_atomicity
+    applies_to: "process inventory"
+    rule: "Confirm each row is one atomic physical, chemical, energy, waste, or elementary exchange; reject umbrella utility, material, packaging, waste, or emission labels."
+    source_ids:
+      - eu-pef-recommendation-2021-2279
+  - rule_id: vr_uuid_semantics
+    applies_to: "UUID-bearing rows"
+    rule: "Confirm state-100 flow name, Chinese name, flow type, classification, property, unit group, product state, geography, technology, and generalComment remain compatible with the declared exchange."
+    source_ids: []
+  - rule_id: vr_mass_balance
+    applies_to: "foreground processes"
+    rule: "Confirm input, output, waste, stock, rework, and direct-release reconciliation; disclose unresolved residuals and do not use missing UUIDs as cut-offs."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: vr_allocation
+    applies_to: "shared and multifunctional processes"
+    rule: "Confirm subdivision was attempted first and any physical or other allocation factor has a documented driver, period, and sensitivity."
+    source_ids:
+      - eu-pef-recommendation-2021-2279
+  - rule_id: vr_source_and_range
+    applies_to: "quantitative constraints"
+    rule: "Confirm no external empirical range is used unless at least two independent, original-text-verified, boundary-compatible sources support the synthesis; otherwise retain foreground collection and the unresolved evidence need."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; may be used as background_dataset after review of representativeness and completeness"
+  downstream_use: "Foreground data package for movement manufacture and downstream process or lifecyclemodel projections of watches, clocks, timekeeping equipment, and products incorporating movements"
+  allowed_use: "Use for the declared movement class, regulating system, calibre family, assembly state, battery inclusion, manufacturing route, geography, technology, and reporting period when required qualifiers and upstream links are present"
+  excluded_use: "Complete watches or clocks; cases or other separately marketed parts; time switches and time-recording apparatus; repair; use-phase electricity or battery replacement; end of life; or materially different movement routes without adaptation"
+  required_metadata: "PCR id and version; product name and CPC context; movement class; regulating system; calibre and dimensions; assembly and completeness state; display interface; battery inclusion; net product mass; make-or-buy share; process applicability; factory geography; technology; reporting period; allocation; cut-offs; upstream datasets; packaging"
+  required_quality_disclosure: "UUID resolution status; source and foreground evidence; measurement and conversion methods; meter allocation; temporal coverage; mass-balance residuals; rework and reject handling; allocation sensitivity; upstream representativeness; unresolved range evidence"
+  update_trigger: "Change in calibre family, movement class, regulating system, assembly state, component make-or-buy share, battery inclusion, cleaning chemistry, production technology, site geography, allocation method, packaging system, upstream dataset, or a material flow exceeding the documented review threshold"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-07)"
+    used_for: "Official CPC 48440 classification identity"
+  - id: "usitc-hts-chapter-91-2013"
+    type: "official_guidance"
+    reference: "United States International Trade Commission, Harmonized Tariff Schedule of the United States (2013), Chapter 91, https://www.usitc.gov/publications/docs/tata/hts/bychapter/1300c91.pdf (retrieved 2026-09-07)"
+    used_for: "Watch-versus-clock movement dimensions, complete-set boundary, incomplete-movement distinctions, and exclusion of cases and external parts"
+  - id: "eta-movement-production-sites"
+    type: "official_guidance"
+    reference: "ETA SA Manufacture Horlogère Suisse, The Motorist of Time, https://www.eta.ch/en/enterprise (retrieved 2026-09-07)"
+    used_for: "Evidence that movement production includes watch parts, blank movements, quartz and mechanical routes, and assembly"
+  - id: "us-epa-snap-precision-cleaning"
+    type: "official_guidance"
+    reference: "United States Environmental Protection Agency, Questions and Answers About SNAP — precision, electronics, and metals cleaning, https://www.epa.gov/snap/questions-and-answers-about-snap (retrieved 2026-09-07)"
+    used_for: "Conditional precision-cleaning process, cleaning-media distinctions, and contamination records"
+  - id: "eta-quartz-overview-2017"
+    type: "handbook"
+    reference: "ETA SA, Quartz 2017 Overview, https://www.eta.ch/sites/default/files/downloads-items/overview_vert_rv_TAB_EN.pdf (retrieved 2026-09-07)"
+    used_for: "Quartz crystal, integrated circuit, and battery components of quartz movements"
+  - id: "eu-pef-recommendation-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission, Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, Annex I, https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng (retrieved 2026-09-07)"
+    used_for: "System boundary, company-specific data, inventory completeness, multifunctionality hierarchy, and recycling treatment"
+  - id: "mass-balance-identity"
+    type: "method_factor"
+    reference: "Conservation-of-mass identity applied to measured foreground inputs, outputs, stock change, rework, waste, and direct releases"
+    used_for: "Normalization, process reconciliation, reject calculation, and reference-flow identity"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:05c626156b19163546c3c810640bd79149f11dddadc4c9b714bfa5a976dc134c"
+  generated_content_sha256: "sha256:1cde7c725d60b1ca97d8ac72bfb33bf197dbd8bdba0f5baa06577bba04df7f69"

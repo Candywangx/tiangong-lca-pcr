@@ -1,10 +1,946 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41544"
-  title: "Zinc dust, powders and flakes"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.zinc-dust-powders-and-flakes"
+  classification_refs: "CPC 3.0: 41544, Zinc dust, powders and flakes"
+  covered_products: "Metallic zinc dust; metallic zinc powder; metallic zinc flakes; declared zinc-alloy particles sold within the same category"
+  excluded_products: "Unwrought zinc ingots; zinc bars, rods, profiles, wire, plates, sheets, strip, or foil; zinc oxide or other zinc compounds sold as products; zinc scrap; formulated coatings containing zinc particles"
+  representative_product: "Zinc dust or powder meeting the producer's declared zinc content, particle-size distribution, and apparent or tapped density specification"
+  production_route: "Atomization and recovery from molten zinc; zinc-dust recovery from a zinc-oxide bed; or milling and finishing of zinc powder into flakes"
+  market_state: "Dry or declared solvent-wetted particulate product at the producing facility gate, with product form, moisture or solvent content, additives, and packaging inclusion stated"
+functional_unit:
+  what: "Provide zinc dust, zinc powder, or zinc flake of the declared composition and particle form at the producing facility gate"
+  how_much: "1 kg net conforming product, excluding packaging unless packaging is explicitly included in the study boundary"
+  how_well: "Meets the producer's declared zinc content or alloy composition, particle-size distribution, morphology, apparent or tapped density, and moisture or residual-solvent specification"
+  how_long_or_cycle: "One production batch or campaign; no service lifetime is assigned"
+  reference_flow_link: "The reference amount equals the net mass of conforming product after internal recycle, off-spec material, and retained process media are accounted for"
+system_boundary:
+  rules:
+    - rule_id: sb_route_selection
+      applies_to: "foreground_system_boundary"
+      rule: "Include only the declared route processes, but include every operation from the selected starting material through recovery, classification, and net conforming product at the facility gate."
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+        - eu-cn-explanatory-notes-zinc-2019
+        - us-patent-7021573-zinc-flake
+    - rule_id: sb_upstream_linkage
+      applies_to: "purchased_inputs"
+      rule: "Treat purchased inputs as product flows with upstream datasets; do not absorb upstream production into the foreground unit process."
+      source_ids: []
+    - rule_id: sb_direct_releases
+      applies_to: "direct_environmental_exchanges"
+      rule: "Report measured direct releases after abatement as elementary flows and report collected residues separately from emitted material."
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+    - rule_id: sb_packaging
+      applies_to: "packaging"
+      rule: "Exclude packaging from the reference product mass and default boundary; when packaging is included by study scope, add each actual packaging component as a separate atomic product input and disclose the change."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased zinc, zinc oxide, or zinc powder at the facility receiving point, with grade and physical state declared"
+  starting_condition_role: "Foreground product input linked to an upstream dataset"
+  product_classification_scope: "Metallic zinc dust, powders, and flakes corresponding to CPC 3.0 subclass 41544"
+  recursive_input_rule: "When zinc dust or powder in this same category is used to make flakes, record the upstream supplier dataset once as an input and do not recursively rebuild it under this PCR"
+  upstream_dataset_requirement: "Link each purchased material, fuel, electricity, gas, water, solvent, and additive to a geography-, technology-, and time-representative upstream dataset"
+  disclosure: "Declare route, starting material, zinc grade, product form, internal recycle, abatement, packaging inclusion, and any omitted route-specific exchange"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Zinc dust"
+    uuid: "4d92b8d4-6633-4238-b0e2-9096db3e8882"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product form"
+    - "zinc content or alloy composition"
+    - "particle-size distribution"
+    - "particle morphology"
+    - "apparent or tapped density"
+    - "production route"
+    - "dry or solvent-wetted state"
+    - "moisture or residual-solvent content"
+    - "surface treatment and additives"
+    - "packaging inclusion"
+    - geography
+    - technology
+    - "reference period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "Reference product and all zinc-bearing product or waste rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report net mass on the declared product-state basis. State whether residual solvent, moisture, alloying elements, and surface additives are included."
+  - id: gas_reference_conditions
+    applies_to: "Natural gas, compressed air, and other volume-based gases"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Record meter conditions and convert gas volumes to the dataset's declared reference temperature and pressure before normalization."
+  - id: electricity_energy
+    applies_to: "Electricity inputs"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electricity separately from fuels and convert kWh to MJ with the declared conversion; do not combine energy carriers."
+  - id: net_product_normalization
+    applies_to: "All foreground inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg/kg"
+    rule: "Divide campaign totals by net conforming product mass. Internal recycle is not counted as a new external input or additional reference output."
+process_map:
+  - id: feed_melting
+    name: "Zinc feed preparation and melting"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the atomization route receives solid zinc rather than measured molten zinc"
+    role: "Foreground preparation of molten zinc"
+    quantitative_reference: "kg molten zinc transferred"
+  - id: atomization_finishing
+    name: "Atomization, cooling, recovery, and classification"
+    inclusion: "conditional"
+    inclusion_condition: "Include when zinc dust or powder is produced by air, water, inert-gas, or centrifugal atomization"
+    role: "Foreground particle formation and product recovery"
+    quantitative_reference: "kg net conforming zinc dust or powder"
+  - id: dust_recovery_finishing
+    name: "Zinc-dust recovery and classification"
+    inclusion: "conditional"
+    inclusion_condition: "Include when saleable zinc dust is recovered from a zinc-oxide bed rather than produced by atomization"
+    role: "Foreground dust recovery"
+    quantitative_reference: "kg net conforming recovered zinc dust"
+  - id: flake_milling_finishing
+    name: "Zinc flake milling, cooling, recovery, and classification"
+    inclusion: "conditional"
+    inclusion_condition: "Include when zinc powder or dust is milled into flake form"
+    role: "Foreground morphology conversion and product finishing"
+    quantitative_reference: "kg net conforming zinc flake"
+process_inventory:
+  - id: feed_melting
+    label: "Zinc feed preparation and melting"
+    inputs:
+      product:
+        - row_id: fm_zinc_feed
+          role: "Unwrought zinc feed"
+          name: "zinc"
+          flow_type: "product"
+          flow_ref:
+            uuid: "418775bb-a062-4748-87dd-73a5ee633bb4"
+          property_unit: "Mass / kg"
+          description: "Received metallic zinc is weighed when it enters the melter."
+          amount:
+            expression: "Metered or batch-weighed external zinc feed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed_melting_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: fm_electricity
+          role: "Electricity for feed preparation and melting"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter electricity used by charging, induction or resistance heating, pumps, and local extraction assigned to this process."
+          amount:
+            expression: "Metered electricity allocated to the melting campaign"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg molten zinc transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed_melting_inputs
+              source_ids: []
+            ranges: []
+        - row_id: fm_natural_gas
+          role: "Natural gas for gas-fired melting"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Include only when gaseous natural gas is combusted in the melter or holding furnace."
+          amount:
+            expression: "Reference-condition-corrected metered natural-gas volume"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg molten zinc transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed_melting_inputs
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: fm_molten_zinc_out
+          role: "Molten zinc transferred to atomization"
+          name: "Molten zinc"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This is a foreground-only intermediate linked directly to ar_molten_zinc_in."
+          amount:
+            expression: "Weighed or mass-balance-calculated molten zinc transferred from the melter"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per melting campaign"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_feed_melting_outputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        - row_id: fm_zinc_dross
+          role: "Zinc dross sent to external recovery or disposal"
+          name: "Zinc dross"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record net zinc dross leaving the foreground after any measured internal return."
+          amount:
+            expression: "Weighed net dross by destination and treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg molten zinc transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed_melting_outputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      elementary:
+        - row_id: fm_co2_fossil
+          role: "Fossil carbon dioxide from natural-gas combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Include direct fossil carbon dioxide only when on-site natural-gas combustion occurs."
+          amount:
+            expression: "Stack measurement or calculation from metered fuel using a documented carbon-balance factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg molten zinc transferred"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_feed_melting_outputs
+              source_ids: []
+            ranges: []
+        - row_id: fm_zinc_to_air
+          role: "Zinc released to air from melting"
+          name: "zinc"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94e3-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Report measured zinc passing the final air-emission control boundary."
+          amount:
+            expression: "Measured concentration multiplied by corrected dry gas volume for the reporting period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg molten zinc transferred"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_feed_melting_outputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+  - id: atomization_finishing
+    label: "Atomization, cooling, recovery, and classification"
+    inputs:
+      product:
+        - row_id: ar_molten_zinc_in
+          role: "Molten zinc received from melting"
+          name: "Molten zinc"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use the same foreground internal-flow identity and quantity as fm_molten_zinc_out, or measure purchased molten zinc at receipt."
+          amount:
+            expression: "Matched inter-process transfer or measured purchased molten-zinc mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming atomized product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_atomization_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: ar_electricity
+          role: "Electricity for atomization and recovery"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter electricity for pressure generation, atomizer drives, cooling, conveying, filtration, and classification."
+          amount:
+            expression: "Metered electricity allocated to the atomization campaign"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming atomized product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_atomization_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: ar_compressed_air
+          role: "Compressed air as atomizing medium"
+          name: "Compressed air"
+          flow_type: "product"
+          flow_ref:
+            uuid: "46e2b1e4-5a4e-4579-b6a2-65b03f9ce825"
+          property_unit: "Volume / m3"
+          description: "Include only for air-atomized production and record delivered air at declared reference conditions."
+          amount:
+            expression: "Reference-condition-corrected metered compressed-air volume"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming atomized product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_atomization_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: ar_process_water
+          role: "Process water as atomizing or make-up cooling medium"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Include only water crossing the foreground boundary for water atomization or cooling-system make-up; exclude recirculated internal water."
+          amount:
+            expression: "Metered make-up water mass or volume converted using documented density"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming atomized product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_atomization_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: ar_nitrogen
+          role: "Nitrogen gas for inert atmosphere"
+          name: "Nitrogen gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "92233c86-8e75-441c-94de-03cc91bc7c10"
+          property_unit: "Mass / kg"
+          description: "Include when purchased or on-site-supplied gaseous nitrogen crosses the atomizer boundary."
+          amount:
+            expression: "Metered or supplier-recorded nitrogen gas mass"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming atomized product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_atomization_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: ar_zinc_dust_out
+          role: "Net conforming zinc dust or powder"
+          name: "Zinc dust"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d92b8d4-6633-4238-b0e2-9096db3e8882"
+          property_unit: "Mass / kg"
+          description: "Record saleable material after cooling, fabric-filter recovery, classification, and internal recycle."
+          amount:
+            expression: "Weighed net conforming product leaving the foreground boundary"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_atomization_outputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: ar_zinc_to_air
+          role: "Zinc released to air from atomization and recovery"
+          name: "zinc"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94e3-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Report measured zinc passing the final fabric filter or other air-emission control boundary."
+          amount:
+            expression: "Measured concentration multiplied by corrected dry gas volume for the reporting period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming atomized product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_atomization_outputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+  - id: dust_recovery_finishing
+    label: "Zinc-dust recovery and classification"
+    inputs:
+      product:
+        - row_id: dr_zinc_oxide
+          role: "Zinc oxide feed to the recovery bed"
+          name: "zinc oxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1512d759-45f7-4cf2-a42c-d02a8f71a19f"
+          property_unit: "Mass / kg"
+          description: "Include only externally supplied zinc oxide crossing the selected recovery-process boundary."
+          amount:
+            expression: "Weighed dry-basis zinc oxide feed with composition recorded"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming recovered zinc dust"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dust_recovery_inputs
+              source_ids:
+                - eu-cn-explanatory-notes-zinc-2019
+            ranges: []
+        - row_id: dr_electricity
+          role: "Electricity for dust recovery and classification"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter electricity for recovery equipment, conveying, filtration, and classification."
+          amount:
+            expression: "Metered electricity allocated to the recovery campaign"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming recovered zinc dust"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dust_recovery_inputs
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dr_zinc_dust_out
+          role: "Net conforming recovered zinc dust"
+          name: "Zinc dust"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d92b8d4-6633-4238-b0e2-9096db3e8882"
+          property_unit: "Mass / kg"
+          description: "Record the mass of saleable recovered zinc dust after classification and internal return."
+          amount:
+            expression: "Weighed net conforming recovered product leaving the foreground boundary"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dust_recovery_outputs
+              source_ids:
+                - eu-cn-explanatory-notes-zinc-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: dr_zinc_to_air
+          role: "Zinc released to air from dust recovery"
+          name: "zinc"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94e3-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Report measured zinc passing the final air-emission control boundary."
+          amount:
+            expression: "Measured concentration multiplied by corrected dry gas volume for the reporting period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming recovered zinc dust"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_dust_recovery_outputs
+              source_ids: []
+            ranges: []
+  - id: flake_milling_finishing
+    label: "Zinc flake milling, cooling, recovery, and classification"
+    inputs:
+      product:
+        - row_id: fl_zinc_powder_in
+          role: "Zinc powder or dust feed"
+          name: "Zinc dust"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d92b8d4-6633-4238-b0e2-9096db3e8882"
+          property_unit: "Mass / kg"
+          description: "Record purchased or transferred zinc particles used as the milling feed and declare their grade and particle-size distribution."
+          amount:
+            expression: "Weighed zinc-particle feed to the milling campaign"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming zinc flake"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_flake_milling_inputs
+              source_ids:
+                - us-patent-7021573-zinc-flake
+            ranges: []
+        - row_id: fl_electricity
+          role: "Electricity for milling and finishing"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Meter electricity for milling, cooling, solvent recovery, drying, conveying, and classification."
+          amount:
+            expression: "Metered electricity allocated to the flake-production campaign"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming zinc flake"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_flake_milling_inputs
+              source_ids:
+                - us-patent-7021573-zinc-flake
+            ranges: []
+        - row_id: fl_white_spirit
+          role: "White spirit for wet milling"
+          name: "White spirit and special boiling point industrial spirits"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5fb93398-c4c6-4b60-bb16-ca956bc35985"
+          property_unit: "Mass / kg"
+          description: "Include only fresh and externally supplied white spirit used as the wet-milling solvent; account for recovered internal solvent separately in the mass balance."
+          amount:
+            expression: "Weighed fresh solvent make-up entering the milling campaign"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming zinc flake"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_flake_milling_inputs
+              source_ids:
+                - us-patent-7021573-zinc-flake
+            ranges: []
+        - row_id: fl_stearic_acid
+          role: "Stearic acid milling lubricant"
+          name: "Stearic acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when stearic acid is actually added to the milling recipe; record other lubricants as separate atomic rows."
+          amount:
+            expression: "Batch-weighed fresh stearic acid addition"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming zinc flake"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_flake_milling_inputs
+              source_ids:
+                - us-patent-7021573-zinc-flake
+            ranges: []
+        - row_id: fl_process_water
+          role: "Process water for mill cooling make-up"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Include only water crossing the foreground boundary as cooling-system make-up; exclude recirculated internal water."
+          amount:
+            expression: "Metered make-up water mass or volume converted using documented density"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming zinc flake"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_flake_milling_inputs
+              source_ids:
+                - us-patent-7021573-zinc-flake
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: fl_zinc_flake_out
+          role: "Net conforming zinc flake"
+          name: "Zinc flake"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record saleable flake after milling, media separation, drying when applicable, classification, and internal recycle."
+          amount:
+            expression: "Weighed net conforming flake leaving the foreground boundary"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_flake_milling_outputs
+              source_ids:
+                - us-patent-7021573-zinc-flake
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: fl_zinc_to_air
+          role: "Zinc released to air from milling and finishing"
+          name: "zinc"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94e3-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Report measured zinc passing the final air-emission control boundary."
+          amount:
+            expression: "Measured concentration multiplied by corrected dry gas volume for the reporting period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming zinc flake"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_flake_milling_outputs
+              source_ids:
+                - us-patent-7021573-zinc-flake
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "multi_route_or_shared_equipment"
+    rule: "Prefer process subdivision, route-specific meters, batch records, and operating-time attribution before applying allocation."
+    source_ids: []
+  - rule_id: allocation_internal_recycle
+    applies_to: "internal_zinc_recycle"
+    rule: "Do not allocate burdens to zinc dust, off-spec particles, or dross returned within the same foreground system; subtract internal returns once so they are neither new external inputs nor additional outputs."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: allocation_exported_coproduct
+    applies_to: "exported_zinc_bearing_output"
+    rule: "When a zinc-bearing output has an intended external use and independently measured quantity, apply a documented physical causal relation where defensible; otherwise apply mass allocation and report a sensitivity case."
+    source_ids: []
+  - rule_id: allocation_waste_treatment
+    applies_to: "wastes"
+    rule: "Assign collection and treatment burdens to the foreground product unless a reviewed downstream dataset documents a different cut-off; do not use an avoided-burden credit without explicit disclosure."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_feed_melting_inputs
+      process_id: "feed_melting"
+      flow_role: "External zinc, electricity, and natural-gas inputs"
+      record_type: "Scale tickets; batch sheets; electricity meter; gas meter"
+      raw_fields: "input identity; gross and tare mass; meter opening and closing; reference conditions; batch id"
+      collection_method: "Reconcile calibrated meters and batch weights to the same campaign"
+      unit: "kg; MJ; m3"
+      frequency: "Each batch and monthly meter reconciliation"
+      temporal_coverage: "Complete declared representative production period"
+      site_scope: "All equipment serving the declared melting route"
+      aggregation_rule: "Sum external inputs; allocate shared meters by documented operating time or submeter; normalize to molten zinc transferred"
+      quality_evidence: "Calibration records; invoices; batch reconciliation; meter logs"
+    - protocol_id: cp_feed_melting_outputs
+      process_id: "feed_melting"
+      flow_role: "Molten zinc, dross, fossil CO2, and zinc-to-air outputs"
+      record_type: "Transfer scale; residue tickets; fuel analysis; stack records"
+      raw_fields: "transferred mass; dross mass; fuel carbon; gas flow; zinc concentration; moisture; oxygen; operating hours"
+      collection_method: "Match output and emission records to the melting campaign and final abatement boundary"
+      unit: "kg; Nm3"
+      frequency: "Each transfer or residue shipment; emissions at permit frequency"
+      temporal_coverage: "Same period as melting inputs"
+      site_scope: "Melter, holding furnace, and assigned abatement"
+      aggregation_rule: "Calculate net transferred zinc and period emissions; retain destination-specific dross totals"
+      quality_evidence: "Scale calibration; laboratory reports; stack-test QA; carbon-balance worksheet"
+    - protocol_id: cp_atomization_inputs
+      process_id: "atomization_finishing"
+      flow_role: "Molten zinc, electricity, compressed air, process water, and nitrogen"
+      record_type: "Transfer scale; batch sheet; utility meters"
+      raw_fields: "zinc mass; electricity; gas or air volume and reference conditions; water make-up; route id"
+      collection_method: "Record only utilities used by the declared atomization route"
+      unit: "kg; MJ; m3"
+      frequency: "Each campaign with monthly reconciliation"
+      temporal_coverage: "Complete declared representative production period"
+      site_scope: "Atomizer, cooling, conveying, and filtration equipment"
+      aggregation_rule: "Sum by campaign; exclude recirculated water and internal gases; normalize to conforming output"
+      quality_evidence: "Calibration; batch route record; meter reconciliation"
+    - protocol_id: cp_atomization_outputs
+      process_id: "atomization_finishing"
+      flow_role: "Conforming product and zinc-to-air emission"
+      record_type: "Product scales; classifier records; filter records; stack measurements"
+      raw_fields: "product mass; product grade; particle-size distribution; gas flow; zinc concentration"
+      collection_method: "Reconcile product, internal returns, collected dust, and emitted zinc"
+      unit: "kg; Nm3"
+      frequency: "Each batch; emissions at permit frequency"
+      temporal_coverage: "Same period as atomization inputs"
+      site_scope: "Atomizer through final classifier and abatement outlet"
+      aggregation_rule: "Net saleable product equals dispatched conforming mass; calculate emitted zinc from corrected gas and concentration"
+      quality_evidence: "Scale calibration; particle-size report; stack-test QA; mass balance"
+    - protocol_id: cp_dust_recovery_inputs
+      process_id: "dust_recovery_finishing"
+      flow_role: "Zinc oxide and electricity inputs"
+      record_type: "Feed scale; composition certificate; electricity meter"
+      raw_fields: "dry feed mass; zinc content; moisture; electricity; campaign id"
+      collection_method: "Reconcile dry-basis feed and energy to each recovery campaign"
+      unit: "kg; MJ"
+      frequency: "Each campaign with monthly reconciliation"
+      temporal_coverage: "Complete declared representative production period"
+      site_scope: "Recovery bed, conveying, and classification equipment"
+      aggregation_rule: "Convert feed to dry basis; sum electricity; normalize to conforming recovered dust"
+      quality_evidence: "Scale and meter calibration; supplier certificate; laboratory assay"
+    - protocol_id: cp_dust_recovery_outputs
+      process_id: "dust_recovery_finishing"
+      flow_role: "Conforming recovered dust and zinc-to-air emission"
+      record_type: "Product scales; classifier records; stack measurements"
+      raw_fields: "product mass; zinc content; particle-size distribution; gas flow; zinc concentration"
+      collection_method: "Reconcile recovered dust and measured final releases to the campaign"
+      unit: "kg; Nm3"
+      frequency: "Each batch; emissions at permit frequency"
+      temporal_coverage: "Same period as recovery inputs"
+      site_scope: "Recovery unit through final classifier and abatement outlet"
+      aggregation_rule: "Sum net conforming product and calculate period zinc release"
+      quality_evidence: "Scale calibration; laboratory assay; stack-test QA; mass balance"
+    - protocol_id: cp_flake_milling_inputs
+      process_id: "flake_milling_finishing"
+      flow_role: "Zinc feed, electricity, solvent, lubricant, and cooling-water inputs"
+      record_type: "Batch sheets; scales; utility meters; solvent inventory"
+      raw_fields: "zinc mass; electricity; fresh solvent; recovered solvent; lubricant; water make-up; route id"
+      collection_method: "Record fresh external inputs separately from internal recovery"
+      unit: "kg; MJ"
+      frequency: "Each milling campaign with monthly reconciliation"
+      temporal_coverage: "Complete declared representative production period"
+      site_scope: "Mill, cooling, solvent recovery, drying, and classifier"
+      aggregation_rule: "Sum fresh inputs by campaign; do not count recovered internal solvent as a new external input"
+      quality_evidence: "Scale and meter calibration; material issue slips; solvent inventory closure"
+    - protocol_id: cp_flake_milling_outputs
+      process_id: "flake_milling_finishing"
+      flow_role: "Conforming zinc flake and zinc-to-air emission"
+      record_type: "Product scales; morphology and size tests; stack measurements"
+      raw_fields: "product mass; zinc content; morphology; particle-size distribution; gas flow; zinc concentration"
+      collection_method: "Reconcile product, internal returns, retained solvent, and final zinc release"
+      unit: "kg; Nm3"
+      frequency: "Each batch; emissions at permit frequency"
+      temporal_coverage: "Same period as milling inputs"
+      site_scope: "Mill through final classifier and abatement outlet"
+      aggregation_rule: "Sum net conforming product; calculate period zinc emission; normalize to reference flow"
+      quality_evidence: "Scale calibration; morphology and size reports; stack-test QA; campaign mass balance"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "Normalized amount = campaign exchange amount divided by net conforming reference-product mass"
+      inputs:
+        - "campaign exchange"
+        - "net conforming product mass"
+      output: "kg, MJ, or m3 per kg reference product"
+      source_ids: []
+    - id: calc_gas_reference_volume
+      applies_to: "volume-based gas rows"
+      rule: "Correct measured gas volume to the declared reference temperature and pressure using the documented meter or ideal-gas correction"
+      inputs:
+        - "measured volume"
+        - pressure
+        - temperature
+        - "compressibility if used"
+      output: "reference-condition m3"
+      source_ids: []
+    - id: calc_zinc_air_release
+      applies_to: "zinc elementary-flow rows"
+      rule: "Zinc released = corrected dry-gas volume multiplied by measured zinc mass concentration, with unit conversion"
+      inputs:
+        - "dry-gas volume"
+        - "zinc concentration"
+        - "sampling duration"
+      output: "kg zinc released"
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+    - id: calc_internal_transfer_match
+      applies_to: "fm_molten_zinc_out; ar_molten_zinc_in"
+      rule: "The paired internal transfer quantities shall be equal for the same campaign after inventory-boundary reconciliation"
+      inputs:
+        - "transfer mass"
+        - "batch id"
+      output: "matched internal molten-zinc mass"
+      source_ids: []
+    - id: calc_net_external_input
+      applies_to: "recycled zinc or solvent"
+      rule: "Net external input = purchased input crossing the boundary; internally recovered material is tracked in the process balance but not added again as an external input"
+      inputs:
+        - "purchase records"
+        - "internal return records"
+      output: "net external input"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Retain zinc assay or alloy composition, product form, particle-size distribution, morphology, density specification, moisture or solvent state, and additive declaration for every represented product family."
+      evidence: "Batch certificate of analysis and product specification"
+    - id: dq_route_identity
+      applies_to: "process map"
+      requirement: "Identify the actual atomization, recovery, or milling route and mark every conditional row as applicable or not applicable with a reason."
+      evidence: "Process flow diagram, equipment list, and signed route declaration"
+    - id: dq_mass_balance
+      applies_to: "zinc-bearing rows"
+      requirement: "Reconcile zinc-bearing inputs, net product, internal returns, dross, retained samples, stock change, and measured releases over the same period; investigate unexplained imbalance."
+      evidence: "Campaign and annual zinc mass-balance worksheet"
+    - id: dq_meter_quality
+      applies_to: "measured inputs and outputs"
+      requirement: "Use calibrated scales and meters or document the uncertainty and correction applied to uncalibrated instruments."
+      evidence: "Current calibration certificates and data-quality exception log"
+    - id: dq_temporal_representativeness
+      applies_to: "foreground dataset"
+      requirement: "Use a representative consecutive production period and disclose shutdowns, trials, abnormal campaigns, and proxy periods."
+      evidence: "Production calendar and coverage assessment"
+    - id: dq_source_linkage
+      applies_to: "purchased inputs"
+      requirement: "Record supplier, geography, technology, and reference period for each upstream dataset and explain material proxy choices."
+      evidence: "Upstream dataset crosswalk and supplier records"
+validation_rules:
+  - rule_id: val_reference_flow
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm that the reference output is exactly 1 kg net conforming product after normalization and that all required qualifiers are populated."
+    source_ids: []
+  - rule_id: val_route_completeness
+    applies_to: "process_map"
+    rule: "Confirm that at least one product-forming route is included, each included process has all applicable atomic exchanges, and every omitted conditional row has a documented reason."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+      - eu-cn-explanatory-notes-zinc-2019
+      - us-patent-7021573-zinc-flake
+  - rule_id: val_uuid_semantics
+    applies_to: "uuid_bearing_rows"
+    rule: "Confirm each UUID remains state 100 and matches the selected flow's English and Chinese baseName, flow type, classification, property, unit group, and product state."
+    source_ids: []
+  - rule_id: val_internal_transfer
+    applies_to: "internal_molten_zinc"
+    rule: "Confirm fm_molten_zinc_out equals ar_molten_zinc_in for every linked campaign and is not counted as an external input."
+    source_ids: []
+  - rule_id: val_zinc_balance
+    applies_to: "zinc_mass_balance"
+    rule: "Confirm all zinc-bearing inputs, products, residues, internal returns, stock changes, and direct zinc releases reconcile for the declared period; report the imbalance and investigation threshold used."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: val_air_emissions
+    applies_to: "direct_air_releases"
+    rule: "Confirm zinc and fossil carbon dioxide rows represent direct foreground releases after abatement and do not duplicate upstream electricity or fuel-supply emissions."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: val_no_unresolved_proxy
+    applies_to: "publication_readiness"
+    rule: "Reject publication if any unresolved flow is replaced by a semantic proxy or if unresolved UUID and range-evidence needs remain undisclosed."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset or background_dataset after review and publication"
+  downstream_use: "Foreground or background modelling of zinc dust, powder, or flake supplied at the producing facility gate"
+  allowed_use: "Product systems whose required zinc particle form, composition, route, geography, technology, and reference period are compatible with the dataset disclosures"
+  excluded_use: "Unwrought zinc; zinc oxide or other compounds; zinc scrap treatment; fabricated zinc products; coating manufacture; a different particle form or production route without documented representativeness"
+  required_metadata: "PCR id and version; product form; zinc content or alloy composition; particle-size distribution; morphology; apparent or tapped density; route; dry or solvent-wetted state; moisture or solvent content; additives; packaging inclusion; geography; technology; reference period; upstream datasets; allocation; cut-offs"
+  required_quality_disclosure: "Data coverage; mass-balance result; meter and scale quality; emission measurement method; proxy inputs; route exclusions; unresolved identities or range gaps; uncertainty limitations"
+  update_trigger: "Change in particle-forming route, feed grade, product specification, abatement, energy supply, solvent system, allocation, site geography, or data period that materially changes representativeness"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv, retrieved 2026-09-04"
+    used_for: "Official product classification identity and hierarchy"
+  - id: "eu-cn-explanatory-notes-zinc-2019"
+    type: "official_guidance"
+    reference: "European Union, consolidated Combined Nomenclature explanatory notes, zinc entries, https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex:02019XC0329(02)-20190724, retrieved 2026-09-04"
+    used_for: "Distinguishing atomized zinc powder and zinc dust recovered from a zinc-oxide bed"
+  - id: "eu-jrc-nfm-bref-2017"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Non-Ferrous Metals Industries, 2017, https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2020-01/JRC107041_NFM_bref2017.pdf, retrieved 2026-09-04"
+    used_for: "Melting, atomization, inert cooling, fabric-filter recovery, product handling, and direct zinc-emission measurement relevance"
+  - id: "us-patent-7021573-zinc-flake"
+    type: "literature"
+    reference: "US7021573B2, Process for dry milling zinc powder to produce zinc flake, https://patents.google.com/patent/US7021573B2/en, retrieved 2026-09-04"
+    used_for: "Flake morphology and conditional milling, solvent, lubricant, cooling, and classification operations"
+  - id: "china-mof-2026-tariff-product-names"
+    type: "official_guidance"
+    reference: "Ministry of Finance of the People's Republic of China, 2026 tariff list, entries 79031000 and 79039000, https://m.mof.gov.cn/zcfb/202604/P020260428407579725260.pdf, retrieved 2026-09-04"
+    used_for: "Professional Chinese product terminology for zinc dust, zinc powder, and flake-form powder"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:efdbc4c03804a3d3b455baa875874a2daa3223a1997f43892158fc2fc3979cc7"
+  generated_content_sha256: "sha256:8946903fcdd6b2a4e282828de3d992f4ca38e76e1fa00340520a9d00226b4afd"
