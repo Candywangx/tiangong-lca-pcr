@@ -229,11 +229,11 @@ export function assertScratchSuitable({
   if (scratch.availableBytes < requiredBytes)
     throw new Error(
       `Scratch filesystem has insufficient capacity: needs ${requiredBytes} bytes, ${describe(scratch)}. ` +
-        "Free space or set TMPDIR to a larger disk-backed temporary filesystem.",
+        "Free space or set PCR_BUILD_SCRATCH_DIR to a larger disk-backed temporary filesystem.",
     );
   if (isMemoryBacked(scratch))
     throw new Error(
-      `Scratch filesystem is memory-backed and cannot relieve a constrained host: ${describe(scratch)}. Set TMPDIR to a disk-backed directory.`,
+      `Scratch filesystem is memory-backed and cannot relieve a constrained host: ${describe(scratch)}. Set PCR_BUILD_SCRATCH_DIR to a disk-backed directory.`,
     );
   const sameDevice = String(scratch.device) === String(constraint.device);
   if (sameDevice && isMemoryBacked(constraint))
@@ -455,6 +455,44 @@ function assertGeneratedIdentity(scratchApp, expectedCommit) {
   return { manifest, version, versionFile };
 }
 
+/** Select and probe storage before copying; an explicit override never silently falls back. */
+export function selectScratchWorkspace({
+  repoRoot, constraint, requiredBytes, env = {}, scratchParent = null,
+  candidates = ["/tmp", "/var/tmp", os.tmpdir()], facts = filesystemFacts, log = console.warn,
+}) {
+  const explicit = scratchParent ?? env.PCR_BUILD_SCRATCH_DIR;
+  if (explicit !== undefined && explicit !== null && !String(explicit).trim())
+    throw new Error("PCR_BUILD_SCRATCH_DIR must name a non-empty directory.");
+  const parents = explicit ? [explicit] : candidates;
+  const sourceRoot = fs.realpathSync(repoRoot);
+  const seen = new Set();
+  const failures = [];
+  for (const parent of parents) {
+    let owned = null;
+    try {
+      const scratchBase = fs.realpathSync(parent);
+      if (seen.has(scratchBase)) continue;
+      seen.add(scratchBase);
+      if (scratchBase === sourceRoot || scratchBase.startsWith(sourceRoot + path.sep))
+        throw new Error("Scratch parent must be outside the source repository.");
+      assertScratchSuitable({ constraint, scratch: facts(scratchBase), requiredBytes,
+        forced: env[RELOCATE_ENV] === "1", warn: log });
+      // A successful unique-directory probe also proves the parent is writable.
+      owned = fs.mkdtempSync(path.join(scratchBase, "pcr-build-"));
+      const scratchFacts = facts(owned);
+      const suitability = assertScratchSuitable({ constraint, scratch: scratchFacts, requiredBytes,
+        forced: env[RELOCATE_ENV] === "1", warn: log });
+      return { scratchBase, scratchRoot: owned, scratchFacts, suitability };
+    } catch (error) {
+      if (owned) fs.rmSync(owned, { recursive: true, force: true });
+      failures.push(`${parent}: ${error.message}`);
+      if (explicit) break;
+    }
+  }
+  throw new Error("No usable disk-backed build scratch. Set PCR_BUILD_SCRATCH_DIR to a writable " +
+    "disk directory with enough space. " + failures.join(" | "));
+}
+
 /**
  * Run the ordinary pipeline on a scratch copy and publish only its validated export.
  *
@@ -466,7 +504,7 @@ export async function runRelocatedBuild({
   repoRoot,
   env = {},
   runPipeline,
-  scratchParent = os.tmpdir(),
+  scratchParent = null,
   reason = "relocation-requested",
   facts = filesystemFacts,
   head = gitHead,
@@ -486,22 +524,14 @@ export async function runRelocatedBuild({
     copyBytes: copyEstimate.bytes,
     outputBytes: measureOutputBytes(app),
   });
-  const scratchBase = fs.realpathSync(scratchParent);
-  const sourceRoot = fs.realpathSync(repoRoot);
-  if (scratchBase === sourceRoot || scratchBase.startsWith(sourceRoot + path.sep))
-    throw new Error("Scratch parent must be outside the source repository.");
-  const scratchRoot = fs.mkdtempSync(path.join(scratchBase, "pcr-build-"));
+  const { scratchBase, scratchRoot, scratchFacts, suitability } = selectScratchWorkspace({
+    repoRoot, constraint, requiredBytes, env, scratchParent, facts, log,
+  });
   const scratchRepo = path.join(scratchRoot, "repo");
   let published = null;
   try {
-    const scratchFacts = facts(scratchRoot);
-    const suitability = assertScratchSuitable({
-      constraint,
-      scratch: scratchFacts,
-      requiredBytes,
-      forced: env[RELOCATE_ENV] === "1",
-      warn: log,
-    });
+    log(JSON.stringify({ event: "build-scratch-selected", sourceCommit: headBefore,
+      scratch: scratchFacts, requiredBytes, environment: describeEnvironment(env) }));
     sample();
     const copied = copy({ from: repoRoot, to: scratchRepo });
     sample();

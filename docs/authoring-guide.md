@@ -24,9 +24,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - library/pcrs/**
   - library/modules/**
-lastReviewedAt: 2026-09-15
-lastReviewedCommit: 9fe6486d985d1a093eb5e50fea307d221bd12e70
-lastReviewedNote: "Reviewed for PCR #17: build-storage adapter addresses observed EdgeOne shared-memory ENOSPC while retaining canonical source, language, fidelity, SEO and resource gates. CI exercises relocated full-corpus builds; local and production results remain tracked in the Issue. No PCR authoring, lifecycle, release or consumption API behavior changes."
+lastReviewedAt: 2026-09-16
+lastReviewedCommit: f695a21737e42ec63855098017e201743ec28c17
+lastReviewedNote: "Reviewed for PCR #19: scratch selection probes usable disk parents independently of the observed provider-controlled TMPDIR and preserves an explicit override. Canonical content, language/lifecycle rules, source identity, output verification and resource limits are unchanged; focused tests cover candidate rejection, override intent and probe cleanup. Provider completion remains tracked separately."
 ---
 
 # Authoring Guide

@@ -22,6 +22,7 @@ import {
   requiredScratchBytes,
   runRelocatedBuild,
   scratchEnvironment,
+  selectScratchWorkspace,
   summarizeTree,
 } from "./build-storage.mjs";
 
@@ -716,5 +717,58 @@ test("interrupted output stages are excluded without deleting their owner's file
       assert.equal(fs.existsSync(path.join(target, "packages/pcr-docs", name)), false);
       assert.equal(fs.readFileSync(path.join(source, "packages/pcr-docs", name, "index.html"), "utf8"), "PREVIOUS-STAGE");
     }
+  } finally { fs.rmSync(root, { recursive: true, force: true }); }
+});
+
+
+test("scratch selection skips constrained and unusable parents before copying", () => {
+  const root = fs.realpathSync(tempRoot("candidate-selection"));
+  try {
+    const repo = path.join(root, "source");
+    const memory = path.join(root, "memory");
+    const disk = path.join(root, "disk");
+    for (const dir of [repo, memory, disk]) fs.mkdirSync(dir);
+    const file = path.join(root, "regular-file"); fs.writeFileSync(file, "keep");
+    const facts = (target) => fakeFacts({ path: target, device: "8",
+      fileSystemType: target.startsWith(memory) ? "tmpfs" : "ext4" });
+    const chosen = selectScratchWorkspace({ repoRoot: repo, requiredBytes: 1000,
+      constraint: fakeFacts({ device: "7", fileSystemType: "tmpfs" }), facts, log: silent,
+      candidates: [path.join(root, "missing"), memory, file, disk] });
+    assert.equal(chosen.scratchBase, disk);
+    assert.equal(fs.statSync(chosen.scratchRoot).isDirectory(), true);
+    assert.deepEqual(fs.readdirSync(memory), []);
+    assert.equal(fs.readFileSync(file, "utf8"), "keep");
+  } finally { fs.rmSync(root, { recursive: true, force: true }); }
+});
+
+test("explicit scratch override is honored without silently using a fallback", () => {
+  const root = fs.realpathSync(tempRoot("candidate-override"));
+  try {
+    const repo = path.join(root, "source"), disk = path.join(root, "disk");
+    fs.mkdirSync(repo); fs.mkdirSync(disk);
+    const options = { repoRoot: repo, requiredBytes: 1000, candidates: [disk], log: silent,
+      constraint: fakeFacts({ device: "7", fileSystemType: "tmpfs" }),
+      facts: (target) => fakeFacts({ path: target, device: "8", fileSystemType: "ext4" }) };
+    assert.throws(() => selectScratchWorkspace({ ...options,
+      env: { PCR_BUILD_SCRATCH_DIR: path.join(root, "missing") } }), /No usable disk-backed/u);
+    assert.deepEqual(fs.readdirSync(disk), []);
+    assert.throws(() => selectScratchWorkspace({ ...options,
+      env: { PCR_BUILD_SCRATCH_DIR: "" } }), /non-empty/u);
+    const chosen = selectScratchWorkspace({ ...options, candidates: [], env: { PCR_BUILD_SCRATCH_DIR: disk } });
+    assert.equal(chosen.scratchBase, disk);
+  } finally { fs.rmSync(root, { recursive: true, force: true }); }
+});
+
+test("a candidate that becomes unsuitable after its write probe leaves no scratch behind", () => {
+  const root = fs.realpathSync(tempRoot("candidate-probe"));
+  try {
+    const repo = path.join(root, "source"), candidate = path.join(root, "candidate");
+    fs.mkdirSync(repo); fs.mkdirSync(candidate);
+    assert.throws(() => selectScratchWorkspace({ repoRoot: repo, requiredBytes: 1000,
+      candidates: [candidate], log: silent,
+      constraint: fakeFacts({ device: "7", fileSystemType: "tmpfs" }),
+      facts: (target) => fakeFacts({ path: target, device: "8", fileSystemType: "ext4",
+        availableBytes: target === candidate ? 1e9 : 0 }) }), /insufficient capacity/u);
+    assert.deepEqual(fs.readdirSync(candidate), []);
   } finally { fs.rmSync(root, { recursive: true, force: true }); }
 });
