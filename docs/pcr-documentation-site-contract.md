@@ -1,4 +1,7 @@
 ---
+lastReviewedAt: 2026-09-15
+lastReviewedNote: "Reviewed for PCR #12: complete source bundles, optional-language release/history compatibility, deterministic generated Fumadocs pages, structured views, exact downloads and static SEO/hosting boundaries. Full corpus build, source coverage and focused tests pass; production and workspace integration remain separate pending gates."
+lastReviewedCommit: 5db5d841963dee8c9d9c7b67e9c1babadbdd3566
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -121,7 +124,7 @@ leave the previous verified deployment intact.
 The first real-corpus export showed that a full-library sidebar on every page
 produced almost 5 GB. The final shell receives the full page route and serializes
 only directory links and the open PCR's chapters. The measured compact export is
-about 1.34 GB across 12,756 files after semantic chapter splitting.
+about 1.44 GB across 12,758 files with semantic chapters and server-rendered structured rule views.
 Next.js retains both initial HTML and static navigation payloads; these are part
 of its supported export and are not deleted after building.
 
@@ -159,3 +162,9 @@ output paths are canonicalized, and output inside canonical data or Git director
 is rejected. End-to-end generator tests cover a three-language immutable release,
 private open revisions, exact downloads, deterministic repeated output and failed
 required-language generation preserving the previous verified artifact set.
+
+Common structured rules and process/flow counts are rendered as semantic tables in
+native disclosures in initial HTML. Their identifiers and text are verified against
+the complete structured projection; the on-demand field tree remains available for
+all remaining metadata. Canonical English rule text is labelled as such on Chinese
+pages instead of being passed off as translated methodology.

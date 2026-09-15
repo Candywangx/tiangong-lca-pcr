@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-09-15
-lastReviewedCommit: 1be27716d6f1fab0abeec6e64d73deaebba3844b
-lastReviewedNote: "Reviewed PCR PR #9 CLI dispatch and consumption changes: the new check command leaves publish/revise/recover dispatch, immutable release snapshots, bilingual hashes and publication gates unchanged."
+lastReviewedCommit: 5db5d841963dee8c9d9c7b67e9c1babadbdd3566
+lastReviewedNote: "Reviewed for PCR #12: complete source bundles, optional-language release/history compatibility, deterministic generated Fumadocs pages, structured views, exact downloads and static SEO/hosting boundaries. Full corpus build, source coverage and focused tests pass; production and workspace integration remain separate pending gates."
 title: PCR Library Release Policy
 docType: contract
 scope: repo

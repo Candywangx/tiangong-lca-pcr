@@ -25,8 +25,8 @@ checkPaths:
   - library/pcrs/**
   - library/modules/**
 lastReviewedAt: 2026-09-15
-lastReviewedCommit: 0e5bb2920a5185663bc6339a73cb38b93bcfc87d
-lastReviewedNote: "Reviewed PCR #14 / PR #13 additional batch: bilingual candidate methodology, projection checks and report-only measurement findings preserve the existing authoring and publication boundaries."
+lastReviewedCommit: 5db5d841963dee8c9d9c7b67e9c1babadbdd3566
+lastReviewedNote: "Reviewed for PCR #12: complete source bundles, optional-language release/history compatibility, deterministic generated Fumadocs pages, structured views, exact downloads and static SEO/hosting boundaries. Full corpus build, source coverage and focused tests pass; production and workspace integration remain separate pending gates."
 ---
 
 # Authoring Guide
