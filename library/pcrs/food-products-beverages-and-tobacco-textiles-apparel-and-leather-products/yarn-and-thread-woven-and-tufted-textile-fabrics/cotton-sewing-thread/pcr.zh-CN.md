@@ -3,7 +3,7 @@ pcr_id: pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-pro
 language: zh-CN
 status: candidate
 content_maturity: authored_methodology
-translation_status: canonical
+translation_status: aligned
 sync_with: pcr.en-US.md
 ---
 

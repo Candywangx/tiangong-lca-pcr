@@ -4,7 +4,7 @@ language: zh-CN
 status: candidate
 sync_with: pcr.en-US.md
 content_maturity: authored_methodology
-translation_status: aligned
+translation_status: scaffold_pending_translation
 ---
 
 # 电视摄像机
