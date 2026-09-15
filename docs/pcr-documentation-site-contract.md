@@ -1,7 +1,7 @@
 ---
 lastReviewedAt: 2026-09-15
-lastReviewedNote: "Reviewed for PCR #12: complete source bundles, optional-language release/history compatibility, deterministic generated Fumadocs pages, structured views, exact downloads and static SEO/hosting boundaries. Full corpus build, source coverage and focused tests pass; production and workspace integration remain separate pending gates."
-lastReviewedCommit: 5db5d841963dee8c9d9c7b67e9c1babadbdd3566
+lastReviewedNote: "Reviewed for PCR #17: build-storage adapter addresses observed EdgeOne shared-memory ENOSPC while retaining canonical source, language, fidelity, SEO and resource gates. CI exercises relocated full-corpus builds; local and production results remain tracked in the Issue. No PCR authoring, lifecycle, release or consumption API behavior changes."
+lastReviewedCommit: 9fe6486d985d1a093eb5e50fea307d221bd12e70
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -139,6 +139,30 @@ The build has an 18-minute task budget within the 20-minute provider limit and
 uses four workers with a 4 GB Node heap ceiling per build process. Measure total
 resident memory against the 6 GB provider limit on CI/hosting; a heap ceiling is
 not proof of total process memory.
+
+### Build workspace storage
+
+The provider's temporary build filesystem is separate from its deployed-asset
+allowance. The first EdgeOne production build at source `9fe6486d` generated every
+page but failed with `ENOSPC` while Next copied `.next` pages into `out` under
+`/dev/shm/repo`. Final artifact size alone does not bound intermediate storage.
+
+When a provider checkout uses that constrained shared-memory filesystem, the build
+adapter must use a unique disk-backed scratch workspace, preserve the exact Git
+source identity and pinned dependencies, and run the same generation, Next export
+and verification stages there. Check storage capacity before work and before
+artifact handoff. An unavailable or unsuitable scratch filesystem is a build
+failure with diagnostics, not permission to trim source text or remove supported
+Next navigation payloads. Publish output only after all existing fidelity, SEO,
+size, memory and time checks pass, and preserve a previous output on failure.
+Temporary cleanup is confined to directories created by the current build.
+
+Relocation hands back only `out/` and writes small build metrics in the original
+checkout. Its original `.generated/` is not the relocated generation metadata;
+use the complete build command rather than standalone `verify` there. Set `TMPDIR`
+to choose a disk-backed scratch parent. Interrupted `out.stage-*` and `out.prev-*`
+directories are excluded from the source copy, but are not automatically removed
+by later runs; inspect ownership before cleaning them when destination space is low.
 
 Search is loaded only on reader intent, in a dedicated Worker. Per-language raw
 indexes must stay under 20 MB and the gzip transfer for each language under 4 MB; the
