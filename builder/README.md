@@ -91,7 +91,7 @@ npm run validate
   byte-for-byte in classification-only mode. Register a coverage descriptor before importing a non-3.0 version.
 - Current classification mapping v2 files contain accepted positive edges only. Every edge targets a material PCR,
   excludes `manual_review`, and carries acceptance status, decision-maker, UTC decision time, and durable decision
-  reference. CPC 3.0 currently has 400 accepted edges; CPC 2.1 is empty v2.
+  reference. Read the accepted set and count from `classifications/mappings/<system>-<version>-to-pcr.yaml`.
 - `--legacy-scaffolds` is migration/test-only and may operate only on retained v1/scaffold mapping fixtures. A current
   v2 mapping causes it to fail before mutation, preventing unaccepted-edge injection and retired-directory
   rehydration. For a v1 fixture it may create one complete four-file target when absent; an existing target must be
@@ -121,8 +121,8 @@ npm run validate
 - `vocab:generate` validates every vocabulary source and deterministically regenerates the checked-in runtime constants and shared JSON Schema.
 - `aliases:build` deterministically derives `classifications/aliases/pcr-id-aliases.yaml` from the retained CPC leaf
   identity inventory and current accepted mapping. `aliases:check` rejects stale output, duplicate sources,
-  material-id collisions, alias chains/cycles, and invalid terminal targets. Current output has 2,543 terminal
-  classification-coverage locators and is checked before catalog lookup.
+  material-id collisions, alias chains/cycles, and invalid terminal targets. Read current membership from the
+  generated registry and its verified count from `library/catalog.yaml`; lookup checks the registry before the catalog.
 - `catalog:build` validates sources and publishes `library/catalog.yaml`, the material index, and registered coverage
   indexes as one journaled recoverable artifact set. The catalog pins the alias registry's canonical path,
   exact-byte SHA-256, and entry count; missing, truncated, or stale registry bytes fail closed. A pre-commit

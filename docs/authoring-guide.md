@@ -24,8 +24,9 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - library/pcrs/**
   - library/modules/**
-lastReviewedAt: 2026-09-13
-lastReviewedCommit: da2301271085ca4db71804ea458d898deaa59cd5
+lastReviewedAt: 2026-09-15
+lastReviewedCommit: 09d9c2ea9d3b678cb96f648a500404ee6e6d032c
+lastReviewedNote: "Reviewed for the inventory-source correction: classification mapping and legacy/material authoring boundaries already use canonical sources and remain valid."
 ---
 
 # Authoring Guide

@@ -26,9 +26,9 @@ checkPaths:
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-09-14
-lastReviewedCommit: b4d45d1d7f379c5ce12cc4844c28d99921f5ba17
-lastReviewedNote: "Reviewed for PCR #6: the current sibling CLI command in .env.example, the builder tool contract, and the authoring guide now use the canonical ../cli directory. Package, runtime, business and environment credential content are unchanged."
+lastReviewedAt: 2026-09-15
+lastReviewedCommit: 09d9c2ea9d3b678cb96f648a500404ee6e6d032c
+lastReviewedNote: "Reviewed inventory-source consistency against PCR PR #9: current membership and counts resolve from canonical mappings, manifests, material/coverage indexes and the catalog alias binding."
 ---
 
 # TianGong LCA PCR Library
@@ -275,12 +275,14 @@ The viewer is a consumption surface only. It does not edit PCR Markdown, manifes
 
 The consumption surfaces are now material-first: default catalog, tree, list, and viewer output represent methodology
 records, while complete classification coverage remains queryable separately. Phase 2 steps 1-5 are complete:
-ordinary CPC imports create zero PCR records; CPC 3.0 mapping v2 retains 417 accepted material edges, CPC 2.1
-is empty v2, and the deterministic registry preserves 2,519 retired leaf-derived ids as coverage locators.
-CPC 3.0 coverage remains 2,877 total, 417 mapped, 2,460 unmapped, and 0 unknown.
+ordinary CPC imports create zero PCR records, current mapping v2 retains accepted material edges only, and the
+deterministic registry preserves retired leaf-derived ids as coverage locators. Read accepted edges from
+`classifications/mappings/`, current coverage totals from `coverage summary` or `classifications/indexes/`, and alias
+membership from `classifications/aliases/pcr-id-aliases.yaml`, whose count and digest are pinned by `library/catalog.yaml`.
 
-The first Phase 3 physical pilot removed only CPC `99000`. The repository currently has 2,878 PCR directories:
-419 material records and 2,459 surviving legacy scaffolds. Code `99000` now resolves as known-unmapped and its old PCR
+The first Phase 3 physical pilot removed only CPC `99000`. Canonical manifests under `library/pcrs/` define the current
+physical inventory; `library/indexes/pcr-index.yaml` enumerates material records, and explicit `list --scope legacy`
+browsing inventories surviving scaffolds. Code `99000` now resolves as known-unmapped and its old PCR
 id redirects through the alias registry. CPC `98000` and the broader physical migration remain pending; do not treat
 the pilot as completion of bulk migration. Only authored or reviewed material records can enter guidance and
 validation.
