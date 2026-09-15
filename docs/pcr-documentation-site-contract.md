@@ -1,7 +1,7 @@
 ---
-lastReviewedAt: 2026-09-15
-lastReviewedNote: "Reviewed for PCR #17: build-storage adapter addresses observed EdgeOne shared-memory ENOSPC while retaining canonical source, language, fidelity, SEO and resource gates. CI exercises relocated full-corpus builds; local and production results remain tracked in the Issue. No PCR authoring, lifecycle, release or consumption API behavior changes."
-lastReviewedCommit: 9fe6486d985d1a093eb5e50fea307d221bd12e70
+lastReviewedAt: 2026-09-16
+lastReviewedNote: "Reviewed for PCR #19: scratch selection probes usable disk parents independently of the observed provider-controlled TMPDIR and preserves an explicit override. Canonical content, language/lifecycle rules, source identity, output verification and resource limits are unchanged; focused tests cover candidate rejection, override intent and probe cleanup. Provider completion remains tracked separately."
+lastReviewedCommit: f695a21737e42ec63855098017e201743ec28c17
 title: Generated PCR Documentation Site Contract
 docType: contract
 scope: repo
@@ -159,8 +159,15 @@ Temporary cleanup is confined to directories created by the current build.
 
 Relocation hands back only `out/` and writes small build metrics in the original
 checkout. Its original `.generated/` is not the relocated generation metadata;
-use the complete build command rather than standalone `verify` there. Set `TMPDIR`
-to choose a disk-backed scratch parent. Interrupted `out.stage-*` and `out.prev-*`
+use the complete build command rather than standalone `verify` there. Relocation
+probes `/tmp`, `/var/tmp`, and the OS default in order, deduplicates their real paths,
+and skips constrained, insufficient or unwritable parents. EdgeOne's effective OS
+default remained `/dev/shm/tmp` even after a project-level `TMPDIR=/tmp` setting,
+so the selector does not rely on that reserved/default variable. Set the explicit
+`PCR_BUILD_SCRATCH_DIR` override to choose one parent without silent fallback;
+`PCR_BUILD_RELOCATE=1` exercises relocation on an ordinary local/CI checkout.
+Candidate errors report storage facts, and selection reports marker presence
+without logging environment values. Interrupted `out.stage-*` and `out.prev-*`
 directories are excluded from the source copy, but are not automatically removed
 by later runs; inspect ownership before cleaning them when destination space is low.
 
