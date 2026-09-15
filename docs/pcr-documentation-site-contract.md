@@ -29,7 +29,10 @@ does not promote candidate PCR methodology or certify a translation.
 
 ## Ownership and data flow
 
-`packages/pcr-core/` owns consistent canonical reads and verified artifacts.
+`packages/pcr-core/` owns consistent current PCR/module reads and verified artifacts.
+Historical bundles reuse the Builder release-chain verifier through
+`builder/lib/pcr-document-history.mjs`, returning complete parsed models and
+byte-exact artifacts without exposing internal revision bodies.
 `packages/pcr-docs/scripts/` owns source inventory, Markdown rendering, metadata,
 search and download generation. Fumadocs owns the public document layout,
 navigation controls, typography and interaction primitives. The site uses the
@@ -50,8 +53,8 @@ model, and retired IDs remain terminal coverage locators.
 English `en-US` is canonical and Chinese `zh-CN` is required. Both source files
 must be complete for a PCR selected for publication by the site. Optional BCP 47
 languages require explicit declarations, safe canonical language codes, titles,
-source files and translation states. Their absence never blocks the required
-pair. An absent or stale optional translation is unavailable, never an English
+source files and translation states. An undeclared optional language never blocks the required
+pair; a declared missing file is an error. An absent or stale optional translation is unavailable, never an English
 fallback masquerading as translated content.
 
 Manifest translation state is authoritative. Candidate translations awaiting
@@ -112,3 +115,47 @@ individual files, total file count and build resources, and partition search and
 source-map artifacts. Production uses the existing `pcr.tiangong.earth` project
 and `main`; preview auto deployment remains disabled. Failed generation or builds
 leave the previous verified deployment intact.
+
+### Measured artifact and runtime budgets
+
+The first real-corpus export showed that a full-library sidebar on every page
+produced almost 5 GB. The final shell receives the full page route and serializes
+only directory links and the open PCR's chapters. The measured compact export is
+about 1.34 GB across 12,756 files after semantic chapter splitting.
+Next.js retains both initial HTML and static navigation payloads; these are part
+of its supported export and are not deleted after building.
+
+The deployment gate is 1.5 GB total, fewer than 20,000 files, and less than 25 MB
+per file, leaving room for a previous production deployment within the provider's
+5 GB shared storage allowance. Recheck actual remaining storage before deployment.
+The build has an 18-minute task budget within the 20-minute provider limit and
+uses four workers with a 4 GB Node heap ceiling per build process. Measure total
+resident memory against the 6 GB provider limit on CI/hosting; a heap ceiling is
+not proof of total process memory.
+
+Search is loaded only on reader intent, in a dedicated Worker. Per-language raw
+indexes must stay under 20 MB and their combined gzip transfer under 4 MB; the
+current measured indexes are about 14.5 MB raw / 2.5 MB gzip per language. The
+Worker and tokenization module are ordinary browser modules copied with the pinned
+FlexSearch browser bundle, preserving its license header. Static exports must
+not ship an uncompiled TypeScript Worker. No search backend is needed at this size.
+
+Large documents split preferentially before semantic H2/H3 boundaries; bounded
+continuations retain their chapter context. Chapter URLs use source heading
+identities, with content-derived continuation suffixes. Tables remain whole, and
+ragged GFM tables preserve source cells beyond the header width by adding empty
+header cells. Source spelling, including a literal `undefined` cell, is retained.
+
+On the initial corpus, five Chinese records remain pending translation review and
+are readable with noindex. Two conflicting frontmatter states were aligned to the
+existing authoritative manifest (cotton sewing thread and television cameras),
+without changing body text or upgrading review status. Future state conflicts fail
+generation. Optional bare `en` and `zh` use distinct URL aliases so they cannot
+collide with the required `en-US`/`zh-CN` routes.
+
+The generator accepts explicit `--source-root` / `--output-root` pairs for isolated
+verification fixtures. A custom source requires a separate output root; source and
+output paths are canonicalized, and output inside canonical data or Git directories
+is rejected. End-to-end generator tests cover a three-language immutable release,
+private open revisions, exact downloads, deterministic repeated output and failed
+required-language generation preserving the previous verified artifact set.

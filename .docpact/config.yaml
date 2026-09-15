@@ -16,6 +16,7 @@ catalog:
         - docs/authoring-guide.md
         - docs/classification-policy.md
         - docs/pcr-library-release-policy.md
+        - docs/pcr-documentation-site-contract.md
       workspaceIntegrationRequired: true
 
 ownership:
@@ -27,6 +28,7 @@ ownership:
           - README.md
           - .docpact/config.yaml
           - .gitignore
+          - edgeone.json
           - .github/workflows/**
           - docs/**
       ownerRepo: pcr
@@ -64,6 +66,7 @@ coverage:
     - .gitignore
     - docs/**
     - package.json
+    - edgeone.json
     - builder/**
     - classifications/**
     - packages/**
@@ -78,6 +81,12 @@ coverage:
     - .docpact/runs/**
     - node_modules/**
     - dist/**
+    - packages/pcr-docs/node_modules/**
+    - packages/pcr-docs/.generated/**
+    - packages/pcr-docs/.generated-stage-*/**
+    - packages/pcr-docs/.next/**
+    - packages/pcr-docs/out/**
+    - packages/pcr-docs/public/generated/**
     - coverage/**
     - library/pcrs/**
     - "*.log"
@@ -133,6 +142,7 @@ docInventory:
     - docs/authoring-guide.md
     - docs/classification-policy.md
     - docs/pcr-library-release-policy.md
+    - docs/pcr-documentation-site-contract.md
 
 repo:
   id: pcr
@@ -259,3 +269,26 @@ rules:
       - path: .docpact/config.yaml
         mode: review_or_update
     reason: Public PCR consumption tools and feedback intake surfaces must stay aligned with repository boundaries and authoring workflows.
+
+  - id: pcr-documentation-site
+    scope: repo
+    repo: pcr
+    triggers:
+      - path: packages/pcr-docs/**
+        kind: generated-public-documentation
+      - path: packages/pcr-core/src/languages.mjs
+        kind: source-language-contract
+      - path: packages/pcr-core/src/index.mjs
+        kind: canonical-document-reader
+      - path: builder/lib/pcr-document-history.mjs
+        kind: historical-document-reader
+      - path: edgeone.json
+        kind: static-production-hosting
+    requiredDocs:
+      - path: docs/pcr-documentation-site-contract.md
+        mode: review_or_update
+      - path: docs/architecture.md
+        mode: review_or_update
+      - path: README.md
+        mode: review_or_update
+    reason: Public documents must retain complete canonical text, exact artifacts, language and lifecycle identities, and the static production contract.

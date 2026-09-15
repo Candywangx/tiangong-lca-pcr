@@ -35,3 +35,28 @@ jobs:
 
       - name: Validate library contracts
         run: npm run validate
+
+  documentation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out complete source history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up production documentation runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.18.0
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            packages/pcr-docs/package-lock.json
+      - name: Install locked dependencies
+        run: npm ci && npm --prefix packages/pcr-docs ci
+      - name: Verify document transformations
+        run: npm --prefix packages/pcr-docs test
+      - name: Build and verify the full static library
+        env:
+          NEXT_TELEMETRY_DISABLED: '1'
+        run: npm --prefix packages/pcr-docs run build

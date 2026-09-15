@@ -259,6 +259,20 @@ Rules:
 - Agent skill guidance lives under `skills/tiangong-pcr/` and must remain thin. It should point agents to CLI commands and library contracts instead of duplicating PCR rules.
 - GitHub feedback intake surfaces live under `.github/ISSUE_TEMPLATE/`.
 
+## Generated Public Documentation
+
+`packages/pcr-docs/` owns the public Fumadocs site. Read
+`docs/pcr-documentation-site-contract.md` before changing its exporter, language
+policy, source mapping, SEO or EdgeOne deployment. It consumes complete core
+bundles and the shared Builder history verifier; it cannot mutate canonical PCR
+content or promote methodology/translation status. English and Chinese remain
+required; declared optional language artifacts are verified and preserved.
+
+Generated `.generated/`, `public/generated/`, `.next/` and `out/` are derivatives,
+not authoring sources. Use `npm run docs:build` for the complete static publication
+gate. Production uses the configured EdgeOne project and PCR `main`; preview
+remains disabled. Root owns exact workspace gitlink integration after child merge.
+
 ## Context Routing
 
 Read only the context needed for the current task.
