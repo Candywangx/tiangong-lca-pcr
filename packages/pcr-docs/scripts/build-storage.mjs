@@ -58,6 +58,7 @@ export function isDerivedPath(relative) {
   if (normalized === "" || normalized === ".") return false;
   if (DERIVED_PATHS.some((dir) => normalized === dir || normalized.startsWith(dir + "/")))
     return true;
+  if (/^packages\/pcr-docs\/out\.(?:stage|prev)-[^/]+(?:\/|$)/u.test(normalized)) return true;
   // Stage directories are created beside the generated root as `.generated-stage-<unique>`.
   return normalized.split("/").some((segment) => segment.startsWith(".generated-stage-"));
 }
@@ -228,11 +229,11 @@ export function assertScratchSuitable({
   if (scratch.availableBytes < requiredBytes)
     throw new Error(
       `Scratch filesystem has insufficient capacity: needs ${requiredBytes} bytes, ${describe(scratch)}. ` +
-        "Free space or point the build at a larger disk-backed temporary filesystem.",
+        "Free space or set TMPDIR to a larger disk-backed temporary filesystem.",
     );
   if (isMemoryBacked(scratch))
     throw new Error(
-      `Scratch filesystem is memory-backed and cannot relieve a constrained host: ${describe(scratch)}.`,
+      `Scratch filesystem is memory-backed and cannot relieve a constrained host: ${describe(scratch)}. Set TMPDIR to a disk-backed directory.`,
     );
   const sameDevice = String(scratch.device) === String(constraint.device);
   if (sameDevice && isMemoryBacked(constraint))
@@ -366,7 +367,7 @@ export function publishOutput({ app, scratchApp, token, freeBytes = null, before
     throw new Error("Relocated export is a symlink and will not be published.");
 
   const target = path.join(app, "out");
-  if (fs.existsSync(target) && fs.lstatSync(target).isSymbolicLink())
+  if (fs.lstatSync(target, { throwIfNoEntry: false })?.isSymbolicLink())
     throw new Error("Refusing to replace a symlinked export directory: " + target);
 
   // Rejected before measuring: the export is expected to be plain files, and a symlink would
@@ -387,7 +388,7 @@ export function publishOutput({ app, scratchApp, token, freeBytes = null, before
   const suffix = uniqueSuffix(token);
   const stage = path.join(app, `out.stage-${suffix}`);
   const previous = path.join(app, `out.prev-${suffix}`);
-  if (fs.existsSync(stage) || fs.existsSync(previous))
+  if (fs.lstatSync(stage, { throwIfNoEntry: false }) || fs.lstatSync(previous, { throwIfNoEntry: false }))
     throw new Error("Refusing to reuse an existing stage or previous-export path.");
 
   let swapped = false;

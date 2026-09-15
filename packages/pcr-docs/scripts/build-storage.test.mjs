@@ -354,6 +354,9 @@ test("publishing refuses symlinked exports and insufficient destination space", 
     assert.throws(() => publishOutput({ app, scratchApp, token: "test2" }), /symlinked export/u);
 
     fs.rmSync(path.join(app, "out"));
+    fs.symlinkSync(path.join(root, "missing"), path.join(app, "out"));
+    assert.throws(() => publishOutput({ app, scratchApp, token: "dangling" }), /symlinked export/u);
+    fs.rmSync(path.join(app, "out"));
     write(path.join(app, "out/index.html"), "OLD");
     assert.throws(
       () => publishOutput({ app, scratchApp, token: "test3", freeBytes: 1 }),
@@ -695,4 +698,23 @@ test("a scratch parent inside the repository is refused before recursive copying
     assert.equal(fs.readFileSync(path.join(fixture.app, "out/index.html"), "utf8"), "PREVIOUS-GOOD");
     assert.equal(fs.readdirSync(fixture.worktree).some(name => name.startsWith("pcr-build-")), false);
   } finally { fs.rmSync(fixture.base, { recursive: true, force: true }); }
+});
+
+
+test("interrupted output stages are excluded without deleting their owner's files", () => {
+  const root = tempRoot("stale-output-stage");
+  try {
+    const source = path.join(root, "source");
+    write(path.join(source, "library/source.md"), "SOURCE");
+    for (const name of ["out.stage-interrupted", "out.prev-interrupted"]) {
+      write(path.join(source, "packages/pcr-docs", name, "index.html"), "PREVIOUS-STAGE");
+    }
+    const target = path.join(root, "copy");
+    copySourceTree({ from: source, to: target });
+    assert.equal(fs.readFileSync(path.join(target, "library/source.md"), "utf8"), "SOURCE");
+    for (const name of ["out.stage-interrupted", "out.prev-interrupted"]) {
+      assert.equal(fs.existsSync(path.join(target, "packages/pcr-docs", name)), false);
+      assert.equal(fs.readFileSync(path.join(source, "packages/pcr-docs", name, "index.html"), "utf8"), "PREVIOUS-STAGE");
+    }
+  } finally { fs.rmSync(root, { recursive: true, force: true }); }
 });

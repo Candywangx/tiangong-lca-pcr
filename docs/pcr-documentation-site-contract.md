@@ -157,6 +157,13 @@ Next navigation payloads. Publish output only after all existing fidelity, SEO,
 size, memory and time checks pass, and preserve a previous output on failure.
 Temporary cleanup is confined to directories created by the current build.
 
+Relocation hands back only `out/` and writes small build metrics in the original
+checkout. Its original `.generated/` is not the relocated generation metadata;
+use the complete build command rather than standalone `verify` there. Set `TMPDIR`
+to choose a disk-backed scratch parent. Interrupted `out.stage-*` and `out.prev-*`
+directories are excluded from the source copy, but are not automatically removed
+by later runs; inspect ownership before cleaning them when destination space is low.
+
 Search is loaded only on reader intent, in a dedicated Worker. Per-language raw
 indexes must stay under 20 MB and the gzip transfer for each language under 4 MB; the
 current measured indexes are about 14.5 MB raw / 2.5 MB gzip per language. The
