@@ -1,10 +1,465 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "47140"
-  title: "Thermionic, cold cathode or photo-cathode valves and tubes (including cathode ray tubes)"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.radio-television-and-communication-equipment-and-apparatus.thermionic-cold-cathode-or-photo-cathode-valves-and-tubes-including-cathode-ray-tubes"
+  classification_refs: "CPC 3.0: 47140; classification context, not an accepted mapping decision"
+  covered_products: "Finished thermionic, cold-cathode and photo-cathode electron tubes, including CRTs"
+  excluded_products: "Open glass envelopes and separate parts; semiconductor devices; electric lamps; complete television sets, monitors and instruments; X-ray apparatus"
+  representative_product: "One declared model of a sealed glass-envelope vacuum electron tube"
+  production_route: "Unsealed assembly receipt; optional water rinse; electric sealing and evacuation; cathode/getter activation; ageing and acceptance testing; optional corrugated box packing"
+  market_state: "New, sealed, tested tube at factory gate; net tube mass excludes transport packaging"
+functional_unit:
+  what: "Electron control, amplification, switching, light detection or image production, as declared for the specific model"
+  how_much: "Declared unit: 1 kg of accepted finished tubes of one model; record item count and mean net mass"
+  how_well: "Meet declared manufacturer acceptance tests, electrical ratings and model-specific response requirements"
+  how_long_or_cycle: "One manufacturing campaign; service life is a disclosed product qualifier, not included operational energy"
+  reference_flow_link: "finished_tube"
+system_boundary:
+  rules:
+    - rule_id: boundary_operations
+      applies_to: "foreground"
+      rule: "Include actual sealing, evacuation, activation, ageing, failed tests, rework energy and waste transfers. The historical EPA sequence and modern PMT description support these operations; neither supplies a current plant inventory."
+      source_ids:
+        - epa-electronic-components-phase-2-1984
+        - hamamatsu-about-pmts
+    - rule_id: boundary_extension
+      applies_to: "route"
+      rule: "The tabulated route uses electric heating and a dry vacuum pump. For gas-filled, fuel-heated, oil-pumped, in-house coated or CRT externally coated/banded routes, add measured atomic exchanges and supplier links for the actual operation before claiming completeness; do not assign zeros to uncollected exchanges."
+      source_ids: []
+    - rule_id: boundary_waste
+      applies_to: "waste"
+      rule: "Record rejected whole tubes separately from dismantled glass, and rinse wastewater as a waste transfer to identified treatment. If treatment is on site, add treatment inputs, sludge and measured species discharged at the environmental boundary; do not count the same pollutant again as untreated wastewater."
+      source_ids:
+        - epa-electronic-components-phase-2-1984
+boundary_abstraction:
+  declared_starting_condition: "Unsealed assembly with fabricated envelope, electrodes and functional surfaces; disclose whether getter and frit are already incorporated"
+  starting_condition_role: "intermediate_product"
+  product_classification_scope: "Finished tubes within CPC 47140; unsealed assembly is a separately identified same-category precursor"
+  recursive_input_rule: "Record the unsealed input once with its upstream dataset and exact fabrication state; do not link it recursively to the finished-tube dataset"
+  upstream_dataset_requirement: "Include envelope, electrode, cathode, phosphor or photocathode fabrication and assembly in linked supplier or separate foreground datasets; verify no gap at the interface"
+  disclosure: "Disclose gate-to-gate foreground and upstream links separately; use and end-of-life are downstream scenarios"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Thermionic, cold cathode or photo-cathode valves and tubes (including cathode ray tubes)"
+    uuid: "ac3173f5-f70e-4122-a541-ac35b54330cc"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Tube model and function"
+    - "cathode type"
+    - "envelope material and lead content"
+    - "vacuum or gas fill and pressure"
+    - "finished dimensions"
+    - "net mass per item"
+    - "electrical ratings"
+    - "CRT screen or photocathode response when applicable"
+    - "acceptance tests and reject criteria"
+    - "declared life and duty"
+    - "assembly starting state"
+    - site
+    - "period and upstream coverage"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_mass
+    applies_to: "finished tubes"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Cross-check output using measured item count times model mean net mass; do not normalize by packed gross mass."
+  - id: energy_conversion
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Retain raw kWh; convert with 1 kWh = 3.6 MJ; upstream grid emissions are not direct emissions here."
+  - id: water_mass
+    applies_to: "rinse water"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "For volume-to-mass conversion retain measured density and temperature; do not silently assume density."
+process_map:
+  - id: rinse
+    name: "Final water rinse"
+    inclusion: "conditional"
+    inclusion_condition: "Water-only rinsing is performed after assembly receipt"
+    role: "foreground production"
+    quantitative_reference: "1 kg accepted tubes"
+  - id: finish
+    name: "Seal, evacuate, activate and test"
+    inclusion: "required"
+    inclusion_condition: "All datasets"
+    role: "foreground production"
+    quantitative_reference: "1 kg accepted tubes"
+  - id: pack
+    name: "Corrugated box packing"
+    inclusion: "conditional"
+    inclusion_condition: "Corrugated boxes cross the delivery boundary"
+    role: "foreground production"
+    quantitative_reference: "1 kg accepted tubes"
+process_inventory:
+  - id: rinse
+    label: "Final water rinse"
+    inputs:
+      product:
+        - row_id: rinse_water
+          role: "Process Water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include only water-only final rinsing actually performed; meter fresh water, not recirculated throughput."
+          amount:
+            expression: "Collect campaign quantity under the linked protocol; normalize by accepted net tube mass in the same campaign."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net finished tube mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rinse
+              source_ids:
+                - epa-electronic-components-phase-2-1984
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: rinse_wastewater
+          role: "Wastewater from cleaning"
+          name: "Wastewater from cleaning"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f0402393-e82c-47e8-9cd8-a486c97f3e89"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include when rinsing discharges a liquid waste stream; record mass, composition and treatment destination."
+          amount:
+            expression: "Collect campaign quantity under the linked protocol; normalize by accepted net tube mass in the same campaign."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net finished tube mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rinse
+              source_ids:
+                - epa-electronic-components-phase-2-1984
+            ranges: []
+      elementary:
+        []
+  - id: finish
+    label: "Seal, evacuate, activate and test"
+    inputs:
+      product:
+        - row_id: unsealed_assembly
+          role: "Assembled electronic valve or tube, unsealed"
+          name: "Assembled electronic valve or tube, unsealed"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5a46a125-0b34-4e90-b714-2e46bb5c1257"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Measure net assemblies consumed including those later rejected; link the exact upstream fabrication state."
+          amount:
+            expression: "Collect campaign quantity under the linked protocol; normalize by accepted net tube mass in the same campaign."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net finished tube mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot
+              source_ids:
+                - hamamatsu-about-pmts
+            ranges: []
+        - row_id: sealing_frit
+          role: "Lead-containing glass sealing frit"
+          name: "Lead-containing glass sealing frit"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: frit sealing occurs and frit is not already in the assembly inventory; weigh dry frit and declare binder separately if used."
+          amount:
+            expression: "Collect campaign quantity under the linked protocol; normalize by accepted net tube mass in the same campaign."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net finished tube mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot
+              source_ids:
+                - epa-electronic-components-phase-2-1984
+            ranges: []
+        - row_id: getter_device
+          role: "BaAl4/Ni evaporable getter device"
+          name: "BaAl4/Ni evaporable getter device"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: this purchased getter is installed in the foreground and is not already included in the unsealed assembly; measure the whole device mass. Activation deposits barium inside the tube, not automatically into ambient air."
+          amount:
+            expression: "Collect campaign quantity under the linked protocol; normalize by accepted net tube mass in the same campaign."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net finished tube mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot
+              source_ids:
+                - saes-ep1402554a1
+            ranges: []
+        - row_id: electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; unit group 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Meter sealing, bakeout, dry pumping, activation, ageing and acceptance tests, including rejected units; allocate auxiliary operations once."
+          amount:
+            expression: "Collect campaign quantity under the linked protocol; normalize by accepted net tube mass in the same campaign."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net finished tube mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_tube
+          role: "Thermionic, cold cathode or photo-cathode valves and tubes (including cathode ray tubes)"
+          name: "Thermionic, cold cathode or photo-cathode valves and tubes (including cathode ray tubes)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ac3173f5-f70e-4122-a541-ac35b54330cc"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Weigh accepted sealed tubes without transport packaging; reconcile item count and acceptance logs."
+          amount:
+            expression: "Collect campaign quantity under the linked protocol; normalize by accepted net tube mass in the same campaign."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net finished tube mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: rejected_tube
+          role: "Rejected sealed electron tube"
+          name: "Rejected sealed electron tube"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record intact rejected tubes transferred out for treatment or recovery, with envelope composition and destination; do not substitute mixed electronic scrap."
+          amount:
+            expression: "Collect campaign quantity under the linked protocol; normalize by accepted net tube mass in the same campaign."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net finished tube mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot
+              source_ids:
+                - epa-electronic-components-phase-2-1984
+            ranges: []
+      elementary:
+        []
+  - id: pack
+    label: "Corrugated box packing"
+    inputs:
+      product:
+        - row_id: corrugated_box
+          role: "corrugated board boxes"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include only when this box is used; weigh net box consumption per dispatched accepted tube mass. Add any actual cushioning as separate identified exchanges."
+          amount:
+            expression: "Collect campaign quantity under the linked protocol; normalize by accepted net tube mass in the same campaign."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net finished tube mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "shared_equipment"
+    rule: "Use direct campaign meters first. Allocate shared vacuum and oven electricity by measured equipment power multiplied by occupied operating time, including attributable standby; document remaining shared services."
+    source_ids: []
+  - rule_id: allocation_rejects
+    applies_to: "accepted_output"
+    rule: "Charge rejects and rework to accepted tube output; do not treat failed units as burden-free co-products. Internal reuse is an internal loop; exported recovery is a separate waste fate with no automatic avoided-production credit."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_rinse
+      process_id: "rinse"
+      flow_role: "rinse_water; rinse_wastewater"
+      record_type: "water_meter; waste_transfer"
+      raw_fields: "time; inlet/outlet mass; temperature; density; composition; destination"
+      collection_method: "calibrated meters and weighing; sampling; transfer tickets"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "complete representative campaign with start/end dates"
+      site_scope: "declared site and equipment"
+      aggregation_rule: "sum actual quantities then divide by same-campaign accepted net mass; document absent operations as not applicable"
+      quality_evidence: "calibration; original logs; supporting tickets"
+    - protocol_id: cp_lot
+      process_id: "finish"
+      flow_role: "unsealed_assembly; sealing_frit; getter_device; finished_tube; rejected_tube"
+      record_type: "batch_record"
+      raw_fields: "batch; model; count; net mass; issues and stocks; test results; waste destination"
+      collection_method: "weighing; stores reconciliation; test logs"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "complete representative campaign with start/end dates"
+      site_scope: "declared site and equipment"
+      aggregation_rule: "sum actual quantities then divide by same-campaign accepted net mass; document absent operations as not applicable"
+      quality_evidence: "calibration; original logs; supporting tickets"
+    - protocol_id: cp_energy
+      process_id: "finish"
+      flow_role: "electricity"
+      record_type: "meter_record"
+      raw_fields: "equipment; timestamps; kWh; batch; occupancy; standby; allocation share"
+      collection_method: "submeter readings; measured power and time for shared equipment"
+      unit: "kWh"
+      frequency: "each batch"
+      temporal_coverage: "complete representative campaign with start/end dates"
+      site_scope: "declared site and equipment"
+      aggregation_rule: "sum actual quantities then divide by same-campaign accepted net mass; document absent operations as not applicable"
+      quality_evidence: "calibration; original logs; supporting tickets"
+    - protocol_id: cp_pack
+      process_id: "pack"
+      flow_role: "corrugated_box"
+      record_type: "stores_record"
+      raw_fields: "box grade; count; unit mass; dispatch batch; stock changes"
+      collection_method: "weighing and dispatch reconciliation"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "complete representative campaign with start/end dates"
+      site_scope: "declared site and equipment"
+      aggregation_rule: "sum actual quantities then divide by same-campaign accepted net mass; document absent operations as not applicable"
+      quality_evidence: "calibration; original logs; supporting tickets"
+  calculation_rules:
+    - id: normalize
+      applies_to: "all rows"
+      rule: "q_i = sum(Q_i) / M_accepted"
+      inputs:
+        - "same-campaign measured exchange and accepted mass"
+      output: "exchange per kg"
+      source_ids: []
+    - id: yield
+      applies_to: "mass reconciliation"
+      rule: "M_in + M_added = M_accepted + M_rejected + M_losses + delta_stock"
+      inputs:
+        - "campaign weighing and stock records"
+      output: "reconciliation, not a universal yield factor"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_sampling
+      applies_to: "output and energy"
+      requirement: "Cover startup, stable production, shutdown, ageing and rejects; do not select only best batches"
+      evidence: "campaign logs and complete meter series"
+    - id: dq_upstream
+      applies_to: "unsealed assembly"
+      requirement: "Supplier boundary must cover incorporated materials and preceding operations; model uncovered operations separately"
+      evidence: "supplier process map, bill of materials and dataset boundary"
+    - id: dq_ranges
+      applies_to: "quantities"
+      requirement: "Use foreground records; no external inferred range without synthesis of two independent, original-text-verified, boundary-compatible sources"
+      evidence: "raw records and uncertainty disclosure"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference_flow"
+    rule: "Reject a dataset without model, net mass, cathode/envelope state and test criteria; do not compare different functions using kg alone."
+    source_ids: []
+  - rule_id: validate_balance
+    applies_to: "inventory"
+    rule: "Reconcile assembly intake, added retained solids, accepted tubes, rejected tubes, measured losses and stock change. Explain discrepancies using weighing uncertainty and rework records, not an invented tolerance."
+    source_ids: []
+  - rule_id: validate_coverage
+    applies_to: "boundary"
+    rule: "Require route applicability, upstream interfaces, meter coverage and destination evidence; unresolved flow identity is disclosed and never silently substituted by a proxy. Missing route-specific exchanges make completeness inconclusive."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset"
+  downstream_use: "Component supply for equipment process and lifecyclemodel projections"
+  allowed_use: "Declared model and compatible manufacturing route with explicit upstream links"
+  excluded_use: "Universal mass-based comparison between CRTs, receiving tubes and photomultipliers; complete equipment footprint; use-phase or disposal claims"
+  required_metadata: "Model, site, period, assembly supplier, cathode, envelope, gas/vacuum state, ratings, unit mass, process boundary and allocation drivers"
+  required_quality_disclosure: "Meters, calibration, yield reconciliation, missing flows, upstream representativeness, waste destinations and uncertainty"
+  update_trigger: "Change in tube design, cathode chemistry, pump or furnace technology, supplier, yield, energy supply or waste treatment"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division, CPC Version 3.0 structure, row 47140 (30 June 2025); https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv; retrieved 2026-09-09"
+    used_for: "Classification identity only"
+  - id: "epa-electronic-components-phase-2-1984"
+    type: "official_guidance"
+    reference: "US EPA, Development Document for Electrical and Electronic Components, Phase II (1984), sections 4.1.3, 4.2 and 5.2.2; https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=2000K55B.TXT; retrieved 2026-09-09"
+    used_for: "Historical tube process sequence and rinse-water pathways; no numerical transfer"
+  - id: "hamamatsu-about-pmts"
+    type: "literature"
+    reference: "Hamamatsu Photonics, About PMTs, Behind high-performance PMTs and Main components; https://www.hamamatsu.com/jp/en/product/optical-sensors/pmt/about_pmts.html; retrieved 2026-09-09"
+    used_for: "Photo-cathode tube components, sealing, evacuation and inspection"
+  - id: "saes-ep1402554a1"
+    type: "literature"
+    reference: "SAES Getters, EP1402554A1, Evaporable getter device for cathode-ray tubes, description; https://patents.google.com/patent/EP1402554A1/en; retrieved 2026-09-09"
+    used_for: "Conditional purchased BaAl4/Ni getter device and in-envelope activation; no numeric factor"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:8ece1e1bca8c7e49b209ccacb97a7ba195acf1131a9df9da0ecee069e214dfae"
+  generated_content_sha256: "sha256:bd40358413c815934e9499dcde75f4bc21a0f7d0bbf85b868f45c5f4802c283c"

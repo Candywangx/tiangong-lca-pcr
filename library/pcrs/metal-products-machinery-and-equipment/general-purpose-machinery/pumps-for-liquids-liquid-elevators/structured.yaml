@@ -1,10 +1,727 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43220"
-  title: "Pumps for liquids; liquid elevators"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.pumps-for-liquids-liquid-elevators"
+  classification_refs: "CPC 3.0: 43220, Pumps for liquids; liquid elevators"
+  covered_products: "Complete pumps for liquids and complete liquid elevators, including rotodynamic, positive-displacement, metering, dispensing, hand-operated, and power-driven designs"
+  excluded_products: "Separately supplied parts; air or vacuum pumps; gas compressors; hydraulic or pneumatic power engines; valves; host products containing a pump when the pump cannot be separated"
+  representative_product: "A finished pump for a declared liquid and rated duty point, supplied with or without a driver as explicitly declared"
+  production_route: "Supplier component production followed by site-specific component preparation, assembly, production testing, packaging, and factory-gate release"
+  market_state: "Finished, tested, saleable pump at the manufacturer gate; shipment packaging is reported separately from net pump mass"
+functional_unit:
+  what: "Provide a finished pump capable of moving the declared liquid at the declared rated duty point"
+  how_much: "1 kg net mass of finished pump at the manufacturer gate, excluding shipment packaging"
+  how_well: "Pump principle, liquid compatibility, driver inclusion, rated flow and head or pressure, efficiency or performance-test basis, and material construction are declared"
+  how_long_or_cycle: "One delivered pump; service life and operating cycles are excluded from the manufacturing reference flow and must be declared in any use-stage scenario"
+  reference_flow_link: "pump_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_cradle_to_gate
+      applies_to: "core foreground package"
+      rule: "Include upstream component or material supply, inbound transport where the chosen upstream datasets do not already include it, on-site preparation, assembly, production testing, packaging, and treatment of manufacturing wastes through the factory gate."
+      source_ids:
+        - grundfos-magna3-epd-2024
+    - rule_id: boundary_no_component_double_count
+      applies_to: "purchased and internally fabricated parts"
+      rule: "Record each physical part at its first foreground crossing. Do not record both a purchased complete component and the raw materials already embodied in that component."
+      source_ids: []
+    - rule_id: boundary_use_stage_separate
+      applies_to: "downstream use modelling"
+      rule: "Exclude operational electricity and pumped-liquid service from the core manufacturing inventory. A separate use-stage scenario must declare duty, efficiency, load profile, operating hours, electricity mix, controls, and service life."
+      source_ids:
+        - eu-water-pump-regulation-547-2012
+    - rule_id: boundary_test_applicability
+      applies_to: "production performance testing"
+      rule: "Include the actual production-test energy and water crossing the factory boundary. Apply the clean-cold-water and BEP/PL/OL method only to pumps for which Commission Regulation (EU) No 547/2012 is applicable; otherwise use the declared applicable test method."
+      source_ids:
+        - eu-water-pump-regulation-547-2012
+boundary_abstraction:
+  declared_starting_condition: "Purchased pump-specific components and semi-finished parts at the reporting factory gate; raw materials replace those components only for fabrication performed inside the foreground boundary"
+  starting_condition_role: "Prevent double counting between purchased component datasets and on-site fabrication while preserving the real first foreground crossing"
+  product_classification_scope: "Complete products within CPC 43220; separately supplied pump parts remain upstream inputs or products outside this PCR identity"
+  recursive_input_rule: "A complete pump purchased for incorporation into a pump system is recorded once as an upstream product input with its own dataset and is not decomposed again in the receiving process; a part is recorded as the specific part or material at its actual crossing condition"
+  upstream_dataset_requirement: "Every purchased component, material, electricity, water, lubricant, and packaging flow requires a geographically and technologically appropriate upstream dataset; supplier-specific data are preferred for high-mass or high-impact inputs"
+  disclosure: "Declare vertical integration, purchased-versus-fabricated condition, included driver and controls, test-loop configuration, packaging boundary, cut-offs, waste destination, reporting period, site geography, and allocation choices"
+reference_flow_definition:
+  reference_amount: "1 kg net finished pump"
+  product_flow_ref:
+    name: "Pump"
+    uuid: "bbd91be4-dc00-44c2-8bc1-f67ee79174a7"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "pump principle"
+    - "pumped liquid and compatibility limits"
+    - "driver included or excluded"
+    - "rated flow"
+    - "rated head or discharge pressure"
+    - "rated speed"
+    - "efficiency or test basis"
+    - "wetted-part materials"
+    - "seal arrangement"
+    - "production geography"
+    - "reporting period"
+    - "net pump mass"
+    - "shipment packaging mass"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "finished pump reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure net finished-pump mass after production testing and before shipment packaging; normalize all inventory exchanges to 1 kg net pump."
+  - id: component_mass_conversion
+    applies_to: "components recorded by item count"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert item counts to mass only from product-specific BOM or weighing records; retain count, measured or specified unit mass, and conversion evidence."
+  - id: electrical_energy_conversion
+    applies_to: "purchased electricity used by foreground processes"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered kWh and convert to MJ using 1 kWh = 3.6 MJ; disclose allocation where a meter serves other products."
+  - id: test_water_mass_conversion
+    applies_to: "production-test water and resulting wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer measured mass; when volume is metered, convert using measured density at stated conditions and retain volume, density, temperature, and conversion. Do not assume 1 kg/L without evidence."
+  - id: performance_test_basis
+    applies_to: "regulated or standards-tested pumps"
+    required_property_ref:
+      name: "declared test property"
+      uuid: ""
+    required_unit: "declared test unit"
+    rule: "Keep test medium, duty point, head or pressure, flow, speed, impeller or displacement setting, test duration, and applicable standard together. For the subset covered by Commission Regulation (EU) No 547/2012, retain its clean-cold-water and BEP/PL/OL test basis."
+process_map:
+  - id: component_preparation
+    name: "Component receipt and preparation"
+    inclusion: "required"
+    inclusion_condition: "All finished pumps require identified incoming parts; record only the machining, cleaning, or preparation actually performed at the reporting site"
+    role: "foreground component preparation"
+    quantitative_reference: "accepted component mass and site exchanges per kg net finished pump"
+  - id: pump_assembly
+    name: "Pump assembly"
+    inclusion: "required"
+    inclusion_condition: "Always included; the electric-motor row applies only when the driver is included in the sold pump"
+    role: "foreground assembly"
+    quantitative_reference: "assembled pump mass before testing per kg net finished pump"
+  - id: production_testing
+    name: "Production performance and leak testing"
+    inclusion: "required"
+    inclusion_condition: "Record the actual release-test route; water rows apply only when water crosses the boundary as test medium"
+    role: "foreground quality test"
+    quantitative_reference: "accepted tested pump mass per kg net finished pump"
+  - id: packaging_release
+    name: "Packaging and factory-gate release"
+    inclusion: "required"
+    inclusion_condition: "Always include release; record corrugated cardboard only when used"
+    role: "foreground packaging and reference output"
+    quantitative_reference: "1 kg net finished pump plus separately measured shipment packaging"
+process_inventory:
+  - id: component_preparation
+    label: "Component receipt and preparation"
+    inputs:
+      product:
+        - row_id: pump_casing
+          role: "Pump casing component"
+          name: "Pump casing component"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the purchased or transferred casing at the condition in which it first enters the foreground process. Material grade, casting or fabrication route, finish, and wetted-surface specification remain product-specific qualifiers."
+          amount:
+            expression: "measured accepted casing mass charged to pumps that reach factory-gate release"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished pump"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_receiving
+              source_ids:
+                - grundfos-magna3-epd-2024
+            ranges: []
+        - row_id: pump_impeller
+          role: "Pump impeller component"
+          name: "Pump impeller component"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each impeller embodied in the delivered pump as one aggregate mass exchange for the declared product configuration, without expanding by stage."
+          amount:
+            expression: "measured or product-specific BOM mass of accepted impellers embodied in released pumps"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished pump"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_receiving
+              source_ids: []
+            ranges: []
+        - row_id: pump_shaft
+          role: "Pump shaft component"
+          name: "Pump shaft component"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the shaft embodied in the delivered pump; do not substitute a wind-turbine or generic transmission-shaft dataset without semantic review."
+          amount:
+            expression: "measured or product-specific BOM mass of accepted pump shafts embodied in released pumps"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished pump"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_receiving
+              source_ids: []
+            ranges: []
+        - row_id: component_preparation_electricity
+          role: "Electricity for component preparation"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity for machining, cleaning equipment, material handling, and other preparation operations inside this process only."
+          amount:
+            expression: "metered component-preparation electricity allocated to released pump output"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished pump"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_foreground_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_scrap_for_recycling
+          role: "Steel scrap sent for recycling"
+          name: "Steel scrap, for recycling"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "6b1343f5-929b-4a1b-8459-f741ed19ebd2"
+          property_unit: "Mass / kg"
+          description: "Record segregated ferrous machining chips, offcuts, and rejected ferrous parts only when transferred to a recycling route. Other metal or mixed wastes require separate atomic rows in the produced dataset."
+          amount:
+            expression: "weighed ferrous scrap transferred to a verified recycling route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished pump"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_scrap_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: pump_assembly
+    label: "Pump assembly"
+    inputs:
+      product:
+        - row_id: electric_motor
+          role: "Electric motor included with the pump"
+          name: "Electric motor"
+          flow_type: "product"
+          flow_ref:
+            uuid: "014f80a3-c257-425b-9b75-3e5a18573695"
+          property_unit: "Mass / kg"
+          description: "Record this row only when an electric motor is part of the saleable pump. Pumps sold bare-shaft or driven by another mechanism omit this row and disclose the driver boundary."
+          amount:
+            expression: "measured or product-specific BOM mass of electric motors embodied in released pumps"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished pump"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_receiving
+              source_ids:
+                - grundfos-magna3-epd-2024
+            ranges: []
+        - row_id: pump_bearing
+          role: "Pump bearing"
+          name: "Pump bearing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record complete ball, roller, or plain bearings embodied in the pump; do not record a bearing cage as the complete bearing."
+          amount:
+            expression: "measured or product-specific BOM mass of bearings embodied in released pumps"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished pump"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_receiving
+              source_ids: []
+            ranges: []
+        - row_id: mechanical_shaft_seal
+          role: "Mechanical shaft seal"
+          name: "Mechanical shaft seal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the complete mechanical shaft seal when present. Packed glands, magnetic couplings, diaphragms, and sealless constructions require their own specific rows rather than this seal identity."
+          amount:
+            expression: "measured or product-specific BOM mass of mechanical shaft seals embodied in released pumps"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished pump"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_receiving
+              source_ids: []
+            ranges: []
+        - row_id: lubricant
+          role: "Lubricant charged during assembly"
+          name: "lubricant"
+          flow_type: "product"
+          flow_ref:
+            uuid: "959f4657-43de-4558-988f-804bbb8c62a9"
+          property_unit: "Mass / kg"
+          description: "Record only lubricant remaining in the delivered pump or consumed by the assembly operation. Separately identify metalworking fluids or test media when they cross the foreground boundary."
+          amount:
+            expression: "purchase-and-issue records reconciled to closing stock and pump production, plus measured fill where lubricant remains in product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished pump"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_consumable_records
+              source_ids: []
+            ranges: []
+        - row_id: assembly_electricity
+          role: "Electricity for pump assembly"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity for assembly tools, joining, handling, and assembly-line auxiliaries allocated to this process."
+          amount:
+            expression: "metered pump-assembly electricity allocated to released pump output"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished pump"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_foreground_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: production_testing
+    label: "Production performance and leak testing"
+    inputs:
+      product:
+        - row_id: test_process_water
+          role: "Process water used as test medium"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record make-up water crossing the site boundary for hydrostatic, leak, or performance testing. Recirculated water is not repeatedly counted; only make-up and final discharge cross the process boundary."
+          amount:
+            expression: "metered test-loop make-up water allocated to accepted tested pumps"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished pump"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_water_balance
+              source_ids:
+                - eu-water-pump-regulation-547-2012
+            ranges: []
+        - row_id: test_electricity
+          role: "Electricity used for production testing"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity supplied to the test rig, pump driver, instrumentation, and test-loop auxiliaries for production release tests."
+          amount:
+            expression: "metered test electricity allocated to accepted tested pumps, net of separately measured recovered electricity if applicable"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net finished pump"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_foreground_electricity
+              source_ids:
+                - eu-water-pump-regulation-547-2012
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: test_wastewater
+          role: "Wastewater discharged from testing"
+          name: "Wastewater"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "d2d44ce1-c0f4-461d-9413-f4b33e0d200f"
+          property_unit: "Mass / kg"
+          description: "Record test water when it leaves the foreground boundary for sewerage or treatment. Declare contamination and treatment route; do not classify a discharge as hazardous without analytical or regulatory evidence."
+          amount:
+            expression: "metered or water-balance-derived test water discharged to the declared treatment route"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished pump"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_test_water_balance
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: packaging_release
+    label: "Packaging and factory-gate release"
+    inputs:
+      product:
+        - row_id: corrugated_cardboard
+          role: "Corrugated cardboard shipment packaging"
+          name: "Corrugated cardboard"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bde297e-98df-463f-bcb4-0db52bf6e0b5"
+          property_unit: "Mass / kg"
+          description: "Record corrugated cardboard crossing the boundary as shipment packaging. Wooden pallets, polymer film, foam, straps, and other packaging require separate atomic rows when used."
+          amount:
+            expression: "purchase and packing records reconciled to packaged pump shipments"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished pump"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - grundfos-magna3-epd-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: pump_product
+          role: "Finished pump at factory gate"
+          name: "Pump"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bbd91be4-dc00-44c2-8bc1-f67ee79174a7"
+          property_unit: "Mass / kg"
+          description: "The reference output is the net mass of saleable pumps that passed the declared release test. Shipment packaging is excluded from this output mass and reported as separate input flows."
+          amount:
+            expression: "exactly 1 kg net finished pump after normalization of accepted production"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net finished pump"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finished_pump_mass
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "shared foreground operations"
+    rule: "Subdivide meters, work centres, test rigs, and production lines where separately measured pump data are available before applying allocation."
+    source_ids: []
+  - rule_id: allocation_physical_driver
+    applies_to: "remaining shared energy and consumables"
+    rule: "Allocate by a documented physical driver that reflects causality, such as machine time, test duration, processed mass, or metered duty; do not use revenue when a causal physical driver is available."
+    source_ids: []
+  - rule_id: allocation_scrap_no_avoided_burden
+    applies_to: "steel scrap sent for recycling"
+    rule: "Report the scrap mass and treatment route at the point it leaves the foreground boundary. Do not subtract an avoided virgin-material burden inside the core inventory; any recycling credit belongs to an explicitly separate downstream method."
+    source_ids:
+      - grundfos-magna3-epd-2024
+  - rule_id: allocation_rejects
+    applies_to: "rejected pumps and reworked components"
+    rule: "Assign rework energy and material losses to the production batch that generated them. Pumps that do not become saleable reference output remain rejects or work in process and are excluded from the output denominator."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_bom_receiving
+      process_id: "component_preparation_pump_assembly"
+      flow_role: "casing, impeller, shaft, motor, bearing, and seal"
+      record_type: "BOM, goods receipt, weighing, production completion"
+      raw_fields: "part number; revision; supplier; quantity; unit mass; accepted mass; rejected mass; pump model; driver inclusion"
+      collection_method: "reconcile controlled BOM to accepted receipts and released pump models; verify high-mass parts by scale"
+      unit: "kg and item"
+      frequency: "each BOM revision and monthly reconciliation"
+      temporal_coverage: "same representative reporting period as output"
+      site_scope: "all production sites in declared dataset"
+      aggregation_rule: "sum accepted component mass embodied in released pumps, then divide by net released pump mass"
+      quality_evidence: "BOM approval, calibration record, receipt ledger, variance investigation"
+    - protocol_id: cp_foreground_electricity
+      process_id: "component_preparation_pump_assembly_production_testing"
+      flow_role: "process electricity"
+      record_type: "revenue meter, submeter, machine or test-rig log"
+      raw_fields: "opening and closing meter; kWh; process; machine time; test duration; allocation population; recovered electricity"
+      collection_method: "use submeters where available; otherwise allocate a reconciled site meter using a causal physical driver"
+      unit: "kWh, converted to MJ"
+      frequency: "continuous or each shift; aggregate monthly"
+      temporal_coverage: "at least 12 consecutive representative months or a justified production campaign"
+      site_scope: "reporting factories only"
+      aggregation_rule: "subtract separately metered non-production loads and recovered electricity, allocate by process, convert to MJ, divide by net released pump mass"
+      quality_evidence: "meter calibration, utility invoice reconciliation, allocation worksheet"
+    - protocol_id: cp_scrap_records
+      process_id: "component_preparation"
+      flow_role: "ferrous scrap for recycling"
+      record_type: "calibrated scale ticket and recycler transfer note"
+      raw_fields: "waste code; alloy family; gross and tare mass; contamination; destination; transfer date"
+      collection_method: "weigh each outbound lot and verify destination against transfer documents"
+      unit: "kg"
+      frequency: "each shipment"
+      temporal_coverage: "same representative reporting period as output"
+      site_scope: "reporting factories only"
+      aggregation_rule: "sum qualifying ferrous scrap sent to recycling and divide by net released pump mass"
+      quality_evidence: "scale calibration, transfer note, recycler acceptance"
+    - protocol_id: cp_consumable_records
+      process_id: "pump_assembly"
+      flow_role: "lubricant"
+      record_type: "purchase, issue, stock, and fill record"
+      raw_fields: "product code; formulation; opening stock; purchases; closing stock; other uses; measured fill; spills"
+      collection_method: "mass balance purchases and inventory; segregate other products and non-pump uses"
+      unit: "kg"
+      frequency: "monthly and each fill-setting change"
+      temporal_coverage: "same representative reporting period as output"
+      site_scope: "reporting factories only"
+      aggregation_rule: "opening stock plus purchases minus closing stock minus verified other uses, divided by net released pump mass"
+      quality_evidence: "inventory reconciliation, fill-equipment calibration, variance review"
+    - protocol_id: cp_test_water_balance
+      process_id: "production_testing"
+      flow_role: "test-water input and wastewater output"
+      record_type: "water meter, tank level, discharge meter, laboratory and maintenance record"
+      raw_fields: "make-up volume or mass; discharge volume or mass; density; temperature; retained inventory change; spills; treatment route; contamination"
+      collection_method: "meter make-up and discharge; reconcile recirculating-loop inventory change; sample when contamination affects treatment identity"
+      unit: "kg, with retained volume and density where converted"
+      frequency: "each test campaign or continuous; aggregate monthly"
+      temporal_coverage: "same representative reporting period as output"
+      site_scope: "all production test loops in declared dataset"
+      aggregation_rule: "input equals discharge plus inventory change, evaporation or other separately evidenced losses; allocate to accepted pumps by causal test duration or duty"
+      quality_evidence: "meter calibration, balance closure, sample result, treatment acceptance"
+    - protocol_id: cp_packaging_records
+      process_id: "packaging_release"
+      flow_role: "corrugated cardboard"
+      record_type: "packaging specification, purchase issue, packing and shipment record"
+      raw_fields: "packaging code; board grade; unit mass; quantity used; returned packaging; damaged packaging; pump model"
+      collection_method: "reconcile packaging issues to packed, released pump shipments and verify unit mass"
+      unit: "kg and item"
+      frequency: "each packaging design revision and monthly reconciliation"
+      temporal_coverage: "same representative reporting period as output"
+      site_scope: "reporting packing sites"
+      aggregation_rule: "net cardboard consumed for shipped pumps divided by net released pump mass"
+      quality_evidence: "controlled packaging specification, scale check, inventory reconciliation"
+    - protocol_id: cp_finished_pump_mass
+      process_id: "packaging_release"
+      flow_role: "net saleable pump output"
+      record_type: "calibrated scale, serial record, completion and release record"
+      raw_fields: "serial or lot; model; driver inclusion; net pump mass; packaging mass; pass/fail status; release date"
+      collection_method: "weigh representative units or every unit as appropriate; reconcile released count and net mass to production ledger"
+      unit: "kg and item"
+      frequency: "each released unit or statistically justified model lot"
+      temporal_coverage: "same representative reporting period as inputs"
+      site_scope: "all release points in declared dataset"
+      aggregation_rule: "sum net mass of pumps passing release; exclude packaging, rejects, and work in process"
+      quality_evidence: "scale calibration, release certificate, production ledger reconciliation"
+  calculation_rules:
+    - id: calc_normalize_mass
+      applies_to: "component, lubricant, scrap, wastewater, and packaging rows"
+      rule: "normalized amount = qualifying row mass / net released pump mass"
+      inputs:
+        - "collected row mass"
+        - "net released pump mass"
+      output: "kg per kg net finished pump"
+      source_ids: []
+    - id: calc_normalize_electricity
+      applies_to: "three foreground electricity rows"
+      rule: "normalized electricity = allocated metered kWh × 3.6 / net released pump mass"
+      inputs:
+        - "metered kWh"
+        - "allocation driver"
+        - "net released pump mass"
+      output: "MJ per kg net finished pump"
+      source_ids: []
+    - id: calc_test_water_discharge
+      applies_to: "test_wastewater"
+      rule: "discharged mass = measured discharge mass; if unavailable, make-up mass minus verified loop inventory increase, evaporation, spills, and other separately measured destinations"
+      inputs:
+        - "make-up water"
+        - "loop inventory change"
+        - "evaporation or loss evidence"
+        - "discharge measurements"
+      output: "kg wastewater per kg net finished pump"
+      source_ids: []
+    - id: calc_item_to_mass
+      applies_to: "BOM components recorded by count"
+      rule: "component mass = accepted item count × verified product-specific unit mass"
+      inputs:
+        - "accepted item count"
+        - "controlled unit mass"
+      output: "kg component per kg net finished pump"
+      source_ids: []
+    - id: calc_reference_output
+      applies_to: "pump_product"
+      rule: "divide all qualifying exchanges by net released pump mass so the reference output equals exactly 1 kg"
+      inputs:
+        - "net mass of pumps passing release"
+      output: "1 kg Pump"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product and BOM"
+      requirement: "Identify pump model family, principle, pumped-liquid compatibility, driver boundary, duty point, wetted materials, seal arrangement, and market state; do not average configurations with materially different boundaries without a disclosed weighting method."
+      evidence: "product specification, controlled BOM, release record, weighting worksheet"
+    - id: dq_temporal_representativeness
+      applies_to: "all foreground rows"
+      requirement: "Use at least 12 consecutive representative months unless production is campaign-based; explain shutdowns, abnormal tests, product-mix changes, and extrapolation."
+      evidence: "reporting-period ledger and representativeness note"
+    - id: dq_mass_balance
+      applies_to: "components, output, scrap, and packaging"
+      requirement: "Reconcile incoming component and packaging mass, saleable pump mass, work in process, rejects, scrap, and documented stock change; investigate material residuals."
+      evidence: "signed mass-balance worksheet and inventory records"
+    - id: dq_meter_quality
+      applies_to: "electricity and water"
+      requirement: "Use calibrated or legally controlled meters; state reading frequency, missing-data treatment, shared-meter allocation, conversion factors, and uncertainty."
+      evidence: "calibration certificates, invoices, meter logs, gap-filling record"
+    - id: dq_upstream_matching
+      applies_to: "purchased products and waste treatment"
+      requirement: "Match geography, technology, product state, recycled content, and delivery boundary. Supplier-specific datasets are preferred for high-mass components; proxies require disclosure and sensitivity review."
+      evidence: "dataset selection log and supplier evidence"
+    - id: dq_completeness
+      applies_to: "foreground inventory"
+      requirement: "Add separate atomic rows for every other material, component, chemical, energy carrier, packaging item, waste stream, and elementary emission that crosses the declared boundary; do not hide them under the rows in this PCR."
+      evidence: "signed completeness checklist, purchase ledger, waste register, emissions permit reconciliation"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "reference product"
+    rule: "Confirm the reference output is exactly 1 kg net Pump, shipment packaging is excluded from pump mass, and all required qualifiers are present."
+    source_ids: []
+  - rule_id: validate_atomic_inventory
+    applies_to: "all inventory exchanges"
+    rule: "Reject collection labels or combined materials, utilities, wastes, and emissions. Every additional crossing must be represented by its own concrete flow row."
+    source_ids: []
+  - rule_id: validate_uuid_semantics
+    applies_to: "UUID-bearing rows"
+    rule: "Confirm public state, English and Chinese base names, flow type, classification, property, unit group, and product state remain semantically compatible with the foreground row."
+    source_ids: []
+  - rule_id: validate_mass_balance
+    applies_to: "component preparation through release"
+    rule: "Verify component, scrap, reject, work-in-process, net pump, and packaging balances close within the site's documented measurement uncertainty; unresolved residuals require correction or disclosure."
+    source_ids: []
+  - rule_id: validate_test_basis
+    applies_to: "production testing"
+    rule: "Verify test medium, test duty, duration, driver energy, water recirculation, and accepted-output denominator are declared. For the regulated clean-water rotodynamic subset, verify the applicable Commission Regulation (EU) No 547/2012 test basis."
+    source_ids:
+      - eu-water-pump-regulation-547-2012
+  - rule_id: validate_use_stage_separation
+    applies_to: "downstream lifecycle model"
+    rule: "Reject a use-stage result that derives operational electricity from pump mass alone. Require declared efficiency or measured power, duty/load profile, annual operating hours, electricity mix, controls, and service life."
+    source_ids:
+      - eu-water-pump-regulation-547-2012
+      - grundfos-magna3-epd-2024
+  - rule_id: validate_unresolved_ranges
+    applies_to: "important foreground flows"
+    rule: "Treat the absence of independent, boundary-compatible empirical ranges as a review need, not as permission to invent bounds; retain foreground collection requirements until evidence is available."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Cradle-to-factory-gate foreground production package for a declared finished pump configuration"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product and project LCAs, supply-chain models, environmental declarations, procurement studies, and comparative work when product boundary, duty, driver inclusion, geography, technology, and data quality are compatible"
+  excluded_use: "Direct comparison of pump service efficiency from mass-based manufacturing data; automatic use-stage electricity estimation from pump mass; representing separately supplied parts as complete pumps; undisclosed mixing of bare-shaft and motor-integrated products"
+  required_metadata: "PCR id and version context; pump model family; pump principle; pumped liquid; rated flow and head or pressure; rated speed; efficiency/test basis; driver and controls included; wetted materials; seal arrangement; net pump mass; packaging mass; factory geography; reporting period; vertical integration; upstream dataset choices; allocation and cut-off decisions"
+  required_quality_disclosure: "Primary-data share; temporal coverage; meter and scale quality; BOM reconciliation; mass-balance closure; supplier-data coverage; proxy use; test-loop water balance; waste destinations; unresolved UUIDs; unresolved range evidence needs; uncertainty and data gaps"
+  update_trigger: "Material change in product construction, driver boundary, supplier route, manufacturing or test technology, packaging, factory energy mix, allocation method, reporting period, regulatory test basis, or newly verified UUID/range evidence"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Ver. 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-05)"
+    used_for: "Official CPC 3.0 code and English product-category identity"
+  - id: "un-cpc-1-1-chinese-2008"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 1.1, Chinese edition, https://unstats.un.org/unsd/publication/SeriesM/M_77ver1_1c.pdf (retrieved 2026-09-05)"
+    used_for: "Official Chinese category terminology and confirmation that separately supplied parts are classified separately"
+  - id: "cn-nbs-product-classification-2010"
+    type: "official_guidance"
+    reference: "National Bureau of Statistics of China, Statistical Product Classification Catalogue, codes 351801-351803, https://www.stats.gov.cn/sj/tjbz/tjypflml/2010/35/3518.html (retrieved 2026-09-05)"
+    used_for: "Professional Chinese terminology distinguishing pumps, liquid elevators, and their parts"
+  - id: "eu-water-pump-regulation-547-2012"
+    type: "standard"
+    reference: "Commission Regulation (EU) No 547/2012 of 25 June 2012, https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32012R0547 (retrieved 2026-09-05)"
+    used_for: "Scope-limited clean-water rotodynamic pump definitions, performance-test basis, reproducibility, product information, use-stage significance, and disassembly information"
+  - id: "grundfos-magna3-epd-2024"
+    type: "dataset"
+    reference: "Grundfos Holding A/S and Institut Bauen und Umwelt e.V., Environmental Product Declaration EPD-GRU-20240273-CBA1-EN, 1 August 2024, https://www.rskdatabasen.se/infodocs/EPD/EPD_0000534.pdf (retrieved 2026-09-05)"
+    used_for: "Verified example of pump composition, manufacturing, assembly, packaging, factory data collection, reference-unit conversion, use electricity modelling, and end-of-life separation; not used to infer a cross-category numeric range"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:228bc50fdc8721f7916a8d35df3c1c2217f93a8da11373dd7fe03bf726506c62"
+  generated_content_sha256: "sha256:e74cafbd7414ed3a672ba1ccbe0bbaecaf8a37303c95620a8476b477791abcbe"

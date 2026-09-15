@@ -2,10 +2,11 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.general-purpose-machinery.hydraulic-turbines-and-water-wheels
 title:
   en-US: "Hydraulic turbines and water wheels"
-  zh-CN: null
-status: scaffold
+  zh-CN: "水轮机和水轮"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
+updated_at_utc: "2026-09-05T01:38:20Z"
 domains:
   - "metal-products-machinery-and-equipment"
 modules:
@@ -22,16 +23,92 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "43142"
     title: "Hydraulic turbines and water wheels"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  semantic_boundary:
+    decision: create_canonical_methodology
+    rationale: "The category is a finished hydraulic prime mover or water wheel at the manufacturer's gate. It is distinct from generators, governing equipment, spare parts, civil works, installation, and complete hydropower plants. No other material PCR identity in the library covers this boundary."
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved_flow_identities:
+    - row_id: reference_hydraulic_turbine
+      issue: "No exact category-wide, mass-basis reference-product UUID was found in the finalized task-bound search; retained without a narrower subtype proxy."
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: low_alloy_steel_components
+        reason_code: no_exact_candidate
+        explanation: "The finalized task-bound search returned low-alloy, non-alloy, ferrochrome, pellet, and generic steel-semifinished candidates, but direct state-100 reads established classification, semantic, or specificity mismatches. Keep the concrete low-alloy-steel semifinished-component input UUID-empty rather than use a proxy."
+        hybrid_search_receipt_ids:
+          - "505db8c5-9728-4b2d-abfa-1462a83bf2c6"
+      - row_id: stainless_steel_components
+        reason_code: no_exact_candidate
+        explanation: "The finalized task-bound search returned generic steel semifinished stock, chromium steel, ferrochrome, and classification-conflicted metal-workpiece candidates; none directly identifies stainless-steel semifinished components. Keep the exchange UUID-empty and retain grade and form as foreground qualifiers."
+        hybrid_search_receipt_ids:
+          - "86db176c-2d03-4cff-b4df-b43ab290ed3d"
+      - row_id: anticorrosion_coating
+        reason_code: no_exact_candidate
+        explanation: "The finalized task-bound search returned a polyester-resin ingredient and an unrelated fabricated-steel subassembly; neither is a formulated anticorrosion coating product. Keep the declared coating-system input UUID-empty and report its chemistry."
+        hybrid_search_receipt_ids:
+          - "c8fa309d-71c7-4c1b-92fe-f81830d2b99e"
+      - row_id: reference_hydraulic_turbine
+        reason_code: no_exact_candidate
+        explanation: "Vertical Francis hydraulic turbine is a narrower turbine subtype and is measured by Number of items, while this PCR covers multiple hydraulic-turbine and water-wheel technologies on a mass reference basis. The remaining candidates were wind-turbine products or parts, so no proxy was promoted."
+        hybrid_search_receipt_ids:
+          - "b5d3099d-c818-4954-ac73-e1518350974e"
+      - row_id: process_wastewater
+        reason_code: manual_review_required
+        explanation: "The finalized task-bound search returned two indistinguishable generic Wastewater state-100 identities with the same CPC, volume property, unit group, and empty general comment; no durable discriminator supports selecting either UUID for this manufacturing process wastewater."
+        hybrid_search_receipt_ids:
+          - "a40ae79f-072e-4e3e-9777-565903e5fb85"
+    range_evidence_needs:
+      - range_id: range_low_alloy_steel_components
+        row_id: low_alloy_steel_components
+        explanation: "No two independent, original-text-verified sources with compatible factory-gate boundary, mass reference flow, and turbine product state were available for a defensible material-input range. Collect bill-of-material and receiving records."
+      - range_id: range_stainless_steel_components
+        row_id: stainless_steel_components
+        explanation: "The verified DOE cases establish route applicability but not a cross-product empirical mass range. Collect grade-resolved bill-of-material and receiving records."
+      - range_id: range_electricity
+        row_id: electricity
+        explanation: "No compatible two-source empirical electricity range was verified. Collect meter or allocated invoice records for the declared manufacturing lot."
+      - range_id: range_natural_gas
+        row_id: natural_gas
+        explanation: "No compatible two-source empirical fuel range was verified. Collect metered natural-gas use only for lots using fuel-fired heat."
+      - range_id: range_industrial_oxygen
+        row_id: industrial_oxygen
+        explanation: "No compatible two-source empirical cutting-oxygen range was verified. Collect metered or cylinder-reconciled oxygen use only for lots using oxygen-assisted cutting."
+      - range_id: range_process_water
+        row_id: process_water
+        explanation: "No compatible two-source empirical process-water range was verified. Collect make-up, cleaning, and test-water records net of documented recirculation."
+      - range_id: range_sodium_hydroxide
+        row_id: sodium_hydroxide
+        explanation: "No compatible two-source empirical cleaning-chemical range was verified. Calculate dry sodium-hydroxide-equivalent mass from batch records and certified solution concentration."
+      - range_id: range_anticorrosion_coating
+        row_id: anticorrosion_coating
+        explanation: "The verified DOE source establishes coating-route applicability but not a compatible applied-mass range. Collect purchase, issue, return, and residue records by coating chemistry."
+      - range_id: range_reference_hydraulic_turbine
+        row_id: reference_hydraulic_turbine
+        explanation: "The exact reference amount is a normalization identity, not an empirical production-yield range. Collect shipped product mass and reconcile it to the 1,000 kg reference flow."
+      - range_id: range_steel_scrap
+        row_id: steel_scrap
+        explanation: "No compatible two-source empirical scrap fraction was verified. Calculate scrap from segregated weighed waste records and mass balance."
+      - range_id: range_process_wastewater
+        row_id: process_wastewater
+        explanation: "No compatible two-source empirical wastewater range was verified. Collect discharged wastewater volume or mass net of recirculated water."
+      - range_id: range_fossil_carbon_dioxide
+        row_id: fossil_carbon_dioxide
+        explanation: "A direct-emission range was not inferred. Calculate the reported emission from metered fuel and a declared combustion factor or use direct monitoring where available."

@@ -2,12 +2,12 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.basic-metals.casing-and-tubing-of-a-kind-used-in-the-drilling-for-oil-or-gas-welded-of-steel
 title:
   en-US: "Casing and tubing, of a kind used in the drilling for oil or gas, welded, of steel"
-  zh-CN: null
-status: scaffold
+  zh-CN: "用于钻探石油或天然气的钢制焊接套管和油管"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +22,69 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "41286"
     title: "Casing and tubing, of a kind used in the drilling for oil or gas, welded, of steel"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  queue_action: promote_legacy
+  semantic_boundary:
+    decision: create_canonical_record
+    explanation: "The retained scaffold exactly matches welded steel casing and tubing for oil or gas wells. Adjacent seamless casing/tubing, welded line-pipe, and generic welded-tube identities have different production or use boundaries and do not duplicate this record."
+  reference_product:
+    uuid: 978eed2c-cf59-47ff-a661-c7b865b56140
+    state_code: 100
+    hybrid_search_receipt_id: 4f9aed1c-889b-45b8-898b-28275cfbb97e
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  cartesian_expansion_review:
+    status: passed
+    explanation: "The inventory uses one ERW production chain. Grade heat treatment, coating, coupling, and shipment-protection exchanges are conditioned individually; product variants are not crossed with energy, packaging, or finish variants."
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: fin_steel_coupling
+        reason_code: no_exact_candidate
+        explanation: "Receipt 289f68f9-22d6-435a-8a37-9cfe1327f6b7 found pipes, finished tubular products, and unrelated coupling concepts, but no separately supplied OCTG steel coupling."
+      - row_id: fin_protective_varnish
+        reason_code: no_exact_candidate
+        explanation: "Receipt 352032bb-85e4-4d5a-a6f5-aa476234ed4a found generic or differently specified coatings, but no exact mill-applied protective varnish for newly manufactured steel pipe."
+      - row_id: fin_marking_ink
+        reason_code: no_exact_candidate
+        explanation: "Receipt 5b158c59-321d-4bd4-871c-48a8a3c1958f found printing ink, coatings, paint, and aluminum paste, but no exact industrial steel-product marking ink."
+      - row_id: fin_spent_hydrotest_water
+        reason_code: no_exact_candidate
+        explanation: "Receipt 07235616-978d-44df-b8b0-d9e557f0f06c found generic wastewater identities only; none identifies separately collected spent hydrostatic-test water and its treatment destination."
+      - row_id: ship_polypropylene_thread_protector
+        reason_code: no_exact_candidate
+        explanation: "Receipt 9f78b2cc-12c4-4671-9024-a6eb2adfb9d6 found polypropylene fibre, yarn, twine, and an unrelated cable protector, but no moulded OCTG thread protector."
+      - row_id: ship_softwood_dunnage
+        reason_code: no_exact_candidate
+        explanation: "Receipt 9190b7ff-52f4-4e77-8feb-a1dd464c3f06 found only a paper packaging insert, not kiln-dried softwood shipping dunnage."
+    range_evidence_needs:
+      - range_id: erw_major_material_and_yield_ranges
+        row_ids: [erw_hot_rolled_coil, erw_steel_scrap, fin_steel_scrap, ref_welded_casing_tubing]
+        explanation: "Two independent original sources with compatible ERW OCTG factory-gate boundaries and net-mass bases are needed before authoring material-yield or scrap-fraction ranges."
+      - range_id: erw_energy_ranges
+        row_ids: [erw_electricity, ht_electricity, ht_natural_gas, fin_electricity]
+        explanation: "Two independent original sources with compatible ERW casing/tubing technology, heat-treatment scope, product grade, and per-mass basis are needed before authoring energy ranges."
+      - range_id: erw_water_and_fluid_ranges
+        row_ids: [erw_process_water, erw_cutting_fluid, ht_quench_water, fin_process_water, fin_cutting_fluid, fin_spent_cutting_fluid, fin_spent_hydrotest_water]
+        explanation: "Two independent original sources with compatible water-recirculation, fluid-recovery, and process boundaries are needed before authoring water or process-fluid ranges."
+      - range_id: heat_treatment_emission_and_scale_ranges
+        row_ids: [ht_mill_scale, ht_carbon_dioxide_fossil, ht_nitrogen_oxides, ht_carbon_monoxide]
+        explanation: "Two independent original sources with compatible furnace fuel, emission-control, grade heat-treatment, and reporting bases are needed before authoring direct-emission or scale ranges."
+      - range_id: finishing_and_shipment_material_ranges
+        row_ids: [fin_steel_coupling, fin_protective_varnish, fin_marking_ink, ship_steel_strapping, ship_polypropylene_thread_protector, ship_softwood_dunnage]
+        explanation: "Two independent original sources with compatible connection, coating, bundling, and reference-product mass conventions are needed before authoring finishing or shipment-material ranges."

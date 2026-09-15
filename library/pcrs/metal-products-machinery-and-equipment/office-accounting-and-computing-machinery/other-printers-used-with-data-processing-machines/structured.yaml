@@ -1,10 +1,525 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "45265"
-  title: "Other printers used with data processing machines"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.office-accounting-and-computing-machinery.other-printers-used-with-data-processing-machines"
+  classification_refs: "CPC 3.0: 45265; un-cpc-3-0-structure-2025"
+  covered_products: "Connectable single-function impact and thermal printers; other marking technologies require explicit mechanism and consumable disclosure."
+  excluded_products: "Inkjet printers; laser printers; multifunction printing/scanning/copying/fax devices; non-connectable stand-alone printers; additive-manufacturing machines; separate printer parts."
+  representative_product: "Computer-connected impact dot-matrix printer, declared model and configuration."
+  production_route: "Purchased housing, populated control board, power supply and integrated print mechanism; assembly, firmware configuration, acceptance testing and packing."
+  market_state: "New, tested complete printer at factory gate; packaging separately accounted."
+functional_unit:
+  what: "Provide a complete printer capable of reproducing digital input on declared media."
+  how_much: "1 kg net accepted printer output as a declared manufacturing unit; retain the model-specific mass per device."
+  how_well: "Pass documented connectivity, feed and print-quality acceptance criteria; declare resolution, printable width, speed and media compatibility."
+  how_long_or_cycle: "One manufacturing delivery cycle. Service-life duration and lifetime print throughput are not assumed and must be collected for downstream service comparisons."
+  reference_flow_link: "finished_printer"
+system_boundary:
+  rules:
+    - rule_id: boundary_assembly
+      applies_to: "foreground"
+      rule: "Include receipt/issue, integration, acceptance testing, rework and packing through accepted factory-gate delivery, with test consumables and rejects."
+      source_ids: []
+    - rule_id: boundary_partial
+      applies_to: "result_scope"
+      rule: "Report gate-to-gate results as partial; disclose all linked upstream datasets and exclusions. Do not claim full-life-cycle GHG-standard conformity from this module."
+      source_ids:
+        - ghg-protocol-product-standard
+    - rule_id: boundary_routes
+      applies_to: "technology"
+      rule: "Apply only the actual mechanism and consumable route. Direct thermal paper and impact ribbon are not interchangeable."
+      source_ids:
+        - epson-lx350-specifications
+        - zebra-zd400-specifications
+        - zebra-thermal-media
+boundary_abstraction:
+  declared_starting_condition: "Purchased finished subassemblies received at the assembly site."
+  starting_condition_role: "Foreground assembly input boundary."
+  product_classification_scope: "CPC 3.0: 45265"
+  recursive_input_rule: "A purchased complete same-category printer is an input with its own upstream dataset; do not recursively unfold this PCR or count its parts again. Disclose refurbishment separately from new manufacture."
+  upstream_dataset_requirement: "Match each purchased assembly to a supplier/technology-specific production dataset, preserving its included parts and delivered state; identify gaps before claiming cradle-to-gate coverage."
+  disclosure: "Make/buy split, assembly coverage, subassembly contents, transport coverage, metered activities and omitted life-cycle stages."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Other printers used with data processing machines"
+    uuid: "ab2017fe-300f-4fa2-ab9c-10bfd897b2d7"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - Model
+    - "marking technology"
+    - "single-function/connectivity evidence"
+    - "net mass per device"
+    - "included power supply and starter ribbon"
+    - resolution
+    - "print width"
+    - "speed and test pattern"
+    - "media/coating"
+    - "factory/country"
+    - "reporting period"
+    - firmware
+    - "purchased-subassembly boundary."
+reference_flows:
+  []
+measurement_rules:
+  - id: net_mass
+    applies_to: "finished_printer"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Measure the declared supplied configuration; exclude shipping packaging. Device count equals net batch mass divided by measured model mass only for a homogeneous model batch."
+  - id: electricity_unit
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Preserve delivered electricity; convert kWh to MJ using 3.6. Record voltage and grid mix; do not add upstream generation emissions as direct factory emissions."
+  - id: consumable_mass
+    applies_to: "Testing consumables"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Convert sheets or ribbon length using measured area density or mass per length; retain cores, cartridge shells, test consumption and shipped remainder separately in the balance."
+process_map:
+  - id: assembly
+    name: "Printer assembly, test and packing"
+    inclusion: "required"
+    inclusion_condition: "All covered factory assembly packages"
+    role: "Foreground production"
+    quantitative_reference: "1 kg finished_printer"
+process_inventory:
+  - id: assembly
+    label: "Printer assembly, test and packing"
+    inputs:
+      product:
+        - row_id: housing
+          role: "ABS printer housing"
+          name: "ABS printer housing"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Only for a purchased moulded ABS housing; record net issues, returns and rejects."
+          amount:
+            expression: "Use the batch exchange ledger divided by accepted net printer mass; keep route-absent flows explicitly not applicable."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted printer output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: pcb
+          role: "Populated printer controller printed circuit board"
+          name: "Populated printer controller printed circuit board"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Purchased controller board including fitted components; exclude any board already in a purchased print mechanism."
+          amount:
+            expression: "Use the batch exchange ledger divided by accepted net printer mass; keep route-absent flows explicitly not applicable."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted printer output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: supply
+          role: "Printer switched mode power supply"
+          name: "Printer switched mode power supply"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Include internal or supplied external power supply with its integral cable; do not count it again inside another assembly."
+          amount:
+            expression: "Use the batch exchange ledger divided by accepted net printer mass; keep route-absent flows explicitly not applicable."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted printer output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: mechanism
+          role: "Dot matrix printer mechanism assembly"
+          name: "Dot matrix printer mechanism assembly"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: impact printing route. Purchased integrated chassis, printhead, drive and paper-feed mechanism; supplier bill of materials defines included parts."
+          amount:
+            expression: "Use the batch exchange ledger divided by accepted net printer mass; keep route-absent flows explicitly not applicable."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted printer output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: thermal
+          role: "Thermal printer mechanism assembly"
+          name: "Thermal printer mechanism assembly"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: direct thermal or thermal transfer route. Purchased integrated printhead, chassis and media-drive mechanism; identify actual technology and included parts."
+          amount:
+            expression: "Use the batch exchange ledger divided by accepted net printer mass; keep route-absent flows explicitly not applicable."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted printer output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; unit group 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Meter assembly, firmware loading, testing, rework and packing electricity together; include attributable shared equipment using recorded operating time."
+          amount:
+            expression: "Use the batch exchange ledger divided by accepted net printer mass; keep route-absent flows explicitly not applicable."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted printer output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: ribbon
+          role: "Printer inked ribbon cartridge"
+          name: "Printer inked ribbon cartridge"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: impact printer testing or supplied starter cartridge. Record cartridge mass and distinguish consumed test fraction from shipped remainder."
+          amount:
+            expression: "Use the batch exchange ledger divided by accepted net printer mass; keep route-absent flows explicitly not applicable."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted printer output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: transfer_ribbon
+          role: "Wax thermal transfer printer ribbon"
+          name: "Wax thermal transfer printer ribbon"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: wax-ribbon thermal transfer route. Measure issued roll mass and returns, retaining formulation and core mass separately."
+          amount:
+            expression: "Use the batch exchange ledger divided by accepted net printer mass; keep route-absent flows explicitly not applicable."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted printer output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: paper
+          role: "paper, woodfree, uncoated"
+          name: "paper, woodfree, uncoated"
+          flow_type: "product"
+          flow_ref:
+            uuid: "58075527-56bb-4c6a-a78a-7d1a3f1db2da"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: testing on uncoated woodfree paper. Weigh paper consumed by the factory acceptance test, including repeat tests."
+          amount:
+            expression: "Use the batch exchange ledger divided by accepted net printer mass; keep route-absent flows explicitly not applicable."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted printer output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: thermal_paper
+          role: "Thermal printing paper"
+          name: "Thermal printing paper"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: direct thermal testing. Measure coated paper excluding the reusable holder; record coating, roll and liner configuration."
+          amount:
+            expression: "Use the batch exchange ledger divided by accepted net printer mass; keep route-absent flows explicitly not applicable."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted printer output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: box
+          role: "Corrugated cardboard box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: corrugated shipping box is supplied. Record box mass outside the net printer reference mass."
+          amount:
+            expression: "Use the batch exchange ledger divided by accepted net printer mass; keep route-absent flows explicitly not applicable."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted printer output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_printer
+          role: "Other printers used with data processing machines"
+          name: "Other printers used with data processing machines"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ab2017fe-300f-4fa2-ab9c-10bfd897b2d7"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Accepted complete printer at factory gate; reference output is 1 kg net product including its declared supplied power supply and starter cartridge, excluding shipping packaging."
+          amount:
+            expression: "Use the batch exchange ledger divided by accepted net printer mass; keep route-absent flows explicitly not applicable."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted printer output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: paper_waste
+          role: "Waste printed paper from printer testing"
+          name: "Waste printed paper from printer testing"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: ordinary paper test waste leaves the line. Weigh separately from thermal paper, and record recipient and treatment route."
+          amount:
+            expression: "Use the batch exchange ledger divided by accepted net printer mass; keep route-absent flows explicitly not applicable."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted printer output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: thermal_waste
+          role: "Waste thermal printed paper"
+          name: "Waste thermal printed paper"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: thermal test paper is discarded. Record coating chemistry and actual disposal route independently of ordinary paper recycling."
+          amount:
+            expression: "Use the batch exchange ledger divided by accepted net printer mass; keep route-absent flows explicitly not applicable."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted printer output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: spent_ribbon
+          role: "Spent printer ribbon cartridge"
+          name: "Spent printer ribbon cartridge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: a spent impact ribbon cartridge is discarded during testing. Record total discarded cartridge mass and treatment destination."
+          amount:
+            expression: "Use the batch exchange ledger divided by accepted net printer mass; keep route-absent flows explicitly not applicable."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted printer output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+        - row_id: reject
+          role: "Waste rejected printer"
+          name: "Waste rejected printer"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: a whole printer is scrapped after failed testing. Record actual mass; reworked units that eventually pass are not waste outputs."
+          amount:
+            expression: "Use the batch exchange ledger divided by accepted net printer mass; keep route-absent flows explicitly not applicable."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted printer output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_meter
+    applies_to: "shared_activities"
+    rule: "First subdivide using batch records and submetering. If shared electricity remains, use documented machine operating time and load; justify the physical relationship."
+    source_ids:
+      - ghg-protocol-product-standard
+  - rule_id: allocation_rework
+    applies_to: "rejects"
+    rule: "Assign failed tests and rework to accepted output of the same model cohort. Record scrap as waste with its treatment burden; do not silently claim avoided virgin-material credits."
+    source_ids: []
+  - rule_id: allocation_coproduct
+    applies_to: "saleable_outputs"
+    rule: "If saleable co-products arise, document function and physical relationship; use economic allocation only if no defensible physical relationship exists, with price period and sensitivity disclosed."
+    source_ids:
+      - ghg-protocol-product-standard
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_assembly
+      process_id: "assembly"
+      flow_role: "Every listed exchange"
+      record_type: "Batch ledger and meter record"
+      raw_fields: "model, batch, dates, technology, item id, supplied contents, issues, returns, stock change, accepted count/mass, rejects, test media/ribbon, meter readings, waste recipient"
+      collection_method: "Reconcile weighed issues/returns with BOM, meter logs, acceptance records and waste transfers"
+      unit: "kg; MJ; item"
+      frequency: "Each batch and meter interval"
+      temporal_coverage: "One disclosed consecutive production period including shutdown and rework; report seasonal representativeness"
+      site_scope: "One factory and identified lines"
+      aggregation_rule: "Sum attributable quantities and divide by accepted net output mass; never average batch ratios without output weighting"
+      quality_evidence: "Calibrations, supplier declarations, BOM version, traceable logs and balance reconciliation"
+  calculation_rules:
+    - id: normalize
+      applies_to: "assembly"
+      rule: "x_i = attributable batch quantity_i / accepted net batch printer mass. Use all batches of the reporting cohort."
+      inputs:
+        - cp_assembly
+      output: "kg/kg; MJ/kg"
+      source_ids: []
+    - id: balance
+      applies_to: "assembly"
+      rule: "Issued material minus returns equals shipped material plus test waste and rejects plus net work-in-progress change; investigate residuals using measurement uncertainty. Packaging and consumables must remain distinguishable from net printer mass."
+      inputs:
+        - cp_assembly
+      output: "Reconciled batch balance"
+      source_ids: []
+  data_quality_requirements:
+    - id: identity
+      applies_to: "reference_flow"
+      requirement: "Keep technology, interface, model and included accessories consistent with the weighed configuration."
+      evidence: "cp_assembly; epson-lx350-specifications; zebra-zd400-specifications"
+    - id: coverage
+      applies_to: "assembly"
+      requirement: "Account for the entire BOM without double counting purchased assembly contents. List exclusions and uncertainty; missing exchange data are not zeros."
+      evidence: "cp_assembly"
+    - id: range_evidence
+      applies_to: "amounts"
+      requirement: "Use measured foreground values. This PCR supplies no external amount ranges; model specifications are not independent production benchmarks."
+      evidence: "cp_assembly"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "finished_printer"
+    rule: "Require positive accepted output mass, a declared model mass and all reference qualifiers; reject inkjet, laser and multifunction identities."
+    source_ids:
+      - un-cpc-3-0-notes-2025
+  - rule_id: validate_atomic
+    applies_to: "inventory"
+    rule: "Every exchange must be atomic, dimensionally consistent, traceable to cp_assembly and assigned a real UUID or an explicit unresolved identity; reject umbrella flow rows."
+    source_ids: []
+  - rule_id: validate_balance
+    applies_to: "assembly"
+    rule: "Verify stock-adjusted mass balance, electricity allocation, test-repeat coverage, and route applicability. Investigate residuals rather than forcing closure with an invented exchange."
+    source_ids: []
+  - rule_id: validate_scope
+    applies_to: "result"
+    rule: "Require explicit partial-boundary disclosure and separate upstream/downstream additions; gate-to-gate results alone cannot support a service-life comparison."
+    source_ids:
+      - ghg-protocol-product-standard
+published_dataset_profile:
+  dataset_role: "foreground_dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Model-specific factory assembly input to a documented broader life-cycle system."
+  excluded_use: "Unqualified full-life-cycle footprint, generic service comparison, or substitution for inkjet/laser manufacturing."
+  required_metadata: "Reference qualifiers, time, geography, model, make/buy split, upstream links, process boundary and allocation."
+  required_quality_disclosure: "Unresolved identities, missing exchanges, ranges not provided, balance residuals, uncertainty and representativeness."
+  update_trigger: "Model/BOM/firmware or site changes; new metering, supply data, waste routes or resolved flow identities."
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "UNSD CPC 3.0 Structure, 30 June 2025; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv; retrieved 2026-09-09"
+    used_for: "Classification identity"
+  - id: "un-cpc-3-0-notes-2025"
+    type: "official_guidance"
+    reference: "UNSD CPC 3.0 Explanatory Notes, p. 247; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf; retrieved 2026-09-09"
+    used_for: "Connectability and excluded printer classes"
+  - id: "epson-lx350-specifications"
+    type: "handbook"
+    reference: "Epson LX-350 User Guide: Printer Specifications; https://files.support.epson.com/htmldocs/lx350_/lx350_ug/html/apspe_2.htm; retrieved 2026-09-09"
+    used_for: "Impact printer example, paper/ribbon distinction and performance qualifiers; no quantity defaults"
+  - id: "zebra-zd400-specifications"
+    type: "handbook"
+    reference: "Zebra ZD400 Series Desktop Printers Specification Sheet; https://www.zebra.com/us/en/products/spec-sheets/printers/desktop/zd400-series.html; retrieved 2026-09-09"
+    used_for: "Thermal technologies, connectivity and supplied power supply; no quantity defaults"
+  - id: "zebra-thermal-media"
+    type: "handbook"
+    reference: "Zebra ZD421/ZD621 User Guide: Types of Thermal Media; https://docs.zebra.com/us/en/printers/desktop/zd421-and-zd621-desktop-printers-user-guide/media/types-of-thermal-media.html; retrieved 2026-09-09"
+    used_for: "Thermal roll media and liner distinctions"
+  - id: "ghg-protocol-product-standard"
+    type: "standard"
+    reference: "WRI/WBCSD Product Life Cycle Accounting and Reporting Standard, chapters 7 and 9; https://ghgprotocol.org/sites/default/files/ghgp/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf; retrieved 2026-09-09"
+    used_for: "Partial boundary disclosure and allocation hierarchy; GHG method only, not certification of this PCR"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:c6d567ee0f71f3bfbe9dabcdfdb228367161d65dff9b686d16322d9f042cfdd3"
+  generated_content_sha256: "sha256:66b80b0f3f0e718687000ee781656ad9137ca54e168dfec7e7eb3e4a1d282eba"

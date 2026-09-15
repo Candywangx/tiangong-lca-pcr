@@ -1,10 +1,1336 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41113"
-  title: "Ferro-chromium"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.ferro-chromium"
+  classification_refs: "CPC 3.0: 41113, Ferro-chromium"
+  covered_products: "Solid marketable high-carbon, medium-carbon, and low-carbon ferro-chromium, including charge chrome when sold as ferro-chromium"
+  excluded_products: "Chromium metal; silico-chromium as the declared product; stainless steel; other ferro-alloys; chromium-bearing wastes; products primarily recovered from secondary residues without an approved extension"
+  representative_product: "Solid crushed or lump ferro-chromium alloy meeting a declared commercial grade"
+  production_route: "Direct carbothermic submerged-arc smelting for high-carbon ferro-chromium; silicothermic or oxygen-decarburisation refining when medium- or low-carbon grades are produced"
+  market_state: "Dry solid alloy at the producing facility gate, in declared lump, crushed, screened, or other saleable form"
+functional_unit:
+  what: "Supply ferro-chromium as an alloying material with declared chromium and carbon contents"
+  how_much: "1,000 kg net dry mass of marketable ferro-chromium"
+  how_well: "Meets the declared commercial specification for chemical composition, size distribution, and physical form"
+  how_long_or_cycle: "One production campaign or reporting period yielding the declared reference amount at the facility gate; no use duration is assigned"
+  reference_flow_link: "output_ferrochromium"
+system_boundary:
+  rules:
+    - rule_id: boundary_facility_gate
+      applies_to: "foreground_system"
+      rule: "Include all on-site operations from receipt of production inputs through solid marketable ferro-chromium at the facility gate, including abatement and on-site residue handling attributable to the product."
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+        - us-epa-ap42-ferroalloy-1986
+    - rule_id: boundary_route_condition
+      applies_to: "route_selection"
+      rule: "Include burden preparation, carbothermic smelting, and medium/low-carbon refining only when performed for the declared product; disclose purchased intermediates and do not model an absent route."
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+        - us-epa-ap42-ferroalloy-1986
+    - rule_id: boundary_release_accounting
+      applies_to: "emissions_and_residues"
+      rule: "Record captured dust, slag, wastewater, recovered furnace gas, and released carbon dioxide, carbon monoxide, and particulate matter as distinct exchanges; do not treat collection as elimination."
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+        - us-epa-ap42-ferroalloy-1986
+    - rule_id: boundary_upstream_separation
+      applies_to: "upstream_inputs"
+      rule: "Exclude upstream extraction and production from the foreground process while requiring linked background datasets for each purchased input."
+      source_ids:
+        - cpc-3-0-official-2025
+boundary_abstraction:
+  declared_starting_condition: "Purchased chromite ore or concentrate, reductants, fluxes, electrode materials, gases, electricity, water, and any purchased alloy intermediate at the ferro-chromium facility gate"
+  starting_condition_role: "Upstream product inputs whose production is represented by separate background datasets"
+  product_classification_scope: "Production of marketable ferro-chromium only; route-specific internal intermediates remain within the foreground system"
+  recursive_input_rule: "A purchased ferro-chromium intermediate in the same category is recorded once as an input with supplier dataset identity, grade, state, and mass; its upstream production is not recreated inside the receiving process unless the site actually produces it"
+  upstream_dataset_requirement: "Use composition-, state-, geography-, technology-, and time-representative datasets for chromite, coke or other reductants, fluxes, electricity, oxygen, fuels, water, and purchased alloy intermediates"
+  disclosure: "Declare ore form, preparation route, furnace and closure type, reductant, refining route, off-gas use or flare, dust control, water recirculation, slag treatment, product grade, recovery loops, and any excluded on-site operation"
+reference_flow_definition:
+  reference_amount: "1,000 kg net dry mass"
+  product_flow_ref:
+    name: "Ferro-chromium"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "chromium mass fraction"
+    - "carbon mass fraction and grade"
+    - "silicon mass fraction where relevant"
+    - "production route"
+    - "furnace type and closure"
+    - "physical form and size class"
+    - "moisture basis"
+    - "recycled-metal content"
+    - "facility geography"
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_dry_mass
+    applies_to: "reference product and all mass-normalized exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Determine net product mass after excluding transport packaging and free water; state the moisture test method and convert wet records to the declared dry basis before normalization."
+  - id: composition_basis
+    applies_to: "product and intermediate alloy assays"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "% by mass"
+    rule: "Report chromium, carbon, silicon, and other specification-relevant constituents on the same declared analytical basis; do not substitute nominal grade names for measured or certified composition."
+  - id: energy_preservation
+    applies_to: "electricity and fuels"
+    required_property_ref:
+      name: "Energy or fuel mass/volume"
+      uuid: ""
+    required_unit: "kWh, MJ, kg, or m3"
+    rule: "Preserve metered native units and conversion factors; report purchased electricity separately by process and do not merge it with recovered furnace-gas energy."
+  - id: water_makeup_basis
+    applies_to: "cooling, scrubbing, and granulation water"
+    required_property_ref:
+      name: "Volume or mass"
+      uuid: ""
+    required_unit: "m3 or kg"
+    rule: "Record fresh make-up water crossing the system boundary, separately from internal recirculation; disclose purge and wastewater quantities."
+  - id: internal_transfer_consistency
+    applies_to: "agglomerated burden, molten alloy, recovered metal, slag, dust, and furnace gas"
+    required_property_ref:
+      name: "Mass or energy"
+      uuid: ""
+    required_unit: "kg, MJ, or m3"
+    rule: "Reconcile each internal output with its receiving process input and count only net exchanges crossing the foreground boundary in the aggregated dataset."
+process_map:
+  - id: charge_preparation
+    name: "Chromite burden preparation and agglomeration"
+    inclusion: "conditional"
+    inclusion_condition: "Include when chromite fines or concentrate are dried, ground, pelletised, briquetted, sintered, or preheated on site"
+    role: "Foreground preparation"
+    quantitative_reference: "Prepared burden delivered to the ferro-chromium furnace"
+  - id: carbothermic_smelting
+    name: "High-carbon ferro-chromium smelting"
+    inclusion: "conditional"
+    inclusion_condition: "Include when high-carbon ferro-chromium or charge chrome is produced on site by carbon reduction"
+    role: "Foreground alloy production"
+    quantitative_reference: "Molten high-carbon ferro-chromium tapped from the furnace"
+  - id: medium_low_carbon_refining
+    name: "Medium- or low-carbon ferro-chromium production"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared grade is produced by silicothermic reduction or oxygen decarburisation on site"
+    role: "Foreground refining"
+    quantitative_reference: "Molten refined ferro-chromium leaving the refining vessel"
+  - id: finishing_and_recovery
+    name: "Tapping, casting, sizing, slag handling, and metal recovery"
+    inclusion: "required"
+    inclusion_condition: "Include for every marketable ferro-chromium dataset; mark slag granulation and metal recovery rows not applicable only when demonstrably absent"
+    role: "Foreground finishing"
+    quantitative_reference: "Net dry marketable ferro-chromium at facility gate"
+process_inventory:
+  - id: charge_preparation
+    label: "Chromite burden preparation and agglomeration"
+    inputs:
+      product:
+        - row_id: input_chromite_fines
+          role: "Chromite concentrate feed"
+          name: "Chromite concentrate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record dry chromite concentrate entering on-site agglomeration."
+          amount:
+            expression: "Weighed dry feed consumed during the reporting period"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per mass of prepared burden output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_charge_preparation
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: input_pellet_binder
+          role: "Bentonite pellet binder"
+          name: "Bentonite"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e01d9941-db32-46cb-b577-ebc584597a2d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record bentonite only when it is physically charged as the pellet binder."
+          amount:
+            expression: "Weighed binder charged"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per mass of prepared burden output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_charge_preparation
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: input_coke_breeze
+          role: "Coke breeze for sintering"
+          name: "Coke Breeze"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2934bd2d-a22f-4936-9bd3-20ff707605f4"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record coke breeze when it is charged to the agglomeration or sintering step."
+          amount:
+            expression: "Weighed coke breeze charged"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per mass of prepared burden output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_charge_preparation
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: input_prep_electricity
+          role: "Electricity for preparation equipment"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e773703a-f0ce-4a1e-b795-cb09dc7f2749"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record metered electricity used by grinding, mixing, agglomeration, conveying, and associated controls."
+          amount:
+            expression: "Metered alternating-current electricity attributable to this process, converted from kWh to MJ with the disclosed exact conversion"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per mass of prepared burden output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_charge_preparation
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: input_prep_natural_gas
+          role: "Natural gas for drying or sintering"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / Units of volume 93a60a57-a3c8-12da-a746-0800200c9a66 / m3"
+          description: "Record delivered natural gas only when combusted in on-site burden drying or sintering."
+          amount:
+            expression: "Metered or invoice-reconciled delivered gas volume at disclosed reference conditions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per mass of prepared burden output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_charge_preparation
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: input_prep_water
+          role: "Process water for preparation"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record fresh make-up water used for pelletising or preparation gas cleaning."
+          amount:
+            expression: "Metered fresh make-up water crossing the facility boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per mass of prepared burden output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_charge_preparation
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: output_agglomerated_chromite
+          role: "Agglomerated chromite burden"
+          name: "Agglomerated chromite burden"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the dry prepared burden transferred to smelting as an internal product flow."
+          amount:
+            expression: "Weighed dry prepared burden output"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_charge_preparation
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        - row_id: output_prep_collected_dust
+          role: "Collected chromite-bearing dust"
+          name: "Collected chromite-bearing dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record dust removed from preparation gas cleaning, net of documented internal recycle."
+          amount:
+            expression: "Weighed collected dust leaving this process or returned internally"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per mass of prepared burden output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_charge_preparation
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      elementary:
+        - row_id: output_prep_particulate_air
+          role: "Released particulate matter from preparation"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record particulate matter released to air after control from material handling and agglomeration."
+          amount:
+            expression: "Stack or fugitive release measurement for this process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per mass of prepared burden output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_charge_emissions
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-1986
+            ranges: []
+  - id: carbothermic_smelting
+    label: "High-carbon ferro-chromium smelting"
+    inputs:
+      product:
+        - row_id: input_chromite_burden
+          role: "Chromite ore burden"
+          name: "Chromite"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cd03bf2-5ea3-46e4-9d3e-f13b6b22ea7d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record dry chromite ore, pellet, or agglomerate charged to the furnace; describe the specific physical state without combining separate flows."
+          amount:
+            expression: "Weighed dry chromite burden charged"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per mass of tapped high-carbon ferro-chromium"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smelting_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: input_metallurgical_coke
+          role: "Metallurgical coke reductant"
+          name: "metallurgical coke"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a94c42b1-7fa9-42f3-a9d1-1e7353e8490d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record metallurgical coke consumed as the carbon reductant."
+          amount:
+            expression: "Weighed dry coke charged, net of returned unused material"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per mass of tapped high-carbon ferro-chromium"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smelting_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-1986
+            ranges: []
+        - row_id: input_quartzite
+          role: "Quartzite flux"
+          name: "Quartzite"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record quartzite charged as a specific flux or burden adjustment."
+          amount:
+            expression: "Weighed dry quartzite charged"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per mass of tapped high-carbon ferro-chromium"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smelting_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: input_smelting_lime
+          role: "Lime flux for smelting"
+          name: "Lime"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c431c0c3-3f5e-4b7b-af99-2ebbdcaf5f99"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record lime only when charged to the smelting burden."
+          amount:
+            expression: "Weighed dry lime charged"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per mass of tapped high-carbon ferro-chromium"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smelting_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: input_electrode_paste
+          role: "Søderberg electrode paste"
+          name: "Søderberg electrode paste"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record electrode paste consumed by the submerged-arc furnace."
+          amount:
+            expression: "Inventory change plus purchases minus transfers for the furnace campaign"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per mass of tapped high-carbon ferro-chromium"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smelting_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: input_smelting_electricity
+          role: "Electricity for smelting furnace"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e773703a-f0ce-4a1e-b795-cb09dc7f2749"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record gross metered furnace and directly associated off-gas-control electricity."
+          amount:
+            expression: "Metered alternating-current electricity attributable to furnace operation and direct controls, converted from kWh to MJ with the disclosed exact conversion"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per mass of tapped high-carbon ferro-chromium"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smelting_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: input_smelting_cooling_water
+          role: "Smelting cooling-water make-up"
+          name: "Cooling water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record fresh water added to the furnace cooling loop, excluding recirculated water."
+          amount:
+            expression: "Metered make-up water crossing the facility boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per mass of tapped high-carbon ferro-chromium"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smelting_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: output_molten_hc_ferrochromium
+          role: "Molten high-carbon ferro-chromium"
+          name: "Molten high-carbon ferro-chromium"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record molten high-carbon ferro-chromium tapped before refining or finishing."
+          amount:
+            expression: "Tapped metal mass reconciled to ladle weights and production records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smelting_outputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-1986
+            ranges: []
+        - row_id: output_cleaned_co_gas
+          role: "Cleaned carbon-monoxide-rich furnace gas"
+          name: "Carbon-monoxide-rich furnace gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record cleaned furnace gas exported or used as a measured internal energy carrier; do not merge it with direct air emissions."
+          amount:
+            expression: "Metered dry gas volume multiplied by measured lower heating value"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per mass of tapped high-carbon ferro-chromium"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_smelting_outputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-1986
+            ranges: []
+      waste:
+        - row_id: output_smelting_slag
+          role: "Ferro-chromium furnace slag"
+          name: "Ferro-chromium furnace slag"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record slag tapped from the smelting furnace before on-site recovery or off-site management."
+          amount:
+            expression: "Weighed or volume-and-density-determined slag mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per mass of tapped high-carbon ferro-chromium"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smelting_outputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-1986
+            ranges: []
+        - row_id: output_smelting_dust
+          role: "Collected ferro-chromium furnace dust"
+          name: "Collected ferro-chromium furnace dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record dust captured from furnace, tapping, and primary gas cleaning, net of documented internal recycle."
+          amount:
+            expression: "Weighed collected dust by destination"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per mass of tapped high-carbon ferro-chromium"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smelting_outputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-1986
+            ranges: []
+      elementary:
+        - row_id: emission_smelting_carbon_dioxide
+          role: "Direct carbon dioxide from smelting"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record carbon dioxide released to air from reduction gas oxidation, flaring, and on-site combustion attributable to smelting."
+          amount:
+            expression: "Site-monitored or carbon-balance-derived fossil direct release, with method and carbon origin disclosed; any non-fossil carbon dioxide must be recorded separately"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per mass of tapped high-carbon ferro-chromium"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_smelting_emissions
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: emission_smelting_carbon_monoxide
+          role: "Direct carbon monoxide from smelting"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record carbon monoxide released to air after recovery, combustion, flaring, and control."
+          amount:
+            expression: "Site-monitored stack and disclosed fugitive fossil carbon-monoxide release; any non-fossil carbon monoxide must be recorded separately"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per mass of tapped high-carbon ferro-chromium"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smelting_emissions
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-1986
+            ranges: []
+        - row_id: emission_smelting_particulate
+          role: "Released particulate matter from smelting"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record particulate matter released to air after furnace and tapping controls."
+          amount:
+            expression: "Stack measurement plus quantified fugitive releases"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per mass of tapped high-carbon ferro-chromium"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smelting_emissions
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-1986
+            ranges: []
+  - id: medium_low_carbon_refining
+    label: "Medium- or low-carbon ferro-chromium production"
+    inputs:
+      product:
+        - row_id: input_refining_hc_ferrochromium
+          role: "High-carbon ferro-chromium intermediate"
+          name: "High-carbon ferro-chromium"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record high-carbon ferro-chromium charged for decarburisation or route-specific refining."
+          amount:
+            expression: "Weighed charged alloy by certified composition"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per mass of refined ferro-chromium output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refining_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-1986
+            ranges: []
+        - row_id: input_ferro_silico_chromium
+          role: "Ferro-silico-chromium reducing agent"
+          name: "Silicon Chromium Alloy"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d8f78abf-5c6a-45c6-909a-161ada78f835"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record ferro-silico-chromium when physically charged for silicothermic reduction."
+          amount:
+            expression: "Weighed charged mass by certified composition"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per mass of refined ferro-chromium output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refining_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-1986
+            ranges: []
+        - row_id: input_refining_chromite
+          role: "Chromite ore for refining"
+          name: "Chromite"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cd03bf2-5ea3-46e4-9d3e-f13b6b22ea7d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record chromite ore charged to a silicothermic refining route."
+          amount:
+            expression: "Weighed dry chromite charged"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per mass of refined ferro-chromium output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refining_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-1986
+            ranges: []
+        - row_id: input_refining_lime
+          role: "Lime for refining"
+          name: "Lime"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c431c0c3-3f5e-4b7b-af99-2ebbdcaf5f99"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record lime charged to form the refining slag."
+          amount:
+            expression: "Weighed dry lime charged"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per mass of refined ferro-chromium output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refining_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-1986
+            ranges: []
+        - row_id: input_refining_oxygen
+          role: "Oxygen for decarburisation"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / Units of volume 93a60a57-a3c8-12da-a746-0800200c9a66 / m3"
+          description: "Record oxygen only for an oxygen-blown medium-carbon route."
+          amount:
+            expression: "Metered industrial oxygen volume delivered to the converter at disclosed reference conditions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per mass of refined ferro-chromium output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refining_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: input_refining_electricity
+          role: "Electricity for refining"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e773703a-f0ce-4a1e-b795-cb09dc7f2749"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record metered electricity for arc furnaces, converters, ladles, and refining controls."
+          amount:
+            expression: "Metered alternating-current electricity attributable to the refining route, converted from kWh to MJ with the disclosed exact conversion"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per mass of refined ferro-chromium output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refining_inputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: output_refined_ferrochromium
+          role: "Molten refined ferro-chromium"
+          name: "Molten refined ferro-chromium"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the molten medium- or low-carbon ferro-chromium transferred to finishing."
+          amount:
+            expression: "Tapped or ladle-weighed alloy mass by measured composition"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refining_outputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-1986
+            ranges: []
+      waste:
+        - row_id: output_refining_slag
+          role: "Ferro-chromium refining slag"
+          name: "Ferro-chromium refining slag"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record slag separated from refining before recovery, recycle, or off-site management."
+          amount:
+            expression: "Weighed or volume-and-density-determined slag mass"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per mass of refined ferro-chromium output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refining_outputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-1986
+            ranges: []
+        - row_id: output_refining_dust
+          role: "Collected refining dust"
+          name: "Collected ferro-chromium refining dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record dust captured from refining vessels and reaction ladles, net of documented recycle."
+          amount:
+            expression: "Weighed collected dust by destination"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per mass of refined ferro-chromium output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refining_outputs
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-1986
+            ranges: []
+      elementary:
+        - row_id: emission_refining_particulate
+          role: "Released particulate matter from refining"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record particulate matter released to air after refining-vessel and ladle controls."
+          amount:
+            expression: "Stack measurement plus quantified fugitive releases"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per mass of refined ferro-chromium output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refining_emissions
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-1986
+            ranges: []
+  - id: finishing_and_recovery
+    label: "Tapping, casting, sizing, slag handling, and metal recovery"
+    inputs:
+      product:
+        - row_id: input_molten_ferrochromium
+          role: "Molten ferro-chromium for finishing"
+          name: "Molten ferro-chromium"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the molten alloy entering casting or granulation and reconcile it with the supplying process."
+          amount:
+            expression: "Ladle-weighed or tapped mass entering finishing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per mass of marketable ferro-chromium output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-1986
+            ranges: []
+        - row_id: input_finishing_electricity
+          role: "Electricity for crushing and screening"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e773703a-f0ce-4a1e-b795-cb09dc7f2749"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record metered electricity for casting auxiliaries, crushing, screening, conveyors, and finishing controls."
+          amount:
+            expression: "Metered alternating-current electricity attributable to finishing, converted from kWh to MJ with the disclosed exact conversion"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per mass of marketable ferro-chromium output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-1986
+            ranges: []
+        - row_id: input_slag_granulation_water
+          role: "Water for slag granulation"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record fresh make-up water when slag is granulated on site; exclude recirculated water."
+          amount:
+            expression: "Metered fresh make-up water to the granulation loop"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per mass of marketable ferro-chromium output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: output_ferrochromium
+          role: "Marketable ferro-chromium reference product"
+          name: "Ferro-chromium"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This row is the declared reference product. Record dry net saleable ferro-chromium after sizing and quality acceptance."
+          amount:
+            expression: "Measured net dry accepted product mass, normalized to 1,000 kg"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg net dry marketable ferro-chromium"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - cpc-3-0-official-2025
+                - samr-gbt-5683-2024
+            ranges: []
+        - row_id: output_recovered_ferrochromium
+          role: "Recovered ferro-chromium metal"
+          name: "Recovered ferro-chromium"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record metal recovered from slag treatment or sizing residues as a separate internal or exported product flow."
+          amount:
+            expression: "Weighed recovered metal by destination and measured grade"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per mass of marketable ferro-chromium output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        - row_id: output_ferrochromium_slag
+          role: "Ferro-chromium slag sent off site"
+          name: "Ferro-chromium slag"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record treated or untreated ferro-chromium slag leaving the facility as waste; disclose destination and metal recovery status."
+          amount:
+            expression: "Weighed slag leaving the facility, net of internal recycle"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per mass of marketable ferro-chromium output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-1986
+            ranges: []
+        - row_id: output_finishing_dust
+          role: "Collected crushing and screening dust"
+          name: "Collected ferro-chromium product dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record dust captured from casting, crushing, screening, and product handling, net of recycle."
+          amount:
+            expression: "Weighed collected dust by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per mass of marketable ferro-chromium output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-1986
+            ranges: []
+        - row_id: output_finishing_wastewater
+          role: "Slag-granulation wastewater"
+          name: "Slag-granulation wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record wastewater purged or discharged from slag granulation after internal recirculation."
+          amount:
+            expression: "Metered purge or discharge volume crossing the facility boundary"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per mass of marketable ferro-chromium output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      elementary:
+        - row_id: emission_finishing_particulate
+          role: "Released particulate matter from finishing"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record particulate matter released to air after casting, crushing, screening, and handling controls."
+          amount:
+            expression: "Stack measurement plus quantified fugitive releases"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per mass of marketable ferro-chromium output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_emissions
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+                - us-epa-ap42-ferroalloy-1986
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "multi_process_facility"
+    rule: "Prefer physical subdivision and direct metering for burden preparation, smelting, refining, finishing, gas use, dust control, and slag recovery before allocating shared burdens."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: allocation_internal_recycle
+    applies_to: "internal_recycle"
+    rule: "Recycled dust, recovered metal, slag returns, and furnace gas used within the assessed foreground system carry their measured internal transfer and shall not create an additional external product credit or duplicate burden."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: allocation_exported_coproduct
+    applies_to: "exported_coproducts"
+    rule: "For exported recovered metal or cleaned furnace gas, first expand the system when a documented displaced function is supportable; otherwise use a documented physical relationship such as energy content for furnace gas or metal mass for recovered alloy. Do not apply an undisclosed economic allocation."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: allocation_waste_status
+    applies_to: "slag_and_dust"
+    rule: "Treat slag and dust as waste unless the dataset documents product status, destination, and function. Waste treatment burdens remain assigned to ferro-chromium production through the point where the waste-management system accepts the flow."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+      - us-epa-ap42-ferroalloy-1986
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_charge_preparation
+      process_id: "charge_preparation"
+      flow_role: "material, water, fuel, electricity, and prepared burden"
+      record_type: "scales, meters, invoices, stock records"
+      raw_fields: "opening stock; receipts; closing stock; dry matter; meter readings; prepared burden mass"
+      collection_method: "Reconcile calibrated scales and meters to batch and monthly production logs"
+      unit: "kg, m3, kWh, MJ"
+      frequency: "batch or daily, aggregated monthly"
+      temporal_coverage: "at least one representative reporting year or complete campaign"
+      site_scope: "all on-site preparation lines serving the product"
+      aggregation_rule: "Sum net consumed input and output by line, then normalize to prepared burden and reference product"
+      quality_evidence: "calibration records; moisture tests; stock reconciliation; meter coverage"
+    - protocol_id: cp_charge_emissions
+      process_id: "charge_preparation"
+      flow_role: "released particulate matter"
+      record_type: "stack tests, continuous monitors, fugitive survey"
+      raw_fields: "concentration; dry gas flow; operating time; capture state; fugitive estimate"
+      collection_method: "Apply site-approved monitoring method to controlled and quantified fugitive releases"
+      unit: "kg, mg/Nm3, Nm3"
+      frequency: "monitoring-plan frequency and after material change"
+      temporal_coverage: "same period as production records"
+      site_scope: "all relevant preparation release points"
+      aggregation_rule: "Integrate concentration and flow over operating time and reconcile capture status"
+      quality_evidence: "sampling report; detection limits; operating log; control-device status"
+    - protocol_id: cp_smelting_inputs
+      process_id: "carbothermic_smelting"
+      flow_role: "furnace materials, electricity, and cooling-water make-up"
+      record_type: "scales, charge sheets, meters, stock records"
+      raw_fields: "dry charged mass by material; composition; electricity; make-up water; furnace hours"
+      collection_method: "Reconcile charge sheets, calibrated meters, and inventory movements to each furnace campaign"
+      unit: "kg, kWh, m3"
+      frequency: "batch or shift, aggregated monthly"
+      temporal_coverage: "complete campaign and reporting period"
+      site_scope: "every furnace producing the declared alloy"
+      aggregation_rule: "Sum by furnace and route; exclude internal recirculation; normalize to tapped alloy and reference product"
+      quality_evidence: "scale calibration; meter coverage; assays; stock reconciliation"
+    - protocol_id: cp_smelting_outputs
+      process_id: "carbothermic_smelting"
+      flow_role: "tapped alloy, slag, captured dust, and recovered furnace gas"
+      record_type: "ladle scales, residue scales, gas meters, gas analysis"
+      raw_fields: "tapped metal; slag; dust by destination; dry gas volume; gas composition; heating value"
+      collection_method: "Reconcile tapped mass and residue destinations; calculate gas energy from measured volume and heating value"
+      unit: "kg, Nm3, MJ"
+      frequency: "tap or shift, aggregated monthly"
+      temporal_coverage: "same period as furnace inputs"
+      site_scope: "furnace, gas cleaning, and residue handling serving the product"
+      aggregation_rule: "Sum outputs; reconcile internal transfers and mass-balance differences"
+      quality_evidence: "scale calibration; laboratory assays; gas-meter calibration; destination records"
+    - protocol_id: cp_smelting_emissions
+      process_id: "carbothermic_smelting"
+      flow_role: "direct CO2, CO, and particulate releases"
+      record_type: "stack and fugitive monitoring plus carbon-balance records"
+      raw_fields: "concentration; gas flow; operating time; carbon inputs; exported gas; flare use; capture state"
+      collection_method: "Quantify monitored releases; where CO2 uses a carbon balance, retain every carbon input and output term"
+      unit: "kg, kg C, mg/Nm3, Nm3"
+      frequency: "monitoring-plan frequency, aggregated monthly"
+      temporal_coverage: "same period as furnace inputs and outputs"
+      site_scope: "all primary and secondary smelting release points"
+      aggregation_rule: "Integrate measured releases and reconcile carbon balance without double counting recovered gas"
+      quality_evidence: "monitoring reports; calibration; carbon assays; flare and control logs"
+    - protocol_id: cp_refining_inputs
+      process_id: "medium_low_carbon_refining"
+      flow_role: "alloy, ore, reductant, lime, oxygen, and electricity"
+      record_type: "scales, charge sheets, gas meters, electricity meters"
+      raw_fields: "charged mass and composition; oxygen; electricity; vessel identity"
+      collection_method: "Reconcile each heat or ladle to refining production records"
+      unit: "kg, Nm3, kWh"
+      frequency: "heat or batch, aggregated monthly"
+      temporal_coverage: "complete refining campaign"
+      site_scope: "all vessels producing the declared grade"
+      aggregation_rule: "Sum route-specific inputs and normalize to accepted refined alloy"
+      quality_evidence: "scale and meter calibration; certificates and assays; heat logs"
+    - protocol_id: cp_refining_outputs
+      process_id: "medium_low_carbon_refining"
+      flow_role: "refined alloy, slag, and collected dust"
+      record_type: "ladle scales, residue scales, laboratory assays"
+      raw_fields: "alloy mass and composition; slag; dust by destination"
+      collection_method: "Reconcile each heat output and residue with input charge and destination records"
+      unit: "kg"
+      frequency: "heat or batch, aggregated monthly"
+      temporal_coverage: "same period as refining inputs"
+      site_scope: "all vessels and controls serving the grade"
+      aggregation_rule: "Sum outputs and reconcile mass-balance differences"
+      quality_evidence: "scale calibration; assays; destination records"
+    - protocol_id: cp_refining_emissions
+      process_id: "medium_low_carbon_refining"
+      flow_role: "released particulate matter"
+      record_type: "stack tests, continuous monitors, fugitive survey"
+      raw_fields: "concentration; gas flow; operating time; hood state"
+      collection_method: "Apply site-approved monitoring method to controlled and quantified fugitive releases"
+      unit: "kg, mg/Nm3, Nm3"
+      frequency: "monitoring-plan frequency"
+      temporal_coverage: "same period as refining records"
+      site_scope: "all refining release points"
+      aggregation_rule: "Integrate concentration and flow over operating time"
+      quality_evidence: "sampling report; detection limits; control-device status"
+    - protocol_id: cp_finishing_records
+      process_id: "finishing_and_recovery"
+      flow_role: "molten input, electricity, water, accepted product, recovered metal, slag, dust, and wastewater"
+      record_type: "scales, product dispatch, meters, laboratory and destination records"
+      raw_fields: "molten mass; electricity; water; accepted dry product; grade; size; recovered metal; slag; dust; wastewater"
+      collection_method: "Reconcile production, quality acceptance, inventory, and dispatch records; apply dry-mass correction"
+      unit: "kg, kWh, m3"
+      frequency: "batch or daily, aggregated monthly"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all finishing and recovery lines serving the product"
+      aggregation_rule: "Sum accepted dry product and all residues; normalize the full foreground system to 1,000 kg"
+      quality_evidence: "scale and meter calibration; moisture and assay reports; dispatch and destination records"
+    - protocol_id: cp_finishing_emissions
+      process_id: "finishing_and_recovery"
+      flow_role: "released particulate matter"
+      record_type: "stack tests and fugitive survey"
+      raw_fields: "concentration; gas flow; operating time; capture state"
+      collection_method: "Quantify controlled and fugitive releases for casting, crushing, screening, and handling"
+      unit: "kg, mg/Nm3, Nm3"
+      frequency: "monitoring-plan frequency"
+      temporal_coverage: "same period as finishing records"
+      site_scope: "all finishing release points"
+      aggregation_rule: "Integrate measured releases and reconcile operating coverage"
+      quality_evidence: "monitoring reports; calibration; control-device and production logs"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all foreground exchanges"
+      rule: "normalized exchange = reporting-period exchange × 1,000 kg / accepted dry marketable ferro-chromium"
+      inputs:
+        - "exchange amount"
+        - "accepted product mass"
+        - "product moisture"
+      output: "exchange per 1,000 kg net dry product"
+      source_ids: []
+    - id: calc_dry_product_mass
+      applies_to: "reference product"
+      rule: "dry product mass = net accepted product mass × (1 − measured free-moisture mass fraction)"
+      inputs:
+        - "net product mass"
+        - "moisture fraction"
+      output: "kg dry marketable ferro-chromium"
+      source_ids:
+        - samr-gbt-5683-2024
+    - id: calc_internal_transfer
+      applies_to: "internal intermediates"
+      rule: "Pair supplying-process output and receiving-process input; aggregated boundary amount is zero for the matched internal transfer, while losses remain explicit"
+      inputs:
+        - "paired transfer masses"
+        - "inventory change"
+        - "loss records"
+      output: "reconciled internal transfer and unexplained difference"
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+    - id: calc_furnace_gas_energy
+      applies_to: "cleaned furnace gas"
+      rule: "recovered-gas energy = measured dry gas volume × measured lower heating value"
+      inputs:
+        - "dry gas volume"
+        - "lower heating value"
+      output: "MJ recovered furnace gas"
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+    - id: calc_monitored_release
+      applies_to: "monitored air emission"
+      rule: "released mass = time-integral of pollutant concentration × dry gas flow, with unit and reference-condition conversion"
+      inputs:
+        - concentration
+        - "gas flow"
+        - time
+        - "reference conditions"
+      output: "kg pollutant released"
+      source_ids:
+        - us-epa-ap42-ferroalloy-1986
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Retain product specification, lot or campaign, chromium and carbon assays, physical form, size class, and dry-mass basis."
+      evidence: "certificate of analysis; sampling and moisture method; dispatch record"
+    - id: dq_route_identity
+      applies_to: "all processes"
+      requirement: "Declare which preparation, furnace, refining, off-gas, water, and slag-recovery configurations operated; explain every conditional process marked not applicable."
+      evidence: "process flow diagram; equipment list; campaign log"
+    - id: dq_temporal_alignment
+      applies_to: "all exchanges"
+      requirement: "Use input, output, emission, and production records from the same reporting period; justify any proxy period."
+      evidence: "dated records; meter extracts; monitoring schedule"
+    - id: dq_completeness
+      applies_to: "foreground system"
+      requirement: "Reconcile all production lines and release points serving the product; quantify missing meter coverage and unexplained mass-balance differences."
+      evidence: "coverage matrix; mass balance; exception log"
+    - id: dq_background_match
+      applies_to: "purchased inputs"
+      requirement: "Select background datasets matching product state, composition, geography, technology, and time; disclose proxies."
+      evidence: "dataset identifiers; supplier specifications; proxy rationale"
+    - id: dq_uuid_status
+      applies_to: "all inventory rows"
+      requirement: "Treat all blank Tiangong UUIDs as unresolved identities; no UUID may be added until hybrid discovery and a public state_code=100 direct read confirm semantic, property, unit, state, geography, and technology suitability."
+      evidence: "UUID audit record"
+    - id: dq_range_status
+      applies_to: "important flows"
+      requirement: "Use foreground records without an external numeric QA range until two independent, original-text, boundary-compatible sources support synthesis; retain the manifest evidence need."
+      evidence: "source review and range synthesis record"
+validation_rules:
+  - rule_id: validation_identity
+    applies_to: "reference_product"
+    rule: "Reject a package that omits ferro-chromium grade, chromium and carbon contents, production route, physical form, dry-mass basis, or the link to output_ferrochromium."
+    source_ids:
+      - cpc-3-0-official-2025
+      - samr-gbt-5683-2024
+  - rule_id: validation_route
+    applies_to: "process_map"
+    rule: "Require at least one alloy-production route and every applicable preparation, refining, abatement, and finishing process; reject invented operations and unexplained conditional exclusions."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+      - us-epa-ap42-ferroalloy-1986
+  - rule_id: validation_atomic_inventory
+    applies_to: "process_inventory"
+    rule: "Require each row to represent one atomic exchange and keep electricity, fuels, water, raw materials, wastes, recovered gas, and each elementary emission separate."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: validation_internal_balance
+    applies_to: "internal_transfers"
+    rule: "Flag unmatched internal transfers of prepared burden, molten alloy, recovered metal, slag, dust, or furnace gas and require an explanation for material-balance differences."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: validation_release_control
+    applies_to: "emissions_and_residues"
+    rule: "Require captured dust and slag to remain explicit and require released CO2, CO, and particulate matter after control to be reported separately when applicable."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+      - us-epa-ap42-ferroalloy-1986
+  - rule_id: validation_allocation
+    applies_to: "coproducts_and_waste"
+    rule: "Reject duplicate credits for internal recycle and reject undisclosed allocation for exported gas or recovered metal; require waste/product status and destination for slag and dust."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: validation_uuid_and_range_gaps
+    applies_to: "review_readiness"
+    rule: "Keep the PCR in review-required status while UUIDs and independent range evidence remain unresolved; absence of those references does not authorize a proxy UUID or invented range."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production dataset that may become a secondary_dataset or background_dataset only after review and publication"
+  downstream_use: "Cradle-to-gate product systems requiring ferro-chromium alloy input, including stainless and alloy-steel production when grade and geography are compatible"
+  allowed_use: "Use for the declared ferro-chromium grade, route, facility geography, technology, product state, and reporting period; aggregation across sites requires transparent weighting"
+  excluded_use: "Chromium metal, silico-chromium as product, other ferro-alloys, secondary-residue recovery without an approved extension, or a grade/route/geography materially different from the dataset"
+  required_metadata: "canonical PCR id; CPC context; product grade and composition; route and equipment; furnace closure; off-gas fate; water and slag management; reference-product state; facility geography; period; allocation; background dataset identifiers; unresolved UUID and range status"
+  required_quality_disclosure: "meter and scale coverage; moisture and assay methods; monitoring coverage and detection limits; mass-balance difference; internal recycle; conditional-process exclusions; proxy datasets; allocation rationale; review limitations"
+  update_trigger: "Change in ore type, reductant, grade, furnace or refining route, furnace closure, off-gas fate, abatement, water loop, slag recovery, allocation, product form, geography, or representative reporting period"
+data_sources:
+  - id: "cpc-3-0-official-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division. CPC Version 3.0 structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-03)."
+    used_for: "Official CPC 41113 product classification identity."
+  - id: "eu-jrc-nfm-bref-2017"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre. Best Available Techniques (BAT) Reference Document for the Non-Ferrous Metals Industries, JRC107041, 2017. https://publications.jrc.ec.europa.eu/repository/bitstream/JRC107041/kjna28648enn.pdf (retrieved 2026-09-03)."
+    used_for: "Ferro-chromium grades, raw materials, preparation, high-carbon smelting, medium/low-carbon routes, gas, slag, dust, water, energy, and finishing process decomposition. No numeric range from this source is adopted."
+  - id: "us-epa-ap42-ferroalloy-1986"
+    type: "official_guidance"
+    reference: "United States Environmental Protection Agency. AP-42 Section 12.4, Ferroalloy Production, October 1986. https://www.epa.gov/sites/production/files/2020-11/documents/b12s04.pdf (retrieved 2026-09-03)."
+    used_for: "Independent description of electric-furnace and exothermic routes, tapping, slag separation, casting, crushing, screening, and air-emission sources. No emission factor or numeric range is adopted."
+  - id: "samr-gbt-5683-2024"
+    type: "standard"
+    reference: "State Administration for Market Regulation and Standardization Administration of China. GB/T 5683-2024, 铬铁 (Ferrochromium). https://openstd.samr.gov.cn/bzgk/std/newGbInfo?hcno=EA0B1B2339CA6704E035C52D7AD92A3A (retrieved 2026-09-03)."
+    used_for: "Professional Chinese product name, English correspondence, and product-specification identity. No conformance limit is used as an empirical range."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:a696c09a401b34ec2badccd687f48f4970381101f24cf90e711c60baa3d4cf1d"
+  generated_content_sha256: "sha256:6682f8cbce45e5ca5c64d7552edafcbfc58a88dc02f8872c2e99df444a5c9ba4"

@@ -1,10 +1,480 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "47813"
-  title: "Database management software, packaged"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.radio-television-and-communication-equipment-and-apparatus.database-management-software-packaged"
+  classification_refs: "CPC 3.0 47813, Database management software, packaged"
+  covered_products: "Published DBMS collections or suites that store, modify, and extract database information and are supplied as finished packaged system software"
+  excluded_products: "Operating systems; network software; development tools and programming-language software; application software; custom software-development services; software downloads; on-line software; database licensing services without the packaged product"
+  representative_product: "A released DBMS distribution with a declared version, supported platform, licence scope, database workload capability, and physical delivery configuration"
+  production_route: "Software development, build, test, scan, release, and immediate retail-package assembly, with mutually exclusive purchased-recorded-carrier or in-house-blank-carrier-recording routes when an optical carrier is included"
+  market_state: "Finished packaged DBMS at the publisher or packaging gate, measured as accepted gross product mass including the declared immediate carrier and retail package"
+functional_unit:
+  what: "Provision of a finished published DBMS collection or suite capable of storing, modifying, and extracting information from a database"
+  how_much: "1 kg of accepted finished packaged DBMS product at the declared publisher or packaging gate"
+  how_well: "The declared release version passes documented release acceptance tests for the stated database functions, workload, supported platform, and licence scope"
+  how_long_or_cycle: "One declared release version and its stated support term; post-gate support activity is excluded unless separately modelled"
+  reference_flow_link: "packaged_dbms_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_rule_1
+      applies_to: "Foreground software production"
+      rule: "Include development, build, test, security scanning, release preparation, allocated electricity, and allocated computer hardware that significantly support the declared release. Include immediate retail-package assembly only when physical components occur in the declared product configuration. Include optical-carrier recording only for the in-house recording route."
+      source_ids:
+        - green-software-foundation-sci-1-1-0
+    - rule_id: boundary_rule_2
+      applies_to: "Product-category separation"
+      rule: "Model only the finished packaged DBMS product defined by its storage, modification, and extraction functions. Do not relabel download-only software, on-line software, licensing services, another software subclass, or a release-candidate intermediate as the reference product."
+      source_ids:
+        - un-cpc-3-0-47813-detail
+    - rule_id: boundary_rule_3
+      applies_to: "Downstream stages"
+      rule: "Exclude distribution beyond the declared gate, installation, operation, maintenance, user devices, data-centre operation, and end-of-life from this production dataset. If any are added for a study, report them as separate modules with a declared workload-based functional unit and infrastructure boundary."
+      source_ids:
+        - green-software-foundation-sci-1-1-0
+    - rule_id: boundary_rule_4
+      applies_to: "Optical-carrier supply"
+      rule: "When an optical carrier is included, select exactly one route. The purchased-recorded route records the finished recorded carrier as a product input and treats recording as upstream. The in-house route records blank optical media, foreground recording electricity, every other actual recording consumable, and every actual recording waste; it shall not also record a purchased recorded carrier."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Publisher-controlled source code, third-party software components, build instructions, release requirements, and the declared physical packaging bill of materials before foreground development and release activities"
+  starting_condition_role: "Starting condition for foreground software production and conditional physical package assembly"
+  product_classification_scope: "Published packaged database-management system software whose essential function is storing, modifying, and extracting database information"
+  recursive_input_rule: "A purchased or transferred finished product already in this same packaged-DBMS category shall be recorded as an upstream product input with a separate conforming dataset; its production shall not be re-expanded inside the current foreground process"
+  upstream_dataset_requirement: "Use geographically and temporally representative upstream datasets for electricity, computer hardware, purchased recorded media, blank optical media, paper boxes, printed paper inserts, and polypropylene cases that cross the foreground boundary"
+  disclosure: "Declare the software components included, release version, accepted output mass, development and build period, infrastructure boundary, hardware allocation parameters, delivery configuration, selected carrier-supply route, package bill of materials, geography, data gaps, and every excluded lifecycle stage"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Database management software, packaged"
+    uuid: "3761b338-237c-4781-81f2-ecd23ed93283"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "DBMS version and edition"
+    - "supported operating platform"
+    - "licence and user or processor scope"
+    - "declared database functions and representative workload"
+    - "release acceptance criteria"
+    - "physical carrier type"
+    - "immediate package composition"
+    - "geographic and temporal scope"
+    - "production and packaging gate"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass_basis
+    applies_to: "Reference product and physical package components"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh accepted finished distribution units and all included immediate carrier, case, insert, and retail-box components. Exclude shipping cartons and pallets beyond the declared gate. Normalize all production exchanges by accepted gross product mass to exactly 1 kg."
+  - id: electricity_energy_conversion
+    applies_to: "Metered or telemetry-derived electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Retain raw electricity records in kWh and convert the allocated total to MJ using 1 kWh = 3.6 MJ. Include electricity for hardware reserved or provisioned for the foreground activities, not only active execution."
+  - id: hardware_allocation_basis
+    applies_to: "Rack servers and desktop workstations"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record installed hardware mass, expected life, time reserved for the release, resources reserved, and total resources. Calculate allocated hardware mass as installed mass multiplied by time share and resource share, then normalize to 1 kg of accepted output."
+process_map:
+  - id: software_production_release
+    name: "Software development, release, and conditional physical packaging"
+    inclusion: "required"
+    inclusion_condition: "Physical-package rows apply only when the declared finished distribution unit contains the corresponding component; if an optical carrier is present, select exactly one of the purchased-recorded and in-house-recording routes"
+    role: "Foreground production"
+    quantitative_reference: "1 kg accepted finished packaged DBMS product"
+process_inventory:
+  - id: software_production_release
+    label: "Software development, release, and conditional physical packaging"
+    inputs:
+      product:
+        - row_id: electricity_software_production
+          role: "Electricity for software production and release"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value / MJ"
+          description: "Record purchased electricity for publisher-controlled development, build, test, scanning, release, and immediate packaging activities. Add separately identified foreground carrier-recording electricity to this exchange only when the in-house recording route is selected; exclude carrier-recording electricity from the foreground when a finished recorded carrier is purchased because that recording is upstream. The allocation shall cover hardware reserved or provisioned for the included activities."
+          amount:
+            expression: "Sum measured or telemetry-derived kWh within the foreground boundary, including separately identified carrier-recording kWh only for the in-house recording route, allocate shared consumption to the declared release using causal activity records, convert the allocated result to MJ, and divide by accepted output mass"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished packaged DBMS product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_electricity_records
+              source_ids:
+                - green-software-foundation-sci-1-1-0
+            ranges: []
+        - row_id: rack_server_computer
+          role: "Allocated rack server computer"
+          name: "Rack server computer"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record a rack server computer only when it is reserved for development, build, test, scanning, or release work within the foreground boundary. The Tiangong flow UUID remains unresolved."
+          amount:
+            expression: "Calculate allocated installed mass from collected hardware mass, reserved time, expected life, reserved resources, and total resources, then normalize to accepted output mass"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished packaged DBMS product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_hardware_allocation_records
+              source_ids:
+                - green-software-foundation-sci-1-1-0
+            ranges: []
+        - row_id: desktop_workstation_computer
+          role: "Allocated desktop workstation computer"
+          name: "Desktop workstation computer"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record a complete desktop workstation computer only when it is reserved for foreground development, test, or release work. The Tiangong flow UUID remains unresolved."
+          amount:
+            expression: "Calculate allocated installed mass from collected workstation mass, reserved time, expected life, reserved resources, and total resources, then normalize to accepted output mass"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted finished packaged DBMS product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_hardware_allocation_records
+              source_ids:
+                - green-software-foundation-sci-1-1-0
+            ranges: []
+        - row_id: recorded_optical_disc
+          role: "Recorded optical disc"
+          name: "Recorded optical disc"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the finished recorded optical carrier only when it is physically included in the accepted distribution unit and the purchased-recorded route is selected. Its purchase includes upstream recording once; do not also include foreground carrier recording or blank optical media. The Tiangong flow UUID remains unresolved."
+          amount:
+            expression: "Divide recorded-disc mass issued to the batch minus only genuinely unused discs returned to usable stock by accepted output mass; include discs consumed and subsequently rejected, and record their waste separately"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg accepted finished packaged DBMS product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_physical_package_bom
+              source_ids: []
+            ranges: []
+        - row_id: blank_optical_media
+          role: "Blank optical media"
+          name: "Optical media, not recorded"
+          flow_type: "product"
+          flow_ref:
+            uuid: "714535e8-24d4-44bf-8496-4837f638fdd4"
+          property_unit: "Mass / kg"
+          description: "Record blank unrecorded optical media only when an optical carrier is physically included and the in-house recording route is selected. Include foreground recording electricity, any other actual recording consumable as its own concrete product flow, and every actual recording waste as its own atomic outgoing waste exchange. Do not also record a purchased finished recorded carrier."
+          amount:
+            expression: "Divide blank optical-media mass issued to the recording batch minus only genuinely unused media returned to usable stock by accepted output mass; include media consumed and subsequently rejected, and record their waste separately"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg accepted finished packaged DBMS product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_physical_package_bom
+              source_ids: []
+            ranges: []
+        - row_id: paper_box
+          role: "Paper box"
+          name: "Paper box"
+          flow_type: "product"
+          flow_ref:
+            uuid: "12d5d744-7725-4dbc-b102-43c80547f777"
+          property_unit: "Mass / kg"
+          description: "Record the immediate paper retail box only when it is physically included in the accepted distribution unit."
+          amount:
+            expression: "Divide paper-box mass issued to the batch minus only genuinely unused boxes returned to usable stock by accepted output mass; include boxes consumed and subsequently rejected, and record their waste separately"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg accepted finished packaged DBMS product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_physical_package_bom
+              source_ids: []
+            ranges: []
+        - row_id: paper_insert
+          role: "Printed paper insert"
+          name: "Packaging, paper insert"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b4681b7b-ff95-4df8-804a-fff06aa3c3aa"
+          property_unit: "Mass / kg"
+          description: "Record the printed instruction or licence insert only when it is physically included in the accepted distribution unit."
+          amount:
+            expression: "Divide printed-paper-insert mass issued to the batch minus only genuinely unused inserts returned to usable stock by accepted output mass; include inserts consumed and subsequently rejected, and record their waste separately"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg accepted finished packaged DBMS product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_physical_package_bom
+              source_ids: []
+            ranges: []
+        - row_id: polypropylene_disc_case
+          role: "Polypropylene optical-disc case"
+          name: "Polypropylene optical-disc case"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record a finished polypropylene optical-disc case only when it is physically included in the accepted distribution unit. The Tiangong flow UUID remains unresolved."
+          amount:
+            expression: "Divide polypropylene-case mass issued to the batch minus only genuinely unused cases returned to usable stock by accepted output mass; include cases consumed and subsequently rejected, and record their waste separately"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg accepted finished packaged DBMS product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_physical_package_bom
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packaged_dbms_output
+          role: "Accepted finished packaged database-management software"
+          name: "Database management software, packaged"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3761b338-237c-4781-81f2-ecd23ed93283"
+          property_unit: "Mass / kg"
+          description: "This is the reference product after release acceptance and conditional physical-package assembly."
+          amount:
+            expression: "exactly 1 kg after normalization from measured accepted gross output mass"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "PCR reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - un-cpc-3-0-47813-detail
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "Separately metered release activities"
+    rule: "Avoid allocation by separating release-specific build jobs, test runs, scanning jobs, carrier-recording batches, packaging batches, and accepted output records whenever possible."
+    source_ids:
+      - green-software-foundation-sci-1-1-0
+  - rule_id: allocation_rule_2
+    applies_to: "Shared electricity"
+    rule: "Allocate shared metered or telemetry-derived electricity with a causal activity driver measured over the same period, such as job runtime multiplied by reserved compute resources. Disclose the driver and do not use revenue allocation when causal data are available."
+    source_ids:
+      - green-software-foundation-sci-1-1-0
+  - rule_id: allocation_rule_3
+    applies_to: "Shared computer hardware"
+    rule: "Allocate installed rack-server and workstation mass by time share multiplied by resource share: allocated mass = installed mass × time reserved / expected life × resources reserved / total resources. Use the same component boundary and reference flow across aggregated components."
+    source_ids:
+      - green-software-foundation-sci-1-1-0
+  - rule_id: allocation_rule_4
+    applies_to: "Rejected packaging and products"
+    rule: "Attribute measured rejected carrier and package materials to the production batch that generated them. A rejected item remains part of consumed product input and shall not be subtracted from that input. Record every actual material waste as a separate atomic outgoing exchange; do not subtract recyclable waste without recording that exchange and the chosen end-of-life allocation convention."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_electricity_records
+      process_id: "software_production_release"
+      flow_role: "electricity_software_production"
+      record_type: "Meter or telemetry records linked to release activities and the selected carrier route"
+      raw_fields: "meter_id, component_id, activity_id, activity_type, carrier_route, release_id, start_time, end_time, electricity_kwh, reserved_resource_quantity, accepted_output_kg"
+      collection_method: "Export facility meters, cloud or device telemetry, and build-pipeline logs; reconcile time zones, remove duplicate intervals, and tag carrier-recording intervals separately"
+      unit: "kWh and kg"
+      frequency: "Per job or at the finest available interval, aggregated per release and activity type"
+      temporal_coverage: "Full declared development, build, test, scan, release, and packaging period, plus carrier-recording periods only for the in-house route"
+      site_scope: "All publisher-controlled and contracted foreground sites included in the release"
+      aggregation_rule: "Sum non-overlapping kWh, include tagged carrier-recording kWh only for the in-house route, allocate shared intervals with the declared causal driver, convert to MJ, and divide by accepted output kg"
+      quality_evidence: "Meter calibration or provider statement, raw export, pipeline-log link, carrier-route record, interval reconciliation, allocation worksheet"
+    - protocol_id: cp_hardware_allocation_records
+      process_id: "software_production_release"
+      flow_role: "rack_server_computer; desktop_workstation_computer"
+      record_type: "Hardware asset and reservation records"
+      raw_fields: "asset_id, hardware_type, installed_mass_kg, installation_date, expected_retirement_date, release_id, time_reserved, resources_reserved, total_resources"
+      collection_method: "Reconcile asset register, supplier mass specification, scheduler reservation logs, and release records"
+      unit: "kg, hours, and consistent resource units"
+      frequency: "At each asset change and reservation interval, aggregated per release"
+      temporal_coverage: "Full installed life estimate and all reservation intervals for the declared release"
+      site_scope: "Every foreground computing asset with a significant reserved share"
+      aggregation_rule: "Calculate time share and resource share per asset, multiply by installed mass, sum by hardware type, and divide by accepted output kg"
+      quality_evidence: "Asset-register extract, supplier specification, scheduler log, expected-life basis, allocation worksheet"
+    - protocol_id: cp_physical_package_bom
+      process_id: "software_production_release"
+      flow_role: "recorded_optical_disc; blank_optical_media; paper_box; paper_insert; polypropylene_disc_case"
+      record_type: "Carrier-route declaration, bill of materials, receiving, stock, batch issue, waste, and accepted-output mass records"
+      raw_fields: "carrier_route, component_id, material_description, supplier, batch_id, received_mass_kg, opening_stock_mass_kg, issued_mass_kg, unused_returned_mass_kg, retained_in_accepted_output_mass_kg, outgoing_waste_flow_id, outgoing_waste_mass_kg, closing_stock_mass_kg, accepted_output_kg"
+      collection_method: "Confirm that purchased-recorded and in-house-recording routes are mutually exclusive, then reconcile purchase and receiving records with stock movements, batch scales, separate atomic waste records, and the approved package bill of materials"
+      unit: "kg"
+      frequency: "Per carrier-recording or packaging batch"
+      temporal_coverage: "All batches supplying the declared release and reporting period"
+      site_scope: "Every foreground or contracted physical-package assembly site"
+      aggregation_rule: "Consumed input mass = issued mass minus genuinely unused mass returned to usable stock; do not subtract rejected mass. Divide consumed input by accepted output kg. Reconcile net input crossing the boundary = retained accepted-output mass + separately recorded outgoing waste mass + closing stock minus opening stock."
+      quality_evidence: "Carrier-route approval, calibrated-scale record, approved bill of materials, supplier specification, stock ledger, batch reconciliation, and separately identified waste records"
+    - protocol_id: cp_output_mass_acceptance
+      process_id: "software_production_release"
+      flow_role: "packaged_dbms_output"
+      record_type: "Release acceptance and finished-product mass records"
+      raw_fields: "release_id, version, edition, platform, licence_scope, acceptance_test_id, delivery_configuration, unit_count, gross_mass_kg, rejected_mass_kg, gate, acceptance_date"
+      collection_method: "Link signed release acceptance to calibrated gross-mass measurements of accepted distribution units"
+      unit: "kg"
+      frequency: "Each accepted release and packaging batch"
+      temporal_coverage: "Entire declared reporting period"
+      site_scope: "All sites producing accepted reference product"
+      aggregation_rule: "Sum accepted gross mass only; use it as the denominator for normalization to 1 kg"
+      quality_evidence: "Signed acceptance record, test report, scale calibration, batch identifier, package bill of materials"
+  calculation_rules:
+    - id: calc_electricity_mj
+      applies_to: "electricity_software_production"
+      rule: "Allocated electricity MJ per kg = sum of allocated electricity kWh × 3.6 / accepted output kg"
+      inputs:
+        - "Non-overlapping kWh intervals"
+        - "causal allocation driver"
+        - "accepted output kg"
+      output: "MJ electricity per kg reference product"
+      source_ids:
+        - green-software-foundation-sci-1-1-0
+    - id: calc_hardware_mass
+      applies_to: "rack_server_computer; desktop_workstation_computer"
+      rule: "Allocated hardware kg per kg output = sum of installed mass kg × time reserved / expected life × resources reserved / total resources / accepted output kg"
+      inputs:
+        - "Installed mass"
+        - "reserved time"
+        - "expected life"
+        - "reserved resources"
+        - "total resources"
+        - "accepted output kg"
+      output: "Allocated hardware kg per kg reference product"
+      source_ids:
+        - green-software-foundation-sci-1-1-0
+    - id: calc_package_component_mass
+      applies_to: "recorded_optical_disc; blank_optical_media; paper_box; paper_insert; polypropylene_disc_case"
+      rule: "Consumed component kg per kg output = issued mass minus genuinely unused mass returned to usable stock, divided by accepted output kg; rejected material remains in consumed input and is also recorded as its own outgoing waste exchange"
+      inputs:
+        - "Selected carrier route"
+        - "issued mass"
+        - "unused returned mass"
+        - "retained accepted-output mass"
+        - "separate outgoing waste masses"
+        - "opening and closing stock"
+        - "and accepted-output mass"
+      output: "Consumed component kg per kg reference product plus a reconciled material balance"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Reference product"
+      requirement: "Preserve the exact DBMS version, edition, supported platform, licence scope, database functions, workload acceptance criteria, delivery configuration, and production gate."
+      evidence: "Release manifest, signed acceptance test, licence specification, product description"
+    - id: dq_temporal
+      applies_to: "Electricity, hardware, and output records"
+      requirement: "Use activity and asset records that cover the full declared release-production period; retain the finest available temporal granularity and identify annual data as the minimum-granularity fallback."
+      evidence: "Raw telemetry, meter export, asset register, reporting-period reconciliation"
+    - id: dq_completeness
+      applies_to: "Foreground boundary"
+      requirement: "Reconcile all significant build, test, scan, release, recording, and packaging components in the declared software boundary; explain excluded sites, components, and data gaps."
+      evidence: "Boundary register, pipeline inventory, package bill of materials, completeness reconciliation"
+    - id: dq_measurement
+      applies_to: "Mass and electricity"
+      requirement: "Use calibrated mass measurements or supplier specifications and traceable meter or provider records; retain conversion and allocation worksheets."
+      evidence: "Calibration record, supplier specification, provider statement, calculation workbook"
+    - id: dq_conditional_route
+      applies_to: "Physical carrier and package rows"
+      requirement: "For every conditional component, record either measured use or documented absence for the declared delivery configuration."
+      evidence: "Approved bill of materials, product photograph or configuration record, batch issue record"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "Product identity"
+    rule: "Fail validation when the reference product is not the accepted finished CPC 47813 DBMS flow, when a release-candidate intermediate is substituted, or when required version, platform, licence, function, workload, delivery, geography, time, or gate qualifiers are missing."
+    source_ids:
+      - un-cpc-3-0-47813-detail
+  - rule_id: validation_rule_2
+    applies_to: "Inventory completeness"
+    rule: "Require exactly one reference output row and require each input to be one concrete electricity, hardware, carrier, or package exchange. Reject umbrella utility, hardware, packaging, waste, or emissions rows."
+    source_ids: []
+  - rule_id: validation_rule_3
+    applies_to: "Electricity"
+    rule: "Confirm that electricity intervals cover the declared foreground period, reserved or provisioned hardware is included, duplicate intervals are removed, the allocation driver is disclosed, and kWh-to-MJ conversion is correct."
+    source_ids:
+      - green-software-foundation-sci-1-1-0
+  - rule_id: validation_rule_4
+    applies_to: "Hardware allocation"
+    rule: "Confirm positive expected life and total resources, non-negative reserved time and resources, time share and resource share not greater than one unless explicitly justified, and the stated allocation formula for each asset."
+    source_ids:
+      - green-software-foundation-sci-1-1-0
+  - rule_id: validation_rule_5
+    applies_to: "Physical package configuration"
+    rule: "Require a measured amount or documented absence for each carrier and package row; do not infer an absent component from a zero or blank record. If an optical carrier is present, require exactly one route: purchased recorded carrier with no foreground recording, or blank optical media with foreground recording electricity, every actual additional consumable, and every actual recording waste."
+    source_ids: []
+  - rule_id: validation_rule_6
+    applies_to: "Normalization and sources"
+    rule: "Confirm that all amounts use the same accepted-output denominator, the reference output equals exactly 1 kg, source ids resolve, unresolved UUIDs remain blank, and no unsupported empirical range is introduced."
+    source_ids: []
+  - rule_id: validation_rule_7
+    applies_to: "Package-material balance"
+    rule: "For each carrier and package material, confirm that input consumption includes rejected material, every actual waste is a separate atomic outgoing exchange, and net input equals retained accepted-output mass plus outgoing waste plus closing stock minus opening stock. Fail validation when rejected material disappears through subtraction from product input."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for finished packaged database-management software"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product carbon-footprint and LCA models that need a mass-based packaged-DBMS production input at a declared publisher or packaging gate; comparative use only when function, release, licence, workload, delivery configuration, geography, time, boundary, and data quality are equivalent"
+  excluded_use: "Download-only or on-line software; licensing service without the packaged product; custom software development; post-gate operation or maintenance; another software subclass; comparisons based only on product mass when functional capability differs"
+  required_metadata: "Canonical PCR id; product UUID; version and edition; supported platform; licence scope; database functions and workload; support term; carrier and package configuration; accepted output mass; production route; sites; geography; reporting period; boundary; allocation methods; source ids"
+  required_quality_disclosure: "Meter and telemetry coverage; hardware asset and allocation coverage; package bill-of-material reconciliation; output mass and acceptance evidence; temporal granularity; supplier-data quality; exclusions; unresolved UUIDs; missing range evidence; uncertainty and data gaps"
+  update_trigger: "New release or edition; material architecture or build-pipeline change; changed hardware allocation; changed physical carrier or package; site or grid change; licence or workload change; improved UUID identity; new independent range evidence; source or method revision"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0 Structure, structure dated 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Official CPC 47813 title and hierarchy within packaged systems software"
+  - id: "un-cpc-3-0-47813-detail"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 classification detail for code 47813, https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/47813, retrieved 2026-09-11"
+    used_for: "Product identity, database-management function, and category separation"
+  - id: "green-software-foundation-sci-1-1-0"
+    type: "standard"
+    reference: "Green Software Foundation, Software Carbon Intensity Specification, version 1.1.0, https://sci.greensoftware.foundation/, retrieved 2026-09-11"
+    used_for: "Software-boundary disclosure, functional-unit consistency, electricity measurement, infrastructure inclusion, hardware time-share and resource-share allocation, and data granularity"
+  - id: "cifa-lca-database-guideline-appendix"
+    type: "official_guidance"
+    reference: "Carbon Footprint Industry Alliance, LCA/碳足迹数据库构建导则——第六章附录, https://www.carbonfootprint.network/docs/cifa-guidelines/lca-database-guideline/chapter-6-appendix, retrieved 2026-09-11"
+    used_for: "Professional Chinese classification title for CPC 47813"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:47c7e9e9ef8d932735d34fff7a9251136faa9760495d6550499f1fabbd20fc1d"
+  generated_content_sha256: "sha256:c2f8bc9783da55baad405d3613bf54587f6225248a9dc5f652d932310c46b5cb"

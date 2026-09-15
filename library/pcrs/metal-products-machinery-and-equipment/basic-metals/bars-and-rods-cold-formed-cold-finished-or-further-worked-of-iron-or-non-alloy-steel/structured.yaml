@@ -1,10 +1,989 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41261"
-  title: "Bars and rods, cold-formed, cold-finished or further worked, of iron or non-alloy steel"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.bars-and-rods-cold-formed-cold-finished-or-further-worked-of-iron-or-non-alloy-steel"
+  classification_refs: "CPC 3.0: 41261 (exact classification reference; mapping acceptance is governed separately)"
+  covered_products: "Uncoated iron or non-alloy-steel bars and rods in straight lengths whose delivered state is cold-drawn, cold-formed, ground, peeled, polished, straightened, sized, or otherwise further worked"
+  excluded_products: "Wire; coiled wire rod sold without conversion to straight bars or rods; alloy-steel bars or rods; angles, shapes, and sections; tubes and hollow profiles; products only forged, hot-rolled, hot-drawn, or hot-extruded; coated products classified by the coating transformation"
+  representative_product: "Bright non-alloy-steel bar in straight commercial lengths, produced from hot-rolled bar by cold drawing or peeling/grinding, optionally annealed, and delivered dry and uncoated at the converting-site gate"
+  production_route: "Declared feed receipt; conditional surface preparation; at least one cold-forming or cold-finishing operation; conditional annealing; final sizing, inspection, and acceptance"
+  market_state: "Accepted straight-length bar or rod at converting-site gate; steel grade, cross-section, dimensions and tolerance, surface finish, heat-treatment state, coating status, and moisture/oil condition declared"
+functional_unit:
+  what: "Cold-formed, cold-finished, or further-worked iron or non-alloy-steel bar or rod meeting the declared dimensional, surface, and mechanical specification"
+  how_much: "1,000 kg net accepted product"
+  how_well: "Conforming to the declared steel grade, cross-section, dimensional tolerances, surface-finish specification, mechanical-property condition, and acceptance test plan"
+  how_long_or_cycle: "One production campaign ending at plant-gate acceptance; no use-stage service duration is assigned"
+  reference_flow_link: "finished_bar_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_start_end
+      applies_to: "foreground system"
+      rule: "Start at receipt of the declared hot-rolled or externally pretreated bar-or-rod feed and end at acceptance of the finished uncoated product at the converting-site gate."
+      source_ids:
+        - unstats-cpc-3-0-structure-2025
+        - eu-jrc-fmp-bref-2022
+    - rule_id: boundary_route_disclosure
+      applies_to: "conditional operations"
+      rule: "Include only operations actually performed, but declare surface preparation, cold drawing/forming, grinding, peeling, straightening, polishing, annealing, and final sizing as included, not applicable, or externally supplied."
+      source_ids:
+        - eu-jrc-fmp-bref-2022
+    - rule_id: boundary_upstream_separation
+      applies_to: "upstream production"
+      rule: "Keep steelmaking, casting, hot rolling, purchased-material production, purchased-energy generation, and off-site treatment in linked upstream datasets rather than recreating them in this foreground inventory."
+      source_ids:
+        - eu-jrc-fmp-bref-2022
+    - rule_id: boundary_no_unlisted_emissions
+      applies_to: "direct releases"
+      rule: "Report each measured or calculated direct release as one chemical species and compartment; a generic “emissions to air” row is not acceptable."
+      source_ids:
+        - eu-jrc-fmp-bref-2022
+boundary_abstraction:
+  declared_starting_condition: "Hot-rolled iron or non-alloy-steel bar or rod, or the same feed after externally performed surface preparation, entering the converting site with mass, grade, geometry, surface condition, and upstream dataset declared"
+  starting_condition_role: "Purchased or transferred upstream product input to the cold-forming, cold-finishing, or further-working foreground system"
+  product_classification_scope: "Iron or non-alloy-steel bars and rods whose delivered defining transformation is cold forming, cold finishing, or further working; CPC 3.0 code 41261 is an exact classification reference but does not own PCR identity"
+  recursive_input_rule: "A purchased input already within this PCR category must be represented by its upstream dataset and must not reopen this PCR recursively; disclose its prior finishing state and count only additional foreground work performed at the reporting site"
+  upstream_dataset_requirement: "Require separate upstream datasets for steelmaking, casting, hot rolling, externally performed pickling or descaling, purchased electricity, natural gas, nitrogen, hydrochloric acid, water, lubricant, and off-site waste treatment as applicable"
+  disclosure: "Declare feed origin and state, included and excluded operations, each conditional route decision, internal recycle loops, acid recovery or rinse-water recirculation, annealing atmosphere and fuel, emission-control boundary, waste destination, and whether transport or packaging is outside the dataset"
+reference_flow_definition:
+  reference_amount: "1,000 kg net accepted product"
+  product_flow_ref:
+    name: "Bars and rods, cold-formed, cold-finished or further worked, of iron or non-alloy steel"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "iron or non-alloy-steel grade and specification"
+    - "carbon and declared alloying-element composition or grade certificate"
+    - "bar versus rod designation"
+    - "cross-section shape"
+    - "nominal dimensions and tolerances"
+    - "delivered length"
+    - "cold-forming/cold-finishing/further-working route"
+    - "area or diameter reduction where applicable"
+    - "surface-finish class"
+    - "heat-treatment state"
+    - "coating status"
+    - "residual oil or dry delivery state"
+    - "production site and geography"
+    - "reference period"
+    - "rejected-product and internal-recycle treatment"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "accepted reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use verified net mass after final inspection. Exclude pallets, straps, wrapping, dunnage, and unaccepted material. Normalize all exchanges to 1,000 kg accepted product."
+  - id: internal_transfer_mass
+    applies_to: "bar-or-rod intermediates"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure or mass-balance each internal transfer without counting the same intermediate as an external input or output. Preserve steel grade and physical-state continuity."
+  - id: electricity_energy
+    applies_to: "alternating-current inputs"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the metered electricity quantity and conversion basis. When source records use kWh, convert by the physical identity 1 kWh = 3.6 MJ and retain both the meter value and converted value."
+  - id: gas_volume_conditions
+    applies_to: "natural gas and protective nitrogen"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report the reference temperature, reference pressure, dry/wet basis, and meter correction used for every gas volume; do not combine gases."
+  - id: waste_wet_dry_basis
+    applies_to: "spent liquor, rinse-water waste, scale, offcuts, lubricant waste, and captured dust"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "State wet or dry basis and measured moisture or entrained-liquid treatment where relevant; do not infer dry mass without a recorded conversion."
+process_map:
+  - id: surface_preparation
+    name: "Surface preparation and hydrochloric-acid pickling"
+    inclusion: "conditional"
+    inclusion_condition: "Include when scale removal or HCl pickling/rinsing occurs inside the reporting site; exclude HCl-specific rows when another declared single-agent or mechanical route is used"
+    role: "foreground conditioning"
+    quantitative_reference: "kg pretreated bar or rod transferred to cold finishing"
+  - id: cold_finishing
+    name: "Cold forming and cold finishing"
+    inclusion: "required"
+    inclusion_condition: "Include the actual cold drawing, grinding, peeling, straightening, polishing, or sizing operations that establish the product category state"
+    role: "foreground production"
+    quantitative_reference: "kg cold-finished bar or rod transferred onward"
+  - id: intermediate_annealing
+    name: "Intermediate annealing"
+    inclusion: "conditional"
+    inclusion_condition: "Include when heat treatment is performed after cold work to obtain the declared metallurgical or mechanical state"
+    role: "foreground heat treatment"
+    quantitative_reference: "kg annealed bar or rod transferred to final sizing"
+  - id: final_sizing_inspection
+    name: "Final sizing, inspection, and acceptance"
+    inclusion: "required"
+    inclusion_condition: "Include final cutting/sizing, inspection, rejected-material accounting, and reference-product acceptance"
+    role: "foreground finishing"
+    quantitative_reference: "1,000 kg net accepted reference product"
+process_inventory:
+  - id: surface_preparation
+    label: "Surface preparation and hydrochloric-acid pickling"
+    inputs:
+      product:
+        - row_id: hot_rolled_bar_input
+          role: "Hot-rolled bar or rod feed"
+          name: "Hot-rolled iron or non-alloy-steel bar or rod"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the hot-rolled iron or non-alloy-steel bar or rod crossing the surface-preparation boundary. Preserve grade, geometry, mass, surface condition, and upstream dataset identity."
+          amount:
+            expression: "measured feed mass entering in-scope surface preparation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_materials
+              source_ids:
+                - unstats-cpc-3-0-structure-2025
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: hydrochloric_acid_input
+          role: "Hydrochloric acid solution"
+          name: "Hydrochloric acid solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only the hydrochloric acid solution crossing the boundary when the declared route uses HCl pickling. State delivered concentration, fresh/recovered status, and acid-regeneration boundary."
+          amount:
+            expression: "measured net fresh and make-up solution mass, with recovered internal acid excluded from external input"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_materials
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: rinse_water_input
+          role: "Rinse water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water supplied to the post-pickling rinse. The UUID fixes the process-water identity only; retain the rinse application, source, quality, geography, density-conversion, and delivery-boundary qualifiers, and meter make-up water separately from recirculated internal water."
+          amount:
+            expression: "measured net make-up rinse-water mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_materials
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: pickling_electricity
+          role: "Pickling-line electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value / MJ"
+          description: "Record alternating-current electricity consumed by in-scope pumps, drives, ventilation, extraction, rinsing, and surface-preparation equipment."
+          amount:
+            expression: "allocation-free submetered electricity, or documented equipment-meter calculation when a dedicated meter is unavailable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_energy
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: pretreated_bar_intermediate
+          role: "Pretreated bar or rod intermediate"
+          name: "Pretreated iron or non-alloy-steel bar or rod intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the descaled bar or rod transferred internally to cold finishing. This internal intermediate is not a marketable reference product unless separately reported outside this PCR result."
+          amount:
+            expression: "measured transfer mass after surface preparation and draining"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_outputs
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        - row_id: spent_pickling_liquor
+          role: "Spent hydrochloric-acid pickling liquor"
+          name: "Spent hydrochloric-acid pickling liquor containing dissolved iron"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent HCl pickling liquor containing dissolved iron when it leaves the foreground process for recovery or treatment. State acid and dissolved-metal concentration and destination."
+          amount:
+            expression: "measured wet mass leaving the foreground process, net of internal recirculation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_outputs
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: acidic_rinse_water
+          role: "Acidic rinse water containing iron chlorides"
+          name: "Acidic rinse water containing iron chlorides"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the specific acidic rinse-water waste stream leaving the surface-preparation system. Keep it separate from spent pickling liquor and unrelated site water."
+          amount:
+            expression: "measured wet mass discharged or transferred to treatment, net of recirculation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_outputs
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: iron_oxide_scale_waste
+          role: "Captured iron-oxide scale"
+          name: "Captured iron-oxide scale"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record captured iron-oxide scale removed mechanically or recovered from surface-preparation equipment. State wet or dry mass basis and recovery destination."
+          amount:
+            expression: "measured captured scale mass leaving the foreground process"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_outputs
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      elementary:
+        - row_id: hydrogen_chloride_air
+          role: "Hydrogen chloride emitted to air"
+          name: "hydrogen chloride"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aab0-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record hydrogen chloride crossing the stack or fugitive-emission boundary after any in-scope capture and abatement. The UUID fixes the substance and unspecified-air compartment; retain stack and fugitive subrecords separately when their monitoring bases differ, and do not combine HCl with other acid gases."
+          amount:
+            expression: "measured stack and quantified fugitive HCl mass after in-scope abatement"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_emissions
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+  - id: cold_finishing
+    label: "Cold forming and cold finishing"
+    inputs:
+      product:
+        - row_id: steel_bar_feed
+          role: "Steel bar or rod feed to cold finishing"
+          name: "Iron or non-alloy-steel bar or rod feed to cold finishing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the single hot-rolled or pretreated iron or non-alloy-steel bar-or-rod feed entering cold finishing. An internal transfer from surface preparation must not also be counted as a purchased input."
+          amount:
+            expression: "measured mass entering the actual cold-drawing, grinding, peeling, straightening, polishing, or sizing equipment"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_inputs
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: rolling_electricity
+          role: "Cold-finishing electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value / MJ"
+          description: "Record alternating-current electricity consumed by the declared cold-forming and cold-finishing equipment. Include only equipment inside this process boundary."
+          amount:
+            expression: "submetered electricity or documented equipment-meter calculation for cold drawing, grinding, peeling, straightening, polishing, and sizing"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_inputs
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: metalworking_lubricant_input
+          role: "Metalworking lubricant oil"
+          name: "Metalworking lubricant oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual single lubricant oil supplied to cold-finishing equipment when used. State product name, viscosity grade, and fresh/recovered status."
+          amount:
+            expression: "measured net fresh and make-up lubricant-oil mass crossing the process boundary"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_inputs
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cold_finished_bar_intermediate
+          role: "Cold-finished bar or rod intermediate"
+          name: "Cold-finished iron or non-alloy-steel bar or rod intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the cold-finished intermediate transferred either to conditional annealing or directly to final sizing and inspection. Preserve grade, geometry, route, and work-hardened state."
+          amount:
+            expression: "measured accepted transfer mass leaving cold finishing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_outputs
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        - row_id: steel_offcuts_cold_finishing
+          role: "Steel offcuts from cold finishing"
+          name: "Clean iron or non-alloy-steel offcuts from cold finishing"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record clean iron or non-alloy-steel offcuts generated within cold finishing and leaving the process for internal recycling or external recovery."
+          amount:
+            expression: "measured mass by destination, excluding material returned internally before the process output is measured"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_outputs
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: spent_lubricant_oil
+          role: "Spent metalworking lubricant oil"
+          name: "Spent metalworking lubricant oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent lubricant oil removed from the declared equipment and leaving for treatment or recovery. State water and metal-fines content where measured."
+          amount:
+            expression: "measured wet mass leaving the process, net of filtered oil returned internally"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_outputs
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: captured_grinding_dust
+          role: "Captured steel grinding dust"
+          name: "Captured iron or non-alloy-steel grinding dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record captured iron or non-alloy-steel grinding dust when grinding is performed. Keep captured solid waste separate from any measured particulate release to air."
+          amount:
+            expression: "measured captured dry or wet mass leaving dust-control equipment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_outputs
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      elementary:
+        []
+  - id: intermediate_annealing
+    label: "Intermediate annealing"
+    inputs:
+      product:
+        - row_id: cold_finished_bar_to_annealing
+          role: "Cold-finished bar or rod entering annealing"
+          name: "Cold-finished iron or non-alloy-steel bar or rod intermediate entering annealing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the work-hardened cold-finished bar or rod transferred into annealing when heat treatment is required by the declared product condition."
+          amount:
+            expression: "measured transfer mass entering the annealing furnace"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_annealing_inputs
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: natural_gas_input
+          role: "Natural gas for annealing"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas crossing the site boundary for the annealing furnace. Declare supply geography, burner technology, net/gross calorific convention, and reference volume conditions."
+          amount:
+            expression: "corrected furnace-meter volume allocated only by direct submeter or documented operating-time calculation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_annealing_inputs
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: annealing_electricity
+          role: "Annealing electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value / MJ"
+          description: "Record alternating-current electricity consumed by furnace drives, fans, controls, cooling, and other in-scope annealing equipment."
+          amount:
+            expression: "submetered electricity or documented equipment-meter calculation for annealing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_annealing_inputs
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: protective_nitrogen
+          role: "Protective nitrogen"
+          name: "Nitrogen gas for protective annealing atmosphere"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record nitrogen gas supplied to the annealing atmosphere when used. Do not substitute oxygen or combine nitrogen with hydrogen or another atmosphere gas."
+          amount:
+            expression: "corrected make-up and purge-gas meter volume, excluding internally recirculated atmosphere gas"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_annealing_inputs
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: annealed_bar_intermediate
+          role: "Annealed bar or rod intermediate"
+          name: "Annealed iron or non-alloy-steel bar or rod intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the annealed iron or non-alloy-steel bar or rod transferred to final sizing and inspection. Preserve furnace cycle, atmosphere, and resulting metallurgical condition."
+          amount:
+            expression: "measured accepted transfer mass after annealing and cooling"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_annealing_outputs
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: fossil_co2_air
+          role: "Fossil carbon dioxide emitted to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil carbon dioxide from in-scope natural-gas combustion after applying the site monitoring or documented fuel-carbon calculation boundary."
+          amount:
+            expression: "measured stack mass or documented site calculation from metered fuel and verified fuel composition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_annealing_outputs
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: nitrogen_oxides_air
+          role: "Nitrogen oxides emitted to air"
+          name: "Nitrogen oxides to air, reported as nitrogen dioxide mass equivalent"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record nitrogen oxides from the annealing combustion source using the declared reporting species, normally NOx as NO2, and the air compartment after in-scope abatement."
+          amount:
+            expression: "measured stack mass from concentration and corrected dry-gas flow, with oxygen reference and reporting species retained"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_annealing_outputs
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+  - id: final_sizing_inspection
+    label: "Final sizing, inspection, and acceptance"
+    inputs:
+      product:
+        - row_id: cold_finished_bar_to_final
+          role: "Unannealed cold-finished bar or rod entering final operations"
+          name: "Unannealed cold-finished iron or non-alloy-steel bar or rod intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this internal transfer only when annealing is not performed and the cold-finished intermediate goes directly to final sizing and inspection."
+          amount:
+            expression: "measured transfer mass entering final operations when annealing is not applicable"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_operations
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: annealed_bar_to_final
+          role: "Annealed bar or rod entering final operations"
+          name: "Annealed iron or non-alloy-steel bar or rod intermediate entering final operations"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this internal transfer only when the product follows the annealing route. Do not record both alternative transfer rows for the same product lot."
+          amount:
+            expression: "measured transfer mass entering final operations after annealing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_operations
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_bar_product
+          role: "Accepted cold-formed, cold-finished, or further-worked bar or rod"
+          name: "Bars and rods, cold-formed, cold-finished or further worked, of iron or non-alloy steel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This is the reference product. Record only net mass that passes the declared dimensional, surface, mechanical-property, and product-state acceptance requirements."
+          amount:
+            expression: "1,000 kg net accepted reference product by definition, supported by calibrated final mass records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_operations
+              source_ids:
+                - unstats-cpc-3-0-structure-2025
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        - row_id: final_steel_offcuts
+          role: "Steel offcuts from final sizing"
+          name: "Clean iron or non-alloy-steel offcuts from final sizing"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record clean iron or non-alloy-steel offcuts generated by final cutting or sizing. Keep rejected finished bars separate in site records and disclose whether they are reworked internally."
+          amount:
+            expression: "measured mass leaving final sizing by destination, net of internal rework"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_operations
+              source_ids:
+                - eu-jrc-fmp-bref-2022
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "shared foreground equipment and meters"
+    rule: "Avoid allocation by subdividing production campaigns, equipment time, material issues, and dedicated meters by declared product grade, geometry, and route."
+    source_ids: []
+  - rule_id: allocation_internal_recycle
+    applies_to: "internal return of bars, offcuts, scale, acid, water, or lubricant"
+    rule: "Do not count an internal recycle loop as both an external output and a new external input. Record only net boundary crossings and disclose the loop and inventory point."
+    source_ids: []
+  - rule_id: allocation_recoverable_material
+    applies_to: "offcuts, scale, spent acid, lubricant, and captured dust sent for recovery"
+    rule: "Report the measured outgoing flow and treatment or recovery destination. Do not apply an avoided-burden credit inside this foreground dataset; downstream recycling modelling belongs to the linked treatment or lifecycle model."
+    source_ids: []
+  - rule_id: allocation_unavoidable_shared_burden
+    applies_to: "residual shared burdens after subdivision"
+    rule: "If direct measurement and subdivision are infeasible, allocate the residual shared burden by net accepted product mass for the same campaign, disclose the affected exchanges and fraction, and test sensitivity when the allocation changes a reported result materially."
+    source_ids: []
+  - rule_id: allocation_rule_5
+    applies_to: "foreground_burden_allocation"
+    rule: "No co-product is assumed by default. A saleable secondary output must be represented as its own concrete product flow and reviewed before the residual-allocation rule is used; it must not be hidden in an offcut or waste row."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_surface_materials
+      process_id: "surface_preparation"
+      flow_role: "feed, HCl solution, and rinse water"
+      record_type: "weigh tickets, tank issues, purchase/transfer records, and water meter"
+      raw_fields: "lot_id; steel_grade; feed_mass_kg; acid_solution_mass_kg; acid_concentration; recovered_acid_mass_kg; rinse_makeup_water_kg"
+      collection_method: "calibrated scales, tank mass balance, and dedicated water meter"
+      unit: "kg"
+      frequency: "each batch with monthly reconciliation"
+      temporal_coverage: "representative continuous 12-month period or complete declared campaign"
+      site_scope: "all in-scope surface-preparation lines"
+      aggregation_rule: "sum net external inputs and normalize by accepted reference-product mass"
+      quality_evidence: "calibration records, acid inventory reconciliation, concentration analyses, and meter completeness"
+    - protocol_id: cp_surface_energy
+      process_id: "surface_preparation"
+      flow_role: "alternating-current input"
+      record_type: "electricity meter and equipment runtime records"
+      raw_fields: "meter_start; meter_end; kWh; equipment_id; production_lot"
+      collection_method: "dedicated submeter preferred; otherwise documented power-by-runtime calculation reconciled to site meter"
+      unit: "kWh and MJ"
+      frequency: "each batch or shift with monthly reconciliation"
+      temporal_coverage: "same period as product output"
+      site_scope: "all in-scope pickling, extraction, pumping, and rinsing equipment"
+      aggregation_rule: "subtract documented non-process loads, convert kWh to MJ, and normalize by accepted product"
+      quality_evidence: "meter calibration, load boundary diagram, runtime logs, and reconciliation"
+    - protocol_id: cp_surface_outputs
+      process_id: "surface_preparation"
+      flow_role: "pretreated transfer and specific waste streams"
+      record_type: "transfer scale, waste manifests, tank drawdown, and solids records"
+      raw_fields: "transfer_mass_kg; spent_liquor_mass_kg; acid_content; dissolved_iron; rinse_waste_mass_kg; scale_mass_kg; wet_dry_basis; destination"
+      collection_method: "calibrated scales, tank mass balance, and shipment records"
+      unit: "kg"
+      frequency: "each batch or removal event"
+      temporal_coverage: "same period as product output"
+      site_scope: "complete surface-preparation system through waste handoff"
+      aggregation_rule: "sum by atomic flow and destination; subtract internal recirculation"
+      quality_evidence: "mass-balance closure, laboratory analyses, moisture records, and manifests"
+    - protocol_id: cp_surface_emissions
+      process_id: "surface_preparation"
+      flow_role: "hydrogen chloride to air"
+      record_type: "stack tests, continuous or periodic monitoring, and fugitive assessment"
+      raw_fields: "HCl_concentration; gas_flow; run_time; capture_status; abatement_status; method"
+      collection_method: "approved stack method plus documented fugitive quantification"
+      unit: "kg HCl"
+      frequency: "monitoring frequency required by permit, with batch operating hours"
+      temporal_coverage: "same period as product output"
+      site_scope: "all HCl emission points inside the process boundary"
+      aggregation_rule: "concentration × corrected gas flow × operating time plus quantified fugitive mass"
+      quality_evidence: "test report, detection limits, gas corrections, and control-device operating records"
+    - protocol_id: cp_cold_inputs
+      process_id: "cold_finishing"
+      flow_role: "steel feed, electricity, and lubricant oil"
+      record_type: "transfer scale, electricity meter, lubricant issues, and equipment runtime"
+      raw_fields: "lot_id; feed_mass_kg; kWh; equipment_id; lubricant_product; lubricant_mass_kg; recovered_lubricant_mass_kg"
+      collection_method: "calibrated scales, dedicated submeters, and material issue records"
+      unit: "kg; kWh; MJ"
+      frequency: "each batch or shift"
+      temporal_coverage: "representative continuous 12-month period or complete declared campaign"
+      site_scope: "all in-scope cold-finishing equipment"
+      aggregation_rule: "sum net boundary inputs by product lot and normalize by accepted product"
+      quality_evidence: "calibration, route logs, inventory reconciliation, and meter completeness"
+    - protocol_id: cp_cold_outputs
+      process_id: "cold_finishing"
+      flow_role: "cold-finished transfer and specific solid or liquid wastes"
+      record_type: "transfer scale, scrap bins, lubricant-removal records, and dust collector records"
+      raw_fields: "transfer_mass_kg; offcut_mass_kg; spent_oil_mass_kg; dust_mass_kg; wet_dry_basis; internal_return_mass_kg; destination"
+      collection_method: "calibrated scales and container-specific removal records"
+      unit: "kg"
+      frequency: "each batch or removal event"
+      temporal_coverage: "same period as product output"
+      site_scope: "all cold-finishing lines and collectors"
+      aggregation_rule: "sum each atomic output; subtract documented internal returns; normalize by accepted product"
+      quality_evidence: "mass-balance closure, manifests, moisture records, and collector maintenance logs"
+    - protocol_id: cp_annealing_inputs
+      process_id: "intermediate_annealing"
+      flow_role: "bar transfer, natural gas, electricity, and nitrogen"
+      record_type: "transfer scale, corrected gas meters, electricity meter, and furnace batch log"
+      raw_fields: "lot_id; transfer_mass_kg; gas_m3; gas_reference_conditions; kWh; nitrogen_m3; atmosphere_recirculation; furnace_cycle"
+      collection_method: "calibrated scales and dedicated corrected meters"
+      unit: "kg; m3; kWh; MJ"
+      frequency: "each furnace batch with monthly reconciliation"
+      temporal_coverage: "representative continuous 12-month period or complete declared campaign"
+      site_scope: "all in-scope annealing furnaces"
+      aggregation_rule: "sum net make-up inputs and normalize by accepted product"
+      quality_evidence: "calibration, reference-condition record, fuel invoice reconciliation, and batch traceability"
+    - protocol_id: cp_annealing_outputs
+      process_id: "intermediate_annealing"
+      flow_role: "annealed transfer and direct combustion emissions"
+      record_type: "transfer scale, fuel-carbon calculation records, and stack monitoring"
+      raw_fields: "annealed_mass_kg; fossil_CO2_kg; NOx_concentration; NOx_reporting_species; gas_flow; oxygen_reference; run_time; abatement_status"
+      collection_method: "calibrated scale, verified fuel-carbon calculation or stack measurement, and approved NOx stack method"
+      unit: "kg"
+      frequency: "each batch for transfer and required monitoring interval for emissions"
+      temporal_coverage: "same period as product output"
+      site_scope: "furnace and all associated in-scope stacks"
+      aggregation_rule: "sum accepted transfer and direct emissions; normalize by accepted reference-product mass"
+      quality_evidence: "mass balance, calculation workbook, fuel analysis, stack report, detection limits, and control records"
+    - protocol_id: cp_final_operations
+      process_id: "final_sizing_inspection"
+      flow_role: "alternative internal feed, accepted product, and final offcuts"
+      record_type: "transfer and final scales, inspection record, scrap bins, and rework log"
+      raw_fields: "lot_id; feed_route; input_mass_kg; accepted_mass_kg; offcut_mass_kg; rejected_mass_kg; rework_mass_kg; grade; dimensions; tolerance; surface_class; heat_treatment_state"
+      collection_method: "calibrated scales linked to lot-level inspection and disposition records"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "representative continuous 12-month period or complete declared campaign"
+      site_scope: "all final sizing and inspection stations"
+      aggregation_rule: "count one alternative feed route; sum net accepted output and net external offcuts; normalize to 1,000 kg accepted product"
+      quality_evidence: "calibration, certificate of analysis, dimensional and mechanical test results, rejection/rework traceability, and mass-balance closure"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every external inventory exchange"
+      rule: "normalized amount = period exchange amount / period net accepted product mass × 1,000 kg"
+      inputs:
+        - "atomic exchange record"
+        - "accepted product mass"
+      output: "exchange per 1,000 kg accepted product"
+      source_ids: []
+    - id: calc_electricity_conversion
+      applies_to: "electricity rows"
+      rule: "MJ = metered kWh × 3.6; retain the original kWh value and meter boundary"
+      inputs:
+        - kWh
+        - "meter boundary"
+      output: "MJ alternating current"
+      source_ids: []
+    - id: calc_net_external_material
+      applies_to: "acid, water, lubricant, nitrogen, wastes, and internal recycle"
+      rule: "net boundary amount = gross addition or removal − documented same-process internal return; never subtract an off-site return as an internal loop"
+      inputs:
+        - "gross records"
+        - "internal return records"
+        - destination
+      output: "net external atomic flow"
+      source_ids: []
+    - id: calc_stack_mass
+      applies_to: "HCl and NOx emissions"
+      rule: "emitted mass = corrected concentration × corrected dry-gas flow × operating time, using consistent units and declared oxygen/reference conditions; add separately quantified fugitive mass only for the same species"
+      inputs:
+        - concentration
+        - "gas flow"
+        - time
+        - "correction factors"
+        - "fugitive assessment"
+      output: "kg emitted species"
+      source_ids:
+        - eu-jrc-fmp-bref-2022
+    - id: calc_mass_balance_check
+      applies_to: "steel-bearing flows"
+      rule: "closure = feed steel mass − accepted product − net steel-bearing waste − inventory change; investigate rather than force any unexplained residual into a waste row"
+      inputs:
+        - feed
+        - transfers
+        - product
+        - "steel-bearing wastes"
+        - "inventory change"
+      output: "mass-balance residual and closure percentage"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product and steel-bearing inputs"
+      requirement: "Maintain lot-level linkage among grade certificate, feed state, route, cross-section, dimensions, tolerances, surface class, heat-treatment state, coating status, and accepted mass."
+      evidence: "certificates, route traveller, inspection record, and lot reconciliation"
+    - id: dq_temporal_representativeness
+      applies_to: "all foreground records"
+      requirement: "Use a continuous representative 12-month period where available; otherwise disclose the complete campaign period, seasonal or utilization limitation, and why it represents the declared product."
+      evidence: "dated meter extracts, production calendar, and campaign statement"
+    - id: dq_completeness
+      applies_to: "process map and inventory"
+      requirement: "Reconcile every required process and every applicable conditional process. Report zero only with evidence of non-applicability; do not omit an applicable atomic exchange because its UUID or range is unresolved."
+      evidence: "process applicability matrix, mass/energy reconciliation, and unresolved-flow register"
+    - id: dq_meter_quality
+      applies_to: "mass, electricity, gas, water, and emission measurements"
+      requirement: "Retain calibration status, resolution, coverage, estimated-data fraction, and correction method. Estimated segments must be identified and sensitivity-tested if material."
+      evidence: "calibration certificates, meter QA records, and estimation log"
+    - id: dq_waste_and_emissions
+      applies_to: "wastes and direct releases"
+      requirement: "Preserve atomic identity, wet/dry basis, concentration where relevant, destination, compartment, reporting species, detection limit, and abatement boundary."
+      evidence: "manifests, analyses, stack reports, and treatment contracts"
+    - id: dq_source_boundary
+      applies_to: "upstream and off-site datasets"
+      requirement: "Verify that linked datasets do not duplicate foreground operations and disclose geography, technology, temporal period, and product state mismatches."
+      evidence: "dataset mapping and boundary crosswalk"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "Fail validation when the final product is not 1,000 kg net accepted iron or non-alloy-steel bar or rod or when any required qualifier is absent."
+    source_ids:
+      - unstats-cpc-3-0-structure-2025
+      - prc-mof-tariff-terminology-2026
+  - rule_id: validate_process_coverage
+    applies_to: "process map"
+    rule: "Require cold_finishing and final_sizing_inspection; require an explicit applicability decision for surface_preparation and intermediate_annealing, supported by route records."
+    source_ids:
+      - eu-jrc-fmp-bref-2022
+  - rule_id: validate_atomic_inventory
+    applies_to: "inventory rows"
+    rule: "Reject combined utilities, combined fuels, combined chemicals, generic wastewater, generic residues, generic emissions, and any row that cannot represent one atomic exchange."
+    source_ids: []
+  - rule_id: validate_uuid_status
+    applies_to: "reference and inventory flows"
+    rule: "A UUID-bearing row must match the directly read Tiangong base name, flow type, classification, property, and unit group; every UUID-empty row must remain in the manifest unresolved inventory list."
+    source_ids: []
+  - rule_id: validate_electricity_identity
+    applies_to: "all electricity rows"
+    rule: "Use the adopted alternating-current UUID only with supplier, geography, voltage, technology, and delivery-boundary qualifiers; do not substitute an unverified voltage-specific consumption mix."
+    source_ids: []
+  - rule_id: validate_material_balance
+    applies_to: "steel-bearing system"
+    rule: "Investigate a non-zero steel mass-balance residual. Do not force unexplained loss into scale, dust, offcuts, or emissions."
+    source_ids: []
+  - rule_id: validate_alternative_transfer
+    applies_to: "final-sizing inputs"
+    rule: "For one product lot, record either cold_finished_bar_to_final or annealed_bar_to_final, never both."
+    source_ids:
+      - eu-jrc-fmp-bref-2022
+  - rule_id: validate_range_evidence
+    applies_to: "amount ranges"
+    rule: "Do not publish an externally inferred range unless at least two independent original sources have compatible system boundary, functional unit, and product state; unresolved needs remain foreground collection requirements."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground product-conversion dataset for cold-formed, cold-finished, or further-worked iron or non-alloy-steel bars and rods"
+  downstream_use: "secondary_dataset; background_dataset after review of representativeness and upstream links"
+  allowed_use: "Product carbon-footprint, LCA, supply-chain, and process-improvement studies requiring a declared plant-gate bar-or-rod conversion dataset within the stated product, geography, technology, and time coverage"
+  excluded_use: "Steelmaking or hot-rolling average; wire, alloy-steel, section, tube, coated-product, use-stage, or end-of-life proxy; generic global dataset without documented representativeness review"
+  required_metadata: "PCR id and version state; CPC reference; steel grade and certificate basis; bar/rod designation; geometry and tolerances; cold-finishing route; area or diameter reduction where applicable; surface class; annealing state; coating and residual-oil state; site geography; reference period; capacity utilization; feed and upstream dataset identities; route applicability; allocation; internal recycling; waste destinations; emission controls; data-quality and unresolved-identity disclosure"
+  required_quality_disclosure: "Foreground-record coverage; measured versus estimated fraction; meter and scale calibration; mass-balance closure; conditional-route decisions; missing exact Tiangong UUIDs; absent independent range evidence; upstream geography/technology/time mismatches; uncertainty and sensitivity results"
+  update_trigger: "Change in steel grade family, feed state, cold-forming or finishing technology, reduction or geometry, annealing furnace or atmosphere, energy supply, acid recovery or water recirculation, emission control, waste destination, allocation, site, or representative period; or resolution of a material UUID or range-evidence gap"
+data_sources:
+  - id: "unstats-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *Central Product Classification Version 3.0 Structure*, code 41261, 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-03)"
+    used_for: "Official classification identity and separation from adjacent bars, wire, sections, alloy-steel, and tube categories"
+  - id: "eu-jrc-fmp-bref-2022"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, *Best Available Techniques (BAT) Reference Document for the Ferrous Metals Processing Industry*, 2022, DOI 10.2760/196475. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2022-12/FMP%20BREF_Final%20Version.pdf (retrieved 2026-09-03)"
+    used_for: "Semantic production boundary; cold drawing, grinding, and peeling of hot-rolled steel bars; conditional annealing; surface preparation, energy, material, waste, water, and direct-emission collection structure"
+  - id: "prc-mof-tariff-terminology-2026"
+    type: "official_guidance"
+    reference: "Ministry of Finance of the People’s Republic of China, 2026 tariff schedule table, HS 721510/721550/721590 terminology. https://m.mof.gov.cn/zcfb/202604/P020260428407579725260.pdf (retrieved 2026-09-03)"
+    used_for: "Professional Chinese terminology for iron or non-alloy steel, cold working/cold forming, and bars or rods; product-qualifier alignment"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f7975ac8e832d12e8be72349c62d5ad8555d4b1eb031c007c5220d8d2c979330"
+  generated_content_sha256: "sha256:93396a58956880098553f5468feb93b403e550ae239f0dc0e40fc52af286a94f"

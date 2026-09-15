@@ -2,12 +2,12 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.basic-metals.zinc-bars-rods-profiles-and-wire-zinc-plates-sheets-strip-and-foil
 title:
   en-US: "Zinc bars, rods, profiles and wire; zinc plates, sheets, strip and foil"
-  zh-CN: null
-status: scaffold
+  zh-CN: "锌条、锌棒、锌型材及锌丝；锌板、锌薄板、锌带条及锌箔"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +22,78 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "41545"
     title: "Zinc bars, rods, profiles and wire; zinc plates, sheets, strip and foil"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  semantic_boundary_review:
+    result: canonical_identity_required
+    explanation: "No material canonical PCR covers fabricated zinc bars, rods, profiles, wire, plates, sheets, strip and foil at the fabrication-facility gate. Unwrought zinc, zinc dust and powders, zinc tubes and fittings, zinc scrap, zinc coatings on other substrates, and finished articles are distinct product or waste boundaries."
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: in_copper_alloying_addition
+        reason_code: no_exact_candidate
+        explanation: "Ranked candidates were broad copper collections or specific fabricated copper forms; none exactly identifies the declared specification-controlled copper metal or master-alloy addition."
+      - row_id: in_titanium_alloying_addition
+        reason_code: no_exact_candidate
+        explanation: "Ranked candidates were titanium plate, titanium wire, ferrotitanium, titanium tetrachloride, or an unrelated zinc-aluminium alloy; none exactly identifies the declared titanium metal or master-alloy addition."
+      - row_id: in_aluminium_alloying_addition
+        reason_code: no_exact_candidate
+        explanation: "Ranked candidates were combined alloys, oxides, unrelated copper material, or volume-based aluminium powder; none exactly identifies a mass-based aluminium metal or master-alloy addition."
+      - row_id: out_cast_zinc_stock
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "The cast slab, billet, rod or strip is an internal, route-specific intermediate transferred to forming and requires a foreground internal flow identity rather than a public generic product UUID."
+      - row_id: out_zinc_dross
+        reason_code: no_exact_candidate
+        explanation: "Ranked waste candidates were iron and steel slags or mill scale; none identifies zinc dross from zinc melting and casting."
+      - row_id: in_cast_zinc_stock
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "The forming input is the same foreground internal cast-stock transfer as out_cast_zinc_stock and requires a foreground internal flow identity."
+    range_evidence_needs:
+      - row_id: in_shg_zinc
+        explanation: "No two independent original-text-verified sources with compatible factory-gate boundary and zinc-feed property support an empirical input range; collect supplier zinc-content and received-mass records."
+      - row_id: in_recycled_zinc_scrap
+        explanation: "No two compatible independent sources support a recycled-zinc-scrap input range across alloy grades and product routes; collect accepted mass, composition, contamination and disposition."
+      - row_id: in_copper_alloying_addition
+        explanation: "No two compatible independent sources support a generic copper-addition range across pure-zinc and zinc-alloy products; collect recipe and batch-scale records."
+      - row_id: in_titanium_alloying_addition
+        explanation: "No two compatible independent sources support a generic titanium-addition range across product specifications; collect recipe and batch-scale records."
+      - row_id: in_aluminium_alloying_addition
+        explanation: "No two compatible independent sources support a generic aluminium-addition range across product specifications; collect recipe and batch-scale records."
+      - row_id: in_electricity_melting
+        explanation: "No two compatible independent sources support a melting-and-casting electricity range across furnace and casting technologies; collect process-meter records."
+      - row_id: in_natural_gas_melting
+        explanation: "No two compatible independent sources support a melting-and-casting natural-gas range across furnace technologies; collect process fuel-meter and net-calorific-value records."
+      - row_id: out_zinc_dross
+        explanation: "No two compatible independent sources support a zinc-dross output range across feed cleanliness, alloy and furnace practice; collect weighed output and zinc-content records."
+      - row_id: out_fossil_carbon_dioxide
+        explanation: "No two compatible independent sources support a direct fossil-carbon-dioxide range across fuel and furnace configurations; use facility emissions records or an accepted fuel-carbon balance."
+      - row_id: out_cast_zinc_stock
+        explanation: "No two compatible independent sources support a cast-stock yield range across slab, billet, rod and strip routes; collect matched internal transfer and work-in-progress records."
+      - row_id: in_cast_zinc_stock
+        explanation: "No two compatible independent sources support a forming-feed range across purchased and internally cast starting stocks; collect matched receipt or internal transfer records."
+      - row_id: in_electricity_forming
+        explanation: "No two compatible independent sources support an electricity range spanning rolling, extrusion and drawing routes; collect route-specific meter records."
+      - row_id: in_natural_gas_forming
+        explanation: "No two compatible independent sources support a forming and thermal-conditioning natural-gas range across routes; collect route-specific fuel-meter and net-calorific-value records."
+      - row_id: in_process_water
+        explanation: "No two compatible independent sources support a consumed process-water range across cooling and forming configurations; collect make-up water and exclude recirculated pass-through volume."
+      - row_id: out_zinc_scrap
+        explanation: "No two compatible independent sources support a trimming and offcut scrap range across product forms and finishing routes; collect weighed scrap by alloy and disposition."
+      - row_id: out_fossil_carbon_dioxide_forming
+        explanation: "No two compatible independent sources support a forming-stage direct fossil-carbon-dioxide range across thermal-conditioning routes; use facility emissions records or an accepted fuel-carbon balance."

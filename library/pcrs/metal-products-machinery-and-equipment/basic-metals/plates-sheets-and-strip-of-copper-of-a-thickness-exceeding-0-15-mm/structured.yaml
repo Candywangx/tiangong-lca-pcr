@@ -1,10 +1,636 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41514"
-  title: "Plates, sheets and strip, of copper, of a thickness exceeding 0.15 mm"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.plates-sheets-and-strip-of-copper-of-a-thickness-exceeding-0-15-mm"
+  classification_refs: "CPC 3.0: 41514 (exact classification context)"
+  covered_products: "Uncoated copper or copper-alloy plate, sheet, and strip with finished thickness greater than 0.15 mm, fabricated from a declared cast slab starting condition"
+  excluded_products: "Copper foil at or below 0.15 mm; wire, rod, bar, profiles, tubes and fittings; coated or laminated products with materially different identity; upstream refined copper and slab production; downstream fabricated components"
+  representative_product: "Red copper strip and sheet exceeding 0.15 mm, delivered at the fabrication-site gate in the declared temper and finish"
+  production_route: "Slab preheating and hot rolling, followed as applicable by milling, cold rolling, annealing, pickling/rinsing/drying, levelling, slitting or cutting"
+  market_state: "Saleable plate, sheet, or strip; unpackaged at the fabrication-site gate; alloy, temper, dimensions, surface condition and edge condition declared"
+functional_unit:
+  what: "Saleable copper or copper-alloy plate, sheet, or strip with finished thickness greater than 0.15 mm"
+  how_much: "1,000 kg net saleable product"
+  how_well: "Conforming to the declared alloy/grade, thickness, width, temper, surface finish, flatness and edge condition"
+  how_long_or_cycle: "One production campaign and reporting period sufficient to represent normal operation; no use-duration function is assigned"
+  reference_flow_link: "The measured net mass of conforming final product leaving the foreground fabrication boundary"
+system_boundary:
+  rules:
+    - rule_id: sb_start_at_cast_slab
+      applies_to: "foreground_start"
+      rule: "Begin the foreground system with a received cast copper or copper-alloy slab suitable for flat rolling; represent mining, refining and off-site slab production with upstream datasets."
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+    - rule_id: sb_include_fabrication_operations
+      applies_to: "foreground_operations"
+      rule: "Include all site operations required to convert the received slab into conforming plate, sheet or strip, including applicable preheating, rolling, milling, annealing, pickling, rinsing, drying, levelling, slitting, cutting, internal recirculation and directly serving treatment."
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+    - rule_id: sb_route_specific_exchanges
+      applies_to: "conditional_operations"
+      rule: "Include each gas, chemical, water and waste exchange only when the declared equipment and surface-treatment route uses or generates that exchange; do not substitute an aggregated utility or waste category."
+      source_ids:
+        - eu-jrc-nfm-bref-2017
+    - rule_id: sb_exclude_downstream_stages
+      applies_to: "downstream_scope"
+      rule: "Exclude packaging, distribution, component fabrication, use and end-of-life unless the study explicitly extends the system and reports those stages separately."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Cast copper or copper-alloy slab received at the flat-product fabrication site, with grade/alloy, mass, dimensions, supplier, geography and upstream dataset declared"
+  starting_condition_role: "Upstream product input and physical starting point for gate-to-gate flat rolling and finishing"
+  product_classification_scope: "Copper and copper-alloy plate, sheet and strip with finished thickness greater than 0.15 mm; CPC 3.0 code 41514 is classification context, not canonical PCR identity"
+  recursive_input_rule: "If an input is already a plate, sheet or strip within this same product category, record its measured mass as a separate upstream product input with its own dataset and exclude that upstream quantity from the cast-slab row; do not recursively apply this foreground fabrication inventory to it."
+  upstream_dataset_requirement: "Use supplier-specific or representative upstream datasets for the declared cast slab, purchased energy, gases, water and chemicals; disclose geography, technology, recycled-content accounting and data vintage."
+  disclosure: "Declare starting-product grade/alloy and dimensions, whether hot rolling, cold rolling, annealing, pickling and on-site treatment occur, all internal recycling loops, exported scrap treatment, allocation choices, and any boundary extension."
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Red Copper Strip and Sheet"
+    uuid: "73ddbcd1-2f64-4406-93cd-0e9ba320cc1e"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "copper grade or alloy designation"
+    - plate
+    - sheet
+    - "or strip form"
+    - "finished thickness greater than 0.15 mm"
+    - "width and length or coil form"
+    - temper
+    - "surface finish"
+    - "edge condition"
+    - "rolling route"
+    - "annealing atmosphere"
+    - "pickling route"
+    - "recycled-content accounting method"
+    - "production geography"
+    - technology
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "Reference product and all solid copper-bearing inputs and outputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net dry mass on calibrated scales; normalize all inventory results to 1,000 kg of conforming final product and exclude packaging mass."
+  - id: electricity_energy
+    applies_to: "Purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the metered electricity quantity and conversion basis; if the source record is in kWh, convert using 1 kWh = 3.6 MJ and retain both values."
+  - id: gas_volume
+    applies_to: "Purchased gaseous natural gas and protective-atmosphere gases"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report metered volume at declared reference temperature and pressure; retain supplier energy content or composition separately when used for calculations."
+  - id: water_and_solution_mass
+    applies_to: "Process water, acids, alkali, rolling oil and liquid wastes"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer direct mass records; when volume is converted to mass, record density, concentration, temperature, source and calculation."
+process_map:
+  - id: flat_copper_product_fabrication
+    name: "Flat copper product rolling, annealing and finishing"
+    inclusion: "required"
+    inclusion_condition: "Always; individual route-specific exchanges are recorded only when the declared production route uses or generates them"
+    role: "Foreground conversion of received cast slab to conforming plate, sheet or strip"
+    quantitative_reference: "1,000 kg net saleable product"
+process_inventory:
+  - id: flat_copper_product_fabrication
+    label: "Flat copper product rolling, annealing and finishing"
+    inputs:
+      product:
+        - row_id: cast_copper_slab_input
+          role: "Cast copper slab feedstock"
+          name: "Cast copper slab"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the received cast slab that enters preheating or rolling. The row is one solid copper-bearing feedstock exchange; grade/alloy and dimensions are mandatory qualifiers."
+          amount:
+            expression: "measured net mass accepted into the production campaign"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable plate, sheet, or strip output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: electricity_input
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity crossing the site boundary for drives, rolling mills, furnaces, pumps, ventilation, treatment, and finishing; retain the site submetering allocation."
+          amount:
+            expression: "metered purchased electricity allocated to the product campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable plate, sheet, or strip output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: natural_gas_input
+          role: "Gaseous natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record purchased gaseous natural gas only when it is consumed by preheating, annealing, drying, protective-gas generation, or other directly serving foreground equipment."
+          amount:
+            expression: "metered foreground natural-gas volume at declared reference conditions; zero is permitted only with documented non-use"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable plate, sheet, or strip output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: gaseous_nitrogen_input
+          role: "Gaseous nitrogen for annealing"
+          name: "Gaseous nitrogen"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record purchased gaseous elemental nitrogen when the declared annealing route uses nitrogen alone or in a protective-gas mixture. Do not use this row for liquid nitrogen delivered to the site."
+          amount:
+            expression: "metered purchased gaseous nitrogen at declared reference conditions; not applicable when the route does not use purchased nitrogen"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable plate, sheet, or strip output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: gaseous_hydrogen_input
+          role: "Gaseous hydrogen for annealing"
+          name: "Gaseous hydrogen"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record purchased gaseous elemental hydrogen when the declared reducing-atmosphere annealing route uses it. Keep hydrogen generated on site and its precursor inputs in separately disclosed processes."
+          amount:
+            expression: "metered purchased gaseous hydrogen at declared reference conditions; not applicable when the route does not use purchased hydrogen"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable plate, sheet, or strip output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_gas_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: cold_rolling_oil_input
+          role: "Cold-rolling oil make-up"
+          name: "cold rolling oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a9417245-6f45-4df3-8f04-227ed8a1be58"
+          property_unit: "Mass / kg"
+          description: "Record the mass of cold-rolling oil added to the rolling-oil circuit. Exclude internally recirculated oil from gross input and retain formulation and water content in supporting records."
+          amount:
+            expression: "purchased or externally supplied cold-rolling-oil make-up issued to the campaign"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable plate, sheet, or strip output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_consumable_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: process_water_input
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record net process water supplied for roll cooling, applicable pickling and rinsing, brushing, and directly serving treatment after deducting documented closed-loop recirculation."
+          amount:
+            expression: "metered net make-up process water crossing the foreground boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable plate, sheet, or strip output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: sulfuric_acid_input
+          role: "Sulfuric acid for pickling"
+          name: "Sulfuric acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee2e3c3-bee7-4520-92b7-3e23afbfcd6f"
+          property_unit: "Mass / kg"
+          description: "Record sulfuric acid make-up when the declared surface-treatment route uses a sulfuric-acid pickling bath. Record delivered acid mass and concentration without including recycled bath solution as a new input."
+          amount:
+            expression: "purchased sulfuric-acid solution mass and concentration issued to the foreground pickling route"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable plate, sheet, or strip output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_consumable_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: sodium_hydroxide_input
+          role: "Sodium hydroxide for neutralization"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide only when it is consumed by on-site neutralization of pickling or rinse streams directly serving the foreground line; retain delivered concentration."
+          amount:
+            expression: "purchased sodium-hydroxide solution mass and concentration issued to directly serving treatment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable plate, sheet, or strip output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_consumable_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: final_product_output
+          role: "Conforming copper plate, sheet, or strip"
+          name: "Red Copper Strip and Sheet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "73ddbcd1-2f64-4406-93cd-0e9ba320cc1e"
+          property_unit: "Mass / kg"
+          description: "Record only net saleable product that meets the declared thickness, alloy/grade, temper, dimensions, surface and edge specifications."
+          amount:
+            expression: "measured net mass of conforming product; the normalized result is exactly 1,000 kg"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg net saleable plate, sheet, or strip output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - un-cpc-3-0-2025
+            ranges: []
+      waste:
+        - row_id: copper_offcuts_output
+          role: "Copper edge trim and offcuts"
+          name: "Copper Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "4fbbb5f1-560a-4052-ba0c-652c5dfc282e"
+          property_unit: "Mass / kg"
+          description: "Record segregated metallic copper or copper-alloy edge trim and offcuts leaving the process for internal or external recovery. Retain alloy, contamination, destination and whether an internal loop was excluded from gross exchange totals."
+          amount:
+            expression: "measured mass of segregated copper trim and offcuts leaving the foreground process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable plate, sheet, or strip output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: spent_cold_rolling_oil_output
+          role: "Spent cold-rolling oil"
+          name: "Spent cold-rolling oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent cold-rolling oil removed from the rolling-oil circuit and transferred for treatment or recovery. Do not combine it with cutting oil, solvent, or aqueous pickling waste."
+          amount:
+            expression: "measured mass removed from the circuit after deducting documented internal recovery and return"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable plate, sheet, or strip output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: spent_sulfuric_acid_output
+          role: "Spent sulfuric-acid copper pickling solution"
+          name: "Spent sulfuric-acid copper pickling solution"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent sulfuric-acid solution containing dissolved copper when it leaves the bath for on-site or off-site recovery or treatment. Do not combine it with rinse water, sludge, or another acid."
+          amount:
+            expression: "measured transferred mass with acid concentration and dissolved-copper content retained"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable plate, sheet, or strip output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_records
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      elementary:
+        - row_id: fossil_carbon_dioxide_output
+          role: "Direct fossil carbon dioxide"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record fossil carbon dioxide emitted directly from foreground combustion or carbon-bearing protective-gas generation. Exclude upstream emissions embodied in purchased electricity, fuels, gases, chemicals and slab datasets."
+          amount:
+            expression: "calculate from metered foreground fossil-fuel consumption and measured or supplier-validated carbon content, with oxidation assumptions disclosed"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable plate, sheet, or strip output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_co2_calculation
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "shared_foreground_operations"
+    rule: "Prefer process subdivision and direct metering for product campaigns, rolling lines, furnaces and treatment units before applying allocation."
+    source_ids: []
+  - rule_id: allocation_internal_recycling
+    applies_to: "internal_copper_and_oil_loops"
+    rule: "Exclude internally recirculated copper, rolling oil, acid and water from gross boundary exchanges; record only make-up inputs and materials that leave the foreground boundary, and disclose loop losses."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: allocation_multiple_products
+    applies_to: "multiple_saleable_products"
+    rule: "When one campaign yields more than one saleable plate, sheet or strip product and direct subdivision is impracticable, allocate shared burdens by net conforming product mass unless a documented causal relation justifies another basis; disclose products, masses and sensitivity."
+    source_ids: []
+  - rule_id: allocation_exported_scrap
+    applies_to: "exported_copper_scrap"
+    rule: "Record exported copper trim and offcuts as a waste output at measured mass without an avoided-burden credit inside this gate-to-gate foreground dataset; any downstream recycling allocation or substitution belongs to the consuming lifecycle model and shall be disclosed."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass
+      process_id: "flat_copper_product_fabrication"
+      flow_role: "cast slab input and conforming product output"
+      record_type: "scale record and production order"
+      raw_fields: "timestamp; batch; alloy/grade; dimensions; gross mass; tare; net mass; product disposition"
+      collection_method: "calibrated inbound/outbound or process scales reconciled to production orders"
+      unit: "kg"
+      frequency: "each lot or coil"
+      temporal_coverage: "representative campaign and at least the declared reporting period"
+      site_scope: "all in-scope lines and products"
+      aggregation_rule: "sum accepted slab and conforming product masses, then normalize to 1,000 kg product"
+      quality_evidence: "calibration certificates; tare checks; order reconciliation; rejected-product log"
+    - protocol_id: cp_energy_records
+      process_id: "flat_copper_product_fabrication"
+      flow_role: "purchased electricity"
+      record_type: "revenue meter, submeter and invoice"
+      raw_fields: "meter id; opening/closing readings; kWh; line; equipment; operating hours; allocation key"
+      collection_method: "reconcile site invoice with line and major-equipment submeters"
+      unit: "kWh and MJ"
+      frequency: "continuous or shift readings, aggregated monthly"
+      temporal_coverage: "full reporting period including representative production and downtime"
+      site_scope: "all directly serving rolling, furnace, pumping, ventilation, treatment and finishing equipment"
+      aggregation_rule: "subtract excluded loads and allocate residual shared loads by documented causal driver"
+      quality_evidence: "meter calibration; invoice reconciliation; submeter coverage statement"
+    - protocol_id: cp_gas_records
+      process_id: "flat_copper_product_fabrication"
+      flow_role: "natural gas, gaseous nitrogen and gaseous hydrogen"
+      record_type: "flow meter and supplier record"
+      raw_fields: "gas identity; meter id; volume; temperature; pressure; energy content or purity; equipment; batch"
+      collection_method: "reconcile calibrated line meters with supplier invoices and tank/pipe balance"
+      unit: "m3 at declared reference conditions"
+      frequency: "continuous or per campaign"
+      temporal_coverage: "full reporting period"
+      site_scope: "all in-scope furnaces, dryers and protective-atmosphere systems"
+      aggregation_rule: "sum each gas separately and normalize by conforming product mass"
+      quality_evidence: "calibration; supplier certificate; reference-condition conversion; leak and balance check"
+    - protocol_id: cp_consumable_records
+      process_id: "flat_copper_product_fabrication"
+      flow_role: "cold-rolling oil, sulfuric acid and sodium hydroxide"
+      record_type: "inventory issue, purchase and bath-management record"
+      raw_fields: "chemical identity; formulation; concentration; issued mass; returned mass; tank level; line; batch"
+      collection_method: "reconcile stores issues and tank changes with line logs; exclude documented recirculation"
+      unit: "kg solution or product as delivered"
+      frequency: "each issue and bath change"
+      temporal_coverage: "full reporting period"
+      site_scope: "all in-scope rolling, pickling and directly serving treatment systems"
+      aggregation_rule: "net external make-up by substance, normalized by conforming product mass"
+      quality_evidence: "supplier specification; concentration analysis; tank calibration; stock reconciliation"
+    - protocol_id: cp_water_records
+      process_id: "flat_copper_product_fabrication"
+      flow_role: "net process water"
+      record_type: "water meter and water-balance record"
+      raw_fields: "source; meter id; volume or mass; density if converted; use area; recirculated volume; discharge"
+      collection_method: "calibrated meters and documented water balance by use area"
+      unit: "kg, with source volume retained"
+      frequency: "continuous or daily"
+      temporal_coverage: "full reporting period"
+      site_scope: "roll cooling, surface treatment, rinsing, brushing and directly serving treatment"
+      aggregation_rule: "external make-up less documented out-of-scope use; do not subtract water leaving in waste unless required by the site balance"
+      quality_evidence: "meter calibration; water-balance closure; density and conversion record"
+    - protocol_id: cp_output_records
+      process_id: "flat_copper_product_fabrication"
+      flow_role: "copper scrap, spent rolling oil and spent pickling solution"
+      record_type: "scale ticket, waste manifest and transfer analysis"
+      raw_fields: "identity; mass; alloy or composition; acid concentration; dissolved copper; oil/water content; destination; recovery route"
+      collection_method: "weigh each container or transfer and reconcile with handler documentation"
+      unit: "kg"
+      frequency: "each transfer"
+      temporal_coverage: "full reporting period"
+      site_scope: "all in-scope generation points and storage"
+      aggregation_rule: "sum each waste separately after excluding documented internal return"
+      quality_evidence: "scale calibration; manifest; laboratory analysis; receiver and recovery evidence"
+    - protocol_id: cp_direct_co2_calculation
+      process_id: "flat_copper_product_fabrication"
+      flow_role: "direct fossil carbon dioxide"
+      record_type: "fuel meter, supplier composition and calculation record"
+      raw_fields: "fuel volume or mass; carbon content; reference conditions; oxidation assumption; equipment; period"
+      collection_method: "calculate fossil carbon dioxide from collected fuel carbon entering direct foreground combustion or gas generation"
+      unit: "kg CO2"
+      frequency: "monthly and reporting-period total"
+      temporal_coverage: "full reporting period"
+      site_scope: "all in-scope direct fossil combustion and on-site carbon-bearing protective-gas generation"
+      aggregation_rule: "sum source-specific calculated emissions and normalize by conforming product mass"
+      quality_evidence: "metering evidence; supplier certificate or measured carbon content; formula version; reviewer check"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every inventory row"
+      rule: "normalized amount = campaign exchange amount × 1,000 / campaign net mass of conforming final product"
+      inputs:
+        - "campaign exchange amount"
+        - "net conforming product mass"
+      output: "amount per 1,000 kg reference product"
+      source_ids: []
+    - id: calc_volume_to_mass
+      applies_to: "water and delivered liquid solutions when only volume is measured"
+      rule: "mass = measured volume × density at the recorded temperature; keep concentration on an as-delivered basis"
+      inputs:
+        - volume
+        - density
+        - temperature
+        - concentration
+      output: "kg solution or water"
+      source_ids: []
+    - id: calc_direct_fossil_co2
+      applies_to: "fossil_carbon_dioxide_output"
+      rule: "convert measured fossil-fuel carbon entering direct foreground equipment to carbon dioxide using the documented carbon balance and oxidation assumption; do not include upstream supply-chain emissions"
+      inputs:
+        - "fuel quantity"
+        - "carbon content"
+        - "oxidation assumption"
+        - "molecular mass conversion"
+      output: "kg direct fossil CO2"
+      source_ids: []
+    - id: calc_copper_mass_balance
+      applies_to: "copper-bearing inputs and outputs"
+      rule: "reconcile cast-slab copper-bearing mass with conforming product, exported scrap, measured treatment residues and inventory change; investigate unexplained imbalance"
+      inputs:
+        - "slab mass"
+        - "product mass"
+        - "scrap mass"
+        - "measured residues"
+        - "work-in-process change"
+      output: "campaign copper-bearing mass-balance closure"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product and cast slab"
+      requirement: "Declare grade/alloy, form, thickness, dimensions, temper, surface, edge condition and product disposition; separate nonconforming and foil output."
+      evidence: "production order; inspection certificate; material certificate; dimensional test record"
+    - id: dq_temporal_coverage
+      applies_to: "all foreground exchanges"
+      requirement: "Cover a representative production period that includes routine start-up, steady production, product changes, maintenance and downtime, or disclose and justify every exclusion."
+      evidence: "reporting calendar; line logs; maintenance and downtime records"
+    - id: dq_metering
+      applies_to: "energy, gas, water and mass records"
+      requirement: "Use calibrated meters or reconciled supplier records; document estimation only for measured gaps and report its share."
+      evidence: "calibration certificates; invoices; reconciliation and gap log"
+    - id: dq_completeness
+      applies_to: "process inventory"
+      requirement: "Account separately for every applicable atomic exchange in this PCR and disclose any confirmed non-applicable row; do not replace rows with aggregated utilities, chemicals, wastes or air emissions."
+      evidence: "completed inventory checklist; non-applicability evidence; mass and energy reconciliation"
+    - id: dq_route_disclosure
+      applies_to: "system boundary"
+      requirement: "Declare hot/cold rolling, furnace fuel, annealing atmosphere, pickling chemistry, water recirculation, oil/acid recovery, scrap routing and directly serving treatment."
+      evidence: "process flow diagram; equipment list; operating procedure; waste route documentation"
+    - id: dq_uncertainty
+      applies_to: "calculated and allocated values"
+      requirement: "Retain raw values, formulas, allocation keys, uncertainty or data-gap notes, and a reviewer-reproducible calculation workbook or equivalent record."
+      evidence: "calculation file; version history; independent check"
+validation_rules:
+  - rule_id: val_reference_identity
+    applies_to: "reference_flow"
+    rule: "Fail validation if net product thickness is not greater than 0.15 mm or if grade/alloy, product form, dimensions, temper, surface finish, edge condition, geography, technology or reporting period is absent."
+    source_ids:
+      - un-cpc-3-0-2025
+  - rule_id: val_inventory_atomicity
+    applies_to: "process_inventory"
+    rule: "Fail validation when one inventory row combines multiple utilities, gases, chemicals, wastes or emissions, or when a selected flow is a collection or future selector instead of one concrete exchange."
+    source_ids: []
+  - rule_id: val_mass_normalization
+    applies_to: "inventory_amounts"
+    rule: "Recalculate every amount to 1,000 kg net conforming product and verify unit conversions, excluded packaging, and separate treatment of nonconforming product and scrap."
+    source_ids: []
+  - rule_id: val_route_completeness
+    applies_to: "conditional_exchanges"
+    rule: "For each gas, acid, alkali and waste row, require either a measured amount or documented route-specific non-applicability; verify declared equipment against process and purchasing records."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: val_copper_balance
+    applies_to: "copper_bearing_flows"
+    rule: "Require a documented copper-bearing mass balance across slab input, conforming product, copper scrap, residues and inventory change; investigate and disclose unexplained imbalance."
+    source_ids: []
+  - rule_id: val_direct_co2
+    applies_to: "direct_emissions"
+    rule: "Verify direct fossil carbon dioxide against metered fossil-fuel carbon and exclude upstream emissions from purchased electricity, fuels, gases, chemicals and slab datasets."
+    source_ids: []
+  - rule_id: val_uuid_and_locale
+    applies_to: "tiangong_identity"
+    rule: "Require state-100 Tiangong UUIDs to match flow type, property and unit group, and require the official Tiangong Chinese baseName in the Chinese rendering; keep audited unresolved rows UUID-empty."
+    source_ids: []
+  - rule_id: val_source_and_range_status
+    applies_to: "evidence"
+    rule: "Verify every cited source against original text; treat all missing external ranges listed in manifest review metadata as unresolved evidence needs and never infer a range from one case or unverified metadata."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Gate-to-gate foreground dataset for flat copper and copper-alloy plate, sheet, or strip fabrication"
+  downstream_use: "secondary_dataset; background_dataset after independent review and resolution of product-specific upstream links and material evidence gaps"
+  allowed_use: "Product carbon footprint and LCA models that need a disclosed flat-copper-product fabrication stage consistent with the declared slab starting condition and product qualifiers"
+  excluded_use: "Copper mining, smelting, refining or slab-production datasets; foil at or below 0.15 mm; wire, rod, tube or fabricated component production; undisclosed cradle-to-gate claims; generic substitution across alloy, temper or surface routes without sensitivity review"
+  required_metadata: "canonical PCR id; product UUID; grade/alloy; product form; thickness; dimensions; temper; surface and edge condition; slab dataset; rolling/annealing/pickling route; geography; technology; reporting period; allocation; data sources; unresolved identity and range status"
+  required_quality_disclosure: "primary-data share; meter and scale coverage; temporal representativeness; missing-data estimation; mass-balance closure; allocation sensitivity; internal recycling treatment; upstream dataset choices; unresolved Tiangong identities and range-evidence needs"
+  update_trigger: "Change in alloy or product form, thickness side of the 0.15 mm boundary, rolling or furnace technology, annealing atmosphere, pickling chemistry, recovery route, site geography, allocation method, upstream slab dataset, or material change in measured energy, water, yield, waste or direct emissions"
+data_sources:
+  - id: "un-cpc-3-0-2025"
+    type: "dataset"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, [official CSV](https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv), retrieved 2026-09-04"
+    used_for: "Original-text verification of CPC 41514 identity and the thickness boundary separating the product from copper foil"
+  - id: "eu-jrc-nfm-bref-2017"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, *Best Available Techniques (BAT) Reference Document for the Non-Ferrous Metals Industries*, JRC107041, 2017, [official PDF](https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2020-01/JRC107041_NFM_bref2017.pdf), retrieved 2026-09-04"
+    used_for: "Original-text verification of cast slab/cake starting material; hot and cold rolling, annealing, pickling, rinsing, drying and finishing; rolling oil, protective gases, water, acid, alkali, scrap and recovery/treatment roles"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d9057029fe3ff5e3b3637004bad75d80c1351fd994df326b259608c391c0d3bf"
+  generated_content_sha256: "sha256:f805b0775fccd9df905e553c8242f07b702dce30cca792787fbe9749e48e6b40"

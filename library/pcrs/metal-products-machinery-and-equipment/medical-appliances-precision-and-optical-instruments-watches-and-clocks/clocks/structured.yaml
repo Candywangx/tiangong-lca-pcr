@@ -1,10 +1,430 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "48420"
-  title: "Clocks"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.medical-appliances-precision-and-optical-instruments-watches-and-clocks.clocks"
+  classification_refs: "CPC 3.0: 48420, Clocks (exact)"
+  covered_products: "Complete non-wearable clocks principally indicating time of day, including alarm, wall, table, mantel, instrument-panel, analog, digital, electrically operated, and non-electrically operated clocks"
+  excluded_products: "Watches; time-recording, interval-measuring, and time-switching apparatus; separately sold watch or clock movements; separately sold clock parts; products whose principal identity is not a clock"
+  representative_product: "Analog quartz table clock with one supplied button-cell battery"
+  production_route: "Receipt of purchased clock movement, complete clock case, analog clock dial, and included battery; assembly; calibration; functional testing; release of conforming clock at the factory gate before sales packaging"
+  market_state: "Complete, tested, unpackaged clock at the manufacturing factory gate; mechanism, display, accuracy specification, power interface, and included-battery state declared"
+functional_unit:
+  what: "A complete non-wearable clock providing ordinary time-of-day indication"
+  how_much: "1 kg of conforming clocks at the declared factory-gate state"
+  how_well: "Meets the producer's declared timekeeping accuracy, display readability, functional-test acceptance criteria, and power-interface specification"
+  how_long_or_cycle: "Declared design service life under the stated duty pattern; service life is a required qualifier and is not embedded in the 1 kg manufacturing reference amount"
+  reference_flow_link: "The mass of conforming complete clocks released by final_clock_assembly and normalized to 1 kg"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The default boundary begins when purchased clock components and supplied batteries enter the reporting facility and ends when conforming, tested clocks are released at the factory gate before sales packaging. It includes component receipt and internal handling, assembly, calibration, functional testing, electricity used by those operations, and management of defective complete clocks. Upstream production of purchased components and electricity is represented by linked upstream datasets rather than repeated as foreground exchanges."
+      source_ids: []
+    - rule_id: boundary_clock_identity
+      applies_to: "product scope"
+      rule: "Apply this PCR only when the reference product is a complete clock whose principal identity is ordinary time-of-day indication within CPC 3.0 subclass 48420."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+    - rule_id: boundary_factory_gate
+      applies_to: "foreground operations"
+      rule: "Include receipt, internal handling, assembly, calibration, functional testing, electricity used by those operations, and defective complete-clock handling through release at the factory gate before sales packaging."
+      source_ids: []
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased inputs"
+      rule: "Represent production of purchased movements, cases, dials, supplied batteries, and electricity with linked upstream datasets and do not duplicate their upstream exchanges in the foreground inventory."
+      source_ids: []
+    - rule_id: boundary_default_exclusions
+      applies_to: "excluded life-cycle stages"
+      rule: "Exclude sales packaging, distribution, consumer use, maintenance, replacement batteries, and end-of-life unless a study explicitly extends the boundary and reports those stages separately."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased clock movement, complete clock case, analog clock dial, and any battery supplied with the clock at the reporting facility receiving point"
+  starting_condition_role: "Auditable gate-to-gate starting condition for the declared clock-assembly route"
+  product_classification_scope: "Complete clocks within CPC 3.0 subclass 48420; watches, time-recording apparatus, separately sold movements, and separately sold parts are outside the canonical product boundary"
+  recursive_input_rule: "A purchased complete clock used as an input must be represented by a separately identified upstream clock dataset and must not be silently decomposed or counted again inside the current assembly process"
+  upstream_dataset_requirement: "Link geographically and technologically representative upstream datasets for every purchased component, battery, and electricity input; disclose any proxy and its effect on completeness"
+  disclosure: "Declare the starting condition, component make-or-buy boundary, clock mechanism, display, supplied battery state, included operations, excluded operations, reference-product mass convention, geography, technology, and data period"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Clocks"
+    uuid: "24759480-c6f3-43e9-90be-61582a11d717"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "clock type and intended installation"
+    - "mechanism and time base"
+    - "analog or digital display"
+    - "declared accuracy and test method"
+    - "power interface"
+    - "supplied battery chemistry"
+    - format
+    - count
+    - "and inclusion state"
+    - "complete-clock net mass excluding sales packaging"
+    - "factory-gate state"
+    - "manufacturing geography and technology"
+    - "data period"
+    - "declared design service life and duty pattern"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_clock_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure net mass of conforming complete clocks after calibration and testing and before sales packaging; exclude pallets, reusable transport items, and sales packaging from the reference-product mass."
+  - id: component_mass_normalization
+    applies_to: "clock movement, clock case, analog clock dial, and included battery"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg/kg"
+    rule: "Record each received component separately by mass and divide the accepted batch quantity by the conforming complete-clock mass from the same batch."
+  - id: electricity_energy_conversion
+    applies_to: "assembly electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered kWh in raw records and convert to MJ using 1 kWh = 3.6 MJ before normalization; do not add upstream grid emissions as foreground elementary flows."
+  - id: defect_mass_consistency
+    applies_to: "defective complete clock waste"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg/kg"
+    rule: "Weigh rejected complete clocks before dismantling or rework; do not combine component scrap, packaging waste, or mixed manufacturing waste with this row."
+process_map:
+  - id: final_clock_assembly
+    name: "Final clock assembly, calibration, and testing"
+    inclusion: "required"
+    inclusion_condition: "Applies to every dataset using this factory-gate PCR"
+    role: "Foreground manufacturing process that converts purchased components into conforming complete clocks"
+    quantitative_reference: "1 kg conforming complete clocks before sales packaging"
+process_inventory:
+  - id: final_clock_assembly
+    label: "Final clock assembly, calibration, and testing"
+    inputs:
+      product:
+        - row_id: clock_movement
+          role: "Purchased timekeeping movement"
+          name: "Watch or clock movements"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3dcf3381-920e-4477-a31c-aa2594aa8c59"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The complete purchased movement crosses the receiving boundary and provides the time base and drive function for the representative clock. Record only the movement delivered to assembly, not its internal gears or electronic parts again."
+          amount:
+            expression: "measured accepted movement mass issued to the assembly batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming complete-clock output before sales packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_receipts
+              source_ids: []
+            ranges: []
+        - row_id: clock_case
+          role: "Complete clock case"
+          name: "Clock case"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The complete case that houses and supports the representative clock crosses the receiving boundary as one product input. Material, finish, dimensions, supplier, and fit must be declared; its exact Tiangong flow UUID remains unresolved."
+          amount:
+            expression: "measured accepted clock-case mass issued to the assembly batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming complete-clock output before sales packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_receipts
+              source_ids: []
+            ranges: []
+        - row_id: analog_clock_dial
+          role: "Analog clock dial"
+          name: "Analog clock dial"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The finished analog dial or face crosses the receiving boundary and provides the visible time scale for the representative product. Record it separately from the case and movement; its exact Tiangong flow UUID remains unresolved."
+          amount:
+            expression: "measured accepted dial mass issued to the assembly batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming complete-clock output before sales packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_receipts
+              source_ids: []
+            ranges: []
+        - row_id: included_button_cell_battery
+          role: "Battery supplied with the clock"
+          name: "Button-cell battery"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record one new button-cell battery only when it is physically supplied with the representative clock at the declared factory-gate state. Battery-free products must document that this exchange is absent rather than substituting use-phase replacement batteries; the exact Tiangong flow UUID remains unresolved."
+          amount:
+            expression: "measured mass of new button-cell batteries installed in or supplied with the conforming batch; absent only when the dataset declares that no battery is supplied"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming complete-clock output before sales packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_receipts
+              source_ids: []
+            ranges: []
+        - row_id: assembly_electricity
+          role: "Electricity used for assembly and testing"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200b9a66 / MJ"
+          description: "Electricity crosses the foreground boundary through assembly-line, calibration-bench, test-rig, and directly attributable support loads. Grid mix, voltage, geography, losses, and meter allocation must be declared."
+          amount:
+            expression: "metered electricity attributable to the assembly batch, converted from kWh to MJ and normalized to conforming output"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming complete-clock output before sales packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: clock_output
+          role: "Conforming complete clock"
+          name: "Clocks"
+          flow_type: "product"
+          flow_ref:
+            uuid: "24759480-c6f3-43e9-90be-61582a11d717"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Conforming complete clocks leave assembly after calibration and functional testing. Their net mass establishes the reference output and excludes sales packaging."
+          amount:
+            expression: "exactly 1 kg after normalization from measured conforming batch output"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg conforming complete-clock reference flow before sales packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_clock_output
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: defective_complete_clock
+          role: "Defective complete clocks"
+          name: "Defective complete clock"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Complete clocks rejected after assembly or functional testing cross the process boundary as a distinct waste stream when they are not reworked in the same batch. Do not combine them with component scrap or mixed manufacturing waste; the exact Tiangong waste-flow UUID remains unresolved."
+          amount:
+            expression: "measured mass of rejected complete clocks leaving the process for treatment, excluding units fully reworked into conforming output in the same batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming complete-clock output before sales packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_defective_clock_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "shared assembly, calibration, and testing operations"
+    rule: "Avoid allocation by separately metering or otherwise subdividing product-line electricity, component issues, conforming output, and defective-clock waste wherever practicable."
+    source_ids: []
+  - rule_id: allocation_physical_mass
+    applies_to: "inseparable shared operations producing more than one clock model"
+    rule: "When subdivision is not practicable, allocate shared burdens among clock models by measured conforming product mass; disclose the affected operations, models, allocation denominator, and sensitivity to an item-count alternative."
+    source_ids: []
+  - rule_id: allocation_no_defect_credit
+    applies_to: "defective complete clocks"
+    rule: "Assign burdens incurred before rejection to the production batch and report the defective-clock waste output without an avoided-product credit; model any recycling or treatment in the linked downstream waste dataset."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_component_receipts
+      process_id: "final_clock_assembly"
+      flow_role: "purchased component input"
+      record_type: "receiving and issue records plus verified mass measurement"
+      raw_fields: "supplier; SKU; component description; movement mechanism; case material and finish; dial type; battery chemistry and format; accepted count; rejected count; tare mass; net mass; batch_id"
+      collection_method: "Reconcile receiving and line-issue records; verify representative unit or lot mass with a calibrated balance; retain component identity by row_id"
+      unit: "kg"
+      frequency: "Each received lot and assembly batch"
+      temporal_coverage: "Same reporting period as clock output, normally at least 12 consecutive months"
+      site_scope: "All component lots used by the reporting facility for the declared clock product"
+      aggregation_rule: "Sum accepted net mass issued to the batch by atomic component row and divide by conforming clock output mass"
+      quality_evidence: "Purchase/issue reconciliation, supplier specification, balance calibration record, and sampled weighing record"
+    - protocol_id: cp_assembly_electricity
+      process_id: "final_clock_assembly"
+      flow_role: "assembly electricity input"
+      record_type: "submeter or documented meter allocation"
+      raw_fields: "meter_id; opening_kWh; closing_kWh; timestamps; production-line operating hours; shared-load allocation basis; batch_id"
+      collection_method: "Read dedicated submeters where available; otherwise allocate a documented parent-meter difference using measured operating hours or equipment load-hours"
+      unit: "kWh and MJ"
+      frequency: "At least monthly and for each production campaign when campaign data exist"
+      temporal_coverage: "Same reporting period as clock output, normally at least 12 consecutive months"
+      site_scope: "Assembly, calibration, testing, and directly attributable support equipment at the reporting facility"
+      aggregation_rule: "Subtract verified non-production loads, convert kWh to MJ, sum the reporting period, and divide by conforming clock output mass"
+      quality_evidence: "Meter identification, calibration or utility reconciliation, reading log, and allocation worksheet"
+    - protocol_id: cp_clock_output
+      process_id: "final_clock_assembly"
+      flow_role: "conforming clock product output"
+      record_type: "production release and mass records"
+      raw_fields: "model; mechanism; display; accuracy specification; power interface; supplied battery state; accepted_count; net_unit_mass; total_conforming_mass; release_date; batch_id"
+      collection_method: "Reconcile quality-release counts with calibrated net-mass measurements after testing and before sales packaging"
+      unit: "kg"
+      frequency: "Each released batch"
+      temporal_coverage: "Same period as all input and waste records, normally at least 12 consecutive months"
+      site_scope: "All conforming clock output from the declared line and product system"
+      aggregation_rule: "Sum conforming net clock mass; use it as the denominator and scale all exchanges to exactly 1 kg"
+      quality_evidence: "Quality-release record, test acceptance record, balance calibration, and batch reconciliation"
+    - protocol_id: cp_defective_clock_waste
+      process_id: "final_clock_assembly"
+      flow_role: "defective complete-clock waste output"
+      record_type: "rejection, rework, weighing, and dispatch records"
+      raw_fields: "rejected_count; defect_code; gross_mass; tare_mass; net_mass; rework_status; destination; dispatch_reference; batch_id"
+      collection_method: "Weigh complete rejected clocks before dismantling or dispatch and reconcile units reworked into conforming output"
+      unit: "kg"
+      frequency: "Each batch and each waste dispatch"
+      temporal_coverage: "Same reporting period as clock output, normally at least 12 consecutive months"
+      site_scope: "All complete-clock rejects generated by the declared process"
+      aggregation_rule: "Sum net mass dispatched as waste; exclude successfully reworked clocks and normalize by conforming clock output mass"
+      quality_evidence: "Rejection log, rework reconciliation, calibrated weighing record, and waste transfer evidence"
+  calculation_rules:
+    - id: calc_mass_normalization
+      applies_to: "all mass-based input and waste rows"
+      rule: "normalized amount (kg/kg) = batch atomic-flow net mass (kg) / conforming complete-clock net mass (kg)"
+      inputs:
+        - "batch row mass"
+        - "conforming clock output mass"
+        - "matched batch_id and period"
+      output: "kg exchange per kg conforming complete clocks"
+      source_ids: []
+    - id: calc_electricity_mj
+      applies_to: "assembly_electricity"
+      rule: "normalized electricity (MJ/kg) = attributable electricity (kWh) × 3.6 / conforming complete-clock net mass (kg)"
+      inputs:
+        - "verified meter difference"
+        - "excluded load"
+        - "allocation factor"
+        - "conforming output mass"
+      output: "MJ electricity per kg conforming complete clocks"
+      source_ids: []
+    - id: calc_clock_output_reference
+      applies_to: "clock_output"
+      rule: "Divide measured conforming complete-clock mass by itself after confirming a positive denominator; the normalized reference output equals exactly 1 kg"
+      inputs:
+        - "measured conforming complete-clock mass"
+      output: "1 kg reference product"
+      source_ids: []
+    - id: calc_clock_mass_balance
+      applies_to: "final clock assembly mass balance"
+      rule: "Compare atomic component inputs with conforming clock output, defective complete-clock waste, documented in-process inventory change, and separately recorded atomic component scrap; investigate unexplained mass rather than forcing closure"
+      inputs:
+        - "atomic component masses"
+        - "output mass"
+        - "defective-clock waste"
+        - "in-process inventory change"
+        - "separately identified scrap"
+      output: "disclosed mass-balance difference and reconciliation status"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Retain model, mechanism, display, accuracy specification, power interface, supplied battery state, net mass convention, and factory-gate state sufficient to demonstrate that the output is a complete clock rather than a watch, movement, part, or time-recording apparatus."
+      evidence: "Product specification, bill of materials, product photograph or drawing, and quality-release record"
+    - id: dq_flow_identity
+      applies_to: "every inventory row"
+      requirement: "Preserve one concrete exchange identity per row, the selected Tiangong UUID when confirmed, property and unit, supplier or meter context, and any unresolved UUID status; do not aggregate unlike components, wastes, or emissions."
+      evidence: "Row-level reconciliation and UUID review record"
+    - id: dq_temporal_alignment
+      applies_to: "all foreground data"
+      requirement: "Use the same representative period for input, output, electricity, and waste records; disclose shutdowns, launches, abnormal campaigns, and any period shorter than 12 consecutive months."
+      evidence: "Dated source records and reporting-period reconciliation"
+    - id: dq_measurement
+      applies_to: "mass and electricity records"
+      requirement: "Use calibrated or verified balances and meters, retain tare corrections and conversion worksheets, and document shared-meter allocation assumptions."
+      evidence: "Calibration certificates or checks, raw readings, invoices, and calculation workbook"
+    - id: dq_completeness
+      applies_to: "foreground inventory"
+      requirement: "Reconcile purchased component issues, conforming output, defective-clock waste, rework, in-process inventory change, and electricity coverage; quantify any excluded or estimated share."
+      evidence: "Mass-balance statement, energy reconciliation, and completeness checklist"
+validation_rules:
+  - rule_id: validate_clock_identity
+    applies_to: "product identity"
+    rule: "Confirm that the reference product is a complete non-wearable clock in CPC 3.0 subclass 48420 and not a watch, time-recording apparatus, separately sold movement, separately sold part, or multifunction product with another principal identity."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_reference_flow
+    applies_to: "reference flow"
+    rule: "Require a positive conforming complete-clock mass and a normalized clock_output of exactly 1 kg using the declared net-mass convention."
+    source_ids: []
+  - rule_id: validate_required_qualifiers
+    applies_to: "dataset metadata"
+    rule: "Reject an incomplete reference-flow definition when any required qualifier in section 3 is missing or when the supplied battery state is inconsistent with included_button_cell_battery."
+    source_ids: []
+  - rule_id: validate_atomic_inventory
+    applies_to: "process inventory"
+    rule: "Require every material, battery, electricity, waste, and any added direct-emission exchange to use its own row, property, unit, amount rule, protocol, and identity status."
+    source_ids: []
+  - rule_id: validate_period_reconciliation
+    applies_to: "foreground records"
+    rule: "Confirm that component, electricity, conforming output, reject, rework, and in-process inventory records cover the same declared period and facility scope."
+    source_ids: []
+  - rule_id: validate_mass_balance
+    applies_to: "assembly mass balance"
+    rule: "Report the mass-balance difference from calc_clock_mass_balance; investigate and disclose component scrap, stock change, moisture, and measurement uncertainty rather than hiding an unexplained difference."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground clock-manufacturing data package and product-category-specific process dataset"
+  downstream_use: "secondary_dataset; background_dataset after methodology review, geographic and technological representativeness review, and resolution or explicit acceptance of open identity and range-evidence needs"
+  allowed_use: "Comparative or attributional modelling of complete clocks that match the declared mechanism, display, accuracy, power interface, supplied battery state, factory-gate state, geography, technology, and data period"
+  excluded_use: "Watches, separately sold movements or parts, time-recording apparatus, packaged-clock claims, distribution, use-phase energy or batteries, maintenance, and end-of-life without explicit additional modelling"
+  required_metadata: "PCR id and version; product model and clock type; mechanism and time base; display; accuracy specification and test method; power interface; battery chemistry, format, count, and supplied state; net mass convention; facility geography and technology; make-or-buy boundary; data period; allocation; upstream dataset identities; unresolved UUIDs; exclusions"
+  required_quality_disclosure: "Primary-data share; meter and balance coverage; calibration status; temporal coverage; shared-load allocation; component and output reconciliation; defect and rework treatment; mass-balance difference; proxy datasets; unresolved UUIDs and range-evidence needs"
+  update_trigger: "Change in mechanism, display, case or dial design, supplied battery, assembly technology, facility, electricity supply, make-or-buy boundary, allocation, net-mass convention, or data period; resolution of an identity or range-evidence need; or a material change in normalized inputs, electricity, output, or waste"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, structure dated 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-07)"
+    used_for: "Official CPC 48420 identity and separation from watches, time-recording apparatus, movements, and other parts"
+  - id: "un-cpc-1-1-chinese-2002"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 1.1, Chinese edition, https://unstats.un.org/unsd/publication/SeriesM/M_77ver1_1c.pdf (retrieved 2026-09-07)"
+    used_for: "Verified professional Chinese category term “钟” and distinction from “表”, “钟表机心”, and other parts"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f404cdec6c31c6cc8095fa1172ba2de26635ff27771263b70af96e314bdf885f"
+  generated_content_sha256: "sha256:3ffed0a0bea891b97333857ae59ec0736bf8c47c623dca053982a365f6e7c6c8"

@@ -2,12 +2,12 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.springs-and-leaves-for-springs-of-iron-or-steel
 title:
   en-US: "Springs and leaves for springs, of iron or steel"
-  zh-CN: null
-status: scaffold
+  zh-CN: "钢铁制弹簧及弹簧片"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +22,99 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "42945"
     title: "Springs and leaves for springs, of iron or steel"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  semantic_boundary:
+    status: confirmed
+    statement: "Factory-gate production of finished, inspected iron or steel springs and spring leaves from purchased steel wire, strip, or rod; route-specific heat treatment and surface finishing are included when performed, while separate packaging, distribution, use, and end-of-life are outside the declared product boundary."
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: steel_strip
+        reason_code: no_exact_candidate
+        explanation: "The bounded hybrid search returned generic metal-strip, platinum-strip, steel-wire, and finished-innerspring records; none is an exact spring-steel strip identity."
+      - row_id: steel_rod
+        reason_code: no_exact_candidate
+        explanation: "The finalized hybrid-search audit found steel wire, reinforcing bar, generic alloy-steel bar/rod, further-worked bar/rod, and a finished innerspring; none exactly represents purchased spring-steel rod."
+      - row_id: forming_lubricant
+        reason_code: no_exact_candidate
+        explanation: "The finalized hybrid-search audit found sheet-, cold-, and hot-rolling oils, waste lubricating oil, and hydraulic fluid; none exactly represents the declared spring-forming lubricant."
+      - row_id: formed_blank_output
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "This facility-specific formed spring blank is an internal intermediate whose alloy, geometry, and heat-treatment state must be declared; no canonical public flow is asserted."
+      - row_id: formed_blank_heat_input
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "This row transfers the facility-specific formed spring blank into heat treatment and requires a new internal flow in the foreground package."
+      - row_id: heat_treated_blank_output
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "This facility-specific heat-treated spring blank is an internal intermediate whose alloy, geometry, and thermal state must be declared."
+      - row_id: formed_blank_finishing_input
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "This input applies only when the declared route omits post-forming heat treatment and transfers the facility-specific formed blank directly to finishing."
+      - row_id: heat_treated_blank_finishing_input
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "This row transfers the facility-specific heat-treated spring blank into finishing and inspection."
+      - row_id: steel_shot
+        reason_code: classification_mismatch
+        explanation: "The only state-100 Cast Steel Shot candidate is classified as other non-ferrous metal ores and concentrates, which conflicts with the required steel-shot product identity."
+      - row_id: spent_steel_shot
+        reason_code: classification_mismatch
+        explanation: "The only state-100 candidate is generic spent abrasive classified as non-metal waste and does not establish steel composition or shot-peening origin."
+      - row_id: metal_finishing_wastewater
+        reason_code: semantic_mismatch
+        explanation: "The only state-100 candidate is evaporation condensate, not wastewater from metal cleaning and surface treatment."
+    range_evidence_needs:
+      - row_id: steel_wire
+        need: "Two independent, boundary-compatible original sources for iron or non-alloy steel wire input per kg conforming output."
+      - row_id: low_alloy_steel_wire
+        need: "Two independent, boundary-compatible original sources for low-alloy steel wire input per kg conforming output."
+      - row_id: steel_strip
+        need: "Two independent, boundary-compatible original sources for spring-steel strip input per kg conforming output."
+      - row_id: steel_rod
+        need: "Two independent, boundary-compatible original sources for spring-steel rod input per kg conforming output."
+      - row_id: forming_electricity
+        need: "Two independent, boundary-compatible original sources for forming electricity per kg conforming output."
+      - row_id: forming_lubricant
+        need: "Two independent, boundary-compatible original sources for forming-lubricant consumption."
+      - row_id: steel_offcuts
+        need: "Two independent, boundary-compatible original sources for forming offcut and reject fractions."
+      - row_id: heat_treatment_electricity
+        need: "Two independent, boundary-compatible original sources for electrically heated treatment energy."
+      - row_id: natural_gas_heat_treatment
+        need: "Two independent, boundary-compatible original sources for gas-fired heat-treatment energy."
+      - row_id: quenching_oil
+        need: "Two independent, boundary-compatible original sources for make-up quenching-oil consumption."
+      - row_id: spent_quenching_oil
+        need: "Two independent, boundary-compatible original sources for spent-quenching-oil generation."
+      - row_id: fossil_co2_heat_treatment
+        need: "Two independent compatible sources or verified site factors for direct fossil CO2 from gas-fired heat treatment."
+      - row_id: finishing_electricity
+        need: "Two independent, boundary-compatible original sources for finishing electricity."
+      - row_id: process_water_finishing
+        need: "Two independent, boundary-compatible original sources for cleaning and finishing water use."
+      - row_id: sodium_hydroxide_finishing
+        need: "Two independent, boundary-compatible original sources for sodium-hydroxide use in applicable alkaline cleaning routes."
+      - row_id: steel_shot
+        need: "Two independent, boundary-compatible original sources for steel-shot make-up in applicable shot-peening routes."
+      - row_id: spent_steel_shot
+        need: "Two independent, boundary-compatible original sources for spent-steel-shot generation."
+      - row_id: metal_finishing_wastewater
+        need: "Two independent, boundary-compatible original sources for metal-finishing wastewater generation."
+      - row_id: reference_product
+        need: "Two independent, boundary-compatible original sources for saleable-yield or reject-rate QA ranges across comparable spring routes."

@@ -2,12 +2,12 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.basic-metals.unrefined-copper-copper-anodes-for-electrolytic-refining
 title:
   en-US: "Unrefined copper; copper anodes for electrolytic refining"
-  zh-CN: null
-status: scaffold
+  zh-CN: "未精炼铜；电解精炼用铜阳极"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +22,82 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "41412"
     title: "Unrefined copper; copper anodes for electrolytic refining"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  semantic_boundary:
+    decision: promote_legacy
+    scope: "Gate-to-gate fire refining of declared blister copper or copper scrap to fire-refined unrefined copper, plus anode casting when the declared product is an anode for electrolytic refining."
+    exclusions: "Ore and concentrate production, roasting, matte smelting, converting before the declared feed gate, electrolytic refining, cathode casting, semi-fabrication, and downstream use."
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: fr_unrefined_copper_output
+        reason_code: no_exact_candidate
+        explanation: "No exact public state-100 flow was established for generic marketed fire-refined unrefined copper without a conflicting feed, route, or refined-product state. Receipt: 3295d987-68b4-4f31-b248-58dfb3d412fe."
+      - row_id: fr_filter_dust
+        reason_code: no_exact_candidate
+        explanation: "Ranked waste candidates were mixed waste, electrolytic anode sludge, or disposal service, not captured copper-bearing anode-furnace filter dust. Receipt: 6e5c303e-1ddb-4eac-a82b-5a6fcd0ac87a."
+      - row_id: fr_sulfur_dioxide
+        reason_code: no_exact_candidate
+        explanation: "Searches found sulfur-oxide aggregates or sulfur dioxide in incompatible indoor, upper-atmosphere, or water compartments; no exact unspecified outdoor-air sulfur-dioxide flow was established. Receipts: 943a59f9-73ea-4299-8259-938b1502c2e3, 4e31c619-7f8f-4926-910d-3d9a20b0ac76, e78324b5-b25b-4762-b3bf-f01668e2ef53."
+      - row_id: ac_fire_refined_copper_input
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "The internal fire-refined copper transfer requires a facility-specific intermediate identity; generic blister and refined-copper candidates do not match this state. Receipt: 3295d987-68b4-4f31-b248-58dfb3d412fe."
+      - row_id: ac_offspec_anode_copper
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "Off-spec anodes returned to refining require a distinct internal intermediate flow and must not use the conforming reference-product UUID. Receipt: b2bd2abf-9229-4c49-bb8f-500cce161914."
+    range_evidence_needs:
+      - row_id: fr_blister_copper
+        explanation: "Obtain two independent, boundary-compatible original sources for blister-copper input mass per unit of net fire-refined product; until then use foreground mass records."
+      - row_id: fr_copper_scrap
+        explanation: "Obtain two independent, route-compatible original sources for copper-scrap input and loss behavior; until then use foreground weighbridge and assay records."
+      - row_id: fr_natural_gas
+        explanation: "Obtain two independent, technology-compatible original sources for natural-gas use in anode furnaces; until then use foreground meter records."
+      - row_id: fr_propane
+        explanation: "Obtain two independent, technology-compatible original sources for propane use in poling; until then use foreground delivery and meter records."
+      - row_id: fr_compressed_air
+        explanation: "Obtain two independent, technology-compatible original sources for compressed-air use; until then use foreground flowmeter records."
+      - row_id: fr_industrial_oxygen
+        explanation: "Obtain two independent, oxygen-enrichment-route sources; until then use foreground oxygen-meter records and mark the row not applicable where oxygen is not supplied."
+      - row_id: fr_electricity
+        explanation: "Obtain two independent, gate-to-gate original sources for electricity demand; until then use foreground electricity meters."
+      - row_id: fr_unrefined_copper_output
+        explanation: "Obtain two independent, product-state-compatible sources for yield or loss screening; until then calculate net output from foreground mass records."
+      - row_id: fr_anode_furnace_slag
+        explanation: "Obtain two independent, process-compatible sources for anode-furnace slag generation; until then use foreground slag mass and assay records."
+      - row_id: fr_filter_dust
+        explanation: "Obtain two independent, control-technology-compatible sources for captured filter-dust generation; until then use foreground collection records."
+      - row_id: fr_fossil_co2
+        explanation: "Obtain two independent, fuel- and boundary-compatible direct-emission sources or an accepted carbon-balance factor set; until then use site emissions records."
+      - row_id: fr_sulfur_dioxide
+        explanation: "Obtain two independent, feed-sulfur- and control-compatible sources; until then use site stack and fugitive-emission measurements."
+      - row_id: fr_particulate
+        explanation: "Obtain two independent, control-technology-compatible sources; until then use site particulate measurements."
+      - row_id: ac_fire_refined_copper_input
+        explanation: "Obtain two independent, boundary-compatible sources for casting transfer losses; until then use foreground transferred-mass records."
+      - row_id: ac_cooling_water
+        explanation: "Obtain two independent, cooling-technology-compatible sources for make-up water and discharge; until then use foreground water meters."
+      - row_id: ac_electricity
+        explanation: "Obtain two independent, casting-technology-compatible sources for electricity demand; until then use submetered foreground records."
+      - row_id: ac_anode_copper
+        explanation: "Obtain two independent, product-state-compatible sources for casting yield screening; until then calculate conforming output from foreground mass records."
+      - row_id: ac_offspec_anode_copper
+        explanation: "Obtain two independent, casting-technology-compatible sources for off-spec rates; until then use foreground rejection records."
+      - row_id: ac_wastewater
+        explanation: "Obtain two independent, direct-cooling- and treatment-compatible sources for wastewater generation; until then use foreground discharge meters."

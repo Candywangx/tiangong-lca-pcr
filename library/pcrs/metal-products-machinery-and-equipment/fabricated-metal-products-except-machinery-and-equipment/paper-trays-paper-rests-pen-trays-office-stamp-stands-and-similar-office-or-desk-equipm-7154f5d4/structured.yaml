@@ -1,10 +1,735 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "42994"
-  title: "Paper trays, paper rests, pen trays, office-stamp stands and similar office or desk equipment, of base metal, other than office furniture"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.paper-trays-paper-rests-pen-trays-office-stamp-stands-and-similar-office-or-desk-equipm-7154f5d4"
+  classification_refs: "CPC 3.0: 42994"
+  covered_products: "Base-metal paper or letter trays, paper rests, pen trays, office-stamp stands, and similar non-furniture office or desk articles"
+  excluded_products: "Office furniture; floor-standing cabinets; paper, paperboard, plastics-only, or electronic articles; binder fittings, paper clips, and staples"
+  representative_product: "A finished powder-coated formed-sheet base-metal paper tray, ready for sale"
+  production_route: "Delivered base-metal stock; cutting and forming; route-dependent joining and mechanical finishing; route-dependent cleaning or pretreatment; route-dependent coating and curing; assembly, inspection, and packaging"
+  market_state: "Finished, dry, inspected product at the factory gate; packaging is separate from net reference mass"
+functional_unit:
+  what: "Provide a finished base-metal office or desk article for holding, supporting, or organizing paper, pens, stamps, or similar office items"
+  how_much: "1 kg net mass of finished product"
+  how_well: "Conforms to the declared article type, dimensions, principal metal or alloy, finish, coating or plating specification, assembly state, and acceptance criteria"
+  how_long_or_cycle: "One completed manufacturing batch to the factory gate; service life is outside this mass-based reference flow"
+  reference_flow_link: "reference_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "foreground manufacturing"
+      rule: "Include receiving, cutting, punching, bending or wire forming, joining, deburring or grinding, cleaning and pretreatment when used, coating or plating when used, curing or drying, assembly, inspection, packaging, direct wastes, and direct emissions."
+      source_ids:
+        - us-epa-ap42-metal-furniture-coating-1995
+        - eu-jrc-sts-bref-2020
+    - rule_id: boundary_route_disclosure
+      applies_to: "conditional operations"
+      rule: "Report the actual uncoated, powder-coated, liquid-coated, plated, mechanically finished, aqueous-cleaned, solvent-cleaned, and abrasive-prepared routes; never substitute one route for another."
+      source_ids:
+        - us-epa-ap42-metal-furniture-coating-1995
+        - eu-jrc-sts-bref-2020
+    - rule_id: boundary_upstream
+      applies_to: "purchased inputs"
+      rule: "Link upstream datasets for metals, electricity, fuels, chemicals, coatings, components, and packaging instead of recreating their supply chains here."
+      source_ids: []
+    - rule_id: boundary_exclusions
+      applies_to: "other life-cycle stages"
+      rule: "Exclude capital equipment, employee travel, distribution, retail, use, maintenance, and end-of-life unless the study goal includes and reports them separately."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Metal stock, components, coatings, treatment chemicals, utilities, and packaging are received at the reporting factory, with upstream production represented by separate datasets"
+  starting_condition_role: "Factory-gate manufacturing start"
+  product_classification_scope: "Base-metal non-furniture office or desk articles within section 1"
+  recursive_input_rule: "A bought-in article already within this PCR boundary is a product input with its own upstream dataset and is not recursively unfolded in this foreground process"
+  upstream_dataset_requirement: "Use geographically, technologically, temporally, and product-state representative upstream datasets for every purchased input"
+  disclosure: "Declare material and stock route, bought-in versus in-house operations, joining, pretreatment, finish, curing energy, scrap destinations, wastewater, air controls, packaging, geography, period, and omissions"
+reference_flow_definition:
+  reference_amount: "1 kg net finished product, excluding packaging"
+  product_flow_ref:
+    name: "Paper trays, paper rests, pen trays, office-stamp stands and similar office or desk equipment, of base metal"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "article type and dimensions"
+    - "principal metal or alloy and stock form"
+    - "net mass"
+    - "recycled-content claim and chain-of-custody basis"
+    - "forming and joining route"
+    - pretreatment
+    - coating
+    - plating
+    - "or uncoated state"
+    - "finish and colour"
+    - packaging
+    - geography
+    - "reporting period"
+    - "factory-gate state"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure accepted product after retained coatings and assembly components are fitted; exclude sales and transport packaging."
+  - id: material_mass_basis
+    applies_to: "material, coating, chemical, packaging, and waste rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record physical mass crossing the boundary and normalize to 1 kg net product; do not substitute metal content, dry solids, or solvent mass unless explicitly required."
+  - id: electricity_energy_basis
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered energy; convert kWh using 1 kWh = 3.6 MJ and disclose voltage, grid geography, and meter boundary."
+  - id: gas_volume_basis
+    applies_to: "gaseous natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report metered volume and reference temperature, pressure, composition or calorific value, and delivery boundary."
+  - id: water_mass_basis
+    applies_to: "process water and wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use metered mass or convert volume with documented density for the measured temperature and dissolved-solids state."
+process_map:
+  - id: fabrication_finishing_packaging
+    name: "Fabrication, surface finishing, assembly, and packaging"
+    inclusion: "required"
+    inclusion_condition: "All datasets; each conditional exchange below applies only when physically used"
+    role: "Foreground manufacture from delivered stock to packed factory-gate product"
+    quantitative_reference: "1 kg net accepted finished product"
+process_inventory:
+  - id: fabrication_finishing_packaging
+    label: "Fabrication, surface finishing, assembly, and packaging"
+    inputs:
+      product:
+        - row_id: low_carbon_steel_sheet
+          role: "Low-carbon steel sheet stock"
+          name: "Low-carbon steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this atomic input only for the low-carbon-steel sheet route."
+          amount:
+            expression: "Net measured mass issued to the batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted low-carbon-steel product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_and_packaging
+              source_ids: []
+            ranges: []
+        - row_id: stainless_steel_sheet
+          role: "Stainless-steel sheet stock"
+          name: "Stainless-steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this atomic input only for the stainless-steel sheet route."
+          amount:
+            expression: "Net measured mass issued to the batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted stainless-steel product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_and_packaging
+              source_ids: []
+            ranges: []
+        - row_id: aluminium_sheet
+          role: "Aluminium sheet stock"
+          name: "aluminium sheet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197be4-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record this atomic input only for the aluminium sheet route."
+          amount:
+            expression: "Net measured mass issued to the batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted aluminium product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_and_packaging
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record purchased electrical energy crossing the manufacturing meter boundary."
+          amount:
+            expression: "Metered electricity allocated by submetering or documented machine-hours"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges: []
+        - row_id: process_water
+          role: "Process water for aqueous cleaning or pretreatment"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record water only when an aqueous cleaning or pretreatment route operates."
+          amount:
+            expression: "Metered make-up and rinse water crossing the boundary"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg product using aqueous treatment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - us-epa-ap42-metal-furniture-coating-1995
+            ranges: []
+        - row_id: sodium_hydroxide
+          role: "Sodium hydroxide for alkaline cleaning"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide only when it is present in the cleaning formulation."
+          amount:
+            expression: "Dispensed active-substance mass; include only when present in the cleaning formulation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg product using sodium-hydroxide cleaning"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_and_packaging
+              source_ids:
+                - us-epa-ap42-metal-furniture-coating-1995
+            ranges: []
+        - row_id: powder_coating
+          role: "Powder coating formulation"
+          name: "Powder Coating"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6e3010f9-fbd3-48f6-95fc-c1b38d2800d2"
+          property_unit: "Mass / kg"
+          description: "Record the powder-coating formulation only for the powder route."
+          amount:
+            expression: "Coating issued minus uncontaminated powder returned to inventory"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg powder-coated product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_and_packaging
+              source_ids:
+                - us-epa-ap42-metal-furniture-coating-1995
+            ranges: []
+        - row_id: solventborne_coating
+          role: "Solventborne liquid coating formulation"
+          name: "Solventborne liquid metal coating"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the complete liquid coating only for the solventborne route."
+          amount:
+            expression: "Complete formulation issued minus sealed unused formulation returned; do not substitute resin-only mass"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg solventborne-coated product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_and_packaging
+              source_ids:
+                - us-epa-ap42-metal-furniture-coating-1995
+                - eu-jrc-sts-bref-2020
+            ranges: []
+        - row_id: natural_gas
+          role: "Natural gas for direct on-site heating"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas only when combusted on site for drying or curing."
+          amount:
+            expression: "Metered gas for dry-off or curing, with stated reference conditions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg product using gas-fired heating"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - us-epa-ap42-metal-furniture-coating-1995
+            ranges: []
+        - row_id: corrugated_boxes
+          role: "Corrugated board boxes"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record the corrugated board boxes shipped with the finished product."
+          amount:
+            expression: "Specification mass times packed units, reconciled with purchase issues"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net accepted product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_and_packaging
+              source_ids: []
+            ranges: []
+        - row_id: ldpe_film
+          role: "Low-density polyethylene packaging film"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass / kg"
+          description: "Record this packaging film only when it is shipped with the finished product."
+          amount:
+            expression: "Specification mass times packed units, reconciled with purchase issues"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg product packed with PE-LD film"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_and_packaging
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Accepted factory-gate reference product"
+          name: "Paper trays, paper rests, pen trays, office-stamp stands and similar office or desk equipment, of base metal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the accepted product output before packaging mass is added."
+          amount:
+            expression: "1 kg net accepted finished product by reference-flow definition"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "per reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - unsd-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: ferrous_forming_scrap
+          role: "Iron and steel forming scrap"
+          name: "Iron and steel forming scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "11d74955-1634-4ef7-94e9-b9e90783c510"
+          property_unit: "Mass / kg"
+          description: "Record segregated iron and steel scrap generated by cutting and forming."
+          amount:
+            expression: "Weighed offcuts, punchings, wire ends, and rejected formed parts leaving the process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg iron or steel product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: aluminium_scrap
+          role: "Aluminium forming scrap"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass / kg"
+          description: "Record segregated aluminium scrap generated by cutting and forming."
+          amount:
+            expression: "Weighed aluminium offcuts, punchings, and rejected formed parts leaving the process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg aluminium product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: powder_coating_waste
+          role: "Unrecovered powder coating waste"
+          name: "Powder coating waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "9aa53a82-5462-400e-9096-efab7718201f"
+          property_unit: "Mass / kg"
+          description: "Record only powder material that cannot be internally recovered or recirculated."
+          amount:
+            expression: "Weighed contaminated or unrecoverable powder after internal recirculation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg powder-coated product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - us-epa-ap42-metal-furniture-coating-1995
+            ranges: []
+        - row_id: waste_paint
+          role: "Liquid-coating waste paint"
+          name: "Waste paint"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "877e5a04-76c8-4c5b-ac4c-062f5beeb2bd"
+          property_unit: "Mass / kg"
+          description: "Record discarded paint-bearing waste only for a liquid-coating route."
+          amount:
+            expression: "Weighed discarded liquid coating and paint-bearing residue, excluding separately reported solvent"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg liquid-coated product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - us-epa-ap42-metal-furniture-coating-1995
+                - eu-jrc-sts-bref-2020
+            ranges: []
+        - row_id: metal_finishing_wastewater
+          role: "Metal-finishing wastewater"
+          name: "Metal-finishing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater when it leaves aqueous cleaning or pretreatment for treatment or discharge."
+          amount:
+            expression: "Metered or tank-derived wastewater leaving for treatment or discharge, net of internal recirculation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg product using aqueous treatment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - us-epa-ap42-metal-furniture-coating-1995
+            ranges: []
+      elementary:
+        - row_id: fossil_co2
+          role: "Fossil carbon dioxide from on-site natural-gas combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil CO2 from in-scope on-site gas combustion, excluding upstream emissions."
+          amount:
+            expression: "Calculate from metered gas and documented fuel carbon content or a supplier-specific verified factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg product using on-site gas combustion"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fuel_co2
+              source_ids: []
+            ranges: []
+        - row_id: voc_emission
+          role: "Volatile organic compounds from solventborne coating"
+          name: "Volatile organic compounds to air, unspecified"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct VOC from in-scope solventborne coating and related cleaning."
+          amount:
+            expression: "Measurement or solvent mass balance adjusted for retained, recovered, destroyed, and transferred solvent"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg solventborne-coated product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_voc_balance
+              source_ids:
+                - us-epa-ap42-metal-furniture-coating-1995
+                - eu-jrc-sts-bref-2020
+            ranges: []
+        - row_id: particulate_matter
+          role: "Particulate matter from mechanical finishing or coating"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass / kg"
+          description: "Record particulate matter released after abatement from in-scope particle-generating operations."
+          amount:
+            expression: "Representative measurement or documented captured-versus-uncaptured mass calculation after abatement"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg product using particulate-generating operations"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emission_records
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "shared lines"
+    rule: "Prefer submetering, batch records, time-resolved equipment data, and physical subdivision so allocation is avoided."
+    source_ids: []
+  - rule_id: allocation_shared_inputs
+    applies_to: "unavoidable shared totals"
+    rule: "Allocate by a causal physical driver such as machine-hours, processed metal mass, coated area, oven occupancy, or throughput; disclose any non-physical basis."
+    source_ids: []
+  - rule_id: allocation_scrap
+    applies_to: "scrap and coating wastes"
+    rule: "Report gross input, product, each waste, internal recirculation, and destination separately; do not credit avoided primary production inside this foreground process unless a wider method requires it."
+    source_ids: []
+  - rule_id: allocation_consistency
+    applies_to: "normalization"
+    rule: "Apply one documented hierarchy across the period and reconcile allocated site totals before normalization."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_and_packaging
+      process_id: "fabrication_finishing_packaging"
+      flow_role: "Exact metal, chemical, coating, and package inputs"
+      record_type: "Purchase, issue, return, BOM, and package records"
+      raw_fields: "identity; supplier; grade or formulation; lot; issued and returned mass; package unit mass"
+      collection_method: "Calibrated scales and reconciled stores records"
+      unit: "kg"
+      frequency: "Per batch; monthly aggregation"
+      temporal_coverage: "12 representative months or full shorter campaign"
+      site_scope: "All in-scope lines and outsourced steps"
+      aggregation_rule: "Sum net issues by atomic flow and route; allocate causally; divide by net accepted mass"
+      quality_evidence: "Calibration, supplier specification, stock reconciliation, batch traceability"
+    - protocol_id: cp_utility_records
+      process_id: "fabrication_finishing_packaging"
+      flow_role: "Electricity, process water, and natural gas"
+      record_type: "Meter, invoice, and equipment-hour records"
+      raw_fields: "meter id; readings; unit; gas reference conditions; hours; downtime; shared loads"
+      collection_method: "Read calibrated meters and reconcile invoices"
+      unit: "MJ, kg, m3"
+      frequency: "Batch or shift; monthly aggregation"
+      temporal_coverage: "Same period as production"
+      site_scope: "All in-scope utility users"
+      aggregation_rule: "Subtract excluded loads; allocate causally; normalize"
+      quality_evidence: "Calibration, invoices, boundary diagram, allocation worksheet"
+    - protocol_id: cp_waste_records
+      process_id: "fabrication_finishing_packaging"
+      flow_role: "Each named waste"
+      record_type: "Scale ticket, manifest, tank meter, and recycler receipt"
+      raw_fields: "identity; origin; gross and tare; volume and density; date; destination; treatment; recovery"
+      collection_method: "Weigh each transfer or use a calibrated meter"
+      unit: "kg"
+      frequency: "Each transfer; monthly aggregation"
+      temporal_coverage: "Same period as production"
+      site_scope: "Every storage and discharge point"
+      aggregation_rule: "Sum net exported mass by atomic waste and route; normalize"
+      quality_evidence: "Calibration, manifests, receipts, mass balance"
+    - protocol_id: cp_fuel_co2
+      process_id: "fabrication_finishing_packaging"
+      flow_role: "Direct fossil CO2"
+      record_type: "Gas meter and supplier fuel-quality records"
+      raw_fields: "gas volume; temperature; pressure; carbon content or verified factor; oxidation basis"
+      collection_method: "Calculate from collected gas and supplier-specific carbon data"
+      unit: "kg CO2"
+      frequency: "Monthly"
+      temporal_coverage: "Same period as gas use"
+      site_scope: "All in-scope combustion points"
+      aggregation_rule: "Sum direct fossil CO2; normalize"
+      quality_evidence: "Calibration, supplier certificate, workbook, completeness check"
+    - protocol_id: cp_voc_balance
+      process_id: "fabrication_finishing_packaging"
+      flow_role: "Direct VOC"
+      record_type: "Coating, thinner, recovery, destruction, and waste records"
+      raw_fields: "formulation mass; VOC fraction; thinner; retained, recovered, destroyed, and waste solvent"
+      collection_method: "Prefer measurement; otherwise close a facility mass balance"
+      unit: "kg VOC"
+      frequency: "Per formulation and batch; monthly aggregation"
+      temporal_coverage: "Same period as coating"
+      site_scope: "Every application, flash-off, oven, and cleaning point"
+      aggregation_rule: "VOC input minus documented retention, recovery, destruction, and transfer; normalize"
+      quality_evidence: "SDS or certificate, controls, waste analysis, balance closure"
+    - protocol_id: cp_emission_records
+      process_id: "fabrication_finishing_packaging"
+      flow_role: "Particulate matter"
+      record_type: "Stack test, measurement, capture, and operating records"
+      raw_fields: "source; operation; flow; concentration; duration; captured dust; control efficiency"
+      collection_method: "Representative measurement or captured-versus-uncaptured calculation"
+      unit: "kg"
+      frequency: "Each test and period; monthly aggregation"
+      temporal_coverage: "Representative of reporting routes"
+      site_scope: "All particulate sources and controls"
+      aggregation_rule: "Sum post-abatement release; normalize"
+      quality_evidence: "Test report, calibration, log, control inspection"
+  calculation_rules:
+    - id: calc_normalize
+      applies_to: "variable inventory rows"
+      rule: "normalized amount = route-attributable amount / net accepted finished-product mass"
+      inputs:
+        - "atomic-flow amount"
+        - "net product mass"
+      output: "amount per 1 kg net product"
+      source_ids: []
+    - id: calc_material_balance
+      applies_to: "metal routes"
+      rule: "metal input = retained product metal + exported scrap + work-in-progress change + documented losses; investigate imbalance"
+      inputs:
+        - "issued metal"
+        - "product composition"
+        - scrap
+        - "work in progress"
+      output: "route-specific closure"
+      source_ids: []
+    - id: calc_voc
+      applies_to: "voc_emission"
+      rule: "VOC input minus retained, recovered, destroyed, and transferred VOC"
+      inputs:
+        - formulation
+        - solvent
+        - control
+        - "and waste records"
+      output: "kg VOC to air per kg product"
+      source_ids:
+        - us-epa-ap42-metal-furniture-coating-1995
+    - id: calc_fossil_co2
+      applies_to: "fossil_co2"
+      rule: "Calculate from metered gas, fuel carbon, molecular conversion, and oxidation basis; exclude upstream electricity emissions"
+      inputs:
+        - "gas and fuel-carbon records"
+      output: "kg fossil CO2 per kg product"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "product and exchanges"
+      requirement: "Preserve article, alloy, stock, coating chemistry, waste state, direction, type, property, and unit; never merge route alternatives."
+      evidence: "Specifications, BOM, UUID audit, and manifests"
+    - id: dq_temporal
+      applies_to: "foreground dataset"
+      requirement: "Use 12 consecutive representative months, or the complete shorter campaign; disclose abnormal downtime and mix shifts."
+      evidence: "Dated production, meter, store, and waste records"
+    - id: dq_completeness
+      applies_to: "foreground boundary"
+      requirement: "Reconcile metal, product, scrap, utilities, coatings, chemicals, packaging, wastes, and direct emissions; explain exclusions and estimates."
+      evidence: "Balances, boundary diagram, completeness checklist"
+    - id: dq_route
+      applies_to: "conditional exchanges"
+      requirement: "Identify actual material, joining, pretreatment, coating, plating, curing, and abatement routes; exclude non-applicable rows from totals."
+      evidence: "Process diagram, work instructions, operating logs"
+    - id: dq_geography_technology
+      applies_to: "upstream datasets"
+      requirement: "Match supplier region, technology, grade, recycled-content basis, grid, formulation, and delivery state; disclose proxies."
+      evidence: "Supplier metadata and selection record"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "reference flow"
+    rule: "Confirm exactly 1 kg net accepted output, packaging excluded, and all required qualifiers present."
+    source_ids:
+      - unsd-cpc-3-0-structure-2025
+  - rule_id: validate_atomic_inventory
+    applies_to: "inventory"
+    rule: "Confirm each row is one exchange with correct direction, type, property, unit, route condition, UUID status, and localized display name."
+    source_ids: []
+  - rule_id: validate_balance
+    applies_to: "metals and wastes"
+    rule: "Reconcile issued stock, retained product metal, work-in-progress change, exported scrap, and documented loss by metal family."
+    source_ids: []
+  - rule_id: validate_energy_emissions
+    applies_to: "utilities and emissions"
+    rule: "Reconcile meters; include direct fossil CO2 only for in-scope combustion; reconcile VOC and particulate releases without adding upstream emissions."
+    source_ids:
+      - us-epa-ap42-metal-furniture-coating-1995
+  - rule_id: validate_sources_ranges
+    applies_to: "ranges"
+    rule: "Reject an externally inferred range without two independent, boundary-compatible original sources; otherwise require foreground collection and keep the need unresolved."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground factory-gate manufacturing dataset for one declared base-metal office or desk article and route"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product-footprint and life-cycle models requiring route-specific factory-gate manufacture of the declared article"
+  excluded_use: "Office furniture, paper or plastics-only articles, upstream metal production, use, or end-of-life without added evidence"
+  required_metadata: "PCR id and version; article; dimensions; net mass; alloy and stock; recycled-content basis; forming and joining; pretreatment; finish; curing energy; packaging; geography; technology; period; allocation; upstream datasets; waste destinations; abatement"
+  required_quality_disclosure: "Primary-data share; coverage; calibration; balance closure; route completeness; UUID gaps; proxies; allocation; estimates; omissions; unresolved range evidence"
+  update_trigger: "Material, supplier, recycled content, design, yield, process, finish, cure, fuel, abatement, package, waste route, site, or grid changes; or data older than programme requirements"
+data_sources:
+  - id: "unsd-cpc-3-0-structure-2025"
+    type: "dataset"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-04)"
+    used_for: "Official CPC 42994 identity and boundary"
+  - id: "hong-kong-censtatd-hs-2022"
+    type: "official_guidance"
+    reference: "Hong Kong Census and Statistics Department, Hong Kong Imports and Exports Classification List (Harmonized System), 2022 Edition, Volume Two, https://www.censtatd.gov.hk/en/data/stat_report/product/B2XX0012/att/B2XX0012012022XXXXB0100.pdf (retrieved 2026-09-04)"
+    used_for: "Bilingual terminology check; not quantitative evidence"
+  - id: "us-epa-ap42-metal-furniture-coating-1995"
+    type: "method_factor"
+    reference: "U.S. EPA, AP-42 Section 4.2.2.12, Metal Furniture Surface Coating, reformatted January 1995, https://www.epa.gov/sites/default/files/2020-10/documents/c4s02_2m.pdf (retrieved 2026-09-04)"
+    used_for: "Analogous cleaning, coating, curing, powder and liquid routes, VOC method, and facility-specific data requirement"
+  - id: "eu-jrc-sts-bref-2020"
+    type: "official_guidance"
+    reference: "European Commission JRC, Surface Treatment Using Organic Solvents including Wood and Wood Products Preservation with Chemicals BREF, adopted December 2020, https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/surface-treatment-using-organic-solvents-including-wood-and-wood-products-preservation (retrieved 2026-09-04)"
+    used_for: "Applicability of coating, painting, cleaning, and degreasing guidance to other metal goods"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d50525072fe5dbbd0e276a343690d6e69688d5e97d763451703a28a49b68f207"
+  generated_content_sha256: "sha256:8252027520f8b0081e675f85241c0b7e3d386101c78ea4a8eacd0e04fb4d33a4"

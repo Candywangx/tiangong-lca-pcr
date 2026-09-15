@@ -1,10 +1,832 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43143"
-  title: "Gas turbines other than turbo-jets and turbo-propellers"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.gas-turbines-other-than-turbo-jets-and-turbo-propellers"
+  classification_refs: "CPC 3.0: 43143, Gas turbines other than turbo-jets and turbo-propellers"
+  covered_products: "Complete open-cycle, closed-cycle, semi-closed-cycle, stationary, marine, mechanical-drive, power-generation, and non-aircraft aero-derivative gas turbines"
+  excluded_products: "Turbo-jets; turbo-propellers; steam turbines; hydraulic turbines and water wheels; generators sold separately; complete combined-cycle plants; parts sold separately; turbine manufacturing services on customer-owned inputs"
+  representative_product: "A complete industrial gas turbine comprising compressor, combustor, turbine section, shafting, casing, controls, and auxiliaries included in the declared supply scope"
+  production_route: "Purchased and/or in-house cast, forged, machined, joined, heat-treated, coated, assembled, inspected, and acceptance-tested components; each controlled step is declared"
+  market_state: "Complete gas turbine at the manufacturer's factory gate, unpackaged, with included auxiliaries and test status declared"
+functional_unit:
+  what: "Provision of a complete non-aircraft gas turbine capable of converting the declared fuel into mechanical shaft output"
+  how_much: "1 kg net mass of complete gas turbine in the declared factory-gate supply scope"
+  how_well: "Meets the manufacturer's declared rated output, heat-rate or efficiency basis, fuel specification, emissions-control configuration, and acceptance criteria"
+  how_long_or_cycle: "Production stage only; design service life and maintenance interval are declared metadata and no use-stage service is credited"
+  reference_flow_link: "reference_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_cradle_to_gate
+      applies_to: "foreground and upstream product system"
+      rule: "Include upstream production of every recorded input and all directly controlled manufacturing, assembly, inspection, and applicable acceptance testing through the unpackaged factory-gate reference product."
+      source_ids:
+        - eu-pef-recommendation-2021-2279
+        - us-doe-netl-gas-turbine-handbook-2006-buckets-nozzles
+    - rule_id: boundary_no_silent_cutoff
+      applies_to: "process and flow completeness"
+      rule: "Do not omit a process or exchange merely because a UUID or preferred dataset is unavailable. Any applied cut-off shall be quantified, justified across material, energy, and environmental significance, and disclosed."
+      source_ids:
+        - eu-pef-recommendation-2021-2279
+    - rule_id: boundary_use_excluded
+      applies_to: "downstream life cycle"
+      rule: "Exclude installation, operation, maintenance, overhaul, and end-of-life from the reported cradle-to-gate inventory; report design-life and use assumptions only as metadata for downstream models."
+      source_ids:
+        - eu-pef-recommendation-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Purchased alloy, steel, aluminium, coating material, process chemical, energy carrier, water, and supplier-finished component at the receiving gate of the controlled manufacturing system"
+  starting_condition_role: "Cradle-to-gate upstream product inputs with supplier production outside the foreground; in-house transformation, assembly, and testing inside the foreground"
+  product_classification_scope: "Complete products within CPC 3.0 code 43143; parts, separate generators, and plant construction are outside this PCR identity"
+  recursive_input_rule: "A purchased complete gas turbine used as an input shall remain a separately modelled upstream product and shall not be re-expanded under this PCR; disclose its function and mass"
+  upstream_dataset_requirement: "Use geographically, technologically, temporally, compositionally, and product-state representative upstream datasets for every purchased input; proxies remain explicit data gaps"
+  disclosure: "Declare the controlled process list, purchased-versus-in-house component split, factory-test boundary, included auxiliaries, allocation, cut-offs, proxy use, recycled-content method, and packaging exclusion"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Gas turbine other than turbo-jets and turbo-propellers"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "rated shaft or electrical-equivalent output"
+    - "simple/recuperated/closed/semi-closed cycle"
+    - "stationary/marine/mechanical-drive application"
+    - "fuel specification"
+    - "dry net product mass"
+    - "included compressor"
+    - combustor
+    - turbine
+    - controls
+    - base
+    - "enclosure and auxiliaries"
+    - "cooling method"
+    - "coating system"
+    - "factory-test status"
+    - "production site"
+    - "production year"
+    - "recycled-content accounting method"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product and mass-normalized exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use verified net dry product mass at the factory gate. Normalize each batch total by conforming product mass in the same declared supply scope."
+  - id: electricity_energy
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electrical energy and convert kWh to MJ using 1 kWh = 3.6 MJ; do not convert electricity into fuel mass."
+  - id: gas_volume
+    applies_to: "gaseous natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report metered volume at the supplier or meter reference conditions and disclose temperature, pressure, and any conversion from standard volume."
+  - id: test_output_basis
+    applies_to: "acceptance-test records"
+    required_property_ref:
+      name: "declared test units"
+      uuid: ""
+    required_unit: "declared test units"
+    rule: "Retain measured fuel, electricity, duration, corrected power or shaft output, heat rate, exhaust flow, and test uncertainty in their native records; allocation to product mass shall use the tested serial-number scope."
+process_map:
+  - id: integrated_manufacture
+    name: "Component manufacture, finishing, assembly, and inspection"
+    inclusion: "required"
+    inclusion_condition: "Always include all directly controlled manufacturing and assembly steps; use zero only for an atomic exchange demonstrated absent"
+    role: "foreground production"
+    quantitative_reference: "1 kg conforming complete gas turbine at factory gate"
+  - id: acceptance_test
+    name: "Factory thermal performance acceptance test"
+    inclusion: "conditional"
+    inclusion_condition: "Include when contractual, routine, or release testing consumes energy or causes emissions before the factory gate"
+    role: "foreground quality acceptance"
+    quantitative_reference: "Tested serial-number share allocated to 1 kg conforming product"
+process_inventory:
+  - id: integrated_manufacture
+    label: "Component manufacture, finishing, assembly, and inspection"
+    inputs:
+      product:
+        - row_id: nickel_base_superalloy
+          role: "Nickel-base superalloy feedstock"
+          name: "Nickel-base superalloy"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased nickel-base superalloy entering cast or machined hot-gas-path components; alloy grade and incoming form are mandatory qualifiers."
+          amount:
+            expression: "measured received mass minus returned unopened material, allocated to conforming product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming complete gas turbine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_receipts
+              source_ids:
+                - us-doe-netl-gas-turbine-handbook-2006-buckets-nozzles
+            ranges: []
+        - row_id: alloy_steel
+          role: "Alloy-steel feedstock"
+          name: "Alloy steel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record turbine-grade alloy steel used for shafts, discs, fasteners, casings, or other declared parts; keep each foreground grade traceable in the underlying bill of materials."
+          amount:
+            expression: "measured received mass consumed in the declared product batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming complete gas turbine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_receipts
+              source_ids: []
+            ranges: []
+        - row_id: carbon_steel
+          role: "Carbon-steel feedstock"
+          name: "Carbon Steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b3b18433-8fd1-4298-98f5-8af11eb64762"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record carbon steel for base, enclosure, casing, piping, and other declared parts by received mass."
+          amount:
+            expression: "measured received mass consumed in the declared product batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming complete gas turbine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_receipts
+              source_ids: []
+            ranges: []
+        - row_id: aluminium_alloy
+          role: "Aluminium-alloy feedstock"
+          name: "Aluminium alloy"
+          flow_type: "product"
+          flow_ref:
+            uuid: "28b47d6d-68b4-4810-b764-01a1fc1352dc"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record aluminium alloy only when it is present in the declared design; alloy family and product form remain foreground qualifiers."
+          amount:
+            expression: "measured received mass consumed when aluminium-alloy parts are present"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming complete gas turbine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_receipts
+              source_ids: []
+            ranges: []
+        - row_id: ysz_coating
+          role: "Yttria-stabilized zirconia coating material"
+          name: "Yttria-stabilized zirconia coating material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record yttria-stabilized zirconia powder when a ceramic thermal-barrier top coat is applied within the foreground."
+          amount:
+            expression: "issued coating material minus documented recoverable return when a ceramic top coat is applied"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming complete gas turbine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_receipts
+              source_ids:
+                - us-doe-netl-gas-turbine-handbook-2006-buckets-nozzles
+            ranges: []
+        - row_id: mcraly_bond_coat
+          role: "MCrAlY metallic bond-coat alloy powder"
+          name: "MCrAlY metallic bond-coat alloy powder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record MCrAlY alloy powder when a metallic bond coat or overlay is applied within the foreground."
+          amount:
+            expression: "issued bond-coat powder minus documented recoverable return when the coating route applies"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming complete gas turbine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_receipts
+              source_ids:
+                - us-doe-netl-gas-turbine-handbook-2006-buckets-nozzles
+            ranges: []
+        - row_id: manufacturing_electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200b9a66 / MJ"
+          description: "Record electricity metered for directly controlled casting, heat treatment, machining, joining, coating, assembly, inspection, and allocated facility support."
+          amount:
+            expression: "metered electricity attributed to the production batch under the documented allocation rule"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming complete gas turbine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_factory_utilities
+              source_ids: []
+            ranges: []
+        - row_id: manufacturing_natural_gas
+          role: "Gaseous natural gas for manufacturing heat"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Record gaseous natural gas combusted in directly controlled furnaces or heat-treatment equipment; omit only when no such equipment serves the product."
+          amount:
+            expression: "metered standard or actual volume allocated to the production batch with reference conditions disclosed"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming complete gas turbine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_factory_utilities
+              source_ids: []
+            ranges: []
+        - row_id: industrial_oxygen
+          role: "Industrial oxygen"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Record supplied industrial oxygen when oxy-fuel cutting, welding, or another declared foreground operation consumes it."
+          amount:
+            expression: "supplier-metered volume attributed to the product batch when oxygen-consuming operations apply"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming complete gas turbine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_factory_utilities
+              source_ids: []
+            ranges: []
+        - row_id: process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record water crossing the foreground boundary for cleaning, aqueous machining, surface preparation, or pressure testing; cooling loops count only net make-up water."
+          amount:
+            expression: "metered net process-water input allocated to the production batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming complete gas turbine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_factory_utilities
+              source_ids: []
+            ranges: []
+        - row_id: sodium_hydroxide
+          role: "Sodium hydroxide for surface treatment"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record sodium hydroxide product mass when an alkaline cleaning or surface-treatment bath serving the product is directly controlled; disclose solution concentration."
+          amount:
+            expression: "pure-product-equivalent mass replenished to applicable baths and allocated to the product batch"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming complete gas turbine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_factory_utilities
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Complete gas turbine reference product"
+          name: "Gas turbine other than turbo-jets and turbo-propellers"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only conforming complete gas-turbine mass in the declared supply scope; rejected units remain work in process or waste and are not reference product."
+          amount:
+            expression: "verified net dry mass of conforming complete product leaving the factory gate"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg conforming complete gas turbine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_release
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: steel_scrap
+          role: "Segregated steel scrap"
+          name: "Steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "b973529f-a945-4cb9-9600-ecbcc745a4c6"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record steel offcuts, turnings, and rejected steel parts leaving the foreground as one segregated waste exchange."
+          amount:
+            expression: "measured steel scrap dispatched from the product batch, excluding internally remelted return"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming complete gas turbine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_dispatch
+              source_ids: []
+            ranges: []
+        - row_id: nickel_alloy_scrap
+          role: "Segregated nickel-alloy scrap"
+          name: "Nickel-alloy scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record nickel-alloy gates, risers, turnings, and rejected parts leaving the foreground; exclude internally remelted returns."
+          amount:
+            expression: "measured nickel-alloy scrap dispatched from the product batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming complete gas turbine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_dispatch
+              source_ids:
+                - us-doe-netl-gas-turbine-handbook-2006-buckets-nozzles
+            ranges: []
+        - row_id: spent_ceramic_shell
+          role: "Spent investment-casting ceramic shell"
+          name: "Spent investment-casting ceramic shell"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record broken ceramic mold and core material leaving the foreground when investment casting is directly controlled."
+          amount:
+            expression: "measured dry mass dispatched from applicable investment-casting operations"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming complete gas turbine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_dispatch
+              source_ids:
+                - us-doe-netl-gas-turbine-handbook-2006-buckets-nozzles
+            ranges: []
+        - row_id: waste_cutting_oil
+          role: "Waste cutting oil"
+          name: "Waste cutting oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "80d926e3-0f76-4a19-9b1e-ffec9deb1216"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record spent oil-based cutting fluid leaving machining after subtracting recovered oil returned to the same foreground loop."
+          amount:
+            expression: "measured dispatched mass attributable to machining for the product batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming complete gas turbine"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_dispatch
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: manufacturing_carbon_dioxide
+          role: "Fossil carbon dioxide from manufacturing heat"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record direct fossil carbon dioxide released from natural-gas combustion inside the integrated manufacturing boundary; upstream fuel emissions are excluded from this row."
+          amount:
+            expression: "measured stack mass or site-approved fuel-carbon calculation allocated to the product batch"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming complete gas turbine"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids: []
+            ranges: []
+  - id: acceptance_test
+    label: "Factory thermal performance acceptance test"
+    inputs:
+      product:
+        - row_id: test_electricity
+          role: "Test electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record electricity consumed by test auxiliaries, instrumentation, controls, pumps, and cooling equipment during applicable factory testing."
+          amount:
+            expression: "test-meter electricity assigned to the tested serial numbers"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "tested serial-number share per 1 kg conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance_test
+              source_ids:
+                - asme-ptc-22-2023
+            ranges: []
+        - row_id: test_natural_gas
+          role: "Gaseous natural gas for testing"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Record gaseous natural gas burned during factory testing when the tested configuration uses gas fuel."
+          amount:
+            expression: "test-metered volume assigned to tested serial numbers with reference conditions disclosed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "tested serial-number share per 1 kg conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance_test
+              source_ids:
+                - asme-ptc-22-2023
+            ranges: []
+        - row_id: test_diesel
+          role: "Diesel fuel for testing"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record diesel mass only when the contractual or production test uses liquid diesel fuel."
+          amount:
+            expression: "weighed or supplier-metered diesel consumed by applicable test runs and assigned to tested serial numbers"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "tested serial-number share per 1 kg conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance_test
+              source_ids:
+                - asme-ptc-22-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: test_carbon_dioxide
+          role: "Fossil carbon dioxide from testing"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record direct fossil carbon dioxide released by all declared fossil test fuels; upstream fuel-production emissions are excluded from this row."
+          amount:
+            expression: "measured exhaust mass or site-approved fuel-carbon calculation assigned to tested serial numbers"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "tested serial-number share per 1 kg conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_test_emissions
+              source_ids: []
+            ranges: []
+        - row_id: test_carbon_monoxide
+          role: "Fossil carbon monoxide from testing"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record direct fossil carbon monoxide in test exhaust on the facility's declared measurement basis."
+          amount:
+            expression: "measured exhaust concentration and dry or wet flow integrated over applicable test duration"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "tested serial-number share per 1 kg conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_test_emissions
+              source_ids: []
+            ranges: []
+        - row_id: test_methane
+          role: "Fossil methane from testing"
+          name: "methane (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9610-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record direct unburned fossil methane in test exhaust when gas fuel is used and the emission is measured or otherwise quantified."
+          amount:
+            expression: "measured exhaust concentration and flow integrated over gas-fuel test duration"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "tested serial-number share per 1 kg conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_test_emissions
+              source_ids: []
+            ranges: []
+        - row_id: test_nitrogen_oxides
+          role: "Nitrogen oxides from testing"
+          name: "Nitrogen oxides"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record aggregate combustion nitrogen oxides using the facility's explicitly declared reporting species and conversion basis; do not substitute nitrous oxide or nitrogen monoxide identity silently."
+          amount:
+            expression: "measured NOx concentration and exhaust flow integrated over applicable test duration, with reporting basis declared"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "tested serial-number share per 1 kg conforming product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_test_emissions
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "shared manufacturing and test operations"
+    rule: "First subdivide meters, work orders, test logs, and waste records by product family, batch, or serial number whenever physically possible."
+    source_ids:
+      - eu-pef-recommendation-2021-2279
+  - rule_id: allocation_physical_causal
+    applies_to: "inseparable shared operations"
+    rule: "If subdivision is not possible, use a documented causal physical driver such as machine time, furnace occupancy, treated area, test duration, or measured product mass; demonstrate why it represents resource use."
+    source_ids:
+      - eu-pef-recommendation-2021-2279
+  - rule_id: allocation_economic_last_resort
+    applies_to: "inseparable multi-product operations"
+    rule: "Use economic allocation only when no defensible physical relationship exists; disclose prices, period, currency, volatility treatment, and sensitivity."
+    source_ids:
+      - eu-pef-recommendation-2021-2279
+  - rule_id: allocation_scrap
+    applies_to: "metal scrap and recovered process material"
+    rule: "Internally reused material does not cross the process boundary. Record material leaving the foreground as waste without avoided-burden credit; downstream recycling treatment belongs to the receiving system unless the study explicitly expands the boundary."
+    source_ids:
+      - eu-pef-recommendation-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_bom_receipts
+      process_id: "integrated_manufacture"
+      flow_role: "material inputs"
+      record_type: "ERP receipt, issue, return, and bill-of-material record"
+      raw_fields: "material identity; grade; form; supplier; received mass; issued mass; returned mass; batch; serial numbers"
+      collection_method: "reconcile supplier weighing with controlled stores and product BOM"
+      unit: "kg"
+      frequency: "each receipt and production issue"
+      temporal_coverage: "full representative production year or declared batch"
+      site_scope: "all controlled sites supplying the reference product"
+      aggregation_rule: "net consumed mass by material and product batch divided by conforming product mass"
+      quality_evidence: "calibrated scale records; supplier certificates; BOM revision; reconciliation sign-off"
+    - protocol_id: cp_factory_utilities
+      process_id: "integrated_manufacture"
+      flow_role: "electricity, fuel, oxygen, water, and process chemical"
+      record_type: "meter, invoice, tank, and bath-replenishment record"
+      raw_fields: "meter start/end; submeter; volume reference conditions; delivered mass or volume; concentration; operating hours; production driver"
+      collection_method: "read calibrated submeters; reconcile to invoices; calculate pure sodium-hydroxide mass from solution concentration"
+      unit: "MJ; m3; kg"
+      frequency: "each batch where available and at least monthly"
+      temporal_coverage: "full representative production year"
+      site_scope: "all controlled manufacturing buildings"
+      aggregation_rule: "direct assignment, then documented causal allocation, divided by conforming product mass"
+      quality_evidence: "calibration certificates; invoices; meter map; concentration analysis; allocation worksheet"
+    - protocol_id: cp_product_release
+      process_id: "integrated_manufacture"
+      flow_role: "reference product"
+      record_type: "serial-number release and weighing record"
+      raw_fields: "serial number; configuration; included auxiliaries; dry net mass; acceptance status; release date"
+      collection_method: "calibrated final weighing or verified component mass roll-up"
+      unit: "kg"
+      frequency: "each released unit"
+      temporal_coverage: "full declared batch or production year"
+      site_scope: "final assembly and release site"
+      aggregation_rule: "sum conforming net dry mass in identical supply scope"
+      quality_evidence: "scale calibration; signed release certificate; configuration baseline"
+    - protocol_id: cp_waste_dispatch
+      process_id: "integrated_manufacture"
+      flow_role: "segregated waste outputs"
+      record_type: "waste scale ticket and manifest"
+      raw_fields: "waste identity; source operation; gross/tare/net mass; contamination; destination; date; batch attribution"
+      collection_method: "weigh each segregated dispatch and reconcile accumulation periods to work orders"
+      unit: "kg"
+      frequency: "each dispatch"
+      temporal_coverage: "full representative production year"
+      site_scope: "all controlled manufacturing buildings"
+      aggregation_rule: "direct batch attribution or causal allocation divided by conforming product mass"
+      quality_evidence: "scale ticket; waste manifest; segregation audit; mass reconciliation"
+    - protocol_id: cp_direct_emissions
+      process_id: "integrated_manufacture"
+      flow_role: "manufacturing combustion emissions"
+      record_type: "continuous or periodic stack record and fuel record"
+      raw_fields: "pollutant; concentration; exhaust flow; moisture; oxygen correction; duration; fuel carbon; oxidation basis"
+      collection_method: "integrate validated stack measurements or apply a site-approved fuel-carbon method"
+      unit: "kg"
+      frequency: "each measured event and monthly fuel reconciliation"
+      temporal_coverage: "full representative production year"
+      site_scope: "all directly controlled combustion units serving the product"
+      aggregation_rule: "allocate measured or calculated mass by documented causal driver to conforming product mass"
+      quality_evidence: "instrument calibration; laboratory QA; fuel analysis; method approval"
+    - protocol_id: cp_acceptance_test
+      process_id: "acceptance_test"
+      flow_role: "test energy inputs"
+      record_type: "serial-number test log and calibrated meter record"
+      raw_fields: "serial number; configuration; fuel identity; fuel amount; electricity; duration; corrected output; heat rate; exhaust flow; uncertainty"
+      collection_method: "follow the declared contractual test procedure and calibrated instrumentation plan"
+      unit: "m3; kg; MJ; h; declared performance units"
+      frequency: "every applicable test run"
+      temporal_coverage: "all tests represented by the dataset"
+      site_scope: "factory test stand"
+      aggregation_rule: "direct serial-number assignment divided by tested conforming product mass"
+      quality_evidence: "approved procedure; meter calibration; uncertainty analysis; signed test report"
+    - protocol_id: cp_test_emissions
+      process_id: "acceptance_test"
+      flow_role: "test exhaust elementary flows"
+      record_type: "emissions test record"
+      raw_fields: "pollutant species; reporting basis; concentration; dry/wet flow; moisture; oxygen correction; duration; fuel identity; serial number"
+      collection_method: "integrate calibrated concentration and exhaust-flow measurements; retain all conversions"
+      unit: "kg"
+      frequency: "every emissions measurement used"
+      temporal_coverage: "all applicable test runs represented by the dataset"
+      site_scope: "factory test stand"
+      aggregation_rule: "direct serial-number assignment divided by tested conforming product mass"
+      quality_evidence: "instrument calibration; laboratory QA; calculation workbook; signed test report"
+  calculation_rules:
+    - id: calc_batch_normalization
+      applies_to: "every batch inventory exchange"
+      rule: "normalized exchange = exchange assigned to conforming batch / net dry mass of conforming complete turbines in the same supply scope"
+      inputs:
+        - "assigned exchange"
+        - "conforming product mass"
+      output: "exchange per kg reference product"
+      source_ids: []
+    - id: calc_solution_mass
+      applies_to: "sodium hydroxide solution"
+      rule: "pure-product-equivalent mass = delivered solution mass × measured mass fraction; retain solution water separately when material"
+      inputs:
+        - "solution mass"
+        - concentration
+      output: "kg sodium hydroxide"
+      source_ids: []
+    - id: calc_exhaust_mass
+      applies_to: "test carbon monoxide, methane, and nitrogen oxides"
+      rule: "pollutant mass = time integral of concentration × compatible dry or wet exhaust flow after documented reference-condition, moisture, and oxygen-basis conversions"
+      inputs:
+        - "concentration series"
+        - "exhaust flow"
+        - duration
+        - "conversion data"
+      output: "kg pollutant"
+      source_ids:
+        - asme-ptc-22-2023
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and inputs"
+      requirement: "Match serial number, configuration, material grade, supplier, product form, and included-auxiliary scope to the inventory period; do not use a generic flow to hide a known distinct material."
+      evidence: "release record; BOM; supplier certificate; UUID audit"
+    - id: dq_measurement
+      applies_to: "meters, scales, and emissions instruments"
+      requirement: "Use calibrated instruments, retain raw readings and conversions, and quantify uncertainty for acceptance-test measurements."
+      evidence: "calibration certificate; uncertainty analysis; test report"
+    - id: dq_temporal
+      applies_to: "annual or batch dataset"
+      requirement: "Cover a representative production year or disclose the exact batch/test window, shutdowns, prototypes, rework, and production-rate differences."
+      evidence: "production calendar; work orders; test schedule"
+    - id: dq_completeness
+      applies_to: "all foreground processes"
+      requirement: "Reconcile material inputs to product, internal return, and dispatched waste; reconcile utilities to invoices; disclose excluded processes and environmental significance."
+      evidence: "mass balance; invoice reconciliation; cut-off register"
+    - id: dq_representativeness
+      applies_to: "upstream datasets"
+      requirement: "Document geography, technology, time, alloy/product state, recycled-content model, fuel quality, electricity mix, and proxy limitations."
+      evidence: "dataset metadata and data-quality assessment"
+validation_rules:
+  - rule_id: validate_identity_scope
+    applies_to: "reference product"
+    rule: "Confirm the product is a complete non-aircraft gas turbine, not a turbo-jet, turbo-propeller, hydraulic or steam turbine, generator, separate part, plant, or manufacturing service."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_reference_mass
+    applies_to: "functional unit and reference flow"
+    rule: "Confirm exactly 1 kg net dry conforming product in a consistent included-auxiliary scope and verify the output row links to reference_product."
+    source_ids: []
+  - rule_id: validate_atomic_inventory
+    applies_to: "every inventory row"
+    rule: "Confirm each selected flow is one atomic exchange with a compatible direction, flow type, property, unit, condition, and UUID decision; reject umbrella rows."
+    source_ids: []
+  - rule_id: validate_test_condition
+    applies_to: "acceptance_test"
+    rule: "Include test inputs and emissions only when testing occurs before the factory gate; link every value to tested serial numbers and a declared procedure."
+    source_ids:
+      - asme-ptc-22-2023
+  - rule_id: validate_completeness
+    applies_to: "foreground inventory"
+    rule: "Reconcile BOM receipts, product mass, metal scrap, other wastes, utilities, and direct combustion emissions; quantify and justify every cut-off or proxy."
+    source_ids:
+      - eu-pef-recommendation-2021-2279
+  - rule_id: validate_bilingual_uuid
+    applies_to: "bilingual PCR"
+    rule: "Confirm every UUID-bearing Chinese selected-flow name is the exact public Tiangong Chinese baseName and that ordered rule and row identifiers match English."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Cradle-to-factory-gate foreground production dataset for a complete non-aircraft gas turbine"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product carbon footprint, life-cycle inventory, turbine-system and power-plant models when product configuration, included auxiliaries, geography, technology, year, and factory-test status are compatible"
+  excluded_use: "Direct substitution for turbo-jets, turbo-propellers, steam or hydraulic turbines, separate components, generators, combined-cycle plants, installation, use, maintenance, overhaul, or end-of-life"
+  required_metadata: "PCR id; product model and serial/batch scope; rated output; cycle; application; fuel; dry net mass; included auxiliaries; coating/cooling configuration; production sites and year; controlled process list; supplier/in-house split; test procedure and status; allocation; cut-offs; proxies; recycled-content method"
+  required_quality_disclosure: "Temporal, geographic, and technological representativeness; mass and utility reconciliation; instrument calibration; test uncertainty; upstream dataset quality; unresolved UUIDs; missing independent range evidence; limitations"
+  update_trigger: "Material design or alloy change; coating or cooling route change; supplier or site change; new test procedure or fuel; material change in annual specific electricity, fuel, product yield, or major scrap rate; corrected UUID; or newly verified independent range evidence"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-05)"
+    used_for: "Official CPC 43143 product identity and exclusions encoded by the label"
+  - id: "us-doe-netl-gas-turbine-handbook-2006-buckets-nozzles"
+    type: "handbook"
+    reference: "U.S. Department of Energy, National Energy Technology Laboratory, Gas Turbine Handbook, section 4.4.1, Buckets and Nozzles, https://www.netl.doe.gov/sites/default/files/gas-turbine-handbook/4-4-1.pdf (retrieved 2026-09-05)"
+    used_for: "Industrial gas-turbine hot-section materials; investment casting; heat treatment; joining; machining; coating; inspection; YSZ and MCrAlY process decomposition"
+  - id: "asme-ptc-22-2023"
+    type: "standard"
+    reference: "ASME PTC 22-2023, Gas Turbines, https://www.asme.org/codes-standards/find-codes-standards/gas-turbines (retrieved 2026-09-05)"
+    used_for: "Conditional factory thermal-performance testing, corrected performance and exhaust measurements, test planning, uncertainty, and reporting"
+  - id: "eu-pef-recommendation-2021-2279"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, consolidated 30 December 2021, https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng (retrieved 2026-09-05)"
+    used_for: "Functional unit and reference flow, system boundary, company-specific data quality, cut-off disclosure, allocation hierarchy, and recycling modelling"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:bbf3f18ba39fad6138672ba87e70fd54f1e0ee7ca4c9d9f69251f7ebce096ca9"
+  generated_content_sha256: "sha256:e304122393b7589ded65b2d1bc5a85c0a31f93cf515e2042105638dcc0b0e282"

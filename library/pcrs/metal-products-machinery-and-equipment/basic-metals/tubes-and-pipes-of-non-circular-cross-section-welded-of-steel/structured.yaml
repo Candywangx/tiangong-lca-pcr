@@ -1,10 +1,850 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41288"
-  title: "Tubes and pipes, of non-circular cross-section, welded, of steel"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.tubes-and-pipes-of-non-circular-cross-section-welded-of-steel"
+  classification_refs: "CPC 3.0 41288, Tubes and pipes, of non-circular cross-section, welded, of steel"
+  covered_products: "welded steel tube or pipe delivered with a square, rectangular, elliptical, or other declared non-circular closed cross-section"
+  excluded_products: "seamless tube; circular welded tube; open-seam or riveted tube; cast tube; tube fittings; product-specific oil and gas line pipe or casing; project-fabricated members"
+  representative_product: "unfabricated rectangular welded steel tube made from hot-rolled non-alloy steel coil"
+  production_route: "coil receiving and slitting; direct-forming or continuous-forming; longitudinal welding; sizing; cut-to-length; inspection; conditional post-production heat treatment"
+  market_state: "as-delivered dry tube at the manufacturer's gate, before project-specific fabrication, coating, installation, use, or end-of-life"
+functional_unit:
+  what: "provide an unfabricated welded steel tube or pipe with a declared non-circular closed cross-section and declared mechanical and dimensional performance"
+  how_much: "1 kg of accepted product"
+  how_well: "conforms to the declared grade or specification, section geometry, dimensions and tolerances, seam-weld method and acceptance criteria, surface and heat-treatment state"
+  how_long_or_cycle: "one production batch at the manufacturer's gate; no service life is represented"
+  reference_flow_link: "5b36ddd4-adb1-41da-9456-33e69e0f141c"
+system_boundary:
+  rules:
+    - rule_id: sb_start_at_coil_gate
+      applies_to: "foreground starting condition"
+      rule: "Start foreground collection when purchased steel coil crosses the tube-manufacturing site gate; link its production and inbound transport to separately identified upstream datasets rather than recreating steelmaking inside this foreground system."
+      source_ids:
+        - sti-hss-sustainability-guide
+        - worldsteel-lci-methodology-2017
+    - rule_id: sb_include_tube_manufacture
+      applies_to: "foreground controlled operations"
+      rule: "Include coil receiving and slitting, forming, longitudinal welding, weld-flash removal when performed, sizing, cut-to-length, inspection, internal material transfers, directly controlled utilities, direct releases, and on-site waste handling through accepted product at the manufacturer's gate."
+      source_ids:
+        - sti-hss-seam-welds
+        - sti-hss-sustainability-guide
+    - rule_id: sb_route_disclosure
+      applies_to: "forming and finishing route"
+      rule: "Declare whether the tube is direct-formed or formed round then reshaped; include post-production heat treatment only when it is part of the sale state and identify on-site versus third-party treatment."
+      source_ids:
+        - sti-hss-seam-welds
+        - sti-hss-heat-treating-2017
+    - rule_id: sb_exclude_downstream_fabrication
+      applies_to: "downstream operations"
+      rule: "Exclude project-specific cutting, coping, drilling, connection welding, coating, installation, use, and end-of-life; model them in downstream datasets when required by the study."
+      source_ids:
+        - sti-hss-sustainability-guide
+    - rule_id: sb_no_embedded_recycling_credit
+      applies_to: "manufacturing scrap"
+      rule: "Report post-industrial steel scrap as a physical waste output and disclose its destination. Do not embed avoided primary steel or end-of-life recycling credit in the gate-to-gate tube inventory; report any recycling method separately and consistently."
+      source_ids:
+        - worldsteel-lci-methodology-2017
+boundary_abstraction:
+  declared_starting_condition: "purchased hot-rolled steel coil received at the tube-manufacturing site"
+  starting_condition_role: "externally supplied steel feedstock carrying upstream steel-production burdens"
+  product_classification_scope: "welded steel tubes and pipes with a declared non-circular closed cross-section; CPC 3.0 41288 is the accepted classification context"
+  recursive_input_rule: "a purchased input already meeting this PCR product boundary remains an explicit product input and links to a separate upstream dataset; do not recursively reproduce its manufacturing inventory in the current dataset"
+  upstream_dataset_requirement: "use separately identified, geographically and technologically appropriate datasets for steel coil, electricity, natural gas, process water, and other purchased products; disclose supplier-specific or market-average status"
+  disclosure: "report feedstock grade and coil state, forming route, weld technology, site and geography, data period, heat-treatment state, product acceptance basis, included finishing, and gate"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Tubes and pipes, of non-circular cross-section, welded, of steel"
+    uuid: "5b36ddd4-adb1-41da-9456-33e69e0f141c"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "steel grade and alloy family"
+    - "section shape and dimensions"
+    - "wall thickness"
+    - "product specification"
+    - "direct-forming or continuous-forming route"
+    - "weld technology"
+    - "weld acceptance basis"
+    - "heat-treatment state"
+    - "coating and residual-oil state"
+    - "accepted-product mass basis"
+    - "manufacturing geography"
+    - "data period"
+    - "manufacturer's gate"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "accepted reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh only accepted tube in its declared sale state. State whether residual mill oil, temporary protection, bundled accessories, and any included coating are inside the reported product mass."
+  - id: process_mass_balance
+    applies_to: "steel coil, internal steel intermediates, accepted tube, and steel scrap"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Reconcile dry steel-bearing inputs, internal transfers, accepted output, measured scrap, and documented stock change for the same reporting period without counting internal transfers as external inputs or outputs."
+  - id: electricity_energy_conversion
+    applies_to: "alternating-current meter records"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered kWh and convert to MJ with the exact identity 1 kWh = 3.6 MJ; disclose voltage level, grid or supplier mix, geography, and whether on-site generation is included."
+  - id: gas_volume_conditions
+    applies_to: "natural-gas records"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Record meter reference temperature, pressure, dry or wet basis, and conversion method. Do not combine volume measured at incompatible reference conditions."
+  - id: water_mass_basis
+    applies_to: "process-water records"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Retain supplied mass or document the measured volume, density basis, make-up versus recirculated distinction, and conversion used to report kg of new water crossing the boundary."
+process_map:
+  - id: coil_preparation_and_slitting
+    name: "Coil preparation and slitting"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground feedstock preparation"
+    quantitative_reference: "kg slit steel strip transferred to forming"
+  - id: cold_forming_and_welding
+    name: "Cold forming and longitudinal welding"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground tube formation"
+    quantitative_reference: "kg as-welded non-circular tube transferred to finishing"
+  - id: sizing_finishing_and_inspection
+    name: "Sizing, cut-to-length, conditional heat treatment, and inspection"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground final manufacture"
+    quantitative_reference: "1 kg accepted welded non-circular steel tube"
+process_inventory:
+  - id: coil_preparation_and_slitting
+    label: "Coil preparation and slitting"
+    inputs:
+      product:
+        - row_id: hot_rolled_steel_coil
+          role: "Hot-rolled steel coil feedstock"
+          name: "steel hot rolled coil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f1a1835-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Purchased hot-rolled non-alloy steel coil is the declared representative steel feedstock. Record its received dry mass and the supplier dataset that carries upstream steelmaking burdens."
+          amount:
+            expression: "measured received mass consumed, adjusted for verified stock change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted welded non-circular steel tube"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coil_receiving
+              source_ids:
+                - sti-hss-sustainability-guide
+            ranges: []
+        - row_id: slitting_ac_electricity
+          role: "Alternating-current electricity for coil preparation and slitting"
+          name: "alternating current"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Record the electricity delivered to coil handling and slitting equipment. Keep voltage, supplier or grid mix, geography, and any shared-meter allocation explicit; the flow UUID remains under manual review."
+          amount:
+            expression: "submetered consumption or documented allocation from a calibrated shared meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted welded non-circular steel tube"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slitting_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: slit_steel_strip_output
+          role: "Slit hot-rolled steel strip transferred to forming"
+          name: "slit hot-rolled steel strip, internal intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the batch-specific internal steel strip leaving slitting. This internal transfer preserves grade, width, thickness, and mass identity and is not an external co-product."
+          amount:
+            expression: "measured transferred mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted welded non-circular steel tube"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slit_strip_transfer
+              source_ids:
+                - sti-hss-seam-welds
+            ranges: []
+      waste:
+        - row_id: postindustrial_steel_scrap_edge_trim
+          role: "Post-industrial steel edge-trim scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Record edge trim and rejected strip that leaves this process as manufacturing scrap. Internal return to the same operation is a loop, not an output crossing the foreground boundary."
+          amount:
+            expression: "measured scrap mass by destination, net of documented internal return"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted welded non-circular steel tube"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_edge_trim_scrap
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: cold_forming_and_welding
+    label: "Cold forming and longitudinal welding"
+    inputs:
+      product:
+        - row_id: slit_steel_strip_input
+          role: "Slit hot-rolled steel strip received from preparation"
+          name: "slit hot-rolled steel strip, internal intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal steel strip entering the forming line with the same batch identity and mass basis used at the preceding process output."
+          amount:
+            expression: "measured transferred mass reconciled to slit_steel_strip_output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted welded non-circular steel tube"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_strip_transfer
+              source_ids:
+                - sti-hss-seam-welds
+            ranges: []
+        - row_id: forming_welding_ac_electricity
+          role: "Alternating-current electricity for forming and welding"
+          name: "alternating current"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity delivered to roll-forming, induction or resistance welding, weld-flash removal, and directly associated controls. The flow UUID remains under manual review."
+          amount:
+            expression: "submetered consumption or documented allocation from a calibrated shared meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted welded non-circular steel tube"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_welding_electricity
+              source_ids:
+                - sti-hss-seam-welds
+            ranges: []
+        - row_id: process_water_for_welding_cooling
+          role: "Process water supplied to the welding cooling loop"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record only new process water crossing the site boundary into the welding cooling loop. Recirculated water remains internal; record zero only with evidence that no make-up water was supplied."
+          amount:
+            expression: "measured make-up water supplied to the cooling loop"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted welded non-circular steel tube"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_welding_cooling_water
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: welded_non_circular_tube_intermediate_output
+          role: "As-welded non-circular steel tube transferred to finishing"
+          name: "as-welded non-circular steel tube, internal intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal as-welded tube after longitudinal seam closure and any in-line reshaping, before final sizing, cut-to-length, heat treatment, and acceptance."
+          amount:
+            expression: "measured transferred mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted welded non-circular steel tube"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_welded_tube_transfer
+              source_ids:
+                - sti-hss-seam-welds
+            ranges: []
+      waste:
+        - row_id: postindustrial_steel_scrap_weld_flash
+          role: "Post-industrial steel weld-flash scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Record externally removed weld flash and related ferrous trim as manufacturing scrap when it leaves the foreground system."
+          amount:
+            expression: "measured collected weld-flash scrap mass by destination"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted welded non-circular steel tube"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weld_flash_scrap
+              source_ids:
+                - sti-hss-seam-welds
+            ranges: []
+        - row_id: metalworking_wastewater
+          role: "Metalworking wastewater from forming and welding"
+          name: "metalworking wastewater from steel tube forming and welding"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the measured aqueous waste stream discharged from forming and welding equipment, including its treatment state and destination. Do not combine sanitary water, stormwater, or alkaline-cleaning wastewater into this row."
+          amount:
+            expression: "measured discharged mass after subtracting documented recirculation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted welded non-circular steel tube"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metalworking_wastewater
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: sizing_finishing_and_inspection
+    label: "Sizing, cut-to-length, conditional heat treatment, and inspection"
+    inputs:
+      product:
+        - row_id: welded_non_circular_tube_intermediate_input
+          role: "As-welded tube received for sizing and finishing"
+          name: "as-welded non-circular steel tube, internal intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal as-welded tube entering the final manufacturing stage with the same batch identity and mass basis as the preceding process output."
+          amount:
+            expression: "measured transferred mass reconciled to welded_non_circular_tube_intermediate_output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted welded non-circular steel tube"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_tube_transfer
+              source_ids:
+                - sti-hss-seam-welds
+            ranges: []
+        - row_id: finishing_ac_electricity
+          role: "Alternating-current electricity for sizing, cutting, and inspection"
+          name: "alternating current"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity delivered to sizing, straightening, cut-to-length, inspection, and material-handling equipment. The flow UUID remains under manual review."
+          amount:
+            expression: "submetered consumption or documented allocation from a calibrated shared meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted welded non-circular steel tube"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_electricity
+              source_ids: []
+            ranges: []
+        - row_id: natural_gas_for_direct_fired_heat_treatment
+          role: "Gaseous natural gas for direct-fired post-production heat treatment"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record this input only when post-production heat treatment is part of the declared sale state and a directly fired natural-gas system supplies the heat. Electrically heated or third-party treatment must not be represented by this row."
+          amount:
+            expression: "metered natural-gas volume at declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted heat-treated welded non-circular steel tube"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_natural_gas
+              source_ids:
+                - sti-hss-heat-treating-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_welded_non_circular_steel_tube
+          role: "Accepted welded non-circular steel tube"
+          name: "Tubes and pipes, of non-circular cross-section, welded, of steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5b36ddd4-adb1-41da-9456-33e69e0f141c"
+          property_unit: "Mass / kg"
+          description: "Record only tube accepted against the declared grade, geometry, dimensions, weld acceptance basis, surface state, and heat-treatment state. This row realizes the PCR reference flow."
+          amount:
+            expression: "measured accepted product mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg accepted welded non-circular steel tube"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_accepted_product_mass
+              source_ids:
+                - unsd-cpc-3-0-structure-2025
+                - sti-hss-sustainability-guide
+            ranges: []
+      waste:
+        - row_id: postindustrial_steel_scrap_cutoff
+          role: "Post-industrial steel cut-off and rejected-tube scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Record cut-off ends and rejected tube that leave the foreground system as manufacturing scrap, separated by destination where treatment differs."
+          amount:
+            expression: "measured scrap mass by destination, net of documented internal return"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted welded non-circular steel tube"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutoff_reject_scrap
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: fossil_co2_from_natural_gas
+          role: "Fossil carbon dioxide from direct-fired natural-gas heat treatment"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil carbon dioxide released to air only when the natural-gas heat-treatment row applies. Exclude upstream electricity and fuel-supply emissions, which belong to linked upstream datasets."
+          amount:
+            expression: "stack measurement or calculation from collected fuel volume, verified gas composition or carbon content, oxidation basis, and declared reference conditions"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted heat-treated welded non-circular steel tube"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_fossil_co2
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "separately measurable lines, batches, and finishing routes"
+    rule: "Subdivide direct-forming and continuous-forming campaigns, heat-treated and non-heat-treated products, and separately metered operations before allocating shared burdens."
+    source_ids: []
+  - rule_id: allocation_internal_transfers
+    applies_to: "slit strip and as-welded tube intermediates"
+    rule: "Treat internal intermediates as mass-balanced transfers between foreground processes; do not assign an upstream credit, market value, or second external burden to them."
+    source_ids: []
+  - rule_id: allocation_shared_utilities
+    applies_to: "unavoidable shared electricity, water, and site services"
+    rule: "Where subdivision or direct metering is not practicable, allocate by a documented causal driver such as equipment time and measured power, water draw, or accepted throughput; mass allocation may be used only when it approximates the physical driver and is sensitivity-tested for material shared burdens."
+    source_ids: []
+  - rule_id: allocation_manufacturing_scrap
+    applies_to: "post-industrial steel scrap"
+    rule: "Report physical scrap mass and destination separately. Keep any recycling credit, substitution factor, or end-of-life benefit outside the gate-to-gate inventory and disclose the separately selected recycling method consistently for scrap inputs and outputs."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_coil_receiving
+      process_id: "coil_preparation_and_slitting"
+      flow_role: "hot-rolled steel coil feedstock"
+      record_type: "receiving and stock record"
+      raw_fields: "coil id; supplier; grade; width; thickness; gross mass; tare; receipt date; opening and closing stock"
+      collection_method: "calibrated weighbridge or coil scale plus inventory reconciliation"
+      unit: "kg"
+      frequency: "per coil and reporting period"
+      temporal_coverage: "representative continuous production period covering declared seasonal and operating variability"
+      site_scope: "all coil inputs to the declared line and site"
+      aggregation_rule: "consumed mass = receipts + opening stock - closing stock - documented returns; normalize to accepted product"
+      quality_evidence: "calibration, supplier certificate, weigh ticket, and stock reconciliation"
+    - protocol_id: cp_slitting_electricity
+      process_id: "coil_preparation_and_slitting"
+      flow_role: "slitting electricity"
+      record_type: "electricity meter record"
+      raw_fields: "meter id; start and end reading; kWh; voltage; supplier or source; allocation driver; timestamps"
+      collection_method: "dedicated submeter or calibrated shared meter"
+      unit: "kWh and MJ"
+      frequency: "continuous reading aggregated monthly"
+      temporal_coverage: "same period as product output"
+      site_scope: "coil handling and slitting equipment at the declared site"
+      aggregation_rule: "subtract idle or unrelated loads where documented; convert kWh to MJ and normalize to accepted product"
+      quality_evidence: "meter calibration, interval export, and allocation worksheet"
+    - protocol_id: cp_slit_strip_transfer
+      process_id: "coil_preparation_and_slitting"
+      flow_role: "slit strip transfer"
+      record_type: "internal batch transfer record"
+      raw_fields: "batch id; grade; width; thickness; mass; timestamp; destination line"
+      collection_method: "calibrated scale or mass-balance transfer ticket"
+      unit: "kg"
+      frequency: "per batch"
+      temporal_coverage: "same period as product output"
+      site_scope: "transfer from slitting to forming"
+      aggregation_rule: "sum verified transfers and reconcile with coil input, scrap, and stock change"
+      quality_evidence: "scale calibration and matched transfer tickets"
+    - protocol_id: cp_edge_trim_scrap
+      process_id: "coil_preparation_and_slitting"
+      flow_role: "edge-trim scrap"
+      record_type: "scrap weigh ticket"
+      raw_fields: "container id; scrap description; mass; destination; internal return flag; date"
+      collection_method: "calibrated scale and destination record"
+      unit: "kg"
+      frequency: "per container or shipment"
+      temporal_coverage: "same period as product output"
+      site_scope: "slitting operation"
+      aggregation_rule: "sum only net boundary-crossing scrap by destination and normalize to accepted product"
+      quality_evidence: "scale calibration, weigh tickets, and buyer or treatment record"
+    - protocol_id: cp_forming_strip_transfer
+      process_id: "cold_forming_and_welding"
+      flow_role: "slit strip input"
+      record_type: "internal batch receipt"
+      raw_fields: "batch id; grade; width; thickness; mass; timestamp; source process"
+      collection_method: "matched internal transfer ticket"
+      unit: "kg"
+      frequency: "per batch"
+      temporal_coverage: "same period as product output"
+      site_scope: "forming line receipt point"
+      aggregation_rule: "reconcile one-to-one or by controlled batch aggregation with cp_slit_strip_transfer"
+      quality_evidence: "matched source and receipt tickets"
+    - protocol_id: cp_forming_welding_electricity
+      process_id: "cold_forming_and_welding"
+      flow_role: "forming and welding electricity"
+      record_type: "electricity meter record"
+      raw_fields: "meter id; readings; kWh; voltage; weld technology; operating hours; allocation driver; timestamps"
+      collection_method: "dedicated submeter or calibrated shared meter"
+      unit: "kWh and MJ"
+      frequency: "continuous reading aggregated monthly"
+      temporal_coverage: "same period as product output"
+      site_scope: "forming, welding, weld-flash removal, and associated controls"
+      aggregation_rule: "allocate only documented shared loads; convert kWh to MJ and normalize to accepted product"
+      quality_evidence: "meter calibration, interval export, and line log"
+    - protocol_id: cp_welding_cooling_water
+      process_id: "cold_forming_and_welding"
+      flow_role: "welding cooling make-up water"
+      record_type: "water meter record"
+      raw_fields: "meter id; readings; water source; make-up volume or mass; purge; recirculation status; timestamps"
+      collection_method: "dedicated meter or reconciled tank record"
+      unit: "kg, with original m3 retained when metered by volume"
+      frequency: "per reading aggregated monthly"
+      temporal_coverage: "same period as product output"
+      site_scope: "welding cooling loop"
+      aggregation_rule: "count new boundary-crossing make-up water only; document density conversion and normalize to accepted product"
+      quality_evidence: "meter calibration, water invoice, and loop balance"
+    - protocol_id: cp_welded_tube_transfer
+      process_id: "cold_forming_and_welding"
+      flow_role: "as-welded tube transfer"
+      record_type: "internal batch transfer record"
+      raw_fields: "batch id; section; grade; wall thickness; weld technology; mass; timestamp"
+      collection_method: "calibrated scale or reconciled mass-balance ticket"
+      unit: "kg"
+      frequency: "per batch"
+      temporal_coverage: "same period as product output"
+      site_scope: "transfer from welding to final sizing and finishing"
+      aggregation_rule: "sum transfers and reconcile with strip input, weld-flash scrap, wastewater solids where material, and stock change"
+      quality_evidence: "scale calibration and matched transfer tickets"
+    - protocol_id: cp_weld_flash_scrap
+      process_id: "cold_forming_and_welding"
+      flow_role: "weld-flash scrap"
+      record_type: "scrap weigh ticket"
+      raw_fields: "container id; mass; grade; destination; date"
+      collection_method: "calibrated scale and destination record"
+      unit: "kg"
+      frequency: "per container or shipment"
+      temporal_coverage: "same period as product output"
+      site_scope: "weld-flash removal point"
+      aggregation_rule: "sum net boundary-crossing scrap by destination and normalize to accepted product"
+      quality_evidence: "scale calibration, weigh tickets, and destination record"
+    - protocol_id: cp_metalworking_wastewater
+      process_id: "cold_forming_and_welding"
+      flow_role: "metalworking wastewater"
+      record_type: "discharge and treatment record"
+      raw_fields: "stream id; mass or volume; density basis; source equipment; treatment state; oil and suspended-solids characterization; destination; date"
+      collection_method: "dedicated meter or calibrated tank level with representative sampling"
+      unit: "kg, with original m3 retained when metered by volume"
+      frequency: "per discharge aggregated monthly"
+      temporal_coverage: "same period as product output"
+      site_scope: "forming and welding wastewater only"
+      aggregation_rule: "subtract documented recirculation; keep incompatible streams separate; normalize discharged mass to accepted product"
+      quality_evidence: "meter calibration, sampling report, discharge log, and treatment receipt"
+    - protocol_id: cp_finishing_tube_transfer
+      process_id: "sizing_finishing_and_inspection"
+      flow_role: "as-welded tube input"
+      record_type: "internal batch receipt"
+      raw_fields: "batch id; section; grade; wall thickness; heat-treatment requirement; mass; timestamp"
+      collection_method: "matched internal transfer ticket"
+      unit: "kg"
+      frequency: "per batch"
+      temporal_coverage: "same period as product output"
+      site_scope: "final manufacturing stage receipt point"
+      aggregation_rule: "reconcile with cp_welded_tube_transfer and documented stock change"
+      quality_evidence: "matched source and receipt tickets"
+    - protocol_id: cp_finishing_electricity
+      process_id: "sizing_finishing_and_inspection"
+      flow_role: "sizing, cutting, and inspection electricity"
+      record_type: "electricity meter record"
+      raw_fields: "meter id; readings; kWh; voltage; equipment scope; operating hours; allocation driver; timestamps"
+      collection_method: "dedicated submeter or calibrated shared meter"
+      unit: "kWh and MJ"
+      frequency: "continuous reading aggregated monthly"
+      temporal_coverage: "same period as product output"
+      site_scope: "sizing, straightening, cutting, inspection, and handling equipment"
+      aggregation_rule: "allocate only documented shared loads; convert kWh to MJ and normalize to accepted product"
+      quality_evidence: "meter calibration, interval export, and equipment log"
+    - protocol_id: cp_heat_treatment_natural_gas
+      process_id: "sizing_finishing_and_inspection"
+      flow_role: "direct-fired heat-treatment natural gas"
+      record_type: "fuel meter and furnace campaign record"
+      raw_fields: "meter id; volume; temperature; pressure; dry or wet basis; gas composition or calorific record; furnace id; product batch; timestamps"
+      collection_method: "calibrated gas meter linked to heat-treatment campaigns"
+      unit: "m3"
+      frequency: "per campaign and reporting period"
+      temporal_coverage: "same period as heat-treated product output"
+      site_scope: "direct-fired post-production heat treatment included in sale state"
+      aggregation_rule: "allocate campaign fuel by measured furnace load or another documented causal driver and normalize to accepted heat-treated product"
+      quality_evidence: "meter calibration, gas invoice, gas-quality record, and furnace log"
+    - protocol_id: cp_accepted_product_mass
+      process_id: "sizing_finishing_and_inspection"
+      flow_role: "accepted reference product"
+      record_type: "production and quality-release record"
+      raw_fields: "batch id; product flow id; grade; section; dimensions; weld method; heat-treatment state; coating state; accepted mass; rejection mass; release date"
+      collection_method: "calibrated final scale linked to quality release"
+      unit: "kg"
+      frequency: "per accepted batch"
+      temporal_coverage: "same period as all inventory records"
+      site_scope: "all accepted reference product at the declared site gate"
+      aggregation_rule: "sum only quality-released mass in the declared sale state and use it as normalization denominator"
+      quality_evidence: "scale calibration, inspection record, and certificate of conformity"
+    - protocol_id: cp_cutoff_reject_scrap
+      process_id: "sizing_finishing_and_inspection"
+      flow_role: "cut-off and rejected-tube scrap"
+      record_type: "scrap weigh ticket and rejection record"
+      raw_fields: "container or batch id; reason; mass; destination; internal return flag; date"
+      collection_method: "calibrated scale linked to rejection record"
+      unit: "kg"
+      frequency: "per container, batch, or shipment"
+      temporal_coverage: "same period as product output"
+      site_scope: "final sizing, cutting, and inspection"
+      aggregation_rule: "sum only net boundary-crossing scrap by destination and normalize to accepted product"
+      quality_evidence: "scale calibration, rejection log, weigh ticket, and destination record"
+    - protocol_id: cp_direct_fossil_co2
+      process_id: "sizing_finishing_and_inspection"
+      flow_role: "fossil carbon dioxide from direct-fired heat treatment"
+      record_type: "stack record or fuel-carbon calculation record"
+      raw_fields: "linked gas volume; reference conditions; gas composition or carbon content; oxidation basis; stack concentration and flow when measured; campaign id"
+      collection_method: "calibrated stack measurement or documented carbon-balance calculation from cp_heat_treatment_natural_gas"
+      unit: "kg CO2"
+      frequency: "per monitored campaign or calculation period"
+      temporal_coverage: "same period as direct-fired heat-treated output"
+      site_scope: "direct furnace stack only"
+      aggregation_rule: "calculate or aggregate direct fossil CO2, exclude upstream fuel and electricity emissions, and normalize to accepted heat-treated product"
+      quality_evidence: "analyzer calibration or fuel-quality certificate, formula worksheet, and campaign link"
+  calculation_rules:
+    - id: calc_normalize_reference_flow
+      applies_to: "all external inventory rows"
+      rule: "normalized amount = boundary-crossing amount attributable to the declared product / accepted reference-product mass"
+      inputs:
+        - "applicable collection protocol"
+        - cp_accepted_product_mass
+      output: "amount per 1 kg accepted product"
+      source_ids: []
+    - id: calc_reconcile_internal_strip
+      applies_to: "slit steel strip transfer"
+      rule: "opening strip stock + output from slitting - input to forming - closing strip stock = documented transfer variance; investigate material variance before release"
+      inputs:
+        - cp_slit_strip_transfer
+        - cp_forming_strip_transfer
+      output: "reconciled internal strip transfer"
+      source_ids: []
+    - id: calc_reconcile_internal_welded_tube
+      applies_to: "as-welded tube transfer"
+      rule: "opening intermediate stock + output from welding - input to finishing - closing intermediate stock = documented transfer variance; investigate material variance before release"
+      inputs:
+        - cp_welded_tube_transfer
+        - cp_finishing_tube_transfer
+      output: "reconciled internal welded-tube transfer"
+      source_ids: []
+    - id: calc_steel_mass_balance
+      applies_to: "steel-bearing flows"
+      rule: "consumed coil mass = accepted tube mass + net steel scrap mass + documented steel-bearing loss + closing stock increase - opening stock increase; disclose and investigate any residual"
+      inputs:
+        - cp_coil_receiving
+        - "transfer protocols"
+        - cp_edge_trim_scrap
+        - cp_weld_flash_scrap
+        - cp_cutoff_reject_scrap
+        - cp_accepted_product_mass
+      output: "period steel mass-balance residual"
+      source_ids: []
+    - id: calc_direct_fossil_co2
+      applies_to: "direct-fired heat treatment"
+      rule: "calculate fossil CO2 from collected gas volume at declared conditions and verified composition or carbon content with the declared oxidation basis, or aggregate calibrated stack mass flow; do not add upstream combustion emissions"
+      inputs:
+        - cp_heat_treatment_natural_gas
+        - cp_direct_fossil_co2
+      output: "kg fossil CO2 per 1 kg accepted heat-treated product"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "product and feedstock identity"
+      requirement: "Each reported batch shall link grade, alloy family, section geometry, dimensions, wall thickness, forming route, weld technology, heat-treatment state, coating state, and applicable specification to the reference flow and coil input."
+      evidence: "product certificate, coil certificate, route sheet, and inspection release"
+    - id: dq_temporal_alignment
+      applies_to: "all foreground records"
+      requirement: "Inventory numerator records and accepted-product denominator records shall cover the same representative period; gaps, shutdowns, trial runs, and exceptional campaigns shall be identified."
+      evidence: "period reconciliation and coverage table"
+    - id: dq_measurement
+      applies_to: "mass, electricity, water, gas, and emissions"
+      requirement: "Retain instrument id, calibration status, reading frequency, missing-data treatment, unit conversion, and uncertainty or accuracy information for material measurements."
+      evidence: "calibration certificates, meter exports, weigh tickets, and calculation worksheets"
+    - id: dq_completeness
+      applies_to: "all process rows"
+      requirement: "Report each applicable row, document evidence-based zero or non-applicability, reconcile internal transfers, and explain excluded minor exchanges rather than placing them in an unspecified aggregate flow."
+      evidence: "row-completeness matrix and mass/energy reconciliation"
+    - id: dq_upstream_representativeness
+      applies_to: "purchased coil, electricity, gas, and water"
+      requirement: "Identify upstream dataset provider, geography, technology, reference year, supplier-specific or market-average status, and mismatch from the foreground supply."
+      evidence: "supplier records and upstream dataset metadata"
+    - id: dq_waste_destination
+      applies_to: "steel scrap and wastewater"
+      requirement: "Identify receiving facility or buyer, treatment or recycling route, transport link, and whether end-of-waste status has been reached; do not assume recycling solely from positive value."
+      evidence: "transfer note, buyer receipt, permit or treatment record"
+validation_rules:
+  - rule_id: val_reference_identity
+    applies_to: "reference flow"
+    rule: "Confirm the reference product is welded steel tube or pipe with a declared non-circular closed cross-section and that its UUID, Mass property, kg unit, product state, and required qualifiers are present."
+    source_ids:
+      - unsd-cpc-3-0-structure-2025
+  - rule_id: val_scope_gate
+    applies_to: "system boundary"
+    rule: "Confirm the dataset starts with purchased coil and ends with accepted unfabricated tube at the manufacturer's gate; separately identify upstream supply, downstream fabrication, coating, installation, use, and end-of-life."
+    source_ids:
+      - sti-hss-sustainability-guide
+  - rule_id: val_route
+    applies_to: "process map"
+    rule: "Confirm the declared direct-forming or continuous-forming route, weld technology, weld-flash removal practice, and conditional heat-treatment state match the represented inventory."
+    source_ids:
+      - sti-hss-seam-welds
+      - sti-hss-heat-treating-2017
+  - rule_id: val_reference_normalization
+    applies_to: "inventory amounts"
+    rule: "Confirm every external amount is normalized to the same measured accepted-product mass and that internal transfers are excluded from aggregated external inputs and outputs."
+    source_ids: []
+  - rule_id: val_steel_mass_balance
+    applies_to: "steel-bearing flows"
+    rule: "Confirm coil input, internal steel transfers, accepted product, each post-industrial steel-scrap stream, stock change, and any documented steel-bearing loss reconcile for the reporting period."
+    source_ids: []
+  - rule_id: val_energy_water
+    applies_to: "electricity, gas, and water"
+    rule: "Confirm meters, voltage and supply mix, gas reference conditions, water make-up versus recirculation, conversions, route applicability, and allocation drivers are disclosed."
+    source_ids: []
+  - rule_id: val_direct_co2
+    applies_to: "fossil carbon dioxide"
+    rule: "When direct-fired heat treatment applies, confirm direct fossil CO2 is linked to the same gas campaigns and excludes upstream electricity and fuel-supply emissions; otherwise require documented non-applicability for both rows."
+    source_ids: []
+  - rule_id: val_scrap_recycling
+    applies_to: "manufacturing scrap"
+    rule: "Confirm each scrap row reports physical mass and destination and that any recycling credit or end-of-life benefit is outside this gate-to-gate inventory and disclosed separately."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: val_data_quality
+    applies_to: "dataset release"
+    rule: "Confirm temporal alignment, calibration evidence, missing-data treatment, upstream dataset representativeness, row completeness, and wastewater characterization are sufficient for the declared dataset role."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "unit_process"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "datasets for welded non-circular steel tubes or pipes with matching feedstock, forming route, weld technology, section, grade, heat-treatment and coating state, geography, period, and manufacturer's gate"
+  excluded_use: "seamless or circular tube; cast or open-seam tube; fittings; product-specific oil and gas pipe; project fabrication; coated or heat-treated states not represented by the foreground data; installation, use, or end-of-life"
+  required_metadata: "reference flow UUID and qualifiers; site and geography; data period; coil supplier and upstream dataset; forming and weld route; heat-treatment and coating state; process coverage; allocation; scrap and wastewater destination; data-quality rating"
+  required_quality_disclosure: "measured versus allocated shares; meter and scale coverage; internal-transfer and steel mass-balance residuals; missing-data treatment; upstream dataset mismatches; uncertainty; unresolved UUIDs and range-evidence needs"
+  update_trigger: "material change in feedstock grade or supplier mix, forming or welding technology, section family, heat treatment, coating inclusion, energy or water system, scrap or wastewater route, site, geography, data period, or data quality"
+data_sources:
+  - id: "unsd-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "official CPC 3.0 product identity and exact wording for code 41288"
+  - id: "sti-hss-seam-welds"
+    type: "literature"
+    reference: "https://steeltubeinstitute.org/resources/hss-seam-welds/"
+    used_for: "direct-forming and continuous-forming process decomposition, longitudinal welding, and weld-flash removal"
+  - id: "sti-hss-sustainability-guide"
+    type: "extension_guidance"
+    reference: "https://steeltubeinstitute.org/resources/practical-guide-to-hss-sustainability-documentation-and-submittals/"
+    used_for: "steel-coil input, tube-forming boundary, and separation of unfabricated tube manufacture from downstream fabrication"
+  - id: "sti-hss-heat-treating-2017"
+    type: "literature"
+    reference: "https://steeltubeinstitute.org/resources/heat-treating-hss/"
+    used_for: "welded HSS forming routes and conditional post-production heat treatment"
+  - id: "worldsteel-lci-methodology-2017"
+    type: "method_factor"
+    reference: "https://worldsteel.org/wp-content/uploads/Life-cycle-inventory-methodology-report.pdf"
+    used_for: "cradle-to-gate steel LCI framing and transparent, consistent treatment of steel scrap and recycling"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:3b9500d69e596c7df523b01feddf19bcf18aa3a497858f6d5549bed9493cc596"
+  generated_content_sha256: "sha256:d279e55b59b466cf36a858dc235b377b31de55acbf087f39a174a161639e96d3"

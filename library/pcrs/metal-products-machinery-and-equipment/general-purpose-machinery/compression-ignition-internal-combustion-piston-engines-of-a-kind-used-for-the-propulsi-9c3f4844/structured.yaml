@@ -1,10 +1,983 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43123"
-  title: "Compression-ignition internal combustion piston engines, of a kind used for the propulsion of vehicles other than railway or tramway rolling stock"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.compression-ignition-internal-combustion-piston-engines-of-a-kind-used-for-the-propulsi-9c3f4844"
+  classification_refs: "CPC 3.0: 43123 (exact category identity)"
+  covered_products: "New compression-ignition piston engines designed for propulsion of road or other non-rail vehicles, delivered as complete factory-tested engines"
+  excluded_products: "Spark-ignition engines; railway or tramway propulsion engines; aircraft, marine, or stationary engines; engine parts sold separately; remanufactured engines"
+  representative_product: "A complete diesel-cycle vehicle-propulsion engine at the engine manufacturer's gate"
+  production_route: "Component manufacture or machining, engine assembly and finishing, and factory acceptance testing; outsourced stages are disclosed and linked"
+  market_state: "New, complete, factory-tested engine before vehicle installation; dry or wet mass state must be declared"
+functional_unit:
+  what: "Provision of a new, complete, factory-tested compression-ignition piston engine suitable for non-rail vehicle propulsion"
+  how_much: "1 kg of complete engine mass at the engine manufacturer's gate"
+  how_well: "Meets the declared engine-family specification, rated power and speed, applicable emission stage, and declared accessory and aftertreatment configuration"
+  how_long_or_cycle: "One production and factory-acceptance cycle; engine service life is outside this gate-to-gate reference"
+  reference_flow_link: "reference_engine_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "foreground engine manufacturing"
+      rule: "Include producer-controlled component manufacture or machining, assembly, finishing, acceptance testing, internal material movement, rework, and treatment of foreground wastes through the manufacturer gate."
+      source_ids:
+        - rouhento-2018-diesel-engine-lca
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased inputs"
+      rule: "Keep every purchased material, component, energy carrier, water, fuel, and chemical as an explicit product input linked to a geographically and technologically appropriate upstream dataset."
+      source_ids:
+        - jrc-2025-ef-method-key-aspects
+    - rule_id: boundary_outsourced_operations
+      applies_to: "outsourced manufacturing"
+      rule: "Include outsourced operations through explicit service or intermediate-product links and disclose their geography and data quality; do not silently omit them."
+      source_ids:
+        - jrc-2025-ef-method-key-aspects
+    - rule_id: boundary_exclusions
+      applies_to: "downstream life cycle"
+      rule: "Exclude vehicle assembly, engine operation, maintenance, replacement, vehicle use, and end-of-life unless a separate downstream model explicitly adds them without altering this manufacturing inventory."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+boundary_abstraction:
+  declared_starting_condition: "Purchased material, component, energy, water, fuel, and chemical inputs received at the engine-manufacturing boundary, with upstream datasets linked separately"
+  starting_condition_role: "Defines the foreground gate and prevents upstream production from being embedded as untraceable totals"
+  product_classification_scope: "Complete CPC 43123 engines only; parts and same-category intermediate engines remain separate inputs until incorporated"
+  recursive_input_rule: "If a CPC 43123 engine is incorporated as an input, record it as a distinct product input with supplier, mass state, and upstream dataset rather than recursively applying this PCR inside the same process"
+  upstream_dataset_requirement: "Each purchased input requires a representative upstream dataset or an explicit documented data gap"
+  disclosure: "Declare producer-controlled versus outsourced stages, dry or wet reference state, included engine accessories, test share, allocation, cut-offs, geography, technology, and reference period"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Compression-ignition vehicle-propulsion piston engine"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "engine model or family"
+    - displacement
+    - "rated power and rated speed"
+    - "applicable emission stage and market"
+    - "dry or wet mass state"
+    - "included turbocharger"
+    - "fuel system"
+    - controls
+    - aftertreatment
+    - starter
+    - alternator
+    - "and other accessories"
+    - "manufacturing geography and reference period"
+    - "new rather than remanufactured state"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "complete engine reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh the delivered engine in the declared dry or wet state; normalize every exchange to 1 kg of that same state."
+  - id: material_mass
+    applies_to: "material, chemical, fuel, scrap, waste oil, wastewater, coating waste, and gaseous or particulate emissions"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use calibrated mass records; conversions from volume require recorded density, temperature, and concentration where material."
+  - id: energy_quantity
+    applies_to: "electricity and purchased heat"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Convert metered kWh to MJ using 3.6 MJ per kWh and preserve the meter boundary; do not convert purchased heat to fuel without evidence."
+  - id: exhaust_test_basis
+    applies_to: "acceptance-test emissions"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Aggregate measured mass over the declared test cycle and allocate only to engines actually tested; disclose cycle, sampling location, detection limits, and any below-detection treatment."
+process_map:
+  - id: component_manufacturing
+    name: "Component manufacture and machining"
+    inclusion: "required"
+    inclusion_condition: "Include producer-controlled casting, forming, heat treatment, machining, and cleaning; represent outsourced components as linked purchased inputs"
+    role: "Converts metal feedstocks into engine components"
+    quantitative_reference: "Per 1 kg complete engine output"
+  - id: assembly_and_finishing
+    name: "Engine assembly and finishing"
+    inclusion: "required"
+    inclusion_condition: "Include mechanical assembly, washing, coating, drying, fluid filling, rust protection, rework, and internal handling actually performed"
+    role: "Produces a finished engine ready for test"
+    quantitative_reference: "Per 1 kg complete engine output"
+  - id: factory_acceptance_test
+    name: "Factory acceptance test"
+    inclusion: "required"
+    inclusion_condition: "Include the documented routine or sampled engine test and allocate sampled-test burdens over the represented production lot"
+    role: "Confirms engine conformity and produces the reference output"
+    quantitative_reference: "Per 1 kg complete engine output"
+process_inventory:
+  - id: component_manufacturing
+    label: "Component manufacture and machining"
+    inputs:
+      product:
+        - row_id: cast_iron
+          role: "Cast iron feedstock"
+          name: "Cast iron"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the cast iron incorporated into producer-made blocks, heads, housings, or other cast components from purchasing and stock records."
+          amount:
+            expression: "Net purchased mass entering included component manufacture, corrected for stock change and separately recorded scrap"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg complete engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_materials
+              source_ids:
+                - rouhento-2018-diesel-engine-lca
+            ranges: []
+        - row_id: alloy_steel
+          role: "Alloy steel feedstock"
+          name: "Alloy steel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record alloy steel incorporated into producer-made shafts, gears, fasteners, or other machined components."
+          amount:
+            expression: "Net purchased mass entering included component manufacture, corrected for stock change and separately recorded scrap"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg complete engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_materials
+              source_ids:
+                - rouhento-2018-diesel-engine-lca
+            ranges: []
+        - row_id: aluminium_alloy
+          role: "Aluminium alloy"
+          name: "Aluminium alloy"
+          flow_type: "product"
+          flow_ref:
+            uuid: "28b47d6d-68b4-4810-b764-01a1fc1352dc"
+          property_unit: "Mass / kg"
+          description: "Record aluminium alloy feedstock used in producer-made cast or machined engine components."
+          amount:
+            expression: "Net purchased mass entering included component manufacture, corrected for stock change and separately recorded scrap"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg complete engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_materials
+              source_ids:
+                - rouhento-2018-diesel-engine-lca
+            ranges: []
+        - row_id: cutting_fluid
+          role: "Cutting fluid"
+          name: "Cutting Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "576d250f-4f36-4385-939d-0f03b8f95a10"
+          property_unit: "Mass / kg"
+          description: "Record make-up cutting fluid crossing the boundary into machining, not recirculated internal volume."
+          amount:
+            expression: "Purchased make-up plus opening inventory minus closing inventory, excluding recovered internal recirculation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg complete engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_consumables
+              source_ids:
+                - rouhento-2018-diesel-engine-lca
+            ranges: []
+        - row_id: component_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity for included component operations and their allocated auxiliaries."
+          amount:
+            expression: "Metered electricity converted to MJ and allocated using documented equipment time or production mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg complete engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_water
+              source_ids:
+                - rouhento-2018-diesel-engine-lca
+            ranges: []
+        - row_id: component_process_water
+          role: "Process Water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water supplied to producer-controlled machining and parts cleaning in this process."
+          amount:
+            expression: "Metered or invoiced water entering this process, converted to mass with documented density when measured by volume"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg complete engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_water
+              source_ids:
+                - rouhento-2018-diesel-engine-lca
+            ranges: []
+        - row_id: component_heat
+          role: "Heat"
+          name: "Heat"
+          flow_type: "product"
+          flow_ref:
+            uuid: "260672cc-62f0-48c3-b09e-22e71519be74"
+          property_unit: "Net calorific value / MJ"
+          description: "Record purchased heat delivered to included heat treatment or component operations; direct on-site fuels must be recorded as their own atomic inputs instead."
+          amount:
+            expression: "Metered purchased heat attributable to the process, net of documented return energy where the supplier bill uses that basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg complete engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_water
+              source_ids:
+                - rouhento-2018-diesel-engine-lca
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_scrap
+          role: "Steel scrap for recycling"
+          name: "Steel scrap, for recycling"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "6b1343f5-929b-4a1b-8459-f741ed19ebd2"
+          property_unit: "Mass / kg"
+          description: "Record segregated ferrous machining and forming scrap transferred for recycling."
+          amount:
+            expression: "Weighed outbound ferrous scrap attributed to included engine production"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg complete engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_manufacturing_wastes
+              source_ids:
+                - rouhento-2018-diesel-engine-lca
+            ranges: []
+        - row_id: aluminium_scrap
+          role: "Aluminium Scrap"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass / kg"
+          description: "Record segregated aluminium machining or casting scrap transferred from the foreground system."
+          amount:
+            expression: "Weighed outbound aluminium scrap attributed to included engine production"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg complete engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_manufacturing_wastes
+              source_ids:
+                - rouhento-2018-diesel-engine-lca
+            ranges: []
+        - row_id: waste_cutting_oil
+          role: "Waste cutting oil"
+          name: "Waste cutting oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "80d926e3-0f76-4a19-9b1e-ffec9deb1216"
+          property_unit: "Mass / kg"
+          description: "Record spent cutting oil removed from the recirculating machining system for external treatment."
+          amount:
+            expression: "Weighed or manifest-recorded spent cutting oil leaving the foreground boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg complete engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_manufacturing_wastes
+              source_ids:
+                - rouhento-2018-diesel-engine-lca
+            ranges: []
+      elementary:
+        []
+  - id: assembly_and_finishing
+    label: "Engine assembly and finishing"
+    inputs:
+      product:
+        - row_id: liquid_detergent
+          role: "Liquid Detergent"
+          name: "Liquid Detergent"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c1214ed0-28a4-4273-a8c9-a4f29351747a"
+          property_unit: "Mass / kg"
+          description: "Record liquid detergent supplied for aqueous washing of engine components or assembled engines."
+          amount:
+            expression: "Purchased make-up corrected for stock change and dilution water recorded separately"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg complete engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_materials
+              source_ids:
+                - rouhento-2018-diesel-engine-lca
+            ranges: []
+        - row_id: industrial_maintenance_coating
+          role: "Industrial Maintenance Coatings"
+          name: "Industrial Maintenance Coatings"
+          flow_type: "product"
+          flow_ref:
+            uuid: "46c99c8a-0ae9-4be8-972f-a2b9ab3baaf5"
+          property_unit: "Mass / kg"
+          description: "Record protective coating solids and carrier as the purchased coating product crossing the finishing boundary."
+          amount:
+            expression: "Coating issued to the line minus documented recoverable return, with formulation and solids fraction declared"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg complete engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_materials
+              source_ids:
+                - rouhento-2018-diesel-engine-lca
+            ranges: []
+        - row_id: rust_preventive_oil
+          role: "Rust-preventive oil"
+          name: "Rust-preventive oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record oil applied specifically for temporary corrosion protection before shipment."
+          amount:
+            expression: "Issued mass minus recoverable return; record zero only when absence is documented for the represented product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg complete engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_materials
+              source_ids:
+                - rouhento-2018-diesel-engine-lca
+            ranges: []
+        - row_id: lubricating_oil
+          role: "lubricating oil"
+          name: "lubricating oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "aec6f1a5-7b09-4704-870d-434d3ada0edd"
+          property_unit: "Mass / kg"
+          description: "Record lubricating oil filled into the engine before factory testing and shipment."
+          amount:
+            expression: "Net filled mass including test top-up, less separately measured recovered oil"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg complete engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fluid_filling
+              source_ids:
+                - rouhento-2018-diesel-engine-lca
+            ranges: []
+        - row_id: coolant
+          role: "Coolant"
+          name: "Coolant"
+          flow_type: "product"
+          flow_ref:
+            uuid: "92c6fd56-f8a2-45ed-bb52-c4238cf8927c"
+          property_unit: "Mass / kg"
+          description: "Record coolant filled into the engine or its closed factory-test circuit when it crosses the process boundary."
+          amount:
+            expression: "Net new coolant make-up; exclude internally recirculated inventory and declare formulation and concentration"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg complete engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fluid_filling
+              source_ids:
+                - rouhento-2018-diesel-engine-lca
+            ranges: []
+        - row_id: assembly_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity for assembly, washing, coating, drying, handling, and allocated auxiliaries."
+          amount:
+            expression: "Metered electricity converted to MJ and allocated using documented equipment time or production mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg complete engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_water
+              source_ids:
+                - rouhento-2018-diesel-engine-lca
+            ranges: []
+        - row_id: assembly_process_water
+          role: "Process Water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record water supplied for washing, coating preparation, and finishing operations, excluding closed-loop recirculation."
+          amount:
+            expression: "Metered or invoiced water entering assembly and finishing, converted to mass with documented density"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg complete engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_water
+              source_ids:
+                - rouhento-2018-diesel-engine-lca
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: oily_industrial_wastewater
+          role: "Oily industrial wastewater"
+          name: "Oily industrial wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record aqueous effluent contaminated by oil from washing or finishing when it leaves for treatment."
+          amount:
+            expression: "Metered discharge mass attributable to engine production, with oil concentration and treatment destination declared"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg complete engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_wastes
+              source_ids:
+                - rouhento-2018-diesel-engine-lca
+            ranges: []
+        - row_id: waste_paint
+          role: "Waste paint"
+          name: "Waste paint"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "877e5a04-76c8-4c5b-ac4c-062f5beeb2bd"
+          property_unit: "Mass / kg"
+          description: "Record coating residue collected from mixing, application, overspray capture, or equipment cleaning for external treatment."
+          amount:
+            expression: "Weighed or manifest-recorded waste paint leaving the foreground boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg complete engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_wastes
+              source_ids:
+                - rouhento-2018-diesel-engine-lca
+            ranges: []
+      elementary:
+        []
+  - id: factory_acceptance_test
+    label: "Factory acceptance test"
+    inputs:
+      product:
+        - row_id: test_diesel_fuel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "Record diesel fuel combusted during routine or sampled factory acceptance tests."
+          amount:
+            expression: "Test-cell fuel-meter difference over represented test cycles, allocated across the documented production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg complete engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance_test
+              source_ids:
+                - rouhento-2018-diesel-engine-lca
+            ranges: []
+        - row_id: test_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for test-cell equipment, controls, ventilation, pumps, and allocated auxiliaries."
+          amount:
+            expression: "Metered test-cell electricity converted to MJ and allocated across the represented production lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg complete engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_acceptance_test
+              source_ids:
+                - rouhento-2018-diesel-engine-lca
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_engine_output
+          role: "Complete compression-ignition vehicle-propulsion engine"
+          name: "Compression-ignition vehicle-propulsion piston engine"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the complete conforming engine at the manufacturer gate in the declared dry or wet state."
+          amount:
+            expression: "Fixed normalization output of 1 kg, scaled from the weighed conforming engine mass"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg complete engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reference_product
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: test_carbon_dioxide_fossil
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record fossil carbon dioxide emitted from test-engine exhaust during the represented acceptance-test cycles."
+          amount:
+            expression: "Measured exhaust mass over represented cycles, or a declared carbon balance from measured fuel carbon when direct measurement is unavailable"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg complete engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_emissions
+              source_ids:
+                - eu-reg-582-2011-consolidated-2021
+            ranges: []
+        - row_id: test_carbon_monoxide_fossil
+          role: "carbon monoxide (fossil)"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record fossil carbon monoxide emitted from test-engine exhaust during the represented acceptance-test cycles."
+          amount:
+            expression: "Analyzer-derived mass integrated over the represented test cycles"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg complete engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_emissions
+              source_ids:
+                - eu-reg-582-2011-consolidated-2021
+            ranges: []
+        - row_id: nitrogen_oxides_to_air
+          role: "Nitrogen oxides to air"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record nitrogen oxides emitted from test-engine exhaust using the declared regulatory or factory test convention."
+          amount:
+            expression: "Analyzer-derived mass integrated over represented cycles; declare whether reported as NO2 equivalent"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg complete engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_emissions
+              source_ids:
+                - eu-reg-582-2011-consolidated-2021
+            ranges: []
+        - row_id: particulate_matter_to_air
+          role: "Particulate matter, particle size unspecified"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass / kg"
+          description: "Record measured particulate matter mass emitted from test-engine exhaust; do not substitute particle number without a documented conversion method."
+          amount:
+            expression: "Filter- or instrument-derived particulate mass integrated over represented test cycles"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg complete engine output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_emissions
+              source_ids:
+                - eu-reg-582-2011-consolidated-2021
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "separable engine models, lines, or process steps"
+    rule: "First subdivide meters, batches, lines, test cells, rework, and waste records wherever technically feasible."
+    source_ids:
+      - jrc-2025-ef-method-key-aspects
+  - rule_id: allocation_physical
+    applies_to: "unavoidable shared burdens"
+    rule: "When subdivision is not feasible, allocate using a causal physical driver such as machine time, test duration, metered energy, processed mass, or engine count; document the driver and calculation."
+    source_ids:
+      - jrc-2025-ef-method-key-aspects
+  - rule_id: allocation_recycling
+    applies_to: "metal scrap and recovered materials"
+    rule: "Record scrap as a waste output at the foreground boundary and apply the chosen downstream recycling method consistently outside this inventory; do not subtract avoided primary production from foreground input quantities."
+    source_ids:
+      - jrc-2025-ef-method-key-aspects
+  - rule_id: allocation_test_sampling
+    applies_to: "sampled acceptance tests"
+    rule: "Allocate sampled-test fuel, electricity, and emissions across the exact production lot represented by the sampling plan, preserving rejected-engine and retest burdens."
+    source_ids:
+      - rouhento-2018-diesel-engine-lca
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_component_materials
+      process_id: "component_manufacturing"
+      flow_role: "metal feedstocks"
+      record_type: "purchase, stock, recipe, and scrap records"
+      raw_fields: "material grade; opening stock; receipts; closing stock; scrap; engine model; conforming output mass"
+      collection_method: "Reconcile material ledger to production orders and weigh representative components"
+      unit: "kg"
+      frequency: "monthly or batch"
+      temporal_coverage: "At least 12 representative months or full campaign"
+      site_scope: "All included component areas"
+      aggregation_rule: "Sum net material by grade and divide by conforming reference-product mass"
+      quality_evidence: "invoices; stock ledger; scales; bill of material; reconciliation"
+    - protocol_id: cp_machining_consumables
+      process_id: "component_manufacturing"
+      flow_role: "cutting fluid"
+      record_type: "issue and tank inventory records"
+      raw_fields: "product; concentration; opening inventory; additions; closing inventory; recovered quantity"
+      collection_method: "Reconcile purchased make-up and tank inventory; exclude internal recirculation"
+      unit: "kg"
+      frequency: "batch or monthly"
+      temporal_coverage: "Same period as production"
+      site_scope: "Included machining systems"
+      aggregation_rule: "Net make-up divided by conforming output mass"
+      quality_evidence: "purchase records; tank logs; concentration tests"
+    - protocol_id: cp_energy_water
+      process_id: "component_manufacturing_assembly_and_finishing"
+      flow_role: "electricity, heat, and process water"
+      record_type: "meters and invoices"
+      raw_fields: "meter id; start/end reading; unit; time; area; allocation driver; production mass"
+      collection_method: "Read calibrated submeters; use invoices only with documented allocation"
+      unit: "MJ; kg"
+      frequency: "shift, batch, or monthly"
+      temporal_coverage: "Same representative period for numerator and output"
+      site_scope: "All included production and auxiliary areas"
+      aggregation_rule: "Sum by process, convert units, subtract documented non-engine loads, normalize by output mass"
+      quality_evidence: "meter calibration; invoices; allocation worksheet"
+    - protocol_id: cp_manufacturing_wastes
+      process_id: "component_manufacturing"
+      flow_role: "segregated scrap and spent cutting oil"
+      record_type: "scales and waste manifests"
+      raw_fields: "waste identity; mass; date; origin; destination; recovery or treatment route"
+      collection_method: "Weigh each outbound waste stream and reconcile storage change"
+      unit: "kg"
+      frequency: "shipment and monthly"
+      temporal_coverage: "Same period as production"
+      site_scope: "Included component areas"
+      aggregation_rule: "Outbound plus closing inventory minus opening inventory, normalized by output mass"
+      quality_evidence: "weighbridge tickets; manifests; waste-store ledger"
+    - protocol_id: cp_finishing_materials
+      process_id: "assembly_and_finishing"
+      flow_role: "detergent, coating, and rust-preventive oil"
+      record_type: "issue, return, and formulation records"
+      raw_fields: "product; issued mass; returned mass; concentration; solids fraction; engine family"
+      collection_method: "Reconcile line issues and returns; record water separately"
+      unit: "kg"
+      frequency: "batch or monthly"
+      temporal_coverage: "Same period as production"
+      site_scope: "Included washing and coating lines"
+      aggregation_rule: "Net issued product divided by conforming output mass"
+      quality_evidence: "formulation sheet; issue logs; purchase records"
+    - protocol_id: cp_fluid_filling
+      process_id: "assembly_and_finishing"
+      flow_role: "lubricating oil and coolant"
+      record_type: "fill-station meters and inventory"
+      raw_fields: "fluid identity; formulation; concentration; fill; recovery; top-up; engine serial"
+      collection_method: "Meter new fluid crossing the boundary and exclude closed-loop inventory"
+      unit: "kg"
+      frequency: "engine or batch"
+      temporal_coverage: "Same period as production"
+      site_scope: "Included fill and test circuits"
+      aggregation_rule: "Net new fluid divided by conforming output mass"
+      quality_evidence: "calibrated dispenser; serial records; inventory reconciliation"
+    - protocol_id: cp_finishing_wastes
+      process_id: "assembly_and_finishing"
+      flow_role: "oily wastewater and waste paint"
+      record_type: "effluent meters, sampling, scales, and manifests"
+      raw_fields: "mass or volume; density; oil concentration; paint residue mass; destination"
+      collection_method: "Meter discharge and weigh residues; reconcile holding-tank inventory"
+      unit: "kg"
+      frequency: "discharge or shipment"
+      temporal_coverage: "Same period as production"
+      site_scope: "Included washing and finishing areas"
+      aggregation_rule: "Net boundary output divided by conforming output mass"
+      quality_evidence: "meter calibration; laboratory report; manifest; tank ledger"
+    - protocol_id: cp_acceptance_test
+      process_id: "factory_acceptance_test"
+      flow_role: "test fuel and electricity"
+      record_type: "test-cell meters and logs"
+      raw_fields: "engine serial; model; cycle; duration; fuel readings; electricity readings; lot represented"
+      collection_method: "Link calibrated meters to each test and sampling plan"
+      unit: "kg; MJ"
+      frequency: "each test"
+      temporal_coverage: "Same period as represented production"
+      site_scope: "All included test cells and auxiliaries"
+      aggregation_rule: "Sum tests, include retests, allocate over represented lot, normalize by output mass"
+      quality_evidence: "test log; meter calibration; sampling plan"
+    - protocol_id: cp_reference_product
+      process_id: "factory_acceptance_test"
+      flow_role: "conforming engine output"
+      record_type: "production and weighing records"
+      raw_fields: "engine serial; dry or wet state; included accessories; measured mass; conformity status"
+      collection_method: "Weigh conforming engines and reconcile production count"
+      unit: "kg"
+      frequency: "each model or representative batch"
+      temporal_coverage: "Same period as inventory"
+      site_scope: "Manufacturer gate"
+      aggregation_rule: "Sum conforming engine mass; exclude rejected output but retain its burdens"
+      quality_evidence: "calibrated scale; bill of material; conformity record"
+    - protocol_id: cp_test_emissions
+      process_id: "factory_acceptance_test"
+      flow_role: "exhaust emissions"
+      record_type: "analyzer and particulate measurement files"
+      raw_fields: "engine serial; cycle; pollutant; concentration or mass; exhaust flow; detection limit; calibration; lot represented"
+      collection_method: "Integrate calibrated measurements over each test cycle and link to the sampling plan"
+      unit: "kg"
+      frequency: "each measured test"
+      temporal_coverage: "Same period as represented production"
+      site_scope: "Test-cell exhaust boundary"
+      aggregation_rule: "Sum measured mass including retests, allocate over represented lot, normalize by output mass"
+      quality_evidence: "raw analyzer file; filter record; calibration; test report"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every exchange"
+      rule: "normalized exchange = period exchange / conforming complete-engine mass for the identical period and declared mass state"
+      inputs:
+        - "period exchange"
+        - "conforming engine mass"
+      output: "kg, MJ, or kg emission per kg reference product"
+      source_ids:
+        - jrc-2025-ef-method-key-aspects
+    - id: calc_electricity_conversion
+      applies_to: "electricity"
+      rule: "electricity_MJ = metered_kWh × 3.6"
+      inputs:
+        - "metered kWh"
+      output: "MJ electricity"
+      source_ids:
+        - jrc-2025-ef-method-key-aspects
+    - id: calc_stock_reconciliation
+      applies_to: "materials, chemicals, fluids, and stored wastes"
+      rule: "boundary amount = purchases or generation + opening inventory - closing inventory - documented recoverable return"
+      inputs:
+        - invoices
+        - "opening and closing stock"
+        - returns
+      output: "net boundary mass"
+      source_ids:
+        - jrc-2025-ef-method-key-aspects
+    - id: calc_test_allocation
+      applies_to: "sampled acceptance test"
+      rule: "allocated test amount = total included test amount / total conforming engine mass represented by the documented sampling plan"
+      inputs:
+        - "test totals"
+        - "represented lot"
+        - "output mass"
+      output: "test exchange per kg engine"
+      source_ids:
+        - rouhento-2018-diesel-engine-lca
+    - id: calc_exhaust_mass
+      applies_to: "gaseous and particulate exhaust"
+      rule: "integrate validated analyzer or filter mass over the test cycle; if concentration and exhaust flow are used, preserve time alignment, dry/wet correction, and reference conditions"
+      inputs:
+        - "calibrated measurement series"
+        - "exhaust flow"
+        - "cycle duration"
+      output: "pollutant mass per represented production lot"
+      source_ids:
+        - eu-reg-582-2011-consolidated-2021
+  data_quality_requirements:
+    - id: dq_temporal_alignment
+      applies_to: "all foreground exchanges"
+      requirement: "Numerators and conforming engine output shall cover the same representative period; disclose shutdowns, ramp-up, and abnormal production."
+      evidence: "dated records and period reconciliation"
+    - id: dq_technology_geography
+      applies_to: "all inputs and processes"
+      requirement: "Declare engine family, manufacturing technology, site geography, supplier geography where known, and upstream dataset representativeness."
+      evidence: "dataset metadata and supplier records"
+    - id: dq_meter_traceability
+      applies_to: "metered energy, water, fluids, and emissions"
+      requirement: "Identify meters and analyzers, calibration status, resolution, missing-data treatment, and allocation to included equipment."
+      evidence: "calibration certificates and raw logs"
+    - id: dq_mass_balance
+      applies_to: "materials and wastes"
+      requirement: "Reconcile material inputs, product incorporation, stock change, scrap, waste, and documented losses; investigate material discrepancies."
+      evidence: "signed mass-balance worksheet"
+    - id: dq_cutoff_disclosure
+      applies_to: "all exchanges"
+      requirement: "Avoid cut-offs; any unquantified input or output requires identity, reason, expected direction of bias, and improvement plan."
+      evidence: "data-gap register"
+    - id: dq_verification
+      applies_to: "complete data package"
+      requirement: "An independent reviewer shall trace sampled values from published normalized exchanges back to raw records and calculations."
+      evidence: "verification log and sampled audit trail"
+validation_rules:
+  - rule_id: validation_identity
+    applies_to: "reference product"
+    rule: "The product shall be a new complete CPC 43123 compression-ignition piston engine for non-rail vehicle propulsion, with all required qualifiers declared."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validation_reference_mass
+    applies_to: "reference flow"
+    rule: "The output reference_engine_output shall equal 1 kg after normalization and use the same declared dry or wet state as every denominator."
+    source_ids:
+      - jrc-2025-ef-method-key-aspects
+  - rule_id: validation_inventory_atomicity
+    applies_to: "process inventory"
+    rule: "Every exchange shall represent one atomic material, chemical, energy, waste, or emission flow; combined utilities, fuels, wastes, or emission groups are nonconforming."
+    source_ids:
+      - jrc-2025-ef-method-key-aspects
+  - rule_id: validation_boundary_completeness
+    applies_to: "system boundary"
+    rule: "All producer-controlled and outsourced manufacturing stages shall be included or explicitly disclosed with upstream links and quantified data gaps."
+    source_ids:
+      - jrc-2025-ef-method-key-aspects
+  - rule_id: validation_test_traceability
+    applies_to: "factory acceptance test"
+    rule: "Fuel, electricity, emission measurements, sampling plan, retests, and represented production mass shall reconcile by engine serial or lot."
+    source_ids:
+      - eu-reg-582-2011-consolidated-2021
+  - rule_id: validation_allocation
+    applies_to: "shared burdens"
+    rule: "Subdivision attempts, chosen physical driver, allocation calculation, and sensitivity to material alternatives shall be documented."
+    source_ids:
+      - jrc-2025-ef-method-key-aspects
+  - rule_id: validation_no_unverified_ranges
+    applies_to: "all exchanges"
+    rule: "Site-specific collection remains mandatory unless a reviewed range with compatible boundary, functional unit, product state, and at least two independent original sources is added later."
+    source_ids:
+      - jrc-2025-ef-method-key-aspects
+published_dataset_profile:
+  dataset_role: "Foreground manufacturing data package for one declared compression-ignition vehicle-engine family and manufacturing configuration"
+  downstream_use: "Projection to Tiangong flow, process, and lifecyclemodel records and connection to upstream material and energy datasets"
+  allowed_use: "Manufacturer-gate comparisons and downstream vehicle models when reference state, engine specification, geography, technology, time, and boundary are compatible"
+  excluded_use: "Direct representation of stationary, rail, aircraft, marine, spark-ignition, remanufactured, use-phase, maintenance, or end-of-life systems"
+  required_metadata: "PCR id and version; engine family and model; displacement; rated power and speed; emission stage and market; dry or wet state; included accessories and aftertreatment; site geography; reference period; process ownership; upstream datasets; test sampling; allocation"
+  required_quality_disclosure: "Primary-data share; meter and analyzer calibration; temporal coverage; data gaps; cut-offs; mass-balance closure; allocation; upstream representativeness; uncertainty and verification status"
+  update_trigger: "Material change in engine design, mass state, emission stage, manufacturing route, site, supplier mix, energy mix, test practice, allocation, or a data source outside the declared validity period"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, official CSV, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Exact CPC 43123 product-category identity and exclusion of rail or tramway propulsion engines"
+  - id: "rouhento-2018-diesel-engine-lca"
+    type: "literature"
+    reference: "Rouhento, Manufacturing of a Non-road Diesel Engine from the Life Cycle Perspective, Tampere University of Technology, 2018, https://urn.fi/URN:NBN:fi:tty-201808142130"
+    used_for: "Original-text manufacturing-stage decomposition and identification of machining, assembly, washing, painting, drying, testing, fluids, energy, water, and waste exchanges"
+  - id: "eu-reg-582-2011-consolidated-2021"
+    type: "standard"
+    reference: "European Commission, Regulation (EU) No 582/2011, consolidated text 1 January 2021, https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:02011R0582-20210101"
+    used_for: "Original-text factory-test exhaust measurement context and pollutant coverage for compression-ignition engines"
+  - id: "jrc-2025-ef-method-key-aspects"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Key aspects of the product and organisation environmental footprint methods, JRC129907, https://publications.jrc.ec.europa.eu/repository/bitstream/JRC129907/JRC129907_01.pdf"
+    used_for: "Original-text functional-unit dimensions, data-quality and verification expectations, cut-off avoidance, and allocation hierarchy"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:0ded786aba8b877136da5264f846771153bdc763b380ce18c7ee11137dddc83a"
+  generated_content_sha256: "sha256:3bb22c01cd104df54884e9c59c288281ac775c50b2109e82c10047803dd84c0c"

@@ -1,10 +1,583 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "47214"
-  title: "Video camera recorders"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.radio-television-and-communication-equipment-and-apparatus.video-camera-recorders"
+  classification_refs: "CPC 3.0: 47214 (un-cpc-3-0-structure-2025; un-cpc-3-0-notes-2025)"
+  covered_products: "Camcorders and web cameras; declare local recording or host-dependent capture"
+  excluded_products: "Professional television/video cameras; still-image-optimized digital cameras; standalone video recorders; phones; recording services"
+  representative_product: "A tested new consumer camcorder; a web camera is a separately qualified variant"
+  production_route: "Purchased finished component assembly, optical alignment, firmware loading, image and recording/host-interface test, packing"
+  market_state: "New, functional equipment at factory gate; product mass excludes transport packaging"
+functional_unit:
+  what: "Provide moving-image capture with declared local recording or host interface"
+  how_much: "Manufacturing declaration for 1 kg of one specified finished model; report its equivalent equipment count"
+  how_well: "Declare resolution, frame rate, codec/interface, optical configuration and acceptance test; model specifications are not category-wide limits (sony-ax43a-specifications)"
+  how_long_or_cycle: "One manufacturing cycle. No service life is assumed; downstream functional studies must declare recording hours, lifetime and replacement requirements"
+  reference_flow_link: "finished_camera"
+system_boundary:
+  rules:
+    - rule_id: manufacturing_boundary
+      applies_to: "foreground"
+      rule: "Include component assembly, optical alignment, firmware loading, acceptance testing, rework and factory packing. Link component production, inbound delivery and outgoing manufacturing-waste treatment upstream/downstream as appropriate. This is a partial manufacturing dataset, not a complete product footprint."
+      source_ids:
+        - ghg-product-standard-2011
+    - rule_id: route_completeness
+      applies_to: "actual_site"
+      rule: "The declared route starts with finished components. Where the site makes a component, solders, cleans or coats it, extend the process map with each actual atomic input and output and replace the overlapping purchased-component burden. Reconcile every BOM part, fastener, adapter and packaging component; no unlisted exchange may be silently omitted."
+      source_ids:
+        - ghg-product-standard-2011
+    - rule_id: downstream_boundary
+      applies_to: "dataset_use"
+      rule: "Distribution after factory gate, operation, replacement and end-of-life of the sold equipment are outside this manufacturing declaration. A life-cycle study must add these stages, including host equipment and recording media where required by the function, and disclose assumptions."
+      source_ids:
+        - ghg-product-standard-2011
+boundary_abstraction:
+  declared_starting_condition: "Purchased finished lens, populated imaging board and finished enclosure delivered to assembly; no upstream component burdens are assumed zero"
+  starting_condition_role: "Foreground assembly entry; upstream burden linkage required"
+  product_classification_scope: "Camcorders and web cameras; declare local recording or host-dependent capture"
+  recursive_input_rule: "Do not feed the finished reference camera back into its own production. Rework stays within the same lot; purchased used cameras require a separately declared refurbishment route"
+  upstream_dataset_requirement: "Link supplier or representative upstream component datasets including delivery. Disclose geography, technology, time, recycled content and dataset boundary"
+  disclosure: "State actual bill of materials, make/buy boundary, included accessories, packaging, outsourced stages and excluded life-cycle stages"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Video camera recorders"
+    uuid: "dcf8321d-003e-48d9-b233-1524a7547be9"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - model
+    - "camcorder or web camera"
+    - "recording architecture"
+    - "sensor type"
+    - "resolution and frame rate"
+    - "lens configuration"
+    - firmware
+    - "product mass and count"
+    - "included battery and accessories"
+    - "production site and period"
+    - "test protocol"
+reference_flows:
+  []
+measurement_rules:
+  - id: mass_count
+    applies_to: "finished_camera"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure model net mass m and accepted count N. Reference mass M=N×m; amount per kg=q/M. Declare battery/accessory inclusion and exclude packaging from M."
+  - id: energy_conversion
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Keep meter kWh records and convert using 1 kWh=3.6 MJ; do not include upstream electricity emissions as direct site emissions."
+process_map:
+  - id: assembly
+    name: "Assembly and functional test"
+    inclusion: "required"
+    inclusion_condition: "All declared models"
+    role: "foreground_production"
+    quantitative_reference: "Accepted model mass at packing exit"
+  - id: packing
+    name: "Packing and release"
+    inclusion: "required"
+    inclusion_condition: "All declared models"
+    role: "foreground_production"
+    quantitative_reference: "1 kg"
+process_inventory:
+  - id: assembly
+    label: "Assembly and functional test"
+    inputs:
+      product:
+        - row_id: lens
+          role: "Objective lens"
+          name: "Objective lenses for cameras, projectors or photographic enlargers or reducers"
+          flow_type: "product"
+          flow_ref:
+            uuid: "cfef9f14-3271-428b-bebe-47ded2db11d4"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Required; record the finished lens and mount supplied as one assembly"
+          amount:
+            expression: "Measured batch exchange divided by accepted equipment net mass; reconcile receipts, returns and stock changes"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted model equipment, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lens
+              source_ids: []
+            ranges: []
+        - row_id: board
+          role: "Imaging circuit board"
+          name: "Populated camera imaging circuit board"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Required; declare sensor and processing electronics included on this board; separately record any additional board"
+          amount:
+            expression: "Measured batch exchange divided by accepted equipment net mass; reconcile receipts, returns and stock changes"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted model equipment, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_board
+              source_ids: []
+            ranges: []
+        - row_id: housing
+          role: "ABS enclosure"
+          name: "ABS plastic camera housing"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: ABS enclosure fitted; declare resin and finished state; extend separately for another material"
+          amount:
+            expression: "Measured batch exchange divided by accepted equipment net mass; reconcile receipts, returns and stock changes"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted model equipment, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_housing
+              source_ids: []
+            ranges: []
+        - row_id: display
+          role: "LCD module"
+          name: "Liquid crystal display module"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: integrated LCD fitted; do not include a separately owned host monitor"
+          amount:
+            expression: "Measured batch exchange divided by accepted equipment net mass; reconcile receipts, returns and stock changes"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted model equipment, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_display
+              source_ids: []
+            ranges: []
+        - row_id: battery
+          role: "Battery pack"
+          name: "Lithium ion rechargeable battery pack"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: supplied battery pack; specify chemistry, capacity and included electronics"
+          amount:
+            expression: "Measured batch exchange divided by accepted equipment net mass; reconcile receipts, returns and stock changes"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted model equipment, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_battery
+              source_ids: []
+            ranges: []
+        - row_id: cable
+          role: "USB cable"
+          name: "USB cable"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: supplied USB cable; specify connector and length"
+          amount:
+            expression: "Measured batch exchange divided by accepted equipment net mass; reconcile receipts, returns and stock changes"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted model equipment, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cable
+              source_ids: []
+            ranges: []
+        - row_id: microphone
+          role: "Microphone"
+          name: "Microphone"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: microphone fitted; exclude it here if already inside the purchased board module"
+          amount:
+            expression: "Measured batch exchange divided by accepted equipment net mass; reconcile receipts, returns and stock changes"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted model equipment, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_microphone
+              source_ids: []
+            ranges: []
+        - row_id: memory
+          role: "SD card"
+          name: "SD memory card"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: supplied SD card; record capacity; host-owned media are outside this manufacturing declaration"
+          amount:
+            expression: "Measured batch exchange divided by accepted equipment net mass; reconcile receipts, returns and stock changes"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted model equipment, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_memory
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Assembly and test electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; Units of energy 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Meter assembly, calibration, recording or host-interface test and rework energy; include allocated facility electricity"
+          amount:
+            expression: "Measured batch exchange divided by accepted equipment net mass; reconcile receipts, returns and stock changes"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted model equipment, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: reject
+          role: "Rejected equipment"
+          name: "Discarded video camera recorder"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: irreparable rejected equipment leaves for treatment; retain composition and hazardous-component information"
+          amount:
+            expression: "Measured batch exchange divided by accepted equipment net mass; reconcile receipts, returns and stock changes"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted model equipment, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reject
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: packing
+    label: "Packing and release"
+    inputs:
+      product:
+        - row_id: box
+          role: "Corrugated box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "inclusion_condition: corrugated box used; record box mass separately from equipment mass"
+          amount:
+            expression: "Measured batch exchange divided by accepted equipment net mass; reconcile receipts, returns and stock changes"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted model equipment, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_box
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_camera
+          role: "Accepted equipment"
+          name: "Video camera recorders"
+          flow_type: "product"
+          flow_ref:
+            uuid: "dcf8321d-003e-48d9-b233-1524a7547be9"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record accepted equipment net mass and count after functional testing; keep packaging outside reference mass"
+          amount:
+            expression: "Measured batch exchange divided by accepted equipment net mass; reconcile receipts, returns and stock changes"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted model equipment, excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finished_camera
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: separate_models
+    applies_to: "shared_production"
+    rule: "Subdivide by model and metered operation before allocating shared burdens. Allocate unavoidable common equipment electricity using documented processing time and load; do not use product mass alone across camcorders and web cameras."
+    source_ids:
+      - ghg-product-standard-2011
+  - rule_id: yield_and_recycling
+    applies_to: "rejects"
+    rule: "Charge rework and manufacturing rejects to accepted output of the same lot. Report outgoing waste mass and treatment separately; no avoided virgin-production credit is assigned in the foreground manufacturing inventory. Disclose the downstream recycling method."
+    source_ids:
+      - ghg-product-standard-2011
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_lens
+      process_id: "assembly"
+      flow_role: "Objective lens"
+      record_type: "Batch record"
+      raw_fields: "lot; model; date; exchange quantity; unit; accepted mass; meter or scale ID; stock change; applicability"
+      collection_method: "Weigh and reconcile BOM and warehouse/treatment records"
+      unit: "kg"
+      frequency: "Each lot"
+      temporal_coverage: "One declared representative continuous production period; retain dates and downtime"
+      site_scope: "Named factory and line"
+      aggregation_rule: "Sum physical exchanges and divide by accepted model mass; do not average lot ratios"
+      quality_evidence: "Calibration; invoices; BOM; acceptance test; waste manifests as applicable"
+    - protocol_id: cp_board
+      process_id: "assembly"
+      flow_role: "Imaging circuit board"
+      record_type: "Batch record"
+      raw_fields: "lot; model; date; exchange quantity; unit; accepted mass; meter or scale ID; stock change; applicability"
+      collection_method: "Weigh and reconcile BOM and warehouse/treatment records"
+      unit: "kg"
+      frequency: "Each lot"
+      temporal_coverage: "One declared representative continuous production period; retain dates and downtime"
+      site_scope: "Named factory and line"
+      aggregation_rule: "Sum physical exchanges and divide by accepted model mass; do not average lot ratios"
+      quality_evidence: "Calibration; invoices; BOM; acceptance test; waste manifests as applicable"
+    - protocol_id: cp_housing
+      process_id: "assembly"
+      flow_role: "ABS enclosure"
+      record_type: "Batch record"
+      raw_fields: "lot; model; date; exchange quantity; unit; accepted mass; meter or scale ID; stock change; applicability"
+      collection_method: "Weigh and reconcile BOM and warehouse/treatment records"
+      unit: "kg"
+      frequency: "Each lot"
+      temporal_coverage: "One declared representative continuous production period; retain dates and downtime"
+      site_scope: "Named factory and line"
+      aggregation_rule: "Sum physical exchanges and divide by accepted model mass; do not average lot ratios"
+      quality_evidence: "Calibration; invoices; BOM; acceptance test; waste manifests as applicable"
+    - protocol_id: cp_display
+      process_id: "assembly"
+      flow_role: "LCD module"
+      record_type: "Batch record"
+      raw_fields: "lot; model; date; exchange quantity; unit; accepted mass; meter or scale ID; stock change; applicability"
+      collection_method: "Weigh and reconcile BOM and warehouse/treatment records"
+      unit: "kg"
+      frequency: "Each lot"
+      temporal_coverage: "One declared representative continuous production period; retain dates and downtime"
+      site_scope: "Named factory and line"
+      aggregation_rule: "Sum physical exchanges and divide by accepted model mass; do not average lot ratios"
+      quality_evidence: "Calibration; invoices; BOM; acceptance test; waste manifests as applicable"
+    - protocol_id: cp_battery
+      process_id: "assembly"
+      flow_role: "Battery pack"
+      record_type: "Batch record"
+      raw_fields: "lot; model; date; exchange quantity; unit; accepted mass; meter or scale ID; stock change; applicability"
+      collection_method: "Weigh and reconcile BOM and warehouse/treatment records"
+      unit: "kg"
+      frequency: "Each lot"
+      temporal_coverage: "One declared representative continuous production period; retain dates and downtime"
+      site_scope: "Named factory and line"
+      aggregation_rule: "Sum physical exchanges and divide by accepted model mass; do not average lot ratios"
+      quality_evidence: "Calibration; invoices; BOM; acceptance test; waste manifests as applicable"
+    - protocol_id: cp_cable
+      process_id: "assembly"
+      flow_role: "USB cable"
+      record_type: "Batch record"
+      raw_fields: "lot; model; date; exchange quantity; unit; accepted mass; meter or scale ID; stock change; applicability"
+      collection_method: "Weigh and reconcile BOM and warehouse/treatment records"
+      unit: "kg"
+      frequency: "Each lot"
+      temporal_coverage: "One declared representative continuous production period; retain dates and downtime"
+      site_scope: "Named factory and line"
+      aggregation_rule: "Sum physical exchanges and divide by accepted model mass; do not average lot ratios"
+      quality_evidence: "Calibration; invoices; BOM; acceptance test; waste manifests as applicable"
+    - protocol_id: cp_microphone
+      process_id: "assembly"
+      flow_role: "Microphone"
+      record_type: "Batch record"
+      raw_fields: "lot; model; date; exchange quantity; unit; accepted mass; meter or scale ID; stock change; applicability"
+      collection_method: "Weigh and reconcile BOM and warehouse/treatment records"
+      unit: "kg"
+      frequency: "Each lot"
+      temporal_coverage: "One declared representative continuous production period; retain dates and downtime"
+      site_scope: "Named factory and line"
+      aggregation_rule: "Sum physical exchanges and divide by accepted model mass; do not average lot ratios"
+      quality_evidence: "Calibration; invoices; BOM; acceptance test; waste manifests as applicable"
+    - protocol_id: cp_memory
+      process_id: "assembly"
+      flow_role: "SD card"
+      record_type: "Batch record"
+      raw_fields: "lot; model; date; exchange quantity; unit; accepted mass; meter or scale ID; stock change; applicability"
+      collection_method: "Weigh and reconcile BOM and warehouse/treatment records"
+      unit: "kg"
+      frequency: "Each lot"
+      temporal_coverage: "One declared representative continuous production period; retain dates and downtime"
+      site_scope: "Named factory and line"
+      aggregation_rule: "Sum physical exchanges and divide by accepted model mass; do not average lot ratios"
+      quality_evidence: "Calibration; invoices; BOM; acceptance test; waste manifests as applicable"
+    - protocol_id: cp_electricity
+      process_id: "assembly"
+      flow_role: "Assembly and test electricity"
+      record_type: "Meter log"
+      raw_fields: "lot; model; date; exchange quantity; unit; accepted mass; meter or scale ID; stock change; applicability"
+      collection_method: "Submeter"
+      unit: "MJ"
+      frequency: "Each lot"
+      temporal_coverage: "One declared representative continuous production period; retain dates and downtime"
+      site_scope: "Named factory and line"
+      aggregation_rule: "Sum physical exchanges and divide by accepted model mass; do not average lot ratios"
+      quality_evidence: "Calibration; invoices; BOM; acceptance test; waste manifests as applicable"
+    - protocol_id: cp_reject
+      process_id: "assembly"
+      flow_role: "Rejected equipment"
+      record_type: "Batch record"
+      raw_fields: "lot; model; date; exchange quantity; unit; accepted mass; meter or scale ID; stock change; applicability"
+      collection_method: "Weigh and reconcile BOM and warehouse/treatment records"
+      unit: "kg"
+      frequency: "Each lot"
+      temporal_coverage: "One declared representative continuous production period; retain dates and downtime"
+      site_scope: "Named factory and line"
+      aggregation_rule: "Sum physical exchanges and divide by accepted model mass; do not average lot ratios"
+      quality_evidence: "Calibration; invoices; BOM; acceptance test; waste manifests as applicable"
+    - protocol_id: cp_box
+      process_id: "packing"
+      flow_role: "Corrugated box"
+      record_type: "Batch record"
+      raw_fields: "lot; model; date; exchange quantity; unit; accepted mass; meter or scale ID; stock change; applicability"
+      collection_method: "Weigh and reconcile BOM and warehouse/treatment records"
+      unit: "kg"
+      frequency: "Each lot"
+      temporal_coverage: "One declared representative continuous production period; retain dates and downtime"
+      site_scope: "Named factory and line"
+      aggregation_rule: "Sum physical exchanges and divide by accepted model mass; do not average lot ratios"
+      quality_evidence: "Calibration; invoices; BOM; acceptance test; waste manifests as applicable"
+    - protocol_id: cp_finished_camera
+      process_id: "packing"
+      flow_role: "Accepted equipment"
+      record_type: "Batch record"
+      raw_fields: "lot; model; date; exchange quantity; unit; accepted mass; meter or scale ID; stock change; applicability"
+      collection_method: "Weigh and reconcile BOM and warehouse/treatment records"
+      unit: "kg"
+      frequency: "Each lot"
+      temporal_coverage: "One declared representative continuous production period; retain dates and downtime"
+      site_scope: "Named factory and line"
+      aggregation_rule: "Sum physical exchanges and divide by accepted model mass; do not average lot ratios"
+      quality_evidence: "Calibration; invoices; BOM; acceptance test; waste manifests as applicable"
+  calculation_rules:
+    - id: normalize
+      applies_to: "all_rows"
+      rule: "a_i=sum(q_i)/sum(M_accepted) for the same model and period; for electricity convert meter kWh to MJ first"
+      inputs:
+        - "protocol batch quantities and accepted mass"
+      output: "kg/kg or MJ/kg"
+      source_ids:
+        - ghg-product-standard-2011
+    - id: yield
+      applies_to: "finished_camera"
+      rule: "accepted count divided by completed test count; retain rework loops and irreparable reject count without counting rework twice"
+      inputs:
+        - "test and release logs"
+      output: "observed model yield, no default"
+      source_ids:
+        - ghg-product-standard-2011
+  data_quality_requirements:
+    - id: traceability
+      applies_to: "all_rows"
+      requirement: "Retain primary records, calibration, supplier boundaries, period and geographic/technology representativeness. Record missing data and uncertainty explicitly."
+      evidence: "ghg-product-standard-2011"
+    - id: configuration
+      applies_to: "model"
+      requirement: "Retain BOM revision, sensor/lens/recording configuration and functional-test criteria. Manufacturer specifications describe examples, not universal acceptance limits."
+      evidence: "sony-ax43a-specifications"
+validation_rules:
+  - rule_id: identity_check
+    applies_to: "reference_product"
+    rule: "Reject records missing model, mass/count reconciliation, recording architecture, test evidence or required qualifiers. Separate professional cameras and still-image cameras from this category."
+    source_ids:
+      - un-cpc-3-0-notes-2025
+  - rule_id: inventory_check
+    applies_to: "all_rows"
+    rule: "Require measured or calculated quantities, protocol linkage, units, boundary-compatible upstream links and explicit applicability. Missing data are not zero. Prevent sensor double counting when supplied on the populated board."
+    source_ids:
+      - ghg-product-standard-2011
+  - rule_id: balance_check
+    applies_to: "batch"
+    rule: "Reconcile component receipts, stock changes, accepted equipment, rejects and packaging. Investigate differences against instrument uncertainty and BOM evidence; no unsupported universal tolerance is imposed."
+    source_ids:
+      - ghg-product-standard-2011
+published_dataset_profile:
+  dataset_role: "manufacturing_foreground_data_package"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Manufacturing contribution for the specified model with upstream links"
+  excluded_use: "Standalone whole-life footprint; mass-based comparison of different camera functions"
+  required_metadata: "model; camcorder or web camera; recording architecture; sensor type; resolution and frame rate; lens configuration; firmware; product mass and count; included battery and accessories; production site and period; test protocol"
+  required_quality_disclosure: "Coverage, missing exchanges, UUID gaps, allocation, uncertainty and excluded stages"
+  update_trigger: "BOM, sensor, recording architecture, site, supplier, energy supply or test-route change"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "UNSD CPC 3.0 structure, 30 June 2025; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv; retrieved 2026-09-09"
+    used_for: "Classification identity"
+  - id: "un-cpc-3-0-notes-2025"
+    type: "official_guidance"
+    reference: "UNSD CPC 3.0 Explanatory Notes, pp. 256–257, 30 June 2025; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf; retrieved 2026-09-09"
+    used_for: "Included camcorders and web cameras; exclusions"
+  - id: "sony-ax43a-specifications"
+    type: "handbook"
+    reference: "Sony FDR-AX43A specifications; https://www.sony.com.sg/electronics/handycam-camcorders/fdr-ax43a/specifications; retrieved 2026-09-09"
+    used_for: "Component functions and model-specific qualifiers; no manufacturing ranges"
+  - id: "sony-ax100-chinese-guide"
+    type: "handbook"
+    reference: "Sony FDR-AX100/FDR-AX100E/HDR-CX900/HDR-CX900E Chinese Help Guide, model information; https://helpguide.sony.net/gbmig/45346571/v1/zh-cn/contents/TP0000433415.html; retrieved 2026-09-09"
+    used_for: "Chinese term 摄录一体机"
+  - id: "ghg-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD Product Life Cycle Accounting and Reporting Standard (2011), chapters 6–9; summary pp. 14–15; https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf; retrieved 2026-09-09"
+    used_for: "Partial boundary disclosure, primary data, process map and allocation hierarchy; applied as method guidance, not a claim of complete footprint conformance"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:7d6d8e484fb6c9ee22d095b105e4ee479033b7c3e4d896ee20ea2ed7b4a27054"
+  generated_content_sha256: "sha256:5138abb06faac748d9532e66694cdc7ef6b898bc93fb96677d9101a340a7a9d1"

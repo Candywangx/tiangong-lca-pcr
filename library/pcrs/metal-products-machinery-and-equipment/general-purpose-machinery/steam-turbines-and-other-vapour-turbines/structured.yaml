@@ -1,10 +1,780 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43141"
-  title: "Steam turbines and other vapour turbines"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.steam-turbines-and-other-vapour-turbines"
+  classification_refs: "CPC 3.0: 43141, Steam turbines and other vapour turbines (un-cpc-3-0-2025)"
+  covered_products: "Complete steam turbines and other vapour turbines supplied as bare turbines, turbine modules, or declared turbine packages for generator drive or mechanical drive"
+  excluded_products: "Separately supplied parts; boilers and steam generators; hydraulic turbines and water wheels; gas turbines; generators, gears, condensers, controls, and auxiliaries not transferred with the declared turbine"
+  representative_product: "A shipment-ready steam turbine with declared rotor, casing, blading, valve, bearing, base-frame, auxiliary, and package scope"
+  production_route: "Product-specific engineering and procurement; component forming or procurement; machining and heat treatment; conditional joining and surface treatment; assembly; balancing and factory testing; preservation and dispatch preparation"
+  market_state: "New, complete, accepted turbine or declared turbine package at the manufacturer's dispatch gate; net turbine mass and included equipment are declared"
+functional_unit:
+  what: "A shipment-ready steam or other vapour turbine that converts thermal energy in steam or another declared vapour into mechanical shaft power"
+  how_much: "1,000 kg net mass of the declared complete turbine or turbine package at the manufacturer's dispatch gate"
+  how_well: "Meeting the declared rated shaft or generator output, inlet and exhaust steam conditions, rotational speed and frequency where applicable, drive duty, acceptance criteria, and included package scope"
+  how_long_or_cycle: "The declared design life and duty profile are reported as product metadata; this manufacturing reference flow does not divide factory burdens by lifetime operation"
+  reference_flow_link: "One output row steam_turbine_product from p_assembly_testing equals the 1,000 kg reference amount"
+system_boundary:
+  rules:
+    - rule_id: boundary_cradle_to_gate
+      applies_to: "Product system"
+      rule: "Include upstream production of all purchased materials and energy plus foreground activities under the reporting manufacturer's control through acceptance and dispatch preparation at the factory gate. Document and justify any exclusion."
+      source_ids:
+        - ec-pef-recommendation-2021-annexes
+    - rule_id: boundary_declared_package
+      applies_to: "Product scope"
+      rule: "Model only the turbine, modules, base frame, fluids, controls, generator, gear, condenser, piping, instrumentation, and auxiliaries actually included in the commercial supply scope; disclose every included and excluded package element."
+      source_ids:
+        - siemens-energy-industrial-steam-turbines-2021
+        - ge-steam-power-product-catalog-2020
+    - rule_id: boundary_component_supply
+      applies_to: "Purchased or internally produced components"
+      rule: "For purchased forgings, casings, blades, valves, bearings, and modules, connect supplier cradle-to-gate datasets at the receiving gate. For in-house manufacture, collect the actual forming, heat-treatment, machining, joining, and finishing exchanges without double counting supplier processing."
+      source_ids:
+        - ge-steam-power-product-catalog-2020
+        - ec-pef-recommendation-2021-annexes
+    - rule_id: boundary_post_gate
+      applies_to: "Downstream stages"
+      rule: "Exclude outbound transport after the dispatch gate, site installation and commissioning, steam generation, turbine operation, maintenance, refurbishment, and end-of-life from this manufacturing dataset. Report them only in a separate downstream lifecycle model."
+      source_ids:
+        - ec-pef-recommendation-2021-annexes
+boundary_abstraction:
+  declared_starting_condition: "Purchased materials and components are received at the reporting manufacturer's gate in their actual delivered product state; upstream extraction, material production, forming, and supplier processing remain connected through supplier or representative upstream datasets"
+  starting_condition_role: "Separates product-specific foreground manufacture from upstream material and component production while retaining cradle-to-gate completeness"
+  product_classification_scope: "Complete steam turbines and other vapour turbines matching the semantic product boundary and CPC 43141 context"
+  recursive_input_rule: "A purchased complete turbine in the same category is not absorbed into the foreground output. Record it as a separate product input with its own upstream dataset, mass, configuration, and reason for use, then exclude its manufacture from the reporting site inventory to avoid recursion and double counting."
+  upstream_dataset_requirement: "Every purchased material, component, fuel, electricity supply, gas, process chemical, and packaging item requires a geographically and technologically representative upstream dataset or an explicit documented data gap."
+  disclosure: "Declare manufacturing site, reporting period, turbine model and duty, alloy and component supply states, in-house versus supplier operations, bare-versus-package scope, accepted net mass, allocation, exclusions, data gaps, and downstream stages omitted."
+reference_flow_definition:
+  reference_amount: "1,000 kg net shipment-ready turbine mass"
+  product_flow_ref:
+    name: "Steam turbines and other vapour turbines"
+    uuid: "d073d1e4-584a-4467-878f-0845a4f0c868"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "turbine type and model"
+    - "bare turbine or package scope"
+    - "generator-drive or mechanical-drive duty"
+    - "rated output"
+    - "inlet pressure and temperature"
+    - "exhaust or back-pressure condition"
+    - "reheat and extraction configuration"
+    - "rotational speed"
+    - "grid frequency if applicable"
+    - "net product mass"
+    - "included modules and auxiliaries"
+    - "manufacturing site and geography"
+    - "reporting period"
+    - "acceptance-test state"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product and normalization denominator"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh or calculate the accepted net mass of the declared turbine scope. Exclude transport packaging and fixtures from the denominator, but retain them as inventory inputs when transferred or consumed for dispatch."
+  - id: material_mass_basis
+    applies_to: "Purchased metals, consumables, product, and wastes"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record dry or as-supplied mass consistently, disclose retained fluid and coating mass, and normalize each amount to 1,000 kg net reference product."
+  - id: electricity_energy_basis
+    applies_to: "Purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electricity before allocation; convert kWh to MJ using the exact identity 1 kWh = 3.6 MJ and disclose voltage, grid mix, geography, and delivery losses."
+  - id: gas_volume_basis
+    applies_to: "Natural gas, industrial oxygen, and unresolved industrial argon"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report metered gas volume at declared temperature, pressure, and moisture reference conditions; do not combine different gases or convert to mass without a documented composition and density basis."
+  - id: mass_balance_check
+    applies_to: "Material fabrication and final assembly"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Reconcile accepted product mass, retained consumables, returned material, measured process scrap, and other separately recorded outputs on one consistent product-order basis."
+process_map:
+  - id: p_material_fabrication
+    name: "Turbine component fabrication and finishing"
+    inclusion: "required"
+    inclusion_condition: "Always include manufacturer-controlled component production, machining, finishing, and the receipt of purchased components; individual conditional exchanges apply only when the named route is used."
+    role: "Foreground material conversion and component preparation"
+    quantitative_reference: "Per product order, normalized to 1,000 kg accepted net turbine mass"
+  - id: p_assembly_testing
+    name: "Turbine assembly, balancing, filling, and factory acceptance testing"
+    inclusion: "required"
+    inclusion_condition: "Always include final manufacturer-controlled assembly and acceptance activities."
+    role: "Foreground assembly and acceptance"
+    quantitative_reference: "Per accepted turbine or declared package, normalized to 1,000 kg net mass"
+  - id: p_preservation_dispatch
+    name: "Preservation coating and dispatch preparation"
+    inclusion: "required"
+    inclusion_condition: "Include actual preservation and load-board inputs consumed or transferred before the dispatch gate; rows may be zero only when the named exchange is demonstrably absent."
+    role: "Foreground dispatch preparation"
+    quantitative_reference: "Per accepted turbine shipment, normalized to 1,000 kg net mass"
+process_inventory:
+  - id: p_material_fabrication
+    label: "Turbine component fabrication and finishing"
+    inputs:
+      product:
+        - row_id: low_alloy_steel_forging
+          role: "Delivered low-alloy steel forging"
+          name: "Low-alloy steel forging"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record the measured mass of delivered low-alloy steel forgings consumed for rotors, blades, shafts, or other turbine components. Grade, forging state, heat treatment, component role, supplier, and included upstream processing must be declared."
+          amount:
+            expression: "measured net mass issued to the product order, adjusted for documented returns"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg accepted net turbine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_materials
+              source_ids:
+                - ge-steam-power-product-catalog-2020
+            ranges: []
+        - row_id: titanium_billet
+          role: "Titanium billet for turbine blading"
+          name: "Titanium billet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record titanium billet only when the declared turbine includes titanium blades or another billet-derived titanium component manufactured within the product system. Do not substitute plate, tube, or profile identity."
+          amount:
+            expression: "measured titanium billet issued to the product order; zero only when no billet-derived titanium component is in scope"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg accepted net turbine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_materials
+              source_ids:
+                - ge-steam-power-product-catalog-2020
+            ranges: []
+        - row_id: fabrication_electricity
+          role: "Fabrication electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200b9a66 / MJ 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Record purchased electricity for manufacturer-controlled machining, heat treatment, joining, cleaning, balancing preparation, and shop services assigned to component fabrication."
+          amount:
+            expression: "separately metered use or allocated measured shop electricity for the product order"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted net turbine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_meters
+              source_ids:
+                - ec-pef-recommendation-2021-annexes
+            ranges: []
+        - row_id: heat_treatment_natural_gas
+          role: "Natural gas for direct-fired heat treatment"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3 93a60a57-a3c8-12da-a746-0800200c9a66"
+          description: "Record gaseous natural gas only when it is burned within the foreground boundary for heat treatment or other component fabrication. Supplier, composition, metering reference conditions, combustion technology, and allocation must be declared."
+          amount:
+            expression: "metered or invoiced volume assigned to the product order; zero when no foreground natural-gas combustion occurs"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted net turbine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_meters
+              source_ids: []
+            ranges: []
+        - row_id: fabrication_process_water
+          role: "Fabrication process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record process water crossing the foreground boundary for machining, cooling, aqueous cleaning, or surface preparation. Water source, quality, density conversion, recirculation boundary, and discharge route must be declared."
+          amount:
+            expression: "measured make-up water assigned to the product order, excluding internally recirculated volume"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted net turbine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_meters
+              source_ids: []
+            ranges: []
+        - row_id: cutting_fluid
+          role: "Cutting fluid"
+          name: "Cutting Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "576d250f-4f36-4385-939d-0f03b8f95a10"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record cutting fluid make-up consumed in machining turbine components. Formulation, water content, concentration, recycled-loop boundary, and supplier must be declared."
+          amount:
+            expression: "measured make-up mass issued to machining for the product order"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted net turbine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_materials
+              source_ids: []
+            ranges: []
+        - row_id: flux_cored_wire
+          role: "Flux-cored welding wire"
+          name: "Flux Cored Wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1b74a576-06e0-4764-97ce-11a73f8a4752"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record flux-cored welding wire only when flux-cored arc welding is used on the declared turbine or package. Wire grade, deposited-metal specification, return, and unused remainder must be documented."
+          amount:
+            expression: "measured wire consumed by the product order; zero when flux-cored wire is not used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted net turbine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_materials
+              source_ids:
+                - ge-steam-power-product-catalog-2020
+            ranges: []
+        - row_id: industrial_argon
+          role: "Industrial argon shielding gas"
+          name: "Industrial argon"
+          flow_type: "product"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3 93a60a57-a3c8-12da-a746-0800200c9a66"
+          description: "Record industrial argon only when it is supplied for welding or another inert-gas fabrication operation. Purity, blend composition, supply state, metering reference conditions, and loss boundary must be declared."
+          amount:
+            expression: "metered or supplier-recorded argon volume assigned to the product order; zero when argon is not used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted net turbine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_materials
+              source_ids: []
+            ranges: []
+        - row_id: industrial_oxygen
+          role: "Industrial oxygen for thermal cutting"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3 93a60a57-a3c8-12da-a746-0800200c9a66"
+          description: "Record industrial oxygen only when it is supplied for oxy-fuel cutting or another foreground fabrication operation. Purity, pressure, reference conditions, supplier, and operation must be declared."
+          amount:
+            expression: "metered or supplier-recorded oxygen volume assigned to the product order; zero when oxygen is not used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted net turbine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_materials
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: postindustrial_steel_scrap
+          role: "Post-industrial steel scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record segregated steel offcuts, chips, swarf, and rejected steel pieces leaving the foreground as post-industrial scrap. Report alloy family, contamination, wet or dry basis, recovery destination, and any cutting-fluid content separately."
+          amount:
+            expression: "weighed net mass transferred off site or into a separately modelled recovery process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted net turbine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: waste_cutting_oil
+          role: "Waste cutting oil"
+          name: "Waste cutting oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "80d926e3-0f76-4a19-9b1e-ffec9deb1216"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record oil-based waste cutting fluid only when it is separately removed from the machining system. Do not combine it with aqueous coolant, metal chips, or wastewater."
+          amount:
+            expression: "weighed waste cutting oil transferred for treatment; zero when no oil-based cutting-fluid waste is generated"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted net turbine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: metal_finishing_wastewater
+          role: "Metal-finishing wastewater"
+          name: "Metal-finishing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record the aqueous wastewater stream generated by component cleaning or surface treatment only when it leaves the recirculation system for treatment or discharge. Declare composition, treatment state, solids separation, mass basis, and receiving boundary."
+          amount:
+            expression: "measured wastewater mass leaving the foreground water loop; zero when no such stream leaves the boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted net turbine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: heat_treatment_fossil_co2
+          role: "Fossil carbon dioxide from foreground natural-gas combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record only direct fossil carbon dioxide released by natural-gas combustion inside the foreground fabrication boundary. Upstream fuel-supply emissions and purchased-electricity emissions remain in their upstream datasets."
+          amount:
+            expression: "measured stack inventory or calculated fossil CO2 from assigned fuel volume, supplier composition or carbon content, and a documented oxidation basis; zero when no foreground fossil-fuel combustion occurs"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted net turbine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids: []
+            ranges: []
+  - id: p_assembly_testing
+    label: "Turbine assembly, balancing, filling, and factory acceptance testing"
+    inputs:
+      product:
+        - row_id: assembly_test_electricity
+          role: "Assembly and factory-test electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200b9a66 / MJ 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Record purchased electricity for assembly, rotor handling, balancing, pumps, test stands, controls, and acceptance activities within the declared factory boundary."
+          amount:
+            expression: "separately metered use or allocated measured assembly-and-test electricity for the product order"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted net turbine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_meters
+              source_ids:
+                - ec-pef-recommendation-2021-annexes
+            ranges: []
+        - row_id: turbine_lubricating_oil
+          role: "Turbine lubricating-oil fill"
+          name: "lubricating oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "aec6f1a5-7b09-4704-870d-434d3ada0edd"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record lubricating oil that is consumed in testing or retained in the transferred turbine or included oil system. Declare mineral or synthetic base, grade, viscosity, quantity recovered after testing, retained fill, and package scope."
+          amount:
+            expression: "measured make-up plus retained final fill attributable to the product order, net of recovered reusable oil"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg accepted net turbine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_materials
+              source_ids:
+                - siemens-energy-industrial-steam-turbines-2021
+                - ge-steam-power-product-catalog-2020
+            ranges: []
+        - row_id: test_process_water
+          role: "Factory-test process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record process water crossing the boundary for hydrostatic tests, flushing, or cleaning. Exclude recirculated water until make-up enters or a wastewater stream leaves the foreground."
+          amount:
+            expression: "measured make-up water assigned to testing and acceptance for the product order"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted net turbine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_meters
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: steam_turbine_product
+          role: "Accepted steam or other vapour turbine"
+          name: "Steam turbines and other vapour turbines"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d073d1e4-584a-4467-878f-0845a4f0c868"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record the accepted shipment-ready turbine or declared package after assembly and factory acceptance. The output name and UUID identify the whole product, not separately supplied parts or downstream electricity generation."
+          amount:
+            expression: "exactly 1,000 kg accepted net reference product after normalization"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1,000 kg accepted net turbine or declared package mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - un-cpc-3-0-2025
+                - siemens-energy-industrial-steam-turbines-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: p_preservation_dispatch
+    label: "Preservation coating and dispatch preparation"
+    inputs:
+      product:
+        - row_id: epoxy_zinc_primer
+          role: "Two-component epoxy zinc-rich primer"
+          name: "Two-component epoxy zinc-rich primer"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record this primer only when the actual preservation system uses a two-component epoxy zinc-rich coating before dispatch. Keep other coating formulations as separately identified foreground flows rather than substituting a generic primer UUID."
+          amount:
+            expression: "measured mixed coating mass consumed for the declared product, net of separately recorded waste; zero when this formulation is not used"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg accepted net turbine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_materials
+              source_ids: []
+            ranges: []
+        - row_id: wooden_pallet
+          role: "Wooden pallet or load board"
+          name: "Pallets, box pallets and other load boards, of wood, pallet collars of wood"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4b49871e-95be-4e0c-9223-9902f9eaa763"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record wooden pallets, skids, or load boards consumed or transferred with the dispatch unit. Declare wood species or product description, treatment, moisture basis, reuse status, and whether the item crosses the dispatch gate."
+          amount:
+            expression: "measured mass consumed or transferred with the product order; zero when no wooden load board crosses the boundary"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg accepted net turbine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_materials
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "Shared manufacturing operations"
+    rule: "Avoid allocation by separately metering or otherwise subdividing product-order material issues, machine time, energy, tests, waste, and direct emissions whenever technically feasible."
+    source_ids:
+      - ec-pef-recommendation-2021-annexes
+  - rule_id: allocation_physical_relationship
+    applies_to: "Residual shared burdens"
+    rule: "When subdivision is infeasible, use a documented causal physical relationship such as measured machine-hours, test-stand hours, processed mass, furnace loading, or occupied production time that represents the burden driver. Do not allocate all burdens only by final product mass when mass is not causal."
+    source_ids:
+      - ec-pef-recommendation-2021-annexes
+  - rule_id: allocation_other_relationship
+    applies_to: "No defensible physical relationship"
+    rule: "Use another relationship, including economic allocation, only after documenting why subdivision and a causal physical relationship are infeasible. Report the factor, data period, affected flows, and sensitivity."
+    source_ids:
+      - ec-pef-recommendation-2021-annexes
+  - rule_id: allocation_scrap_and_waste
+    applies_to: "Steel scrap, waste cutting oil, and wastewater"
+    rule: "Report waste treatment and any recovery modelling separately. Do not assign avoided virgin-material credits inside the foreground inventory unless the downstream lifecycle model declares and consistently applies a reviewed recycling method."
+    source_ids:
+      - ec-pef-recommendation-2021-annexes
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_bom_materials
+      process_id: "p_material_fabrication_p_assembly_testing_p_preservation_dispatch"
+      flow_role: "Product-specific material, gas, fluid, coating, and dispatch inputs"
+      record_type: "Approved bill of materials, purchase and issue records, return records, cylinder records, coating mix sheets, and final-fill sheets"
+      raw_fields: "product order; item identity; grade or formulation; supplier; delivered state; gross issue; return; retained amount; unit; included package element; date"
+      collection_method: "Reconcile approved BOM with stores, supplier, production, coating, gas-cylinder, and fill records"
+      unit: "kg or m3 at declared conditions"
+      frequency: "Per product order, reconciled at acceptance"
+      temporal_coverage: "Entire manufacture of each accepted product order; aggregate only orders within the declared reporting period"
+      site_scope: "All reporting-site operations and declared supplier component gates"
+      aggregation_rule: "Net consumption equals issue plus direct receipt minus documented return and reusable recovery; normalize by accepted net product mass"
+      quality_evidence: "Signed BOM revision, traceable material certificates, calibrated scales, supplier invoices, issue/return records, cylinder tickets, and acceptance configuration"
+    - protocol_id: cp_utility_meters
+      process_id: "p_material_fabrication_p_assembly_testing"
+      flow_role: "Electricity, natural gas, and process water"
+      record_type: "Meter readings, invoices, equipment logs, production hours, and allocation-driver records"
+      raw_fields: "meter id; opening and closing reading; unit; time; product order; machine or furnace; load; runtime; reference conditions; allocation driver"
+      collection_method: "Prefer submetering; otherwise reconcile site meter totals and assign only with the allocation hierarchy"
+      unit: "kWh, MJ, m3, or kg"
+      frequency: "Continuous or batch readings with at least monthly reconciliation"
+      temporal_coverage: "Complete product-order manufacturing window and a representative reporting period"
+      site_scope: "Reporting site and identified shop, furnace, test stand, or water loop"
+      aggregation_rule: "Convert units after retaining raw readings; assign by subdivision or documented causal driver; normalize by accepted net mass"
+      quality_evidence: "Meter calibration, invoices, total-versus-submeter reconciliation, downtime and occupancy logs, and stated grid and gas conditions"
+    - protocol_id: cp_waste_records
+      process_id: "p_material_fabrication"
+      flow_role: "Post-industrial steel scrap, waste cutting oil, and metal-finishing wastewater"
+      record_type: "Weighbridge tickets, container weights, manifests, wastewater meters, laboratory records, and treatment receipts"
+      raw_fields: "product order or campaign; waste identity; gross and tare mass; water or oil content; contamination; treatment state; destination; date; allocation driver"
+      collection_method: "Weigh each transfer or measure wastewater leaving the recirculation loop and reconcile to site waste totals"
+      unit: "kg"
+      frequency: "Per transfer with monthly and product-order reconciliation"
+      temporal_coverage: "Complete manufacturing window for included product orders"
+      site_scope: "Reporting site through the waste handover or declared treatment boundary"
+      aggregation_rule: "Subtract tare; avoid double counting liquid retained on scrap; allocate shared transfers using documented generation drivers"
+      quality_evidence: "Calibrated scale or meter, transfer manifest, laboratory result where composition matters, and treatment acceptance receipt"
+    - protocol_id: cp_direct_emissions
+      process_id: "p_material_fabrication"
+      flow_role: "Direct fossil carbon dioxide"
+      record_type: "Stack measurement or fuel records with supplier composition, carbon content, oxidation basis, and furnace assignment"
+      raw_fields: "measured CO2 or fuel volume; reference conditions; carbon factor; oxidation factor; operating time; furnace load; product order; biogenic fraction"
+      collection_method: "Prefer verified direct monitoring; otherwise calculate from collected fuel and documented supplier or site factor"
+      unit: "kg CO2 or m3 fuel"
+      frequency: "Per run or reporting period with product-order assignment"
+      temporal_coverage: "Complete period of foreground combustion for included orders"
+      site_scope: "Reporting-site combustion only"
+      aggregation_rule: "Exclude upstream fuel and electricity emissions; assign direct fossil CO2 consistently with the same fuel allocation"
+      quality_evidence: "Instrument calibration or supplier fuel certificate, factor provenance, calculation sheet, and reconciliation to reported fuel use"
+    - protocol_id: cp_product_acceptance
+      process_id: "p_assembly_testing"
+      flow_role: "Accepted turbine output and reference denominator"
+      record_type: "Final mass statement, configuration baseline, acceptance certificate, and dispatch release"
+      raw_fields: "product order; model; serial number; net mass; package inclusions; rated output; steam conditions; speed; frequency; test status; acceptance date"
+      collection_method: "Use approved engineering mass roll-up or calibrated weighing and reconcile to the accepted configuration"
+      unit: "kg"
+      frequency: "Per accepted turbine or package"
+      temporal_coverage: "Each product order in the declared reporting period"
+      site_scope: "Reporting manufacturer and dispatch gate"
+      aggregation_rule: "Sum only accepted products of matching declared scope; normalize all exchanges to 1,000 kg net mass"
+      quality_evidence: "Approved as-built configuration, mass statement, signed acceptance evidence, and dispatch release"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Every inventory row"
+      rule: "normalized amount = product-order exchange / accepted net product mass × 1,000 kg"
+      inputs:
+        - "Net exchange amount from the applicable protocol"
+        - "accepted net product mass from cp_product_acceptance"
+      output: "Exchange per 1,000 kg reference product"
+      source_ids:
+        - ec-pef-recommendation-2021-annexes
+    - id: calc_electricity_conversion
+      applies_to: "fabrication_electricity; assembly_test_electricity"
+      rule: "electricity MJ = metered kWh × 3.6 MJ/kWh"
+      inputs:
+        - "Metered kWh and allocation result from cp_utility_meters"
+      output: "MJ electricity before reference normalization"
+      source_ids: []
+    - id: calc_net_material_consumption
+      applies_to: "BOM-controlled inputs"
+      rule: "net consumed = direct receipt + stores issue - returned unused material - separately documented reusable recovery"
+      inputs:
+        - BOM
+        - receipt
+        - issue
+        - return
+        - "and recovery records from cp_bom_materials"
+      output: "kg or m3 net input by atomic flow"
+      source_ids:
+        - ec-pef-recommendation-2021-annexes
+    - id: calc_direct_fossil_co2
+      applies_to: "heat_treatment_fossil_co2"
+      rule: "Use verified direct CO2 measurement; otherwise multiply assigned fuel quantity by a documented supplier- or site-specific fossil-carbon factor and oxidation basis, preserving reference-condition conversions and biogenic fraction"
+      inputs:
+        - "Assigned natural gas"
+        - "composition or carbon content"
+        - "oxidation basis"
+        - "monitoring record"
+      output: "kg direct fossil CO2"
+      source_ids: []
+    - id: calc_shared_operation_assignment
+      applies_to: "Shared utilities and waste"
+      rule: "Apply subdivision first; if infeasible, multiply the reconciled shared total by the documented causal physical allocation factor for the product order"
+      inputs:
+        - "Reconciled shop total"
+        - "product-order and total driver quantities"
+      output: "Assigned exchange before reference normalization"
+      source_ids:
+        - ec-pef-recommendation-2021-annexes
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product"
+      requirement: "The as-built model, drive duty, steam conditions, accepted state, net mass, and included package elements must match the reference flow and commercial supply boundary."
+      evidence: "Configuration baseline, mass statement, acceptance certificate, and dispatch release"
+    - id: dq_bom_completeness
+      applies_to: "Material and component inputs"
+      requirement: "Reconcile the product-specific BOM to procurement, issue, return, and as-built records; identify every environmentally relevant material and energy flow and document exclusions."
+      evidence: "Approved BOM revision, material certificates, reconciliation record, and exclusion register (ec-pef-recommendation-2021-annexes)"
+    - id: dq_temporal_coverage
+      applies_to: "All foreground data"
+      requirement: "Cover the complete manufacture of each included product order. Shared site data must span a representative period that captures the orders and operating modes used in allocation."
+      evidence: "Dated records, production calendar, meter coverage, and gap log"
+    - id: dq_measurement
+      applies_to: "Meters, scales, gas and waste records"
+      requirement: "Use calibrated or financially reconciled measurements; retain raw units and reference conditions before conversion."
+      evidence: "Calibration certificates, invoices, weighbridge tickets, meter reconciliation, and conversion sheet"
+    - id: dq_representativeness
+      applies_to: "Upstream datasets"
+      requirement: "Match material grade and product state, supplier geography, production technology, energy market, and temporal period; disclose proxies and unresolved identities."
+      evidence: "Supplier information, dataset metadata, representativeness assessment, and data-gap register"
+    - id: dq_mass_balance
+      applies_to: "Fabrication and assembly"
+      requirement: "Explain material-balance differences between input, accepted product, retained fluids or coatings, returns, scrap, other wastes, and work in progress."
+      evidence: "Product-order mass-balance worksheet and signed review"
+    - id: dq_no_double_counting
+      applies_to: "Supplier and foreground processing"
+      requirement: "Purchased-component datasets and in-house operations must not both include the same forming, heat-treatment, machining, joining, coating, testing, or packaging step."
+      evidence: "Process responsibility matrix and supplier dataset boundary statement"
+validation_rules:
+  - rule_id: validate_identity_and_scope
+    applies_to: "Reference product"
+    rule: "Fail validation when the product is not a complete steam or other vapour turbine, the accepted net mass is absent, or bare-versus-package inclusions and exclusions are not declared."
+    source_ids:
+      - un-cpc-3-0-2025
+      - siemens-energy-industrial-steam-turbines-2021
+  - rule_id: validate_reference_amount
+    applies_to: "Reference flow"
+    rule: "Require one steam_turbine_product output and exactly 1,000 kg after normalization; packaging mass must not enter the net-product denominator."
+    source_ids: []
+  - rule_id: validate_atomic_inventory
+    applies_to: "Inventory rows"
+    rule: "Require every exchange to have one direction, one flow type, one concrete flow identity, one amount-production mode, one basis, and one protocol when collected or calculated from collection. Reject combined utilities, fuels, gases, coatings, materials, wastes, or emissions."
+    source_ids:
+      - ec-pef-recommendation-2021-annexes
+  - rule_id: validate_conditional_routes
+    applies_to: "Conditional inputs and outputs"
+    rule: "A zero value is valid only when the dataset documents that the named route or exchange is absent. Otherwise require the measured value and route qualifier."
+    source_ids: []
+  - rule_id: validate_uuid_semantics
+    applies_to: "Tiangong references"
+    rule: "Require each adopted UUID to retain its audited flow type, classification, property, unit group, and official Chinese baseName; unresolved rows must remain UUID-empty and declared in manifest review metadata."
+    source_ids: []
+  - rule_id: validate_mass_and_energy
+    applies_to: "Foreground calculations"
+    rule: "Require unit conversions, shared-operation allocation, product normalization, gas reference conditions, and mass-balance reconciliation to be reproducible from retained raw records."
+    source_ids:
+      - ec-pef-recommendation-2021-annexes
+  - rule_id: validate_boundary_completeness
+    applies_to: "Cradle-to-gate result"
+    rule: "Require upstream datasets or explicit data gaps for purchased materials, components, energy, process chemicals, and packaging, and require foreground waste and direct emissions to be identified without double counting supplier operations."
+    source_ids:
+      - ec-pef-recommendation-2021-annexes
+      - ge-steam-power-product-catalog-2020
+published_dataset_profile:
+  dataset_role: "Product-specific cradle-to-gate foreground manufacturing dataset for an accepted steam or other vapour turbine"
+  downstream_use: "secondary_dataset; background_dataset for a matching turbine configuration and supply scope; foreground input to a separately modelled power-plant, industrial-drive, installation, use, maintenance, or end-of-life lifecycle model"
+  allowed_use: "Comparison or modelling only when turbine duty, rated output, steam conditions, mass, bare-versus-package scope, manufacturing geography and technology, reporting period, allocation, and upstream dataset representativeness are compatible and disclosed"
+  excluded_use: "Not an electricity-generation dataset; not a steam-generation dataset; not a hydraulic, gas, or wind turbine dataset; not a separately supplied parts dataset; not a use-stage efficiency or lifetime default; not representative of an undeclared turbine package"
+  required_metadata: "PCR id and version state; product model and serial or study identifier; turbine and drive type; rated output; steam inlet, exhaust, reheat, and extraction conditions; speed and frequency; design-life metadata; accepted net mass; included and excluded package elements; manufacturing site and geography; reporting period; component supply states; allocation; cut-offs; data gaps; source and background dataset versions"
+  required_quality_disclosure: "Foreground versus supplier data share; BOM and mass-balance completeness; meter and scale quality; temporal, geographical, and technological representativeness; allocation drivers; unresolved UUIDs; missing empirical ranges; exclusions; proxies; uncertainty and sensitivity"
+  update_trigger: "Material change to turbine design or package scope, alloy or component supply state, manufacturing route, site or energy supply, allocation, upstream datasets, Tiangong UUID identity, acceptance basis, or evidence used by this PCR"
+data_sources:
+  - id: "un-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, row 43141, 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-05; SHA-256 5cd2c1c4890dd6be16af48e9bb940fed48efff9865f39ff15edaa921da25fb7c)"
+    used_for: "Official classification identity; separation of complete turbines from parts in row 43153"
+  - id: "siemens-energy-industrial-steam-turbines-2021"
+    type: "handbook"
+    reference: "Siemens Energy, *Industrial steam turbines from 2 to 250 MW*, 2021. https://assets.siemens-energy.com/dam/79160ff2-731e-4ffe-9ab2-b0360117cdde/SE-Brochure-Industrial-Steam-Turbines-2021-pdf_Original%20file.pdf (retrieved 2026-09-05)"
+    used_for: "Generator-drive and mechanical-drive scope; bare and package configurations; modular assemblies; oil systems; casing and auxiliary qualifiers"
+  - id: "ge-steam-power-product-catalog-2020"
+    type: "handbook"
+    reference: "GE Steam Power, *GE Steam Power product catalog*, 2020. https://www.gevernova.com/content/dam/gepower-steam/global/en_US/documents/Steam-Product-Catalog.pdf (retrieved 2026-09-05)"
+    used_for: "Forged rotor and blade production; steel and conditional titanium materials; welded and cast structures; preassembled units; package auxiliaries"
+  - id: "ec-pef-recommendation-2021-annexes"
+    type: "official_guidance"
+    reference: "European Commission, *Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, Annexes 1 to 2*, 2021. https://environment.ec.europa.eu/document/download/680503dc-5a19-4f6a-bb92-84d9bfc8f312_en?filename=Annexes+1+to+2.pdf (retrieved 2026-09-05)"
+    used_for: "Product-specific BOM and manufacturing data; completeness and documented exclusions; site-specific data; boundary definition; subdivision-first allocation and data-quality rules"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f14449c8ea73115774373e1cb96f0ef2842998e794a4d04e62c38688e425de17"
+  generated_content_sha256: "sha256:4e21a1172ac804ff4edd6bd5e8a66b8c89fb6300e480a706e0c81bb7e7866026"

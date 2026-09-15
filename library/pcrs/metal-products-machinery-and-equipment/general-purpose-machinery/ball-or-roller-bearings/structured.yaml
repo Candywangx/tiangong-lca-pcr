@@ -1,10 +1,823 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43310"
-  title: "Ball or roller bearings"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.ball-or-roller-bearings"
+  classification_refs: "CPC 3.0: 43310, Ball or roller bearings (un-cpc-3-0-structure-2025)"
+  covered_products: "Complete finished bearings in which balls or rollers roll between bearing raceways; radial or thrust types; open, shielded, or sealed variants; lubricated or preservative-coated variants when sold in that state"
+  excluded_products: "Loose parts and rolling elements; bearing housings and plain bearings; gears, gearboxes, screws, couplings, and drives; magnetic or fluid-film bearings; services; downstream application equipment"
+  representative_product: "A finished, inspected ball or roller bearing with declared type, dimensions, mass, material specification, accuracy, internal clearance, load rating, sealing, and lubrication state"
+  production_route: "Forming and turning; heat treatment; grinding and honing or superfinishing; cleaning; assembly; lubrication or preservation as applicable; inspection; packaging, with outsourced steps represented by specific upstream datasets"
+  market_state: "Conforming finished bearing at the manufacturer factory gate, preserved and packaged as sold; packaging mass is reported separately from net bearing mass"
+functional_unit:
+  what: "Finished ball or roller bearings at the manufacturer factory gate"
+  how_much: "1 kg net mass of conforming bearing product, excluding separately reported packaging"
+  how_well: "Meets the declared product specification and has passed applicable dimensional, internal-clearance, surface, visual, free-running, vibration or noise, and marking inspections"
+  how_long_or_cycle: "Factory-gate declared unit; no service-life cycle is represented. If a downstream study models use, it must separately declare application, load, speed, lubrication, environment, maintenance, and service-life assumptions."
+  reference_flow_link: "The output row final_bearing_output is the reference flow and is normalized to exactly 1 kg."
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary begins when steel, purchased parts, auxiliaries, energy, water, and packaging are received at the reporting manufacturing site or at a contracted operation attributed to the product. It ends with the conforming, preserved, inspected, and packaged bearing leaving the factory gate. The operation sequence and inspection stages follow the bearing-manufacturing descriptions in skf-insert-bearings-18033; material, auxiliary, energy, cleaning, packaging, and residual-product relevance follows skf-green-bearings."
+      source_ids: []
+    - rule_id: boundary_rule_1
+      applies_to: "foreground_operations"
+      rule: "Include forming and turning, heat treatment, grinding and honing or superfinishing, cleaning, assembly, lubrication or sealing when applicable, inspection, preservation, and packaging when they are performed under the producer's control or attributed contract manufacturing."
+      source_ids:
+        - skf-insert-bearings-18033
+        - skf-green-bearings
+    - rule_id: boundary_rule_2
+      applies_to: "purchased_inputs"
+      rule: "Link cradle-to-gate upstream datasets for every purchased material, component, auxiliary, energy carrier, water supply, and packaging input; do not treat the reporting-site gate as a zero-burden origin."
+      source_ids:
+        - skf-green-bearings
+        - eu-recommendation-2021-2279
+    - rule_id: boundary_rule_3
+      applies_to: "outsourced_steps"
+      rule: "Represent an outsourced manufacturing step once, either as a supplier-specific process or within a purchased-component dataset. Do not also count the same energy, auxiliary, waste, or emission in the reporting-site inventory."
+      source_ids:
+        - skf-insert-bearings-18033
+    - rule_id: boundary_rule_4
+      applies_to: "downstream_stages"
+      rule: "Exclude distribution after the factory gate, mounting, operation, maintenance, replacement, remanufacturing, and end of life from this declared unit. A downstream model may add them only with separately declared application and scenario data."
+      source_ids:
+        - international-epd-pcr-2023-03
+    - rule_id: boundary_rule_5
+      applies_to: "capital_goods_and_minor_flows"
+      rule: "Do not apply an automatic mass or cost cut-off. Include measured production exchanges and disclose any excluded capital good or minor flow with a documented significance check for the intended study."
+      source_ids:
+        - eu-recommendation-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Delivered bearing-grade steel and any purchased bearing parts, auxiliaries, energy, process water, and packaging at the reporting site gate, with supplier, material grade, product state, recycled content when known, and upstream dataset identified"
+  starting_condition_role: "Foreground manufacturing input; extraction and production of purchased goods and energy are represented by linked upstream datasets rather than repeated inside the foreground process"
+  product_classification_scope: "Complete ball or roller bearings; loose parts and other power-transmission products remain outside the reference-product identity"
+  recursive_input_rule: "A purchased complete ball or roller bearing used as a component must be recorded once as an upstream product input with its own dataset and must not be recursively decomposed under this PCR unless the study intentionally replaces that supplier dataset with primary component records"
+  upstream_dataset_requirement: "Use supplier-specific datasets where available for bearing steel, purchased components, lubricant, preservation oil, packaging, electricity, natural gas, and water; otherwise use geographically, technologically, temporally, and materially representative datasets and disclose substitutions"
+  disclosure: "Declare which operations are on-site or outsourced, the incoming state of steel and parts, furnace and finishing technologies, cleaning route, lubrication and preservation state, rejects and rework, waste destinations, packaging, site geography, reporting period, and exclusions"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Ball or roller bearings"
+    uuid: "9b10184f-db9d-4cc7-94b5-02ab19ca370d"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "manufacturer and site geography"
+    - "reporting period"
+    - "product designation"
+    - "ball or roller type and subtype"
+    - "radial or thrust arrangement"
+    - bore
+    - "outside diameter"
+    - "and width"
+    - "net bearing mass"
+    - "ring and rolling-element material grades"
+    - "cage material and presence"
+    - "seal or shield state"
+    - "lubricant type and fill"
+    - "preservation state"
+    - "accuracy and internal-clearance classes"
+    - "basic load ratings or declared performance specification"
+    - "integrated and outsourced manufacturing steps"
+    - "allocation method"
+    - "packaging composition and mass"
+reference_flows:
+  []
+measurement_rules:
+  - id: measurement_reference_mass
+    applies_to: "Reference product and all mass-normalized exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh or calculate net conforming bearing mass after final inspection and before adding separately reported packaging. Normalize every inventory exchange to 1 kg net bearing output."
+  - id: measurement_electricity
+    applies_to: "Electricity rows"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the Tiangong energy property. Convert measured kWh to MJ by multiplying by 3.6 and retain the original meter records, meter boundary, and electricity supply mix."
+  - id: measurement_gas_volume
+    applies_to: "Gaseous natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report metered volume at declared reference temperature and pressure. If records use mass or energy, use supplier- or meter-specific conversion data and disclose the conversion basis; do not apply an undocumented generic factor."
+  - id: measurement_water_mass
+    applies_to: "Process water and cleaning wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer direct mass records. When meters report volume, convert using measured or documented site-specific density and preserve volume, density, temperature, and conversion records."
+  - id: measurement_material_balance
+    applies_to: "Steel input, bearing output, steel chips, and steel swarf"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Reconcile received steel, work in progress, conforming output, rejects, chips, swarf, and stock change over the reporting period. Record oil, water, and abrasive retained in waste separately or disclose their inclusion in measured waste mass."
+process_map:
+  - id: forming_and_turning
+    name: "Component forming and turning"
+    inclusion: "required"
+    inclusion_condition: "Model on-site records when rings or rolling elements are formed or turned by the reporting producer; otherwise link the supplier-specific component process and record no duplicate on-site burden."
+    role: "Foreground material conversion and machining"
+    quantitative_reference: "Per 1 kg conforming finished bearing output"
+  - id: heat_treatment
+    name: "Heat treatment"
+    inclusion: "required"
+    inclusion_condition: "Model the actual electric, gas-fired, or outsourced route; the natural-gas and direct-combustion rows apply only to gas-fired equipment within the foreground boundary."
+    role: "Foreground hardening and stabilization"
+    quantitative_reference: "Per 1 kg conforming finished bearing output"
+  - id: grinding_honing_cleaning
+    name: "Grinding, honing, superfinishing, and cleaning"
+    inclusion: "required"
+    inclusion_condition: "Model actual wet or dry finishing and aqueous or non-aqueous cleaning; the water and wastewater rows apply only when process water crosses the boundary."
+    role: "Foreground precision finishing and cleaning"
+    quantitative_reference: "Per 1 kg conforming finished bearing output"
+  - id: assembly_lubrication_preservation
+    name: "Assembly, lubrication, sealing, and preservation"
+    inclusion: "required"
+    inclusion_condition: "Grease and preservation-oil rows apply only when those products are added within the foreground boundary; declare open, shielded, or sealed product state."
+    role: "Foreground final assembly and protection"
+    quantitative_reference: "Per 1 kg conforming finished bearing output"
+  - id: inspection_packaging
+    name: "Final inspection and packaging"
+    inclusion: "required"
+    inclusion_condition: "Model the inspections required by the declared product specification and each packaging component actually used; the corrugated-box row applies only when used."
+    role: "Foreground conformity release and factory-gate output"
+    quantitative_reference: "Per 1 kg conforming finished bearing output"
+process_inventory:
+  - id: forming_and_turning
+    label: "Component forming and turning"
+    inputs:
+      product:
+        - row_id: bearing_steel_input
+          role: "Bearing-grade high-carbon chromium steel input"
+          name: "Bearing-grade high-carbon chromium steel"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record the mass of bearing-grade steel bar, tube, wire, forging, or other declared feedstock entering producer-controlled forming and turning. Keep alloy grade, metallurgical state, product form, supplier, recycled content when known, and upstream dataset with the foreground record."
+          amount:
+            expression: "measured received mass less documented returns and reporting-period stock increase, attributed to conforming output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished bearing output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - skf-green-bearings
+            ranges: []
+        - row_id: forming_electricity
+          role: "Electricity for forming and turning"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200b9a66 / MJ 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Record purchased or self-generated electricity delivered to forging, cold forming, turning, material handling, and directly attributable support equipment for this stage."
+          amount:
+            expression: "measured stage electricity converted to MJ and attributed to conforming output"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished bearing output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stage_electricity
+              source_ids:
+                - skf-green-bearings
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_machining_chips
+          role: "Steel machining chips from turning"
+          name: "Steel machining chips"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "69609b56-5e59-4f7d-9847-2eae3ea031b7"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record segregated ferrous chips generated by turning and other chip-forming operations. Declare alloy grade, cutting-fluid contamination, on-site recovery, and destination."
+          amount:
+            expression: "measured wet or dry chip mass, with measurement state declared, leaving the process for internal recovery or external treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished bearing output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids:
+                - skf-green-bearings
+            ranges: []
+      elementary:
+        []
+  - id: heat_treatment
+    label: "Heat treatment"
+    inputs:
+      product:
+        - row_id: heat_treatment_electricity
+          role: "Electricity for heat treatment"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200b9a66 / MJ 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Record electricity supplied to furnaces, quench circulation, washing, controls, and directly attributable heat-treatment support equipment."
+          amount:
+            expression: "measured heat-treatment electricity converted to MJ and attributed to conforming output"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished bearing output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stage_electricity
+              source_ids:
+                - skf-insert-bearings-18033
+            ranges: []
+        - row_id: natural_gas_heat_treatment
+          role: "Gaseous natural gas for heat treatment"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3 93a60a57-a3c8-12da-a746-0800200c9a66"
+          description: "Record natural gas only when it is combusted in producer-controlled heat-treatment or directly attributable thermal equipment. Declare reference conditions, supplier, composition or calorific-value record, and furnace technology."
+          amount:
+            expression: "metered gas volume at declared reference conditions; record zero and not-applicable evidence for a fully electric or outsourced route"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished bearing output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_natural_gas
+              source_ids:
+                - skf-insert-bearings-18033
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: fossil_co2_heat_treatment
+          role: "Direct fossil carbon dioxide from natural-gas combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record only direct fossil carbon dioxide crossing to air from natural gas combusted within the foreground boundary. Do not copy upstream electricity or fuel-supply emissions into this row."
+          amount:
+            expression: "measured stack mass or calculated fossil CO2 from metered fuel and supplier-specific carbon content according to calc_direct_fossil_co2"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished bearing output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_combustion
+              source_ids:
+                - skf-green-bearings
+            ranges: []
+  - id: grinding_honing_cleaning
+    label: "Grinding, honing, superfinishing, and cleaning"
+    inputs:
+      product:
+        - row_id: grinding_electricity
+          role: "Electricity for grinding, honing, superfinishing, and cleaning"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200b9a66 / MJ 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Record electricity for grinding, honing or superfinishing, coolant circulation, aqueous cleaning, filtration, and directly attributable support equipment."
+          amount:
+            expression: "measured stage electricity converted to MJ and attributed to conforming output"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished bearing output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stage_electricity
+              source_ids:
+                - skf-insert-bearings-18033
+                - skf-green-bearings
+            ranges: []
+        - row_id: process_water_cleaning
+          role: "Process water for aqueous cleaning"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record process water delivered to aqueous cleaning only when this route is operated within the foreground boundary. Declare water source, quality, recirculation, make-up versus total circulation, and delivery boundary."
+          amount:
+            expression: "measured make-up water crossing the site or process boundary; do not report recirculated water repeatedly"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished bearing output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_water
+              source_ids:
+                - skf-green-bearings
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_grinding_swarf
+          role: "Steel swarf from grinding"
+          name: "Steel swarf"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "6a16eab5-8097-4e37-8d28-aa1e81b8bb5c"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record fine steel swarf removed during grinding, honing, or superfinishing. Declare whether the measured mass includes grinding fluid, abrasive, water, or filter media and record its treatment destination."
+          amount:
+            expression: "measured swarf mass in the declared wet or dry state leaving the process for recovery or treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished bearing output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids:
+                - skf-green-bearings
+            ranges: []
+        - row_id: cleaning_wastewater
+          role: "Wastewater from aqueous cleaning"
+          name: "Wastewater from cleaning"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f0402393-e82c-47e8-9cd8-a486c97f3e89"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record cleaning wastewater transferred to on-site treatment, sewer, or an external waste handler. Declare cleaning chemistry, contaminant load, internal recycling, treatment boundary, and destination."
+          amount:
+            expression: "measured wastewater mass crossing the selected treatment boundary, net of documented internal recirculation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished bearing output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_wastewater
+              source_ids:
+                - skf-green-bearings
+            ranges: []
+      elementary:
+        []
+  - id: assembly_lubrication_preservation
+    label: "Assembly, lubrication, sealing, and preservation"
+    inputs:
+      product:
+        - row_id: bearing_lubricating_grease
+          role: "Rolling-bearing lubricating grease"
+          name: "Rolling-bearing lubricating grease"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record the grease placed in the bearing only for grease-lubricated products. Declare manufacturer and grade, base oil, thickener, consistency or specification, fill mass, and whether the bearing is sealed for life."
+          amount:
+            expression: "measured grease issued to conforming bearings less documented recoverable return and reporting-period stock increase"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished bearing output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_auxiliary_mass
+              source_ids:
+                - skf-insert-bearings-18033
+                - skf-green-bearings
+            ranges: []
+        - row_id: bearing_rust_preventive_oil
+          role: "Bearing rust-preventive oil"
+          name: "Bearing rust-preventive oil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record the rust-preventive oil applied to the finished bearing only when preservation is part of the factory-gate product state. Declare formulation or grade, application method, retained mass, and volatile fraction when relevant."
+          amount:
+            expression: "measured oil issued less documented return, with retained and waste fractions reconciled"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished bearing output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_auxiliary_mass
+              source_ids:
+                - skf-insert-bearings-18033
+                - skf-green-bearings
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: inspection_packaging
+    label: "Final inspection and packaging"
+    inputs:
+      product:
+        - row_id: packaging_corrugated_boxes
+          role: "Corrugated board boxes"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record corrugated board boxes only when they are used to deliver the reference bearing. Declare box specification, mass, supplier, recycled content when known, and whether additional packaging components are separately recorded."
+          amount:
+            expression: "measured box mass issued to packaged conforming bearing output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished bearing output; packaging excluded from net reference-product mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_mass
+              source_ids:
+                - skf-green-bearings
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: final_bearing_output
+          role: "Conforming finished bearing at factory gate"
+          name: "Ball or roller bearings"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9b10184f-db9d-4cc7-94b5-02ab19ca370d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record only conforming released product after applicable clearance, free-running, vibration or noise, visual, dimensional, marking, preservation, and packaging checks. Packaging mass is not part of the 1 kg net bearing output."
+          amount:
+            expression: "exactly 1 kg net conforming bearing output by definition of the reference flow"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "PCR reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "shared_processes"
+    rule: "Avoid allocation by subdividing production lines, batches, meters, furnaces, and waste records so inputs and outputs directly attributable to the declared bearing are collected separately."
+    source_ids:
+      - eu-recommendation-2021-2279
+  - rule_id: allocation_rule_2
+    applies_to: "unavoidable_shared_burdens"
+    rule: "When subdivision is not possible, use a causal physical relationship such as machine time, furnace occupancy, metered energy, processed mass, surface area, or batch time. Document the driver, numerator, denominator, affected products, and sensitivity."
+    source_ids:
+      - eu-recommendation-2021-2279
+  - rule_id: allocation_rule_3
+    applies_to: "non_physical_allocation"
+    rule: "Use economic or another non-physical relationship only after documenting why subdivision and a relevant physical relationship are infeasible. Record prices, period, geography, co-product status, and sensitivity."
+    source_ids:
+      - eu-recommendation-2021-2279
+  - rule_id: allocation_rule_4
+    applies_to: "recycled_metal_and_waste"
+    rule: "Keep the burdens of collecting, conditioning, and treating chips, swarf, wastewater, and other wastes on the generating system until the declared treatment or end-of-waste boundary. Report any recycling credit or substitution scenario separately; do not subtract it invisibly from foreground quantities."
+    source_ids:
+      - eu-recommendation-2021-2279
+  - rule_id: allocation_rule_5
+    applies_to: "rework_and_internal_recycling"
+    rule: "Track internal rework and recirculated material without creating a second product output. Count only net external inputs and outputs while retaining gross process records for audit and mass-balance checks."
+    source_ids:
+      - skf-green-bearings
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass
+      process_id: "forming_and_turning"
+      flow_role: "bearing_steel_input"
+      record_type: "scale and stock records"
+      raw_fields: "alloy grade; delivered form; gross and tare mass; opening and closing stock; returns; work in progress"
+      collection_method: "Weigh steel charged by alloy and route and reconcile stock, returns, chips, and work in progress."
+      unit: "kg"
+      frequency: "each receipt and production batch"
+      temporal_coverage: "representative reporting period"
+      site_scope: "reporting site and attributed contracted forming"
+      aggregation_rule: "net attributable mass divided by conforming output mass"
+      quality_evidence: "scale identity, calibration status, stock reconciliation, supplier record"
+    - protocol_id: cp_stage_electricity
+      process_id: "forming_and_turning_heat_treatment_grinding_honing_cleaning"
+      flow_role: "forming_electricity; heat_treatment_electricity; grinding_electricity"
+      record_type: "electricity meter records"
+      raw_fields: "meter reading; timestamp; meter boundary; stage; batch; shared-load driver"
+      collection_method: "Collect separate stage meters; allocate shared meters only with documented machine time, checked rated load, or furnace occupancy."
+      unit: "kWh and MJ"
+      frequency: "continuous or each batch"
+      temporal_coverage: "same period as output"
+      site_scope: "each included site and outsourced operation"
+      aggregation_rule: "stage total converted to MJ and divided by conforming output mass"
+      quality_evidence: "meter identity, calibration, allocation worksheet, energy invoice reconciliation"
+    - protocol_id: cp_waste_mass
+      process_id: "forming_and_turning_grinding_honing_cleaning"
+      flow_role: "steel_machining_chips; steel_grinding_swarf"
+      record_type: "waste scale and dispatch records"
+      raw_fields: "gross mass; tare; wet or dry state; alloy; retained fluid; destination; end-of-waste status"
+      collection_method: "Weigh each stream separately at removal and correct for documented container tare."
+      unit: "kg"
+      frequency: "each removal"
+      temporal_coverage: "same period as output"
+      site_scope: "each generating operation"
+      aggregation_rule: "net stream mass divided by conforming output mass"
+      quality_evidence: "weigh ticket, tare record, waste transfer record, moisture or retained-fluid note"
+    - protocol_id: cp_natural_gas
+      process_id: "heat_treatment"
+      flow_role: "natural_gas_heat_treatment"
+      record_type: "gas meter or reconciled billing record"
+      raw_fields: "volume; temperature; pressure; timestamp; furnace; composition or calorific value"
+      collection_method: "Read the heat-treatment meter or reconcile billed volume to furnace operation and state reference conditions."
+      unit: "m3"
+      frequency: "continuous or each furnace batch"
+      temporal_coverage: "same period as heat-treated output"
+      site_scope: "gas-fired heat treatment within foreground boundary"
+      aggregation_rule: "attributable reference-condition volume divided by conforming output mass"
+      quality_evidence: "meter identity, calibration, bill reconciliation, supplier specification"
+    - protocol_id: cp_direct_combustion
+      process_id: "heat_treatment"
+      flow_role: "fossil_co2_heat_treatment"
+      record_type: "stack result or fuel-carbon calculation"
+      raw_fields: "stack mass or fuel quantity; carbon content or emission factor; oxidation fraction; unit conversion"
+      collection_method: "Prefer site stack or fuel-carbon records; otherwise calculate from metered gas with a documented supplier factor and oxidation assumption."
+      unit: "kg"
+      frequency: "each monitored period or furnace batch"
+      temporal_coverage: "same period as fuel record"
+      site_scope: "foreground gas-fired equipment only"
+      aggregation_rule: "direct fossil CO2 divided by conforming output mass"
+      quality_evidence: "stack report or complete factor provenance and calculation sheet"
+    - protocol_id: cp_process_water
+      process_id: "grinding_honing_cleaning"
+      flow_role: "process_water_cleaning"
+      record_type: "water meter or scale record"
+      raw_fields: "make-up quantity; source; quality; temperature; density; recirculation boundary"
+      collection_method: "Meter or weigh net make-up process water delivered to cleaning; exclude gross recirculating flow."
+      unit: "kg"
+      frequency: "continuous or each cleaning batch"
+      temporal_coverage: "same period as cleaned output"
+      site_scope: "foreground aqueous-cleaning system"
+      aggregation_rule: "net make-up mass divided by conforming output mass"
+      quality_evidence: "meter identity, calibration, density conversion, water balance"
+    - protocol_id: cp_cleaning_wastewater
+      process_id: "grinding_honing_cleaning"
+      flow_role: "cleaning_wastewater"
+      record_type: "effluent meter, scale, and dispatch record"
+      raw_fields: "quantity; temperature; density; destination; contaminant characterization"
+      collection_method: "Meter or weigh wastewater leaving the foreground boundary and reconcile it to water input, retention, and evaporation."
+      unit: "kg"
+      frequency: "continuous or each discharge"
+      temporal_coverage: "same period as cleaning input"
+      site_scope: "foreground aqueous-cleaning system"
+      aggregation_rule: "boundary-crossing wastewater mass divided by conforming output mass"
+      quality_evidence: "meter or weigh ticket, density conversion, water balance, treatment record"
+    - protocol_id: cp_auxiliary_mass
+      process_id: "assembly_lubrication_preservation"
+      flow_role: "bearing_lubricating_grease; bearing_rust_preventive_oil"
+      record_type: "scale, purchase, and stock records"
+      raw_fields: "product name; grade; supplier; lot; gross and tare mass; opening and closing stock"
+      collection_method: "Weigh or reconcile each separately specified auxiliary actually used or retained on the bearing."
+      unit: "kg"
+      frequency: "each batch and reporting period"
+      temporal_coverage: "same period as assembled output"
+      site_scope: "assembly and preservation operations"
+      aggregation_rule: "net attributable product mass divided by conforming output mass"
+      quality_evidence: "scale calibration, purchase and stock reconciliation, product specification or safety-data identifier"
+    - protocol_id: cp_packaging_mass
+      process_id: "inspection_packaging"
+      flow_role: "packaging_corrugated_boxes"
+      record_type: "packaging scale and issue record"
+      raw_fields: "box specification; gross and tare mass; issued, unused, and returned quantities; recycled content"
+      collection_method: "Weigh boxes issued to declared output, net of unused stock and returns, outside net bearing mass."
+      unit: "kg"
+      frequency: "each packaging batch"
+      temporal_coverage: "same period as packaged output"
+      site_scope: "final packaging operation"
+      aggregation_rule: "box mass divided by net conforming bearing mass"
+      quality_evidence: "scale calibration, packaging issue reconciliation, supplier specification"
+    - protocol_id: cp_output_mass
+      process_id: "inspection_packaging"
+      flow_role: "final_bearing_output"
+      record_type: "release scale and production record"
+      raw_fields: "product designation; net mass; accepted quantity; rejects; work in progress; shipment"
+      collection_method: "Weigh net conforming bearings after release inspection and before transport packaging; reconcile production and shipment."
+      unit: "kg"
+      frequency: "each released batch"
+      temporal_coverage: "representative reporting period"
+      site_scope: "all included bearing production sites"
+      aggregation_rule: "conforming net mass is denominator and normalized to 1 kg"
+      quality_evidence: "scale calibration, inspection release, production and shipment reconciliation"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "Divide each reporting-period exchange assigned to conforming bearings by net conforming bearing mass from the same period and boundary."
+      inputs:
+        - "attributable exchange quantity"
+        - "conforming output mass"
+      output: "exchange per 1 kg reference flow"
+      source_ids:
+        - eu-recommendation-2021-2279
+    - id: calc_electricity_conversion
+      applies_to: "stage electricity rows"
+      rule: "Multiply metered kWh by 3.6 while preserving the meter record and factor."
+      inputs:
+        - "electricity in kWh"
+      output: "electricity in MJ"
+      source_ids: []
+    - id: calc_water_mass
+      applies_to: "water rows"
+      rule: "Multiply measured volume by a stated density appropriate to measured temperature and composition."
+      inputs:
+        - volume
+        - temperature
+        - "water composition"
+        - density
+      output: "water mass in kg"
+      source_ids: []
+    - id: calc_direct_fossil_co2
+      applies_to: "fossil_co2_heat_treatment"
+      rule: "Multiply metered fuel quantity by documented fossil-carbon or supplier emission factor and oxidation fraction; exclude upstream emissions."
+      inputs:
+        - "fuel quantity"
+        - factor
+        - "oxidation fraction"
+        - "unit conversions"
+      output: "direct fossil CO2 mass"
+      source_ids:
+        - eu-recommendation-2021-2279
+    - id: calc_metal_balance
+      applies_to: "forming, turning, grinding, and final output"
+      rule: "Reconcile alloy-specific steel input with conforming product, chips, swarf, rejects, retained work in progress, and documented stock change; investigate material imbalance."
+      inputs:
+        - "alloy-specific material records"
+      output: "documented metal balance and discrepancy"
+      source_ids:
+        - skf-green-bearings
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Record bearing family, rolling-element type, principal dimensions, applicable load or tolerance class, seal or shield state, cage and ring materials, heat-treatment route, lubrication, and packaging state."
+      evidence: "product specification, drawing, inspection and release record"
+    - id: dq_measurement
+      applies_to: "all measured rows"
+      requirement: "Prefer calibrated direct measurement and record instrument identity, resolution, calibration status, interval, missing-data treatment, and uncertainty."
+      evidence: "calibration certificate, meter log, scale record, uncertainty note"
+    - id: dq_temporal
+      applies_to: "all foreground rows"
+      requirement: "Use a representative continuous 12-month period where available or justify a shorter campaign capturing batch and operating variability; align numerator and denominator periods."
+      evidence: "reporting-period statement and representativeness assessment"
+    - id: dq_site_scope
+      applies_to: "all processes"
+      requirement: "Identify each included site and outsourced operation; do not omit a material step because it occurs off site."
+      evidence: "site and supplier process map, contracts, purchasing records"
+    - id: dq_completeness
+      applies_to: "all inventory rows"
+      requirement: "Reconcile purchased materials, site records, wastes, direct emissions, and conforming output; identify and quantitatively justify every exclusion."
+      evidence: "mass and energy reconciliations, exclusion register"
+    - id: dq_technology
+      applies_to: "all processes"
+      requirement: "Describe forming, machining, heat-treatment atmosphere and furnace, grinding and honing, cleaning, assembly, lubrication, preservation, inspection, and packaging technologies sufficiently to distinguish routes."
+      evidence: "process specifications, equipment list, production instructions"
+    - id: dq_upstream_data
+      applies_to: "all purchased inputs"
+      requirement: "Match datasets to actual alloy, auxiliary grade, energy supply, water source, packaging, geography, technology, product state, and delivery boundary; document proxies and sensitivity."
+      evidence: "dataset-selection log and sensitivity assessment"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm that the declared product is a complete ball or roller bearing under the stated boundary and not a bearing housing, plain bearing, loose ball, loose roller, bearing unit, or spare part."
+    source_ids: []
+  - rule_id: validation_rule_2
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm that the reference product is exactly 1 kg net conforming finished bearing at the factory gate and that packaging mass is excluded from that net mass."
+    source_ids: []
+  - rule_id: validation_rule_3
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm that all five required manufacturing stages are represented, including outsourced stages, and that exclusions or non-applicable steps are explicitly justified."
+    source_ids: []
+  - rule_id: validation_rule_4
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm that every inventory row is an atomic physical, chemical, waste, energy, or elementary exchange and that no umbrella utility, fuel, packaging, chemical, wastewater, residue, or emission row is used."
+    source_ids: []
+  - rule_id: validation_rule_5
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm that forming, heat-treatment, and grinding electricity are collected and reported separately, even where an allocation procedure uses a shared meter."
+    source_ids: []
+  - rule_id: validation_rule_6
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm that machining chips and grinding swarf remain separate waste flows and are not netted against bearing-steel input or combined with rejected bearings."
+    source_ids: []
+  - rule_id: validation_rule_7
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm that direct fossil carbon dioxide represents only foreground gaseous-natural-gas combustion and excludes upstream energy-system emissions."
+    source_ids: []
+  - rule_id: validation_rule_8
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm that the metal balance and the cleaning-water balance have been performed and that material discrepancies are documented."
+    source_ids: []
+  - rule_id: validation_rule_9
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm that UUID-bearing rows match the audited TianGong English and Chinese base names, flow type, classification, flow property, unit group, and public state; unresolved rows must retain empty UUIDs and manifest review records."
+    source_ids: []
+  - rule_id: validation_rule_10
+    applies_to: "foreground_dataset_conformance"
+    rule: "Confirm that no externally inferred range is used unless at least two independent, original-text-verified sources have compatible boundaries, reference flow, product state, and units."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Cradle-to-factory-gate foreground data package for one declared complete ball or roller bearing product, normalized to net conforming mass"
+  downstream_use: "Linked product flow, unit-process dataset, manufacturer product footprint, EPD-supporting model, or life-cycle model whose downstream stages and scenarios are added separately"
+  allowed_use: "Comparison or aggregation only when product function, declared bearing specification, reference flow, geography, technology, reporting period, system boundary, allocation, and data quality are compatible"
+  excluded_use: "Direct representation of loose parts, bearing housings, plain bearings, bearing units outside the declared identity, use-phase performance, maintenance, remanufacturing, or end-of-life scenarios"
+  required_metadata: "Production geography and sites; reporting period; product designation and design; mass and dimensions; materials; manufacturing and outsourced routes; lubrication and preservation state; inspection basis; allocation; packaging; upstream dataset choices"
+  required_quality_disclosure: "Primary-data share and coverage; meter and scale evidence; missing data; exclusions; allocation drivers; mass, water, and energy reconciliations; proxy datasets; uncertainty; representativeness; unresolved UUIDs and range evidence"
+  update_trigger: "Material change in bearing design, mass, alloy, supplier route, manufacturing site or technology, furnace fuel, electricity supply, cleaning system, lubricant or preservation product, packaging, allocation, data coverage, or reporting period"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Ver. 3.0 Structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Original CSV row verified for CPC 43310 product classification identity."
+  - id: "un-cpc-1-1-chinese-2002"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 1.1, Chinese edition. https://unstats.un.org/unsd/publication/SeriesM/M_77ver1_1c.pdf"
+    used_for: "Original Chinese classification text verified for the professional title “滚珠轴承或滚柱轴承”."
+  - id: "international-epd-pcr-2023-03"
+    type: "standard"
+    reference: "International EPD System, PCR 2023:03 Bearings, bearing units and parts. https://www.environdec.com/pcr-library/pcr_c8639225-b509-4a82-6b78-08d9caad768c"
+    used_for: "Official original landing page verified for category correspondence to UN CPC 4331 and the distinction of bearing production from downstream life-cycle stages."
+  - id: "skf-insert-bearings-18033"
+    type: "handbook"
+    reference: "SKF, Insert bearings, publication 18033 EN. https://cdn.skfmediahub.skf.com/api/public/0901d196807f0c2f/pdf_preview_medium/Insert_bearings_booklet_-_18033_EN_pdf_preview_medium.pdf"
+    used_for: "Original PDF pages verified for heat treatment, grinding, honing, assembly, greasing or sealing, inspection, preservation, marking, and packaging operations."
+  - id: "skf-green-bearings"
+    type: "literature"
+    reference: "SKF Evolution, Green bearings. https://cdn.skfmediahub.skf.com/api/public/0901d1968031d53b/pdf_preview_medium/0901d1968031d53b_pdf_preview_medium.pdf"
+    used_for: "Original full PDF verified for steel and auxiliary inputs, energy, water-based cleaning, lubrication, packaging, chips, grinding swarf, used oil, and waste handling."
+  - id: "eu-recommendation-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods. https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng"
+    used_for: "Official original legal text verified for functional-unit definition, allocation hierarchy, data quality, and foreground inventory rules."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:af0c67d2e5b57c9f1196733c6d22e01024e5e1a30f8572e4d38747003c74bc0b"
+  generated_content_sha256: "sha256:0d7c175c36ca7f069afcf44ca0c9cded20c4675f4cc1a69eb090766bd938f2cb"

@@ -1,10 +1,809 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "47402"
-  title: "Parts for the goods of subclasses 47321, 47323 and 47330"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.radio-television-and-communication-equipment-and-apparatus.parts-for-the-goods-of-subclasses-47321-47323-and-47330"
+  classification_refs: "CPC 3.0: 47402; classification identity only; acceptance is maintained separately"
+  covered_products: "Dedicated manufactured parts for sound/video recording or reproducing apparatus and electroacoustic equipment, identifiable by intended parent equipment and part drawing"
+  excluded_products: "Complete recorders, loudspeakers, microphones, microphone stands and amplifiers; general-purpose bare printed circuits, integrated circuits, resistors, capacitors, wire and magnets sold as those products; radio/television reception and telecommunications parts outside this parent-equipment scope; recorded media; repair services"
+  representative_product: "Bobbinless epoxy-bound copper loudspeaker voice coil, cured, tested, with integral winding ends and without diaphragm or magnet assembly"
+  production_route: "Insulated-wire winding and epoxy adhesive application; electrical curing and demoulding; electrical/dimensional inspection and packing"
+  market_state: "New accepted part at the part manufacturer's dispatch gate; primary and shipping packaging reported separately from net part mass"
+functional_unit:
+  what: "Accepted bobbinless epoxy-bound copper loudspeaker voice coil for incorporation into a specified loudspeaker"
+  how_much: "1 kg net accepted coils of one part number and revision; report corresponding piece count"
+  how_well: "Conforms to the declared drawing, winding resistance at its specified test temperature, insulation and dimensional acceptance criteria; criteria and measured results are foreground records"
+  how_long_or_cycle: "One manufacturing and acceptance cycle; no final loudspeaker operating life is assigned to this intermediate product"
+  reference_flow_link: "accepted_voice_coil"
+system_boundary:
+  rules:
+    - rule_id: boundary_part_gate
+      applies_to: "system model"
+      rule: "Provide a clearly identified intermediate-part production inventory. A cradle-to-gate result includes upstream supply and production-waste treatment and excludes final-equipment use and end of life; justify this partial boundary."
+      source_ids:
+        - wri-wbcsd-product-standard-2011
+    - rule_id: boundary_processes
+      applies_to: "representative foreground"
+      rule: "Include wire winding, adhesive application, actual curing energy, demoulding, inspection, failed tests, rework and packing. Diaphragm attachment and magnet assembly belong to downstream loudspeaker production in this reference state."
+      source_ids:
+        - us20170223463a1-voice-coil
+    - rule_id: boundary_conditional_exchanges
+      applies_to: "route instantiation"
+      rule: "Verify all routes against the actual bill of materials, safety data sheets and site records. Add each used solvent, its species-specific release, cleaning agent, fuel, water stream, tooling replacement and subcontract service as a separate exchange; do not assume zero because it is absent from the representative cards. The representative recipe is supplied solvent-free and electrically cured; substantiate that condition."
+      source_ids: []
+    - rule_id: boundary_tooling
+      applies_to: "reusable sleeves and equipment"
+      rule: "Record tooling material, replacement count, reuse life and output served. Include attributable replacement burdens or document and justify exclusion. Do not count a removable sleeve as retained coil mass."
+      source_ids:
+        - us20170223463a1-voice-coil
+    - rule_id: boundary_support
+      applies_to: "logistics and waste treatment"
+      rule: "Collect received mass, distance, transport mode, load allocation and waste transfer destination. Attach transport and treatment datasets at their actual boundaries, without duplicating services already included in supplier datasets."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased insulated winding wire and formulated epoxy adhesive received at the part factory; reusable winding sleeves are tooling, not retained product in the representative route"
+  starting_condition_role: "Foreground entry condition for intermediate-part manufacture"
+  product_classification_scope: "Dedicated audio/video and electroacoustic equipment parts; related general components retain their own identity"
+  recursive_input_rule: "Record a purchased voice coil or other same-category intermediate at its actual incoming state with supplier identity and upstream dataset. Include only subsequent in-house operations; never expand the same input recursively or count its embodied production twice."
+  upstream_dataset_requirement: "Link purchased materials, electricity, packaging, transport and exported-waste treatment to boundary-compatible upstream/downstream support datasets; disclose geography, technology, time and allocation. A gate-to-gate foreground package alone is not a cradle-to-gate result."
+  disclosure: "Declare made/bought stages, internal transfer links, subcontract operations, transport legs, waste destinations, tooling lifetime, utilities, exclusions and intended downstream application."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Bobbinless epoxy-bound copper loudspeaker voice coil"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "part number"
+    - "drawing revision"
+    - "intended parent equipment"
+    - "conductor composition and insulation"
+    - "wire diameter and turns"
+    - "coil geometry"
+    - "adhesive formulation and supplied state"
+    - "curing route"
+    - "bobbinless construction"
+    - "net part mass and piece count"
+    - "resistance test temperature and acceptance criteria"
+    - "insulation test method"
+    - "reject/rework treatment"
+    - "packaging configuration"
+    - "production site and country"
+    - "record period"
+    - "purchased-versus-made stages"
+    - "upstream dataset boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_reference_mass
+    applies_to: "accepted output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh accepted dry cured parts without packaging, temporary sleeves or rejected units. Record calibrated balance resolution and tare."
+  - id: piece_mass_conversion
+    applies_to: "piece-based production and packing"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Convert counts using measured mean mass for the same part revision and lot. Do not use a universal coil or box mass. Retain sample count and variation."
+  - id: energy_conversion
+    applies_to: "electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve meter kWh and normalize with 1 kWh = 3.6 MJ. Do not treat electrical energy as fuel mass or add grid emissions as direct site emissions."
+  - id: wire_and_adhesive_basis
+    applies_to: "winding inputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Wire quantity includes its supplied insulation. Adhesive quantity is total supplied formulation; record solids and any volatile constituents separately. Do not duplicate resin or insulation already included in purchased inputs."
+  - id: batch_matching
+    applies_to: "all inventory rows"
+    required_property_ref:
+      name: "Mass or energy as specified on the row"
+      uuid: ""
+    required_unit: "kg or MJ"
+    rule: "Use a common closed production period, account for work in progress and rework, and divide allocated exchange totals by accepted net mass M. Require M greater than zero."
+process_map:
+  - id: winding
+    name: "Winding and adhesive application"
+    inclusion: "conditional"
+    inclusion_condition: "Representative bobbinless coil is wound in the foreground"
+    role: "foreground production"
+    quantitative_reference: "wound uncured coil mass"
+  - id: curing
+    name: "Electrical curing and demoulding"
+    inclusion: "conditional"
+    inclusion_condition: "Representative wound coils are cured in the foreground"
+    role: "foreground conditioning"
+    quantitative_reference: "cured untested coil mass"
+  - id: release
+    name: "Inspection and packing"
+    inclusion: "required"
+    inclusion_condition: "All manufactured parts undergo declared acceptance; detailed cards below instantiate the voice-coil route"
+    role: "foreground release"
+    quantitative_reference: "1 kg accepted net coils"
+process_inventory:
+  - id: winding
+    label: "Winding and adhesive application"
+    inputs:
+      product:
+        - row_id: winding_wire
+          role: "Insulated copper winding wire"
+          name: "Insulated copper winding wire"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): When winding the representative coil. This condition determines only whether this concrete exchange is present."
+          amount:
+            expression: "Actual supplied wire consumed, including coating and winding ends; Q_wire/M"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted coil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - us20170223463a1-voice-coil
+            ranges: []
+        - row_id: epoxy_adhesive
+          role: "Formulated heat-curing epoxy adhesive"
+          name: "Formulated heat-curing epoxy adhesive"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): When separately supplied adhesive is applied; do not duplicate pre-coated bonding layers. This condition determines only whether this concrete exchange is present."
+          amount:
+            expression: "Weighed complete supplied adhesive formulation consumed; Q_adhesive/M; solvent-free condition must be demonstrated"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted coil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material
+              source_ids:
+                - us20170223463a1-voice-coil
+            ranges: []
+        - row_id: winding_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; unit group 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): When winding and adhesive application use electricity. This condition determines only whether this concrete exchange is present."
+          amount:
+            expression: "Allocated winding and adhesive application meter total in MJ divided by M"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted coil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_winding
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: uncured_coil_out
+          role: "Wound uncured epoxy-coated copper voice coil"
+          name: "Wound uncured epoxy-coated copper voice coil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): When transferring wound coils to curing. This condition determines only whether this concrete exchange is present."
+          amount:
+            expression: "Weighed outgoing uncured coils divided by M; paired with uncured_coil_in"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted coil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_transfer_winding
+              source_ids:
+                - us20170223463a1-voice-coil
+            ranges: []
+      waste:
+        - row_id: winding_wire_scrap
+          role: "Insulated copper winding wire offcuts"
+          name: "Insulated copper winding wire offcuts"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): When wire cutting generates exported offcuts. This condition determines only whether this concrete exchange is present."
+          amount:
+            expression: "Weighed exported wire offcuts including insulation divided by M; identify recovery destination"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted coil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_winding
+              source_ids: []
+            ranges: []
+        - row_id: uncured_adhesive_waste
+          role: "Uncured epoxy adhesive waste"
+          name: "Uncured epoxy adhesive waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): When adhesive is discarded before cure. This condition determines only whether this concrete exchange is present."
+          amount:
+            expression: "Weighed unused adhesive discarded divided by M; retain uncured state and hazard assessment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted coil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_winding
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: curing
+    label: "Electrical curing and demoulding"
+    inputs:
+      product:
+        - row_id: uncured_coil_in
+          role: "Wound uncured epoxy-coated copper voice coil"
+          name: "Wound uncured epoxy-coated copper voice coil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): When receiving the wound uncured coil. This condition determines only whether this concrete exchange is present."
+          amount:
+            expression: "Incoming transfer mass divided by M; same batch and state as uncured_coil_out"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted coil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_transfer_curing
+              source_ids:
+                - us20170223463a1-voice-coil
+            ranges: []
+        - row_id: curing_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; unit group 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): When electrical curing is used. This condition determines only whether this concrete exchange is present."
+          amount:
+            expression: "Metered electrical curing, ventilation and attributable vacuum energy converted to MJ and divided by M"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted coil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_curing
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cured_coil_out
+          role: "Cured untested bobbinless copper voice coil"
+          name: "Cured untested bobbinless copper voice coil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): When transferring demoulded coils for inspection. This condition determines only whether this concrete exchange is present."
+          amount:
+            expression: "Net demoulded outgoing coil mass divided by M; excludes reusable sleeves; paired with cured_coil_in"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted coil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_transfer_curing
+              source_ids:
+                - us20170223463a1-voice-coil
+            ranges: []
+      waste:
+        - row_id: cured_epoxy_flash
+          role: "Cured epoxy resin flash waste"
+          name: "Cured epoxy resin flash waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): When demoulding or trimming generates cured resin flash. This condition determines only whether this concrete exchange is present."
+          amount:
+            expression: "Segregated cured flash discarded divided by M; exclude adhesive retained in product"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted coil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_curing
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: release
+    label: "Inspection and packing"
+    inputs:
+      product:
+        - row_id: cured_coil_in
+          role: "Cured untested bobbinless copper voice coil"
+          name: "Cured untested bobbinless copper voice coil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): When the representative cured coil is received. This condition determines only whether this concrete exchange is present."
+          amount:
+            expression: "Incoming net coil mass divided by M; paired with cured_coil_out"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted coil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_transfer_release
+              source_ids:
+                - us20170223463a1-voice-coil
+            ranges: []
+        - row_id: release_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; unit group 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): When inspection or packing uses electricity. This condition determines only whether this concrete exchange is present."
+          amount:
+            expression: "Metered inspection and packing electricity converted to MJ and divided by M"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted coil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_release
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_box
+          role: "Corrugated cardboard box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): When corrugated shipping boxes are used. This condition determines only whether this concrete exchange is present."
+          amount:
+            expression: "Actual corrugated boxes consumed including discarded boxes divided by M; measured unit masses"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted coil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+        - row_id: polyethylene_bag
+          role: "Low-density polyethylene packaging bag"
+          name: "Low-density polyethylene packaging bag"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): When LDPE bags are used. This condition determines only whether this concrete exchange is present."
+          amount:
+            expression: "Actual LDPE bag consumption including discarded bags divided by M; verify polymer and density grade"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted coil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pack
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_voice_coil
+          role: "Bobbinless epoxy-bound copper loudspeaker voice coil"
+          name: "Bobbinless epoxy-bound copper loudspeaker voice coil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): Representative finished part at declared dispatch gate. This condition determines only whether this concrete exchange is present."
+          amount:
+            expression: "Accepted net coil mass M/M = 1 kg; retain measured M and matching accepted count; exclude packaging"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted coil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_release
+              source_ids:
+                - us20170223463a1-voice-coil
+            ranges: []
+      waste:
+        - row_id: rejected_voice_coil
+          role: "Rejected cured epoxy-bound copper voice coil"
+          name: "Rejected cured epoxy-bound copper voice coil"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): When a cured coil is finally rejected and exported as waste. This condition determines only whether this concrete exchange is present."
+          amount:
+            expression: "Weighed rejected coil mass leaving for waste treatment divided by M; internal rework tracked separately"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted coil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_release
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_box_waste
+          role: "Waste corrugated cardboard box"
+          name: "Waste corrugated cardboard box"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): When boxes are damaged or discarded at the factory. This condition determines only whether this concrete exchange is present."
+          amount:
+            expression: "Weighed discarded corrugated boxes divided by M; exclude packaging dispatched with accepted coils"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted coil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_release
+              source_ids: []
+            ranges: []
+        - row_id: polyethylene_bag_waste
+          role: "Waste low-density polyethylene packaging bag"
+          name: "Waste low-density polyethylene packaging bag"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Inclusion condition (inclusion_condition): When LDPE bags are damaged or discarded at the factory. This condition determines only whether this concrete exchange is present."
+          amount:
+            expression: "Weighed discarded LDPE bags divided by M; keep polymer and contamination state"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net accepted coil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_release
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "shared operations"
+    rule: "Prefer separately measured operations. Where separation is infeasible, use a demonstrated physical driver; disclose a justified alternative when no physical relationship can be established."
+    source_ids:
+      - wri-wbcsd-product-standard-2011
+  - rule_id: allocation_factory
+    applies_to: "winding, curing and testing"
+    rule: "Allocate shared electricity from measured equipment time and load, or occupied cure capacity validated against the meter. Do not allocate different part designs solely by revenue or net mass without explaining the causal relationship. Fractions must sum to one over products served."
+    source_ids: []
+  - rule_id: allocation_rework
+    applies_to: "rejected and reworked coils"
+    rule: "Burdens of failed units and all repeated operations remain in the producing cohort and are normalized to accepted output. Internal rework is not a negative input or a saleable co-product."
+    source_ids: []
+  - rule_id: allocation_scrap
+    applies_to: "wire scrap and exported waste"
+    rule: "Disclose whether each output is waste or a saleable co-product and justify any allocation. Record recycling treatment and allocation consistently, with no automatic avoided-primary-copper credit deducted from manufacturing."
+    source_ids:
+      - wri-wbcsd-product-standard-2011
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material
+      process_id: "winding"
+      flow_role: "wire and adhesive"
+      record_type: "weighing and stock ledger"
+      raw_fields: "lot; part_revision; supplied_composition; gross_issue; return; opening_stock; closing_stock; tare"
+      collection_method: "Calibrated weighing reconciled to stores and supplier specification"
+      unit: "kg"
+      frequency: "Each batch and inventory close"
+      temporal_coverage: "All batches in declared representative production period"
+      site_scope: "Named factory winding line"
+      aggregation_rule: "Sum actual consumption after stock and return adjustment, then apply calc_normalize"
+      quality_evidence: "Calibration; invoices; SDS; batch records; stock reconciliation"
+    - protocol_id: cp_transfer_winding
+      process_id: "winding"
+      flow_role: "internal coils"
+      record_type: "transfer register"
+      raw_fields: "source_batch; destination_batch; part_revision; input_mass; output_mass; opening_WIP; closing_WIP; rework_mass"
+      collection_method: "Weigh paired transfers and reconcile production records"
+      unit: "kg"
+      frequency: "Every transfer"
+      temporal_coverage: "Same period as accepted output with WIP reconciliation"
+      site_scope: "Linked stations at the declared site"
+      aggregation_rule: "Pair identical transfers once on each side; cancel on aggregation"
+      quality_evidence: "Traceable transfer tickets; batch closure"
+    - protocol_id: cp_transfer_curing
+      process_id: "curing"
+      flow_role: "internal coils"
+      record_type: "transfer register"
+      raw_fields: "source_batch; destination_batch; part_revision; input_mass; output_mass; opening_WIP; closing_WIP; rework_mass"
+      collection_method: "Weigh paired transfers and reconcile production records"
+      unit: "kg"
+      frequency: "Every transfer"
+      temporal_coverage: "Same period as accepted output with WIP reconciliation"
+      site_scope: "Linked stations at the declared site"
+      aggregation_rule: "Pair identical transfers once on each side; cancel on aggregation"
+      quality_evidence: "Traceable transfer tickets; batch closure"
+    - protocol_id: cp_transfer_release
+      process_id: "release"
+      flow_role: "internal coils"
+      record_type: "transfer register"
+      raw_fields: "source_batch; destination_batch; part_revision; input_mass; output_mass; opening_WIP; closing_WIP; rework_mass"
+      collection_method: "Weigh paired transfers and reconcile production records"
+      unit: "kg"
+      frequency: "Every transfer"
+      temporal_coverage: "Same period as accepted output with WIP reconciliation"
+      site_scope: "Linked stations at the declared site"
+      aggregation_rule: "Pair identical transfers once on each side; cancel on aggregation"
+      quality_evidence: "Traceable transfer tickets; batch closure"
+    - protocol_id: cp_energy_winding
+      process_id: "winding"
+      flow_role: "electrical energy"
+      record_type: "meter log"
+      raw_fields: "meter_id; start_kWh; end_kWh; equipment; time; load; part_batch; shared_fraction"
+      collection_method: "Submeter actual runs including standby attributable to production, vacuum and heating where used"
+      unit: "kWh; MJ after conversion"
+      frequency: "Each run or metered production period"
+      temporal_coverage: "Include ordinary production, start-up, failed runs and rework"
+      site_scope: "Declared equipment and shared supply"
+      aggregation_rule: "Meter differences times justified allocation fractions, convert and normalize"
+      quality_evidence: "Meter calibration; schedule; reconciliation to site bill"
+    - protocol_id: cp_energy_curing
+      process_id: "curing"
+      flow_role: "electrical energy"
+      record_type: "meter log"
+      raw_fields: "meter_id; start_kWh; end_kWh; equipment; time; load; part_batch; shared_fraction"
+      collection_method: "Submeter actual runs including standby attributable to production, vacuum and heating where used"
+      unit: "kWh; MJ after conversion"
+      frequency: "Each run or metered production period"
+      temporal_coverage: "Include ordinary production, start-up, failed runs and rework"
+      site_scope: "Declared equipment and shared supply"
+      aggregation_rule: "Meter differences times justified allocation fractions, convert and normalize"
+      quality_evidence: "Meter calibration; schedule; reconciliation to site bill"
+    - protocol_id: cp_energy_release
+      process_id: "release"
+      flow_role: "electrical energy"
+      record_type: "meter log"
+      raw_fields: "meter_id; start_kWh; end_kWh; equipment; time; load; part_batch; shared_fraction"
+      collection_method: "Submeter actual runs including standby attributable to production, vacuum and heating where used"
+      unit: "kWh; MJ after conversion"
+      frequency: "Each run or metered production period"
+      temporal_coverage: "Include ordinary production, start-up, failed runs and rework"
+      site_scope: "Declared equipment and shared supply"
+      aggregation_rule: "Meter differences times justified allocation fractions, convert and normalize"
+      quality_evidence: "Meter calibration; schedule; reconciliation to site bill"
+    - protocol_id: cp_waste_winding
+      process_id: "winding"
+      flow_role: "each named waste"
+      record_type: "waste weighing and transfer"
+      raw_fields: "waste_identity; cure_state; contamination; gross_mass; tare; batch; destination; treatment; recovered_quantity"
+      collection_method: "Segregated weighing and licensed-recipient or equivalent destination record"
+      unit: "kg"
+      frequency: "Each batch or waste removal"
+      temporal_coverage: "Same production cohort, adjusted for stored waste"
+      site_scope: "Named generation station and waste store"
+      aggregation_rule: "Sum each actual stream independently; exclude internal reuse from exported waste"
+      quality_evidence: "Weigh tickets; manifests; hazard assessment; treatment records"
+    - protocol_id: cp_waste_curing
+      process_id: "curing"
+      flow_role: "each named waste"
+      record_type: "waste weighing and transfer"
+      raw_fields: "waste_identity; cure_state; contamination; gross_mass; tare; batch; destination; treatment; recovered_quantity"
+      collection_method: "Segregated weighing and licensed-recipient or equivalent destination record"
+      unit: "kg"
+      frequency: "Each batch or waste removal"
+      temporal_coverage: "Same production cohort, adjusted for stored waste"
+      site_scope: "Named generation station and waste store"
+      aggregation_rule: "Sum each actual stream independently; exclude internal reuse from exported waste"
+      quality_evidence: "Weigh tickets; manifests; hazard assessment; treatment records"
+    - protocol_id: cp_waste_release
+      process_id: "release"
+      flow_role: "each named waste"
+      record_type: "waste weighing and transfer"
+      raw_fields: "waste_identity; cure_state; contamination; gross_mass; tare; batch; destination; treatment; recovered_quantity"
+      collection_method: "Segregated weighing and licensed-recipient or equivalent destination record"
+      unit: "kg"
+      frequency: "Each batch or waste removal"
+      temporal_coverage: "Same production cohort, adjusted for stored waste"
+      site_scope: "Named generation station and waste store"
+      aggregation_rule: "Sum each actual stream independently; exclude internal reuse from exported waste"
+      quality_evidence: "Weigh tickets; manifests; hazard assessment; treatment records"
+    - protocol_id: cp_release
+      process_id: "release"
+      flow_role: "accepted voice coil"
+      record_type: "quality and output register"
+      raw_fields: "part_revision; tested_count; accepted_count; reject_count; net_mass; resistance; test_temperature; insulation_result; dimensions; criteria; rework"
+      collection_method: "Calibrated balance and product-specific electrical/dimensional acceptance tests"
+      unit: "kg; piece; ohm; degC; drawing units"
+      frequency: "Every production batch; acceptance sampling plan declared"
+      temporal_coverage: "All accepted lots for the same period"
+      site_scope: "Declared release station"
+      aggregation_rule: "Accepted net mass M is denominator; reconcile tested, accepted, rejected and reworked counts"
+      quality_evidence: "Signed release record; test method; instrument calibration; sampling plan"
+    - protocol_id: cp_pack
+      process_id: "release"
+      flow_role: "corrugated boxes and polyethylene bags"
+      record_type: "pack consumption register"
+      raw_fields: "material; grade; thickness; box_or_bag_count; measured_unit_mass; returns; rejects; reuse_cycles"
+      collection_method: "Weigh each packaging component separately and reconcile purchase and packing records"
+      unit: "kg; piece"
+      frequency: "Each packing batch and stock close"
+      temporal_coverage: "Same period as accepted output"
+      site_scope: "Declared packing station"
+      aggregation_rule: "Gross actual consumption less returns; retained and discarded packaging reconcile independently"
+      quality_evidence: "Packaging specification; sampling weights; invoices; stock closure"
+  calculation_rules:
+    - id: calc_normalize
+      applies_to: "external exchanges"
+      rule: "q_i = Q_i / M, where Q_i is the measured cohort exchange after stock correction and any justified shared-process allocation; M is accepted net product mass"
+      inputs:
+        - "collected Q_i"
+        - M
+        - "allocation fraction"
+      output: "kg/kg or MJ/kg accepted part"
+      source_ids: []
+    - id: calc_energy
+      applies_to: "metered electricity"
+      rule: "Q_MJ = (end_kWh - start_kWh) × 3.6 × allocated_fraction; normalize by M"
+      inputs:
+        - meters
+        - "allocation records"
+        - M
+      output: "MJ per kg accepted part"
+      source_ids: []
+    - id: calc_transfer
+      applies_to: "internal links"
+      rule: "Outgoing transfer equals matching incoming transfer after explicitly recorded WIP changes; cancel both in plant aggregation"
+      inputs:
+        - "transfer tickets"
+        - "WIP masses"
+      output: "reconciled internal mass"
+      source_ids: []
+    - id: calc_yield_balance
+      applies_to: "coil manufacture"
+      rule: "Input material mass plus opening WIP equals accepted coils plus exported process wastes plus identified releases plus closing WIP. Internal transfers and internal rework are not additional plant inputs. Investigate differences using documented measurement uncertainty."
+      inputs:
+        - wire
+        - adhesive
+        - "coil output"
+        - wastes
+        - WIP
+        - "identified releases"
+      output: "batch mass balance and measured yield"
+      source_ids: []
+    - id: calc_pack_balance
+      applies_to: "each packaging material"
+      rule: "Consumption equals retained shipped packaging plus recorded discarded packaging, adjusted for stock and reuse"
+      inputs:
+        - counts
+        - "measured masses"
+        - "waste weights"
+      output: "packaging reconciliation"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all parts"
+      requirement: "Preserve one part number and revision per reference dataset; distinguish a coil from a complete transducer and a bare circuit from an assembled equipment-specific board."
+      evidence: "Drawing; BOM; parent-equipment declaration; official classification"
+    - id: dq_completeness
+      applies_to: "actual route"
+      requirement: "Walk the actual process and compare material balances, SDS, maintenance and utility records. Add any missing concrete exchange; document applicability of every conditional card."
+      evidence: "Signed route checklist; logs; mass balance"
+    - id: dq_representativeness
+      applies_to: "measurement period"
+      requirement: "Declare start/end dates, production volume, geography and technology; cover the operating modes that materially affect this part. Explain downtime, seasonal effects and omitted batches."
+      evidence: "Production records; period selection justification"
+    - id: dq_uncertainty
+      applies_to: "all quantities"
+      requirement: "Retain uncertainty, missing records, allocation sensitivity and supplier data quality. Do not replace missing observations with patent examples or an unverified “typical” range."
+      evidence: "Calibration records; uncertainty assessment; data-gap register"
+    - id: dq_sources
+      applies_to: "supporting datasets"
+      requirement: "Verify delivered state and upstream boundary; retain data-source version in the foreground package, while PCR flow UUIDs remain version-free."
+      evidence: "Supplier declarations; dataset documentation"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "reference product"
+    rule: "Require all declared qualifiers, M greater than zero, accepted product status, net mass and count reconciliation. An uninstantiated generic part description is incomplete."
+    source_ids: []
+  - rule_id: validate_atomic
+    applies_to: "every exchange"
+    rule: "Require one physical or chemical exchange, correct product/waste/elementary type, compatible property and unit, and either verified flow identity or an explicit unresolved identity. A missing UUID never means a zero quantity."
+    source_ids: []
+  - rule_id: validate_conservation
+    applies_to: "production and packing"
+    rule: "Check calc_transfer, calc_yield_balance and calc_pack_balance. Set acceptance tolerance from measurement uncertainty and report deviations; this PCR supplies no invented universal tolerance."
+    source_ids: []
+  - rule_id: validate_energy
+    applies_to: "three processes"
+    rule: "Reconcile separate meters and allocation fractions; exclude duplicate electrical totals and upstream generation emissions from direct site releases."
+    source_ids: []
+  - rule_id: validate_route
+    applies_to: "applicability"
+    rule: "Substantiate solvent-free adhesive, electrical curing, removable tooling and the unmounted coil gate for the representative route. Other routes require their own atomic exchanges, direct releases and finished-part reference before use."
+    source_ids:
+      - us20170223463a1-voice-coil
+  - rule_id: validate_boundary
+    applies_to: "downstream results"
+    rule: "Clearly distinguish gate-to-gate data from a completed cradle-to-gate model. Do not present this part dataset as a complete loudspeaker lifecycle or use it for unqualified comparison of different equipment functions."
+    source_ids:
+      - wri-wbcsd-product-standard-2011
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset only after declared representativeness and review"
+  downstream_use: "Input to assembly of the specified audio/video or electroacoustic equipment; process and lifecyclemodel projections of the collected foreground package"
+  allowed_use: "Matching part revision and supply condition, or an explicitly justified technologically compatible part with disclosed adjustments"
+  excluded_use: "Automatic substitution for complete equipment, copper wire, generic boards, other part functions, final acoustic service or product use/end of life"
+  required_metadata: "Part identity and revision; declared unit and count conversion; intended equipment; site, geography and dates; made/bought stages; process map; allocation; suppliers; logistics; waste treatment; supporting datasets"
+  required_quality_disclosure: "Coverage, uncertainty, data gaps, unresolved identities, missing range evidence, primary/secondary data contributions, measurement basis and exclusions"
+  update_trigger: "Drawing, conductor, insulation, adhesive, cure route, factory, power supply, yield, supplier boundary or packaging change; new records that invalidate representativeness"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "UNSD, CPC Ver. 3.0 Structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv ; retrieved 2026-09-09; independence_key: unsd-cpc-3-0-2025"
+    used_for: "Original rows 47402, 47321, 47323, 47330 and separate component categories; classification and translation scope"
+  - id: "un-cpc-3-0-notes-2025"
+    type: "official_guidance"
+    reference: "UNSD, CPC Ver. 3.0 Explanatory Notes, 30 June 2025, printed pp. 255–259. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf ; retrieved 2026-09-09; independence_key: unsd-cpc-3-0-2025"
+    used_for: "Original parent-equipment and parts entries; same underlying classification as the CSV, not independent quantitative evidence"
+  - id: "us20170223463a1-voice-coil"
+    type: "literature"
+    reference: "US20170223463A1, Voice coil having epoxy-bound winding layers, publication 3 August 2017; description of Figs. 4A and 9, operations 902–908. https://patents.google.com/patent/US20170223463A1/en ; original PDF https://patentimages.storage.googleapis.com/10/88/c4/0487e5cb54c040/US20170223463A1.pdf ; retrieved 2026-09-09; independence_key: us20170223463a1-patent-family"
+    used_for: "Original technical description: insulated conductor, epoxy application, winding, curing, removable sleeves and subsequent diaphragm attachment; representative decomposition only, no quantitative range or mandated design"
+  - id: "wri-wbcsd-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard, 2011, chapters 7–9 and 13. https://ghgprotocol.org/sites/default/files/ghgp/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf ; retrieved 2026-09-09; independence_key: wri-wbcsd-product-standard-2011"
+    used_for: "Original provisions on partial intermediate-product boundaries, allocation and transparent reporting; these principles support this PCR's declared collection rules, not a claim of complete GHG-standard conformity or a full LCIA method"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:71cd33e1a0647df79511dab0a9fc28d3c41e84bd2e84d435b46a0b5b8b8921af"
+  generated_content_sha256: "sha256:f54e37281aa6cf19698c5f1e931593d6e6a1261f7bb93983f4f182d7319bdd3a"

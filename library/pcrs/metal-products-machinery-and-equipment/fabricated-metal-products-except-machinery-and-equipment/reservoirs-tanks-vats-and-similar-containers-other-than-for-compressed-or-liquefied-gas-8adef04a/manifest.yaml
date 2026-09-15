@@ -2,12 +2,13 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.reservoirs-tanks-vats-and-similar-containers-other-than-for-compressed-or-liquefied-gas-8adef04a
 title:
   en-US: "Reservoirs, tanks, vats and similar containers (other than for compressed or liquefied gas), of iron, steel or aluminium, of a capacity exceeding 300 litres, not fitted with mechanical or thermal equipment"
-  zh-CN: null
-status: scaffold
+  zh-CN: "铁、钢或铝制容积超过300升且未装有机械或热力设备的储罐、槽罐、大桶及类似容器（压缩气体或液化气体容器除外）"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
+updated_at_utc: "2026-09-04T18:47:57Z"
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +23,91 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "42210"
     title: "Reservoirs, tanks, vats and similar containers (other than for compressed or liquefied gas), of iron, steel or aluminium, of a capacity exceeding 300 litres, not fitted with mechanical or thermal equipment"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  authoring_action: promote_legacy
+  semantic_boundary:
+    status: verified
+    rationale: "The canonical boundary is the passive finished factory-gate container product: iron, steel, or aluminium; capacity greater than 300 litres; not intended for compressed or liquefied gas; and not fitted with mechanical or thermal equipment. The adjacent category for containers not exceeding 300 litres and categories for pressure-gas containers or equipped tanks are excluded. No other material PCR with this boundary was identified."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  cartesian_expansion_review:
+    status: passed
+    rationale: "Steel and aluminium material routes, welding choices, coating, and hydrostatic testing are expressed as independent row-level inclusion conditions. The inventory does not expand material × joining × finish combinations."
+  evidence_review:
+    original_text_verified: true
+    external_range_policy: "No empirical amount range is asserted because no pair of mutually independent, original-text-verified sources with compatible product state, factory-gate boundary, reference mass, geography, and fabrication technology was established. Foreground collection remains mandatory."
+  unresolved_flow_identities:
+    - row_id: finished_tank_output
+      selected_flow: "Finished large metal reservoir, tank, vat, or similar container"
+      status: unresolved
+      reason_code: no_exact_candidate
+      explanation: "The reference-product flow remains UUID-empty and is also recorded under review_metadata.unresolved.inventory_flow_uuids."
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: steel_plate_input
+        reason_code: no_exact_candidate
+        explanation: "Ranked state-100 candidates were narrower alloy/sheet products, non-plate forms, or had conflicting non-atomic bilingual identities; confirm the actual steel grade and supply state before assigning a UUID."
+      - row_id: aluminium_plate_input
+        reason_code: no_exact_candidate
+        explanation: "Ranked state-100 candidates were printing substrate, foil, strip, or primary-alloy sheet identities and did not cover the product-specific plate grade and recycled-content route."
+      - row_id: steel_fabrication_scrap
+        reason_code: no_exact_candidate
+        explanation: "No ranked state-100 candidate combined segregated ferrous fabrication-scrap semantics with total mass in kg."
+      - row_id: aluminium_fabrication_scrap
+        reason_code: no_exact_candidate
+        explanation: "The aluminium-scrap candidate used volume rather than total mass, while other candidates were material-generic or property-mismatched."
+      - row_id: covered_welding_electrode
+        reason_code: no_exact_candidate
+        explanation: "The bounded welding-consumable search confirmed flux-cored wire but returned no exact covered welding electrode for the non-FCAW route."
+      - row_id: welding_argon
+        reason_code: no_exact_candidate
+        explanation: "Ranked shielding-gas candidates were composition-generic, carbon dioxide, or used area-time/volume-time properties; none exactly identified delivered gaseous argon."
+      - row_id: welding_pm10
+        reason_code: manual_review_required
+        explanation: "PM10 candidates were bound to different air compartments and stack-height classes; the facility release compartment must be declared before selecting one exact elementary-flow UUID."
+      - row_id: epoxy_coating
+        reason_code: no_exact_candidate
+        explanation: "Ranked coating candidates were generic multi-formulation products, resin intermediates, or unrelated materials and did not identify a formulated epoxy coating."
+      - row_id: surface_treatment_wastewater
+        reason_code: no_exact_candidate
+        explanation: "Generic wastewater candidates did not encode metal-surface-treatment origin, composition, treatment state, and receiving boundary."
+      - row_id: hydrotest_wastewater
+        reason_code: no_exact_candidate
+        explanation: "Generic wastewater candidates did not identify drained hydrostatic-test water with its documented quality and receiving boundary."
+      - row_id: finished_tank_output
+        reason_code: no_exact_candidate
+        explanation: "The direct-read candidates included raw metal, a ≤300-litre aluminium shell, and uncoated assembled container bodies; none established the fully inspected finished >300-litre product across coated and uncoated routes."
+    range_evidence_needs:
+      - range_id: major_metal_inputs_and_yield
+        row_ids: [steel_plate_input, aluminium_plate_input, steel_fabrication_scrap, aluminium_fabrication_scrap, finished_tank_output]
+        explanation: "Obtain two independent, boundary-compatible plant or published datasets for tank-plate input, finished-product yield, and segregated scrap, with material grade, recycled content, capacity, and factory-gate scope aligned."
+      - range_id: process_electricity
+        row_ids: [forming_electricity, joining_electricity, finishing_electricity, inspection_electricity]
+        explanation: "Obtain two independent tank-fabrication datasets with compatible forming, joining, finishing, inspection, and reference-mass boundaries; generic fabricated-metal energy observations are not substituted."
+      - range_id: welding_inputs_and_pm10
+        row_ids: [flux_cored_wire, covered_welding_electrode, welding_argon, welding_pm10]
+        explanation: "Obtain two independent observations for the declared welding process, electrode grade, base metal, controls, release compartment, and kg-finished-product basis before setting consumable or PM10 ranges."
+      - range_id: surface_finishing_inputs_and_effluent
+        row_ids: [surface_treatment_water, sodium_hydroxide, epoxy_coating, surface_treatment_wastewater]
+        explanation: "Obtain two independent observations for the same surface-treatment route, coating chemistry, treated area, water accounting, wastewater treatment boundary, and kg-finished-product conversion."
+      - range_id: hydrostatic_test_flows
+        row_ids: [hydrotest_water, hydrotest_wastewater]
+        explanation: "Obtain two independent observations with compatible tank capacity, test protocol, water reuse, drainage boundary, and reference-mass normalization before setting ranges."

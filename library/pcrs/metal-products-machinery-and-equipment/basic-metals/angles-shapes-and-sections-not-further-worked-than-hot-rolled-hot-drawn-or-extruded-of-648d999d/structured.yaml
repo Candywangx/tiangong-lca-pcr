@@ -1,10 +1,974 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41251"
-  title: "Angles, shapes and sections, not further worked than hot-rolled, hot-drawn or extruded, of iron or non-alloy steel"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.angles-shapes-and-sections-not-further-worked-than-hot-rolled-hot-drawn-or-extruded-of-648d999d"
+  classification_refs: "CPC 3.0: 41251 (exact classification context; mapping acceptance is governed separately)"
+  covered_products: "Solid iron or non-alloy steel angles, channels, I-sections, H-sections, T-sections and other open or solid sections, not further worked beyond hot rolling, hot drawing or hot extrusion"
+  excluded_products: "Cold-formed, cold-finished or otherwise further-worked sections; alloy-steel sections; welded sections; sheet piling when a distinct product; hollow sections; rails; bars and rods; coated, fabricated or assembled products"
+  representative_product: "Mill-length non-alloy structural steel section with declared grade and cross-sectional geometry"
+  production_route: "One declared route: hot rolling, hot drawing or hot extrusion; common reheating and final cooling/cutting are included"
+  market_state: "Uncoated, unwelded, unfabricated solid section at producing-mill gate, supplied at declared commercial length, surface condition and heat-treatment state"
+functional_unit:
+  what: "Provision of an iron or non-alloy steel angle, shape or section at the producing-mill gate"
+  how_much: "1,000 kg net saleable section product"
+  how_well: "Conforming to the declared steel grade, cross-sectional geometry, dimensional tolerance, surface condition and mechanical-property specification"
+  how_long_or_cycle: "One production batch through one declared hot-forming route to mill-gate release"
+  reference_flow_link: "angles_shapes_sections_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_included_operations
+      applies_to: "foreground gate-to-gate system"
+      rule: "Include feedstock receipt, reheating, applicable descaling, exactly one declared hot-forming route, cooling, straightening, cutting and management of resulting scrap, scale, sludge and captured dust."
+      source_ids:
+        - ec-jrc-fmp-bref-2022
+        - cn-nbs-industry-classification-2017
+    - rule_id: boundary_upstream_steel
+      applies_to: "semi-finished steel input"
+      rule: "Keep ironmaking, steelmaking and casting outside the foreground, but link the received semi-finished product to an upstream dataset with compatible grade, route, geography and delivery state."
+      source_ids:
+        - worldsteel-lci-methodology-2017
+    - rule_id: boundary_excluded_further_work
+      applies_to: "downstream operations"
+      rule: "Exclude cold forming/finishing, welding, pickling and oiling as a marketed finish, coating, fabrication, distribution, use and end-of-life unless a broader study explicitly adds and labels them outside this PCR foreground."
+      source_ids:
+        - unsd-cpc-3-0-2025
+        - ec-jrc-fmp-bref-2022
+    - rule_id: boundary_internal_recirculation
+      applies_to: "water and recovered material"
+      rule: "Record internally recirculated water and material as internal transfers for engineering checks, but inventory only their net boundary crossings; disclose the calculation and recovery destination."
+      source_ids:
+        - worldsteel-lci-methodology-2017
+boundary_abstraction:
+  declared_starting_condition: "Semi-finished iron or non-alloy steel billet, bloom or beam blank at the section-producing site, with mass, grade, geometry, supplier, casting/steelmaking dataset, incoming temperature and surface condition declared"
+  starting_condition_role: "Upstream product input to the gate-to-gate section-forming foreground"
+  product_classification_scope: "Solid angles, shapes and sections of iron or non-alloy steel whose last shape-forming operation is hot rolling, hot drawing or hot extrusion"
+  recursive_input_rule: "If an input is already a product in this same category, record it as a separately identified upstream product dataset and exclude its prior section-forming burden from this foreground to prevent recursion"
+  upstream_dataset_requirement: "Link each semi-finished steel input to supplier-specific primary data where available; otherwise use and disclose a geographically and technologically representative steelmaking-and-casting dataset"
+  disclosure: "Declare route, feedstock form and incoming temperature, heating technology and fuel, descaling method, cooling method, section geometry, yield, residue destinations, internal recycling, allocation and all exclusions"
+reference_flow_definition:
+  reference_amount: "1,000 kg net saleable product"
+  product_flow_ref:
+    name: "Angles, shapes and sections, not further worked than hot-rolled, hot-drawn or extruded, of iron or non-alloy steel"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "steel grade and standard"
+    - "section geometry and dimensions"
+    - "hot-forming route"
+    - "feedstock form and incoming temperature"
+    - "heat-treatment state"
+    - "surface condition"
+    - "commercial length"
+    - "producing site and geography"
+    - "production period"
+    - "allocation and internal-recycling treatment"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "reference product and all steel-bearing inputs and outputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine mass on calibrated scales or from a documented length-by-section-mass calculation verified against batch weighing; normalize the net conforming output to 1,000 kg."
+  - id: electricity_energy
+    applies_to: "electricity consumed by included foreground processes"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve meter records in their original unit and convert kWh to MJ using 1 kWh = 3.6 MJ; do not mix generated, purchased and exported electricity."
+  - id: fuel_gas_volume
+    applies_to: "gaseous natural gas delivered to reheating"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "State the meter reference temperature, pressure and dry/wet basis; convert supplier billing volumes only with the documented supplier conversion."
+  - id: route_and_hot_charge
+    applies_to: "route-specific inventory and reheating"
+    required_property_ref:
+      name: "declared route and feedstock temperature"
+      uuid: ""
+    required_unit: "route code and °C"
+    rule: "Record exactly one hot-forming route and the incoming feedstock temperature. Do not apply cold-charge reheating values to a hot-charged batch."
+  - id: water_boundary
+    applies_to: "descaling and cooling water"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report net make-up water crossing the foreground boundary separately from internally recirculated water; do not count the same recirculated volume as repeated input."
+process_map:
+  - id: feedstock_receipt
+    name: "Semi-finished steel receipt"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Establish eligible input identity and mass"
+    quantitative_reference: "kg received semi-finished steel per 1,000 kg saleable output"
+  - id: feedstock_reheating
+    name: "Feedstock reheating"
+    inclusion: "required"
+    inclusion_condition: "Always included; hot-charge condition and supplemental heating must be declared"
+    role: "Bring feedstock to forming temperature"
+    quantitative_reference: "Fuel and electricity per 1,000 kg saleable output"
+  - id: descaling
+    name: "Descaling and scale-water treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when water, mechanical or another descaling operation is used within the foreground"
+    role: "Remove adherent scale before or during forming"
+    quantitative_reference: "Net water, electricity and residues per 1,000 kg saleable output"
+  - id: hot_rolling
+    name: "Section hot rolling"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when declared route = hot rolling"
+    role: "Roughing, intermediate and finishing deformation in section stands"
+    quantitative_reference: "Electricity, lubricant and rolling residues per 1,000 kg saleable output"
+  - id: hot_drawing
+    name: "Section hot drawing"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when declared route = hot drawing"
+    role: "Hot drawing through the declared die train"
+    quantitative_reference: "Electricity, lubricant and route residues per 1,000 kg saleable output"
+  - id: hot_extrusion
+    name: "Section hot extrusion"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when declared route = hot extrusion"
+    role: "Hot extrusion through the declared die and press line"
+    quantitative_reference: "Electricity, lubricant and route residues per 1,000 kg saleable output"
+  - id: final_cooling_cutting
+    name: "Cooling, straightening and final cutting"
+    inclusion: "required"
+    inclusion_condition: "Always included; water cooling is conditional on actual operation"
+    role: "Produce saleable commercial-length sections"
+    quantitative_reference: "1,000 kg net saleable output"
+process_inventory:
+  - id: feedstock_receipt
+    label: "Semi-finished steel receipt"
+    inputs:
+      product:
+        - row_id: semi_finished_non_alloy_steel_input
+          role: "Eligible semi-finished non-alloy steel"
+          name: "Semi-finished non-alloy steel billet, bloom or beam blank"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the physical semi-finished steel that crosses the site boundary into this foreground. Keep grades, feedstock geometries and supplier datasets separate when their upstream burdens differ materially."
+          amount:
+            expression: "measured received mass assigned to the declared product batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable section output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_records
+              source_ids:
+                - worldsteel-lci-methodology-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: feedstock_reheating
+    label: "Feedstock reheating"
+    inputs:
+      product:
+        - row_id: reheating_natural_gas_input
+          role: "Gaseous natural gas supplied to the reheating furnace"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Record natural gas crossing the furnace supply boundary when the declared reheating equipment consumes it. State volume reference conditions and exclude gas used by upstream steelmaking."
+          amount:
+            expression: "metered natural-gas volume assigned to eligible reheating campaigns; not_applicable when no natural gas is used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable section output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_meter_records
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: reheating_electricity_input
+          role: "Alternating-current electricity supplied to reheating"
+          name: "Alternating current"
+          flow_type: "product"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record electricity used by electric or induction heating and furnace auxiliaries at the declared meter boundary. Do not select a voltage-specific market UUID until site qualifiers are known."
+          amount:
+            expression: "sub-metered or allocated electricity for eligible reheating campaigns; not_applicable only when demonstrably absent"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable section output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meter_records
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: reheating_fossil_co2_air
+          role: "Fossil carbon dioxide from reheating"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record direct fossil carbon dioxide released by included reheating fuel combustion using stack measurements or a facility emissions record traceable to the furnace fuel inventory."
+          amount:
+            expression: "measured or facility-calculated direct fossil CO2 assigned to eligible reheating campaigns; not_applicable when no fossil fuel is used"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable section output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air_emissions_records
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: reheating_nitrogen_oxides_air
+          role: "Nitrogen oxides from reheating to air"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the monitored nitrogen-oxides elementary emission with the reported species convention, oxygen reference, dry/wet basis and abatement boundary."
+          amount:
+            expression: "stack-monitoring result assigned to eligible reheating campaigns; not_applicable only when the emission is demonstrably absent"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable section output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air_emissions_records
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: reheating_carbon_monoxide_air
+          role: "Carbon monoxide from reheating to air"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the monitored carbon-monoxide elementary emission with the oxygen reference, dry/wet basis and abatement boundary."
+          amount:
+            expression: "stack-monitoring result assigned to eligible reheating campaigns; not_applicable only when the emission is demonstrably absent"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable section output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air_emissions_records
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+  - id: descaling
+    label: "Descaling and scale-water treatment"
+    inputs:
+      product:
+        - row_id: descaling_process_water_input
+          role: "Descaling process water"
+          name: "Descaling process water"
+          flow_type: "product"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Record only net make-up process water crossing the foreground boundary for high-pressure or other wet descaling. Internal recirculation is an engineering transfer, not repeated input."
+          amount:
+            expression: "metered net make-up water assigned to eligible descaling campaigns; not_applicable for a dry route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable section output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_meter_records
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: descaling_electricity_input
+          role: "Alternating-current electricity supplied to descaling"
+          name: "Alternating current"
+          flow_type: "product"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record electricity for descaling pumps and included scale-water treatment at the declared sub-meter boundary."
+          amount:
+            expression: "sub-metered or documented allocation of electricity to eligible descaling campaigns; not_applicable when the process is absent"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable section output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meter_records
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: descaling_mill_scale_output
+          role: "Separately collected mill scale"
+          name: "Mill scale"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "aad763e2-78ab-4fcb-8a3b-8d8525c9e6ca"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record mill scale removed from the steel and collected from descaling or water treatment. Declare oil content, moisture, internal return, external recovery or disposal destination."
+          amount:
+            expression: "measured wet and dry mass with moisture basis declared, assigned to eligible production"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable section output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_mass_records
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: descaling_oily_sludge_output
+          role: "Oily ferrous sludge from scale-water treatment"
+          name: "Oily ferrous sludge from descaling-water treatment"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the distinct oily ferrous sludge stream when generated by treatment of descaling water. Keep it separate from dry scale and declare oil, water and solids content."
+          amount:
+            expression: "measured wet mass and documented composition assigned to eligible production; not_applicable when no oily sludge is generated"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable section output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_mass_records
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+      elementary:
+        []
+  - id: hot_rolling
+    label: "Section hot rolling"
+    inputs:
+      product:
+        - row_id: hot_rolling_electricity_input
+          role: "Alternating-current electricity supplied to section rolling"
+          name: "Alternating current"
+          flow_type: "product"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record electricity for the included roughing, intermediate, finishing and direct line-drive equipment at the declared meter boundary. Supplier, geography, voltage, technology and delivery boundary remain mandatory qualifiers."
+          amount:
+            expression: "sub-metered electricity assigned to the eligible hot-rolling campaign; not_applicable for the other hot-forming routes"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable section output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meter_records
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: hot_rolling_lubricant_oil_input
+          role: "Rolling lubricant oil"
+          name: "Hot rolling oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b6d54639-2da8-49b3-89d2-e14324bb14c8"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the mass of the supplier-declared rolling lubricant oil that crosses the foreground boundary and is consumed by the section rolling line."
+          amount:
+            expression: "purchase-and-issue balance assigned to eligible hot-rolling campaigns; not_applicable when no lubricant is consumed"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable section output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lubricant_records
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: hot_rolling_crop_end_scrap_output
+          role: "Clean steel crop ends from hot rolling"
+          name: "Non-alloy steel crop-end scrap from hot rolling"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record crop ends and rolling rejects as a distinct non-alloy steel scrap stream. Declare internal remelting, external recovery or disposal without applying an undisclosed avoided-burden credit."
+          amount:
+            expression: "measured scrap mass assigned to the eligible hot-rolling campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable section output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_mass_records
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+                - worldsteel-lci-methodology-2017
+            ranges: []
+      elementary:
+        - row_id: hot_rolling_particulate_air
+          role: "Particulate matter released from section rolling"
+          name: "Particulate matter, unspecified size, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the monitored particulate-matter elementary emission from included rolling and handling sources. Declare particle-size convention, capture boundary and whether the amount is measured before or after abatement."
+          amount:
+            expression: "monitored emission assigned to the eligible hot-rolling campaign; not_applicable only when demonstrably absent"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable section output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_air_emissions_records
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+  - id: hot_drawing
+    label: "Section hot drawing"
+    inputs:
+      product:
+        - row_id: hot_drawing_electricity_input
+          role: "Alternating-current electricity supplied to hot drawing"
+          name: "Alternating current"
+          flow_type: "product"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record electricity for the declared hot-drawing line at its meter boundary. Do not reuse a voltage-specific consumption-mix UUID without site qualifiers."
+          amount:
+            expression: "sub-metered electricity assigned to the eligible hot-drawing campaign; not_applicable for the other hot-forming routes"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable section output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meter_records
+              source_ids:
+                - cn-nbs-industry-classification-2017
+            ranges: []
+        - row_id: hot_drawing_lubricant_input
+          role: "Hot-drawing lubricant"
+          name: "Hot-drawing lubricant"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the mass of the supplier-declared lubricant product consumed by the hot-drawing route; retain its formulation and safety data with the foreground records."
+          amount:
+            expression: "purchase-and-issue balance assigned to eligible hot-drawing campaigns; not_applicable when the route or lubricant is absent"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable section output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lubricant_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: hot_drawing_steel_scrap_output
+          role: "Steel trim and reject scrap from hot drawing"
+          name: "Non-alloy steel trim and reject scrap from hot drawing"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record non-alloy steel trim and rejected material from the hot-drawing route as a distinct scrap stream with destination declared."
+          amount:
+            expression: "measured scrap mass assigned to the eligible hot-drawing campaign; not_applicable for the other routes"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable section output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_mass_records
+              source_ids:
+                - worldsteel-lci-methodology-2017
+            ranges: []
+      elementary:
+        []
+  - id: hot_extrusion
+    label: "Section hot extrusion"
+    inputs:
+      product:
+        - row_id: hot_extrusion_electricity_input
+          role: "Alternating-current electricity supplied to hot extrusion"
+          name: "Alternating current"
+          flow_type: "product"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record electricity for the declared hot-extrusion press, drives and included auxiliaries at the meter boundary. Do not reuse a voltage-specific consumption-mix UUID without site qualifiers."
+          amount:
+            expression: "sub-metered electricity assigned to the eligible hot-extrusion campaign; not_applicable for the other hot-forming routes"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable section output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meter_records
+              source_ids:
+                - cn-nbs-industry-classification-2017
+            ranges: []
+        - row_id: hot_extrusion_lubricant_input
+          role: "Hot-extrusion lubricant"
+          name: "Hot-extrusion lubricant"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the mass of the supplier-declared lubricant product consumed by the hot-extrusion route; retain its formulation and safety data with the foreground records."
+          amount:
+            expression: "purchase-and-issue balance assigned to eligible hot-extrusion campaigns; not_applicable when the route or lubricant is absent"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable section output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lubricant_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: hot_extrusion_steel_scrap_output
+          role: "Steel butt, trim and reject scrap from hot extrusion"
+          name: "Non-alloy steel butt, trim and reject scrap from hot extrusion"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record non-alloy steel butt, trim and rejected material from the hot-extrusion route as a distinct scrap stream with destination declared."
+          amount:
+            expression: "measured scrap mass assigned to the eligible hot-extrusion campaign; not_applicable for the other routes"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable section output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_mass_records
+              source_ids:
+                - worldsteel-lci-methodology-2017
+            ranges: []
+      elementary:
+        []
+  - id: final_cooling_cutting
+    label: "Cooling, straightening and final cutting"
+    inputs:
+      product:
+        - row_id: finishing_electricity_input
+          role: "Alternating-current electricity supplied to finishing"
+          name: "Alternating current"
+          flow_type: "product"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record electricity used by cooling-bed auxiliaries, straightening, saws and included material handling at the declared meter boundary."
+          amount:
+            expression: "sub-metered or documented allocation of electricity to eligible finishing campaigns"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable section output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meter_records
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: finishing_cooling_water_input
+          role: "Make-up cooling water"
+          name: "Make-up cooling water"
+          flow_type: "product"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Record net make-up water crossing the foreground boundary for direct or indirect product cooling; internal recirculation is not repeated as input."
+          amount:
+            expression: "metered net make-up water assigned to eligible finishing campaigns; not_applicable when cooling is dry"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable section output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_meter_records
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: angles_shapes_sections_output
+          role: "Net saleable angles, shapes and sections"
+          name: "Angles, shapes and sections, not further worked than hot-rolled, hot-drawn or extruded, of iron or non-alloy steel"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record conforming product released at the mill gate after cooling, straightening and cutting. The amount is the denominator for every normalized inventory exchange."
+          amount:
+            expression: "1,000 kg measured net conforming saleable output"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "reference product at producing-mill gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_material_mass_records
+              source_ids:
+                - unsd-cpc-3-0-2025
+                - worldsteel-sections-eco-profile-2023
+            ranges: []
+      waste:
+        - row_id: finishing_steel_offcuts_output
+          role: "Steel offcuts from final cutting"
+          name: "Non-alloy steel offcuts from final cutting"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record commercial-length saw offcuts and final dimensional rejects separately from route-specific crop ends, with internal remelting or external destination declared."
+          amount:
+            expression: "measured offcut and final-reject mass assigned to eligible finishing campaigns"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable section output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_mass_records
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+                - worldsteel-lci-methodology-2017
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "shared meters and multi-product campaigns"
+    rule: "Prefer process subdivision and direct metering. Where a shared flow cannot be subdivided, allocate by a documented physical driver that represents causality, such as measured operating time and power for electricity or processed hot mass for furnace fuel; disclose the driver and sensitivity."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: allocation_internal_recovery
+    applies_to: "internally recirculated scrap, scale, water and lubricant"
+    rule: "Record the material as an output from the generating process and an input to the receiving process for internal engineering balance, then report only the net crossing of the foreground boundary in the product inventory."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: allocation_external_recovery
+    applies_to: "scrap, scale, sludge and dust leaving the site"
+    rule: "Classify an exported residue as material for recovery or co-product only when its destination and market use are documented. Otherwise model its actual waste treatment. Do not embed an undisclosed avoided-burden or end-of-life credit in this gate-to-gate dataset."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+      - ec-jrc-fmp-bref-2022
+  - rule_id: allocation_route_separation
+    applies_to: "hot rolling, hot drawing and hot extrusion"
+    rule: "Do not average mutually exclusive routes unless the dataset explicitly represents a production-weighted mix with route shares and separate underlying inventories."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass_records
+      process_id: "feedstock_receipt_final_cooling_cutting"
+      flow_role: "steel input and conforming product mass"
+      record_type: "weighbridge, batch scale and production certificate"
+      raw_fields: "batch_id; grade; feedstock_geometry; product_geometry; gross_mass; tare_mass; net_mass; timestamp; scale_id"
+      collection_method: "calibrated weighing with length-by-section-mass cross-check where used"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "representative 12 consecutive months"
+      site_scope: "all included lines and saleable products"
+      aggregation_rule: "sum eligible mass by batch and normalize to certified net saleable output"
+      quality_evidence: "calibration certificates; weigh tickets; production certificates; reconciliation log"
+    - protocol_id: cp_fuel_meter_records
+      process_id: "feedstock_reheating"
+      flow_role: "natural gas input"
+      record_type: "furnace fuel meter and supplier invoice"
+      raw_fields: "meter_id; opening_reading; closing_reading; reference_temperature; reference_pressure; dry_wet_basis; campaign_id"
+      collection_method: "reconcile furnace meter with invoice and operating log"
+      unit: "m3"
+      frequency: "each campaign with monthly reconciliation"
+      temporal_coverage: "representative 12 consecutive months"
+      site_scope: "all included reheating furnaces"
+      aggregation_rule: "subtract non-production use and allocate only with disclosed physical driver"
+      quality_evidence: "meter calibration; invoices; reconciliation and outage logs"
+    - protocol_id: cp_electricity_meter_records
+      process_id: "all_included_processes"
+      flow_role: "electricity input"
+      record_type: "revenue meter and sub-meter"
+      raw_fields: "meter_id; opening_reading; closing_reading; unit; process_id; campaign_id; operating_time"
+      collection_method: "process sub-meter preferred; reconcile with site meter"
+      unit: "kWh or MJ"
+      frequency: "each campaign with monthly reconciliation"
+      temporal_coverage: "representative 12 consecutive months"
+      site_scope: "all included foreground equipment"
+      aggregation_rule: "convert kWh to MJ and normalize eligible consumption to net saleable output"
+      quality_evidence: "meter calibration; single-line diagram; reconciliation record"
+    - protocol_id: cp_water_meter_records
+      process_id: "descaling_final_cooling_cutting"
+      flow_role: "net make-up water"
+      record_type: "make-up water meter and water-balance log"
+      raw_fields: "meter_id; opening_reading; closing_reading; water_quality; circuit_id; discharge_or_loss; campaign_id"
+      collection_method: "measure boundary make-up and exclude internal recirculation"
+      unit: "m3"
+      frequency: "daily or each campaign with monthly balance"
+      temporal_coverage: "representative 12 consecutive months"
+      site_scope: "all included water circuits"
+      aggregation_rule: "net boundary input divided by eligible net saleable output"
+      quality_evidence: "meter calibration; water-balance diagram; reconciliation log"
+    - protocol_id: cp_lubricant_records
+      process_id: "route_specific_forming_process"
+      flow_role: "consumed lubricant product"
+      record_type: "purchase, store issue and return record"
+      raw_fields: "product_id; supplier; formulation_reference; opening_stock; receipts; issues; returns; closing_stock; campaign_id"
+      collection_method: "mass balance of stock and line issues"
+      unit: "kg"
+      frequency: "each issue with monthly reconciliation"
+      temporal_coverage: "representative 12 consecutive months"
+      site_scope: "selected route and included lines"
+      aggregation_rule: "consumption = opening + receipts - returns - closing, assigned to eligible campaign"
+      quality_evidence: "invoices; store ledger; safety data sheet; stock reconciliation"
+    - protocol_id: cp_residue_mass_records
+      process_id: "all_included_processes"
+      flow_role: "scrap, scale, sludge and offcut output"
+      record_type: "container scale, dispatch ticket and residue analysis"
+      raw_fields: "residue_id; row_id; wet_mass; moisture; oil_content; dry_solids; destination; internal_or_external; batch_id"
+      collection_method: "weigh each dispatch or container; retain composition basis"
+      unit: "kg"
+      frequency: "each container or dispatch"
+      temporal_coverage: "representative 12 consecutive months"
+      site_scope: "all included residue collection points"
+      aggregation_rule: "aggregate each distinct stream and destination; do not net unlike residues"
+      quality_evidence: "scale calibration; dispatch tickets; laboratory results; recycler receipt"
+    - protocol_id: cp_air_emissions_records
+      process_id: "feedstock_reheating_hot_rolling"
+      flow_role: "direct elementary emissions"
+      record_type: "continuous or periodic stack monitoring and facility emissions record"
+      raw_fields: "source_id; pollutant; concentration; gas_flow; oxygen_reference; dry_wet_basis; abatement_state; operating_time; campaign_id"
+      collection_method: "approved monitoring method with production-time alignment"
+      unit: "kg"
+      frequency: "continuous or permit-defined campaign sampling"
+      temporal_coverage: "representative 12 consecutive months"
+      site_scope: "all included point and documented fugitive sources"
+      aggregation_rule: "integrate mass emission over eligible operation and normalize to net saleable output"
+      quality_evidence: "monitoring reports; instrument calibration; permit records; calculation workbook"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every inventory row"
+      rule: "normalized amount = eligible row amount × 1,000 kg / eligible net saleable product mass"
+      inputs:
+        - "eligible row amount"
+        - "eligible net saleable output mass"
+      output: "row amount per 1,000 kg reference product"
+      source_ids: []
+    - id: calc_electricity_conversion
+      applies_to: "electricity meter records"
+      rule: "electricity (MJ) = electricity (kWh) × 3.6"
+      inputs:
+        - "kWh meter difference"
+      output: "MJ electricity"
+      source_ids: []
+    - id: calc_net_water_input
+      applies_to: "descaling and cooling water"
+      rule: "net make-up water = measured water entering the circuit from outside the foreground; internal recirculation is excluded from repeated input"
+      inputs:
+        - "make-up meter"
+        - "circuit balance"
+        - "discharge and evaporation records"
+      output: "m3 net make-up water"
+      source_ids:
+        - ec-jrc-fmp-bref-2022
+    - id: calc_steel_mass_balance
+      applies_to: "complete foreground"
+      rule: "received semi-finished steel mass = saleable product mass + separately measured scrap + offcuts + scale + sludge dry iron-bearing solids + captured dust + other disclosed steel-bearing losses, after inventory change"
+      inputs:
+        - "steel input"
+        - "product output"
+        - "all steel-bearing residues"
+        - "stock change"
+      output: "reconciled steel mass balance and unexplained difference"
+      source_ids:
+        - worldsteel-lci-methodology-2017
+    - id: calc_route_gate
+      applies_to: "route-specific rows"
+      rule: "exactly one of hot rolling, hot drawing or hot extrusion is active for a batch; rows for the other two routes are not_applicable, not zero-filled measured values"
+      inputs:
+        - "declared route"
+        - "batch id"
+        - "process log"
+      output: "route-consistent inventory"
+      source_ids:
+        - unsd-cpc-3-0-2025
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product and feedstock"
+      requirement: "Retain grade, standard, geometry, route, heat-treatment state, surface condition, commercial length and upstream feedstock dataset for every represented product family."
+      evidence: "production certificate; order specification; supplier dataset link"
+    - id: dq_temporal_representativeness
+      applies_to: "all foreground data"
+      requirement: "Use a representative 12-consecutive-month period covering normal operation, maintenance and product mix; justify shorter or abnormal periods."
+      evidence: "dated meter exports; production calendar; deviation statement; worldsteel-lci-methodology-2017"
+    - id: dq_completeness
+      applies_to: "all included processes"
+      requirement: "Reconcile site totals to process records and document every excluded meter, residue stream, emission source and downtime adjustment."
+      evidence: "reconciliation workbook; source map; exclusion register"
+    - id: dq_route_separation
+      applies_to: "route-specific production"
+      requirement: "Keep hot-rolling, hot-drawing and hot-extrusion batches separate unless a documented production-weighted route mix is the declared dataset object."
+      evidence: "route code; batch genealogy; weighted aggregation workbook"
+    - id: dq_mass_balance
+      applies_to: "steel-bearing flows"
+      requirement: "Perform and retain a steel mass balance and investigate unexplained differences before release."
+      evidence: "signed mass-balance workbook; worldsteel-lci-methodology-2017"
+    - id: dq_uuid_status
+      applies_to: "Tiangong references"
+      requirement: "Use only directly read public state_code 100 UUIDs with matching flow type, state, property, unit group and qualifiers; leave unresolved identities empty rather than using proxies."
+      evidence: "UUID audit record and unresolved manifest entries"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "product category"
+    rule: "Fail if the product is alloy steel, welded, hollow, cold-formed/cold-finished, coated or otherwise further worked beyond the declared hot-forming route, or if grade and section geometry are missing."
+    source_ids:
+      - unsd-cpc-3-0-2025
+  - rule_id: validate_reference_amount
+    applies_to: "reference flow"
+    rule: "Require exactly 1,000 kg net conforming saleable output and Mass property/unit consistency."
+    source_ids:
+      - worldsteel-sections-eco-profile-2023
+  - rule_id: validate_route_exclusivity
+    applies_to: "process inventory"
+    rule: "Require exactly one active route among hot rolling, hot drawing and hot extrusion for each batch; require the other route rows to be not_applicable."
+    source_ids:
+      - unsd-cpc-3-0-2025
+  - rule_id: validate_boundary
+    applies_to: "system boundary"
+    rule: "Require a linked upstream dataset for the semi-finished steel input and exclude upstream steelmaking from the foreground; require disclosure of any broader added processes."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: validate_mass_balance
+    applies_to: "steel-bearing flows"
+    rule: "Require a reconciled steel mass balance covering product, crop ends, offcuts, scale, sludge, dust and other declared losses; unresolved differences must be explained."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: validate_energy_water
+    applies_to: "electricity, fuel and water"
+    rule: "Require meter boundaries, unit conversions, gas reference conditions and net-make-up water treatment to be documented; reject repeated counting of recirculated water."
+    source_ids:
+      - ec-jrc-fmp-bref-2022
+      - worldsteel-lci-methodology-2017
+  - rule_id: validate_residue_destination
+    applies_to: "scrap, scale, sludge and dust"
+    rule: "Require separate mass and destination for each residue stream; reject an undisclosed recovery credit or a combined residue total."
+    source_ids:
+      - ec-jrc-fmp-bref-2022
+      - worldsteel-lci-methodology-2017
+  - rule_id: validate_uuid_and_ranges
+    applies_to: "flow identities and numerical guidance"
+    rule: "Reject proxy or non-public UUIDs. Treat missing exact UUIDs and missing two-source range evidence as explicit unresolved review items, not permission to invent identities or ranges."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Gate-to-gate foreground production dataset for hot-formed iron or non-alloy steel sections"
+  downstream_use: "secondary_dataset; background_dataset after review and when combined with a compatible upstream semi-finished-steel dataset"
+  allowed_use: "Product and building LCAs, EPD modelling and supply-chain studies that need a route- and site-qualified mill-gate section-forming inventory"
+  excluded_use: "Stand-alone cradle-to-gate steel production without an upstream feedstock dataset; alloy-steel, welded, hollow, cold-finished, coated or fabricated section products; unqualified cross-route comparisons"
+  required_metadata: "PCR id and version; site and geography; production period; steel grade and standard; section geometry and commercial length; feedstock form, supplier dataset and incoming temperature; hot-forming route; furnace fuel and technology; descaling and cooling methods; meter boundaries; allocation; residue destinations; unresolved UUIDs"
+  required_quality_disclosure: "Primary-data coverage; meter and scale calibration; mass-balance result; route shares if aggregated; temporal and technological representativeness; upstream dataset choice; exclusions; allocation sensitivity; emission-monitoring basis"
+  update_trigger: "Change in steel grade family, feedstock source or state, forming route, furnace fuel/technology, descaling or cooling circuit, section-mill configuration, allocation, residue destination, or a material change in annual normalized inventory"
+data_sources:
+  - id: "unsd-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, CPC 41251. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-03)"
+    used_for: "Product identity, allowed hot-forming states and exclusions"
+  - id: "ec-jrc-fmp-bref-2022"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Ferrous Metals Processing Industry, EUR 31321 EN, 2022. https://doi.org/10.2760/196475 (retrieved 2026-09-03)"
+    used_for: "Downstream boundary, structural/section mill process map, descaling, cooling, water circuits, emissions and residues"
+  - id: "worldsteel-lci-methodology-2017"
+    type: "method_factor"
+    reference: "World Steel Association, Life Cycle Inventory Methodology Report for Steel Products, 2017, ISBN 978-2-930069-89-0. https://worldsteel.org/wp-content/uploads/Life-cycle-inventory-methodology-report.pdf (retrieved 2026-09-03)"
+    used_for: "Factory-gate data production, external semi-finished inputs, material recovery, allocation disclosure, quality and mass-balance validation"
+  - id: "worldsteel-sections-eco-profile-2023"
+    type: "dataset"
+    reference: "World Steel Association, Global Sections - Construction LCA eco-profile, publication date June 2023. https://worldsteel.org/wider-sustainability/life-cycle-thinking/lca-eco-profiles-2024-release/global-sections-construction/ (retrieved 2026-09-03)"
+    used_for: "Representative structural-section identity and 1 metric tonne declared-unit precedent"
+  - id: "cn-nbs-industry-classification-2017"
+    type: "official_guidance"
+    reference: "National Bureau of Statistics of China, 2017 National Economic Industry Classification Annotation, class 3130 Steel rolling processing. https://www.stats.gov.cn/xxgk/tjbz/gjtjbz/202008/P020200811608157848094.pdf (retrieved 2026-09-03)"
+    used_for: "Professional Chinese terminology and rolling/extrusion production context"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d6658ad1a8f8f614bed10564999710bbceb85c38fac8f6d05dd1d4364bf5e4d4"
+  generated_content_sha256: "sha256:c4c4e2837824dcb977d30e08ff0912744534fdc209c55d2c0d3f9d484100dfe3"

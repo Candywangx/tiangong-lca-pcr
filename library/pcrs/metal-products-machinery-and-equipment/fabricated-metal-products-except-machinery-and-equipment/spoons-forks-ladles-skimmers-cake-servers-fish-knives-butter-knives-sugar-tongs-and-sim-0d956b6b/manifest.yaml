@@ -2,12 +2,13 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.spoons-forks-ladles-skimmers-cake-servers-fish-knives-butter-knives-sugar-tongs-and-sim-0d956b6b
 title:
   en-US: "Spoons, forks, ladles, skimmers, cake-servers, fish-knives, butter-knives, sugar tongs and similar kitchen or table ware"
-  zh-CN: null
-status: scaffold
+  zh-CN: "匙、叉、长柄勺、漏勺、蛋糕铲、鱼刀、黄油刀、糖夹及类似厨房或餐桌用具"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
+updated_at_utc: "2026-09-04T20:35:57Z"
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +23,62 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "42916"
     title: "Spoons, forks, ladles, skimmers, cake-servers, fish-knives, butter-knives, sugar tongs and similar kitchen or table ware"
     mapping_type: exact
+review_metadata:
+  reference_flow_identity:
+    status: unresolved
+    unresolved_support_fields:
+      - reference_product_flow_uuid
+  semantic_boundary:
+    decision: promote_legacy
+    rationale: "A distinct mass-based factory-gate rule is needed for finished base-metal eating and serving implements. Existing nearby records are empty scaffolds for manufacturing services, other cutlery articles, or non-metal tableware and do not cover this product boundary."
+    representative_route: "Integrated stainless-steel cutlery manufacturing from purchased cold-rolled strip by blanking, forming, heat treatment when required, grinding, polishing, cleaning, optional passivation or coating, inspection, and factory-gate packing."
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: raw_stainless_steel
+        reason_code: no_exact_candidate
+        explanation: "Ranked public state-100 candidates were generic or wrong-material cold/hot rolled products and did not establish grade-neutral cold-rolled stainless-steel strip for this boundary. Receipt: 3beb5da6-8863-4499-ae6b-d863ef5dc1e5."
+      - row_id: finished_cutlery
+        reason_code: no_exact_candidate
+        explanation: "No ranked public state-100 product candidate matched CPC 42916 finished kitchen or table ware; the closest cutlery candidate was CPC 42915 and was rejected. Receipt: 18f45415-d176-4ea2-8018-de1c0a797611."
+      - row_id: stainless_steel_scrap
+        reason_code: no_exact_candidate
+        explanation: "Candidates were externally supplied grade-specific 316 or 430 scrap or broad post-industrial steel scrap; none exactly represented grade-declared stainless-steel offcuts and skeleton scrap generated inside the foreground. Receipt: c3ff204a-d71b-47f4-b670-5d4533a186ab."
+      - row_id: metal_finishing_wastewater
+        reason_code: no_exact_candidate
+        explanation: "The only ranked waste candidate was evaporation condensate, not cleaning and rinse wastewater from metal finishing. Receipt: 41fbefab-7012-44bc-9b22-a599a23335c5."
+      - row_id: metal_bearing_sludge
+        reason_code: no_exact_candidate
+        explanation: "Ranked candidates were municipal or generic sewage sludge, return activated sludge, generic sediment and sludge, or oil sludge; none exactly represented metal-bearing surface-treatment wastewater sludge. Receipt: 8fe5f5a0-0a62-4931-b621-ee321387b6d2."
+    range_evidence_needs:
+      - range_id: rng_raw_stainless_steel
+        row_ids: [raw_stainless_steel]
+        explanation: "Two independent, boundary-compatible original sources are needed for a representative input-to-output mass range by declared alloy grade and product mix."
+      - range_id: rng_energy
+        row_ids: [electricity, natural_gas, fossil_co2]
+        explanation: "Two independent sources with compatible factory-gate operations, heat-treatment route, reference conditions, and emission accounting are needed before energy or direct fossil-carbon ranges can be inferred."
+      - range_id: rng_wet_processing
+        row_ids: [process_water, sodium_hydroxide, nitric_acid, metal_finishing_wastewater, metal_bearing_sludge]
+        explanation: "Two independent sources matched for cleaning/passivation route, bath concentration, rinse boundary, and wastewater-treatment state are needed before wet-processing ranges can be inferred."
+      - range_id: rng_fabrication_consumables
+        row_ids: [cutting_fluid, white_fused_alumina, waste_cutting_oil, waste_polishing_media, particulate_air]
+        explanation: "Two independent sources matched for blanking/grinding/polishing technology and dust-control boundary are needed before consumable, waste, or particulate ranges can be inferred."
+      - range_id: rng_yield_and_packaging
+        row_ids: [finished_cutlery, stainless_steel_scrap, corrugated_board_boxes]
+        explanation: "Two independent sources matched for product mix, alloy grade, saleable-product basis, scrap routing, and packaging configuration are needed before yield, scrap, or packaging ranges can be inferred."

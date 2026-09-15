@@ -1,10 +1,849 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43230"
-  title: "Air or vacuum pumps; air or other gas compressors"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.air-or-vacuum-pumps-air-or-other-gas-compressors"
+  classification_refs: "CPC 3.0: 43230 “Air or vacuum pumps; air or other gas compressors” (un-cpc-3-0-2025)"
+  covered_products: "Finished air pumps; vacuum pumps; positive-displacement or dynamic air compressors; compressors for refrigerants, process gases, and other gases"
+  excluded_products: "Liquid pumps and liquid elevators; fans and blowers sold separately; hydraulic or pneumatic power engines; valves; parts-only products; compressed-air or vacuum utility service"
+  representative_product: "Hermetic refrigeration compressor, used only as the declared UUID-bearing representative within the broader covered category"
+  production_route: "Product-specific material/component receipt and preparation; conditional in-house machining and cleaning; conditional thermal joining or surface operations; assembly, factory testing, and packaging"
+  market_state: "New, finished, quality-released equipment at the manufacturer gate; net product mass and packaging mass reported separately"
+functional_unit:
+  what: "Manufacture of a finished air pump, vacuum pump, air compressor, or other-gas compressor that meets the declared performance specification"
+  how_much: "1 kg net mass of quality-released finished equipment, excluding transport packaging"
+  how_well: "Product type, operating principle, working gas, lubrication state, rated flow or pumping speed, inlet and discharge or base pressure, input power, and applicable factory test method are declared"
+  how_long_or_cycle: "One completed manufacturing and factory-release event; no use-life service is included"
+  reference_flow_link: "rf_finished_pump_or_compressor"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary begins when purchased materials and components are received at the manufacturing site and ends when the tested, quality-released product and its transport packaging are ready to leave the manufacturer gate. Product-specific bills of material and company-specific manufacturing activity are mandatory. Known product inputs, wastes, and direct elementary outputs shall be represented without replacing measured foreground records with category averages. (eu-pef-method-2021)"
+      source_ids: []
+    - rule_id: system_boundary_rule_1_2
+      applies_to: "foreground_manufacturing"
+      rule: "Include product-specific material and component inputs, in-house energy and water, processing aids, factory testing, packaging, wastes, and direct emissions from receipt through manufacturer-gate release."
+      source_ids:
+        - eu-pef-method-2021
+    - rule_id: system_boundary_rule_2
+      applies_to: "conditional_processes"
+      rule: "Include machining, cleaning, thermal joining, coating, or other surface operations only when performed inside the declared foreground boundary; otherwise represent the purchased component with an upstream dataset and do not duplicate its production."
+      source_ids:
+        - jrc-fabricated-metal-products-2020
+    - rule_id: system_boundary_rule_3
+      applies_to: "completeness"
+      rule: "Add every additional product-specific BoM material, process chemical, packaging component, waste stream, and direct elementary flow as its own atomic exchange when known; the listed inventory is a minimum category pattern, not permission to aggregate or omit flows."
+      source_ids:
+        - eu-pef-method-2021
+boundary_abstraction:
+  declared_starting_condition: "Purchased materials and components received at the manufacturing site, with supplier state, grade, and included upstream dataset boundary declared"
+  starting_condition_role: "Cradle-to-gate foreground manufacturing entry condition"
+  product_classification_scope: "Finished equipment within CPC 3.0 code 43230; separate parts and supplied compressed-air or vacuum services are outside scope"
+  recursive_input_rule: "A same-category pump or compressor purchased as an input is recorded once as a specific upstream product dataset and is not recursively disassembled into this foreground manufacturing inventory; disclose its role and avoid double counting its bill of materials"
+  upstream_dataset_requirement: "Every purchased product input requires a geographically and technologically representative upstream dataset or a documented proxy decision; no UUID alone supplies upstream burden data"
+  disclosure: "Declare manufacturing sites, production period, make-or-buy boundary, processes performed in-house, shared utilities, product-specific BoM, net product mass, packaging, factory test conditions, and any excluded or unmetered operation"
+reference_flow_definition:
+  reference_amount: "1 kg net finished equipment at the manufacturer gate"
+  product_flow_ref:
+    name: "Hermetic refrigeration compressor"
+    uuid: "a2a3427c-5d93-494b-a1fd-bcab42fea432"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "covered product type"
+    - "model/family"
+    - "operating principle"
+    - "working gas or service"
+    - "lubricant-injected or lubricant-free state"
+    - "drive and control configuration"
+    - "rated flow"
+    - capacity
+    - "or pumping speed"
+    - "inlet and discharge pressure or base pressure"
+    - "test gas and test conditions"
+    - "rated input power"
+    - "included accessories"
+    - "net dry mass"
+    - "factory-installed fluid mass"
+    - "packaging state"
+    - "manufacturing geography"
+    - "production period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure quality-released product mass net of transport packaging. Report factory-installed lubricant or other fluid included in that mass and report packaging separately."
+  - id: material_mass_basis
+    applies_to: "Material, chemical, packaging, waste, and direct-emission rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record actual wet or as-supplied mass and declare grade, concentration, moisture, or coating state when it changes interpretation."
+  - id: electricity_energy_basis
+    applies_to: "Electricity inputs"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered kWh and convert to MJ using 1 kWh = 3.6 MJ; disclose voltage, grid/supplier, geography, and loss boundary."
+  - id: gas_volume_basis
+    applies_to: "Natural gas and industrial oxygen"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "State meter reference temperature and pressure, gas composition or purity, and whether the volume is normal, standard, or actual. Do not mix volume bases."
+  - id: performance_test_basis
+    applies_to: "Product release test"
+    required_property_ref:
+      name: "Declared product performance"
+      uuid: ""
+    required_unit: "product-specific"
+    rule: "For displacement compressors record volume flow and power with operating/test conditions; for vacuum pumps record the applicable volume-flow, base-pressure, compression-ratio, or critical-backing-pressure method and test gas. (us-doe-10-cfr-431-app-a-2024; din-iso-21360-1-2025)"
+process_map:
+  - id: material_component_preparation
+    name: "Material and component preparation"
+    inclusion: "required"
+    inclusion_condition: "Always; record the product-specific BoM and make-or-buy boundary"
+    role: "Product-specific purchased-material and component basis"
+    quantitative_reference: "kg input per kg net finished equipment"
+  - id: machining_parts_cleaning
+    name: "In-house machining and parts cleaning"
+    inclusion: "conditional"
+    inclusion_condition: "Include when metal removal, compressor-oil washing, or aqueous alkaline parts cleaning occurs on site"
+    role: "Foreground shaping and cleaning"
+    quantitative_reference: "measured inputs and wastes per kg net finished equipment"
+  - id: thermal_joining_surface_operations
+    name: "Thermal joining and surface operations"
+    inclusion: "conditional"
+    inclusion_condition: "Include when natural-gas heating, oxygen-assisted joining/cutting, or another thermal surface operation occurs on site"
+    role: "Foreground thermal processing"
+    quantitative_reference: "measured gas inputs and direct emissions per kg net finished equipment"
+  - id: assembly_testing_packaging
+    name: "Assembly, factory testing, and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always; include the actual factory-release test and shipment packaging configuration"
+    role: "Final manufacture and reference-product release"
+    quantitative_reference: "1 kg net finished equipment plus separately measured packaging"
+process_inventory:
+  - id: material_component_preparation
+    label: "Material and component preparation"
+    inputs:
+      product:
+        - row_id: in_cast_iron
+          role: "Cast-iron material"
+          name: "Cast iron"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record cast iron entering the product-specific BoM when the equipment contains cast-iron housings or other cast components. The Tiangong UUID remains unresolved because the exact-name candidate has an incompatible classification."
+          amount:
+            expression: "measured as-supplied cast-iron mass attributable to the declared product output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_procurement
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: in_carbon_steel
+          role: "Carbon-steel material"
+          name: "Carbon Steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b3b18433-8fd1-4298-98f5-8af11eb64762"
+          property_unit: "Mass / kg"
+          description: "Record carbon steel entering shafts, frames, vessels, fasteners, or other declared product components."
+          amount:
+            expression: "measured as-supplied carbon-steel mass attributable to the declared product output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_procurement
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: in_aluminium_alloy
+          role: "Aluminium-alloy material"
+          name: "Aluminium alloy"
+          flow_type: "product"
+          flow_ref:
+            uuid: "28b47d6d-68b4-4810-b764-01a1fc1352dc"
+          property_unit: "Mass / kg"
+          description: "Record aluminium alloy entering housings, rotors, heat-transfer components, or other declared product components."
+          amount:
+            expression: "measured as-supplied aluminium-alloy mass attributable to the declared product output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_procurement
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: in_magnet_wire
+          role: "Insulated winding wire"
+          name: "Magnet wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2bf8a4db-b29e-404a-ae6c-402adbb77af4"
+          property_unit: "Mass / kg"
+          description: "Record insulated winding wire incorporated into an in-house motor or electromagnetic assembly; exclude it when the complete motor is purchased and represented upstream."
+          amount:
+            expression: "measured winding-wire mass incorporated into the declared product output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_procurement
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: machining_parts_cleaning
+    label: "In-house machining and parts cleaning"
+    inputs:
+      product:
+        - row_id: in_machining_electricity
+          role: "Machining and cleaning electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity used by machining, coolant circulation, parts washing, and associated in-process equipment when this process is in scope."
+          amount:
+            expression: "metered electricity attributable to in-scope machining and parts cleaning"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_cleaning_records
+              source_ids:
+                - eu-pef-method-2021
+                - jrc-fabricated-metal-products-2020
+            ranges: []
+        - row_id: in_process_water
+          role: "Aqueous parts-cleaning water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water fed to on-site aqueous parts cleaning; do not combine it with cooling-water or sanitary-water records."
+          amount:
+            expression: "measured process-water mass supplied to parts cleaning"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_cleaning_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: in_compressor_washing_oil
+          role: "Compressor washing oil"
+          name: "Compressor washing oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a7a72288-977a-4d7e-a200-ed85f83ad84e"
+          property_unit: "Mass / kg"
+          description: "Record compressor washing oil used to remove machining residues or clean internal compressor parts when that oil-based route is used."
+          amount:
+            expression: "measured fresh compressor-washing-oil input"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_cleaning_records
+              source_ids:
+                - jrc-fabricated-metal-products-2020
+            ranges: []
+        - row_id: in_sodium_hydroxide
+          role: "Sodium-hydroxide cleaning agent"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide on a pure-substance-equivalent basis when an alkaline aqueous cleaning bath contains it; disclose solution concentration and bath-management boundary."
+          amount:
+            expression: "measured sodium-hydroxide product mass, with concentration recorded for solution products"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_cleaning_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: out_post_industrial_steel_scrap
+          role: "Post-industrial steel scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Record segregated steel chips, turnings, offcuts, and rejected steel parts leaving the foreground process as one post-industrial steel-scrap waste flow."
+          amount:
+            expression: "measured net mass sent to the declared waste-management route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_cleaning_records
+              source_ids:
+                - eu-pef-method-2021
+                - jrc-fabricated-metal-products-2020
+            ranges: []
+        - row_id: out_waste_lubricating_oil
+          role: "Waste lubricating oil"
+          name: "Waste lubricating oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "9c1267ee-ba26-4c53-9643-89ae0c5764c4"
+          property_unit: "Mass / kg"
+          description: "Record spent compressor washing oil separately from aqueous wastewater and declare recovery or disposal destination."
+          amount:
+            expression: "measured spent oil mass leaving the foreground boundary"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_cleaning_records
+              source_ids:
+                - eu-pef-method-2021
+                - jrc-fabricated-metal-products-2020
+            ranges: []
+        - row_id: out_cleaning_wastewater
+          role: "Cleaning wastewater"
+          name: "Wastewater from cleaning"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f0402393-e82c-47e8-9cd8-a486c97f3e89"
+          property_unit: "Mass / kg"
+          description: "Record the aqueous waste stream from parts cleaning at the point it leaves the foreground process for on-site or off-site treatment; retain composition and treatment-route evidence."
+          amount:
+            expression: "measured cleaning-wastewater mass leaving the foreground process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_machining_cleaning_records
+              source_ids:
+                - eu-pef-method-2021
+                - jrc-fabricated-metal-products-2020
+            ranges: []
+      elementary:
+        []
+  - id: thermal_joining_surface_operations
+    label: "Thermal joining and surface operations"
+    inputs:
+      product:
+        - row_id: in_natural_gas
+          role: "Natural gas for on-site thermal operations"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas supplied to an in-scope furnace, burner, or thermal surface operation; exclude it when the operation is embodied in a purchased component dataset."
+          amount:
+            expression: "metered natural-gas volume at declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_thermal_operations_records
+              source_ids:
+                - eu-pef-method-2021
+                - jrc-fabricated-metal-products-2020
+            ranges: []
+        - row_id: in_industrial_oxygen
+          role: "Industrial oxygen for joining or cutting"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume / m3"
+          description: "Record industrial oxygen used in an oxygen-assisted joining or cutting operation when that route is performed in-house; disclose purity and reference conditions."
+          amount:
+            expression: "metered industrial-oxygen volume at declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_thermal_operations_records
+              source_ids:
+                - eu-pef-method-2021
+                - jrc-fabricated-metal-products-2020
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: out_fossil_carbon_dioxide
+          role: "Fossil carbon dioxide from on-site natural-gas combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record fossil carbon dioxide emitted directly from the in-scope natural-gas combustion source. Upstream fuel-supply emissions remain in the upstream natural-gas dataset."
+          amount:
+            expression: "stack measurement or site-specific calculation reconciled to metered natural gas and documented fuel composition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_air_emissions
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+  - id: assembly_testing_packaging
+    label: "Assembly, factory testing, and packaging"
+    inputs:
+      product:
+        - row_id: in_assembly_electricity
+          role: "Assembly and factory-test electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity used for assembly, leak testing, run-in, performance testing, controls programming, and packaging equipment."
+          amount:
+            expression: "metered electricity attributable to assembly, factory testing, and packaging"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_test_energy
+              source_ids:
+                - eu-pef-method-2021
+                - us-doe-compressed-air-sourcebook-2003
+            ranges: []
+        - row_id: in_corrugated_cardboard
+          role: "Corrugated-cardboard packaging"
+          name: "Corrugated cardboard"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bde297e-98df-463f-bcb4-0db52bf6e0b5"
+          property_unit: "Mass / kg"
+          description: "Record the mass of corrugated cardboard installed as the shipment carton, sleeve, divider, or protective board."
+          amount:
+            expression: "measured corrugated-cardboard mass installed per shipped product configuration"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: in_wooden_pallet_euro
+          role: "EURO wooden pallet"
+          name: "Wooden pallet (EURO)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "96b2b9ac-cfb6-46bf-8ad1-c056e338950a"
+          property_unit: "Mass / kg"
+          description: "Record allocated pallet mass only when the shipped product uses a EURO wooden pallet; declare reuse count and allocation without replacing the physical pallet input."
+          amount:
+            expression: "measured pallet mass divided by the documented number of products and, for reusable pallets, documented uses"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: in_polyethylene_film
+          role: "Polyethylene packaging film"
+          name: "Polyethylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record polyethylene film used for wrapping or moisture protection. The UUID remains unresolved because no candidate passed both semantic and classification review."
+          amount:
+            expression: "measured polyethylene-film mass installed per shipped product configuration"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net finished equipment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: out_reference_product
+          role: "Quality-released representative product"
+          name: "Hermetic refrigeration compressor"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a2a3427c-5d93-494b-a1fd-bcab42fea432"
+          property_unit: "Mass / kg"
+          description: "Record the net mass of finished equipment that passed the declared factory release test. The Tiangong identity is the exact mass-based representative hermetic refrigeration compressor, while other covered equipment types retain their declared type qualifiers."
+          amount:
+            expression: "1 kg net quality-released finished equipment"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "reference flow output"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - un-cpc-3-0-2025
+                - us-doe-10-cfr-431-app-a-2024
+                - din-iso-21360-1-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "product_specific_manufacturing"
+    rule: "Prefer product-specific metering, batch records, or physical subdivision. Do not allocate a complete factory total when a process- or product-family record is available."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_rule_2
+    applies_to: "shared_processes"
+    rule: "If subdivision is not feasible, allocate shared electricity, water, consumables, and wastes using the causal driver that best reflects the operation, such as machine time, test time, processed mass, or measured throughput; document the driver and reconcile allocated totals to the site record."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_rule_3
+    applies_to: "scrap_and_recovered_material"
+    rule: "Report physical scrap and waste outputs without an avoided-production credit inside the foreground manufacturing process. Any recycling substitution or end-of-life credit belongs to a separately declared system model."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_rule_4
+    applies_to: "pallet_reuse"
+    rule: "Allocate a reusable pallet's measured mass over documented uses and products per use; disclose losses, repair, and return boundary. If evidence is absent, model the pallet as single-use rather than assuming a reuse count."
+    source_ids:
+      - eu-pef-method-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_bom_procurement
+      process_id: "material_component_preparation"
+      flow_role: "product-specific BoM inputs"
+      record_type: "released BoM, purchase receipt, stock issue"
+      raw_fields: "material name; grade; supplier state; gross issue; returned material; incorporated mass; product model; batch output"
+      collection_method: "Reconcile released BoM and weighed issues/returns to production batch"
+      unit: "kg"
+      frequency: "each batch or production order"
+      temporal_coverage: "representative production period, normally at least 12 months or all available production for a newer model"
+      site_scope: "every manufacturing site in scope"
+      aggregation_rule: "sum net incorporated and attributable issue mass, then normalize by net conforming output"
+      quality_evidence: "approved BoM revision; scale calibration; purchase and stock reconciliation"
+    - protocol_id: cp_machining_cleaning_records
+      process_id: "machining_parts_cleaning"
+      flow_role: "machining energy, cleaning inputs, and process wastes"
+      record_type: "submeter, batch log, chemical issue, water meter, waste transfer record"
+      raw_fields: "electricity; water; washing oil; sodium-hydroxide product and concentration; batch id; machine hours; steel scrap; spent oil; wastewater; treatment route"
+      collection_method: "Read meters and reconcile consumable issues and waste manifests by batch or causal operating time"
+      unit: "kg; MJ"
+      frequency: "each batch, shift, or meter interval"
+      temporal_coverage: "same period as product output"
+      site_scope: "each site performing the operation"
+      aggregation_rule: "subtract documented non-production use, allocate by causal machine time or throughput, and normalize by net conforming output"
+      quality_evidence: "meter calibration; bath log; waste manifest; mass-balance review"
+    - protocol_id: cp_thermal_operations_records
+      process_id: "thermal_joining_surface_operations"
+      flow_role: "gaseous thermal inputs"
+      record_type: "gas meter, cylinder issue, production log"
+      raw_fields: "natural-gas volume; oxygen volume; reference conditions; purity; operation hours; batch output"
+      collection_method: "Reconcile gas meters or cylinder changes to production orders"
+      unit: "m3"
+      frequency: "each batch or meter interval"
+      temporal_coverage: "same period as product output"
+      site_scope: "each site performing the operation"
+      aggregation_rule: "convert to one declared volume basis, allocate by causal operation time or throughput, and normalize by net conforming output"
+      quality_evidence: "meter certificate; supplier certificate; production log"
+    - protocol_id: cp_direct_air_emissions
+      process_id: "thermal_joining_surface_operations"
+      flow_role: "direct fossil carbon dioxide"
+      record_type: "stack measurement or site emission record"
+      raw_fields: "CO2 mass or concentration and flow; natural-gas volume; fuel composition; operating hours; batch output"
+      collection_method: "Use direct measurement where available; otherwise retain the separate source-backed calculation record used by the site"
+      unit: "kg"
+      frequency: "each monitored period"
+      temporal_coverage: "same period as thermal inputs"
+      site_scope: "each direct-emission source in scope"
+      aggregation_rule: "reconcile to fuel record and normalize by net conforming output"
+      quality_evidence: "monitoring report; instrument calibration; fuel certificate; calculation worksheet"
+    - protocol_id: cp_assembly_test_energy
+      process_id: "assembly_testing_packaging"
+      flow_role: "assembly and release-test electricity"
+      record_type: "submeter, test stand log, production counter"
+      raw_fields: "electricity; product model; test duration; test gas; inlet/discharge/base pressure; rated flow or pumping speed; conforming output"
+      collection_method: "Link test-stand and assembly energy to released serial numbers or production batches"
+      unit: "MJ"
+      frequency: "each batch or test sequence"
+      temporal_coverage: "same period as product output"
+      site_scope: "every assembly and test site"
+      aggregation_rule: "exclude failed-test energy only if failed products and their treatment are separately recorded; normalize by net conforming output"
+      quality_evidence: "calibrated meter; test report; serial-number traceability"
+    - protocol_id: cp_packaging_records
+      process_id: "assembly_testing_packaging"
+      flow_role: "installed shipment packaging"
+      record_type: "packaging specification, issue record, scale record, pallet ledger"
+      raw_fields: "cardboard mass; pallet standard and mass; film polymer and mass; products per pallet; documented pallet uses; losses"
+      collection_method: "Weigh the approved package configuration and reconcile packaging issues to shipped units"
+      unit: "kg"
+      frequency: "each package design and when changed"
+      temporal_coverage: "current packaging configuration during study period"
+      site_scope: "every dispatch configuration in scope"
+      aggregation_rule: "allocate shared and reusable packaging using recorded products and uses, then normalize by net product mass"
+      quality_evidence: "approved packaging specification; scale calibration; pallet tracking record"
+    - protocol_id: cp_finished_output
+      process_id: "assembly_testing_packaging"
+      flow_role: "quality-released product output"
+      record_type: "calibrated scale and release record"
+      raw_fields: "product model; serial or batch; net dry mass; installed fluid mass; accessories; packaging mass; pass/fail result; test method"
+      collection_method: "Weigh quality-released product net of transport packaging and link to factory test result"
+      unit: "kg"
+      frequency: "each unit or statistically controlled batch"
+      temporal_coverage: "same period as all foreground inputs"
+      site_scope: "every final assembly site"
+      aggregation_rule: "sum net conforming output only and preserve rejected-product treatment records"
+      quality_evidence: "scale calibration; release certificate; factory test report"
+  calculation_rules:
+    - id: calc_normalize_reference_mass
+      applies_to: "all inventory rows"
+      rule: "attributable row amount ÷ net mass of quality-released output"
+      inputs:
+        - "row amount"
+        - "cp_finished_output net conforming output"
+      output: "amount per 1 kg net finished equipment"
+      source_ids:
+        - eu-pef-method-2021
+    - id: calc_electricity_mj
+      applies_to: "electricity rows"
+      rule: "metered kWh × 3.6"
+      inputs:
+        - "metered kWh"
+      output: "MJ electricity"
+      source_ids:
+        - eu-pef-method-2021
+    - id: calc_solution_active_mass
+      applies_to: "sodium-hydroxide cleaning agent"
+      rule: "as-supplied solution mass × measured or supplier-certified mass fraction"
+      inputs:
+        - "solution mass"
+        - "NaOH mass fraction"
+      output: "kg sodium hydroxide equivalent, with solution mass retained in supporting record"
+      source_ids:
+        - eu-pef-method-2021
+    - id: calc_reusable_pallet_share
+      applies_to: "EURO wooden pallet"
+      rule: "measured pallet mass ÷ documented lifetime uses ÷ documented products per use"
+      inputs:
+        - "pallet mass"
+        - uses
+        - "products per use"
+      output: "kg pallet attributable to reference product"
+      source_ids:
+        - eu-pef-method-2021
+    - id: calc_shared_process_allocation
+      applies_to: "shared manufacturing records"
+      rule: "total measured amount × documented product causal share; sum of product shares shall equal the total"
+      inputs:
+        - "measured total"
+        - "machine/test time or throughput by product"
+      output: "product-attributable amount"
+      source_ids:
+        - eu-pef-method-2021
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Preserve product type, model, operating principle, working gas, lubrication state, rated performance, pressures, power, accessories, test method, and net mass."
+      evidence: "released specification; nameplate; BoM; factory test report"
+    - id: dq_bom_completeness
+      applies_to: "material and packaging inputs"
+      requirement: "Reconcile the released product-specific BoM and packaging specification to actual issues and returns; add unlisted materials as atomic rows rather than aggregating them."
+      evidence: "BoM reconciliation signed by production or engineering"
+    - id: dq_foreground_completeness
+      applies_to: "all processes"
+      requirement: "Account for all known energy, water, materials, wastes, and direct emissions within the declared site boundary and explain exclusions."
+      evidence: "completeness checklist tied to process map and site records"
+    - id: dq_temporal_geographic
+      applies_to: "all foreground records"
+      requirement: "Use one consistent production period and identify every site; explain shutdowns, ramp-up, outsourcing changes, or non-representative campaigns."
+      evidence: "production calendar; site list; variance review"
+    - id: dq_measurement_traceability
+      applies_to: "measured flows"
+      requirement: "Retain meter/scale identity, calibration status, reading period, raw unit, conversion, allocation driver, and reconciliation result."
+      evidence: "calibration certificates; raw exports; signed calculation workbook"
+    - id: dq_waste_and_emissions
+      applies_to: "waste and elementary outputs"
+      requirement: "Preserve composition, hazardous classification where applicable, treatment destination, and whether direct emissions were measured or calculated."
+      evidence: "waste manifest; laboratory result; monitoring report"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "identity_and_reference_flow"
+    rule: "Reject a package that omits any required product qualifier, mixes net product and packaging mass, or lacks a traceable factory test compatible with the declared product type."
+    source_ids:
+      - us-doe-10-cfr-431-app-a-2024
+      - din-iso-21360-1-2025
+      - us-doe-compressed-air-sourcebook-2003
+  - rule_id: validation_rule_2
+    applies_to: "inventory_balance"
+    rule: "Confirm that product-specific BoM inputs, separately measured packaging, finished output, scrap, wastes, and retained factory-installed fluids are reconcilable on a documented mass basis; investigate rather than force-close unexplained differences."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: validation_rule_3
+    applies_to: "conditional_routes"
+    rule: "A conditional process marked not applicable shall have evidence that it is outsourced, absent, or embodied in purchased components; otherwise collect its atomic exchanges."
+    source_ids:
+      - jrc-fabricated-metal-products-2020
+  - rule_id: validation_rule_4
+    applies_to: "energy_and_gases"
+    rule: "Reconcile electricity to meter totals after allocation; preserve kWh before MJ conversion; confirm gas reference conditions and purity before aggregating volumes."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: validation_rule_5
+    applies_to: "uuid_and_localization"
+    rule: "Confirm every UUID-bearing English and Chinese row has the same UUID and uses the public state-100 English and Chinese base names; keep in_cast_iron and in_polyethylene_film UUID-empty until classification-compatible exact candidates are verified."
+    source_ids: []
+  - rule_id: validation_rule_6
+    applies_to: "evidence_and_ranges"
+    rule: "Do not infer an external empirical range without at least two independent, original-text-verified and boundary-compatible sources. Until then require foreground records and preserve the manifest range-evidence needs."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Product-specific cradle-to-gate foreground manufacturing dataset"
+  downstream_use: "secondary_dataset; background_dataset when product identity, geography, technology, time, and make-or-buy boundary are compatible"
+  allowed_use: "Manufacturing-footprint modelling, supplier comparison within compatible specifications, component or system LCAs, and later life-cycle model projection with separately modelled downstream stages"
+  excluded_use: "Direct comparison of unlike pump/compressor technologies or performance duties; representation of compressed-air or vacuum utility service; use-stage energy modelling without a declared duty profile; parts-only products; liquid pumps"
+  required_metadata: "PCR id/version; product type/model; working gas; operating principle; lubrication state; rated performance and pressures; test method/conditions; input power; net mass; installed fluids; accessories; BoM revision; packaging; sites; geography; production period; make-or-buy boundary; allocation drivers; upstream dataset choices"
+  required_quality_disclosure: "Foreground coverage; meter and scale calibration; BoM reconciliation; shared-process allocation; conditional-process applicability; waste and emission measurement; unresolved UUIDs; absence of external empirical ranges"
+  update_trigger: "Product design or BoM revision; supplier/material change; manufacturing-site or make-or-buy change; test method or performance rating change; packaging change; process/energy mix change; new exact Tiangong identity; new independent compatible range evidence; or material data-quality finding"
+data_sources:
+  - id: "un-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Ver. 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-05)"
+    used_for: "Official CPC 43230 identity and scope anchor"
+  - id: "eu-pef-method-2021"
+    type: "official_guidance"
+    reference: "European Commission, Commission Recommendation (EU) 2021/2279, consolidated English PDF, https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX%3A02021H2279-20211230 (retrieved 2026-09-05)"
+    used_for: "Product-specific BoM, company-specific manufacturing records, input/output completeness, allocation, data quality, and reporting"
+  - id: "jrc-fabricated-metal-products-2020"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Environmental Management Practice in the Fabricated Metal Products sector, 2020, https://publications.jrc.ec.europa.eu/repository/bitstream/JRC119281/jrc119281_jrc_bemp_fabricated_metal_product_manufacturing_report.pdf (retrieved 2026-09-05)"
+    used_for: "Machining, metalworking fluids, cleaning, surface operations, assembly, utilities, and fabricated-metal process decomposition"
+  - id: "us-doe-compressed-air-sourcebook-2003"
+    type: "official_guidance"
+    reference: "U.S. Department of Energy, Improving Compressed Air System Performance: A Sourcebook for Industry, 2003, https://www1.eere.energy.gov/manufacturing/tech_assistance/pdfs/compressed_air_sourcebook.pdf (retrieved 2026-09-05)"
+    used_for: "Compressor technology, lubricant state, air quality, capacity, pressure, and performance qualifiers"
+  - id: "us-doe-10-cfr-431-app-a-2024"
+    type: "standard"
+    reference: "U.S. Department of Energy, 10 CFR part 431, subpart T, appendix A, Uniform Test Method for Certain Air Compressors, 2024 annual edition, https://www.govinfo.gov/content/pkg/CFR-2024-title10-vol3/pdf/CFR-2024-title10-vol3-part431-subpartT-appA.pdf (retrieved 2026-09-05)"
+    used_for: "Official measurement requirements for compressor volume flow, inlet and discharge pressure, temperature, condensate, and packaged compressor power input; incorporates the applicable ISO 1217:2009 provisions by reference"
+  - id: "din-iso-21360-1-2025"
+    type: "standard"
+    reference: "DIN ISO 21360-1:2025-04, Vacuum technology — Standard methods for measuring vacuum-pump performance — Part 1: General description (ISO 21360-1:2020), https://www.dinmedia.de/de/norm/din-iso-21360-1/389352087 (retrieved 2026-09-05)"
+    used_for: "Official standards-body description of methods for vacuum-pump volume flow, base pressure, compression ratio, and critical backing pressure"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:0ca4953e259e26202ef6ff5441f4d2e104185524518c687e36719dc66eabd4b0"
+  generated_content_sha256: "sha256:c7c0a761799c7094cb84eeef625c501b6c1e7e70b9fdceee89cf53d7b2cccdd4"

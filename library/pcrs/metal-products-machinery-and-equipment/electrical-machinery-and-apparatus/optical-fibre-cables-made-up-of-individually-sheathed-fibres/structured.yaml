@@ -1,10 +1,717 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "46360"
-  title: "Optical fibre cables made up of individually sheathed fibres"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.electrical-machinery-and-apparatus.optical-fibre-cables-made-up-of-individually-sheathed-fibres"
+  classification_refs: "CPC 3.0: 46360 (exact classification context)"
+  covered_products: "Optical fibre cables made up of individually sheathed fibres; products may incorporate electric conductors or be fitted with optical-fibre connectors"
+  excluded_products: "Bare optical fibres; optical fibre bundles and cables whose fibres are not individually sheathed; electric-only wire or cable; separately supplied connectors; installed cable systems and network services"
+  representative_product: "Tested, saleable optical fibre communication cable wound on its dispatch drum at the factory gate"
+  production_route: "Fibre preparation and buffering or micromodule formation, core assembly, water blocking, reinforcement, sheath extrusion, marking, testing, optional conductor or connector integration, and dispatch packaging"
+  market_state: "Finished cable at factory gate, declared by mass and accompanied by its dispatch packaging inventory"
+functional_unit:
+  what: "Provide a finished optical fibre cable capable of transmitting declared optical signals while meeting the declared mechanical, environmental, and fire-performance requirements"
+  how_much: "1 kg of saleable cable at the factory gate, excluding dispatch packaging mass"
+  how_well: "Meets the declared optical attenuation, fibre type and count, tensile, crush, impact, bending, temperature, water-blocking, and applicable fire-performance specifications"
+  how_long_or_cycle: "One manufacturing output at factory gate; service life is not normalized in this cradle-to-gate PCR"
+  reference_flow_link: "One kilogram of tested saleable cable output after process loss, with length-per-kilogram and fibre-kilometres disclosed for functional comparison"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "Foreground system"
+      rule: "Include all on-site operations from receipt of materials through testing, winding, and dispatch packaging; installation, use, and end-of-life remain outside this cradle-to-gate foreground boundary."
+      source_ids:
+        - cablescom-optical-fibre-duct-cable-epd-2022
+        - iec-tr-62839-1-2025
+    - rule_id: boundary_variant_components
+      applies_to: "Product variants"
+      rule: "Include incorporated conductors and fitted connectors only when present in the declared reference product, and record each as its own atomic exchange."
+      source_ids:
+        - unsd-industrial-commodity-statistics-yearbook-2014
+    - rule_id: boundary_upstream
+      applies_to: "Purchased products"
+      rule: "Link upstream production and inbound supply to representative datasets; do not report upstream dataset emissions as direct foreground elementary flows."
+      source_ids:
+        - cablescom-optical-fibre-duct-cable-epd-2022
+    - rule_id: boundary_capital_goods
+      applies_to: "Capital goods"
+      rule: "Exclude buildings and production equipment unless the study goal, applicable program rule, or documented significance assessment explicitly requires them; disclose the decision."
+      source_ids:
+        - cablescom-optical-fibre-duct-cable-epd-2022
+boundary_abstraction:
+  declared_starting_condition: "Purchased optical fibre, cable compounds, strength members, optional conductors or connectors, and dispatch-packaging components received at the manufacturing site"
+  starting_condition_role: "Upstream product inputs to foreground cable manufacture"
+  product_classification_scope: "Optical fibre cables made up of individually sheathed fibres, including designs assembled with electric conductors or fitted with connectors"
+  recursive_input_rule: "If a purchased input is itself an in-scope finished optical fibre cable, record it once as a product input with an upstream dataset and do not recursively reproduce its manufacturing inventory in this foreground process."
+  upstream_dataset_requirement: "Use supplier-specific datasets where available; otherwise use geography-, technology-, recycled-content-, and product-state-representative background datasets for every purchased input."
+  disclosure: "Declare factory geography, reporting period, cable construction, included operations, supplier-data coverage, cut-offs, internal recycling, treatment routes, and all deviations from the required boundary."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Optical fibre cable made up of individually sheathed fibres"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "cable construction and application"
+    - "fibre type and count"
+    - "fibre-kilometres and cable length per kg"
+    - "sheath polymer and fire-performance class"
+    - "water-blocking and reinforcement system"
+    - "metallic armour or incorporated conductor type and mass"
+    - "connector state and interface"
+    - "factory geography and technology"
+    - "dispatch packaging"
+    - "reference product UUID unresolved"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference cable output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure net saleable cable mass without dispatch packaging and normalize all inventory rows to 1 kg; retain cable length and fibre count so cable-kilometres and fibre-kilometres can be reconstructed."
+  - id: packaging_separation
+    applies_to: "Wooden drum, steel band, and protective film"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure each dispatch-packaging component separately and do not include its mass in the 1 kg reference cable output."
+  - id: electricity_conversion
+    applies_to: "Purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the meter reading in kWh and convert to MJ using 1 kWh = 3.6 MJ; do not add upstream grid emissions as foreground elementary exchanges."
+  - id: material_net_consumption
+    applies_to: "Cable materials"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Calculate consumed mass as opening stock plus receipts minus closing stock minus returned material; separately measured internal regrind remains inside the foreground boundary and is not counted again as a new input."
+  - id: waste_route_measurement
+    applies_to: "Manufacturing scrap"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record each chemically or physically distinct waste at the point it leaves the foreground boundary and disclose moisture, contamination, and contracted treatment route."
+process_map:
+  - id: cable_manufacturing_and_packaging
+    name: "Optical fibre cable manufacturing, testing, winding, and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always included for an in-scope factory-gate cable"
+    role: "Foreground production"
+    quantitative_reference: "1 kg tested saleable optical fibre cable output, excluding dispatch packaging mass"
+process_inventory:
+  - id: cable_manufacturing_and_packaging
+    label: "Optical fibre cable manufacturing, testing, winding, and packaging"
+    inputs:
+      product:
+        - row_id: optical_fibre
+          role: "Silica optical fibre"
+          name: "Silica optical fibre for telecommunications cable"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of purchased silica optical fibres entering the cable line, including applied primary coatings received with the fibre when they cannot be separated by supplier data."
+          amount:
+            expression: "Measured net mass consumed in saleable and rejected cable"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg tested saleable cable output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - cablescom-optical-fibre-duct-cable-epd-2022
+            ranges: []
+        - row_id: pbt_granules
+          role: "Polybutylene terephthalate granules"
+          name: "Polybutylene terephthalate granules"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record PBT granules consumed when fibre buffers, loose tubes, or micromodules are extruded on site."
+          amount:
+            expression: "Measured net PBT mass consumed"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg tested saleable cable output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - cablescom-optical-fibre-duct-cable-epd-2022
+            ranges: []
+        - row_id: water_blocking_polyester_yarn
+          role: "Water-blocking polyester yarn"
+          name: "Water-blocking polyester yarn"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record polyester yarn impregnated or coated to provide the declared cable water-blocking function. Use not_applicable only for a design with no such yarn."
+          amount:
+            expression: "Measured net yarn mass consumed; zero only when absence is demonstrated by the bill of materials"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg tested saleable cable output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - cablescom-optical-fibre-duct-cable-epd-2022
+            ranges: []
+        - row_id: hdpe_material
+          role: "High-density polyethylene sheath material"
+          name: "High-density polyethylene material, HDPE"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ef7b2077-b2c6-49e3-b9d7-7fce4d3f27a0"
+          property_unit: "Mass / kg"
+          description: "Record primary-form HDPE compounded for outer-sheath extrusion; disclose grade, recycled content, additives, and supplier."
+          amount:
+            expression: "Measured net HDPE compound mass consumed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg tested saleable cable output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - cablescom-optical-fibre-duct-cable-epd-2022
+            ranges: []
+        - row_id: glass_reinforced_polymer
+          role: "Glass-fibre-reinforced polymer strength member"
+          name: "glass fibre reinforced polymer"
+          flow_type: "product"
+          flow_ref:
+            uuid: "dab98d11-c76c-4d40-bac9-a3d082f1fb36"
+          property_unit: "Mass / kg"
+          description: "Record glass-fibre-reinforced polymer rods or equivalent strength members incorporated into the cable; disclose resin system and geometry."
+          amount:
+            expression: "Measured mass incorporated plus separately recorded production offcuts"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg tested saleable cable output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - cablescom-optical-fibre-duct-cable-epd-2022
+            ranges: []
+        - row_id: aramid_yarn
+          role: "Aramid reinforcement yarn"
+          name: "Aramid reinforcement yarn"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record aramid yarn only for cable constructions that incorporate it as tensile reinforcement."
+          amount:
+            expression: "Measured net aramid yarn mass consumed; zero only when absence is demonstrated by the bill of materials"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg tested saleable cable output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - cablescom-optical-fibre-duct-cable-epd-2022
+            ranges: []
+        - row_id: insulated_copper_conductor
+          role: "Insulated copper conductor"
+          name: "Insulated copper conductor for hybrid optical fibre cable"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of an insulated copper conductor only when it is assembled into the declared optical fibre cable."
+          amount:
+            expression: "Measured mass incorporated into the reference cable; zero only when the product specification confirms no electric conductor"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg tested saleable cable output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - unsd-industrial-commodity-statistics-yearbook-2014
+            ranges: []
+        - row_id: optical_fibre_connector
+          role: "Optical-fibre cable connector"
+          name: "Connectors for optical fibres, optical fibre bundles or cables"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5f90c9f6-a484-428c-8846-89bece3a62ec"
+          property_unit: "Mass / kg"
+          description: "Record finished optical-fibre connectors only when fitted at the manufacturing site before the cable crosses the factory gate."
+          amount:
+            expression: "Measured connector mass incorporated into the reference cable; zero only when the cable is supplied unterminated"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg tested saleable cable output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - unsd-industrial-commodity-statistics-yearbook-2014
+            ranges: []
+        - row_id: cable_marking_ink
+          role: "Cable marking ink"
+          name: "Cable marking ink"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the specific ink formulation consumed for sheath or tube identification and disclose carrier chemistry and hazardous constituents."
+          amount:
+            expression: "Measured or stock-balanced ink mass consumed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg tested saleable cable output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - cablescom-optical-fibre-duct-cable-epd-2022
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record purchased electricity consumed by the included cable line and allocated support operations. Grid mix, voltage, geography, and loss boundary are required foreground qualifiers."
+          amount:
+            expression: "Metered electricity converted from kWh to MJ and allocated according to Section 7"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg tested saleable cable output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_electricity
+              source_ids:
+                - cablescom-optical-fibre-duct-cable-epd-2022
+            ranges: []
+        - row_id: wooden_cable_drum
+          role: "Wooden cable drum"
+          name: "Packing cases, boxes, crates, drums and similar packings, of wood, cable-drums of wood"
+          flow_type: "product"
+          flow_ref:
+            uuid: "39feb4f9-43da-4106-aa3c-f52afb654078"
+          property_unit: "Mass / kg"
+          description: "Record the mass of wooden drums and staves supplied with the cable; identify reused drums and allocate their actual use cycle consistently."
+          amount:
+            expression: "Measured dispatch mass attributable to the reference cable shipment"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg tested saleable cable output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_mass
+              source_ids:
+                - cablescom-optical-fibre-duct-cable-epd-2022
+            ranges: []
+        - row_id: steel_packaging_band
+          role: "Steel packaging band"
+          name: "Steel baling band"
+          flow_type: "product"
+          flow_ref:
+            uuid: "56fe4f71-b594-4b55-8553-c87f2516737d"
+          property_unit: "Mass / kg"
+          description: "Record the mass of finished steel baling band used to secure the cable drum or its protection. Disclose coating or galvanization, width, thickness, grade, reuse status, supplier geography, and delivery boundary; do not substitute baling wire or generic metal strip."
+          amount:
+            expression: "Measured dispatch mass attributable to the reference cable shipment"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg tested saleable cable output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_mass
+              source_ids:
+                - cablescom-optical-fibre-duct-cable-epd-2022
+            ranges: []
+        - row_id: plastic_coated_paperboard_film
+          role: "Plastic-coated paperboard protective film"
+          name: "Plastic-coated paperboard protective film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of the plastic-coated paperboard protector wrapped around the dispatch drum; do not substitute a generic packaging category."
+          amount:
+            expression: "Measured dispatch mass attributable to the reference cable shipment"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg tested saleable cable output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_mass
+              source_ids:
+                - cablescom-optical-fibre-duct-cable-epd-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_optical_fibre_cable
+          role: "Tested saleable optical fibre cable"
+          name: "Optical fibre cable made up of individually sheathed fibres"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the tested cable output excluding the mass of its wooden drum, steel band, and protective film. The exact TianGong reference-product UUID remains unresolved."
+          amount:
+            expression: "1 kg after normalization from measured net saleable output"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output_mass
+              source_ids:
+                - un-cpc-3-0-2025
+                - unsd-industrial-commodity-statistics-yearbook-2014
+            ranges: []
+      waste:
+        - row_id: waste_polyethylene
+          role: "Separately collected polyethylene sheath scrap"
+          name: "Waste polyethylene"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "7e78f0a8-c042-47ca-a742-3bac92be1477"
+          property_unit: "Mass / kg"
+          description: "Record clean or contaminated polyethylene start-up pieces, trim, and rejected sheath that leave the foreground boundary; internal regrind does not cross the boundary."
+          amount:
+            expression: "Measured net waste mass sent off site, by treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg tested saleable cable output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids:
+                - cablescom-optical-fibre-duct-cable-epd-2022
+            ranges: []
+        - row_id: waste_pbt
+          role: "Polybutylene terephthalate buffer-tube scrap"
+          name: "Waste polybutylene terephthalate"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record PBT start-up pieces, trim, and rejected buffer tube that leave the foreground boundary; do not merge this polymer with PET or other plastic waste."
+          amount:
+            expression: "Measured net waste mass sent off site, by treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg tested saleable cable output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids:
+                - cablescom-optical-fibre-duct-cable-epd-2022
+            ranges: []
+        - row_id: waste_optical_fibre
+          role: "Silica optical-fibre offcuts"
+          name: "Silica optical-fibre offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record cut lengths and rejected silica optical fibre that leave the foreground boundary, including inseparable primary coating when present."
+          amount:
+            expression: "Measured net waste mass sent off site, by treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg tested saleable cable output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids:
+                - cablescom-optical-fibre-duct-cable-epd-2022
+            ranges: []
+        - row_id: waste_glass_reinforced_plastic
+          role: "Glass-reinforced plastic strength-member offcuts"
+          name: "Glass-reinforced plastic waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "52db6bdb-3bc0-4f88-84fe-7bfec8bf74c5"
+          property_unit: "Mass / kg"
+          description: "Record rejected or trimmed glass-reinforced plastic strength members that leave the foreground boundary."
+          amount:
+            expression: "Measured net waste mass sent off site, by treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg tested saleable cable output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids:
+                - cablescom-optical-fibre-duct-cable-epd-2022
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "Foreground operations"
+    rule: "Avoid allocation by using product-specific bills of material, cable-line production records, dedicated meters, and separately weighed waste wherever available."
+    source_ids:
+      - cablescom-optical-fibre-duct-cable-epd-2022
+  - rule_id: allocation_shared_inputs
+    applies_to: "Shared energy, auxiliary materials, packaging, and waste"
+    rule: "When physical subdivision is not feasible, allocate shared quantities by net saleable cable mass produced during the same reporting period; disclose the products, quantities, and allocation shares."
+    source_ids:
+      - cablescom-optical-fibre-duct-cable-epd-2022
+  - rule_id: allocation_internal_recycling
+    applies_to: "Internal regrind and rework"
+    rule: "Keep material internally reprocessed into the same reporting period inside the foreground boundary; count only net purchased input and waste leaving the boundary, and prevent double counting."
+    source_ids: []
+  - rule_id: allocation_recycling_outputs
+    applies_to: "Scrap sent for recycling or recovery"
+    rule: "Apply the polluter-pays principle at the foreground boundary and do not claim avoided production unless a downstream model explicitly applies a documented recycling method."
+    source_ids:
+      - cablescom-optical-fibre-duct-cable-epd-2022
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass
+      process_id: "cable_manufacturing_and_packaging"
+      flow_role: "Each cable material input"
+      record_type: "ERP issue and return records, purchase receipts, stock counts, bill of materials"
+      raw_fields: "material identity; supplier; grade; opening stock; receipts; closing stock; returns; internal regrind; cable product code"
+      collection_method: "Reconcile stock balance to cable-line issue records and approved bill of materials"
+      unit: "kg"
+      frequency: "Per batch with monthly reconciliation"
+      temporal_coverage: "Representative continuous twelve-month period or justified campaign"
+      site_scope: "Each included factory and cable line"
+      aggregation_rule: "Net consumption by material and product code, then allocate only shared residues under Section 7"
+      quality_evidence: "Purchase documents, supplier specifications, stock reconciliation, and approved bill of materials"
+    - protocol_id: cp_electricity
+      process_id: "cable_manufacturing_and_packaging"
+      flow_role: "Purchased electricity"
+      record_type: "Utility invoices and calibrated submeter readings"
+      raw_fields: "meter id; opening and closing reading; kWh; voltage; supplier; grid product; line hours; reporting period"
+      collection_method: "Prefer dedicated cable-line meters; reconcile submeters to site invoice and allocate documented shared loads"
+      unit: "kWh"
+      frequency: "Continuous or batch-level, reconciled monthly"
+      temporal_coverage: "Same period as output records"
+      site_scope: "Each included factory and cable line"
+      aggregation_rule: "Convert kWh to MJ and divide by allocated saleable cable mass"
+      quality_evidence: "Invoice, meter calibration or verification, reconciliation, and allocation worksheet"
+    - protocol_id: cp_packaging_mass
+      process_id: "cable_manufacturing_and_packaging"
+      flow_role: "Each dispatch-packaging component"
+      record_type: "Packing list, packaging issue record, and scale record"
+      raw_fields: "component identity; material; supplier; reused status; gross mass; tare mass; shipment; cable product code"
+      collection_method: "Weigh each component or use verified supplier mass per item multiplied by dispatched count"
+      unit: "kg"
+      frequency: "Per shipment"
+      temporal_coverage: "Same period as output records"
+      site_scope: "Each included factory"
+      aggregation_rule: "Sum each component separately and divide by associated saleable cable mass"
+      quality_evidence: "Packing list, scale record or supplier specification, and reuse-cycle evidence"
+    - protocol_id: cp_output_mass
+      process_id: "cable_manufacturing_and_packaging"
+      flow_role: "Tested saleable cable output"
+      record_type: "Production counter, length meter, scale, and final-test record"
+      raw_fields: "product code; batch; cable length; cable net mass; fibre count; test disposition; drum tare; packaging mass"
+      collection_method: "Weigh net cable or subtract verified packaging tare from gross mass; reconcile length and mass to accepted test disposition"
+      unit: "kg, m, fibre-km"
+      frequency: "Per finished drum or batch"
+      temporal_coverage: "Same period as input records"
+      site_scope: "Each included factory and cable line"
+      aggregation_rule: "Sum accepted net cable mass; exclude rejected output and dispatch packaging"
+      quality_evidence: "Calibrated scale and length meter, test certificate, and production reconciliation"
+    - protocol_id: cp_waste_mass
+      process_id: "cable_manufacturing_and_packaging"
+      flow_role: "Each distinct waste output"
+      record_type: "Waste scale ticket, container log, and contractor receipt"
+      raw_fields: "waste identity; source process; gross and tare mass; moisture; contamination; internal regrind; destination; treatment route"
+      collection_method: "Weigh each waste separately at dispatch; reconcile to contractor receipts and exclude internal regrind"
+      unit: "kg"
+      frequency: "Per dispatch with monthly reconciliation"
+      temporal_coverage: "Same period as input and output records"
+      site_scope: "Each included factory and cable line"
+      aggregation_rule: "Net each waste by identity and route; divide by saleable cable mass"
+      quality_evidence: "Scale ticket, contractor receipt, container log, and mass-balance reconciliation"
+  calculation_rules:
+    - id: calc_material_intensity
+      applies_to: "Each material input"
+      rule: "(opening stock + receipts - closing stock - returns - material transferred to other products) / saleable cable mass"
+      inputs:
+        - Stock
+        - receipt
+        - return
+        - transfer
+        - "and output records"
+      output: "kg material per kg cable"
+      source_ids: []
+    - id: calc_electricity_intensity
+      applies_to: "Purchased electricity"
+      rule: "(metered kWh × 3.6 MJ/kWh × allocation share) / saleable cable mass"
+      inputs:
+        - "Meter readings"
+        - "allocation share"
+        - "saleable output mass"
+      output: "MJ electricity per kg cable"
+      source_ids: []
+    - id: calc_packaging_intensity
+      applies_to: "Each packaging component"
+      rule: "packaging component mass associated with shipment / net cable mass in that shipment"
+      inputs:
+        - "Packing and output records"
+      output: "kg packaging component per kg cable"
+      source_ids: []
+    - id: calc_waste_intensity
+      applies_to: "Each waste output"
+      rule: "net off-site waste mass by identity and route / saleable cable mass"
+      inputs:
+        - "Waste and output records"
+      output: "kg waste per kg cable"
+      source_ids: []
+    - id: calc_fibre_kilometres
+      applies_to: "Functional disclosure"
+      rule: "cable length in km × number of optical fibres"
+      inputs:
+        - "Length meter and declared fibre count"
+      output: "fibre-km per reference-flow batch"
+      source_ids: []
+    - id: calc_mass_balance
+      applies_to: "Foreground completeness"
+      rule: "Compare total measured material inputs with saleable cable output, separately measured waste outputs, stock change, retained samples, and documented measurement uncertainty; investigate unexplained imbalance."
+      inputs:
+        - Material
+        - output
+        - waste
+        - stock
+        - "and sample records"
+      output: "Mass-balance reconciliation"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product"
+      requirement: "Retain product specification, cable drawing, bill of materials, applicable test standards, fibre type and count, construction, conductor and connector state, and fire-performance class."
+      evidence: "Approved technical file and final-test certificate"
+    - id: dq_temporal
+      applies_to: "All foreground rows"
+      requirement: "Use one representative twelve-month period where practicable; disclose shutdowns, start-up campaigns, product-mix changes, and any shorter justified period."
+      evidence: "Dated source records and representativeness statement"
+    - id: dq_geography_technology
+      applies_to: "Foreground and upstream links"
+      requirement: "Declare factory geography and cable-line technology; document supplier, production route, recycled content, and geography for major upstream materials."
+      evidence: "Site metadata and supplier documentation"
+    - id: dq_measurement
+      applies_to: "Mass, length, and electricity"
+      requirement: "Use calibrated or verified instruments, document resolution and uncertainty, and reconcile submeters and shipment records to controlling records."
+      evidence: "Calibration or verification records and reconciliations"
+    - id: dq_completeness
+      applies_to: "Inventory"
+      requirement: "Cover every required atomic row and all additional site exchanges; justify absence using bills of material, meter scope, or waste records and complete the mass balance."
+      evidence: "Row-level inclusion review and mass-balance worksheet"
+    - id: dq_uuid
+      applies_to: "Flow identity"
+      requirement: "Use only directly audited public state-100 TianGong identities; retain unresolved rows without UUID rather than selecting a broad proxy."
+      evidence: "UUID audit record and unresolved review metadata"
+validation_rules:
+  - rule_id: validate_reference
+    applies_to: "Reference flow"
+    rule: "Confirm that cable net mass equals the declared reference amount after normalization and that packaging mass is excluded; cable length and fibre-kilometres must be disclosed."
+    source_ids: []
+  - rule_id: validate_scope
+    applies_to: "Product identity"
+    rule: "Confirm the product contains individually sheathed optical fibres; reject bare fibre, non-individually-sheathed fibre bundles or cables, and electric-only cable from this PCR."
+    source_ids:
+      - un-cpc-3-0-2025
+      - unsd-industrial-commodity-statistics-yearbook-2014
+  - rule_id: validate_variants
+    applies_to: "Conditional construction"
+    rule: "Require explicit applicable or not-applicable decisions for water-blocking yarn, aramid reinforcement, incorporated conductor, and fitted connector based on the product bill of materials."
+    source_ids:
+      - unsd-industrial-commodity-statistics-yearbook-2014
+      - cablescom-optical-fibre-duct-cable-epd-2022
+  - rule_id: validate_atomicity
+    applies_to: "Inventory rows"
+    rule: "Reject combined utilities, materials, packaging, waste, or emissions; every exchange must retain one flow identity, direction, property, unit, and treatment or compartment where applicable."
+    source_ids: []
+  - rule_id: validate_mass_balance
+    applies_to: "Foreground inventory"
+    rule: "Require documented reconciliation of material inputs to cable output, waste, stock change, retained samples, internal regrind, and measurement uncertainty; investigate and disclose unexplained imbalance."
+    source_ids: []
+  - rule_id: validate_electricity
+    applies_to: "Electricity"
+    rule: "Reconcile line and allocated support electricity to the site controlling meter and verify the kWh-to-MJ conversion."
+    source_ids: []
+  - rule_id: validate_sources
+    applies_to: "Quantitative ranges"
+    rule: "Reject external empirical ranges unless at least two independent original sources are verified and shown boundary-compatible; absence of an accepted range does not replace foreground collection."
+    source_ids: []
+  - rule_id: validate_uuid
+    applies_to: "UUID-bearing rows"
+    rule: "Confirm public state_code 100, English and Chinese base names, flow type, classification, property, unit group, product state, and general comment; fail any proxy or unverified UUID."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset or background_dataset generated from reviewed foreground records"
+  downstream_use: "Construction of product-flow, process, and lifecyclemodel datasets for individually sheathed-fibre optical cable manufacture"
+  allowed_use: "Cradle-to-gate cable production modelling for the declared construction, factory, reporting period, and geography; comparison only after aligning reference mass, cable length, fibre-kilometres, performance, boundary, and data quality"
+  excluded_use: "Bare optical fibre production; non-individually-sheathed optical bundles or cables; electric-only cable; installation, network operation, maintenance, removal, or end-of-life without additional rules and data"
+  required_metadata: "PCR id and status; product code and specification; cable construction; fibre type and count; length and fibre-kilometres per kg; sheath, water-blocking, reinforcement, armour, conductor, and connector state; factory and supplier geography; technology; period; allocation; packaging; cut-offs; UUID status"
+  required_quality_disclosure: "Primary-data share; meter and scale coverage; temporal, geographical, and technological representativeness; supplier-data quality; mass-balance result; allocation shares; internal recycling; waste routes; unresolved UUIDs and range evidence needs"
+  update_trigger: "Material change in cable construction, compound or supplier, recycled content, fibre count or type, conductor or connector state, production line, energy supply, packaging, allocation, waste route, factory, or reporting period"
+data_sources:
+  - id: "un-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Official CPC 46360 classification identity"
+  - id: "unsd-industrial-commodity-statistics-yearbook-2014"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, 2014 Industrial Commodity Statistics Yearbook: Production Statistics (2005-2014), Volume I, ST/ESA/STAT/SER.P/54, published 2017. https://unstats.un.org/unsd/publication/SeriesP/SeriesP_54_vol_I.pdf"
+    used_for: "Original-text product boundary including cables assembled with electric conductors or fitted with connectors"
+  - id: "iec-tr-62839-1-2025"
+    type: "standard"
+    reference: "IEC TR 62839-1:2025, Environmental declaration - Part 1: Communication wires and cables - Product specific rules. https://webstore.iec.ch/en/publication/84774"
+    used_for: "Applicability of communication-cable LCA rules to products comprising optical fibre and relationship to IEC 60794"
+  - id: "cablescom-optical-fibre-duct-cable-epd-2022"
+    type: "dataset"
+    reference: "Cables de Comunicaciones Zaragoza S.L., Environmental Product Declaration for optical fibre cables for telecommunication networks through duct installation, registration S-P-05723, revised 8 April 2022. https://www.cablescom.com/sites/default/files/Documents/EPD_Cablescom_Duct_rev01.pdf"
+    used_for: "Original-text product composition, micromodule and sheathing process decomposition, factory-gate boundary, electricity and packaging inclusion, waste accounting, and allocation hierarchy"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:6bb9612b3bbc83951141800eecb6d1501217baf854d80e047290e622bfe2f697"
+  generated_content_sha256: "sha256:e2f061fcfc33b0a1fe2e2540e760169b425ad729069956cfcc8280d1123b19c4"

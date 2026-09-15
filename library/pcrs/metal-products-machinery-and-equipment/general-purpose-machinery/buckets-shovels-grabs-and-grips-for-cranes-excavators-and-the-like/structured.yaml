@@ -1,10 +1,432 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43580"
-  title: "Buckets, shovels, grabs and grips for cranes, excavators and the like"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.buckets-shovels-grabs-and-grips-for-cranes-excavators-and-the-like"
+  classification_refs: "CPC 3.0: 43580"
+  covered_products: "Completed buckets, shovels, grabs and grips designed as attachments for cranes, excavators or similar machinery"
+  excluded_products: "Host machinery; standalone hydraulic actuators; standalone quick couplers; bulldozer blades; generic replacement parts; hand tools"
+  representative_product: "A welded alloy-steel excavator bucket with cutting edge and attachment interface"
+  production_route: "Purchased plate and optional purchased cast or forged wear parts; cutting and forming; welding and assembly; machining; optional protective coating; inspection"
+  market_state: "Finished attachment at factory gate, uncoated or coated as declared, without transport packaging unless packaging is explicitly added as an atomic flow"
+functional_unit:
+  what: "Provide one completed load-engaging or excavating attachment compatible with the declared host-machine interface and intended material-handling duty"
+  how_much: "1,000 kg net finished attachment mass"
+  how_well: "Meets the declared drawing, material grades, rated capacity, interface dimensions, weld acceptance criteria and coating specification"
+  how_long_or_cycle: "Factory-gate declared unit; service life is not normalized and must be disclosed separately if used downstream"
+  reference_flow_link: "The reference flow is the net mass of conforming completed attachments released at final inspection"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "All foreground datasets"
+      rule: "Include cutting, forming, welding, assembly, machining, applicable coating, final inspection, direct energy, listed consumables, generated steel scrap and measured direct releases from the manufacturing site. Keep steelmaking and production of purchased cast or forged parts upstream."
+      source_ids:
+        - eu-commission-pef-method-2021
+        - ssab-hardox-bucket-welding-techsupport-29
+        - eu-jrc-smitheries-foundries-bref-2024
+    - rule_id: boundary_outsourcing
+      applies_to: "Outsourced operations"
+      rule: "Include an outsourced operation when it produces the declared attachment before factory-gate release; identify the subcontractor process and do not omit its inputs, wastes or direct releases."
+      source_ids:
+        - eu-commission-pef-method-2021
+    - rule_id: boundary_additional_flows
+      applies_to: "Site-specific exchanges"
+      rule: "Add every material, fuel, process gas, waste and elementary emission that physically crosses the declared boundary as a separate atomic row when present; do not replace these exchanges with an umbrella utility, waste or emissions label."
+      source_ids:
+        - eu-commission-pef-method-2021
+boundary_abstraction:
+  declared_starting_condition: "Purchased alloy-steel plate and, when used, purchased finished cast or forged wear parts and other listed consumables at the attachment manufacturing site"
+  starting_condition_role: "Foreground gate for cutting, forming, welding, assembly, machining, optional coating and final inspection"
+  product_classification_scope: "Completed machinery attachments corresponding to the semantic product boundary; classification mapping remains external to PCR identity"
+  recursive_input_rule: "A purchased completed attachment from this same category used as an input must remain a separately linked upstream product dataset and must not be recursively expanded inside this foreground process"
+  upstream_dataset_requirement: "Use supplier-specific datasets where available and otherwise geography-, technology- and product-state-representative background datasets for each purchased input"
+  disclosure: "Declare included manufacturing operations, outsourced operations, material grades, purchased-part content, coating route, scrap destination, site, geography, period and exclusions"
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Buckets, shovels, grabs and grips for cranes, excavators and the like; UUID unresolved"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "attachment family"
+    - "host-machine make or interface standard"
+    - "rated volume or gripping capacity"
+    - "net finished mass"
+    - "principal plate and wear-part grades"
+    - "cutting edge and tooth configuration"
+    - welded
+    - "cast or hybrid construction"
+    - "coating state and coating system"
+    - "manufacturing site and period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use net mass of conforming completed attachments after final inspection. Exclude removable shipping supports and transport packaging. Normalize every inventory amount to 1,000 kg reference product."
+  - id: energy_conversion
+    applies_to: "Purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electricity in its source unit and convert kWh to MJ using 1 kWh = 3.6 MJ; do not combine electricity with fuels or purchased heat."
+  - id: gas_mass_basis
+    applies_to: "Industrial oxygen and carbon dioxide"
+    required_property_ref:
+      name: "Mass or source-record volume converted to mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Prefer supplier mass or cylinder mass difference. If volume is used, retain gas composition, pressure, temperature, reference conditions and the conversion factor."
+process_map:
+  - id: integrated_attachment_manufacture
+    name: "Integrated attachment manufacture"
+    inclusion: "required"
+    inclusion_condition: "Always include; individual flow cards state route conditions"
+    role: "Foreground cutting, forming, welding, assembly, machining, optional coating and inspection"
+    quantitative_reference: "1,000 kg conforming completed attachment"
+process_inventory:
+  - id: integrated_attachment_manufacture
+    label: "Integrated attachment manufacture"
+    inputs:
+      product:
+        - row_id: steel_plate
+          role: "Alloy-steel plate"
+          name: "Steel Plate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "421db3a5-394d-410b-8ebf-af23a37fc878"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Purchased structural and wear plate entering cutting and forming is recorded by grade and thickness."
+          amount:
+            expression: "measured received mass issued to the production orders, less documented unused plate returned unchanged to stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_integrated_manufacturing_records
+              source_ids:
+                - ssab-hardox-bucket-welding-techsupport-29
+            ranges: []
+        - row_id: cast_alloy_steel_bucket_tooth
+          role: "Purchased cast alloy-steel excavator bucket tooth"
+          name: "Cast alloy-steel excavator bucket tooth; UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this concrete bucket-tooth input only when a finished cast alloy-steel excavator bucket tooth is purchased and incorporated; UUID remains unresolved. Any adapter or other purchased part must be added as its own atomic row."
+          amount:
+            expression: "measured received mass of bucket teeth incorporated into the production orders; zero only when the bill of materials demonstrates that no purchased cast bucket tooth is used"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_integrated_manufacturing_records
+              source_ids:
+                - ssab-hardox-bucket-welding-techsupport-29
+                - eu-jrc-smitheries-foundries-bref-2024
+            ranges: []
+        - row_id: industrial_oxygen
+          role: "Industrial oxygen for cutting"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Record oxygen only for oxygen-assisted cutting used by the declared production orders."
+          amount:
+            expression: "supplier delivery or submetered oxygen volume, with reference conditions retained"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product produced with oxygen-assisted cutting"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_integrated_manufacturing_records
+              source_ids:
+                - ssab-hardox-bucket-welding-techsupport-29
+            ranges: []
+        - row_id: flux_cored_wire
+          role: "Flux-cored welding wire"
+          name: "Flux Cored Wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1b74a576-06e0-4764-97ce-11a73f8a4752"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record flux-cored wire only when FCAW is used; other welding consumables must be added as separate atomic flows."
+          amount:
+            expression: "issued mass minus sealed unused wire returned to stock"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product welded using FCAW"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_integrated_manufacturing_records
+              source_ids:
+                - ssab-hardox-bucket-welding-techsupport-29
+            ranges: []
+        - row_id: carbon_dioxide_shielding_gas
+          role: "Carbon-dioxide shielding gas"
+          name: "Carbon dioxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "27f41c1c-535e-4d2a-bce9-2c7f4de11549"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record welding-grade carbon dioxide only when it is supplied as shielding gas."
+          amount:
+            expression: "supplier mass or cylinder mass difference allocated to the production orders; document any volume-to-mass conversion"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product welded with carbon-dioxide shielding"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_integrated_manufacturing_records
+              source_ids:
+                - ssab-hardox-bucket-welding-techsupport-29
+            ranges: []
+        - row_id: industrial_maintenance_coating
+          role: "Industrial maintenance coating"
+          name: "Industrial Maintenance Coatings"
+          flow_type: "product"
+          flow_ref:
+            uuid: "46c99c8a-0ae9-4be8-972f-a2b9ab3baaf5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record formulated protective coating only when applied before factory-gate release; formulation, solids content and VOC content are required qualifiers."
+          amount:
+            expression: "mixed coating mass issued minus documented unused coating returned for reuse; separately account for disposed mixed coating as an added waste row"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg coated reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_integrated_manufacturing_records
+              source_ids:
+                - eu-commission-pef-method-2021
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record electricity consumed by included cutting, forming, welding, machining, coating and inspection operations."
+          amount:
+            expression: "submetered consumption or production-share allocation from site meters, converted under energy_conversion"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_integrated_manufacturing_records
+              source_ids:
+                - eu-commission-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Completed attachment reference product"
+          name: "Buckets, shovels, grabs and grips for cranes, excavators and the like; UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The conforming net finished mass released by final inspection is the reference product; the exact TianGong product UUID is unresolved."
+          amount:
+            expression: "fixed reference amount of 1,000 kg net conforming finished attachment"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "source_rule"
+              source_ids:
+                - un-cpc-3-0-structure-2025
+                - eu-commission-pef-method-2021
+            ranges: []
+      waste:
+        - row_id: post_industrial_steel_scrap
+          role: "Post-industrial steel scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record offcuts, rejected steel components and machining steel scrap leaving the foreground boundary as waste; disclose internal reuse and external recovery destination separately."
+          amount:
+            expression: "measured mass leaving the production orders after subtracting documented clean offcuts returned unchanged to stock"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_integrated_manufacturing_records
+              source_ids:
+                - eu-commission-pef-method-2021
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "Production records"
+    rule: "Prefer production-order metering, weighing and direct assignment. Subdivide operations before applying allocation."
+    source_ids:
+      - eu-commission-pef-method-2021
+  - rule_id: allocation_shared_operations
+    applies_to: "Shared electricity and consumables"
+    rule: "When separate metering is unavailable, allocate using a documented causal driver such as machine time, weld length, deposited weld mass, coating area or processed mass; do not default to revenue."
+    source_ids:
+      - eu-commission-pef-method-2021
+  - rule_id: allocation_scrap
+    applies_to: "Steel scrap"
+    rule: "Report the full measured scrap output and destination. Do not subtract an avoided-primary-steel credit inside the foreground inventory; apply any recycling model only in the downstream life-cycle model and disclose it."
+    source_ids:
+      - eu-commission-pef-method-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_integrated_manufacturing_records
+      process_id: "integrated_attachment_manufacture"
+      flow_role: "All listed input and output rows"
+      record_type: "Production orders, bills of materials, weigh tickets, stores issues and returns, gas delivery records, electricity meters, coating batch logs, scrap tickets and inspection release records"
+      raw_fields: "production_order_id; product_family; finished_mass_kg; plate_grade_mass_kg; cast_part_mass_kg; oxygen_m3; flux_cored_wire_kg; carbon_dioxide_kg_or_m3; coating_kg; electricity_kWh; scrap_kg; operating_hours; site; date"
+      collection_method: "Reconcile material and utility records to released production orders and retain conversion factors and route flags"
+      unit: "kg; m3; kWh; h"
+      frequency: "Per batch or production order, aggregated monthly"
+      temporal_coverage: "At least 12 consecutive representative months or the full campaign when production is shorter"
+      site_scope: "All operations under operational control at the declared manufacturing site, including identified subcontracted operations"
+      aggregation_rule: "Sum each atomic exchange for conforming released production and normalize by total net conforming mass, with rejected units and stock returns reconciled"
+      quality_evidence: "Calibrated meter records; supplier invoices; weigh tickets; signed production order; bill-of-material revision; coating batch sheet; scrap transfer ticket; inspection release"
+  calculation_rules:
+    - id: calc_normalize_mass
+      applies_to: "All mass rows"
+      rule: "normalized amount = included exchange mass / conforming net finished mass × 1,000"
+      inputs:
+        - "exchange mass"
+        - "conforming finished mass"
+      output: "kg per 1,000 kg reference product"
+      source_ids:
+        - eu-commission-pef-method-2021
+    - id: calc_electricity
+      applies_to: "electricity"
+      rule: "electricity_MJ = included electricity_kWh × 3.6; normalized electricity = electricity_MJ / conforming net finished mass × 1,000"
+      inputs:
+        - "included electricity kWh"
+        - "finished mass kg"
+      output: "MJ per 1,000 kg reference product"
+      source_ids:
+        - eu-commission-pef-method-2021
+    - id: calc_gas_mass
+      applies_to: "industrial_oxygen; carbon_dioxide_shielding_gas"
+      rule: "Use supplier mass directly; if only volume is available, convert with documented composition, pressure, temperature and reference-condition factor before normalization"
+      inputs:
+        - "gas mass or volume"
+        - "conversion factor"
+        - "finished mass"
+      output: "kg or m3 per 1,000 kg reference product as required by the selected flow property"
+      source_ids:
+        - eu-commission-pef-method-2021
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Reference product"
+      requirement: "Match released production to drawing revision, attachment family, host interface, capacity, mass, material grades and coating state."
+      evidence: "Bill of materials, drawing, inspection release and product data sheet"
+    - id: dq_completeness
+      applies_to: "Inventory"
+      requirement: "Reconcile plate, purchased parts, welding consumables, gases, coating, electricity, finished product and steel scrap; add any other physically present exchange as an atomic row."
+      evidence: "Material balance, utility reconciliation and waste register"
+    - id: dq_temporal
+      applies_to: "Foreground data"
+      requirement: "Cover a representative continuous period and disclose shutdowns, rework campaigns, product-mix changes and abnormal batches."
+      evidence: "Dated production and meter records"
+    - id: dq_technology
+      applies_to: "Conditional rows"
+      requirement: "Record route flags for purchased cast parts, oxygen-assisted cutting, FCAW, carbon-dioxide shielding and coating; do not report a conditional amount without the corresponding route."
+      evidence: "Work instructions, machine logs, welding procedure and coating specification"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "Dataset identity"
+    rule: "Confirm that the reference output is exactly 1,000 kg net conforming completed attachment and that all required qualifiers are present."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - eu-commission-pef-method-2021
+  - rule_id: validate_inventory_coverage
+    applies_to: "Process inventory"
+    rule: "Confirm that every physically present input, waste and direct elementary release is represented as one atomic exchange and that no umbrella utility, waste or emissions row is used."
+    source_ids:
+      - eu-commission-pef-method-2021
+  - rule_id: validate_mass_reconciliation
+    applies_to: "Material balance"
+    rule: "Investigate any unreconciled difference between metal inputs and finished product, returned stock, steel scrap and other declared metal outputs; document scale and measurement effects."
+    source_ids:
+      - eu-commission-pef-method-2021
+  - rule_id: validate_conditions
+    applies_to: "Conditional rows"
+    rule: "Require route evidence for cast parts, oxygen, flux-cored wire, carbon dioxide and coating; a non-applicable row must be supported by the bill of materials or process route."
+    source_ids:
+      - ssab-hardox-bucket-welding-techsupport-29
+      - eu-jrc-smitheries-foundries-bref-2024
+  - rule_id: validate_uuid_status
+    applies_to: "UUID references"
+    rule: "Treat unresolved reference_product and cast_alloy_steel_bucket_tooth UUIDs as review findings and never substitute a broader or mismatched TianGong flow."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground manufacturing dataset suitable for later publication as a secondary_dataset or background_dataset after review"
+  downstream_use: "Product-system modelling of factory-gate completed machinery attachments and aggregation into process or lifecyclemodel records"
+  allowed_use: "Studies whose attachment family, construction route, material grades, host interface, manufacturing geography, period and coating state are represented"
+  excluded_use: "Complete cranes or excavators; standalone couplers or hydraulic actuators; use-phase service; repair; distribution; end-of-life; products with materially different manufacturing routes unless separately modelled"
+  required_metadata: "PCR id; product family; reference mass; site and geography; period; technology route; material grades; purchased-part content; welding process; coating state; allocation drivers; data sources; unresolved UUID status"
+  required_quality_disclosure: "Primary-data share; meter and weighing basis; temporal coverage; material-balance result; subcontracted operations; background dataset choices; data gaps; route-specific exclusions"
+  update_trigger: "Material change in product design, plate or wear-part grade, welding technology, coating system, supplier route, site energy mix, allocation method, production geography, or resolution of an unresolved UUID"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv, retrieved 2026-09-05"
+    used_for: "Official product classification identity"
+  - id: "ssab-hardox-bucket-welding-techsupport-29"
+    type: "handbook"
+    reference: "SSAB, Welding of cutting edge to bucket and adapters to cutting edge, TechSupport 29, https://www.ssab.com/-/media/files/en/hardox/brochures/29-hardox-welding-of-cutting-edge-to-bucket-and-adapters-to-cutting-edge.pdf, retrieved 2026-09-05"
+    used_for: "Bucket plate selection, joint preparation, welding methods and consumables"
+  - id: "eu-jrc-smitheries-foundries-bref-2024"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Smitheries and Foundries Industry, 2024, https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/smitheries-and-foundries-industry, retrieved 2026-09-06"
+    used_for: "Boundary for purchased cast or forged parts and upstream process disclosure"
+  - id: "eu-commission-pef-method-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, consolidated 30 December 2021, https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng, retrieved 2026-09-05"
+    used_for: "Functional unit, reference flow, system boundary, allocation, foreground data quality and validation"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:a662edbd7ea5e570d874e7e8aab370508eb90b3450d79eaf1c5014db4814204a"
+  generated_content_sha256: "sha256:febf0f0f1be5afaa4741c3ce4857f22d364bb6f6d9833708bba0593c4aed9ed5"

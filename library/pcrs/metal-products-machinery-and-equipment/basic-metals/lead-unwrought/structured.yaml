@@ -1,10 +1,1162 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41441"
-  title: "Lead, unwrought"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.lead-unwrought"
+  classification_refs: "CPC 3.0: 41441, Lead, unwrought (mapping context only)"
+  covered_products: "Unwrought lead metal in crude or refined, unalloyed or declared-alloy grade, supplied in cast primary forms such as pigs, sows, or ingots"
+  excluded_products: "Lead ores and concentrates; lead scrap sold as scrap; lead oxides; semi-finished lead; fabricated lead articles; batteries; downstream forming and manufacture"
+  representative_product: "Crude lead, with actual purity, alloy composition, casting form, and saleable grade declared"
+  production_route: "Primary smelting and refining from lead-bearing concentrate, or secondary recovery, smelting, refining, and casting from lead scrap"
+  market_state: "Solid unwrought lead at the producer gate, net of transport packaging"
+functional_unit:
+  what: "Supply unwrought lead metal as feedstock for downstream fabrication or alloy use"
+  how_much: "1 kg net saleable unwrought lead at the producer gate"
+  how_well: "Declared lead content, impurity or alloy composition, grade specification, primary/secondary route, casting form, and conformance status"
+  how_long_or_cycle: "One production batch or reporting-period output; no use-stage service life is represented"
+  reference_flow_link: "primary_lead_product or secondary_lead_product, according to the declared route"
+system_boundary:
+  rules:
+    - rule_id: boundary_primary_route
+      applies_to: "Primary production"
+      rule: "Include concentrate receipt and handling, preparation or sintering when used, smelting/reduction, gas cleaning and sulfur recovery when used, bullion refining, alloy adjustment, casting, on-site residue handling, and direct releases through the producer gate."
+      source_ids:
+        - us-epa-ap42-primary-lead-1995
+        - eu-jrc-nfm-bref-2017
+    - rule_id: boundary_secondary_route
+      applies_to: "Secondary production"
+      rule: "Include scrap receipt and preparation performed by the producer, smelting/reduction, gas cleaning, refining or alloy adjustment, casting, on-site residue handling, and direct releases through the producer gate."
+      source_ids:
+        - us-epa-ap42-secondary-lead-2010
+        - eu-jrc-nfm-bref-2017
+    - rule_id: boundary_upstream_inputs
+      applies_to: "Purchased inputs"
+      rule: "Link upstream supply datasets at the actual delivered grade, state, geography, and reference conditions; do not include their upstream emissions again as direct foreground releases."
+      source_ids: []
+    - rule_id: boundary_exclusions
+      applies_to: "Downstream stages"
+      rule: "Exclude off-site transport after the producer gate, downstream forming/fabrication, product use, and end-of-life unless a broader study adds them as separately identified processes."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Primary route: lead-bearing concentrate as received at the smelter gate. Secondary route: sorted lead scrap as received at the recovery/smelter gate."
+  starting_condition_role: "Purchased or transferred lead-bearing feed entering the foreground producer"
+  product_classification_scope: "Unwrought lead metal independent of the external classification tree; CPC 41441 is mapping context"
+  recursive_input_rule: "Unwrought lead internally remelted within the same reporting system is an internal loop and is not duplicated as an upstream product input; purchased unwrought lead is recorded as a separate input with an upstream dataset."
+  upstream_dataset_requirement: "Provide geographically and temporally representative upstream datasets for every purchased material, fuel, electricity, oxygen, water, reagent, and externally treated residue crossing the boundary."
+  disclosure: "Declare route, feed origin and composition, furnace/refining technology, gas and dust controls, sulfur management, co-product destinations, waste treatment, product grade, and all exclusions."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Crude lead"
+    uuid: "063889a6-fcdf-48f8-a229-992a07bc2b0a"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - primary
+    - secondary
+    - "or measured mixed route"
+    - "lead purity and full declared alloy/impurity composition"
+    - "product grade/specification"
+    - "casting form"
+    - "producer geography"
+    - "production technology and furnace type"
+    - "reporting period"
+    - "recycled-content accounting convention"
+    - "net-mass and moisture/contamination basis"
+    - "producer-gate boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure net saleable metal mass at the producer gate, excluding pallets, straps, mould coatings, and transport packaging."
+  - id: grade_composition_basis
+    applies_to: "Lead-bearing inputs and product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record wet or as-received feed mass separately from dry mass and contained lead; report product lead content and each intentionally added alloying constituent on a consistent mass basis."
+  - id: electricity_energy_basis
+    applies_to: "Purchased electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Record metered electricity and the grid/contract geography and voltage; convert kWh to MJ with 1 kWh = 3.6 MJ without changing the underlying meter record."
+  - id: fuel_energy_basis
+    applies_to: "Natural gas and coke"
+    required_property_ref:
+      name: "Volume or Mass"
+      uuid: ""
+    required_unit: "m3 or kg"
+    rule: "Preserve purchased quantity and declared reference conditions; calculate energy only with the supplier or site-specific net calorific value and retain that factor."
+  - id: direct_emission_basis
+    applies_to: "Direct elementary outputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Report only releases from foreground operations; keep captured/recycled material and upstream electricity or fuel-supply emissions outside direct-emission rows."
+process_map:
+  - id: primary_unwrought_lead
+    name: "Primary unwrought lead production"
+    inclusion: "conditional"
+    inclusion_condition: "Include when lead-bearing concentrate is the principal feed; declare sinter/blast, direct-smelting, or other verified furnace configuration."
+    role: "Foreground primary smelting, refining, and casting"
+    quantitative_reference: "kg net saleable unwrought lead"
+  - id: secondary_unwrought_lead
+    name: "Secondary unwrought lead production"
+    inclusion: "conditional"
+    inclusion_condition: "Include when waste and scrap of lead is the principal feed; declare scrap preparation and furnace configuration."
+    role: "Foreground secondary recovery, smelting, refining, and casting"
+    quantitative_reference: "kg net saleable unwrought lead"
+process_inventory:
+  - id: primary_unwrought_lead
+    label: "Primary unwrought lead production"
+    inputs:
+      product:
+        - row_id: primary_lead_concentrate
+          role: "Lead-bearing concentrate"
+          name: "lead concentrate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the dry and as-received mass and contained-lead assay of concentrate delivered to the primary smelter."
+          amount:
+            expression: "measured concentrate received and consumed, reconciled to dry mass and contained lead"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable primary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_primary_materials
+              source_ids:
+                - us-epa-ap42-primary-lead-1995
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: primary_coke
+          role: "Metallurgical coke"
+          name: "metallurgical coke"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a94c42b1-7fa9-42f3-a9d1-1e7353e8490d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record coke used as reducing agent or process fuel; exclude coke internally recycled without crossing the system boundary."
+          amount:
+            expression: "measured delivered coke consumed by foreground furnaces"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable primary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_primary_materials
+              source_ids:
+                - us-epa-ap42-primary-lead-1995
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: primary_limestone
+          role: "Limestone flux"
+          name: "Limestone"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6cf9f186-6e7e-40b5-800e-6759a429e7a8"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record limestone charged as flux, with grade and carbonate content declared."
+          amount:
+            expression: "measured limestone charged"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable primary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_primary_materials
+              source_ids:
+                - us-epa-ap42-primary-lead-1995
+            ranges: []
+        - row_id: primary_silica_sand
+          role: "Silica flux"
+          name: "silica sand"
+          flow_type: "product"
+          flow_ref:
+            uuid: "854527a0-1a8f-43af-b7c5-8c20d22e61ff"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record silica sand charged as flux, with silica content declared."
+          amount:
+            expression: "measured silica sand charged"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable primary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_primary_materials
+              source_ids:
+                - us-epa-ap42-primary-lead-1995
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: primary_oxygen
+          role: "Industrial oxygen"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / Units of volume 93a60a57-a3c8-12da-a746-0800200c9a66 / m3"
+          description: "Record purchased oxygen when oxygen enrichment or oxygen injection is used; declare purity, pressure, and reference conditions."
+          amount:
+            expression: "metered purchased oxygen at declared reference conditions; zero only when documented absent"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable primary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_primary_utilities
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: primary_process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record process water crossing the facility boundary; cooling-water loops are not represented by this row unless makeup water is measured as process water."
+          amount:
+            expression: "measured net process-water input"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable primary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_primary_utilities
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: primary_electricity
+          role: "Purchased electricity"
+          name: "alternating-current electricity supply"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record metered alternating-current electricity supplied to the facility, with voltage and grid or contract geography declared."
+          amount:
+            expression: "metered purchased electricity converted from kWh when necessary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable primary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_primary_utilities
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: primary_natural_gas
+          role: "Gaseous natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / Units of volume 93a60a57-a3c8-12da-a746-0800200c9a66 / m3"
+          description: "Record natural gas burned in kettles, dryers, or other directly fired foreground equipment."
+          amount:
+            expression: "metered natural gas at declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable primary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_primary_utilities
+              source_ids:
+                - us-epa-ap42-primary-lead-1995
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: primary_sodium_hydroxide
+          role: "Sodium hydroxide refining reagent"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record sodium hydroxide used to remove residual impurities; declare solution concentration and supplied state."
+          amount:
+            expression: "measured sodium-hydroxide product mass, with active-content concentration retained"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable primary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_primary_materials
+              source_ids:
+                - us-epa-ap42-primary-lead-1995
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: primary_lead_product
+          role: "Saleable primary unwrought lead"
+          name: "Crude lead"
+          flow_type: "product"
+          flow_ref:
+            uuid: "063889a6-fcdf-48f8-a229-992a07bc2b0a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "This is the quantitative-reference output for a primary-route data package."
+          amount:
+            expression: "1 kg after normalization of measured net saleable output"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net saleable primary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_primary_outputs
+              source_ids:
+                - un-cpc-3-0-structure-2025
+                - us-epa-ap42-primary-lead-1995
+            ranges: []
+        - row_id: primary_sulfuric_acid
+          role: "Sulfuric acid co-product"
+          name: "Sulfuric acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee2e3c3-bee7-4520-92b7-3e23afbfcd6f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record saleable sulfuric acid when sulfur dioxide from sulfur-bearing primary feed is converted in an on-site acid plant; otherwise document the actual sulfur-control output separately."
+          amount:
+            expression: "measured saleable sulfuric acid crossing the producer boundary; zero only when no saleable acid is produced"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable primary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_primary_outputs
+              source_ids:
+                - us-epa-ap42-primary-lead-1995
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        - row_id: primary_lead_smelting_slag
+          role: "Lead-smelting slag"
+          name: "lead smelting slag"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record slag leaving the primary process for recovery, treatment, use, or disposal, with lead content and destination declared."
+          amount:
+            expression: "measured slag mass leaving the foreground system"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable primary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_primary_outputs
+              source_ids:
+                - us-epa-ap42-primary-lead-1995
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: primary_lead_refining_dross
+          role: "Lead-refining dross"
+          name: "lead refining dross"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record refining dross leaving the foreground system, with composition, recovery route, and final destination declared."
+          amount:
+            expression: "measured dross mass leaving the foreground system"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable primary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_primary_outputs
+              source_ids:
+                - us-epa-ap42-primary-lead-1995
+            ranges: []
+        - row_id: primary_copper_matte
+          role: "Copper-sulfide matte"
+          name: "copper-sulfide matte from lead smelting"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record matte transferred for metal recovery as a distinct output, not as slag."
+          amount:
+            expression: "measured matte mass leaving the foreground system"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable primary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_primary_outputs
+              source_ids:
+                - us-epa-ap42-primary-lead-1995
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: primary_speiss
+          role: "Arsenic-antimony speiss"
+          name: "arsenic-antimony speiss from lead smelting"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record speiss transferred for recovery or treatment as a distinct output, with arsenic and antimony composition declared."
+          amount:
+            expression: "measured speiss mass leaving the foreground system"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable primary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_primary_outputs
+              source_ids:
+                - us-epa-ap42-primary-lead-1995
+            ranges: []
+      elementary:
+        - row_id: primary_carbon_dioxide_fossil
+          role: "Direct fossil carbon dioxide"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record direct fossil carbon dioxide from on-site coke and fuel combustion or reduction; exclude upstream fuel and electricity emissions."
+          amount:
+            expression: "measured direct release or site-specific carbon balance reconciled to foreground fossil-carbon inputs"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable primary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_primary_emissions
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: primary_sulfur_dioxide_air
+          role: "Sulfur dioxide to air"
+          name: "sulfur dioxide to air, unspecified"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record sulfur dioxide released after gas collection, acid production, scrubbing, and other controls; do not record sulfur retained in products or residues here."
+          amount:
+            expression: "measured controlled and diffuse foreground release combined without double counting"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable primary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_primary_emissions
+              source_ids:
+                - us-epa-ap42-primary-lead-1995
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: primary_lead_air
+          role: "Lead to air"
+          name: "lead"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4d9a8790-3ddd-11dd-91dc-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record lead released to air from captured stacks and quantified diffuse sources."
+          amount:
+            expression: "measured lead release to air, unspecified compartment, including quantified diffuse emissions"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable primary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_primary_emissions
+              source_ids:
+                - us-epa-ap42-primary-lead-1995
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: primary_particulate_air
+          role: "Particulate matter to air"
+          name: "particulate matter to air, unspecified particle size"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record total particulate matter of unspecified particle size released after controls; retain any measured size fractions as separate supporting fields rather than substituting them for this total."
+          amount:
+            expression: "measured total particulate release from stacks and quantified diffuse sources"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable primary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_primary_emissions
+              source_ids:
+                - us-epa-ap42-primary-lead-1995
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+  - id: secondary_unwrought_lead
+    label: "Secondary unwrought lead production"
+    inputs:
+      product:
+        - row_id: secondary_lead_scrap
+          role: "Waste and scrap of lead"
+          name: "Waste and scrap of lead"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c814e493-f6ff-48a6-9b92-caba670f15e3"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record sorted lead scrap delivered to the secondary producer; battery-derived feed must be declared after separation into the actual lead-bearing fraction represented by this row."
+          amount:
+            expression: "measured delivered lead-scrap mass with contained lead, moisture, sulfur, plastics, and contamination recorded"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable secondary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_secondary_materials
+              source_ids:
+                - us-epa-ap42-secondary-lead-2010
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: secondary_coke
+          role: "Metallurgical coke"
+          name: "metallurgical coke"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a94c42b1-7fa9-42f3-a9d1-1e7353e8490d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record coke charged as fuel or reducing agent in the selected secondary furnace."
+          amount:
+            expression: "measured coke consumed by foreground operations"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable secondary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_secondary_materials
+              source_ids:
+                - us-epa-ap42-secondary-lead-2010
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: secondary_limestone
+          role: "Limestone flux"
+          name: "Limestone"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6cf9f186-6e7e-40b5-800e-6759a429e7a8"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record limestone charged in the selected secondary smelting route."
+          amount:
+            expression: "measured limestone charged"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable secondary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_secondary_materials
+              source_ids:
+                - us-epa-ap42-secondary-lead-2010
+            ranges: []
+        - row_id: secondary_scrap_steel
+          role: "Ferrous scrap charge"
+          name: "Scrap Steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6cb5e364-ba39-4009-8b40-a76fdc88bc42"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record ferrous scrap used for sulfur fixation, flux formation, or heat distribution; do not merge it with lead scrap."
+          amount:
+            expression: "measured ferrous scrap charged"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable secondary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_secondary_materials
+              source_ids:
+                - us-epa-ap42-secondary-lead-2010
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: secondary_oxygen
+          role: "Industrial oxygen"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / Units of volume 93a60a57-a3c8-12da-a746-0800200c9a66 / m3"
+          description: "Record purchased oxygen when oxygen enrichment is used, with purity, pressure, and reference conditions declared."
+          amount:
+            expression: "metered purchased oxygen at declared reference conditions; zero only when documented absent"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable secondary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_secondary_utilities
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: secondary_process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record process water crossing the secondary-producer boundary, excluding closed-loop recirculation."
+          amount:
+            expression: "measured net process-water input"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable secondary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_secondary_utilities
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: secondary_electricity
+          role: "Purchased electricity"
+          name: "alternating-current electricity supply"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record metered alternating-current electricity supplied to the facility, with voltage and grid or contract geography declared."
+          amount:
+            expression: "metered purchased electricity converted from kWh when necessary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable secondary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_secondary_utilities
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: secondary_natural_gas
+          role: "Gaseous natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / Units of volume 93a60a57-a3c8-12da-a746-0800200c9a66 / m3"
+          description: "Record natural gas burned in scrap pretreatment, smelting, refining, or casting equipment."
+          amount:
+            expression: "metered natural gas at declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable secondary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_secondary_utilities
+              source_ids:
+                - us-epa-ap42-secondary-lead-2010
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: secondary_sodium_carbonate
+          role: "Sodium carbonate flux"
+          name: "sodium carbonate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record sodium carbonate used for paste desulfurization, sulfur fixation, or furnace fluxing, with supplied grade declared."
+          amount:
+            expression: "measured sodium-carbonate product mass charged"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable secondary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_secondary_materials
+              source_ids:
+                - us-epa-ap42-secondary-lead-2010
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: secondary_sodium_hydroxide
+          role: "Sodium hydroxide refining reagent"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record sodium hydroxide used in paste treatment or refining; declare solution concentration, supplied state, and process role."
+          amount:
+            expression: "measured sodium-hydroxide product mass, with active-content concentration retained"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable secondary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_secondary_materials
+              source_ids:
+                - us-epa-ap42-secondary-lead-2010
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: secondary_lead_product
+          role: "Saleable secondary unwrought lead"
+          name: "Crude lead"
+          flow_type: "product"
+          flow_ref:
+            uuid: "063889a6-fcdf-48f8-a229-992a07bc2b0a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "This is the quantitative-reference output for a secondary-route data package."
+          amount:
+            expression: "1 kg after normalization of measured net saleable output"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net saleable secondary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_secondary_outputs
+              source_ids:
+                - un-cpc-3-0-structure-2025
+                - us-epa-ap42-secondary-lead-2010
+            ranges: []
+      waste:
+        - row_id: secondary_lead_smelting_slag
+          role: "Secondary-lead-smelting slag"
+          name: "secondary lead smelting slag"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record slag leaving the secondary process with lead content, sulfur-fixation role, recovery status, and destination declared."
+          amount:
+            expression: "measured slag mass leaving the foreground system"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable secondary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_secondary_outputs
+              source_ids:
+                - us-epa-ap42-secondary-lead-2010
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: secondary_lead_refining_dross
+          role: "Secondary-lead-refining dross"
+          name: "secondary lead refining dross"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record dross leaving the secondary refining system with composition, recovery route, and destination declared."
+          amount:
+            expression: "measured dross mass leaving the foreground system"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable secondary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_secondary_outputs
+              source_ids:
+                - us-epa-ap42-secondary-lead-2010
+            ranges: []
+      elementary:
+        - row_id: secondary_carbon_dioxide_fossil
+          role: "Direct fossil carbon dioxide"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record direct fossil carbon dioxide from on-site coke and fuel combustion or reduction; exclude upstream fuel and electricity emissions."
+          amount:
+            expression: "measured direct release or site-specific carbon balance reconciled to foreground fossil-carbon inputs"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable secondary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_secondary_emissions
+              source_ids:
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: secondary_sulfur_dioxide_air
+          role: "Sulfur dioxide to air"
+          name: "sulfur dioxide to air, unspecified"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record sulfur dioxide released after paste desulfurization, sulfur fixation, scrubbing, acid production, and other controls."
+          amount:
+            expression: "measured controlled and diffuse foreground release combined without double counting"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable secondary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_secondary_emissions
+              source_ids:
+                - us-epa-ap42-secondary-lead-2010
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: secondary_lead_air
+          role: "Lead to air"
+          name: "lead"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "4d9a8790-3ddd-11dd-91dc-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Record lead released to air from captured stacks and quantified diffuse sources."
+          amount:
+            expression: "measured lead release to air, unspecified compartment, including quantified diffuse emissions"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable secondary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_secondary_emissions
+              source_ids:
+                - us-epa-ap42-secondary-lead-2010
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+        - row_id: secondary_particulate_air
+          role: "Particulate matter to air"
+          name: "particulate matter to air, unspecified particle size"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record total particulate matter of unspecified particle size released after controls; retain measured size fractions separately."
+          amount:
+            expression: "measured total particulate release from stacks and quantified diffuse sources"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable secondary unwrought lead"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_secondary_emissions
+              source_ids:
+                - us-epa-ap42-secondary-lead-2010
+                - eu-jrc-nfm-bref-2017
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "Shared operations and route mixing"
+    rule: "Subdivide primary and secondary routes and separately metered refining, sulfur recovery, and residue recovery whenever records permit; do not average routes merely to avoid subdivision."
+    source_ids: []
+  - rule_id: allocation_internal_recycling
+    applies_to: "Internal lead, dust, slag, and dross loops"
+    rule: "Exclude internal-loop exchanges from external inventory totals while retaining the gross records needed for mass-balance checks; allocate no separate burden to an internal loop."
+    source_ids:
+      - us-epa-ap42-primary-lead-1995
+      - us-epa-ap42-secondary-lead-2010
+      - eu-jrc-nfm-bref-2017
+  - rule_id: allocation_scrap_input
+    applies_to: "Secondary lead feed"
+    rule: "Carry the selected upstream dataset for delivered lead scrap, including collection and pretreatment within that dataset boundary; do not add an avoided-primary-lead credit inside the foreground producer."
+    source_ids: []
+  - rule_id: allocation_coproducts
+    applies_to: "Sulfuric acid or another saleable co-product"
+    rule: "Prefer separately measured subdivision or a documented causal physical relation. If neither is feasible, apply economic allocation using contemporaneous producer-gate values, disclose the period and price basis, and report a sensitivity result; residues without a market are treated as waste outputs, not co-products."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_primary_materials
+      process_id: "primary_unwrought_lead"
+      flow_role: "Concentrate, coke, fluxes, and refining reagent"
+      record_type: "Weighbridge, batch charge, assay, and purchase records"
+      raw_fields: "gross_mass; tare_mass; moisture; Pb_assay; material_grade; active_content; batch_id"
+      collection_method: "Reconcile delivered, returned, stored, and charged quantities by material"
+      unit: "kg"
+      frequency: "Each delivery and furnace batch"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "All primary-route units within the producer boundary"
+      aggregation_rule: "Sum net consumed mass by material; retain dry-mass and contained-lead calculations separately"
+      quality_evidence: "Calibrated scales; laboratory certificates; stock reconciliation; batch logs"
+    - protocol_id: cp_primary_utilities
+      process_id: "primary_unwrought_lead"
+      flow_role: "Oxygen, water, electricity, and natural gas"
+      record_type: "Utility meters and invoices"
+      raw_fields: "meter_open; meter_close; import; export; reference_conditions; NCV; allocation_key"
+      collection_method: "Reconcile submeter totals to facility invoices and shared-service allocation"
+      unit: "m3; kg; kWh; MJ"
+      frequency: "Continuous or billing interval"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "All foreground primary operations and documented shared services"
+      aggregation_rule: "Net imports minus verified exports; convert units only under Section 4"
+      quality_evidence: "Meter calibration; invoices; reference-condition and NCV records; allocation worksheet"
+    - protocol_id: cp_primary_outputs
+      process_id: "primary_unwrought_lead"
+      flow_role: "Lead, sulfuric acid, slag, dross, matte, and speiss"
+      record_type: "Product scales, shipment records, residue manifests, and assays"
+      raw_fields: "output_mass; grade; composition; destination; recovery_status; batch_id"
+      collection_method: "Reconcile produced, shipped, stored, internally recycled, and discarded outputs"
+      unit: "kg"
+      frequency: "Each batch or shipment"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "All foreground primary outputs"
+      aggregation_rule: "Sum external outputs by identity and destination; keep internal loops separate"
+      quality_evidence: "Scale calibration; certificates of analysis; shipment and waste records; stock reconciliation"
+    - protocol_id: cp_primary_emissions
+      process_id: "primary_unwrought_lead"
+      flow_role: "Direct CO2, SO2, lead, and particulate"
+      record_type: "Continuous or periodic monitoring, validated stack tests, diffuse estimates, and fuel/carbon balance"
+      raw_fields: "source_id; pollutant; concentration; gas_flow; duration; capture_status; fuel_carbon; uncertainty"
+      collection_method: "Calculate source-specific mass releases and reconcile capture and bypass events"
+      unit: "kg"
+      frequency: "Monitoring interval and every reportable event"
+      temporal_coverage: "Complete reporting period including startup, shutdown, and upset events"
+      site_scope: "All controlled and diffuse foreground sources"
+      aggregation_rule: "Sum source-specific direct releases once; exclude captured return and upstream emissions"
+      quality_evidence: "Calibration and QA records; test reports; operating hours; carbon and sulfur balance; uncertainty statement"
+    - protocol_id: cp_secondary_materials
+      process_id: "secondary_unwrought_lead"
+      flow_role: "Lead scrap, coke, limestone, ferrous scrap, sodium carbonate, and sodium hydroxide"
+      record_type: "Weighbridge, sorting, assay, batch charge, and purchase records"
+      raw_fields: "net_mass; moisture; Pb_content; sulfur; plastics; contamination; material_grade; batch_id"
+      collection_method: "Reconcile delivered, rejected, stored, separated, and charged quantities by material"
+      unit: "kg"
+      frequency: "Each delivery and furnace batch"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "All secondary-route units within the producer boundary"
+      aggregation_rule: "Sum net consumed mass by specific material; keep separated non-lead fractions distinct"
+      quality_evidence: "Calibrated scales; sorting records; laboratory assays; stock reconciliation; batch logs"
+    - protocol_id: cp_secondary_utilities
+      process_id: "secondary_unwrought_lead"
+      flow_role: "Oxygen, water, electricity, and natural gas"
+      record_type: "Utility meters and invoices"
+      raw_fields: "meter_open; meter_close; import; export; reference_conditions; NCV; allocation_key"
+      collection_method: "Reconcile submeter totals to facility invoices and shared-service allocation"
+      unit: "m3; kg; kWh; MJ"
+      frequency: "Continuous or billing interval"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "All foreground secondary operations and documented shared services"
+      aggregation_rule: "Net imports minus verified exports; convert units only under Section 4"
+      quality_evidence: "Meter calibration; invoices; reference-condition and NCV records; allocation worksheet"
+    - protocol_id: cp_secondary_outputs
+      process_id: "secondary_unwrought_lead"
+      flow_role: "Lead, slag, and dross"
+      record_type: "Product scales, shipment records, residue manifests, and assays"
+      raw_fields: "output_mass; grade; composition; destination; recovery_status; batch_id"
+      collection_method: "Reconcile produced, shipped, stored, internally recycled, and discarded outputs"
+      unit: "kg"
+      frequency: "Each batch or shipment"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "All foreground secondary outputs"
+      aggregation_rule: "Sum external outputs by identity and destination; keep internal loops separate"
+      quality_evidence: "Scale calibration; certificates of analysis; shipment and waste records; stock reconciliation"
+    - protocol_id: cp_secondary_emissions
+      process_id: "secondary_unwrought_lead"
+      flow_role: "Direct CO2, SO2, lead, and particulate"
+      record_type: "Continuous or periodic monitoring, validated stack tests, diffuse estimates, and fuel/carbon balance"
+      raw_fields: "source_id; pollutant; concentration; gas_flow; duration; capture_status; fuel_carbon; uncertainty"
+      collection_method: "Calculate source-specific mass releases and reconcile control, bypass, and afterburner events"
+      unit: "kg"
+      frequency: "Monitoring interval and every reportable event"
+      temporal_coverage: "Complete reporting period including startup, shutdown, and upset events"
+      site_scope: "All controlled and diffuse foreground sources"
+      aggregation_rule: "Sum source-specific direct releases once; exclude captured return and upstream emissions"
+      quality_evidence: "Calibration and QA records; test reports; operating hours; carbon and sulfur balance; uncertainty statement"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Every inventory row"
+      rule: "normalized amount = reporting-period exchange amount / reporting-period net saleable unwrought-lead mass"
+      inputs:
+        - "Exchange totals"
+        - "net saleable lead output"
+      output: "Amount per 1 kg reference product"
+      source_ids: []
+    - id: calc_dry_concentrate
+      applies_to: "primary_lead_concentrate"
+      rule: "dry mass = as-received mass × (1 - measured moisture fraction); contained lead = dry mass × dry-basis Pb assay"
+      inputs:
+        - "As-received mass"
+        - moisture
+        - "Pb assay"
+      output: "Dry concentrate and contained-lead mass"
+      source_ids: []
+    - id: calc_scrap_contained_lead
+      applies_to: "secondary_lead_scrap"
+      rule: "contained lead = mass of each accepted scrap fraction × its measured Pb content; sum only accepted lead-bearing fractions"
+      inputs:
+        - "Fraction masses"
+        - "Pb assays"
+        - "reject records"
+      output: "Contained lead in secondary feed"
+      source_ids: []
+    - id: calc_direct_emission_mass
+      applies_to: "Direct SO2, lead, and particulate"
+      rule: "source release = concentration × dry gas flow × operating duration, adjusted only by documented reference-condition conversions; sum stack and separately quantified diffuse sources"
+      inputs:
+        - "Monitoring data"
+        - "gas flow"
+        - duration
+        - "reference conditions"
+      output: "Pollutant mass released"
+      source_ids:
+        - us-epa-ap42-primary-lead-1995
+        - us-epa-ap42-secondary-lead-2010
+        - eu-jrc-nfm-bref-2017
+    - id: calc_carbon_balance
+      applies_to: "Direct fossil CO2 when continuous CO2 mass is unavailable"
+      rule: "Convert site-specific fossil-carbon consumption and measured carbon retained in products/residues to direct fossil CO2 using a documented carbon balance; do not use a generic emission factor without source review."
+      inputs:
+        - "Fuel and coke carbon"
+        - "retained carbon"
+        - "measured off-gas information"
+      output: "Direct fossil CO2 mass"
+      source_ids: []
+    - id: calc_mass_balance
+      applies_to: "Each route"
+      rule: "mass balance closure = identified external outputs plus direct mass releases and inventory change divided by identified external inputs; report the unaccounted mass and investigate material discrepancies without forcing closure."
+      inputs:
+        - "Material inputs"
+        - products
+        - wastes
+        - emissions
+        - "opening and closing stocks"
+      output: "Route mass-balance evidence"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product"
+      requirement: "Retain product grade, lead content, full declared alloy/impurity composition, casting form, route, batch or period, and conformance evidence."
+      evidence: "Certificates of analysis; product specifications; batch and shipment records"
+    - id: dq_feed_identity
+      applies_to: "Lead-bearing feed"
+      requirement: "Report feed origin, physical state, moisture, lead content, sulfur, relevant impurities, and recycled/primary status; do not substitute an umbrella feed label."
+      evidence: "Supplier certificates; sampling plan; laboratory assays; sorting records"
+    - id: dq_temporal_coverage
+      applies_to: "All rows"
+      requirement: "Cover a representative continuous reporting period and include startup, shutdown, maintenance, bypass, and upset events; disclose gaps and extrapolation."
+      evidence: "Meter completeness report; production calendar; event logs"
+    - id: dq_mass_balance
+      applies_to: "Each route"
+      requirement: "Reconcile lead and total mass across inputs, products, internal loops, residues, emissions, and stock changes; investigate rather than hide unexplained differences."
+      evidence: "Lead balance; total mass balance; stock reconciliation; corrective-action notes"
+    - id: dq_emission_coverage
+      applies_to: "Direct emissions"
+      requirement: "Include captured stack releases and quantified diffuse releases, identify particle fraction and compartment, and exclude captured material returned to process."
+      evidence: "Monitoring plan; stack tests; diffuse-emission method; control-device records"
+    - id: dq_upstream_representativeness
+      applies_to: "Purchased inputs"
+      requirement: "Use upstream datasets matching delivered geography, grade, technology, and reference conditions, and disclose substitutions."
+      evidence: "Dataset-selection log; supplier data; representativeness assessment"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "Confirm that the quantitative-reference output is unwrought lead, uses the verified Crude lead UUID and Mass/kg support chain, and declares all required qualifiers."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_route_selection
+    applies_to: "Process map"
+    rule: "Require a primary, secondary, or explicitly measured mixed-site route declaration; reject a dataset that silently combines route defaults or incompatible furnace scenarios."
+    source_ids:
+      - eu-jrc-nfm-bref-2017
+  - rule_id: validate_inventory_atomicity
+    applies_to: "Inventory"
+    rule: "Require each exchange to keep one chemical or physical identity, direction, flow type, property, unit, route condition, and destination; reject umbrella utilities, materials, wastes, or emissions."
+    source_ids: []
+  - rule_id: validate_uuid_support
+    applies_to: "UUID-bearing and unresolved rows"
+    rule: "Recheck every final UUID against public state 100, bilingual baseName, flow type, classification, property, and unit group; unresolved rows must retain their exact identity and receive a reviewed UUID before publication."
+    source_ids: []
+  - rule_id: validate_no_double_counting
+    applies_to: "Utilities and emissions"
+    rule: "Confirm that direct foreground CO2, SO2, lead, and particulate exclude upstream supply-chain emissions and that internal dust, slag, dross, or metal return loops are not counted as external flows."
+    source_ids:
+      - us-epa-ap42-primary-lead-1995
+      - us-epa-ap42-secondary-lead-2010
+      - eu-jrc-nfm-bref-2017
+  - rule_id: validate_balance_and_coverage
+    applies_to: "Dataset completeness"
+    rule: "Review lead balance, total mass balance, temporal coverage, stock changes, missing records, control bypasses, co-product allocation, and waste destinations; unresolved discrepancies or undocumented exclusions fail validation."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset or background_dataset for producer-gate unwrought lead"
+  downstream_use: "Foreground input to lead fabrication, alloying, battery, construction, shielding, chemical, or other downstream lifecycle models when grade and route match"
+  allowed_use: "Product systems requiring 1 kg of declared-grade unwrought lead at the producer gate, with route, geography, technology, allocation, and recycled-content convention matched"
+  excluded_use: "Lead ore/concentrate, lead scrap, lead oxide, semi-finished lead, fabricated articles, batteries, unidentified mixed lead products, or a cradle-to-grave claim without added upstream/downstream processes"
+  required_metadata: "Product grade and composition; crude/refined/alloy state; casting form; primary/secondary/mixed route; feed origin; furnace and refining technology; geography; reporting period; allocation method; recycled-content convention; control technology; data sources; unresolved substitutions"
+  required_quality_disclosure: "Primary-data share; meter and assay coverage; lead and total mass-balance results; temporal gaps; diffuse-emission method; uncertainty; co-product treatment; residue destinations; upstream dataset representativeness"
+  update_trigger: "Change in feed mix, primary/secondary share, furnace or refining technology, product grade, sulfur or dust control, energy supply, allocation method, residue destination, reporting period, or a material mass-balance/quality finding"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-04)"
+    used_for: "Official classification identity CPC 41441, Lead, unwrought"
+  - id: "us-epa-ap42-primary-lead-1995"
+    type: "official_guidance"
+    reference: "U.S. EPA, AP-42 Section 12.6, Primary Lead Smelting, January 1995, https://www.epa.gov/sites/production/files/2020-11/documents/c12s06.pdf (retrieved 2026-09-04)"
+    used_for: "Primary-route process decomposition, specific charge materials, refining/casting, residues, and direct air-emission candidates"
+  - id: "us-epa-ap42-secondary-lead-2010"
+    type: "official_guidance"
+    reference: "U.S. EPA, AP-42 Section 12.11, Secondary Lead Processing, October 1986, reformatted January 1995, tables updated September 2010, https://www.epa.gov/sites/production/files/2020-11/documents/c12s11_2010.pdf (retrieved 2026-09-04)"
+    used_for: "Secondary-route scrap preparation, smelting, refining/casting, charge materials, residues, and direct air-emission candidates"
+  - id: "eu-jrc-nfm-bref-2017"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Non-Ferrous Metals Industries, 2017, https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2020-01/JRC107041_NFM_bref2017.pdf (retrieved 2026-09-04)"
+    used_for: "Primary/secondary route distinction, direct-smelting and battery-recovery variants, utilities, residues, emissions, controls, and foreground qualifiers"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:2af98d8cfdf5b0afccb7b858af1de8d8a06d9b43fc34b4102f36201b05477911"
+  generated_content_sha256: "sha256:bf164a9beb70957ccf4426679f5a3d9f14bdb718fed45ba0995b2afadaca6afc"

@@ -1,10 +1,1163 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41223"
-  title: "Flat-rolled products of alloy steel (except of silicon-electrical steel), not further worked than cold-rolled, of a width of 600 mm or more"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.flat-rolled-products-of-alloy-steel-except-of-silicon-electrical-steel-not-further-work-55e07ecd"
+  classification_refs: "CPC 3.0 41223"
+  covered_products: "Wide cold-rolled or cold-reduced flat products of alloy steel other than silicon-electrical steel, supplied as coil, strip, or sheet at 600 mm width or more and not further worked beyond the declared included finishing operations"
+  excluded_products: "Silicon-electrical steel; separately classified stainless steel; width below 600 mm; products only hot rolled; coated, plated, fabricated, formed, or machined products; downstream use products"
+  representative_product: "Uncoated wide cold-rolled alloy-steel coil at the producer factory gate"
+  production_route: "Hot-rolled alloy-steel feed; pickling and rinsing; cold rolling; conditional annealing and temper rolling; finishing and dispatch preparation"
+  market_state: "Dry factory-gate coil, strip, or sheet with declared grade, dimensions, surface condition, temper, edge condition, and packing state"
+functional_unit:
+  what: "Declared quantity of qualifying wide cold-rolled flat alloy-steel product delivered at the producer factory gate"
+  how_much: "1,000 kg net product mass"
+  how_well: "Conforming to the declared alloy grade, ordered thickness and width, mechanical properties, surface condition, temper, edge condition, and inspection status"
+  how_long_or_cycle: "One production campaign or reporting-period aggregate; no use-stage service life is assigned to this factory-gate declared unit"
+  reference_flow_link: "reference_cold_rolled_alloy_steel"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary starts when qualifying hot-rolled alloy-steel feed enters the pickling or coupled pickling-and-rolling line and ends when the net qualifying cold-rolled product is finished and ready for dispatch. Linked upstream datasets provide the burdens of hot-rolled feed, purchased chemicals, electricity, fuels, water, gases, and packaging. Treatment or recovery datasets are required for wastes leaving the foreground site."
+      source_ids: []
+    - rule_id: boundary_include_cold_rolling_chain
+      applies_to: "foreground production"
+      rule: "Include pickling and rinsing, cold rolling, grade- or order-required annealing and temper rolling, finishing, internal material handling, directly attributable utilities, emissions control, wastewater handling, and packing performed before the factory gate."
+      source_ids:
+        - ec-jrc-fmp-bref-2022
+        - worldsteel-lci-methodology-2017
+    - rule_id: boundary_link_upstream_inputs
+      applies_to: "product and utility inputs"
+      rule: "Link every purchased product input to a geographically and technologically representative upstream dataset and disclose supplier-specific substitutions; do not truncate hot-rolled steel production merely because the foreground starts at pickling."
+      source_ids:
+        - worldsteel-lci-methodology-2017
+    - rule_id: boundary_exclude_downstream_conversion
+      applies_to: "downstream life cycle"
+      rule: "Exclude transport after the factory gate, fabrication, forming, coating, assembly, use, maintenance, and end-of-life unless a separately declared expanded study adds them without changing this reference flow."
+      source_ids:
+        - un-cpc-3-0-2025
+        - worldsteel-lci-methodology-2017
+    - rule_id: boundary_conditional_operations
+      applies_to: "annealing, temper rolling, surface oiling, and packing"
+      rule: "Include each operation and its atomic exchanges only when performed for the reported product; otherwise document the operation as absent rather than applying a generic route average."
+      source_ids:
+        - ec-jrc-fmp-bref-2022
+boundary_abstraction:
+  declared_starting_condition: "Received hot-rolled flat alloy-steel coil or strip, excluding silicon-electrical steel, with supplier, grade, dimensions, surface state, mass, and upstream dataset declared"
+  starting_condition_role: "foreground transformation input with linked upstream production burden"
+  product_classification_scope: "CPC 3.0 41223, restricted to cold-rolled flat alloy-steel products of width 600 mm or more and excluding silicon-electrical steel"
+  recursive_input_rule: "If qualifying cold-rolled product is reintroduced as an input, record it as a separately identified recycled, rework, or purchased product flow with its prior dataset; do not recursively apply this PCR to hide the prior production stage."
+  upstream_dataset_requirement: "Supplier-specific hot-rolled alloy-steel dataset preferred; otherwise use a documented regional and technology-representative dataset with grade, recycled-content accounting, and factory-gate boundary aligned to the feed."
+  disclosure: "Declare feed origin, alloy grade, BOF/EAF or supplier technology where known, site, geography, reporting period, pickling acid route, rolling mill type, lubrication system, annealing and temper route, surface oiling, packing, waste treatment, and any excluded onsite operation."
+reference_flow_definition:
+  reference_amount: "1,000 kg net cold-rolled alloy-steel product at the factory gate"
+  product_flow_ref:
+    name: "Flat-rolled products of alloy steel (except of silicon-electrical steel), not further worked than cold-rolled, of a width of 600 mm or more"
+    uuid: "d572d61f-b115-4a81-a187-8d7d111a0d65"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "alloy grade and standard"
+    - "silicon-electrical exclusion"
+    - "width and thickness"
+    - coil
+    - strip
+    - "or sheet form"
+    - "annealed or full-hard state"
+    - "temper and surface finish"
+    - "edge condition"
+    - "coating status"
+    - "production site and geography"
+    - "reporting period"
+    - "net mass basis"
+    - "packing state"
+    - "factory-gate boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "reference product and steel intermediates"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use net dry product mass excluding pallets, wrapping, strapping, cores, and other dispatch packaging; record gross-to-net reconciliation when commercial records use gross mass."
+  - id: electricity_energy_conversion
+    applies_to: "all alternating-current electricity rows"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve supplier or meter kWh and convert to MJ using exactly 3.6 MJ per kWh; retain the original kWh record and identify the meter, voltage level, supplier or grid mix, and allocation method."
+  - id: natural_gas_volume_conditions
+    applies_to: "annealing natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report gaseous natural-gas volume at explicitly declared temperature, pressure, and dry/wet reference conditions; retain the meter correction or supplier statement used to harmonize volume."
+  - id: process_mass_balance
+    applies_to: "each process and the overall foreground chain"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Reconcile input steel mass to conforming intermediates, reference product, steel scrap, scale or filter residues, retained work in progress, and measured inventory change on the same temporal basis."
+process_map:
+  - id: pickling_and_surface_preparation
+    name: "Pickling and surface preparation"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground surface preparation"
+    quantitative_reference: "kg pickled alloy-steel strip leaving the line"
+  - id: cold_rolling
+    name: "Cold rolling"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground thickness reduction"
+    quantitative_reference: "kg as-rolled cold-reduced alloy-steel strip"
+  - id: annealing_temper_finishing_and_packing
+    name: "Annealing, temper rolling, finishing, and packing"
+    inclusion: "required"
+    inclusion_condition: "Annealing, temper rolling, wet temper agent, surface oiling, and each packing component apply only when performed for the reported product."
+    role: "foreground final conditioning and reference-product dispatch"
+    quantitative_reference: "1,000 kg net qualifying reference product"
+process_inventory:
+  - id: pickling_and_surface_preparation
+    label: "Pickling and surface preparation"
+    inputs:
+      product:
+        - row_id: hot_rolled_alloy_steel_feed
+          role: "Hot-rolled alloy-steel feed"
+          name: "Hot-rolled flat alloy-steel coil or strip, excluding silicon-electrical steel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The received wide hot-rolled alloy-steel coil or strip is the physical feed whose oxide scale is removed before cold rolling."
+          amount:
+            expression: "measured net feed mass accepted into the pickling line"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg pickled alloy-steel strip output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pickling_material_mass
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: hydrochloric_acid_input
+          role: "Hydrochloric acid for pickling"
+          name: "Hydrochloric acid solution"
+          flow_type: "product"
+          property_unit: "Mass / kg as purchased solution and kg HCl equivalent"
+          description: "Hydrochloric acid is recorded only when the site uses the hydrochloric-acid pickling route; purchased solution concentration is retained."
+          amount:
+            expression: "measured additions minus documented recovered solution returned to the same bath system"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg pickled alloy-steel strip output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pickling_acid_and_water
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: sulfuric_acid_input
+          role: "Sulfuric acid for pickling"
+          name: "Sulfuric acid solution"
+          flow_type: "product"
+          property_unit: "Mass / kg as purchased solution and kg H2SO4 equivalent"
+          description: "Sulfuric acid is recorded only when the site uses the sulfuric-acid pickling route; it is not combined with the hydrochloric-acid row."
+          amount:
+            expression: "measured additions minus documented recovered solution returned to the same bath system"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg pickled alloy-steel strip output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pickling_acid_and_water
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: demineralized_rinse_water
+          role: "Demineralized rinse water"
+          name: "Demineralized water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9385842f-1815-4f19-a6b9-3dbb7ccbbffc"
+          property_unit: "Mass / kg"
+          description: "Demineralized or equivalent-quality water crossing into rinsing is recorded separately from closed-loop recirculation."
+          amount:
+            expression: "measured make-up water mass entering the pickling rinse system; where only volume is metered, convert to kg using documented water density at the declared measurement conditions"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg pickled alloy-steel strip output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pickling_acid_and_water
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: pickling_electricity
+          role: "Alternating-current electricity for pickling"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value / MJ"
+          description: "Electricity used by strip handling, pumps, extraction, drying, and directly attributable pickling-line equipment is recorded at the point of use."
+          amount:
+            expression: "stage submeter reading; otherwise a documented allocation from a shared meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg pickled alloy-steel strip output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pickling_energy
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: pickled_alloy_steel_strip
+          role: "Pickled alloy-steel strip"
+          name: "Pickled flat alloy-steel strip"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The descaled, rinsed, and dried strip leaving pickling is measured as the quantitative output of surface preparation."
+          amount:
+            expression: "measured output mass corrected for inventory change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "process quantitative reference"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pickling_material_mass
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        - row_id: pickling_trim_scrap
+          role: "Alloy-steel edge trim from pickling"
+          name: "Clean alloy-steel edge trim scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Clean edge trim removed to obtain the required width is recorded as a distinct steel scrap output, including internal recycling destination."
+          amount:
+            expression: "weighed or mass-balanced trim scrap leaving the pickling process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg pickled alloy-steel strip output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pickling_waste_and_emissions
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: spent_hydrochloric_pickle_liquor
+          role: "Spent hydrochloric pickle liquor"
+          name: "Spent hydrochloric pickle liquor"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Spent hydrochloric pickle liquor is recorded when it leaves the bath system for regeneration, recovery, treatment, or disposal."
+          amount:
+            expression: "measured transferred mass net of liquor returned to the same process loop"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg pickled alloy-steel strip output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pickling_waste_and_emissions
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: spent_sulfuric_pickle_liquor
+          role: "Spent sulfuric pickle liquor"
+          name: "Spent sulfuric pickle liquor"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Spent sulfuric pickle liquor is recorded separately when the sulfuric route transfers liquor out of the bath system."
+          amount:
+            expression: "measured transferred mass net of liquor returned to the same process loop"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg pickled alloy-steel strip output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pickling_waste_and_emissions
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: acidic_rinse_wastewater
+          role: "Acidic rinse wastewater"
+          name: "Acidic steel-pickling rinse wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Acidic rinsing or scrubber water leaving the cold-rolling foreground for onsite or external treatment is recorded before treatment substitution."
+          amount:
+            expression: "measured discharge or transfer volume from pickling and associated gas cleaning"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg pickled alloy-steel strip output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pickling_waste_and_emissions
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+      elementary:
+        - row_id: hydrogen_chloride_to_air
+          role: "Hydrogen chloride emitted to air"
+          name: "hydrogen chloride"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-aab0-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Hydrogen chloride at the pickling extraction or abatement outlet is recorded when the hydrochloric-acid route is used and the emission is measured or reportable."
+          amount:
+            expression: "measured outlet mass or concentration multiplied by standardized dry gas volume"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg pickled alloy-steel strip output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pickling_waste_and_emissions
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+  - id: cold_rolling
+    label: "Cold rolling"
+    inputs:
+      product:
+        - row_id: pickled_strip_feed
+          role: "Pickled strip feed"
+          name: "Pickled flat alloy-steel strip"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Pickled wide alloy-steel strip entering the rolling stands is recorded to connect the surface-preparation and rolling mass balances."
+          amount:
+            expression: "measured mass entering the cold-rolling mill corrected for inventory change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg as-rolled cold-reduced strip output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rolling_material_mass
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: rolling_oil_input
+          role: "Rolling oil"
+          name: "Cold-rolling lubricant oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased rolling oil crossing into lubrication or emulsion make-up is recorded by formulation and excludes recirculated oil remaining within the loop."
+          amount:
+            expression: "measured fresh lubricant additions net of unopened returns"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg as-rolled cold-reduced strip output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rolling_lubricant_and_water
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: rolling_cooling_water
+          role: "Rolling cooling-water make-up"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Fresh water added to the rolling emulsion, direct cooling, or indirect cooling circuit is recorded without counting internally recirculated water."
+          amount:
+            expression: "measured make-up water mass crossing into cold-rolling cooling systems; where only volume is metered, convert to kg using documented water density at the declared measurement conditions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg as-rolled cold-reduced strip output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rolling_lubricant_and_water
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: cold_rolling_electricity
+          role: "Alternating-current electricity for cold rolling"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value / MJ"
+          description: "Electricity used by rolling drives, strip handling, pumps, filtration, extraction, and directly attributable cooling is recorded at the point of use."
+          amount:
+            expression: "rolling-line submeter reading; otherwise a documented allocation from a shared meter"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg as-rolled cold-reduced strip output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rolling_energy
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cold_reduced_strip_output
+          role: "As-rolled cold-reduced strip"
+          name: "As-rolled cold-reduced flat alloy-steel strip"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Cold-reduced strip leaving the principal rolling stands is measured before any downstream annealing, temper rolling, or finishing."
+          amount:
+            expression: "measured output mass corrected for work-in-progress inventory change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "process quantitative reference"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rolling_material_mass
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        - row_id: used_rolling_oil
+          role: "Used rolling oil"
+          name: "Used cold-rolling oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Used lubricant removed from the rolling system and sent for external recovery, treatment, or disposal is recorded separately from oil recirculated onsite."
+          amount:
+            expression: "measured waste shipment or tank-transfer mass leaving the rolling process"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg as-rolled cold-reduced strip output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rolling_waste
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: oily_rolling_wastewater
+          role: "Oily rolling wastewater"
+          name: "Oily cold-rolling wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Oily water or broken emulsion transferred from cold rolling to treatment is recorded as one specific waste stream before treatment."
+          amount:
+            expression: "measured transfer volume to onsite or external wastewater treatment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg as-rolled cold-reduced strip output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rolling_waste
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: rolling_filter_residue
+          role: "Rolling-emulsion filter residue"
+          name: "Oil-bearing rolling-emulsion filter residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Oil-bearing filter residue or sludge removed from rolling-emulsion conditioning is recorded when it leaves the recirculation system."
+          amount:
+            expression: "measured waste-container or shipment mass"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg as-rolled cold-reduced strip output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rolling_waste
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+      elementary:
+        []
+  - id: annealing_temper_finishing_and_packing
+    label: "Annealing, temper rolling, finishing, and packing"
+    inputs:
+      product:
+        - row_id: cold_reduced_strip_feed
+          role: "Cold-reduced strip feed"
+          name: "As-rolled cold-reduced flat alloy-steel strip"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Cold-reduced strip entering the final conditioning sequence is recorded whether it goes directly to finishing or first undergoes annealing and temper rolling."
+          amount:
+            expression: "measured mass entering the final conditioning sequence"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_material_and_packaging
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: annealing_natural_gas
+          role: "Natural gas for annealing"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Gaseous natural gas is recorded only for gas-fired annealing or directly attributable thermal conditioning; furnace type and reference volume conditions are declared."
+          amount:
+            expression: "corrected meter volume consumed by applicable annealing furnaces"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_energy_and_gases
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: annealing_finishing_electricity
+          role: "Alternating-current electricity for annealing and finishing"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value / MJ"
+          description: "Electricity used by electric annealing where applicable, furnace auxiliaries, temper rolling, straightening, slitting, cutting, inspection, oiling, packing, and material handling is recorded at point of use."
+          amount:
+            expression: "sequence submeter reading; otherwise a documented allocation from a shared meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_energy_and_gases
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: protective_nitrogen
+          role: "Protective nitrogen"
+          name: "Nitrogen gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "96ba4c16-fd7c-424e-b318-d87484d3d7c0"
+          property_unit: "Volume / m3 at declared reference conditions"
+          description: "Nitrogen supplied to an annealing protective atmosphere is recorded only when that atmosphere is used, with purity and delivery state declared."
+          amount:
+            expression: "measured delivered or metered nitrogen volume consumed by the annealing sequence"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_energy_and_gases
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: protective_hydrogen
+          role: "Protective hydrogen"
+          name: "Industrial hydrogen gas"
+          flow_type: "product"
+          property_unit: "Volume / m3 at declared reference conditions"
+          description: "Hydrogen supplied to an annealing protective atmosphere is recorded separately when used; it is not combined with nitrogen."
+          amount:
+            expression: "measured delivered or metered hydrogen volume consumed by the annealing sequence"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_energy_and_gases
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: temper_rolling_agent
+          role: "Wet temper-rolling agent"
+          name: "Wet temper-rolling agent"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The formulated wet temper-rolling agent is recorded only when wet temper rolling is applied; dry temper rolling has no amount on this row."
+          amount:
+            expression: "measured fresh agent issued to the temper mill net of unopened returns"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_material_and_packaging
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: anticorrosion_oil
+          role: "Anticorrosion oil"
+          name: "Anticorrosion oil for steel strip"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Anticorrosion oil crossing onto the delivered steel surface is recorded only for oiled product, with formulation and retained-on-product status declared."
+          amount:
+            expression: "measured oil consumption adjusted for recovered overspray returned to the same system"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_material_and_packaging
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: steel_strapping
+          role: "Steel dispatch strapping"
+          name: "Steel baling band"
+          flow_type: "product"
+          flow_ref:
+            uuid: "56fe4f71-b594-4b55-8553-c87f2516737d"
+          property_unit: "Mass / kg"
+          description: "Steel bands used to secure the dispatched coil, strip, or sheet are recorded separately when included in the declared packing state."
+          amount:
+            expression: "measured or purchase-and-inventory-reconciled strap mass consumed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_material_and_packaging
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: packaging_paper
+          role: "Protective packaging paper"
+          name: "Protective packaging paper"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Paper wrapping or interleaving supplied with the product is recorded separately when used."
+          amount:
+            expression: "measured or purchase-and-inventory-reconciled paper mass consumed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_material_and_packaging
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: wooden_pallet
+          role: "Wooden dispatch pallet or skid"
+          name: "Pallets, box pallets and other load boards, of wood, pallet collars of wood"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4b49871e-95be-4e0c-9223-9902f9eaa763"
+          property_unit: "Mass / kg"
+          description: "The wooden pallet or skid crossing the factory gate with the product is recorded when used; reusable pallets retained by the producer are excluded."
+          amount:
+            expression: "measured mass of pallets or skids shipped with the reference product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_material_and_packaging
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_cold_rolled_alloy_steel
+          role: "Reference cold-rolled alloy-steel product"
+          name: "Flat-rolled products of alloy steel (except of silicon-electrical steel), not further worked than cold-rolled, of a width of 600 mm or more"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d572d61f-b115-4a81-a187-8d7d111a0d65"
+          property_unit: "Mass / kg"
+          description: "This is the net qualifying CPC 41223 product after all reported included operations and before transport beyond the producer factory gate."
+          amount:
+            expression: "fixed reference output of 1,000 kg net product mass"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "PCR reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "external_source"
+              source_ids:
+                - un-cpc-3-0-2025
+                - worldsteel-lci-methodology-2017
+            ranges: []
+      waste:
+        - row_id: finishing_trim_scrap
+          role: "Alloy-steel trim from finishing"
+          name: "Clean alloy-steel finishing trim scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Clean trimming, slitting, or defective alloy-steel portions removed during finishing are recorded as a distinct scrap output with destination."
+          amount:
+            expression: "measured scrap mass leaving finishing, corrected for inventory change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_waste_and_emissions
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: spent_temper_rolling_agent
+          role: "Spent wet temper-rolling agent"
+          name: "Spent wet temper-rolling agent"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Spent temper-rolling solution leaving the process for treatment or disposal is recorded only when wet temper rolling is used."
+          amount:
+            expression: "measured transfer or shipment mass leaving the temper-rolling system"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_waste_and_emissions
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+      elementary:
+        - row_id: fossil_carbon_dioxide
+          role: "Fossil carbon dioxide from onsite fuel combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Direct fossil carbon dioxide from gas-fired annealing or other included onsite fuel combustion is recorded at the emission boundary and is not substituted by the upstream fuel dataset."
+          amount:
+            expression: "verified stack, fuel-carbon-balance, or regulated emissions-ledger mass attributable to included operations"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_waste_and_emissions
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: nitrogen_oxides_to_air
+          role: "Nitrogen oxides emitted to air"
+          name: "Nitrogen oxides to air, reported as declared NOx convention"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Nitrogen oxides from included annealing combustion are recorded according to the site's monitored species and reporting convention, which must be declared."
+          amount:
+            expression: "measured outlet concentration multiplied by standardized dry gas volume, or verified regulated emissions record"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_waste_and_emissions
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: carbon_monoxide_to_air
+          role: "Carbon monoxide emitted to air"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Carbon monoxide from included annealing combustion is recorded when measured or reportable at the furnace emission point."
+          amount:
+            expression: "measured outlet concentration multiplied by standardized dry gas volume, or verified regulated emissions record"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_waste_and_emissions
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "all foreground processes"
+    rule: "Subdivide by process line, meter, campaign, and product family before allocation; assign directly measured inputs, outputs, wastes, and emissions to the product that caused them."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: allocation_shared_energy
+    applies_to: "shared electricity, fuel, steam, compressed air, and cooling"
+    rule: "Use direct metering first; otherwise use a documented physical relationship such as equipment operating time and rated load, delivered energy, or thermal duty. Mass allocation is permitted only when no more causal parameter exists and must be sensitivity-tested for material shared burdens."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: allocation_internal_scrap
+    applies_to: "internally recycled steel trim and scrap"
+    rule: "Record generation and destination, but do not count internally recirculated scrap as both an external waste credit and an external scrap input; disclose any recycling model applied outside this foreground transformation."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: allocation_co_product_expansion
+    applies_to: "exported recovered acid, iron oxide, or other recovered material"
+    rule: "Prefer system expansion only when the displaced product, functional equivalence, market use, and substitution ratio are documented; otherwise report the output separately and disclose the selected justified partitioning method and sensitivity."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+      - ec-jrc-fmp-bref-2022
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_pickling_material_mass
+      process_id: "pickling_and_surface_preparation"
+      flow_role: "steel feed, pickled output, and inventory"
+      record_type: "weighbridge, coil tracking, and inventory record"
+      raw_fields: "coil id; grade; width; thickness; input kg; output kg; opening and closing WIP kg"
+      collection_method: "calibrated scale plus coil production system"
+      unit: "kg"
+      frequency: "per coil or lot"
+      temporal_coverage: "same representative reporting period, normally 12 consecutive months"
+      site_scope: "each included pickling line"
+      aggregation_rule: "reconcile input, output, scrap, and WIP; normalize to pickled output"
+      quality_evidence: "calibration certificate; coil genealogy; signed mass balance"
+    - protocol_id: cp_pickling_acid_and_water
+      process_id: "pickling_and_surface_preparation"
+      flow_role: "acid and rinse-water inputs"
+      record_type: "purchase, tank, concentration, and meter record"
+      raw_fields: "chemical id; concentration; received kg; tank change; recovered return; water m3; meter id"
+      collection_method: "tank balance and calibrated water meter"
+      unit: "kg; m3"
+      frequency: "per delivery and daily or batch meter read"
+      temporal_coverage: "same reporting period as product mass"
+      site_scope: "each included bath and rinse train"
+      aggregation_rule: "net external addition divided by pickled output"
+      quality_evidence: "supplier certificate; tank calibration; meter calibration; route log"
+    - protocol_id: cp_pickling_energy
+      process_id: "pickling_and_surface_preparation"
+      flow_role: "pickling electricity"
+      record_type: "interval meter or allocated shared-meter record"
+      raw_fields: "meter id; kWh; start and end time; production kg; voltage; supplier or grid mix; allocation driver"
+      collection_method: "calibrated electricity meter"
+      unit: "kWh retained; MJ reported"
+      frequency: "continuous or per shift"
+      temporal_coverage: "same reporting period as product mass"
+      site_scope: "included pickling equipment and auxiliaries"
+      aggregation_rule: "sum kWh, subtract documented non-process loads, convert by 3.6, normalize to output"
+      quality_evidence: "meter calibration; energy invoice; allocation worksheet"
+    - protocol_id: cp_pickling_waste_and_emissions
+      process_id: "pickling_and_surface_preparation"
+      flow_role: "trim, spent liquor, wastewater, and HCl emission"
+      record_type: "waste shipment, tank transfer, effluent meter, stack test, or CEMS record"
+      raw_fields: "stream id; mass or volume; concentration; gas volume; treatment destination; route; date"
+      collection_method: "calibrated scale or meter and accredited monitoring where applicable"
+      unit: "kg; m3"
+      frequency: "per transfer and monitoring event"
+      temporal_coverage: "representative operating period including abnormal operation"
+      site_scope: "pickling line and associated abatement"
+      aggregation_rule: "aggregate each atomic stream separately and normalize to pickled output"
+      quality_evidence: "manifests; laboratory report; monitor QA; treatment receipt"
+    - protocol_id: cp_rolling_material_mass
+      process_id: "cold_rolling"
+      flow_role: "pickled feed and cold-reduced output"
+      record_type: "coil tracking and inventory record"
+      raw_fields: "coil id; grade; input kg; output kg; opening and closing WIP kg"
+      collection_method: "calibrated scale plus coil production system"
+      unit: "kg"
+      frequency: "per coil or lot"
+      temporal_coverage: "same reporting period as rolling utilities and wastes"
+      site_scope: "each included rolling mill"
+      aggregation_rule: "reconcile feed, output, and WIP; normalize to cold-reduced output"
+      quality_evidence: "calibration certificate; coil genealogy; signed balance"
+    - protocol_id: cp_rolling_lubricant_and_water
+      process_id: "cold_rolling"
+      flow_role: "fresh rolling oil and cooling-water make-up"
+      record_type: "purchase, tank, issue, return, and meter record"
+      raw_fields: "formulation; fresh oil kg; return kg; tank change; water m3; circuit type"
+      collection_method: "tank balance and calibrated water meter"
+      unit: "kg; m3"
+      frequency: "daily or per batch"
+      temporal_coverage: "same reporting period as rolling output"
+      site_scope: "each lubricant and cooling circuit"
+      aggregation_rule: "count only external make-up crossing the boundary and normalize to output"
+      quality_evidence: "supplier record; tank calibration; meter calibration; circuit diagram"
+    - protocol_id: cp_rolling_energy
+      process_id: "cold_rolling"
+      flow_role: "cold-rolling electricity"
+      record_type: "interval meter or allocated shared-meter record"
+      raw_fields: "meter id; kWh; mill id; operating time; output kg; allocation driver"
+      collection_method: "calibrated electricity meter"
+      unit: "kWh retained; MJ reported"
+      frequency: "continuous or per shift"
+      temporal_coverage: "same reporting period as rolling output"
+      site_scope: "mill drives and directly attributable auxiliaries"
+      aggregation_rule: "sum kWh, convert by 3.6, normalize to output"
+      quality_evidence: "meter calibration; energy invoice; allocation worksheet"
+    - protocol_id: cp_rolling_waste
+      process_id: "cold_rolling"
+      flow_role: "used oil, oily wastewater, and filter residue"
+      record_type: "waste tank, treatment, and shipment record"
+      raw_fields: "stream id; kg or m3; solids or oil content; destination; date"
+      collection_method: "calibrated tank, scale, or flow meter"
+      unit: "kg; m3"
+      frequency: "per transfer or shipment"
+      temporal_coverage: "same reporting period as rolling output"
+      site_scope: "rolling and emulsion-conditioning systems"
+      aggregation_rule: "aggregate each waste separately and normalize to output"
+      quality_evidence: "manifest; treatment receipt; laboratory analysis"
+    - protocol_id: cp_finishing_material_and_packaging
+      process_id: "annealing_temper_finishing_and_packing"
+      flow_role: "steel feed, final product, conditional agents, oil, and packing"
+      record_type: "coil tracking, material issue, packing, and inventory record"
+      raw_fields: "coil id; feed kg; product kg; agent kg; oil kg; strap kg; paper kg; pallet kg; operation status"
+      collection_method: "calibrated scale and production or warehouse system"
+      unit: "kg"
+      frequency: "per coil or shipment"
+      temporal_coverage: "same reporting period as finishing utilities and emissions"
+      site_scope: "included annealing, temper, finishing, and packing operations"
+      aggregation_rule: "aggregate each atomic exchange, reconcile inventory, normalize to 1,000 kg net product"
+      quality_evidence: "calibration; coil genealogy; issue record; packing bill"
+    - protocol_id: cp_finishing_energy_and_gases
+      process_id: "annealing_temper_finishing_and_packing"
+      flow_role: "natural gas, electricity, nitrogen, and hydrogen"
+      record_type: "utility meter and supplier record"
+      raw_fields: "meter id; gas m3; volume conditions; electricity kWh; nitrogen m3; hydrogen m3; furnace and line status"
+      collection_method: "calibrated meters and supplier statements"
+      unit: "m3; kWh retained; MJ reported"
+      frequency: "continuous or per batch"
+      temporal_coverage: "same reporting period as final product"
+      site_scope: "included furnaces, lines, and auxiliaries"
+      aggregation_rule: "allocate causally, convert electricity by 3.6, normalize to 1,000 kg product"
+      quality_evidence: "meter calibration; invoice; batch log; allocation worksheet"
+    - protocol_id: cp_finishing_waste_and_emissions
+      process_id: "annealing_temper_finishing_and_packing"
+      flow_role: "trim, spent agent, CO2, NOx, and CO"
+      record_type: "scale, waste shipment, CEMS, stack test, fuel-carbon balance, or regulated ledger"
+      raw_fields: "stream id; kg; concentration; standardized gas volume; oxygen reference; fuel carbon data; destination; date"
+      collection_method: "calibrated scale and verified monitoring or ledger method"
+      unit: "kg"
+      frequency: "per batch, shipment, or monitoring event"
+      temporal_coverage: "representative period covering applicable furnace operation"
+      site_scope: "finishing operations and their emission points"
+      aggregation_rule: "aggregate each atomic stream and normalize to 1,000 kg net product"
+      quality_evidence: "manifest; accredited test; CEMS QA; verified emissions statement"
+  calculation_rules:
+    - id: normalize_pickling_exchange
+      applies_to: "pickling inventory rows"
+      rule: "normalized amount = reporting-period exchange / reporting-period pickled-strip output"
+      inputs:
+        - cp_pickling_material_mass
+        - cp_pickling_acid_and_water
+        - cp_pickling_energy
+        - cp_pickling_waste_and_emissions
+      output: "amount per kg pickled-strip output"
+      source_ids:
+        - ec-jrc-fmp-bref-2022
+    - id: normalize_rolling_exchange
+      applies_to: "cold-rolling inventory rows"
+      rule: "normalized amount = reporting-period exchange / reporting-period cold-reduced-strip output"
+      inputs:
+        - cp_rolling_material_mass
+        - cp_rolling_lubricant_and_water
+        - cp_rolling_energy
+        - cp_rolling_waste
+      output: "amount per kg cold-reduced-strip output"
+      source_ids:
+        - ec-jrc-fmp-bref-2022
+    - id: normalize_reference_exchange
+      applies_to: "final conditioning inventory rows"
+      rule: "normalized amount = reporting-period exchange / reporting-period net reference-product kg * 1,000"
+      inputs:
+        - cp_finishing_material_and_packaging
+        - cp_finishing_energy_and_gases
+        - cp_finishing_waste_and_emissions
+      output: "amount per 1,000 kg net reference product"
+      source_ids:
+        - worldsteel-lci-methodology-2017
+    - id: convert_electricity_kwh_to_mj
+      applies_to: "all electricity rows"
+      rule: "reported MJ = metered kWh * 3.6"
+      inputs:
+        - "original kWh"
+        - "meter identity"
+      output: "electricity in MJ with original kWh retained"
+      source_ids: []
+    - id: reconcile_process_steel_mass
+      applies_to: "each foreground process"
+      rule: "steel input + opening WIP = conforming steel output + steel scrap + other measured steel-bearing output + closing WIP; investigate and disclose residual"
+      inputs:
+        - "material mass protocol for the process"
+      output: "reconciled mass balance and residual"
+      source_ids:
+        - worldsteel-lci-methodology-2017
+    - id: calculate_stack_mass
+      applies_to: "HCl, NOx, and CO emissions when concentration data are used"
+      rule: "emitted mass = validated concentration * standardized dry gas volume, adjusted to the declared oxygen and moisture basis where applicable"
+      inputs:
+        - concentration
+        - "gas volume"
+        - time
+        - oxygen
+        - moisture
+        - "monitor QA"
+      output: "kg emitted species"
+      source_ids:
+        - ec-jrc-fmp-bref-2022
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product and intermediates"
+      requirement: "Preserve coil genealogy, alloy-grade standard and chemistry designation, silicon-electrical exclusion, ordered and measured width and thickness, cold-reduction state, surface and temper state, and coating status."
+      evidence: "coil route card; inspection certificate; order specification"
+    - id: dq_temporal_representativeness
+      applies_to: "all foreground rows"
+      requirement: "Use one aligned representative reporting period, normally 12 consecutive months; disclose shutdowns, abnormal operation, campaign changes, and any shorter period."
+      evidence: "dated production, utility, waste, and emissions records"
+    - id: dq_geographic_technology
+      applies_to: "upstream datasets and utilities"
+      requirement: "Match the production geography, supplier route, electricity supply, rolling-mill type, pickling acid route, lubrication circuit, and annealing technology as closely as available; disclose substitutions."
+      evidence: "supplier declaration; dataset metadata; site process description"
+    - id: dq_measurement
+      applies_to: "meters, scales, tanks, and monitors"
+      requirement: "Use calibrated devices within their valid calibration period and retain raw values, units, reference conditions, detection limits, and correction factors."
+      evidence: "calibration certificates; QA logs; raw export"
+    - id: dq_completeness
+      applies_to: "process inventory"
+      requirement: "Reconcile all three process sections and document every excluded or non-applicable atomic exchange; unexplained mass-balance residuals and unassigned shared utilities require correction."
+      evidence: "signed mass balance; completeness checklist; allocation worksheet"
+    - id: dq_source_and_uuid_status
+      applies_to: "evidence and flow identity"
+      requirement: "Preserve source references and flag every unresolved Tiangong flow UUID; no proxy flow may be silently substituted for a specific product, chemical, waste, or elementary emission."
+      evidence: "source register; UUID audit; unresolved manifest entries"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "Confirm net output equals 1,000 kg and all required qualifiers establish alloy grade, non-silicon-electrical status, width at least 600 mm, cold-rolled state, absence of further working, and factory-gate state."
+    source_ids:
+      - un-cpc-3-0-2025
+      - worldsteel-lci-methodology-2017
+  - rule_id: validate_process_alignment
+    applies_to: "process map and inventory"
+    rule: "Confirm required process sections exist, conditional operations are explicitly present or absent, and every inventory card is one atomic exchange linked to the stated process, direction, and flow type."
+    source_ids:
+      - ec-jrc-fmp-bref-2022
+  - rule_id: validate_mass_balance
+    applies_to: "each process and total foreground chain"
+    rule: "Perform steel and total-mass balance checks on aligned periods; investigate and disclose residuals rather than forcing the reference output to close."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: validate_energy_and_gas_units
+    applies_to: "electricity and natural gas"
+    rule: "Confirm kWh-to-MJ conversion, meter coverage, shared-meter allocation, and natural-gas reference volume conditions; reject unitless energy or gas values."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+  - rule_id: validate_waste_and_emission_boundaries
+    applies_to: "wastes and elementary emissions"
+    rule: "Confirm wastes are recorded before linked treatment or recovery, direct onsite emissions are not duplicated in upstream fuel datasets, and monitoring basis and abatement outlet are declared."
+    source_ids:
+      - ec-jrc-fmp-bref-2022
+      - worldsteel-lci-methodology-2017
+  - rule_id: validate_no_double_counting
+    applies_to: "upstream, scrap, recovery, and recycling models"
+    rule: "Confirm hot-rolled feed burdens, internal scrap, exported scrap, recovered chemicals, waste treatment, and any recycling credit are each represented once with the selected allocation model disclosed."
+    source_ids:
+      - worldsteel-lci-methodology-2017
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset after review and publication"
+  downstream_use: "Foreground process construction and cradle-to-gate product systems needing wide cold-rolled non-silicon-electrical alloy-steel input"
+  allowed_use: "Use for the declared alloy grade, width, thickness, surface and temper condition, production route, site or represented geography, technology, and reporting period; aggregate sites only with production-weighted rules disclosed."
+  excluded_use: "Silicon-electrical steel, unqualified generic alloy steel, width below 600 mm, coated or further-fabricated products, comparative public claims without an appropriate application-specific functional unit and review, or regions and technologies outside disclosed representativeness"
+  required_metadata: "canonical PCR id; CPC reference; reference-flow qualifiers; producer and geography; period; alloy grade; dimensions; product form; surface, temper, edge, coating, and packing state; upstream feed dataset; pickling, rolling, annealing, and finishing routes; allocation and recycling method; UUID status"
+  required_quality_disclosure: "primary-data share; meter and scale coverage; mass-balance residuals; temporal, geographic, and technology representativeness; shared-utility allocation; conditional operations; waste treatment; emissions monitoring; unresolved UUIDs and external range-evidence needs"
+  update_trigger: "Change of alloy family, width or thickness range, pickling chemistry, mill or lubrication technology, annealing fuel or atmosphere, finishing and packing specification, site or electricity supply, upstream feed dataset, allocation or recycling method, or reporting period beyond the declared validity"
+data_sources:
+  - id: "un-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0 structure, row 41223, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (accessed 2026-09-03)"
+    used_for: "Official classification identity, material state, width threshold, and exclusions expressed by the CPC title"
+  - id: "ec-jrc-fmp-bref-2022"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Ferrous Metals Processing Industry, EUR 31321 EN, JRC131649, 2022, DOI 10.2760/196475. https://publications.jrc.ec.europa.eu/repository/handle/JRC131649 (accessed 2026-09-03)"
+    used_for: "Cold-rolling process sequence; pickling acids and rinsing; rolling lubrication and cooling; annealing atmospheres and fuels; tempering, finishing, packing, waste, wastewater, and monitored-emission candidates"
+  - id: "worldsteel-lci-methodology-2017"
+    type: "handbook"
+    reference: "World Steel Association, Life cycle inventory methodology report for steel products, 2017, ISBN 978-2-930069-89-0. https://worldsteel.org/wp-content/uploads/Life-cycle-inventory-methodology-report.pdf (accessed 2026-09-03)"
+    used_for: "Factory-gate declared unit, cradle-to-gate boundary linkage, steel product process chain, data quality, mass balance, co-product allocation, scrap and no-double-counting rules"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:13c86f58c432d533fd030bff769dddad8b4ec34d33c5b90baa37072a456b4c72"
+  generated_content_sha256: "sha256:7e2835a6f641987d6304afe4d7eb566241b53e9645acf55b30a77c8e91a65da5"

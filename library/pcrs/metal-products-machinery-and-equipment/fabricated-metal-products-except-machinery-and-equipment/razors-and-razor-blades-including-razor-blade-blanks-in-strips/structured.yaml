@@ -1,10 +1,631 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "42914"
-  title: "Razors and razor blades (including razor blade blanks in strips)"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.razors-and-razor-blades-including-razor-blade-blanks-in-strips"
+  classification_refs: "CPC 3.0 42914, Razors and razor blades (including razor blade blanks in strips), exact contextual reference"
+  covered_products: "Unpackaged safety or shaving razors; razor cartridges; finished single-edge, double-edge, or cartridge razor blades; razor blade blanks in strips"
+  excluded_products: "Electric shavers and clippers; surgical blades; industrial cutting knives; separately supplied non-razor handles; retail packaging"
+  representative_product: "Martensitic stainless-steel razor blade or razor cartridge with declared blade count, optional PTFE edge coating, and optional polypropylene housing"
+  production_route: "Purchased blade-grade steel strip → perforating or stamping → hardening and tempering → grinding and honing → cleaning → optional coating and curing → optional housing moulding and assembly → inspection and factory-gate release"
+  market_state: "Dry, unpackaged, saleable finished razor, cartridge or blade, or saleable blade blanks in strips, at the manufacturing gate"
+functional_unit:
+  what: "Manufacture of a declared razor, razor cartridge, finished razor blade, or razor blade blank in strip form"
+  how_much: "1 kg net saleable unpackaged product at the factory gate"
+  how_well: "Conforms to the manufacturer's released specification for the declared product form, dimensions, blade geometry, material grade, coating state, and assembly state"
+  how_long_or_cycle: "One completed manufacturing campaign to factory-gate release; no use-life or replacement credit is included"
+  reference_flow_link: "The reference amount and product-flow object below represent the same net saleable output"
+system_boundary:
+  rules:
+    - rule_id: sb_foreground_operations
+      applies_to: "foreground manufacturing"
+      rule: "Include all on-site forming, heat treatment, sharpening, cleaning, optional coating and curing, optional housing moulding and assembly, inspection, rework, and directly controlled waste handling needed to produce the declared reference product."
+      source_ids:
+        - epo-ep2454056b1-2014
+        - uspto-us11571827b2-2023
+    - rule_id: sb_upstream_inputs
+      applies_to: "purchased inputs"
+      rule: "Record each purchased material, chemical, water, and electricity flow crossing the site boundary and link it to an upstream dataset with matching product state, geography, technology, and recycled-content qualifiers."
+      source_ids: []
+    - rule_id: sb_water_and_waste
+      applies_to: "aqueous cleaning and surface treatment"
+      rule: "Include process-water intake, sodium-hydroxide active mass when alkaline cleaning is used, cleaning wastewater, internal recycle, and treatment destination; retain a site water mass balance."
+      source_ids:
+        - eu-jrc-sts-bref-2020
+    - rule_id: sb_exclusions
+      applies_to: "downstream stages"
+      rule: "Exclude retail packaging, distribution, use, replacement frequency, shaving consumables, and end-of-life unless the study explicitly expands the boundary and reports those stages separately."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased blade-grade steel strip and any declared housing or coating inputs received at the razor-product manufacturing site"
+  starting_condition_role: "Upstream product inputs to the foreground conversion and assembly process"
+  product_classification_scope: "Razors, razor cartridges, finished razor blades, and razor blade blanks in strips within CPC 3.0 42914"
+  recursive_input_rule: "A razor blade, blade blank, or cartridge from the same product category that enters this process is recorded as a separate product input with its own upstream dataset; it is not folded into the reference output or silently cut off."
+  upstream_dataset_requirement: "Every purchased input must use a compatible upstream dataset or supplier primary record that declares product state, material grade or formulation, geography, technology, recycled content where relevant, and delivery boundary."
+  disclosure: "Declare product form, blade alloy, coating system, housing material, included assembly components, manufacturing route, site geography, production period, excluded operations, internal recycling, and whether mass and energy records cover all included operations."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Razors and razor blades (including razor blade blanks in strips)"
+    uuid: "6c5d6033-a2c9-40f0-bc7d-077549573ace"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product form"
+    - "blade count where applicable"
+    - "blade alloy and grade"
+    - blank
+    - "sharpened or assembled state"
+    - "coating material and coating state"
+    - "housing or handle inclusion and polymer"
+    - "recycled content"
+    - "manufacturing geography"
+    - "production period"
+    - "net dry mass basis"
+    - "factory-gate definition"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "reference product and normalization denominator"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use net dry mass of saleable unpackaged product after final inspection. Exclude pallets, transport packaging, temporary carriers, and rejected product."
+  - id: electricity_conversion
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electricity and convert kWh to MJ using exactly 3.6 MJ per kWh; do not mix fuel energy into this row."
+  - id: solution_active_mass
+    applies_to: "sodium hydroxide and PTFE dispersions"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report active dry substance mass. Calculate it from as-received solution or dispersion mass and batch-specific concentration; retain both raw values."
+  - id: wastewater_mass
+    applies_to: "cleaning wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer direct mass. A volume-to-mass conversion requires measured or supplier-supported density and must retain volume, density, temperature, and conversion evidence."
+process_map:
+  - id: razor_product_manufacturing
+    name: "Razor and razor-blade manufacture"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Foreground conversion, finishing, optional housing moulding, assembly, inspection, and factory-gate release"
+    quantitative_reference: "1 kg net saleable unpackaged reference product"
+process_inventory:
+  - id: razor_product_manufacturing
+    label: "Razor and razor-blade manufacture"
+    inputs:
+      product:
+        - row_id: blade_steel_strip
+          role: "Blade-grade stainless-steel strip"
+          name: "Martensitic stainless-steel razor-blade strip"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased cold-rolled martensitic stainless-steel strip enters forming, heat treatment, and sharpening. The alloy grade, strip thickness, temper, supplier, and recycled content must be retained; no exact Tiangong flow UUID is currently confirmed."
+          amount:
+            expression: "measured received mass consumed by the included production campaign, net of unchanged returned stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_blade_steel_strip
+              source_ids:
+                - epo-ep2454056b1-2014
+            ranges: []
+        - row_id: manufacturing_electricity
+          role: "Manufacturing electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Purchased electricity supplies forming, electric heat treatment, grinding, cleaning, coating, moulding, assembly, ventilation, and directly attributable auxiliaries. Shared meters are allocated only through the approved calculation rule."
+          amount:
+            expression: "metered purchased electricity attributable to the included campaign, converted from kWh where necessary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_manufacturing_electricity
+              source_ids: []
+            ranges: []
+        - row_id: process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Process water crosses the boundary for aqueous cleaning, rinsing, cooling, and PTFE dispersion make-up when used. Record make-up water separately from internally recycled water."
+          amount:
+            expression: "measured make-up process water supplied to the included campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_water
+              source_ids:
+                - eu-jrc-sts-bref-2020
+            ranges: []
+        - row_id: sodium_hydroxide
+          role: "Sodium hydroxide active substance"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Sodium hydroxide is recorded only when an alkaline cleaning bath is used. Report active NaOH mass, not the combined mass of the supplied solution."
+          amount:
+            expression: "as-received cleaning-solution mass multiplied by batch-specific sodium-hydroxide mass fraction"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable reference product; not applicable when no sodium-hydroxide cleaner is used"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sodium_hydroxide
+              source_ids:
+                - eu-jrc-sts-bref-2020
+            ranges: []
+        - row_id: ptfe_resin
+          role: "PTFE resin for edge coating"
+          name: "PTFE resin"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f1adfc87-da88-4bcb-ace7-d6b809049f56"
+          property_unit: "Mass / kg"
+          description: "PTFE resin crosses the boundary only for a declared fluoropolymer low-friction blade-edge coating. Report dry PTFE solids and disclose the dispersion medium and coating application route."
+          amount:
+            expression: "as-applied dispersion mass multiplied by batch-specific PTFE solids fraction"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product; not applicable for products without PTFE coating"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ptfe_resin
+              source_ids:
+                - epo-ep2454056b1-2014
+            ranges: []
+        - row_id: polypropylene
+          role: "Polypropylene for razor housing"
+          name: "Polypropylene resin in primary form"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Polypropylene enters injection moulding only when it is the declared razor or cartridge housing material. Do not use this row for ABS, HIPS, nylon, elastomer, or another polymer. No exact Tiangong flow UUID is currently confirmed because the exact-name candidate carries an incompatible public classification."
+          amount:
+            expression: "measured polypropylene resin charged to housing moulding, net of verified internal regrind returned within the same campaign"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product; not applicable for blade-only products or non-polypropylene housings"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_polypropylene
+              source_ids:
+                - uspto-us11571827b2-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Net saleable reference product"
+          name: "Razors and razor blades (including razor blade blanks in strips)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6c5d6033-a2c9-40f0-bc7d-077549573ace"
+          property_unit: "Mass / kg"
+          description: "Only conforming unpackaged product released at the factory gate is reference output. Rejects, retained samples, rework awaiting release, and packaging are excluded from this mass."
+          amount:
+            expression: "measured net saleable output normalized to exactly 1 kg reference product"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "exactly 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_reference_product_output
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: postindustrial_steel_scrap
+          role: "Post-industrial steel scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Segregated steel offcuts, punched skeletons, trimming losses, and rejected steel parts leaving the process are recorded here. Grinding dust is excluded and has its own row."
+          amount:
+            expression: "measured steel scrap leaving the campaign after deducting verified internal remelt or direct reuse"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_postindustrial_steel_scrap
+              source_ids: []
+            ranges: []
+        - row_id: cleaning_wastewater
+          role: "Cleaning wastewater"
+          name: "Wastewater from cleaning"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f0402393-e82c-47e8-9cd8-a486c97f3e89"
+          property_unit: "Mass / kg"
+          description: "Spent aqueous cleaning and rinsing water leaving the foreground process for treatment or discharge is recorded with treatment status and composition. Internally recycled water is not counted as an output until it leaves the boundary."
+          amount:
+            expression: "measured wastewater mass leaving the included campaign, or volume converted using documented density"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_wastewater
+              source_ids:
+                - eu-jrc-sts-bref-2020
+            ranges: []
+        - row_id: grinding_dust
+          role: "Captured grinding dust"
+          name: "Dust from Grinding and Sieving"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "e0f3b3af-7794-4c25-ae58-5e4302b226d2"
+          property_unit: "Mass / kg"
+          description: "Dry dust collected from blade-edge grinding, honing, and associated filtration is recorded separately from metal offcuts and wet sludge. Disclose metal and abrasive composition and treatment route."
+          amount:
+            expression: "measured dry captured dust leaving the included campaign"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grinding_dust
+              source_ids:
+                - epo-ep2454056b1-2014
+            ranges: []
+        - row_id: polypropylene_waste
+          role: "Polypropylene moulding waste"
+          name: "Polypropylene Wastes"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "88215d1b-e6b6-4ec7-af7f-83375e80637b"
+          property_unit: "Mass / kg"
+          description: "Segregated polypropylene runners, sprues, trim, purge, and rejected mouldings leaving the boundary are recorded only for the polypropylene housing route. Internally returned regrind is disclosed but not counted as an output."
+          amount:
+            expression: "measured polypropylene waste leaving the campaign after deducting verified internal regrind"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable reference product; not applicable for blade-only products or non-polypropylene housings"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_polypropylene_waste
+              source_ids:
+                - uspto-us11571827b2-2023
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "separately metered products, lines, and campaigns"
+    rule: "Prefer subdivision and direct measurement by product form and campaign before allocating shared inputs or wastes."
+    source_ids: []
+  - rule_id: allocation_shared_operations
+    applies_to: "inseparable shared electricity, water, cleaning, ventilation, and waste handling"
+    rule: "Allocate using a documented physical driver that reflects causality, such as machine time, metered sub-load, treated surface area, bath loading, or measured mass throughput; do not default to revenue."
+    source_ids: []
+  - rule_id: allocation_internal_recycling
+    applies_to: "steel scrap and polypropylene regrind returned within the same foreground system"
+    rule: "Treat verified internal reuse as an internal loop and avoid double-counting it as both an output waste and a new input. Report losses and any material leaving the boundary."
+    source_ids: []
+  - rule_id: allocation_external_recovery
+    applies_to: "scrap or waste leaving for recycling or recovery"
+    rule: "Report the waste flow and destination at the factory gate without avoided-burden credit inside this gate-to-gate dataset; any downstream credit belongs to an explicitly declared expanded model."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_blade_steel_strip
+      process_id: "razor_product_manufacturing"
+      flow_role: "Blade-grade stainless-steel strip"
+      record_type: "receiving, issue, and return record"
+      raw_fields: "lot id; supplier; alloy grade; strip thickness; received mass; issued mass; returned mass; recycled content"
+      collection_method: "calibrated scale and inventory reconciliation"
+      unit: "kg"
+      frequency: "per lot and campaign"
+      temporal_coverage: "declared representative production period covering complete campaigns"
+      site_scope: "all included lines at the declared site"
+      aggregation_rule: "sum issued mass minus unchanged returned mass and normalize to released output"
+      quality_evidence: "scale calibration; supplier certificate; lot traceability; inventory reconciliation"
+    - protocol_id: cp_manufacturing_electricity
+      process_id: "razor_product_manufacturing"
+      flow_role: "Manufacturing electricity"
+      record_type: "meter record"
+      raw_fields: "meter id; start and end readings; kWh; covered equipment; allocation driver; downtime"
+      collection_method: "revenue-grade site or submeter"
+      unit: "kWh and MJ"
+      frequency: "per billing interval and campaign where available"
+      temporal_coverage: "declared representative production period covering complete campaigns"
+      site_scope: "all included equipment and auxiliaries"
+      aggregation_rule: "subtract excluded loads, allocate shared load by approved physical driver, convert kWh × 3.6, normalize to released output"
+      quality_evidence: "meter calibration; one-line diagram; reconciliation to utility invoice"
+    - protocol_id: cp_process_water
+      process_id: "razor_product_manufacturing"
+      flow_role: "Process water"
+      record_type: "meter and water-balance record"
+      raw_fields: "source; meter id; make-up volume or mass; recycle volume; discharge volume; density if converted"
+      collection_method: "calibrated water meter or tank mass balance"
+      unit: "kg"
+      frequency: "per meter interval or campaign"
+      temporal_coverage: "declared representative production period covering complete campaigns"
+      site_scope: "all included water-using operations"
+      aggregation_rule: "count boundary make-up once, reconcile intake, recycle, losses and outputs, normalize to released output"
+      quality_evidence: "meter calibration; water mass balance; treatment log"
+    - protocol_id: cp_sodium_hydroxide
+      process_id: "razor_product_manufacturing"
+      flow_role: "Sodium hydroxide active substance"
+      record_type: "chemical batch and concentration record"
+      raw_fields: "batch id; solution mass; NaOH mass fraction; bath make-up; inventory change; disposal"
+      collection_method: "calibrated scale plus certificate or verified titration"
+      unit: "kg active NaOH"
+      frequency: "per batch"
+      temporal_coverage: "declared representative production period covering complete campaigns"
+      site_scope: "included alkaline cleaning baths"
+      aggregation_rule: "sum solution mass × batch concentration, adjust for inventory change, normalize to released output"
+      quality_evidence: "scale calibration; certificate of analysis or titration; bath log"
+    - protocol_id: cp_ptfe_resin
+      process_id: "razor_product_manufacturing"
+      flow_role: "PTFE resin for edge coating"
+      record_type: "coating batch record"
+      raw_fields: "batch id; dispersion mass; PTFE solids fraction; recovered coating; inventory change; coated product mass"
+      collection_method: "calibrated scale plus formulation or certificate"
+      unit: "kg dry PTFE"
+      frequency: "per coating batch"
+      temporal_coverage: "declared representative production period covering complete campaigns"
+      site_scope: "included PTFE coating line"
+      aggregation_rule: "sum dispersion mass × verified solids fraction, subtract recovered unchanged material, normalize to released output"
+      quality_evidence: "scale calibration; formulation; certificate of analysis; batch log"
+    - protocol_id: cp_polypropylene
+      process_id: "razor_product_manufacturing"
+      flow_role: "Polypropylene for razor housing"
+      record_type: "resin issue and regrind record"
+      raw_fields: "lot id; resin grade; virgin mass; external recycled resin mass; internal regrind charged; returned stock; housing output"
+      collection_method: "calibrated hopper or platform scale"
+      unit: "kg"
+      frequency: "per moulding batch"
+      temporal_coverage: "declared representative production period covering complete campaigns"
+      site_scope: "included polypropylene moulding lines"
+      aggregation_rule: "sum externally supplied resin consumed; disclose but do not double-count internal regrind; normalize to released output"
+      quality_evidence: "scale calibration; supplier certificate; batch genealogy"
+    - protocol_id: cp_reference_product_output
+      process_id: "razor_product_manufacturing"
+      flow_role: "Net saleable reference product"
+      record_type: "final release and mass record"
+      raw_fields: "product code; product form; blade count; alloy; coating; housing material; gross mass; packaging tare; rejected mass; released mass"
+      collection_method: "calibrated scale linked to lot-release record"
+      unit: "kg"
+      frequency: "per released lot"
+      temporal_coverage: "declared representative production period covering complete campaigns"
+      site_scope: "all included final inspection and release points"
+      aggregation_rule: "sum released net unpackaged mass and normalize all exchanges to 1 kg"
+      quality_evidence: "scale calibration; release authorization; tare verification; mass reconciliation"
+    - protocol_id: cp_postindustrial_steel_scrap
+      process_id: "razor_product_manufacturing"
+      flow_role: "Post-industrial steel scrap"
+      record_type: "scrap container and dispatch record"
+      raw_fields: "container id; alloy where known; gross mass; tare; internal reuse; destination; date"
+      collection_method: "calibrated floor or dispatch scale"
+      unit: "kg"
+      frequency: "per container or dispatch"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included forming, trimming, and rejection points"
+      aggregation_rule: "sum net scrap leaving the boundary, exclude internal reuse, normalize to released output"
+      quality_evidence: "scale calibration; dispatch ticket; material segregation record"
+    - protocol_id: cp_cleaning_wastewater
+      process_id: "razor_product_manufacturing"
+      flow_role: "Cleaning wastewater"
+      record_type: "effluent meter and treatment record"
+      raw_fields: "source operation; volume or mass; density; pH; metals; oil; treatment status; destination"
+      collection_method: "calibrated meter or tank mass balance with representative sampling"
+      unit: "kg"
+      frequency: "continuous or per discharge batch"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included cleaning and rinsing operations"
+      aggregation_rule: "sum effluent leaving the boundary, exclude internal recycle, convert volume only with documented density, normalize to released output"
+      quality_evidence: "meter calibration; sample chain of custody; laboratory result; water balance"
+    - protocol_id: cp_grinding_dust
+      process_id: "razor_product_manufacturing"
+      flow_role: "Captured grinding dust"
+      record_type: "dust collector clean-out record"
+      raw_fields: "collector id; gross mass; tare; moisture; metal content; abrasive content; destination"
+      collection_method: "calibrated scale at each clean-out"
+      unit: "kg dry mass"
+      frequency: "per clean-out"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included dry grinding and filtration systems"
+      aggregation_rule: "sum dry net dust leaving the boundary and normalize to released output"
+      quality_evidence: "scale calibration; collector log; waste characterization; dispatch ticket"
+    - protocol_id: cp_polypropylene_waste
+      process_id: "razor_product_manufacturing"
+      flow_role: "Polypropylene moulding waste"
+      record_type: "scrap and regrind record"
+      raw_fields: "batch id; runners; sprues; purge; rejects; internal regrind; mass leaving; destination"
+      collection_method: "calibrated scale and batch reconciliation"
+      unit: "kg"
+      frequency: "per moulding batch"
+      temporal_coverage: "same period as product output"
+      site_scope: "included polypropylene moulding lines"
+      aggregation_rule: "sum polypropylene waste leaving the boundary after internal regrind, normalize to released output"
+      quality_evidence: "scale calibration; batch record; waste dispatch ticket"
+  calculation_rules:
+    - id: normalize_to_reference_mass
+      applies_to: "all inventory rows"
+      rule: "normalized amount = period exchange amount / period net released unpackaged product mass × 1 kg"
+      inputs:
+        - "exchange records"
+        - cp_reference_product_output
+      output: "exchange amount per 1 kg reference product"
+      source_ids: []
+    - id: convert_electricity_kwh
+      applies_to: "manufacturing electricity"
+      rule: "electricity MJ = metered kWh × 3.6 MJ/kWh"
+      inputs:
+        - cp_manufacturing_electricity
+      output: "MJ electricity"
+      source_ids: []
+    - id: calculate_active_mass
+      applies_to: "sodium hydroxide and PTFE resin"
+      rule: "active mass = as-received solution or dispersion mass × verified batch mass fraction"
+      inputs:
+        - cp_sodium_hydroxide
+        - cp_ptfe_resin
+      output: "kg active NaOH or dry PTFE"
+      source_ids: []
+    - id: reconcile_material_mass
+      applies_to: "steel and polypropylene"
+      rule: "received external input = saleable product share + material in wastes leaving boundary + net inventory change + documented process loss; internal recycle appears once as an internal loop"
+      inputs:
+        - input
+        - output
+        - scrap
+        - waste
+        - "and inventory records"
+      output: "material-specific reconciliation and unexplained balance"
+      source_ids: []
+    - id: reconcile_site_water
+      applies_to: "process water and cleaning wastewater"
+      rule: "intake = wastewater leaving + water in products or wastes + evaporation and other measured losses + net system inventory change; internal recycle is disclosed but not counted twice"
+      inputs:
+        - cp_process_water
+        - cp_cleaning_wastewater
+      output: "water mass balance and unexplained balance"
+      source_ids:
+        - eu-jrc-sts-bref-2020
+  data_quality_requirements:
+    - id: dq_identity_traceability
+      applies_to: "reference product and blade steel"
+      requirement: "Maintain product code, product form, blade count, alloy grade, strip lot, coating state, housing material, and released-lot linkage."
+      evidence: "supplier certificates, batch genealogy, and release records"
+    - id: dq_temporal_coverage
+      applies_to: "all foreground exchanges"
+      requirement: "Cover complete campaigns within a declared representative production period and disclose seasonality, shutdowns, abnormal events, and any uncovered interval."
+      evidence: "dated meter, inventory, batch, and dispatch records"
+    - id: dq_mass_completeness
+      applies_to: "steel, polymer, product, and wastes"
+      requirement: "Reconcile each material family and investigate every unexplained balance before publication; disclose the review criterion and its justification."
+      evidence: "signed reconciliation with source records and corrective-action evidence"
+    - id: dq_water_management
+      applies_to: "water and wastewater"
+      requirement: "Maintain a flow diagram and site water mass balance; identify intake, internal recycle, treatment, discharge, and losses."
+      evidence: "water audit, meter calibration, sampling records, and treatment logs"
+    - id: dq_conditional_routes
+      applies_to: "coating and housing rows"
+      requirement: "Mark a conditional row not applicable only when product specification and line records demonstrate that the declared coating or housing material is absent."
+      evidence: "bill of materials, route sheet, and batch record"
+    - id: dq_range_status
+      applies_to: "all important flows"
+      requirement: "No external empirical amount range is normative in this candidate PCR. Preserve foreground values and flag them for review until two independent, boundary-compatible original sources or reviewed foreground datasets support a range."
+      evidence: "manifest unresolved range-evidence record and source-review record"
+validation_rules:
+  - rule_id: val_reference_identity
+    applies_to: "reference flow"
+    rule: "Confirm the reference output UUID, Mass/kg property support, net unpackaged mass basis, and every required product qualifier."
+    source_ids: []
+  - rule_id: val_atomic_inventory
+    applies_to: "inventory"
+    rule: "Confirm every row is one atomic exchange with one direction, flow type, property, unit, amount rule, basis, evidence kind, and collection protocol; reject umbrella utilities, combined materials, and combined wastes."
+    source_ids: []
+  - rule_id: val_process_coverage
+    applies_to: "foreground boundary"
+    rule: "Confirm the dataset covers all declared on-site forming, heat treatment, sharpening, cleaning, coating, moulding, assembly, inspection, rework, and directly controlled waste handling, or explicitly marks non-applicable operations with evidence."
+    source_ids:
+      - epo-ep2454056b1-2014
+      - uspto-us11571827b2-2023
+  - rule_id: val_mass_balance
+    applies_to: "steel and polypropylene"
+    rule: "Confirm material-specific reconciliations, internal recycling treatment, and destination for every material output; investigate unexplained balances over the data-quality threshold."
+    source_ids: []
+  - rule_id: val_water_balance
+    applies_to: "water and wastewater"
+    rule: "Confirm water intake, internal recycle, cleaning wastewater, treatment, discharge, and losses reconcile for the same site and period."
+    source_ids:
+      - eu-jrc-sts-bref-2020
+  - rule_id: val_allocation
+    applies_to: "shared operations"
+    rule: "Confirm subdivision was attempted first and every remaining allocation uses a disclosed physical driver with numerator, denominator, period, and affected products."
+    source_ids: []
+  - rule_id: val_range_evidence
+    applies_to: "important flows"
+    rule: "Confirm no unverified single-source value, repeated single value, or mechanically combined scenario minimum/maximum is presented as an empirical range."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "unit_process"
+  downstream_use: "secondary_dataset; background_dataset; foreground building block for lifecyclemodel projections"
+  allowed_use: "Gate-to-gate datasets for razors, cartridges, finished razor blades, or strip blanks matching the declared product form, material, coating, housing, geography, technology, period, and factory gate"
+  excluded_use: "Electric shavers, surgical blades, industrial knives, packaged retail products, use-stage comparisons, replacement-frequency claims, and cradle-to-grave results without additional verified stages"
+  required_metadata: "PCR id; reference product UUID; product form; blade count; alloy and grade; coating; housing material; recycled content; geography; technology; production period; net mass basis; boundary; allocation; source dataset identities"
+  required_quality_disclosure: "record coverage; meter and scale calibration; supplier certificates; active-substance calculations; mass and water balances; allocation drivers; data gaps; unresolved UUID and range-evidence status; uncertainty and representativeness"
+  update_trigger: "Change in product form, reference-flow identity, alloy family, coating system, housing material, manufacturing route, site geography, allocation method, data period, background dataset, or evidence sufficient to resolve UUID or range gaps"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, official CSV: https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-05)"
+    used_for: "Product classification identity and official English title for CPC 42914"
+  - id: "epo-ep2454056b1-2014"
+    type: "literature"
+    reference: "European Patent Office, EP 2 454 056 B1, Razor Blade Technology, 19 March 2014: https://data.epo.org/publication-server/rest/v1.2/publication-dates/20140319/patents/EP2454056NWB1/document.pdf (retrieved 2026-09-05)"
+    used_for: "Stainless-steel strip, hardening, sharpening, cleaning, edge coating, PTFE application and curing, and cartridge assembly process decomposition"
+  - id: "eu-jrc-sts-bref-2020"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document on Surface Treatment Using Organic Solvents including Preservation of Wood and Wood Products with Chemicals, 2020: https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2021-06/jrc122816_sts_2020_final.pdf (retrieved 2026-09-05)"
+    used_for: "Aqueous cleaning, sodium-hydroxide cleaning input, water and wastewater accounting, water audits, and recycling controls"
+  - id: "uspto-us11571827b2-2023"
+    type: "literature"
+    reference: "United States Patent US 11,571,827 B2, Shaving Razor Cartridge and Method of Manufacture, 7 February 2023: https://patents.google.com/patent/US11571827B2/en (retrieved 2026-09-05)"
+    used_for: "Injection-moulded razor-cartridge housing, polypropylene as a housing polymer option, and blade-to-housing assembly"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:c591193ed5e2a0fbff94c2c0f8e21944379519133568c4167c8471c15c101a6a"
+  generated_content_sha256: "sha256:d814e8a9b12ff0f72c0aee7c67615e64e805e1d434b1cee5d2a8fc2100729449"

@@ -1,10 +1,739 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "42916"
-  title: "Spoons, forks, ladles, skimmers, cake-servers, fish-knives, butter-knives, sugar tongs and similar kitchen or table ware"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.spoons-forks-ladles-skimmers-cake-servers-fish-knives-butter-knives-sugar-tongs-and-sim-0d956b6b"
+  classification_refs: "CPC 3.0 42916 (exact classification context)"
+  covered_products: "Finished base-metal spoons, forks, ladles, skimmers, cake-servers, fish-knives, butter-knives, sugar tongs, and similar kitchen or table implements"
+  excluded_products: "Ordinary cutting knives; machine knives; hand tools; manicure or pedicure instruments; cookware vessels; tableware made wholly of wood, plastics, ceramics, or glass; customer-owned-input manufacturing services"
+  representative_product: "Saleable stainless-steel spoon, fork, serving implement, or table-knife article, individually or in a declared set"
+  production_route: "Purchased cold-rolled stainless-steel strip → blanking and forming → route-specific heat treatment → grinding/polishing → cleaning and optional passivation/coating → inspection and packing"
+  market_state: "Finished, dry, clean, saleable ware at the factory gate; alloy grade, article mix, finish, handle material, coating, packaging, and pieces per kilogram declared"
+functional_unit:
+  what: "Provide finished base-metal implements for eating, serving, portioning, skimming, or handling food at a kitchen or table"
+  how_much: "1 kg net mass of conforming finished ware, excluding removable packaging but including integral handles and coatings"
+  how_well: "Meets the declared product specification for article type, alloy grade, finish, dimensions, food-contact suitability, and inspection acceptance"
+  how_long_or_cycle: "One factory-gate delivery of finished ware; service life and use cycles are not asserted by this factory-gate reference flow"
+  reference_flow_link: "The reference product output finished_cutlery is normalized to 1 kg net conforming ware"
+system_boundary:
+  rules:
+    - rule_id: boundary_manufacturing_gate
+      applies_to: "integrated_cutlery_manufacture"
+      rule: "Include on-site blanking or forging, forming, trimming, route-specific heat treatment, grinding, polishing, cleaning, passivation or coating when used, inspection, packing, on-site utilities, wastes, and direct emissions through factory-gate release."
+      source_ids:
+        - unido-ethiopia-cutlery-project-1986
+        - us-epa-fabricated-metal-products-1995
+        - eu-jrc-surface-treatment-metals-2006
+    - rule_id: boundary_outsourced_operations
+      applies_to: "externally performed heat treatment, polishing, coating, passivation, or wastewater treatment"
+      rule: "Record the purchased service or the shipped intermediate and returned product consistently, and prevent double counting of the provider's energy, materials, wastes, and emissions in the foreground."
+      source_ids:
+        - eu-jrc-surface-treatment-metals-2006
+    - rule_id: boundary_upstream_inputs
+      applies_to: "purchased materials and utilities"
+      rule: "Link every purchased input to an upstream dataset that matches the declared grade, formulation, delivery state, geography, and supply boundary."
+      source_ids:
+        - us-epa-fabricated-metal-products-1995
+        - eu-jrc-surface-treatment-metals-2006
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "distribution, use, and end-of-life"
+      rule: "Exclude post-gate distribution, consumer or institutional washing, use, repair, and end-of-life from this factory-gate result unless a separately reported extended scenario is requested."
+      source_ids:
+        - "[]"
+boundary_abstraction:
+  declared_starting_condition: "Purchased cold-rolled stainless-steel strip and other declared inputs accepted at the cutlery manufacturing site"
+  starting_condition_role: "Foreground entry condition for fabrication; upstream production and pre-gate transport are represented outside the foreground process"
+  product_classification_scope: "Finished base-metal kitchen or table implements within the semantic boundary stated in Sections 1 and 2"
+  recursive_input_rule: "A same-category finished or semi-finished ware input crossing the site boundary is recorded once as a purchased product input with its own upstream dataset; do not recreate its prior manufacturing inside this foreground process"
+  upstream_dataset_requirement: "Use geography-, technology-, grade-, and supplier-appropriate upstream datasets for metal stock, electricity, natural gas, water, chemicals, abrasives, packaging, and external treatment services"
+  disclosure: "Declare alloy and product mix, integrated versus outsourced operations, heat source, cleaning/passivation/coating route, wastewater and dust-control boundary, scrap destination, packaging included, geography, period, and any excluded operation"
+reference_flow_definition:
+  reference_amount: "1 kg net conforming finished ware"
+  product_flow_ref:
+    name: "Finished base-metal kitchen or table ware"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "article or set composition"
+    - "pieces per kilogram"
+    - "alloy designation and recycled-content claim basis"
+    - "integral handle material"
+    - "finish and roughness class where specified"
+    - "heat-treatment route"
+    - "passivation or coating route"
+    - "food-contact specification"
+    - "included packaging"
+    - "manufacturing geography"
+    - "data period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product and all mass-normalized inventory"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh conforming dry ware after final cleaning and inspection. Include integral handles and coatings; exclude removable sales and transport packaging. Normalize every inventory amount to 1 kg of this net product mass."
+  - id: set_or_count_conversion
+    applies_to: "Records kept as pieces, dozens, or sets"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert counts using measured net mass from the same product family and reporting period; retain article mix, sample size, mean mass, and variability. Do not apply a generic spoon or set mass."
+  - id: electricity_energy
+    applies_to: "Purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electricity before normalization. When source records are in kWh, convert with 1 kWh = 3.6 MJ and disclose voltage, grid geography, and loss boundary."
+  - id: gas_reference_conditions
+    applies_to: "Gaseous natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report metered volume at the supplier or meter reference temperature and pressure; record those conditions and the lower or higher heating-value basis used by any accompanying energy or emission calculation."
+  - id: solution_as_supplied
+    applies_to: "Sodium hydroxide and nitric acid"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record solution mass as supplied and separately declare active-substance concentration. Do not equate solution mass with dry chemical mass."
+process_map:
+  - id: integrated_cutlery_manufacture
+    name: "Integrated cutlery forming, finishing, cleaning, and packing"
+    inclusion: "required"
+    inclusion_condition: "Always; mark individual heat, chemical, waste, emission, and packaging rows not applicable only when records demonstrate that the route is absent"
+    role: "Foreground production from accepted metal stock to finished ware at the factory gate"
+    quantitative_reference: "1 kg net conforming finished ware"
+process_inventory:
+  - id: integrated_cutlery_manufacture
+    label: "Integrated cutlery forming, finishing, cleaning, and packing"
+    inputs:
+      product:
+        - row_id: raw_stainless_steel
+          role: "Purchased stainless-steel stock"
+          name: "Cold-rolled stainless-steel strip"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the accepted cold-rolled stainless-steel strip by grade and delivery state. A sheet- or rod-based route requires a separately identified atomic stock row in the foreground instance."
+          amount:
+            expression: "Measured accepted stock issued to the declared product campaign, net of supplier packaging retained outside the process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming finished ware"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_records
+              source_ids:
+                - unido-ethiopia-cutlery-project-1986
+                - us-epa-fabricated-metal-products-1995
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200b9a66 / MJ"
+          description: "Record electricity consumed by presses, forming and trimming machines, grinding and polishing equipment, cleaning systems, pumps, dust control, packing, and attributable auxiliary equipment."
+          amount:
+            expression: "Metered or defensibly sub-metered purchased electricity attributable to the product campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming finished ware"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-jrc-surface-treatment-metals-2006
+            ranges: []
+        - row_id: natural_gas
+          role: "Natural gas for on-site heat"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Record gaseous natural gas only when it is burned on site for forging, annealing, hardening, tempering, bath heating, or drying."
+          amount:
+            expression: "Metered natural gas attributable to the product campaign at declared reference conditions; mark not applicable for wholly electric or externally heated routes"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming finished ware"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-jrc-surface-treatment-metals-2006
+            ranges: []
+        - row_id: process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record water supplied for aqueous cleaning, rinsing, bath make-up, cooling make-up, or other direct process uses; exclude sanitary water."
+          amount:
+            expression: "Metered direct process-water input, with density conversion documented when the source meter reports volume"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming finished ware"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - eu-jrc-surface-treatment-metals-2006
+            ranges: []
+        - row_id: cutting_fluid
+          role: "Cutting fluid"
+          name: "Cutting Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "576d250f-4f36-4385-939d-0f03b8f95a10"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the cutting fluid consumed in blanking, trimming, drilling, machining, or edge finishing, with formulation and dilution declared."
+          amount:
+            expression: "Purchased or issued cutting-fluid mass minus verified closing inventory and separately recovered unused fluid"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming finished ware"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_records
+              source_ids:
+                - us-epa-fabricated-metal-products-1995
+            ranges: []
+        - row_id: white_fused_alumina
+          role: "White fused alumina polishing abrasive"
+          name: "White Fused Alumina"
+          flow_type: "product"
+          flow_ref:
+            uuid: "429f2b7f-592a-434c-92e2-43a6b4859300"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record white fused alumina when it is used as the grinding or polishing abrasive; declare grit, grade, carrier, and whether media are reusable."
+          amount:
+            expression: "Purchased or issued white fused alumina consumed in the campaign, corrected for closing inventory and recovered reusable media"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming finished ware"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_records
+              source_ids:
+                - unido-ethiopia-cutlery-project-1986
+                - us-epa-fabricated-metal-products-1995
+            ranges: []
+        - row_id: sodium_hydroxide
+          role: "Sodium hydroxide for alkaline cleaning"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record sodium hydroxide only when an alkaline cleaning bath or wastewater-neutralization step uses it; declare solution concentration and function."
+          amount:
+            expression: "As-supplied solution mass issued to the product campaign, corrected for inventory change and returned unused solution"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming finished ware"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_records
+              source_ids:
+                - us-epa-fabricated-metal-products-1995
+                - eu-jrc-surface-treatment-metals-2006
+            ranges: []
+        - row_id: nitric_acid
+          role: "Nitric acid for passivation"
+          name: "Nitric acid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bf883501-c052-414e-8e21-e6f53cc257ba"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record nitric acid only when the stainless-steel route uses nitric-acid pickling or passivation; declare concentration, bath-life accounting, and function."
+          amount:
+            expression: "As-supplied nitric-acid mass issued to the campaign, including bath make-up and replenishment and excluding verified closing usable inventory"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming finished ware"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_records
+              source_ids:
+                - us-epa-fabricated-metal-products-1995
+                - eu-jrc-surface-treatment-metals-2006
+            ranges: []
+        - row_id: corrugated_board_boxes
+          role: "Corrugated board shipping boxes"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record corrugated board boxes only when they leave the factory with the declared product. Other packaging components require separate atomic rows in the foreground instance."
+          amount:
+            expression: "Measured mass of corrugated board boxes issued to and leaving with the conforming product campaign"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming finished ware"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_records
+              source_ids:
+                - unido-ethiopia-cutlery-project-1986
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_cutlery
+          role: "Finished kitchen or table ware"
+          name: "Finished base-metal kitchen or table ware"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only conforming saleable articles that meet the declared specification and inspection acceptance criteria."
+          amount:
+            expression: "Set to 1 kg after normalizing measured net conforming output from the declared product campaign"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net conforming finished ware"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_and_waste_mass_records
+              source_ids:
+                - un-cpc-3-0-2025
+                - unido-ethiopia-cutlery-project-1986
+            ranges: []
+      waste:
+        - row_id: stainless_steel_scrap
+          role: "Stainless-steel blanking and trimming scrap"
+          name: "Stainless-steel offcuts and skeleton scrap"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record stainless-steel skeletons, offcuts, flash, prong-trimming scrap, and other separately collected metal scrap leaving the foreground, with alloy grade and destination declared."
+          amount:
+            expression: "Measured stainless-steel scrap leaving the process, net of verified closed-loop return within the same foreground process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming finished ware"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_and_waste_mass_records
+              source_ids:
+                - us-epa-fabricated-metal-products-1995
+            ranges: []
+        - row_id: waste_cutting_oil
+          role: "Waste cutting oil"
+          name: "Waste cutting oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "80d926e3-0f76-4a19-9b1e-ffec9deb1216"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record waste cutting oil leaving the site only for oil-based cutting-fluid routes; declare water content, contamination, recovery, and treatment destination."
+          amount:
+            expression: "Measured waste cutting oil transferred off site or into a separately modelled on-site treatment process"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming finished ware"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_and_waste_mass_records
+              source_ids:
+                - us-epa-fabricated-metal-products-1995
+            ranges: []
+        - row_id: metal_finishing_wastewater
+          role: "Metal-finishing cleaning and rinse wastewater"
+          name: "Metal-finishing cleaning and rinse wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the combined liquid wastewater leaving aqueous cleaning, rinsing, pickling, passivation, or coating operations before external treatment; do not combine it with sludge."
+          amount:
+            expression: "Metered wastewater mass, or volume converted with contemporaneous measured density, crossing to external treatment or discharge"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming finished ware"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - us-epa-fabricated-metal-products-1995
+                - eu-jrc-surface-treatment-metals-2006
+            ranges: []
+        - row_id: metal_bearing_sludge
+          role: "Metal-bearing wastewater-treatment sludge"
+          name: "Metal-bearing surface-treatment wastewater sludge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record dewatered sludge only when wastewater is treated within the foreground boundary; declare dry-matter fraction, dominant metals, and destination."
+          amount:
+            expression: "Measured wet sludge mass leaving on-site treatment, accompanied by measured dry-matter fraction"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming finished ware"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_and_waste_mass_records
+              source_ids:
+                - eu-jrc-surface-treatment-metals-2006
+            ranges: []
+        - row_id: waste_polishing_media
+          role: "Waste polishing media"
+          name: "Waste polishing media"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "cdb1838e-d3ec-41e1-87ee-627b9ce95e88"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record spent polishing media leaving the process, including used abrasive compound or media captured by dust-control equipment; declare composition and metal contamination."
+          amount:
+            expression: "Measured waste polishing media transferred off site, net of verified reusable media returned to the same process"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming finished ware"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_and_waste_mass_records
+              source_ids:
+                - unido-ethiopia-cutlery-project-1986
+                - eu-jrc-surface-treatment-metals-2006
+            ranges: []
+      elementary:
+        - row_id: fossil_co2
+          role: "Direct fossil carbon dioxide"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record fossil carbon dioxide emitted directly from on-site natural-gas combustion. Do not add upstream power- or fuel-supply emissions here."
+          amount:
+            expression: "Site-measured or site-calculated direct fossil CO2 using the documented fuel composition, carbon content, oxidation basis, and applicable monitoring method"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming finished ware"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emission_records
+              source_ids:
+                - eu-jrc-surface-treatment-metals-2006
+            ranges: []
+        - row_id: particulate_air
+          role: "Uncaptured polishing particulate to air"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record particulate matter emitted to air from grinding or polishing after accounting for captured material reported as waste. Declare particle-size information and metal composition when measured."
+          amount:
+            expression: "Measured stack and fugitive particulate or a documented site calculation based on measured operating data and control-device performance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming finished ware"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emission_records
+              source_ids:
+                - eu-jrc-surface-treatment-metals-2006
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "mixed products, alloy grades, finishes, or production lines"
+    rule: "Prefer sub-metering, batch records, material issue records, machine time, bath loading, and direct waste measurements to avoid allocation between unlike products or routes."
+    source_ids:
+      - eu-jrc-surface-treatment-metals-2006
+  - rule_id: allocation_common_operations
+    applies_to: "shared presses, furnaces, polishing lines, cleaning baths, utilities, and pollution control"
+    rule: "Allocate a shared operation by the causal physical driver recorded for that operation, such as machine time, treated mass, surface area, bath loading, or metered energy. Document the selected driver and reconciliation to site totals."
+    source_ids:
+      - eu-jrc-surface-treatment-metals-2006
+  - rule_id: allocation_scrap
+    applies_to: "stainless-steel scrap leaving the foreground"
+    rule: "Report scrap mass, alloy grade, and destination separately. Apply the study's declared recycling model consistently; do not credit avoided primary steel inside the foreground unless that system model explicitly requires it."
+    source_ids:
+      - us-epa-fabricated-metal-products-1995
+  - rule_id: allocation_economic_exception
+    applies_to: "inseparable co-products without a defensible physical driver"
+    rule: "Economic allocation may be used only after subdivision and physical causality are shown impracticable; disclose prices, geography, averaging period, currency basis, and sensitivity."
+    source_ids:
+      - "[]"
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass_records
+      process_id: "integrated_cutlery_manufacture"
+      flow_role: "purchased metal, cutting fluid, abrasive, chemicals, and packaging"
+      record_type: "receiving, issue, return, formulation, concentration, and inventory records"
+      raw_fields: "item identity; supplier; grade/formulation; concentration; opening stock; receipts; issues; returns; closing stock; mass; batch; product family"
+      collection_method: "Calibrated scales plus reconciled inventory records; preserve supplier documents and formulation or safety data"
+      unit: "kg"
+      frequency: "Each receipt and issue; reconcile monthly"
+      temporal_coverage: "At least 12 representative consecutive months or the full shorter production campaign"
+      site_scope: "All foreground stores and lines serving the declared product"
+      aggregation_rule: "Consumption = opening stock + receipts - returns - closing stock; allocate shared consumption only by a documented causal driver"
+      quality_evidence: "Scale calibration; purchase and issue records; supplier specification; inventory reconciliation; anomaly log"
+    - protocol_id: cp_energy_records
+      process_id: "integrated_cutlery_manufacture"
+      flow_role: "electricity and natural gas"
+      record_type: "utility meter, sub-meter, invoice, furnace, and operating-hour records"
+      raw_fields: "meter id; opening/closing reading; kWh; m3; reference temperature/pressure; fuel composition; equipment; operating hours; batch; product mass"
+      collection_method: "Prefer calibrated sub-meters; otherwise reconcile equipment-level estimates to site meters and disclose allocation"
+      unit: "kWh; MJ; m3"
+      frequency: "Continuous or per shift; reconcile monthly"
+      temporal_coverage: "Same period as product output"
+      site_scope: "All attributable production and pollution-control equipment"
+      aggregation_rule: "Convert kWh to MJ; normalize reconciled attributable energy to net conforming output"
+      quality_evidence: "Meter calibration; invoices; reconciliation; downtime and allocation records"
+    - protocol_id: cp_water_records
+      process_id: "integrated_cutlery_manufacture"
+      flow_role: "process water"
+      record_type: "water meter, bath make-up, rinse, blowdown, and density records"
+      raw_fields: "meter id; volume; mass; density; use point; batch; recirculation; discharge link"
+      collection_method: "Meter direct process water; exclude sanitary water; document volume-to-mass conversion"
+      unit: "kg; m3"
+      frequency: "Continuous or per batch; reconcile monthly"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Cleaning, rinsing, bath make-up, and direct process cooling systems"
+      aggregation_rule: "Sum net process-water input after documented reuse and normalize to net conforming output"
+      quality_evidence: "Meter calibration; water balance; density evidence; reuse log"
+    - protocol_id: cp_product_and_waste_mass_records
+      process_id: "integrated_cutlery_manufacture"
+      flow_role: "conforming product, stainless scrap, waste cutting oil, sludge, and waste polishing media"
+      record_type: "production count and mass, reject, waste manifest, container tare, dry-matter, and destination records"
+      raw_fields: "article type; count; gross/net/tare mass; alloy; waste identity; dry matter; destination; batch; date"
+      collection_method: "Calibrated scales and reconciled production and waste-dispatch records"
+      unit: "kg"
+      frequency: "Each batch and dispatch; reconcile monthly"
+      temporal_coverage: "Same period as inputs"
+      site_scope: "All foreground lines and on-site waste handling"
+      aggregation_rule: "Subtract tare, prevent double counting of internally recycled material, and normalize net outward flows to net conforming output"
+      quality_evidence: "Scale calibration; inspection acceptance; waste manifests; destination receipts; mass-balance reconciliation"
+    - protocol_id: cp_wastewater_records
+      process_id: "integrated_cutlery_manufacture"
+      flow_role: "metal-finishing cleaning and rinse wastewater"
+      record_type: "effluent meter, batch dump, density, composition, and destination records"
+      raw_fields: "source bath; volume; density; mass; pH; key metals; treatment boundary; destination; date"
+      collection_method: "Meter each continuous stream and batch discharge; convert volume with contemporaneous density"
+      unit: "kg; m3"
+      frequency: "Continuous and each batch dump; reconcile monthly"
+      temporal_coverage: "Same period as wet operations"
+      site_scope: "All cleaning, rinsing, pickling, passivation, coating, and on-site treatment interfaces"
+      aggregation_rule: "Combine only streams with the same waste identity and boundary; normalize mass crossing the declared boundary"
+      quality_evidence: "Meter calibration; laboratory results; transfer manifests; water balance"
+    - protocol_id: cp_direct_emission_records
+      process_id: "integrated_cutlery_manufacture"
+      flow_role: "direct fossil CO2 and polishing particulate"
+      record_type: "stack test, continuous monitor, fuel carbon balance, dust-capture, and operating records"
+      raw_fields: "pollutant; source; measured concentration or mass; gas flow; fuel use; carbon content; oxidation basis; control efficiency; captured dust; operating time; method id"
+      collection_method: "Use applicable site monitoring methods and measured operating data; reconcile captured dust to waste records"
+      unit: "kg"
+      frequency: "Per monitoring plan and each material route change; aggregate monthly"
+      temporal_coverage: "Same period as product output"
+      site_scope: "All on-site combustion and grinding/polishing emission points"
+      aggregation_rule: "Calculate only with documented equations and site inputs; prevent overlap between captured waste and emitted particulate"
+      quality_evidence: "Method identifier; calibration; laboratory report; fuel certificate; control-device inspection; calculation workbook"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "Normalized amount = attributable campaign amount / net mass of conforming dry finished ware"
+      inputs:
+        - "Attributable row amount"
+        - "finished_cutlery net mass"
+      output: "Amount per 1 kg reference product"
+      source_ids:
+        - "[]"
+    - id: calc_material_consumption
+      applies_to: "cutting fluid, white fused alumina, sodium hydroxide, and nitric acid"
+      rule: "Consumption = opening usable inventory + receipts - returns - closing usable inventory; report as-supplied mass and concentration separately"
+      inputs:
+        - "Inventory and issue records"
+      output: "Net consumed mass by material"
+      source_ids:
+        - us-epa-fabricated-metal-products-1995
+        - eu-jrc-surface-treatment-metals-2006
+    - id: calc_electricity_conversion
+      applies_to: "purchased electricity"
+      rule: "Electricity in MJ = metered kWh × 3.6"
+      inputs:
+        - "Metered kWh"
+      output: "MJ of purchased electricity"
+      source_ids:
+        - "[]"
+    - id: calc_metal_mass_balance
+      applies_to: "stainless-steel stock, finished product, stainless scrap, metal in wastes, and inventory change"
+      rule: "Reconcile input metal mass with conforming product, separately measured scrap, metal-bearing wastes, test pieces, and work-in-progress change; investigate rather than allocate unexplained loss"
+      inputs:
+        - "Mass records by alloy and campaign"
+      output: "Mass-balance discrepancy and completeness finding"
+      source_ids:
+        - us-epa-fabricated-metal-products-1995
+    - id: calc_wastewater_mass
+      applies_to: "metal-finishing wastewater"
+      rule: "Wastewater mass = measured volume × contemporaneous measured density when a mass meter is unavailable"
+      inputs:
+        - "Wastewater volume"
+        - density
+      output: "kg wastewater crossing the declared boundary"
+      source_ids:
+        - eu-jrc-surface-treatment-metals-2006
+    - id: calc_direct_emissions
+      applies_to: "fossil CO2 and particulate"
+      rule: "Apply the documented site monitoring or calculation method only to measured site inputs; identify the method, factors, control efficiency, and uncertainty and exclude upstream supply emissions"
+      inputs:
+        - "Fuel composition and use or measured stack data"
+        - "captured-dust records"
+        - "operating data"
+      output: "kg direct emission by named elementary flow"
+      source_ids:
+        - eu-jrc-surface-treatment-metals-2006
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Declare article mix, pieces per kilogram, alloy, handle, coating/passivation, finish, food-contact specification, package, geography, and period; do not combine materially different product states without subdivision."
+      evidence: "Product specification; bill of materials; inspection and packing records"
+    - id: dq_measurement_traceability
+      applies_to: "all measured inputs and outputs"
+      requirement: "Preserve meter or scale identifiers, calibration status, raw readings, unit conversions, allocation drivers, and reconciliation workbooks."
+      evidence: "Calibration certificates; raw logs; signed reconciliation"
+    - id: dq_temporal_representativeness
+      applies_to: "foreground dataset"
+      requirement: "Cover at least 12 representative consecutive months or the full shorter production campaign and disclose shutdowns, atypical batches, and seasonality."
+      evidence: "Production calendar; meter and batch coverage report"
+    - id: dq_mass_balance
+      applies_to: "metal and wet-process systems"
+      requirement: "Reconcile metal inputs and outputs and separately reconcile process-water input, wastewater, evaporation or carry-out estimates, and inventory changes; explain material discrepancies."
+      evidence: "Mass and water-balance workbooks; corrective-action record"
+    - id: dq_route_completeness
+      applies_to: "conditional rows"
+      requirement: "A row may be not applicable only with evidence that its technology or material route is absent; zero, below-detection, and not measured are distinct states."
+      evidence: "Process flow diagram; recipe; equipment list; laboratory report"
+    - id: dq_upstream_matching
+      applies_to: "purchased product flows"
+      requirement: "Select upstream datasets matching material grade/formulation, delivery state, geography, technology, and reference conditions; disclose proxies."
+      evidence: "Supplier declaration; upstream dataset metadata; proxy log"
+    - id: dq_uuid_gaps
+      applies_to: "unresolved flow identities"
+      requirement: "Retain exact semantic row names and do not substitute approximate Tiangong UUIDs. Resolve the five recorded identity gaps before publication or document a governed new-flow decision."
+      evidence: "UUID audit record; review decision"
+validation_rules:
+  - rule_id: validate_reference_amount
+    applies_to: "reference flow"
+    rule: "Confirm exactly 1 kg net conforming dry finished ware, with removable packaging excluded and pieces per kilogram declared."
+    source_ids:
+      - "[]"
+  - rule_id: validate_identity_qualifiers
+    applies_to: "product identity"
+    rule: "Reject a package missing article mix, alloy grade, finish, handle/coating route, packaging scope, manufacturing geography, or data period."
+    source_ids:
+      - "[]"
+  - rule_id: validate_boundary
+    applies_to: "foreground boundary"
+    rule: "Confirm that all on-site forming, thermal, grinding/polishing, wet finishing, inspection, packing, pollution-control, waste, and direct-emission operations are included or explicitly absent, and that upstream and downstream stages are not double counted."
+    source_ids:
+      - unido-ethiopia-cutlery-project-1986
+      - us-epa-fabricated-metal-products-1995
+      - eu-jrc-surface-treatment-metals-2006
+  - rule_id: validate_atomic_rows
+    applies_to: "process inventory"
+    rule: "Confirm each row is one physical, chemical, waste, or energy exchange with the stated direction and flow type; require separate foreground-instance rows for any additional coating metal, handle material, packaging component, chemical, fuel, waste, or emission."
+    source_ids:
+      - "[]"
+  - rule_id: validate_uuid_alignment
+    applies_to: "Tiangong-bearing rows"
+    rule: "Confirm state-100 UUID identity, English and Chinese base names, flow type, property, and unit; unresolved rows must remain UUID-empty and listed in manifest review metadata."
+    source_ids:
+      - "[]"
+  - rule_id: validate_balance
+    applies_to: "metal and wet-process records"
+    rule: "Require explained metal and water-balance discrepancies and prevent double counting between internally recycled scrap, dispatched waste, captured dust, wastewater, sludge, and elementary emissions."
+    source_ids:
+      - us-epa-fabricated-metal-products-1995
+      - eu-jrc-surface-treatment-metals-2006
+  - rule_id: validate_allocation
+    applies_to: "shared operations"
+    rule: "Confirm subdivision was attempted first, every remaining allocation uses a documented causal driver, and allocated totals reconcile to measured site totals."
+    source_ids:
+      - "[]"
+  - rule_id: validate_range_status
+    applies_to: "all important flows"
+    rule: "Treat all amounts as foreground requirements. No external empirical range is authorized until at least two independent, original-text-verified, boundary-compatible sources support a reasoned synthesis; do not infer a range from a single case or duplicate scenario."
+    source_ids:
+      - "[]"
+published_dataset_profile:
+  dataset_role: "secondary_dataset or background_dataset derived from a completed, reviewed foreground data package"
+  downstream_use: "Product-level process datasets and lifecycle models requiring factory-gate burdens for the declared kitchen or table ware product"
+  allowed_use: "Use for the declared article mix, alloy, manufacturing route, finish, packaging scope, geography, and period, or after transparent technology and geography adjustment"
+  excluded_use: "Do not use as a generic proxy for ordinary cutting knives, hand tools, cookware, non-metal tableware, precious-metal ware, customer-owned-input manufacturing services, use-phase washing, or end-of-life without separate justification"
+  required_metadata: "Canonical PCR id; CPC context; article mix and pieces per kilogram; alloy and recycled-content basis; handle/coating/passivation; route and outsourced steps; packaging; geography; period; reference flow; allocation; upstream datasets; unresolved-flow status"
+  required_quality_disclosure: "Data coverage; meter and scale calibration; mass and water balances; allocation drivers; treatment boundary; direct-emission method; scrap and waste destinations; proxy use; uncertainty; cut-offs; deviations"
+  update_trigger: "Material change in product mix, alloy or supplier, heat-treatment or finishing technology, coating/passivation, packaging, energy or water supply, wastewater/dust control, allocation driver, geography, or representative data period"
+data_sources:
+  - id: "un-cpc-3-0-2025"
+    type: "dataset"
+    reference: "United Nations Statistics Division, CPC Version 3.0 structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Official CPC 42916 classification identity and English title"
+  - id: "unido-ethiopia-cutlery-project-1986"
+    type: "official_guidance"
+    reference: "United Nations Industrial Development Organization, *Ethiopia: Handicraft and Small Scale Industry Project, Second Phase, Terminal Report*, DP/ID/SER.B/540, 1986. https://downloads.unido.org/ot/48/09/4809611/15001-20000_15053.pdf"
+    used_for: "Product-specific boundary, common materials, forging/forming, trimming, grinding, polishing, buffing, sharpening, and handle attachment"
+  - id: "us-epa-fabricated-metal-products-1995"
+    type: "official_guidance"
+    reference: "U.S. Environmental Protection Agency, *Profile of the Fabricated Metal Products Industry*, Sector Notebook Project, EPA/310-R-95-007, September 1995. https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=10004B8N.TXT"
+    used_for: "Fabrication, shearing, forming, machining, surface preparation, inputs, scrap, wastewater, wastes, and emissions"
+  - id: "eu-jrc-surface-treatment-metals-2006"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, *Reference Document on Best Available Techniques for the Surface Treatment of Metals and Plastics*, August 2006. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/stm_bref_0806.pdf"
+    used_for: "Conditional surface-treatment boundary, water and energy use, cleaning/passivation, wastewater, sludge, spent solutions, dust, and monitoring context"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:8dddf9924858308707505850651ba231665ae312ddc2f193bbb6af7a958a2f71"
+  generated_content_sha256: "sha256:7ac40aa046448f8b1d1ce772eb3342ee08c1a4e1a9d2b39a776e30209a0c0ae9"

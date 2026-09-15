@@ -1,10 +1,863 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "42931"
-  title: "Tanks, casks, drums, cans, boxes and similar containers (other than for compressed or liquefied gas) of iron, steel or aluminium, of a capacity not exceeding 300 litres, not fitted with mechanical or thermal equipment"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.tanks-casks-drums-cans-boxes-and-similar-containers-other-than-for-compressed-or-liquef-f53244d2"
+  classification_refs: "CPC 3.0: 42931 (exact category context)"
+  covered_products: "Empty iron, steel or aluminium tanks, casks, drums, cans, boxes and similar containers with nominal capacity not exceeding 300 L and without mechanical or thermal equipment"
+  excluded_products: "Containers for compressed or liquefied gas; containers exceeding 300 L; containers fitted with mechanical or thermal equipment; separately supplied stoppers, caps, lids and packing accessories; filled containers"
+  representative_product: "Empty steel can released at the manufacturing plant gate"
+  production_route: "Purchased metal sheet or strip; cutting and forming; conditional joining; conditional aqueous pretreatment; conditional coating, printing and curing; inspection and release"
+  market_state: "Empty, conforming, dry container at the manufacturing plant gate, with material, form, capacity, coating and closure configuration declared"
+functional_unit:
+  what: "Manufacture and provide a conforming empty small metal container represented by a steel can"
+  how_much: "1 kg net mass of released empty steel can"
+  how_well: "Meets the declared dimensional, capacity, material, seam, coating, cleanliness and leak-tightness specification"
+  how_long_or_cycle: "One completed manufacturing and release cycle to the plant gate; container use life is outside the foreground boundary"
+  reference_flow_link: "The released steel_can_output mass equals the 1 kg reference amount after excluding contents, transport packaging and separately supplied accessories"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "foreground container manufacture"
+      rule: "Include all on-site cutting, forming, joining, cleaning, pretreatment, coating, printing, curing, inspection, rework and release operations used for the declared container; end the foreground boundary at release of the empty container."
+      source_ids:
+        - unsd-cpc-3-0-structure-2025
+        - us-epa-ap42-can-coating
+    - rule_id: boundary_conditional_routes
+      applies_to: "route selection"
+      rule: "Include joining, aqueous treatment, coating, printing and curing only when performed for the declared product, and identify each included technology and material rather than using an averaged unqualified route."
+      source_ids:
+        - us-epa-ap42-can-coating
+        - ec-jrc-stm-bref-2006
+    - rule_id: boundary_upstream_inputs
+      applies_to: "purchased inputs"
+      rule: "Keep upstream production outside the foreground unit processes but require one compatible upstream dataset for every purchased product input."
+      source_ids:
+        - ec-jrc-stm-bref-2006
+    - rule_id: boundary_direct_releases
+      applies_to: "emissions and wastes"
+      rule: "Include measured on-site wastewater, segregated metal scrap, coating-related NMVOC and direct fossil-fuel CO2 when those exchanges cross the foreground boundary; do not duplicate emissions already embedded in upstream electricity or fuel datasets."
+      source_ids:
+        - us-epa-ap42-can-coating
+        - ec-jrc-stm-bref-2006
+boundary_abstraction:
+  declared_starting_condition: "Purchased metal sheet or strip, process chemicals, coating materials and utilities at the manufacturing-site gate, each with supplier identity, material state and upstream dataset link"
+  starting_condition_role: "Upstream product inputs to gate-to-gate foreground container manufacture"
+  product_classification_scope: "Empty iron, steel or aluminium containers not exceeding 300 L, excluding compressed/liquefied-gas containers and mechanically or thermally equipped containers"
+  recursive_input_rule: "If a covered small metal container is itself consumed as a foreground input, record that specific container as a direct product input with a separate upstream dataset; do not recursively include its manufacture inside the current foreground process"
+  upstream_dataset_requirement: "Link upstream datasets for each purchased metal feedstock, electricity supply, fuel, water, chemical, coating and joining consumable at the declared geography and delivery boundary"
+  disclosure: "Declare material and gauge, forming and joining route, pretreatment and coating route, nominal capacity, included closure configuration, plant geography, reporting period, upstream dataset choices, allocation and any excluded on-site operation"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Steel can"
+    uuid: "5e63418a-6550-4e3c-a334-3a1b343ced44"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "actual container material and alloy or steel grade"
+    - "container form"
+    - "nominal capacity in L"
+    - "empty net mass"
+    - "sheet or strip gauge"
+    - two-piece
+    - three-piece
+    - welded
+    - "seamed or drawn joining/forming route"
+    - "internal and external coating system"
+    - "printing route"
+    - "closure supplied with container or separately"
+    - "reusable or single-use market state"
+    - "production geography and reporting period"
+    - "released-product specification"
+    - "plant-gate boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: measurement_reference_mass
+    applies_to: "reference product and mass-normalized inventory"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use the net dry mass of conforming empty containers released at the plant gate. Exclude contents, pallets, stretch wrap, cartons and separately supplied accessories."
+  - id: measurement_count_to_mass
+    applies_to: "item-count production and reject records"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert counts to mass using a contemporaneous average tare from a documented sample of the same material, form, capacity and configuration; retain sample size and dispersion."
+  - id: measurement_electricity_energy
+    applies_to: "all electricity rows"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Retain meter readings in kWh and convert to MJ using 3.6 MJ per kWh; do not mix purchased electricity with on-site fuel energy."
+  - id: measurement_gas_volume
+    applies_to: "natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "State the metering reference temperature, pressure and dry/wet basis and use the supplier or meter correction to the reported volume basis."
+  - id: measurement_water_mass
+    applies_to: "process water and wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer mass measurement. When volume is measured, convert using measured or documented density at the recorded temperature and retain both the volume record and conversion basis."
+  - id: measurement_material_balance
+    applies_to: "metal feedstock, released product and metal scrap"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Reconcile opening stock plus receipts minus closing stock to released product, segregated scrap, rejects and documented inventory change for each material route."
+process_map:
+  - id: sheet_preparation_and_forming
+    name: "Sheet preparation and forming"
+    inclusion: "required"
+    inclusion_condition: "Always include cutting, blanking, drawing, rolling or forming operations used for the declared container"
+    role: "Foreground material conversion"
+    quantitative_reference: "Per 1 kg released steel can"
+  - id: seam_joining
+    name: "Seam joining"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the body, ends, handles or structural parts are welded or joined with a consumed welding material"
+    role: "Foreground joining"
+    quantitative_reference: "Per 1 kg released steel can"
+  - id: aqueous_surface_pretreatment
+    name: "Aqueous surface pretreatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when water-based cleaning, degreasing, etching, rinsing or chemical pretreatment is performed on-site"
+    role: "Foreground surface preparation"
+    quantitative_reference: "Per 1 kg released steel can"
+  - id: coating_printing_and_curing
+    name: "Coating, printing and curing"
+    inclusion: "conditional"
+    inclusion_condition: "Include when internal or external coating, printing, seam lacquer or thermal curing is performed on-site"
+    role: "Foreground finishing"
+    quantitative_reference: "Per 1 kg released steel can"
+  - id: inspection_and_release
+    name: "Inspection and release"
+    inclusion: "required"
+    inclusion_condition: "Always include final dimensional, visual, cleanliness and leak testing plus released-product accounting"
+    role: "Foreground quality release"
+    quantitative_reference: "Per 1 kg released steel can"
+process_inventory:
+  - id: sheet_preparation_and_forming
+    label: "Sheet preparation and forming"
+    inputs:
+      product:
+        - row_id: tinplate_steel_sheet_input
+          role: "Tinplate steel sheet"
+          name: "Tinplate steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record tin-coated steel sheet entering cutting or forming only for the tinplate route."
+          amount:
+            expression: "Net issued mass from receiving, coil, sheet and production records, adjusted for opening and closing stock."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released steel can"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - us-epa-ap42-can-coating
+            ranges: []
+        - row_id: cold_rolled_carbon_steel_sheet_input
+          role: "Cold-rolled carbon steel sheet"
+          name: "Cold-rolled carbon steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record uncoated cold-rolled carbon steel sheet only for a declared steel route using that feedstock."
+          amount:
+            expression: "Net issued mass from receiving, coil, sheet and production records, adjusted for opening and closing stock."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released steel can"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - us-epa-ap42-can-coating
+            ranges: []
+        - row_id: aluminium_sheet_over_0_2mm_input
+          role: "Aluminium sheet over 0.2 mm"
+          name: "aluminium sheet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197be4-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this sheet only when the declared aluminium feedstock thickness exceeds 0.2 mm."
+          amount:
+            expression: "Net issued mass from receiving, coil, sheet and production records, adjusted for opening and closing stock."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released steel can"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: aluminium_sheet_0_1mm_input
+          role: "0.1 mm aluminium sheet"
+          name: "0.1mm Al sheet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c5e98422-1b9b-4e10-b3f4-3dc4e17d3989"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this specific thin-sheet input only when the declared route uses 0.1 mm aluminium stock."
+          amount:
+            expression: "Net issued mass from receiving, coil, sheet and production records, adjusted for opening and closing stock."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released steel can"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: forming_electricity_input
+          role: "Forming electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200b9a66 / MJ"
+          description: "Record purchased electricity consumed by cutting, presses, drawing, rolling, conveying and route-specific forming auxiliaries."
+          amount:
+            expression: "Submetered electricity for included forming equipment, converted from kWh under measurement_electricity_energy."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released steel can"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_electricity
+              source_ids:
+                - ec-jrc-stm-bref-2006
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: steel_offcut_scrap_output
+          role: "Steel sheet offcuts"
+          name: "Steel scrap, offcuts"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "ae44c4ac-bcd5-4a16-b0a5-d674ffeaab6b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record segregated steel blanking skeletons, edge trim and offcuts leaving the foreground process as waste."
+          amount:
+            expression: "Weighed segregated steel offcuts transferred to the documented destination."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released steel can"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: aluminium_scrap_output
+          role: "Aluminium forming scrap"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record segregated aluminium blanking skeletons, edge trim and forming scrap leaving the foreground process as waste."
+          amount:
+            expression: "Weighed segregated aluminium scrap transferred to the documented destination."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released steel can"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: seam_joining
+    label: "Seam joining"
+    inputs:
+      product:
+        - row_id: flux_cored_wire_input
+          role: "Flux-cored welding wire"
+          name: "Flux Cored Wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1b74a576-06e0-4764-97ce-11a73f8a4752"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record flux-cored wire only when it is physically consumed by the declared welded joining route; resistance-welded or mechanically seamed routes report this row as not applicable."
+          amount:
+            expression: "Issued mass minus returned usable wire for container lots using flux-cored welding."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released steel can"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_joining_consumables
+              source_ids: []
+            ranges: []
+        - row_id: joining_electricity_input
+          role: "Joining electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200b9a66 / MJ"
+          description: "Record purchased electricity for welding, seaming and joining equipment included in the declared route."
+          amount:
+            expression: "Submetered electricity for included joining equipment, converted from kWh."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released steel can"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: aqueous_surface_pretreatment
+    label: "Aqueous surface pretreatment"
+    inputs:
+      product:
+        - row_id: process_water_input
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record externally supplied water used for aqueous cleaning, bath make-up and rinsing; exclude internally recirculated water to avoid double counting."
+          amount:
+            expression: "Metered net external water input, converted to mass when necessary under measurement_water_mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released steel can"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_aqueous_pretreatment
+              source_ids:
+                - ec-jrc-stm-bref-2006
+            ranges: []
+        - row_id: sodium_hydroxide_input
+          role: "Sodium hydroxide"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record sodium hydroxide as pure-equivalent product mass only when used in an alkaline cleaning or treatment bath; retain delivered solution concentration."
+          amount:
+            expression: "Delivered solution mass multiplied by measured or supplier-declared sodium-hydroxide mass fraction."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released steel can"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_aqueous_pretreatment
+              source_ids:
+                - ec-jrc-stm-bref-2006
+            ranges: []
+        - row_id: pretreatment_electricity_input
+          role: "Pretreatment electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200b9a66 / MJ"
+          description: "Record purchased electricity for pumps, agitation, extraction, filtration, bath controls and drying in the aqueous pretreatment process."
+          amount:
+            expression: "Submetered electricity for the included pretreatment line, converted from kWh."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released steel can"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_electricity
+              source_ids:
+                - ec-jrc-stm-bref-2006
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: alkaline_cleaning_wastewater_output
+          role: "Alkaline metal-cleaning wastewater"
+          name: "Alkaline metal-cleaning wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the aqueous waste stream discharged or transferred from alkaline metal cleaning separately from other wastewater and spent concentrated bath solutions."
+          amount:
+            expression: "Metered or tank-reconciled wastewater mass crossing the site boundary, with destination and treatment route recorded."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released steel can"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_aqueous_pretreatment
+              source_ids:
+                - ec-jrc-stm-bref-2006
+            ranges: []
+      elementary:
+        []
+  - id: coating_printing_and_curing
+    label: "Coating, printing and curing"
+    inputs:
+      product:
+        - row_id: formulated_epoxy_coating_input
+          role: "Formulated epoxy-resin container coating"
+          name: "Formulated epoxy-resin container coating"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record a formulated epoxy-resin coating only when it is applied to the declared container; retain solids, solvent and water fractions and do not substitute primary epoxy resin mass."
+          amount:
+            expression: "Issued coating mass minus returned usable coating, by formulation and application line."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released steel can"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_fuel_and_formulation
+              source_ids:
+                - us-epa-ap42-can-coating
+            ranges: []
+        - row_id: natural_gas_input
+          role: "Natural gas for curing"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Record gaseous natural gas delivered to coating or curing ovens only when directly burned on-site."
+          amount:
+            expression: "Corrected meter volume assigned to the included coating and curing line."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released steel can"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coating_fuel_and_formulation
+              source_ids:
+                - us-epa-ap42-can-coating
+            ranges: []
+        - row_id: coating_electricity_input
+          role: "Coating-line electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200b9a66 / MJ"
+          description: "Record purchased electricity for coating application, printing, ventilation, controls, conveying and electrically heated curing equipment."
+          amount:
+            expression: "Submetered electricity for the included coating, printing and curing line, converted from kWh."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released steel can"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_electricity
+              source_ids:
+                - us-epa-ap42-can-coating
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: nmvoc_emission_output
+          role: "Non-methane volatile organic compounds to air"
+          name: "non-methane volatile organic compounds"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-a302-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record direct non-methane volatile organic compounds released from coating application, printing and curing after capture and control; exclude upstream emissions."
+          amount:
+            expression: "Site-measured release or coating-line solvent mass balance after documented capture, recovery and destruction."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released steel can"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_air_emissions
+              source_ids:
+                - us-epa-ap42-can-coating
+            ranges: []
+        - row_id: fossil_carbon_dioxide_output
+          role: "Fossil carbon dioxide to air"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record direct fossil carbon dioxide from on-site natural-gas combustion for coating or curing; exclude upstream fuel-supply and purchased-electricity emissions."
+          amount:
+            expression: "Site-measured direct stack release allocated to the included curing equipment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released steel can"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_air_emissions
+              source_ids:
+                - us-epa-ap42-can-coating
+            ranges: []
+  - id: inspection_and_release
+    label: "Inspection and release"
+    inputs:
+      product:
+        - row_id: inspection_electricity_input
+          role: "Inspection and release electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200b9a66 / MJ"
+          description: "Record purchased electricity for leak testing, dimensional inspection, vision systems, dry cleaning, conveying and dispatch preparation."
+          amount:
+            expression: "Submetered electricity for inspection and release equipment, converted from kWh."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released steel can"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: steel_can_output
+          role: "Released steel can"
+          name: "Steel can"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5e63418a-6550-4e3c-a334-3a1b343ced44"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only conforming empty steel cans released at the plant gate; other covered product forms require their own reviewed product-flow identity."
+          amount:
+            expression: "Net dry mass of conforming empty steel cans released during the reporting period."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg released steel can"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_released_product
+              source_ids:
+                - unsd-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "all foreground processes"
+    rule: "Avoid allocation by separating material routes, product forms, lines, batches, meters, tanks and emission controls wherever records permit."
+    source_ids:
+      - ec-jrc-stm-bref-2006
+  - rule_id: allocation_shared_utilities
+    applies_to: "shared electricity, fuel, water and treatment services"
+    rule: "Assign directly metered quantities first. If direct measurement is unavailable, use a documented physical driver such as equipment time, treated surface area or throughput mass; disclose the driver and sensitivity."
+    source_ids:
+      - ec-jrc-stm-bref-2006
+  - rule_id: allocation_metal_scrap
+    applies_to: "steel and aluminium scrap"
+    rule: "Report segregated scrap as waste output with measured mass and destination. Do not apply an avoided-primary-material credit inside the foreground inventory; any recycling substitution belongs to the declared downstream system model."
+    source_ids:
+      - ec-jrc-stm-bref-2006
+  - rule_id: allocation_rework_and_rejects
+    applies_to: "internal rework and rejected containers"
+    rule: "Keep internal rework loops inside the foreground system and include their incremental material and energy. Report only waste that crosses the boundary; do not count reworked mass as additional released product."
+    source_ids:
+      - us-epa-ap42-can-coating
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass_balance
+      process_id: "sheet_preparation_and_forming"
+      flow_role: "metal sheet inputs and segregated scrap"
+      record_type: "purchase, coil/sheet issue, stock, scale and waste-transfer records"
+      raw_fields: "material identity; alloy or grade; coating; thickness; opening stock; receipts; issued mass; closing stock; scrap mass; destination; lot"
+      collection_method: "calibrated scales and reconciled inventory ledger"
+      unit: "kg"
+      frequency: "each receipt, issue and waste transfer; monthly reconciliation"
+      temporal_coverage: "full reporting period"
+      site_scope: "all included lines and stores"
+      aggregation_rule: "reconcile separately by material and product route, then normalize to released mass"
+      quality_evidence: "scale calibration; supplier certificate; inventory close; waste transfer note"
+    - protocol_id: cp_process_electricity
+      process_id: "all_included_processes"
+      flow_role: "purchased electricity"
+      record_type: "submeter and production records"
+      raw_fields: "meter id; start/end reading; kWh; process; line; lot; operating time; shared-load driver"
+      collection_method: "calibrated submeter or documented main-meter subtraction"
+      unit: "kWh"
+      frequency: "continuous or each shift; monthly close"
+      temporal_coverage: "full reporting period"
+      site_scope: "all included production and auxiliary equipment"
+      aggregation_rule: "subtract excluded loads, allocate shared loads by documented physical driver, convert to MJ and normalize"
+      quality_evidence: "meter calibration; single-line diagram; reconciliation to invoice"
+    - protocol_id: cp_joining_consumables
+      process_id: "seam_joining"
+      flow_role: "flux-cored wire"
+      record_type: "issue, return and batch records"
+      raw_fields: "consumable identity; grade; diameter; issued mass; returned mass; lot; joining technology; product lot"
+      collection_method: "calibrated issue scale and stores ledger"
+      unit: "kg"
+      frequency: "each issue and return"
+      temporal_coverage: "full reporting period"
+      site_scope: "all included joining lines"
+      aggregation_rule: "net consumption by compatible joining route, normalized to released mass"
+      quality_evidence: "material certificate; scale calibration; batch traceability"
+    - protocol_id: cp_aqueous_pretreatment
+      process_id: "aqueous_surface_pretreatment"
+      flow_role: "water, sodium hydroxide and wastewater"
+      record_type: "water meter, chemical issue, bath analysis, tank and discharge records"
+      raw_fields: "water volume or mass; density; chemical solution mass; concentration; bath inventory; discharge mass; destination; line; lot"
+      collection_method: "calibrated meters/scales, bath analysis and tank reconciliation"
+      unit: "kg; m3; mass fraction"
+      frequency: "each batch or continuous meter; each discharge"
+      temporal_coverage: "full reporting period"
+      site_scope: "all included aqueous treatment and rinse stages"
+      aggregation_rule: "keep external water, each chemical and each waste stream separate; normalize net boundary-crossing mass"
+      quality_evidence: "meter/scale calibration; analysis result; discharge manifest; bath balance"
+    - protocol_id: cp_coating_fuel_and_formulation
+      process_id: "coating_printing_and_curing"
+      flow_role: "coating and natural gas"
+      record_type: "formulation, coating issue/return, gas meter and production records"
+      raw_fields: "formulation id; coating mass; returned mass; solids; water; solvent; gas volume; reference conditions; line; lot; coated area"
+      collection_method: "calibrated scale and corrected gas meter"
+      unit: "kg; m3"
+      frequency: "each coating lot and shift; monthly close"
+      temporal_coverage: "full reporting period"
+      site_scope: "all included coating, printing and curing equipment"
+      aggregation_rule: "aggregate only identical formulations and route conditions; normalize to released mass"
+      quality_evidence: "safety/technical data sheet; scale and meter calibration; lot traceability"
+    - protocol_id: cp_direct_air_emissions
+      process_id: "coating_printing_and_curing"
+      flow_role: "NMVOC and fossil CO2"
+      record_type: "stack test, continuous monitor, capture/control and operating records"
+      raw_fields: "pollutant; concentration; flow; duration; coating solvent input; capture; recovery; destruction; fuel; line; lot"
+      collection_method: "site measurement or reconciled line-specific mass balance after control"
+      unit: "kg"
+      frequency: "each test and operating period required by site plan"
+      temporal_coverage: "representative full reporting period"
+      site_scope: "all direct exhausts from included coating and curing equipment"
+      aggregation_rule: "sum direct releases after control; exclude upstream electricity and fuel-supply emissions"
+      quality_evidence: "method report; calibration; control-device log; completeness reconciliation"
+    - protocol_id: cp_released_product
+      process_id: "inspection_and_release"
+      flow_role: "released steel can"
+      record_type: "production, inspection, tare and dispatch records"
+      raw_fields: "product id; material; form; capacity; coating; closure; count; sampled tare; released mass; rejects; rework; date"
+      collection_method: "calibrated production scale or count-to-mass protocol plus signed release"
+      unit: "kg; item"
+      frequency: "each released lot"
+      temporal_coverage: "full reporting period"
+      site_scope: "all included inspection and dispatch points"
+      aggregation_rule: "sum conforming released mass only; reconcile rejects and rework"
+      quality_evidence: "scale calibration; tare sample; inspection result; release authorization; dispatch record"
+  calculation_rules:
+    - id: calc_normalize_reference_mass
+      applies_to: "every inventory row"
+      rule: "normalized amount = reporting-period exchange amount / reporting-period released steel-can mass"
+      inputs:
+        - "exchange amount"
+        - "released mass"
+      output: "amount per 1 kg released steel can"
+      source_ids: []
+    - id: calc_electricity_mj
+      applies_to: "all electricity rows"
+      rule: "electricity MJ = metered kWh × 3.6 MJ/kWh"
+      inputs:
+        - "metered kWh"
+      output: "electricity in MJ"
+      source_ids: []
+    - id: calc_sodium_hydroxide_pure
+      applies_to: "sodium hydroxide"
+      rule: "pure-equivalent NaOH mass = delivered solution mass × measured or supplier-declared NaOH mass fraction"
+      inputs:
+        - "solution mass"
+        - "NaOH mass fraction"
+      output: "kg NaOH"
+      source_ids:
+        - ec-jrc-stm-bref-2006
+    - id: calc_count_to_mass
+      applies_to: "released product when counted"
+      rule: "released mass = conforming item count × contemporaneous average sampled tare"
+      inputs:
+        - "conforming count"
+        - "sampled tare"
+        - "sample statistics"
+      output: "kg released product"
+      source_ids: []
+    - id: calc_metal_balance
+      applies_to: "each metal route"
+      rule: "imbalance = opening stock + receipts - closing stock - released product - segregated scrap - other documented outputs; investigate and disclose non-zero imbalance"
+      inputs:
+        - stock
+        - receipt
+        - "product and waste masses"
+      output: "route mass-balance result"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Declare material, grade/alloy, form, capacity, gauge, joining route, coating, closure configuration and released specification for every modelled product."
+      evidence: "supplier certificate; drawing/specification; release record"
+    - id: dq_temporal_representativeness
+      applies_to: "all foreground data"
+      requirement: "Use one complete, representative reporting year or the full shorter production campaign; disclose shutdowns, trials and abnormal periods."
+      evidence: "dated records; production calendar; exception log"
+    - id: dq_measurement_traceability
+      applies_to: "mass, energy, water and emissions"
+      requirement: "Retain meter/scale identity, calibration status, raw readings, conversion basis and responsible record owner."
+      evidence: "calibration certificate; raw log; signed reconciliation"
+    - id: dq_route_separation
+      applies_to: "material and technology variants"
+      requirement: "Do not average iron/steel and aluminium routes, coated and uncoated routes, or materially different forming/joining technologies without disclosing composition and testing sensitivity."
+      evidence: "route-specific batch and meter records"
+    - id: dq_completeness
+      applies_to: "foreground boundary"
+      requirement: "Reconcile metal mass, purchased energy, water, chemicals, coating, waste and direct releases to the included process map and explain missing or estimated records."
+      evidence: "signed mass/energy balance and completeness checklist"
+    - id: dq_upstream_compatibility
+      applies_to: "upstream product inputs"
+      requirement: "Use upstream datasets compatible with declared geography, technology, product state and delivery boundary; document substitutions."
+      evidence: "upstream dataset metadata and selection record"
+validation_rules:
+  - rule_id: validation_scope_identity
+    applies_to: "product category and reference flow"
+    rule: "Fail validation if the product is for compressed or liquefied gas, exceeds 300 L, includes mechanical or thermal equipment, is filled, or lacks the required product qualifiers."
+    source_ids:
+      - unsd-cpc-3-0-structure-2025
+  - rule_id: validation_reference_mass
+    applies_to: "reference product"
+    rule: "Confirm that exactly 1 kg net mass of conforming released empty steel cans is the reference and that contents, transport packaging and separately supplied accessories are excluded."
+    source_ids: []
+  - rule_id: validation_process_alignment
+    applies_to: "process map and inventory"
+    rule: "Confirm every required process has a detailed inventory, every conditional process states applicability, and every selected flow is one atomic exchange."
+    source_ids:
+      - us-epa-ap42-can-coating
+      - ec-jrc-stm-bref-2006
+  - rule_id: validation_uuid_and_units
+    applies_to: "UUID-bearing rows"
+    rule: "Confirm public state 100, English and Chinese baseName, flow type, classification, property, unit group and reference unit match the selected row; keep unresolved rows UUID-empty."
+    source_ids: []
+  - rule_id: validation_balance_and_completeness
+    applies_to: "foreground records"
+    rule: "Confirm material-balance closure, released-product reconciliation, route-specific utility coverage, wastewater destination and direct-emission completeness; investigate unexplained gaps."
+    source_ids:
+      - ec-jrc-stm-bref-2006
+  - rule_id: validation_no_double_counting
+    applies_to: "emissions and recycling"
+    rule: "Confirm upstream electricity and fuel emissions are not repeated as direct releases and no avoided recycling credit is embedded in foreground scrap outputs."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset; may serve as background_dataset only for the declared material, product form, capacity, route, geography and plant-gate boundary"
+  downstream_use: "Foreground process datasets and lifecycle models requiring manufacture of empty small metal containers"
+  allowed_use: "Comparison or modelling within the declared material, form, capacity, joining, coating, geography and reporting-period qualifiers"
+  excluded_use: "Compressed/liquefied-gas containers; containers above 300 L; equipped containers; filled packaging systems; a different material or product form without compatibility review; container use or end-of-life"
+  required_metadata: "PCR id; product and CPC context; material and grade/alloy; form; capacity; gauge; joining route; coating/printing route; closure configuration; geography; reporting period; reference mass; process applicability; upstream dataset links; allocation; data quality"
+  required_quality_disclosure: "Raw-record coverage; calibration; mass-balance result; count-to-mass sampling; route separation; shared-service allocation; direct-emission method; unresolved UUIDs; missing independent range evidence"
+  update_trigger: "Material, gauge, forming/joining technology, coating formulation or control, fuel, capacity class, closure configuration, site geography, allocation, upstream dataset, reporting period or released-product specification changes materially"
+data_sources:
+  - id: "unsd-cpc-3-0-structure-2025"
+    type: "dataset"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-04)"
+    used_for: "Official CPC 42931 identity, capacity limit and exclusions"
+  - id: "us-epa-ap42-can-coating"
+    type: "official_guidance"
+    reference: "U.S. EPA, AP-42 Section 4.2.2.2, Can Coating, https://www.epa.gov/sites/default/files/2020-10/documents/c4s02_2b.pdf (retrieved 2026-09-04)"
+    used_for: "Two-piece and three-piece can route decomposition, sheet coating, forming, seam coating, curing and direct NMVOC collection requirement"
+  - id: "ec-jrc-stm-bref-2006"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Reference Document on Best Available Techniques for the Surface Treatment of Metals and Plastics, August 2006, https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/stm_bref_0806.pdf (retrieved 2026-09-04)"
+    used_for: "Aqueous pretreatment, rinsing, energy, water, alkali, wastewater, waste segregation and foreground quality rules"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:0301dd0bac26efa679c75981cb0c3ff75a7bd186c669bddfe304b239b086eb32"
+  generated_content_sha256: "sha256:a51eb60fc99e1fd5ba099ba9b6ca042c2896d775bf39046d5097d399f80438e8"

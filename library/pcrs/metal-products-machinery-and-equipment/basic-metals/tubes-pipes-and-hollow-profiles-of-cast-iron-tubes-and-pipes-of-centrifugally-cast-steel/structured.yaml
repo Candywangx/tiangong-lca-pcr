@@ -1,10 +1,1396 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41291"
-  title: "Tubes, pipes and hollow profiles of cast-iron; tubes and pipes of centrifugally cast-steel"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.tubes-pipes-and-hollow-profiles-of-cast-iron-tubes-and-pipes-of-centrifugally-cast-steel"
+  classification_refs: "CPC 3.0: 41291 (exact classification context; mapping acceptance remains separately governed)"
+  covered_products: "Cast-iron tubes, pipes and hollow profiles; tubes and pipes made from steel by centrifugal casting"
+  excluded_products: "Wrought, rolled, extruded, seamless-pierced or welded steel tubes and pipes; tube and pipe fittings; installed pipeline systems"
+  representative_product: "Finished, conforming, factory-gate cast-iron pipe or centrifugally cast-steel pipe, including only linings and coatings actually applied before sale"
+  production_route: "Ferrous charge preparation and melting; metal treatment; centrifugal casting in a rotating permanent or sand-lined mould; route-required heat treatment; cleaning, machining, testing, lining/coating and marking"
+  market_state: "Finished product at the manufacturing site gate, identified by grade, dimensions, standard/service class and surface condition"
+functional_unit:
+  what: "Finished cast-iron tube, pipe or hollow profile, or finished centrifugally cast-steel tube or pipe, meeting the declared product specification"
+  how_much: "1,000 kg net mass of accepted product"
+  how_well: "Conforming to the declared grade, dimensions, mechanical properties, pressure/service requirements, tests, and lining/coating specification"
+  how_long_or_cycle: "One production reporting period; no use-life equivalence is asserted"
+  reference_flow_link: "ft_reference_product in finishing_testing_and_coating"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "all foreground processes"
+      rule: "Include raw-material handling at the site, melting and treatment, mould preparation directly used by the product, centrifugal casting and cooling, required heat treatment, cleaning, machining, testing, factory-applied lining/coating, marking, internal handling, on-site abatement, and management of wastes up to their first off-site transfer."
+      source_ids:
+        - eu-jrc-sf-bref-2024
+        - dipra-cast-iron-pipe-handbook-1978
+        - us-epa-ap42-gray-iron-foundries-2003
+        - us-epa-ap42-steel-foundries-1995
+    - rule_id: boundary_route_condition
+      applies_to: "conditional processes and flows"
+      rule: "Include only the declared cast-iron or centrifugally cast-steel route and only furnace, mould, core, heat-treatment, machining, test, lining and coating operations actually used for the reference product."
+      source_ids:
+        - eu-jrc-sf-bref-2024
+        - iso-2531-2009
+        - astm-a451-a451m-20
+    - rule_id: boundary_direct_releases
+      applies_to: "site emissions and wastes"
+      rule: "Record direct releases and captured residues at the process where they arise; do not add upstream electricity or purchased-material emissions as foreground elementary flows."
+      source_ids:
+        - us-epa-ap42-gray-iron-foundries-2003
+        - us-epa-ap42-steel-foundries-1995
+    - rule_id: boundary_exclusions
+      applies_to: "downstream life cycle"
+      rule: "Exclude transport after the manufacturing gate, installation, use, maintenance and end-of-life unless a separate downstream model explicitly adds them."
+      source_ids:
+        - unsd-cpc-3-0-structure-2025
+boundary_abstraction:
+  declared_starting_condition: "Purchased primary and secondary ferrous materials, alloy/treatment additions, fuels, fluxes, mould materials, coating/lining materials, water and electricity as they cross the manufacturing-site boundary"
+  starting_condition_role: "Gate-to-gate foreground starting condition with upstream production represented by linked background datasets"
+  product_classification_scope: "Cast-iron tubes, pipes and hollow profiles and centrifugally cast-steel tubes and pipes; not fittings or wrought/welded tube routes"
+  recursive_input_rule: "A returned product of this same category that is externally purchased shall be recorded as an input with its upstream dataset; internal same-site returns are closed-loop intermediates and are not recursively modelled as a new external product input."
+  upstream_dataset_requirement: "Every purchased material, fuel, electricity and treatment input shall link to an upstream dataset matching declared geography, technology, grade/state and delivery boundary, or disclose a justified proxy."
+  disclosure: "Declare furnace type, metallic-charge composition, internal-return accounting, mould and core route, heat treatment, energy sources, abatement, machining, rejection, testing, and factory-applied lining/coating."
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Tubes, pipes and hollow profiles of cast-iron, tubes and pipes of centrifugally cast-steel"
+    uuid: "122e65ff-cac1-4c63-a199-7d204800d6f3"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "cast-iron or centrifugally cast-steel route"
+    - "grey/ductile iron or steel grade"
+    - "tube/pipe/hollow-profile form"
+    - "nominal diameter and wall thickness"
+    - "product standard and service class"
+    - "pressure rating where relevant"
+    - "furnace and mould route"
+    - "heat-treatment condition"
+    - "machining allowance"
+    - "lining and coating system"
+    - "manufacturing geography"
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "accepted reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all exchanges to 1,000 kg of product that passed the declared final acceptance tests. Exclude shipping packaging and rejected product from reference mass."
+  - id: material_mass
+    applies_to: "charge materials, additives, lining/coating materials, wastes and internal intermediates"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use calibrated scale records; state whether wet, dry, as-received, elemental-content or formulation mass is reported, and do not mix these bases."
+  - id: electricity_energy
+    applies_to: "grid-supplied alternating current"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Retain the directly metered electricity quantity by process. When meters report kWh, convert to MJ using 1 kWh = 3.6 MJ and retain the original reading."
+  - id: gas_volume
+    applies_to: "gaseous natural gas and industrial oxygen"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report measured volume with temperature, pressure and standard/reference-condition convention; never combine gases with different reference conditions."
+  - id: water_mass
+    applies_to: "process water"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record net water crossing the foreground boundary. When volume is metered, document measured density or the justified conversion used."
+process_map:
+  - id: metal_melting_and_treatment
+    name: "Ferrous charge preparation, melting and metal treatment"
+    inclusion: "required"
+    inclusion_condition: "Always; route-specific inputs are marked on their individual cards"
+    role: "Foreground production of molten cast iron or molten steel"
+    quantitative_reference: "Per 1,000 kg accepted reference product"
+  - id: centrifugal_casting
+    name: "Mould preparation, centrifugal casting and cooling"
+    inclusion: "required"
+    inclusion_condition: "Always; sand lining and socket cores are included only when used"
+    role: "Foreground formation of the hollow product body"
+    quantitative_reference: "Per 1,000 kg accepted reference product"
+  - id: heat_treatment
+    name: "Annealing or steel heat treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when required by grade, product standard, customer specification or the declared manufacturing route"
+    role: "Foreground thermal conditioning"
+    quantitative_reference: "Per 1,000 kg accepted reference product"
+  - id: finishing_testing_and_coating
+    name: "Cleaning, machining, testing, lining/coating and marking"
+    inclusion: "required"
+    inclusion_condition: "Always; individual lining/coating inputs are conditional on the as-sold product"
+    role: "Foreground completion and acceptance"
+    quantitative_reference: "1,000 kg accepted reference product"
+process_inventory:
+  - id: metal_melting_and_treatment
+    label: "Ferrous charge preparation, melting and metal treatment"
+    inputs:
+      product:
+        - row_id: mm_pig_iron
+          role: "Pig iron charge"
+          name: "pig iron"
+          flow_type: "product"
+          flow_ref:
+            uuid: "439daa27-1495-4a1b-8dec-d9adabba0269"
+          property_unit: "Mass / kg"
+          description: "Record pig iron weighed into a cast-iron melt when used."
+          amount:
+            expression: "Measured as-received batch mass charged to the furnace; zero only when batch records demonstrate no pig iron input"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_charge_materials
+              source_ids:
+                - us-epa-ap42-gray-iron-foundries-2003
+                - eu-jrc-sf-bref-2024
+            ranges: []
+        - row_id: mm_scrap_steel
+          role: "Scrap-steel charge"
+          name: "Scrap Steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6cb5e364-ba39-4009-8b40-a76fdc88bc42"
+          property_unit: "Mass / kg"
+          description: "Record clean steel scrap crossing the site boundary and charged to either declared route."
+          amount:
+            expression: "Measured as-received external scrap mass; exclude internal returns already inside the foreground boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_charge_materials
+              source_ids:
+                - eu-jrc-sf-bref-2024
+                - us-epa-ap42-gray-iron-foundries-2003
+                - us-epa-ap42-steel-foundries-1995
+            ranges: []
+        - row_id: mm_metallurgical_coke
+          role: "Metallurgical coke for cupola melting"
+          name: "metallurgical coke"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a94c42b1-7fa9-42f3-a9d1-1e7353e8490d"
+          property_unit: "Mass / kg"
+          description: "Record coke only for a declared cupola route."
+          amount:
+            expression: "Measured coke mass charged to the cupola"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuels_and_energy
+              source_ids:
+                - eu-jrc-sf-bref-2024
+                - us-epa-ap42-gray-iron-foundries-2003
+            ranges: []
+        - row_id: mm_natural_gas
+          role: "Gaseous natural gas for melting or holding"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record purchased gaseous natural gas consumed by melting, holding, rotary-furnace or burner systems."
+          amount:
+            expression: "Metered volume allocated to melting and holding, with reference conditions and allocation basis retained"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuels_and_energy
+              source_ids:
+                - eu-jrc-sf-bref-2024
+                - us-epa-ap42-gray-iron-foundries-2003
+            ranges: []
+        - row_id: mm_grid_electricity
+          role: "Grid-supplied alternating current"
+          name: "Grid-supplied alternating current"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity delivered to melting, holding, charging, extraction and associated process equipment; the final Tiangong UUID remains under manual review."
+          amount:
+            expression: "Submetered electricity or a documented allocation from the site meter, preserving the original kWh reading"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuels_and_energy
+              source_ids:
+                - eu-jrc-sf-bref-2024
+                - us-epa-ap42-gray-iron-foundries-2003
+                - us-epa-ap42-steel-foundries-1995
+            ranges: []
+        - row_id: mm_limestone_flux
+          role: "Limestone flux"
+          name: "Limestone"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6cf9f186-6e7e-40b5-800e-6759a429e7a8"
+          property_unit: "Mass / kg"
+          description: "Record limestone used as furnace flux."
+          amount:
+            expression: "Measured batch mass charged as flux"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_charge_materials
+              source_ids:
+                - us-epa-ap42-gray-iron-foundries-2003
+                - us-epa-ap42-steel-foundries-1995
+            ranges: []
+        - row_id: mm_magnesium_alloy
+          role: "Rare-earth magnesium alloy for ductile-iron treatment"
+          name: "Rare earth magnesium alloy"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e117530c-8388-4549-b784-fce6ddb8df6b"
+          property_unit: "Mass / kg"
+          description: "Record this nodularising alloy only when it is the actual magnesium-bearing treatment product for ductile iron."
+          amount:
+            expression: "Measured mass added to the molten iron; retain the supplier grade and magnesium content"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_charge_materials
+              source_ids:
+                - us-epa-ap42-gray-iron-foundries-2003
+            ranges: []
+        - row_id: mm_industrial_oxygen
+          role: "Industrial oxygen for oxygen-assisted melting or refining"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume / m3"
+          description: "Record oxygen only when metered oxygen lancing or oxy-fuel assistance is used."
+          amount:
+            expression: "Metered oxygen volume, with purity, pressure and reference conditions declared"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_charge_materials
+              source_ids:
+                - eu-jrc-sf-bref-2024
+                - us-epa-ap42-steel-foundries-1995
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: mm_molten_cast_iron
+          role: "Molten cast iron at ladle discharge"
+          name: "Molten cast iron at ladle discharge"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal molten cast-iron intermediate transferred to centrifugal casting."
+          amount:
+            expression: "Calculated from ladle weights or measured metal-transfer mass for the cast-iron route"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_internal_mass_balance
+              source_ids:
+                - eu-jrc-sf-bref-2024
+                - us-epa-ap42-gray-iron-foundries-2003
+            ranges: []
+        - row_id: mm_molten_steel
+          role: "Molten steel at foundry ladle discharge"
+          name: "Molten steel at foundry ladle discharge"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal molten-steel intermediate transferred to centrifugal casting."
+          amount:
+            expression: "Calculated from ladle weights or measured metal-transfer mass for the centrifugally cast-steel route"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_internal_mass_balance
+              source_ids:
+                - eu-jrc-sf-bref-2024
+                - us-epa-ap42-steel-foundries-1995
+            ranges: []
+      waste:
+        - row_id: mm_cast_iron_slag
+          role: "Cast-iron foundry slag"
+          name: "Cast-iron foundry slag"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record separated slag from the cast-iron melting route; no exact Tiangong waste UUID is confirmed."
+          amount:
+            expression: "Weighed slag leaving the process, net of documented internal return"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_outputs
+              source_ids:
+                - us-epa-ap42-gray-iron-foundries-2003
+            ranges: []
+        - row_id: mm_steel_slag
+          role: "Steel slag"
+          name: "Steel slag"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "a58d033e-31dc-4e26-a4a7-a5c6caeb2766"
+          property_unit: "Mass / kg"
+          description: "Record slag separated from the centrifugally cast-steel melting and refining route."
+          amount:
+            expression: "Weighed slag leaving the process, net of documented internal return"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_outputs
+              source_ids:
+                - us-epa-ap42-steel-foundries-1995
+            ranges: []
+        - row_id: mm_captured_dust
+          role: "Dust-removal ash from melting and treatment"
+          name: "Dust removal ash"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "a2bf9717-8d95-46fd-a485-6ecc0e32dfb6"
+          property_unit: "Mass / kg"
+          description: "Record particulate captured by melting and treatment exhaust controls as a waste output."
+          amount:
+            expression: "Weighed dry or as-collected mass, with moisture basis and disposal or recycling route declared"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_outputs
+              source_ids:
+                - eu-jrc-sf-bref-2024
+                - us-epa-ap42-gray-iron-foundries-2003
+                - us-epa-ap42-steel-foundries-1995
+            ranges: []
+      elementary:
+        - row_id: mm_fossil_co2
+          role: "Direct fossil carbon dioxide"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record only direct fossil carbon dioxide from on-site fuel and charge-carbon oxidation in melting and treatment."
+          amount:
+            expression: "Stack measurement or calculation from verified fuel/charge quantity and supplier carbon data; exclude upstream electricity emissions"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_air_releases
+              source_ids:
+                - eu-jrc-sf-bref-2024
+                - us-epa-ap42-gray-iron-foundries-2003
+                - us-epa-ap42-steel-foundries-1995
+            ranges: []
+        - row_id: mm_fossil_co
+          role: "Direct fossil carbon monoxide"
+          name: "carbon monoxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil carbon monoxide released after on-site control."
+          amount:
+            expression: "Process-specific continuous monitoring or representative stack-test result multiplied by measured exhaust flow and operating time"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_air_releases
+              source_ids:
+                - us-epa-ap42-gray-iron-foundries-2003
+                - us-epa-ap42-steel-foundries-1995
+            ranges: []
+        - row_id: mm_particulate_air
+          role: "Particulate matter released after melting controls"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass / kg"
+          description: "Record total particulate matter of unspecified particle size released to air after control; separately reported size fractions shall not be double counted."
+          amount:
+            expression: "Process-specific stack or fugitive-emission measurement normalized from measured exhaust flow and operating time"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_air_releases
+              source_ids:
+                - eu-jrc-sf-bref-2024
+                - us-epa-ap42-gray-iron-foundries-2003
+                - us-epa-ap42-steel-foundries-1995
+            ranges: []
+  - id: centrifugal_casting
+    label: "Mould preparation, centrifugal casting and cooling"
+    inputs:
+      product:
+        - row_id: cc_molten_cast_iron
+          role: "Molten cast iron supplied to the rotating mould"
+          name: "Molten cast iron at centrifugal-casting inlet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal molten cast-iron input for the cast-iron route."
+          amount:
+            expression: "Same transfer quantity as mm_molten_cast_iron, reconciled for documented holding loss"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_internal_mass_balance
+              source_ids:
+                - eu-jrc-sf-bref-2024
+                - dipra-cast-iron-pipe-handbook-1978
+            ranges: []
+        - row_id: cc_molten_steel
+          role: "Molten steel supplied to the rotating mould"
+          name: "Molten steel at centrifugal-casting inlet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal molten-steel input for the centrifugally cast-steel route."
+          amount:
+            expression: "Same transfer quantity as mm_molten_steel, reconciled for documented holding loss"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_internal_mass_balance
+              source_ids:
+                - eu-jrc-sf-bref-2024
+            ranges: []
+        - row_id: cc_silica_sand
+          role: "Silica sand for sand lining or socket core"
+          name: "silica sand"
+          flow_type: "product"
+          flow_ref:
+            uuid: "854527a0-1a8f-43af-b7c5-8c20d22e61ff"
+          property_unit: "Mass / kg"
+          description: "Record silica sand only when a sand-lined mould or sand core is used for the declared product."
+          amount:
+            expression: "Fresh and externally regenerated silica-sand mass entering the process; exclude recirculated sand that does not cross the boundary"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_casting_materials
+              source_ids:
+                - eu-jrc-sf-bref-2024
+                - dipra-cast-iron-pipe-handbook-1978
+            ranges: []
+        - row_id: cc_grid_electricity
+          role: "Grid-supplied alternating current for casting"
+          name: "Grid-supplied alternating current"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for mould rotation, cooling circulation, extraction and casting-line auxiliaries; the final Tiangong UUID remains under manual review."
+          amount:
+            expression: "Submetered electricity or documented allocation from the site meter, preserving the original kWh reading"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_casting_energy
+              source_ids:
+                - eu-jrc-sf-bref-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cc_cast_iron_pipe_body
+          role: "Uncoated centrifugally cast-iron body"
+          name: "Uncoated centrifugally cast-iron pipe or hollow-profile body"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the solidified cast-iron tube, pipe or hollow-profile body transferred to later processing."
+          amount:
+            expression: "Measured or mass-balance-calculated output after mould removal, before heat treatment and finishing"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_internal_mass_balance
+              source_ids:
+                - eu-jrc-sf-bref-2024
+                - dipra-cast-iron-pipe-handbook-1978
+            ranges: []
+        - row_id: cc_cast_steel_pipe_body
+          role: "Uncoated centrifugally cast-steel body"
+          name: "Uncoated centrifugally cast-steel pipe body"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the solidified centrifugally cast-steel tube or pipe body transferred to later processing."
+          amount:
+            expression: "Measured or mass-balance-calculated output after mould removal, before heat treatment and finishing"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_internal_mass_balance
+              source_ids:
+                - eu-jrc-sf-bref-2024
+                - astm-a451-a451m-20
+            ranges: []
+      waste:
+        - row_id: cc_spent_foundry_sand
+          role: "Spent foundry sand"
+          name: "Spent foundry sand"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent sand removed from mould linings or cores and sent outside the process after internal reclamation."
+          amount:
+            expression: "Weighed sand leaving the internal reclamation loop, with moisture and treatment route declared"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_outputs
+              source_ids:
+                - eu-jrc-sf-bref-2024
+                - us-epa-ap42-gray-iron-foundries-2003
+                - us-epa-ap42-steel-foundries-1995
+            ranges: []
+      elementary:
+        - row_id: cc_particulate_air
+          role: "Particulate matter released after casting controls"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass / kg"
+          description: "Record particulate matter released from mould preparation, pouring, cooling and core removal after controls."
+          amount:
+            expression: "Process-specific monitoring or representative stack/fugitive test normalized by measured production"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_air_releases
+              source_ids:
+                - eu-jrc-sf-bref-2024
+                - us-epa-ap42-gray-iron-foundries-2003
+                - us-epa-ap42-steel-foundries-1995
+            ranges: []
+  - id: heat_treatment
+    label: "Annealing or steel heat treatment"
+    inputs:
+      product:
+        - row_id: ht_cast_iron_pipe_body
+          role: "Cast-iron body entering heat treatment"
+          name: "Centrifugally cast-iron pipe body before heat treatment"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal cast-iron body only when annealing or another declared heat treatment is applied."
+          amount:
+            expression: "Mass transferred into the heat-treatment furnace"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_internal_mass_balance
+              source_ids:
+                - dipra-cast-iron-pipe-handbook-1978
+                - eu-jrc-sf-bref-2024
+            ranges: []
+        - row_id: ht_cast_steel_pipe_body
+          role: "Cast-steel body entering heat treatment"
+          name: "Centrifugally cast-steel pipe body before heat treatment"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal steel body when the declared steel grade requires heat treatment."
+          amount:
+            expression: "Mass transferred into the heat-treatment furnace"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_internal_mass_balance
+              source_ids:
+                - eu-jrc-sf-bref-2024
+                - astm-a451-a451m-20
+            ranges: []
+        - row_id: ht_natural_gas
+          role: "Gaseous natural gas for heat treatment"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record natural gas consumed by the heat-treatment furnace when gas firing is used."
+          amount:
+            expression: "Metered heat-treatment-furnace volume with reference conditions declared"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_records
+              source_ids:
+                - eu-jrc-sf-bref-2024
+            ranges: []
+        - row_id: ht_grid_electricity
+          role: "Grid-supplied alternating current for heat treatment"
+          name: "Grid-supplied alternating current"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity consumed when an electric heat-treatment furnace or electric auxiliary is used; the final Tiangong UUID remains under manual review."
+          amount:
+            expression: "Submetered electricity or documented allocation, preserving original kWh readings"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_records
+              source_ids:
+                - eu-jrc-sf-bref-2024
+            ranges: []
+        - row_id: ht_process_water
+          role: "Process water used as quench makeup"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record net process-water makeup only when water quenching is used; recirculated water that does not cross the boundary is excluded."
+          amount:
+            expression: "Metered or tank-balance makeup-water mass, with density conversion documented when volume is measured"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_records
+              source_ids:
+                - astm-a451-a451m-20
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: ht_heat_treated_cast_iron_body
+          role: "Heat-treated centrifugally cast-iron body"
+          name: "Heat-treated centrifugally cast-iron pipe body"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal cast-iron body after the specified heat-treatment cycle."
+          amount:
+            expression: "Output mass reconciled with furnace input and documented rejects"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_internal_mass_balance
+              source_ids:
+                - dipra-cast-iron-pipe-handbook-1978
+                - eu-jrc-sf-bref-2024
+            ranges: []
+        - row_id: ht_heat_treated_cast_steel_body
+          role: "Heat-treated centrifugally cast-steel body"
+          name: "Heat-treated centrifugally cast-steel pipe body"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal steel body after the specified heat-treatment and quench/cooling cycle."
+          amount:
+            expression: "Output mass reconciled with furnace input and documented rejects"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_internal_mass_balance
+              source_ids:
+                - eu-jrc-sf-bref-2024
+                - astm-a451-a451m-20
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: ht_fossil_co2
+          role: "Direct fossil carbon dioxide from heat treatment"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil carbon dioxide only from on-site heat-treatment fuel combustion."
+          amount:
+            expression: "Stack measurement or calculation from verified gas quantity and supplier carbon data; exclude upstream electricity emissions"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_air_releases
+              source_ids:
+                - eu-jrc-sf-bref-2024
+            ranges: []
+  - id: finishing_testing_and_coating
+    label: "Cleaning, machining, testing, lining/coating and marking"
+    inputs:
+      product:
+        - row_id: ft_cast_iron_pipe_body
+          role: "Cast-iron body entering finishing"
+          name: "Cast-iron pipe or hollow-profile body before finishing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the cast-iron body entering cleaning and finishing, after heat treatment where applicable."
+          amount:
+            expression: "Measured or mass-balance-calculated transfer mass"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_internal_mass_balance
+              source_ids:
+                - dipra-cast-iron-pipe-handbook-1978
+            ranges: []
+        - row_id: ft_cast_steel_pipe_body
+          role: "Cast-steel body entering finishing"
+          name: "Centrifugally cast-steel pipe body before finishing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the centrifugally cast-steel body entering machining and finishing, after heat treatment where applicable."
+          amount:
+            expression: "Measured or mass-balance-calculated transfer mass"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_internal_mass_balance
+              source_ids:
+                - astm-a451-a451m-20
+            ranges: []
+        - row_id: ft_grid_electricity
+          role: "Grid-supplied alternating current for finishing and tests"
+          name: "Grid-supplied alternating current"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for cleaning, machining, pressure testing, coating/lining, ventilation and marking; the final Tiangong UUID remains under manual review."
+          amount:
+            expression: "Submetered electricity or documented allocation, preserving original kWh readings"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - dipra-cast-iron-pipe-handbook-1978
+                - astm-a451-a451m-20
+            ranges: []
+        - row_id: ft_process_water
+          role: "Process water for testing, cleaning or mortar preparation"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record net process water crossing the boundary for hydrostatic testing, cleaning or cement-mortar preparation; distinguish each use in raw records."
+          amount:
+            expression: "Net makeup-water mass by use, excluding recirculation that remains inside the site system"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - dipra-cast-iron-pipe-handbook-1978
+                - iso-2531-2009
+            ranges: []
+        - row_id: ft_portland_cement
+          role: "Ordinary Portland cement for internal lining"
+          name: "Cement, ordinary portland cement, 52.4mpa"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5333f41c-446a-4d3f-82f3-a53e879c0a12"
+          property_unit: "Mass / kg"
+          description: "Record this exact cement grade only when it is actually used in a factory-applied cement-mortar lining; otherwise use a separately verified atomic cement flow."
+          amount:
+            expression: "Measured dry cement mass incorporated plus documented preparation loss"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - iso-2531-2009
+                - dipra-cast-iron-pipe-handbook-1978
+            ranges: []
+        - row_id: ft_silica_sand
+          role: "Silica sand for cement-mortar lining"
+          name: "silica sand"
+          flow_type: "product"
+          flow_ref:
+            uuid: "854527a0-1a8f-43af-b7c5-8c20d22e61ff"
+          property_unit: "Mass / kg"
+          description: "Record silica sand only when it is incorporated into a factory-applied cement-mortar lining."
+          amount:
+            expression: "Measured dry sand mass incorporated plus documented preparation loss"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - iso-2531-2009
+                - dipra-cast-iron-pipe-handbook-1978
+            ranges: []
+        - row_id: ft_zinc_metal
+          role: "Special-high-grade zinc for metallic coating"
+          name: "Special High Grade zinc metal"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2d8ff1bd-e128-4c74-a99d-b8734c99bbd2"
+          property_unit: "Mass / kg"
+          description: "Record this exact zinc product only when it is applied as the declared factory metallic coating."
+          amount:
+            expression: "Applied zinc mass from batch issue and coating-recovery records, with grade and coating system declared"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - iso-2531-2009
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: ft_reference_product
+          role: "Accepted factory-gate reference product"
+          name: "Tubes, pipes and hollow profiles of cast-iron, tubes and pipes of centrifugally cast-steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "122e65ff-cac1-4c63-a199-7d204800d6f3"
+          property_unit: "Mass / kg"
+          description: "Record only finished products that passed the declared dimensional, mechanical, pressure/service and surface-condition acceptance checks."
+          amount:
+            expression: "Fixed normalization output of 1,000 kg net accepted product; retain measured batch output before normalization"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reference_product
+              source_ids:
+                - unsd-cpc-3-0-structure-2025
+                - iso-2531-2009
+                - astm-a451-a451m-20
+            ranges: []
+      waste:
+        - row_id: ft_iron_machining_chips
+          role: "Iron-metal chips from cast-iron finishing"
+          name: "Iron metal chips"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "8aa263a4-39e5-475e-966b-d967747ecc9c"
+          property_unit: "Mass / kg"
+          description: "Record iron chips removed during machining of cast-iron products and transferred out of the finishing process."
+          amount:
+            expression: "Weighed chip mass, with adhering coolant/moisture basis and internal remelting route declared"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_outputs
+              source_ids:
+                - eu-jrc-sf-bref-2024
+                - dipra-cast-iron-pipe-handbook-1978
+            ranges: []
+        - row_id: ft_steel_machining_chips
+          role: "Steel chips from cast-steel finishing"
+          name: "Steel chips"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "bcb2604e-4735-4b7d-88ab-03de8ff5930b"
+          property_unit: "Mass / kg"
+          description: "Record steel chips removed during machining of centrifugally cast-steel products and transferred out of the finishing process."
+          amount:
+            expression: "Weighed chip mass, with adhering coolant/moisture basis and internal remelting route declared"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_outputs
+              source_ids:
+                - eu-jrc-sf-bref-2024
+                - astm-a451-a451m-20
+            ranges: []
+      elementary:
+        - row_id: ft_particulate_air
+          role: "Particulate matter released after finishing controls"
+          name: "Particulate matter, particle size unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0ce3dedb-caca-407b-a856-a90470eb8ec0"
+          property_unit: "Mass / kg"
+          description: "Record particulate matter released from cleaning, grinding, blasting and machining after controls."
+          amount:
+            expression: "Process-specific monitoring, representative test, or a documented capture mass balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_air_releases
+              source_ids:
+                - us-epa-ap42-gray-iron-foundries-2003
+                - us-epa-ap42-steel-foundries-1995
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "multi-product site operations"
+    rule: "Prefer process subdivision and direct metering by furnace, casting line, heat-treatment batch and finishing line. Allocate shared measurements only after technically justified subdivision is exhausted."
+    source_ids: []
+  - rule_id: allocation_shared_operations
+    applies_to: "unavoidable shared burdens"
+    rule: "Allocate shared burdens by a causal physical driver such as metered energy, operating time, treated mass or machine time. If no defensible physical relationship exists and multiple marketable products leave the system, use documented economic allocation and report a mass-allocation sensitivity result."
+    source_ids: []
+  - rule_id: allocation_internal_returns
+    applies_to: "gates, risers, rejects, chips and dust returned on site"
+    rule: "Treat internal returns as internal flows: retain the burdens that generated them, record remelting energy and yield loss, and do not assign an avoided-product credit within this product system."
+    source_ids:
+      - eu-jrc-sf-bref-2024
+  - rule_id: allocation_exported_residues
+    applies_to: "slag, dust, sand or metal residues leaving the site"
+    rule: "Classify each exported residue as waste or co-product using the foreground disposition and market evidence. Do not apply an avoided-burden credit inside this gate-to-gate inventory; any downstream substitution belongs in an explicitly separate scenario."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_charge_materials
+      process_id: "metal_melting_and_treatment"
+      flow_role: "external metallics, flux and treatment additions"
+      record_type: "scale tickets, batch sheets and supplier certificates"
+      raw_fields: "material identity; supplier grade; batch id; gross/tare/net mass; moisture or assay basis; furnace; product route"
+      collection_method: "Reconcile calibrated scale tickets to batch sheets and purchasing records"
+      unit: "kg and declared composition basis"
+      frequency: "each charge"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all furnaces serving the declared product"
+      aggregation_rule: "Sum external inputs by exact material and route; exclude internal returns from external-input totals"
+      quality_evidence: "scale calibration; supplier certificate; batch reconciliation"
+    - protocol_id: cp_fuels_and_energy
+      process_id: "metal_melting_and_treatment"
+      flow_role: "coke, natural gas and electricity"
+      record_type: "charge sheets, invoices and process meters"
+      raw_fields: "fuel identity; coke mass; gas volume; temperature/pressure convention; kWh; meter id; furnace; operating period"
+      collection_method: "Direct weigh or submeter; document allocation only where a shared meter cannot be subdivided"
+      unit: "kg, m3, kWh and MJ"
+      frequency: "each batch or meter interval"
+      temporal_coverage: "complete reporting period"
+      site_scope: "melting, holding and associated control equipment"
+      aggregation_rule: "Sum by energy carrier and convert kWh to MJ using calc_electricity_conversion"
+      quality_evidence: "meter calibration; invoice reconciliation; allocation worksheet"
+    - protocol_id: cp_internal_mass_balance
+      process_id: "all_foreground_processes"
+      flow_role: "molten metal and pipe-body intermediates"
+      record_type: "ladle, scale, production and rejection records"
+      raw_fields: "route; batch; input mass; output mass; returns; spills; rejects; transfer point"
+      collection_method: "Reconcile successive process-stage records without creating an external upstream burden for internal returns"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all included lines"
+      aggregation_rule: "Sum by route and stage; disclose unexplained mass-balance difference"
+      quality_evidence: "calibrated scales; signed batch reconciliation; reject log"
+    - protocol_id: cp_casting_materials
+      process_id: "centrifugal_casting"
+      flow_role: "sand lining and core material"
+      record_type: "issue, return and reclamation records"
+      raw_fields: "sand identity; dry/as-received mass; mould type; core use; recovered mass; discarded mass"
+      collection_method: "Weigh fresh/external sand and reconcile internal reuse"
+      unit: "kg"
+      frequency: "each batch or shift"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all included casting machines"
+      aggregation_rule: "Sum external sand by exact product; do not count internal recirculation as a new input"
+      quality_evidence: "scale calibration; reclamation log; stock reconciliation"
+    - protocol_id: cp_casting_energy
+      process_id: "centrifugal_casting"
+      flow_role: "casting-line electricity"
+      record_type: "submeter or allocated site-meter record"
+      raw_fields: "kWh; meter id; casting machine; cooling system; operating time; product batch"
+      collection_method: "Direct submeter preferred; otherwise allocate by measured machine time and rated/verified load"
+      unit: "kWh and MJ"
+      frequency: "meter interval"
+      temporal_coverage: "complete reporting period"
+      site_scope: "rotating mould, cooling, extraction and direct auxiliaries"
+      aggregation_rule: "Sum readings and convert by calc_electricity_conversion"
+      quality_evidence: "meter calibration; machine-time log; allocation worksheet"
+    - protocol_id: cp_heat_treatment_records
+      process_id: "heat_treatment"
+      flow_role: "heat-treatment inputs"
+      record_type: "furnace recipe, gas/electric meter and quench makeup record"
+      raw_fields: "grade; batch; cycle; temperature/time record; gas volume; kWh; water makeup; quench route"
+      collection_method: "Link each heat-treatment cycle to product batch and process meters"
+      unit: "m3, kWh, MJ and kg"
+      frequency: "each cycle"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all included heat-treatment furnaces"
+      aggregation_rule: "Sum by route and normalize to accepted product from the same batches"
+      quality_evidence: "calibrated meters; validated furnace chart; quench-tank balance"
+    - protocol_id: cp_finishing_records
+      process_id: "finishing_testing_and_coating"
+      flow_role: "machining, testing and applied lining/coating inputs"
+      record_type: "line meters, batch issue records, test logs and coating records"
+      raw_fields: "product batch; kWh; water makeup; cement/sand/zinc identity and mass; applied system; recovery; test status"
+      collection_method: "Reconcile issued material and utility meters to accepted and rejected products"
+      unit: "kg, kWh and MJ"
+      frequency: "each batch or shift"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all included finishing and test lines"
+      aggregation_rule: "Sum exact inputs by route and surface system; exclude absent coating/lining rows"
+      quality_evidence: "meter/scale calibration; material certificate; coating and test log"
+    - protocol_id: cp_waste_outputs
+      process_id: "all_foreground_processes"
+      flow_role: "separately identified waste outputs"
+      record_type: "waste scale tickets, internal return logs and transfer manifests"
+      raw_fields: "waste identity; process origin; mass; moisture; destination; internal return; hazardous classification"
+      collection_method: "Weigh each atomic waste stream and reconcile transfers and internal returns"
+      unit: "kg"
+      frequency: "each transfer and monthly reconciliation"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all included process areas"
+      aggregation_rule: "Sum by exact waste identity and disposition; do not combine slag, sand, dust or metal chips"
+      quality_evidence: "calibrated scales; signed manifests; stock-change reconciliation"
+    - protocol_id: cp_direct_air_releases
+      process_id: "all_foreground_processes"
+      flow_role: "direct elementary releases"
+      record_type: "CEMS, stack tests, fugitive tests and verified fuel-carbon records"
+      raw_fields: "substance; process; concentration; exhaust flow; operating time; control state; fuel/charge amount; carbon data"
+      collection_method: "Use site-specific monitoring or representative compliant testing; use carbon calculation only with verified foreground activity and supplier data"
+      unit: "kg, concentration and flow units"
+      frequency: "continuous or each representative campaign"
+      temporal_coverage: "representative coverage of the reporting period"
+      site_scope: "all included stacks and material fugitive sources"
+      aggregation_rule: "Calculate released mass by substance and process; prevent overlap between total particulate and size fractions"
+      quality_evidence: "instrument calibration; laboratory report; sampling plan; operating-condition match"
+    - protocol_id: cp_reference_product
+      process_id: "finishing_testing_and_coating"
+      flow_role: "accepted product output"
+      record_type: "production, weighing and final-inspection records"
+      raw_fields: "product id; route; grade; dimensions; standard; lining/coating; gross/net mass; acceptance result; rejection reason"
+      collection_method: "Sum calibrated net masses only for conforming product"
+      unit: "kg"
+      frequency: "each accepted unit or batch"
+      temporal_coverage: "complete reporting period"
+      site_scope: "all included finishing lines"
+      aggregation_rule: "Normalize all exchanges by calc_reference_normalization"
+      quality_evidence: "scale calibration; dimensional/mechanical/pressure test records; release certificate"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every inventory exchange"
+      rule: "Normalized amount = reporting-period exchange amount × 1,000 / reporting-period net accepted product mass. Apply within the declared route and product group before aggregation."
+      inputs:
+        - "exact exchange amount"
+        - "net accepted product mass"
+      output: "amount per 1,000 kg accepted reference product"
+      source_ids: []
+    - id: calc_electricity_conversion
+      applies_to: "electricity records"
+      rule: "Electricity (MJ) = metered electricity (kWh) × 3.6. Retain kWh and conversion trace."
+      inputs:
+        - "metered kWh"
+      output: "MJ"
+      source_ids: []
+    - id: calc_gas_reference_condition
+      applies_to: "natural gas and oxygen"
+      rule: "Convert a measured gas volume only when temperature, absolute pressure and compressibility/reference convention are documented; otherwise retain the measured condition and flag it as non-comparable."
+      inputs:
+        - "measured volume"
+        - temperature
+        - pressure
+        - "reference convention"
+      output: "m3 at declared condition"
+      source_ids: []
+    - id: calc_direct_fossil_co2
+      applies_to: "direct fuel and charge-carbon oxidation"
+      rule: "Use measured stack mass where representative. Otherwise calculate from verified foreground fuel/charge quantity and supplier-specific fossil-carbon data, subtracting only documented carbon retained in products or separately measured carbon-bearing outputs; do not use the UUID identity as an emission factor."
+      inputs:
+        - "foreground activity"
+        - "supplier carbon data"
+        - "retained-carbon records"
+      output: "kg direct fossil CO2"
+      source_ids:
+        - eu-jrc-sf-bref-2024
+    - id: calc_mass_balance
+      applies_to: "each foreground process"
+      rule: "Reconcile product and waste outputs against material inputs and internal transfers on a consistent moisture and composition basis; investigate rather than distribute unexplained differences."
+      inputs:
+        - "calibrated input/output masses"
+        - "stock change"
+        - "internal returns"
+      output: "documented process mass-balance check"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and all inputs/outputs"
+      requirement: "Preserve exact material/flow identity, route, grade, state, supplier specification and disposition. Do not replace missing rows with umbrella material or waste categories."
+      evidence: "supplier certificates, Tiangong UUID audit, batch records and waste manifests"
+    - id: dq_temporal
+      applies_to: "all foreground data"
+      requirement: "Cover a representative continuous reporting period, normally at least 12 months or a complete shorter campaign justified for campaign production; document shutdowns and abnormal batches."
+      evidence: "dated meter, production, purchase, test and waste records"
+    - id: dq_technology
+      applies_to: "furnace, casting, treatment and finishing"
+      requirement: "Demonstrate that records correspond to the declared furnace, centrifugal-casting machine, mould route, heat-treatment recipe and surface system."
+      evidence: "equipment list, process flow diagram, batch genealogy and line-meter mapping"
+    - id: dq_completeness
+      applies_to: "inventory"
+      requirement: "Reconcile purchased inputs, internal returns, accepted product, rejects and wastes; list every directly measured regulated release and explain any unmeasured expected release."
+      evidence: "mass/energy balance, emissions inventory and completeness checklist"
+    - id: dq_measurement
+      applies_to: "measured quantities"
+      requirement: "Use calibrated instruments and retain original readings, units, conversion steps, meter coverage and allocation worksheets."
+      evidence: "calibration certificates, raw exports and calculation workbook"
+    - id: dq_proxy
+      applies_to: "upstream datasets"
+      requirement: "Document geography, technology, time and product-state match for each upstream dataset; disclose and justify every proxy."
+      evidence: "dataset mapping register and proxy justification"
+validation_rules:
+  - rule_id: validation_identity
+    applies_to: "dataset identity"
+    rule: "Confirm that the product is cast iron or a steel pipe/tube whose body is centrifugally cast, that fittings and wrought/welded routes are excluded, and that the reference product UUID, Mass property and kg unit match this PCR."
+    source_ids:
+      - unsd-cpc-3-0-structure-2025
+      - eu-jrc-sf-bref-2024
+  - rule_id: validation_qualifiers
+    applies_to: "required metadata"
+    rule: "Fail completeness when route, grade, dimensions, product standard/service class, furnace, mould, heat treatment, machining, lining/coating, geography or reporting period is missing."
+    source_ids:
+      - iso-2531-2009
+      - astm-a451-a451m-20
+  - rule_id: validation_processes
+    applies_to: "process coverage"
+    rule: "Require melting/treatment, centrifugal casting, and finishing/testing. Require heat treatment when batch or standard records show it is applied; require each declared lining/coating input when present on the as-sold product."
+    source_ids:
+      - eu-jrc-sf-bref-2024
+      - dipra-cast-iron-pipe-handbook-1978
+      - astm-a451-a451m-20
+  - rule_id: validation_atomic_inventory
+    applies_to: "inventory rows"
+    rule: "Confirm every row is one atomic exchange with direction, flow type, property, unit, amount-production rule, specificity, normalization basis, evidence and collection protocol; reject combined materials, carriers, wastes or releases."
+    source_ids: []
+  - rule_id: validation_mass_energy
+    applies_to: "balances and normalization"
+    rule: "Confirm the 1,000 kg reference output, reconcile internal transfers and returns, investigate unexplained mass differences, and reconcile carrier-specific energy records to meters without double counting."
+    source_ids: []
+  - rule_id: validation_direct_releases
+    applies_to: "elementary flows"
+    rule: "Confirm that direct fossil CO2, fossil CO and particulate rows include only on-site releases for the named process and that upstream electricity/material emissions and overlapping particulate size fractions are not duplicated."
+    source_ids:
+      - us-epa-ap42-gray-iron-foundries-2003
+      - us-epa-ap42-steel-foundries-1995
+  - rule_id: validation_ranges
+    applies_to: "quantitative QA"
+    rule: "Treat this candidate PCR as having no external empirical amount ranges. Do not infer a range from one case, one publication or incompatible routes; use foreground collection until two independent, boundary-compatible original sources are reviewed."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset or background_dataset after review and publication"
+  downstream_use: "Product carbon footprints, LCA process datasets and lifecycle models requiring a factory-gate inventory for the declared cast-iron or centrifugally cast-steel product"
+  allowed_use: "Use when product route, grade/state, dimensions, standard/service class, geography, technology, period and surface system match the downstream study or are transparently adjusted"
+  excluded_use: "Do not use for welded, wrought, rolled, extruded or seamless-pierced steel tubes; fittings; installed pipelines; or downstream use/end-of-life without additional modelling"
+  required_metadata: "PCR id/version; reference product UUID; route; grade; dimensions; product standard and service class; furnace and mould technology; heat treatment; machining; tests; lining/coating; geography; period; allocation; upstream dataset mapping"
+  required_quality_disclosure: "Primary-data coverage; meter and scale coverage; mass/energy reconciliation; internal-return treatment; rejection rate; direct-emission method; waste disposition; proxy use; unresolved UUIDs; absence of external empirical ranges"
+  update_trigger: "Change in furnace or casting technology, metal grade family, charge mix, heat-treatment recipe, abatement, machining allowance, product standard, lining/coating system, geography, allocation, or evidence sufficient to resolve UUID/range gaps"
+data_sources:
+  - id: "unsd-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, code 41291. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-04)"
+    used_for: "Official classification identity and exclusion of neighbouring product categories"
+  - id: "eu-jrc-sf-bref-2024"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, *Best Available Techniques Reference Document for the Smitheries and Foundries Industry*, 2024. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2024-12/SF_BREF_2024-bref.pdf (retrieved 2026-09-04)"
+    used_for: "Centrifugal-casting definition; furnace, mould, casting, heat-treatment, finishing, resource and release process decomposition"
+  - id: "us-epa-ap42-gray-iron-foundries-2003"
+    type: "official_guidance"
+    reference: "U.S. EPA, AP-42 Section 12.10, *Gray Iron Foundries*, May 2003. https://www.epa.gov/sites/default/files/2020-11/documents/c12s10.pdf (retrieved 2026-09-04)"
+    used_for: "Cast-iron charge, melting, ductile-iron treatment, slag, sand, finishing and direct-release candidates"
+  - id: "us-epa-ap42-steel-foundries-1995"
+    type: "official_guidance"
+    reference: "U.S. EPA, AP-42 Section 12.13, *Steel Foundries*, January 1995. https://www.epa.gov/sites/default/files/2020-11/documents/c12s13.pdf (retrieved 2026-09-04)"
+    used_for: "Steel-foundry charge, electric melting, treatment, finishing, waste and direct-release candidates"
+  - id: "dipra-cast-iron-pipe-handbook-1978"
+    type: "handbook"
+    reference: "Ductile Iron Pipe Research Association, *Cast Iron Pipe Handbook*, Fifth Edition, 1978. https://dipra.org/wp-content/uploads/2025/07/Cast_Iron_Pipe_Handbook_1978_-_Fifth_Edition.pdf (retrieved 2026-09-04)"
+    used_for: "Pipe-specific centrifugal casting, annealing, cleaning, hydrostatic testing, dimensional gauging, coating, lining and marking sequence"
+  - id: "iso-2531-2009"
+    type: "standard"
+    reference: "ISO 2531:2009, *Ductile iron pipes, fittings, accessories and their joints for water applications*. https://gso-sims-preview-doc-aws.s3-eu-west-1.amazonaws.com/iso-2531-2009-en.html (GSO Standards Information Management System-hosted ISO original preview verified 2026-09-04)"
+    used_for: "Ductile-iron pipe specification, dimension, mechanical-property, coating and performance-test qualifiers"
+  - id: "astm-a451-a451m-20"
+    type: "standard"
+    reference: "ASTM A451/A451M-20, *Standard Specification for Centrifugally Cast Austenitic Steel Pipe for High-Temperature Service*. https://store.astm.org/a0451_a0451m-20.html (official abstract and scope verified 2026-09-04)"
+    used_for: "Centrifugally cast-steel heat treatment, machining, chemistry, hydrostatic and tensile-test qualifiers"
+  - id: "cn-nbs-industrial-classification-2017"
+    type: "official_guidance"
+    reference: "National Bureau of Statistics of China, *Industrial Classification for National Economic Activities* (GB/T 4754-2017), official PDF. https://www.stats.gov.cn/xxgk/tjbz/gjtjbz/202008/P020200811608157848094.pdf (retrieved 2026-09-04)"
+    used_for: "Professional Chinese terminology for cast-iron straight pipe and cast-iron hollow profiles"
+  - id: "cn-samr-centrifugally-cast-steel-2026"
+    type: "standard"
+    reference: "State Administration for Market Regulation, national-standard record, *Centrifugally cast steel and alloy products—Part 1: General testing and tolerances*. https://std.samr.gov.cn/gb/search/gbDetailedCNF?id=511EBC5967EA9318E06397BE0A0AFBD5 (verified 2026-09-04)"
+    used_for: "Professional Chinese terminology for centrifugally cast steel products"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:5ce82d68881316a5843fbc97747816585308dc4d1f6a558136765795e6068f1a"
+  generated_content_sha256: "sha256:c5992db4981c1ce318b7d38851855d80090a304d6b51b0ce0375834817cfd522"

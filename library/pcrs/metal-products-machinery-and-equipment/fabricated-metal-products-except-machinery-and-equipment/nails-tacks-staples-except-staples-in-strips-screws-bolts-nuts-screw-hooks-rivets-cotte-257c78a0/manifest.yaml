@@ -2,12 +2,13 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.nails-tacks-staples-except-staples-in-strips-screws-bolts-nuts-screw-hooks-rivets-cotte-257c78a0
 title:
   en-US: "Nails, tacks, staples (except staples in strips), screws, bolts, nuts, screw hooks, rivets, cotters, cotter-pins, washers and similar articles, of iron, steel, copper or aluminium"
-  zh-CN: null
-status: scaffold
+  zh-CN: "铁、钢、铜或铝制钉、平头钉、订书钉（成条订书钉除外）、螺钉、螺栓、螺母、钩头螺钉、铆钉、销、开尾销、垫圈及类似制品"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
+updated_at_utc: "2026-09-04T21:44:45Z"
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +23,70 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "42944"
     title: "Nails, tacks, staples (except staples in strips), screws, bolts, nuts, screw hooks, rivets, cotters, cotter-pins, washers and similar articles, of iron, steel, copper or aluminium"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: metal_finishing_wastewater
+        reason_code: no_exact_candidate
+        explanation: "The only ranked public waste candidate was evaporation condensate, not metal-finishing wastewater."
+      - row_id: spent_hydrochloric_pickling_liquor
+        reason_code: no_exact_candidate
+        explanation: "No ranked public waste candidate exactly represented spent hydrochloric-acid pickling liquor with dissolved metal salts."
+    range_evidence_needs:
+      - range_id: material_yield_and_scrap_rates
+        row_ids:
+          - steel_wire_input
+          - copper_wire_rod_input
+          - aluminium_wire_input
+          - post_industrial_steel_scrap
+          - copper_scrap
+          - aluminium_scrap
+          - reference_fastener_output
+        explanation: "Two independent original sources with compatible factory-gate boundaries and declared product states were not available for empirical material-yield and scrap-rate ranges; collect foreground mass balances."
+      - range_id: forming_energy_and_cutting_fluid
+        row_ids:
+          - forming_electricity
+          - cutting_fluid_input
+        explanation: "Two independent boundary-compatible original sources were not available for empirical forming electricity and cutting-fluid ranges; collect metered foreground records."
+      - range_id: heat_treatment_consumption_and_emissions
+        row_ids:
+          - heat_treatment_natural_gas
+          - heat_treatment_electricity
+          - quenching_oil_input
+          - heat_treatment_fossil_co2
+        explanation: "Heat-treatment technology and product grade materially change consumption and direct emissions; no two compatible original sources supported transferable ranges, so route-specific foreground collection is required."
+      - range_id: cleaning_and_surface_finishing_consumption_and_waste
+        row_ids:
+          - cleaning_process_water
+          - cleaning_sodium_hydroxide
+          - pickling_hydrochloric_acid_30pct
+          - coating_shg_zinc_metal
+          - finishing_electricity
+          - metal_finishing_wastewater
+          - oil_sludge_output
+          - spent_hydrochloric_pickling_liquor
+        explanation: "Bath chemistry, coating route, recirculation and waste treatment prevent a transferable empirical range; no two independent compatible original sources were verified, so foreground bath and waste records are required."
+      - range_id: packaging_consumption
+        row_ids:
+          - corrugated_box_input
+          - wooden_pallet_input
+          - packaging_electricity
+        explanation: "Package design, shipment lot and pallet reuse differ by product; no two independent compatible original sources supported a transferable empirical range, so foreground packaging records are required."

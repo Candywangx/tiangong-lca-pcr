@@ -1,10 +1,1049 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41253"
-  title: "Railway or tramway track construction material of iron or steel"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.railway-or-tramway-track-construction-material-of-iron-or-steel"
+  classification_refs: "CPC 3.0: 41253 (exact classification context)"
+  covered_products: "Iron or steel material specialized for constructing, joining, or fixing railway or tramway track, including the product families listed in Section 1"
+  excluded_products: "Railway construction services and assembled railways; rolling-stock parts and signalling equipment; generic iron or steel sections; non-metallic track components; site installation, use, maintenance, and end-of-life"
+  representative_product: "Hot-rolled steel rail delivered at the manufacturing plant gate"
+  production_route: "Hot rolling of blooms is the representative route; smithery forming and ferrous foundry casting are conditional routes for declared product families, followed by route-specific conditioning, machining, finishing, and inspection"
+  market_state: "Finished, specification-conforming track construction material at plant gate; product family, grade, dimensions, treatment, and delivery state declared"
+functional_unit:
+  what: "Supply specification-conforming iron or steel railway or tramway track construction material"
+  how_much: "1,000 kg net finished product"
+  how_well: "Meets the declared rail, sleeper, crossing, fastening, or track-component specification and acceptance criteria"
+  how_long_or_cycle: "One production batch delivered at the plant gate; installation and service life are outside the boundary"
+  reference_flow_link: "finished_track_material"
+system_boundary:
+  rules:
+    - rule_id: boundary_route_selection
+      applies_to: "Foreground process inclusion"
+      rule: "Include only the declared hot-rolling, smithery, or foundry route and the final-conditioning operations actually used; do not average undeclared routes."
+      source_ids:
+        - ec-jrc-fmp-bref-2022
+        - ec-jrc-sf-bref-2024
+    - rule_id: boundary_upstream_separation
+      applies_to: "Received materials and energy"
+      rule: "Keep upstream production and inbound transport outside the foreground manufacturing processes while linking every purchased input to an upstream dataset."
+      source_ids:
+        - ec-jrc-fmp-bref-2022
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "Product after plant gate"
+      rule: "Exclude track installation, railway construction, use, maintenance, replacement, and end-of-life unless a separate downstream model explicitly adds them."
+      source_ids:
+        - onesteel-hot-rolled-structural-rail-epd-2026
+    - rule_id: boundary_residue_transfer
+      applies_to: "Scrap, scale, slag and spent sand"
+      rule: "Record each residue until the measured transfer point and declare internal return, external recovery, treatment or disposal without combining distinct residue flows."
+      source_ids:
+        - ec-jrc-fmp-bref-2022
+        - ec-jrc-sf-bref-2024
+boundary_abstraction:
+  declared_starting_condition: "Received semi-finished steel bloom or billet for rolling or forging, or separately declared purchased ferrous charge and moulding sand for casting"
+  starting_condition_role: "Upstream products entering downstream manufacture of track construction material"
+  product_classification_scope: "Iron or steel railway or tramway track construction material; the dataset must name one product family and component designation"
+  recursive_input_rule: "A purchased input already belonging to this product category is recorded as an upstream product flow with its own supplier dataset and is not recursively remanufactured inside this foreground boundary"
+  upstream_dataset_requirement: "Supplier-specific or representative upstream datasets are required for semi-finished steel, pig iron, purchased steel scrap, moulding sand, electricity, natural gas, process water and other purchased inputs actually used"
+  disclosure: "Declare product family, grade/specification, route, starting material state, included operations, site, reporting period, cut-offs, internal returns, exported residues, waste destinations, direct-emission method, and packaging boundary"
+reference_flow_definition:
+  reference_amount: "1,000 kg net finished product"
+  product_flow_ref:
+    name: "Railway or tramway track construction material of iron or steel"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product family and component designation"
+    - "iron or steel grade and applicable specification"
+    - "section profile or component geometry and dimensions"
+    - "manufacturing route"
+    - "heat-treatment and surface-condition state"
+    - "net mass accounting rule"
+    - "plant geography"
+    - "reporting period"
+    - "electricity supplier"
+    - "grid geography"
+    - voltage
+    - "technology and delivery boundary"
+    - "natural-gas supply geography and reference-volume conditions"
+    - "confirmation that transport packaging is excluded"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product and mass-normalized material exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report 1,000 kg net accepted finished product, excluding transport packaging."
+  - id: mass_reconciliation
+    applies_to: "Each production route"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile measured input, accepted product, internal returns, exported residues, transferred wastes, and stock change over the same reporting period; document moisture or coating corrections where material."
+  - id: electricity_energy
+    applies_to: "Alternating-current electricity rows"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electricity and convert kWh to MJ using 1 kWh = 3.6 MJ; declare supplier, grid geography, voltage, technology and delivery boundary."
+  - id: natural_gas_volume
+    applies_to: "Gaseous natural-gas rows"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report metered gas volume with reference temperature and pressure; if energy is derived, retain the measured volume, heating value, and conversion calculation."
+  - id: direct_emission_mass
+    applies_to: "Direct elementary emissions"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use stack measurements or a documented calculation from metered fuel and composition; do not substitute life-cycle impact indicators for elementary-flow mass."
+process_map:
+  - id: hot_rolling
+    name: "Reheating, descaling and hot rolling"
+    inclusion: "conditional"
+    inclusion_condition: "Include for rails, rolled steel sleepers, and other track-specific products formed by hot rolling"
+    role: "Downstream forming of steel bloom"
+    quantitative_reference: "kg hot-rolled track-material intermediate"
+  - id: smithery_forming
+    name: "Heating and smithery forming"
+    inclusion: "conditional"
+    inclusion_condition: "Include for track components formed by forging or hammering"
+    role: "Downstream forming of steel billet"
+    quantitative_reference: "kg forged track-material intermediate"
+  - id: foundry_casting
+    name: "Ferrous melting, moulding and casting"
+    inclusion: "conditional"
+    inclusion_condition: "Include for cast iron or steel crossing pieces, chairs, plates, or other declared cast track components"
+    role: "Foundry production of near-net-shape component"
+    quantitative_reference: "kg accepted cast track-material intermediate"
+  - id: final_conditioning
+    name: "Heat treatment, machining, finishing and inspection"
+    inclusion: "required"
+    inclusion_condition: "Always include; individual operations apply only when performed for the declared product and specification"
+    role: "Final manufacture and quality acceptance"
+    quantitative_reference: "1,000 kg net accepted track construction material"
+process_inventory:
+  - id: hot_rolling
+    label: "Reheating, descaling and hot rolling"
+    inputs:
+      product:
+        - row_id: rolling_steel_bloom
+          role: "Steel bloom charge"
+          name: "Steel bloom"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Received steel bloom crosses the boundary for reheating and rolling; record weighed dry mass by grade and heat."
+          amount:
+            expression: "Weighed bloom charged to batches allocated to the declared product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rolling_material_balance
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+                - onesteel-hot-rolled-structural-rail-epd-2026
+            ranges: []
+        - row_id: rolling_natural_gas
+          role: "Reheating-furnace natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record natural gas only when consumed by the declared rolling route and retain supply geography and reference-volume conditions."
+          amount:
+            expression: "Metered natural gas assigned to reheating and supporting rolling-line burners"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rolling_energy
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: rolling_electricity
+          role: "Rolling-line electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value / MJ"
+          description: "Record delivered alternating-current electricity for rollers, pumps, drives and line auxiliaries with mandatory supply qualifiers."
+          amount:
+            expression: "Metered electricity assigned to reheating, descaling, rolling, cooling and line auxiliaries"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rolling_energy
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: descaling_water
+          role: "Descaling-water supply"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water entering the descaling and cooling circuit, net of documented recirculation. Retain water source, quality, supply geography, delivery boundary, metering basis and any density conversion."
+          amount:
+            expression: "Metered make-up water entering the declared rolling-line water circuit"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rolling_water
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: hot_rolled_track_intermediate
+          role: "Hot-rolled track-material intermediate"
+          name: "Hot-rolled railway track-material intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the accepted hot-rolled rail, sleeper section, or declared track-specific rolled shape before final conditioning."
+          amount:
+            expression: "Weighed accepted hot-rolled intermediate transferred to final conditioning"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rolling_material_balance
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+                - onesteel-hot-rolled-structural-rail-epd-2026
+            ranges: []
+      waste:
+        - row_id: mill_scale_waste
+          role: "Separated mill scale"
+          name: "Mill scale"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "aad763e2-78ab-4fcb-8a3b-8d8525c9e6ca"
+          property_unit: "Mass / kg"
+          description: "Record iron-oxide mill scale removed during surface rectification and descaling as one transferred waste flow."
+          amount:
+            expression: "Weighed separated mill scale transferred for recovery, treatment, or disposal"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rolling_material_balance
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: rolling_steel_scrap
+          role: "Rolling crop and trimming scrap"
+          name: "Steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "df700a38-f0e7-486c-abd0-18acaa356280"
+          property_unit: "Mass / kg"
+          description: "Record steel crop ends and trimming scrap leaving the process boundary; internal return remains in the mass balance and is not exported output."
+          amount:
+            expression: "Weighed steel scrap transferred outside the rolling process after deducting documented internal return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rolling_material_balance
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+      elementary:
+        - row_id: rolling_fossil_co2_air
+          role: "Fossil carbon dioxide from reheating"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record fossil carbon dioxide emitted directly from natural-gas combustion in rolling-route furnaces."
+          amount:
+            expression: "Measured stack mass or calculated mass from metered fuel and documented carbon balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_rolling_emissions
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: rolling_nox_air
+          role: "Nitrogen oxides from reheating"
+          name: "Nitrogen oxides"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "191b44d4-90c9-465a-8802-93a651b4fd52"
+          property_unit: "Mass / kg"
+          description: "Record aggregate nitrogen oxides emitted directly through non-urban or high-stack discharge from rolling-route combustion. Use another elementary-flow compartment when the monitored release point does not meet that compartment definition."
+          amount:
+            expression: "Measured stack mass or documented calculation from monitored combustion data"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_rolling_emissions
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+  - id: smithery_forming
+    label: "Heating and smithery forming"
+    inputs:
+      product:
+        - row_id: forging_steel_billet
+          role: "Steel billet charge"
+          name: "Billet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7de70586-42d8-40bb-a687-e0e0c05722e4"
+          property_unit: "Mass / kg"
+          description: "Record the received steel billet by grade and heat for track-component forging."
+          amount:
+            expression: "Weighed billet charged to declared forging batches"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forging_material_balance
+              source_ids:
+                - ec-jrc-sf-bref-2024
+            ranges: []
+        - row_id: forging_natural_gas
+          role: "Forging-furnace natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record natural gas consumed for billet heating and route-specific heat treatment."
+          amount:
+            expression: "Metered natural gas assigned to declared forging batches"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forging_energy
+              source_ids:
+                - ec-jrc-sf-bref-2024
+            ranges: []
+        - row_id: forging_electricity
+          role: "Smithery electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value / MJ"
+          description: "Record delivered alternating-current electricity for forging equipment, drives and auxiliaries."
+          amount:
+            expression: "Metered electricity assigned to heating, forging, cooling and auxiliaries"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forging_energy
+              source_ids:
+                - ec-jrc-sf-bref-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: forged_track_intermediate
+          role: "Forged track-material intermediate"
+          name: "Forged railway track-material intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record accepted forged track components before final conditioning."
+          amount:
+            expression: "Weighed accepted forged intermediate transferred to final conditioning"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forging_material_balance
+              source_ids:
+                - ec-jrc-sf-bref-2024
+            ranges: []
+      waste:
+        - row_id: forging_steel_scrap
+          role: "Forging flash and cropping scrap"
+          name: "Steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "8658611f-0588-4eb7-9490-46bcd02b3c2f"
+          property_unit: "Mass / kg"
+          description: "Record separated ferrous flash, crop pieces, and rejected pieces leaving the forging process."
+          amount:
+            expression: "Weighed forging scrap transferred outside the process after deducting documented internal return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forging_material_balance
+              source_ids:
+                - ec-jrc-sf-bref-2024
+            ranges: []
+      elementary:
+        - row_id: forging_fossil_co2_air
+          role: "Fossil carbon dioxide from forging heat"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record fossil carbon dioxide emitted directly from natural-gas combustion in the smithery route."
+          amount:
+            expression: "Measured stack mass or calculated mass from metered fuel and documented carbon balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_forging_emissions
+              source_ids:
+                - ec-jrc-sf-bref-2024
+            ranges: []
+  - id: foundry_casting
+    label: "Ferrous melting, moulding and casting"
+    inputs:
+      product:
+        - row_id: foundry_steel_scrap_charge
+          role: "Purchased steel-scrap charge"
+          name: "Scrap Steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6cb5e364-ba39-4009-8b40-a76fdc88bc42"
+          property_unit: "Mass / kg"
+          description: "Record purchased prepared steel scrap entering the foundry as a product input, separately from internally returned metal."
+          amount:
+            expression: "Weighed purchased steel-scrap charge by grade and heat"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_foundry_charge_balance
+              source_ids:
+                - ec-jrc-sf-bref-2024
+            ranges: []
+        - row_id: foundry_pig_iron
+          role: "Foundry-grade pig iron"
+          name: "Pig iron"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a636ed9e-f90a-48cb-a180-c75b1fc92cf1"
+          property_unit: "Mass / kg"
+          description: "Record pig iron only when it is an actual declared charge constituent."
+          amount:
+            expression: "Weighed pig iron charged by heat"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_foundry_charge_balance
+              source_ids:
+                - ec-jrc-sf-bref-2024
+            ranges: []
+        - row_id: foundry_electricity
+          role: "Foundry electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value / MJ"
+          description: "Record delivered alternating-current electricity for melting, mould preparation, handling and auxiliaries."
+          amount:
+            expression: "Metered electricity assigned to declared foundry heats and associated operations"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_foundry_energy
+              source_ids:
+                - ec-jrc-sf-bref-2024
+            ranges: []
+        - row_id: foundry_moulding_sand
+          role: "Prepared moulding sand"
+          name: "Prepared foundry moulding sand"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record fresh prepared moulding sand crossing the foundry boundary, with binder system declared."
+          amount:
+            expression: "Weighed fresh moulding sand added to declared casting batches"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_foundry_sand_balance
+              source_ids:
+                - ec-jrc-sf-bref-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cast_track_intermediate
+          role: "Cast track-material intermediate"
+          name: "Cast railway track-material intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record accepted cast track components after shakeout and before final conditioning."
+          amount:
+            expression: "Weighed accepted cast intermediate transferred to final conditioning"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_foundry_charge_balance
+              source_ids:
+                - ec-jrc-sf-bref-2024
+            ranges: []
+      waste:
+        - row_id: foundry_slag_waste
+          role: "Ferrous-foundry slag"
+          name: "Ferrous-foundry melting slag"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record separated slag leaving melting and metal treatment as one waste flow."
+          amount:
+            expression: "Weighed slag transferred for recovery, treatment, or disposal"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_foundry_charge_balance
+              source_ids:
+                - ec-jrc-sf-bref-2024
+            ranges: []
+        - row_id: spent_foundry_sand
+          role: "Spent moulding sand"
+          name: "Spent foundry moulding sand"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent foundry sand leaving shakeout or sand reclamation as a separate waste flow."
+          amount:
+            expression: "Weighed spent sand transferred outside the foundry after deducting documented internal reclamation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_foundry_sand_balance
+              source_ids:
+                - ec-jrc-sf-bref-2024
+            ranges: []
+      elementary:
+        []
+  - id: final_conditioning
+    label: "Heat treatment, machining, finishing and inspection"
+    inputs:
+      product:
+        - row_id: finishing_hot_rolled_intermediate
+          role: "Hot-rolled intermediate input"
+          name: "Hot-rolled railway track-material intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use this internal link only for the declared hot-rolling route."
+          amount:
+            expression: "Weighed hot-rolled intermediate entering final conditioning"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_material_balance
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+                - onesteel-hot-rolled-structural-rail-epd-2026
+            ranges: []
+        - row_id: finishing_forged_intermediate
+          role: "Forged intermediate input"
+          name: "Forged railway track-material intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use this internal link only for the declared smithery route."
+          amount:
+            expression: "Weighed forged intermediate entering final conditioning"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_material_balance
+              source_ids:
+                - ec-jrc-sf-bref-2024
+            ranges: []
+        - row_id: finishing_cast_intermediate
+          role: "Cast intermediate input"
+          name: "Cast railway track-material intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use this internal link only for the declared foundry route."
+          amount:
+            expression: "Weighed cast intermediate entering final conditioning"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_material_balance
+              source_ids:
+                - ec-jrc-sf-bref-2024
+            ranges: []
+        - row_id: finishing_electricity
+          role: "Final-conditioning electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value / MJ"
+          description: "Record delivered alternating-current electricity for heat treatment, straightening, sawing, drilling, machining, grinding, inspection and handling actually performed."
+          amount:
+            expression: "Metered electricity assigned to final conditioning and quality acceptance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_energy
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+                - ec-jrc-sf-bref-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_track_material
+          role: "Finished track construction material"
+          name: "Railway or tramway track construction material of iron or steel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This is the reference product after route-specific conditioning and acceptance inspection."
+          amount:
+            expression: "Fixed reference output of net accepted product"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "source_rule"
+              source_ids:
+                - unstats-cpc-v3-41253
+                - unstats-hs-7302-scope
+                - onesteel-hot-rolled-structural-rail-epd-2026
+            ranges: []
+      waste:
+        - row_id: finishing_steel_scrap
+          role: "Final machining and rejection scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Record steel offcuts, machining swarf, and rejected pieces leaving final conditioning as one ferrous scrap flow only when they share the same transfer identity and destination."
+          amount:
+            expression: "Weighed steel scrap transferred outside final conditioning after deducting documented internal return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net accepted finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_material_balance
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+                - ec-jrc-sf-bref-2024
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide_routes
+    applies_to: "Route and product-family production"
+    rule: "Subdivide hot-rolling, smithery, foundry and final-conditioning records using direct meters, batch records and mass tracking before applying allocation."
+    source_ids: []
+  - rule_id: allocation_internal_return
+    applies_to: "Internal scrap, returns and reclaimed sand"
+    rule: "Treat internal return as an internal loop and reconcile it once; do not report it simultaneously as exported waste and purchased input."
+    source_ids:
+      - ec-jrc-fmp-bref-2022
+      - ec-jrc-sf-bref-2024
+  - rule_id: allocation_exported_residue
+    applies_to: "Exported scrap, scale, slag and spent sand"
+    rule: "Carry manufacturing burdens to the measured transfer point. Do not credit avoided primary production inside this gate-to-gate dataset; any downstream substitution scenario must be separate and disclosed."
+    source_ids:
+      - onesteel-hot-rolled-structural-rail-epd-2026
+  - rule_id: allocation_shared_process
+    applies_to: "Unsubdivided shared equipment"
+    rule: "If direct subdivision is impossible, allocate shared energy and ancillary use by a documented physical driver; use processed mass only when no more causal driver is available and disclose a sensitivity check."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_rolling_material_balance
+      process_id: "hot_rolling"
+      flow_role: "bloom, intermediate, mill scale and rolling scrap"
+      record_type: "weighbridge, scale and production records"
+      raw_fields: "heat_id; grade; input_mass_kg; accepted_mass_kg; internal_return_kg; scale_kg; exported_scrap_kg; stock_change_kg"
+      collection_method: "Reconcile heat and campaign records"
+      unit: "kg"
+      frequency: "each heat or batch"
+      temporal_coverage: "representative 12 consecutive months"
+      site_scope: "all included rolling lines"
+      aggregation_rule: "Sum route records and normalize with calc_reference_normalization"
+      quality_evidence: "calibrated scales; heat traceability; signed reconciliation"
+    - protocol_id: cp_rolling_energy
+      process_id: "hot_rolling"
+      flow_role: "natural gas and electricity"
+      record_type: "utility meters and allocation logs"
+      raw_fields: "meter_id; timestamp; gas_m3; gas_reference_conditions; electricity_kWh; line_status; product_mass_kg"
+      collection_method: "Read dedicated meters or documented causal submeter allocation"
+      unit: "m3; kWh"
+      frequency: "hourly or shift"
+      temporal_coverage: "same period as production"
+      site_scope: "included furnaces and rolling line"
+      aggregation_rule: "Sum productive consumption; document start-up and downtime treatment"
+      quality_evidence: "meter calibration; invoice reconciliation; allocation log"
+    - protocol_id: cp_rolling_water
+      process_id: "hot_rolling"
+      flow_role: "descaling-water supply"
+      record_type: "water meters and circuit logs"
+      raw_fields: "make_up_water_kg; recirculated_water_kg; blowdown_kg; reporting_period"
+      collection_method: "Measure make-up separately from recirculation"
+      unit: "kg"
+      frequency: "shift or daily"
+      temporal_coverage: "same period as production"
+      site_scope: "declared descaling and cooling circuit"
+      aggregation_rule: "Report net external water entering the boundary"
+      quality_evidence: "meter checks; circuit balance"
+    - protocol_id: cp_rolling_emissions
+      process_id: "hot_rolling"
+      flow_role: "fossil CO2 and nitrogen oxides"
+      record_type: "stack monitoring and fuel records"
+      raw_fields: "stack_id; pollutant; concentration; flow; operating_time; gas_m3; carbon_factor; oxidation_factor"
+      collection_method: "Integrate validated monitoring or calculate from collected fuel fields"
+      unit: "kg"
+      frequency: "monitoring interval or batch"
+      temporal_coverage: "same period as production"
+      site_scope: "all included combustion sources"
+      aggregation_rule: "Calculate with calc_direct_emissions and normalize"
+      quality_evidence: "monitor QA/QC; fuel certificate; calculation audit"
+    - protocol_id: cp_forging_material_balance
+      process_id: "smithery_forming"
+      flow_role: "billet, forged intermediate and forging scrap"
+      record_type: "batch weights and production records"
+      raw_fields: "batch_id; grade; billet_kg; accepted_intermediate_kg; internal_return_kg; exported_scrap_kg; stock_change_kg"
+      collection_method: "Reconcile each forging batch"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "representative 12 consecutive months"
+      site_scope: "all included smithery equipment"
+      aggregation_rule: "Sum declared-product batches and normalize"
+      quality_evidence: "calibrated scales; batch traceability"
+    - protocol_id: cp_forging_energy
+      process_id: "smithery_forming"
+      flow_role: "natural gas and electricity"
+      record_type: "utility meters and batch logs"
+      raw_fields: "meter_id; timestamp; gas_m3; reference_conditions; electricity_kWh; batch_id"
+      collection_method: "Meter or causally allocate energy to forging batches"
+      unit: "m3; kWh"
+      frequency: "shift or batch"
+      temporal_coverage: "same period as production"
+      site_scope: "included furnaces, presses and auxiliaries"
+      aggregation_rule: "Sum productive consumption and normalize"
+      quality_evidence: "calibration; invoice reconciliation"
+    - protocol_id: cp_forging_emissions
+      process_id: "smithery_forming"
+      flow_role: "fossil CO2"
+      record_type: "stack and fuel records"
+      raw_fields: "stack_id; concentration; flow; operating_time; gas_m3; carbon_factor; oxidation_factor"
+      collection_method: "Measure or calculate from collected fuel fields"
+      unit: "kg"
+      frequency: "monitoring interval or batch"
+      temporal_coverage: "same period as production"
+      site_scope: "included combustion sources"
+      aggregation_rule: "Calculate with calc_direct_emissions and normalize"
+      quality_evidence: "monitoring QA/QC; fuel certificate"
+    - protocol_id: cp_foundry_charge_balance
+      process_id: "foundry_casting"
+      flow_role: "purchased charge, cast intermediate and slag"
+      record_type: "heat sheets and scale records"
+      raw_fields: "heat_id; scrap_charge_kg; pig_iron_kg; internal_return_kg; accepted_casting_kg; slag_kg; stock_change_kg"
+      collection_method: "Reconcile each foundry heat"
+      unit: "kg"
+      frequency: "each heat"
+      temporal_coverage: "representative 12 consecutive months"
+      site_scope: "all included melting units"
+      aggregation_rule: "Sum declared-product heats and normalize"
+      quality_evidence: "certified scales; heat chemistry; reconciliation"
+    - protocol_id: cp_foundry_energy
+      process_id: "foundry_casting"
+      flow_role: "electricity"
+      record_type: "electricity meters and heat logs"
+      raw_fields: "meter_id; timestamp; electricity_kWh; heat_id; accepted_casting_kg"
+      collection_method: "Meter or causally allocate electricity by heat"
+      unit: "kWh"
+      frequency: "each heat or shift"
+      temporal_coverage: "same period as production"
+      site_scope: "included melting, moulding and handling equipment"
+      aggregation_rule: "Sum productive consumption and convert with calc_electricity_conversion"
+      quality_evidence: "calibration; invoice reconciliation"
+    - protocol_id: cp_foundry_sand_balance
+      process_id: "foundry_casting"
+      flow_role: "fresh and spent moulding sand"
+      record_type: "batch and reclamation records"
+      raw_fields: "batch_id; fresh_sand_kg; reclaimed_sand_kg; spent_sand_exported_kg; binder_system"
+      collection_method: "Reconcile fresh addition, internal reclamation and transfer"
+      unit: "kg"
+      frequency: "batch or shift"
+      temporal_coverage: "same period as production"
+      site_scope: "included moulding and reclamation system"
+      aggregation_rule: "Report fresh external input and spent external output separately"
+      quality_evidence: "scale checks; transfer receipts"
+    - protocol_id: cp_finishing_material_balance
+      process_id: "final_conditioning"
+      flow_role: "route intermediate, finished product and finishing scrap"
+      record_type: "production and inspection records"
+      raw_fields: "batch_id; route; input_kg; accepted_product_kg; internal_return_kg; exported_scrap_kg; stock_change_kg; rejection_reason"
+      collection_method: "Reconcile input through acceptance inspection"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "representative 12 consecutive months"
+      site_scope: "all included final operations"
+      aggregation_rule: "Sum accepted declared-product batches and normalize"
+      quality_evidence: "traceability; calibrated scales; inspection release"
+    - protocol_id: cp_finishing_energy
+      process_id: "final_conditioning"
+      flow_role: "electricity"
+      record_type: "meters and operation logs"
+      raw_fields: "meter_id; timestamp; electricity_kWh; operation; batch_id; accepted_product_kg"
+      collection_method: "Meter or causally allocate to performed final operations"
+      unit: "kWh"
+      frequency: "shift or batch"
+      temporal_coverage: "same period as production"
+      site_scope: "included heat treatment, machining and inspection"
+      aggregation_rule: "Sum productive consumption and convert"
+      quality_evidence: "calibration; invoice reconciliation; operation log"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Every inventory amount"
+      rule: "normalized amount = reporting-period exchange / reporting-period net accepted product × 1,000"
+      inputs:
+        - "exchange amount"
+        - "net accepted product mass"
+      output: "exchange per 1,000 kg reference product"
+      source_ids: []
+    - id: calc_electricity_conversion
+      applies_to: "Electricity recorded in kWh"
+      rule: "MJ = metered kWh × 3.6"
+      inputs:
+        - electricity_kWh
+      output: "electricity_MJ"
+      source_ids: []
+    - id: calc_direct_emissions
+      applies_to: "Direct fossil CO2 and monitored nitrogen oxides"
+      rule: "Integrate concentration × corrected gas flow × operating time, or for fossil CO2 use metered fuel × documented carbon content × oxidation factor; retain the selected method and inputs"
+      inputs:
+        - "monitoring fields or fuel fields"
+      output: "pollutant mass by source and period"
+      source_ids:
+        - ec-jrc-fmp-bref-2022
+        - ec-jrc-sf-bref-2024
+    - id: calc_route_mass_balance
+      applies_to: "Each declared route"
+      rule: "input mass + opening stock = accepted output + internal return + exported residues + closing stock + documented loss; investigate unresolved imbalance"
+      inputs:
+        - "batch and stock fields"
+      output: "reconciled route mass balance"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Reference product"
+      requirement: "Retain product family, designation, grade, specification, geometry, route, treatment state and acceptance release linked to each batch."
+      evidence: "product specification; heat certificate; inspection release"
+    - id: dq_temporal
+      applies_to: "Foreground data"
+      requirement: "Use a representative 12-month period or justify a shorter campaign and disclose start-up, shutdown and abnormal-operation treatment."
+      evidence: "meter coverage report; production calendar; justification"
+    - id: dq_completeness
+      applies_to: "All declared processes"
+      requirement: "Reconcile production, utility, residue and emissions records to the same products, lines, sites and period; quantify missing-record coverage."
+      evidence: "completeness matrix; mass and energy reconciliation"
+    - id: dq_metering
+      applies_to: "Measured exchanges"
+      requirement: "Use calibrated meters or scales and document every shared-meter allocation driver."
+      evidence: "calibration certificates; allocation workbook; invoices"
+    - id: dq_upstream
+      applies_to: "Purchased inputs"
+      requirement: "Match upstream datasets to material grade/state, supplier or representative technology, geography, electricity delivery qualifiers, and gas reference conditions."
+      evidence: "supplier declarations; dataset selection log"
+    - id: dq_uncertainty
+      applies_to: "Important flows without source-backed ranges"
+      requirement: "Retain foreground variability and measurement uncertainty; do not treat this PCR's missing external ranges as zero uncertainty."
+      evidence: "batch statistics; meter uncertainty; unresolved-range review record"
+validation_rules:
+  - rule_id: validation_identity
+    applies_to: "Reference flow"
+    rule: "Fail validation when the product family, grade/specification, geometry, manufacturing route, treatment state, plant geography, reporting period, or net-mass rule is missing."
+    source_ids:
+      - unstats-cpc-v3-41253
+      - unstats-hs-7302-scope
+  - rule_id: validation_route
+    applies_to: "Process map"
+    rule: "Require final conditioning and at least one applicable forming route; reject inventories that average hot rolling, smithery and foundry routes without declared production shares and evidence."
+    source_ids:
+      - ec-jrc-fmp-bref-2022
+      - ec-jrc-sf-bref-2024
+  - rule_id: validation_atomic_flows
+    applies_to: "Inventory rows"
+    rule: "Require one atomic exchange per row and separate electricity, natural gas, water, each residue and each elementary emission."
+    source_ids: []
+  - rule_id: validation_mass_balance
+    applies_to: "Route inventories"
+    rule: "Require the route mass-balance calculation, documented internal returns and explicit destinations for exported scrap, scale, slag and spent sand."
+    source_ids: []
+  - rule_id: validation_energy_qualifiers
+    applies_to: "Electricity and natural gas"
+    rule: "Require electricity supplier, geography, voltage, technology and delivery boundary, plus natural-gas supply geography and reference-volume conditions wherever those flows occur."
+    source_ids: []
+  - rule_id: validation_uuid_status
+    applies_to: "Tiangong references"
+    rule: "Accept a UUID only after direct public read confirms state 100, semantic identity, flow type, classification, property and unit group; keep all other rows explicitly unresolved."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground manufacturing dataset for one declared track-construction-material product family, route, plant and reporting period"
+  downstream_use: "secondary_dataset; background_dataset when geography, technology, grade, product state and quality disclosures match the downstream model"
+  allowed_use: "Gate-to-gate manufacture; combination with separately modelled upstream steel and downstream railway life-cycle stages; product-specific comparison only after equivalence review"
+  excluded_use: "Railway construction service, assembled track, use-stage performance, service-life prediction, maintenance, or end-of-life without added downstream modules; route or grade comparison when required qualifiers differ"
+  required_metadata: "canonical PCR id; classification context; product family/designation; grade/specification; dimensions; route and process shares; treatment and delivery state; site/geography; reporting period; reference mass; upstream dataset identities; electricity and gas qualifiers; residue destinations; packaging boundary"
+  required_quality_disclosure: "primary-data coverage; meter and scale QA; allocation drivers; route mass-balance closure; missing records; direct-emission method; internal-return treatment; uncertainty; unresolved UUIDs and range evidence needs"
+  update_trigger: "Change in product family or grade, forming route, furnace or foundry technology, heat treatment, electricity supply, fuel, supplier material, site boundary, allocation method, residue destination, or data older than the declared representativeness period"
+data_sources:
+  - id: "unstats-cpc-v3-41253"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 structure and explanatory notes, code 41253, last updated 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-09-03)"
+    used_for: "Official product-category identity and classification hierarchy"
+  - id: "unstats-hs-7302-scope"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, HS 2012 classification detail, heading 7302 and correspondence to CPC 41253. https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/32/730210 (retrieved 2026-09-03)"
+    used_for: "Product-family boundary examples for specialized track construction material"
+  - id: "ec-jrc-fmp-bref-2022"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Ferrous Metals Processing Industry BREF, adopted December 2022. https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/ferrous-metals-processing-industry (retrieved 2026-09-03)"
+    used_for: "Hot-rolling boundary and decomposition: semi-finished steel, surface rectification, reheating, descaling, rolling, cooling and finishing; residue and emissions records"
+  - id: "ec-jrc-sf-bref-2024"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques (BAT) Reference Document for the Smitheries and Foundries Industry, 2024, DOI 10.2760/4805267, JRC140209. https://publications.jrc.ec.europa.eu/repository/handle/JRC140209 (retrieved 2026-09-11)"
+    used_for: "Smithery and foundry route decomposition, including heating, forging, machining, finishing, heat treatment, melting, mould/core preparation, casting and shakeout"
+  - id: "onesteel-hot-rolled-structural-rail-epd-2026"
+    type: "dataset"
+    reference: "OneSteel Manufacturing Pty Ltd, Hot Rolled Structural and Rail Environmental Product Declaration, EPD-IES-0032245:001, version date 2026-06-01. https://api.prod.environdec.com/api/v1/EPDLibrary/Files/EPDs/fee23f66-9b67-45a6-7780-08debc338923/Documents (retrieved 2026-09-11)"
+    used_for: "Independently verified rail/sleeper product example, CPC 41253 applicability, one-tonne product-ready-for-dispatch basis, A1-A3 cradle-to-gate boundary and foreground material, energy, water, transport, emission and waste collection fields"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d7e47e16aa35c1bd6e715f764ab5641beca12b810a6fde2ce2ef89762bbc9c91"
+  generated_content_sha256: "sha256:dcc4ad3f82dfd654abeb6b1daa793b6ff3ff05c334a47da5926b93146c5e742d"

@@ -1,10 +1,1040 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43935"
-  title: "Dishwashing machines, except household type"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.dishwashing-machines-except-household-type"
+  classification_refs: "CPC 3.0: 43935, exact"
+  covered_products: "Complete non-household dishwashing machines for commercial, industrial, or institutional warewashing, including stationary-rack and conveyor configurations"
+  excluded_products: "Household dishwashers; laboratory and medical-device washers; bottle/container washing machinery; separately sold detergents, rinse agents, and parts"
+  representative_product: "A complete electrically controlled commercial warewashing machine with declared machine type, sanitation method, rated throughput, and factory-gate mass"
+  production_route: "Sheet-metal fabrication and welding; conditional surface cleaning; purchased-component assembly; conditional refrigerant charging; factory acceptance testing; final packaging"
+  market_state: "New, conforming, drained after testing, and packed at the factory gate; installed refrigerant and all shipped accessories included"
+functional_unit:
+  what: "Factory-gate production of a complete non-household dishwashing machine that performs the declared commercial, industrial, or institutional warewashing function"
+  how_much: "1 kg of conforming complete machine mass at the factory gate"
+  how_well: "Machine type, sanitation method, rated throughput, load or rack basis, heat-recovery configuration, electrical supply, and applicable conformance claims are declared"
+  how_long_or_cycle: "Manufacturing result only; declared design life and rated lifetime cycles or operating hours are reported for downstream use-stage modelling but do not change the factory-gate reference amount"
+  reference_flow_link: "One complete machine equals its measured net factory-gate product mass in kg; multiply this dataset by that mass to represent one machine"
+system_boundary:
+  rules:
+    - rule_id: sb_factory_gate
+      applies_to: "Foreground production boundary"
+      rule: "Include attributable fabrication, welding, on-site surface cleaning when performed, assembly, factory refrigerant charging when performed, acceptance testing, packaging, generated scrap, cleaning wastewater, and purchased electricity through the packed factory gate."
+      source_ids: []
+    - rule_id: sb_upstream_inputs
+      applies_to: "Purchased materials, components, utilities, and packaging"
+      rule: "Link each purchased input to an upstream supply dataset at the delivered manufacturing-site boundary; do not substitute a generic complete-machine dataset for disclosed component inputs."
+      source_ids: []
+    - rule_id: sb_same_category_recursion
+      applies_to: "Purchased complete non-household dishwashing machines"
+      rule: "Stop recursive decomposition at the purchased complete-machine boundary and record that machine as a separate same-category technosphere input with its own upstream dataset."
+      source_ids: []
+    - rule_id: sb_conditional_routes
+      applies_to: "Surface cleaning and refrigerant charging"
+      rule: "Include each conditional process only when performed by or attributed to the reporting site; otherwise mark its atomic rows not applicable and disclose the supplier or product configuration that makes the route absent."
+      source_ids:
+        - swedish-procurement-professional-dishwashers
+    - rule_id: sb_use_stage
+      applies_to: "Operation and downstream lifecycle"
+      rule: "Exclude installation, operation, maintenance, distribution beyond the factory gate, and end-of-life from this foreground manufacturing dataset. Report declared water and energy performance fields so a separate use-stage dataset can be constructed without treating specification limits as manufacturing inventory."
+      source_ids:
+        - us-epa-energy-star-commercial-dishwashers-v3-2020
+boundary_abstraction:
+  declared_starting_condition: "Purchased materials, discrete components, process chemicals, utilities, refrigerant, and packaging cross the manufacturing-site gate with supplier identity, delivered state, quantity, and upstream dataset reference recorded"
+  starting_condition_role: "Cradle-to-gate foreground manufacturing starting condition"
+  product_classification_scope: "Complete dishwashing machines intended principally for non-household commercial, industrial, or institutional use"
+  recursive_input_rule: "A purchased complete machine in the same product category is recorded as a separate product input with its own upstream dataset and is not decomposed again inside this foreground system"
+  upstream_dataset_requirement: "Every purchased input shall reference a geographically and technologically representative upstream dataset or be disclosed as a data gap; supplier-specific data are preferred for major materials and components"
+  disclosure: "Declare manufacturing site, production period, product family, machine configuration, allocation basis, cut-off decisions, purchased-versus-made component boundary, surface-treatment route, refrigerant route, test protocol, packaging state, and excluded lifecycle stages"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Dishwashing machines, except household type"
+    uuid: "d0b59cdb-1ced-4142-ad04-b9d6cbee1411"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "model and product-family identifier"
+    - "principal intended use"
+    - "machine type"
+    - "stationary-rack or conveyor configuration"
+    - "sanitation method"
+    - "rated throughput and its basis"
+    - "rack or belt dimensions where applicable"
+    - "electrical supply"
+    - "integral or external booster-heater boundary"
+    - "heat-recovery and heat-pump configuration"
+    - "refrigerant identity and factory charge when applicable"
+    - "net machine mass"
+    - "included accessories"
+    - "manufacturing site and geography"
+    - "production period"
+    - "factory-gate packaging state"
+    - "declared service life or rated lifetime duty"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "Reference product and all mass-normalized results"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh the complete conforming machine in its declared factory-gate state. Exclude external transport packaging only when that exclusion is consistently applied to the product mass and packaging inventory."
+  - id: material_mass
+    applies_to: "Purchased materials, components, chemicals, refrigerant, packaging, scrap, and wastewater recorded by mass"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use calibrated scales, purchase receipts reconciled to stock change, or engineering BOM masses verified against batch totals; report wet/dry state and concentration where material identity depends on them."
+  - id: electricity_energy
+    applies_to: "Purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve meter records; convert kWh to MJ by multiplying by 3.6 and disclose voltage level, grid geography, renewable contract treatment, and allocation of shared loads."
+  - id: gas_volume
+    applies_to: "Industrial oxygen"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "State the gas reference temperature and pressure, purity, delivery form, and whether invoice volume or corrected meter volume is used."
+  - id: water_mass
+    applies_to: "Process water and wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer direct mass records. If volume is converted to mass, record the measured or supplier-declared density and reference conditions; do not silently assume a density."
+process_map:
+  - id: metal_fabrication
+    name: "Metal forming and welding"
+    inclusion: "required"
+    inclusion_condition: "Always for site-attributed formation or joining of the machine frame, tank, panels, or supports"
+    role: "Foreground fabrication"
+    quantitative_reference: "Net kg of conforming factory-gate product"
+  - id: surface_cleaning
+    name: "On-site alkaline surface cleaning"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when sodium-hydroxide-based cleaning is performed or attributed at the reporting site"
+    role: "Foreground surface preparation"
+    quantitative_reference: "Net kg of conforming factory-gate product"
+  - id: component_assembly
+    name: "Component and subassembly integration"
+    inclusion: "required"
+    inclusion_condition: "Always for final assembly of purchased and fabricated parts"
+    role: "Foreground assembly"
+    quantitative_reference: "Net kg of conforming factory-gate product"
+  - id: refrigerant_charging
+    name: "R404A heat-pump charging"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when the shipped model contains an on-site factory charge of R404A; other refrigerants require their own reviewed atomic flow row"
+    role: "Foreground charging"
+    quantitative_reference: "Net kg of conforming factory-gate product"
+  - id: factory_testing
+    name: "Factory acceptance and leak/function testing"
+    inclusion: "required"
+    inclusion_condition: "Always for released conforming machines; record the actual test protocol"
+    role: "Foreground quality assurance"
+    quantitative_reference: "Net kg of conforming factory-gate product"
+  - id: final_packaging
+    name: "Final packaging and factory-gate release"
+    inclusion: "required"
+    inclusion_condition: "Always for the declared packed factory-gate state"
+    role: "Foreground packaging and reference-product release"
+    quantitative_reference: "Net kg of conforming factory-gate product"
+process_inventory:
+  - id: metal_fabrication
+    label: "Metal forming and welding"
+    inputs:
+      product:
+        - row_id: stainless_steel_input
+          role: "Flat-rolled stainless steel input"
+          name: "Flat-rolled products of stainless steel, further worked"
+          flow_type: "product"
+          flow_ref:
+            uuid: "add37984-82d6-4c91-85e3-9911c0135944"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange crosses the foreground process boundary; obtain its attributable quantity from the collection protocol below and normalize it to the reference product mass."
+          amount:
+            expression: "Measured or BOM-reconciled mass consumed in conforming products plus attributable fabrication loss"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_component_records
+              source_ids: []
+            ranges: []
+        - row_id: carbon_steel_sheet_input
+          role: "Cold-rolled carbon-steel sheet input"
+          name: "Cold-rolled carbon-steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange crosses the foreground process boundary; obtain its attributable quantity from the collection protocol below and normalize it to the reference product mass."
+          amount:
+            expression: "Measured or BOM-reconciled mass consumed in conforming products plus attributable fabrication loss; Tiangong UUID unresolved"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_component_records
+              source_ids: []
+            ranges: []
+        - row_id: fabrication_electricity
+          role: "Fabrication electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "This atomic exchange crosses the foreground process boundary; obtain its attributable quantity from the collection protocol below and normalize it to the reference product mass."
+          amount:
+            expression: "Submetered fabrication electricity or causally allocated shared-meter electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: industrial_oxygen_input
+          role: "Welding oxygen"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume / m3"
+          description: "This atomic exchange crosses the foreground process boundary; obtain its attributable quantity from the collection protocol below and normalize it to the reference product mass."
+          amount:
+            expression: "Corrected meter or invoice volume attributable to welding and cutting"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_gas_records
+              source_ids: []
+            ranges: []
+        - row_id: carbon_dioxide_shielding_input
+          role: "Carbon-dioxide shielding gas"
+          name: "Carbon dioxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "27f41c1c-535e-4d2a-bce9-2c7f4de11549"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange crosses the foreground process boundary; obtain its attributable quantity from the collection protocol below and normalize it to the reference product mass."
+          amount:
+            expression: "Cylinder stock-change or invoice mass attributable to carbon-dioxide shielding"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_gas_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: post_industrial_steel_scrap
+          role: "Post-industrial steel scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange crosses the foreground process boundary; obtain its attributable quantity from the collection protocol below and normalize it to the reference product mass."
+          amount:
+            expression: "Weighed steel scrap leaving the fabrication process, net of documented internal reuse"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: surface_cleaning
+    label: "On-site alkaline surface cleaning"
+    inputs:
+      product:
+        - row_id: surface_process_water
+          role: "Surface-cleaning process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange crosses the foreground process boundary; obtain its attributable quantity from the collection protocol below and normalize it to the reference product mass."
+          amount:
+            expression: "Metered water supplied to the attributed surface-cleaning operation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_wastewater_records
+              source_ids: []
+            ranges: []
+        - row_id: surface_sodium_hydroxide
+          role: "Surface-cleaning sodium hydroxide"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange crosses the foreground process boundary; obtain its attributable quantity from the collection protocol below and normalize it to the reference product mass."
+          amount:
+            expression: "Measured sodium-hydroxide product mass added; solution concentration and product state declared"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_component_records
+              source_ids: []
+            ranges: []
+        - row_id: surface_electricity
+          role: "Surface-cleaning electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "This atomic exchange crosses the foreground process boundary; obtain its attributable quantity from the collection protocol below and normalize it to the reference product mass."
+          amount:
+            expression: "Submetered cleaning-line electricity or causally allocated shared-meter electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: surface_cleaning_wastewater
+          role: "Surface-cleaning wastewater"
+          name: "Wastewater from cleaning"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f0402393-e82c-47e8-9cd8-a486c97f3e89"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange crosses the foreground process boundary; obtain its attributable quantity from the collection protocol below and normalize it to the reference product mass."
+          amount:
+            expression: "Measured wastewater transferred to sewer or treatment after surface cleaning"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_wastewater_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: component_assembly
+    label: "Component and subassembly integration"
+    inputs:
+      product:
+        - row_id: copper_tubing_input
+          role: "Copper tubing"
+          name: "Copper tubing"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0d80f4b8-8f26-4eee-8b81-df499c4c9dff"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange crosses the foreground process boundary; obtain its attributable quantity from the collection protocol below and normalize it to the reference product mass."
+          amount:
+            expression: "Purchased and installed tubing mass, reconciled to stock change and scrap"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_component_records
+              source_ids: []
+            ranges: []
+        - row_id: polypropylene_granulate_input
+          role: "Polypropylene granulate"
+          name: "polypropylene granulate (PP)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19f11d-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange crosses the foreground process boundary; obtain its attributable quantity from the collection protocol below and normalize it to the reference product mass."
+          amount:
+            expression: "Resin mass consumed for product-attributed moulded components, including measured moulding loss"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_component_records
+              source_ids: []
+            ranges: []
+        - row_id: electric_motor_input
+          role: "Electric motor"
+          name: "Electric motor"
+          flow_type: "product"
+          flow_ref:
+            uuid: "014f80a3-c257-425b-9b75-3e5a18573695"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange crosses the foreground process boundary; obtain its attributable quantity from the collection protocol below and normalize it to the reference product mass."
+          amount:
+            expression: "BOM-verified mass of purchased motors installed in conforming products"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_component_records
+              source_ids: []
+            ranges: []
+        - row_id: liquid_pump_input
+          role: "Liquid pump"
+          name: "Pump"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bbd91be4-dc00-44c2-8bc1-f67ee79174a7"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange crosses the foreground process boundary; obtain its attributable quantity from the collection protocol below and normalize it to the reference product mass."
+          amount:
+            expression: "BOM-verified mass of purchased liquid pumps installed in conforming products"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_component_records
+              source_ids: []
+            ranges: []
+        - row_id: electronic_control_unit_input
+          role: "Electronic control unit"
+          name: "Electronic control unit"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ff5a65c8-7726-48b4-b794-6bacd21ab77e"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange crosses the foreground process boundary; obtain its attributable quantity from the collection protocol below and normalize it to the reference product mass."
+          amount:
+            expression: "BOM-verified mass of purchased electronic control units installed in conforming products"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_component_records
+              source_ids: []
+            ranges: []
+        - row_id: assembly_electricity
+          role: "Assembly electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "This atomic exchange crosses the foreground process boundary; obtain its attributable quantity from the collection protocol below and normalize it to the reference product mass."
+          amount:
+            expression: "Submetered assembly electricity or causally allocated shared-meter electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: refrigerant_charging
+    label: "R404A heat-pump charging"
+    inputs:
+      product:
+        - row_id: r404a_refrigerant_input
+          role: "Factory charge of R404A"
+          name: "Refrigerant, R404A"
+          flow_type: "product"
+          flow_ref:
+            uuid: "33db0143-ba65-4036-a57b-e32dcdecb779"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange crosses the foreground process boundary; obtain its attributable quantity from the collection protocol below and normalize it to the reference product mass."
+          amount:
+            expression: "Weighed net refrigerant transferred into conforming products, reconciled to cylinder stock change and recovered refrigerant"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_charge_records
+              source_ids: []
+            ranges: []
+        - row_id: refrigerant_charging_electricity
+          role: "Refrigerant-charging electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "This atomic exchange crosses the foreground process boundary; obtain its attributable quantity from the collection protocol below and normalize it to the reference product mass."
+          amount:
+            expression: "Submetered charging-station electricity or causally allocated shared-meter electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: factory_testing
+    label: "Factory acceptance and leak/function testing"
+    inputs:
+      product:
+        - row_id: test_process_water
+          role: "Factory-test process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange crosses the foreground process boundary; obtain its attributable quantity from the collection protocol below and normalize it to the reference product mass."
+          amount:
+            expression: "Metered water supplied during product-attributed factory testing, including documented refill and flush water"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_factory_test_records
+              source_ids: []
+            ranges: []
+        - row_id: test_electricity
+          role: "Factory-test electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "This atomic exchange crosses the foreground process boundary; obtain its attributable quantity from the collection protocol below and normalize it to the reference product mass."
+          amount:
+            expression: "Submetered electricity consumed by the tested machine and attributable test equipment"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_factory_test_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: test_cleaning_wastewater
+          role: "Drained factory-test wastewater"
+          name: "Wastewater from cleaning"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f0402393-e82c-47e8-9cd8-a486c97f3e89"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange crosses the foreground process boundary; obtain its attributable quantity from the collection protocol below and normalize it to the reference product mass."
+          amount:
+            expression: "Measured test water discharged to sewer or treatment after leak and function testing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_factory_test_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: final_packaging
+    label: "Final packaging and factory-gate release"
+    inputs:
+      product:
+        - row_id: corrugated_board_box_input
+          role: "Corrugated-board box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange crosses the foreground process boundary; obtain its attributable quantity from the collection protocol below and normalize it to the reference product mass."
+          amount:
+            expression: "Weighed mass of corrugated-board boxes installed on shipped conforming products"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: ldpe_film_input
+          role: "Low-density polyethylene film"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange crosses the foreground process boundary; obtain its attributable quantity from the collection protocol below and normalize it to the reference product mass."
+          amount:
+            expression: "Weighed mass of PE-LD film installed on shipped conforming products"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: wooden_pallet_input
+          role: "Wooden pallet"
+          name: "Pallets, box pallets and other load boards, of wood, pallet collars of wood"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4b49871e-95be-4e0c-9223-9902f9eaa763"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange crosses the foreground process boundary; obtain its attributable quantity from the collection protocol below and normalize it to the reference product mass."
+          amount:
+            expression: "Attributable pallet mass installed on shipped products after declared reuse allocation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_electricity
+          role: "Packaging electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "This atomic exchange crosses the foreground process boundary; obtain its attributable quantity from the collection protocol below and normalize it to the reference product mass."
+          amount:
+            expression: "Submetered packaging-line electricity or causally allocated shared-meter electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_energy_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Conforming packed non-household dishwashing machine"
+          name: "Dishwashing machines, except household type"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d0b59cdb-1ced-4142-ad04-b9d6cbee1411"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange crosses the foreground process boundary; obtain its attributable quantity from the collection protocol below and normalize it to the reference product mass."
+          amount:
+            expression: "Measured net mass of conforming released product; equals 1 kg after normalization"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg conforming factory-gate product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finished_product_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "Multi-model lines and shared processes"
+    rule: "Prefer physical subdivision and process submetering. Assign directly measured material, component, utility, waste, test, and packaging records to the product family that caused them."
+    source_ids: []
+  - rule_id: allocation_shared_loads
+    applies_to: "Unavoidable shared electricity, water, labour-cell equipment, and facility records"
+    rule: "Use a documented causal driver such as machine-hours, test-hours, material mass processed, or number of equivalent operations. Product mass or unit count may be used only when shown to represent resource causality; disclose the driver and sensitivity."
+    source_ids: []
+  - rule_id: allocation_scrap
+    applies_to: "Post-industrial steel scrap"
+    rule: "Record scrap at the mass crossing the foreground boundary. Do not subtract an avoided-production credit inside this foreground inventory; any recycling allocation or substitution credit belongs to the declared downstream system model and shall be disclosed separately."
+    source_ids: []
+  - rule_id: allocation_rework
+    applies_to: "Reworked and rejected machines"
+    rule: "Attribute rework inputs and unrecovered reject losses to the conforming production batch. Exclude only materials demonstrably returned to the same process without crossing the boundary, while preserving mass balance."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_component_records
+      process_id: "metal_fabrication_surface_cleaning_component_assembly"
+      flow_role: "Purchased material, chemical, and component inputs"
+      record_type: "BOM, purchase receipt, stock ledger, scale record"
+      raw_fields: "item identity; grade or concentration; supplier; delivered mass; opening/closing stock; product-family assignment; scrap or loss"
+      collection_method: "Reconcile BOM and purchase/stock records to batch consumption; weigh representative components when supplier mass is absent"
+      unit: "kg"
+      frequency: "Each batch with monthly reconciliation"
+      temporal_coverage: "At least 12 representative months or the full shorter production period"
+      site_scope: "Reporting manufacturing site and attributed suppliers"
+      aggregation_rule: "Sum attributable consumption and divide by conforming product mass"
+      quality_evidence: "Calibrated scale records, supplier certificates, stock reconciliation, signed BOM revision"
+    - protocol_id: cp_process_energy_records
+      process_id: "all_foreground_processes"
+      flow_role: "Purchased electricity"
+      record_type: "Submeter, utility meter, equipment log"
+      raw_fields: "meter id; opening/closing reading; kWh; process; operating hours; shared-load driver; grid contract"
+      collection_method: "Prefer process submetering; otherwise allocate the smallest shared meter with a causal driver"
+      unit: "kWh and MJ"
+      frequency: "Per batch or shift; monthly reconciliation"
+      temporal_coverage: "At least 12 representative months or the full shorter production period"
+      site_scope: "Reporting manufacturing site"
+      aggregation_rule: "Convert kWh to MJ, sum attributable energy, and divide by conforming product mass"
+      quality_evidence: "Meter calibration, invoices, allocation worksheet, outage/anomaly log"
+    - protocol_id: cp_process_gas_records
+      process_id: "metal_fabrication"
+      flow_role: "Welding and cutting gases"
+      record_type: "Corrected meter, cylinder ledger, invoice"
+      raw_fields: "gas identity; purity; cylinder mass or corrected volume; opening/closing stock; temperature/pressure basis; process assignment"
+      collection_method: "Reconcile cylinder or bulk-gas stock change to attributed fabrication operations"
+      unit: "kg or m3"
+      frequency: "Each cylinder change or batch"
+      temporal_coverage: "Same period as production inventory"
+      site_scope: "Reporting manufacturing site"
+      aggregation_rule: "Sum attributable gas by identity and normalize to conforming product mass"
+      quality_evidence: "Invoice, cylinder certificate, scale or corrected-meter record"
+    - protocol_id: cp_waste_records
+      process_id: "metal_fabrication"
+      flow_role: "Post-industrial steel scrap"
+      record_type: "Scale ticket and waste transfer record"
+      raw_fields: "waste identity; alloy segregation; gross/tare/net mass; date; destination; treatment; internal reuse"
+      collection_method: "Weigh each outbound load and subtract only documented internal reuse before boundary crossing"
+      unit: "kg"
+      frequency: "Each shipment"
+      temporal_coverage: "Same period as production inventory"
+      site_scope: "Reporting manufacturing site"
+      aggregation_rule: "Sum net boundary-crossing scrap and normalize to conforming product mass"
+      quality_evidence: "Calibrated scale ticket, transfer manifest, recycler receipt"
+    - protocol_id: cp_water_wastewater_records
+      process_id: "surface_cleaning"
+      flow_role: "Process water and cleaning wastewater"
+      record_type: "Submeter, tank record, treatment transfer record"
+      raw_fields: "source; meter reading; mass or volume; density if converted; discharge route; treatment; composition indicators"
+      collection_method: "Meter input and output separately where feasible; reconcile storage change and retained water"
+      unit: "kg or m3"
+      frequency: "Per batch or daily"
+      temporal_coverage: "Same period as surface-cleaning inventory"
+      site_scope: "Reporting manufacturing site"
+      aggregation_rule: "Convert with recorded density when needed, sum attributable mass, and normalize"
+      quality_evidence: "Meter calibration, laboratory or treatment record, transfer manifest"
+    - protocol_id: cp_refrigerant_charge_records
+      process_id: "refrigerant_charging"
+      flow_role: "R404A factory charge"
+      record_type: "Charging-station scale and cylinder ledger"
+      raw_fields: "refrigerant identity; cylinder opening/closing mass; charge setpoint; recovered mass; rejects; serial or batch link"
+      collection_method: "Weigh cylinder before and after charging and reconcile recovery and rejected units"
+      unit: "kg"
+      frequency: "Each charge or batch"
+      temporal_coverage: "Same period as applicable model production"
+      site_scope: "Reporting manufacturing site"
+      aggregation_rule: "Net charged mass in conforming products divided by conforming product mass"
+      quality_evidence: "Calibrated charging scale, refrigerant certificate, leak-test and recovery log"
+    - protocol_id: cp_factory_test_records
+      process_id: "factory_testing"
+      flow_role: "Test water, electricity, and discharged wastewater"
+      record_type: "Product test log and dedicated meter"
+      raw_fields: "serial/batch; test protocol; water input; electricity; wastewater output; repeats; failures; retained water"
+      collection_method: "Record each acceptance test and all repeats; include attributable test-equipment energy"
+      unit: "kg, kWh, MJ"
+      frequency: "Each tested machine"
+      temporal_coverage: "Same period as production inventory"
+      site_scope: "Reporting manufacturing site"
+      aggregation_rule: "Sum all tests for conforming batch, including failed/repeated tests, and normalize"
+      quality_evidence: "Test-system calibration, signed release record, meter records"
+    - protocol_id: cp_packaging_records
+      process_id: "final_packaging"
+      flow_role: "Corrugated box, PE-LD film, and wooden pallet"
+      record_type: "Packaging BOM, scale record, purchase/stock ledger"
+      raw_fields: "packaging identity; mass; units used; reuse count; damage loss; product-family assignment"
+      collection_method: "Weigh each packaging component or verify supplier unit mass and reconcile stock"
+      unit: "kg"
+      frequency: "Each packaging configuration with batch reconciliation"
+      temporal_coverage: "Same period as shipped production"
+      site_scope: "Reporting manufacturing site"
+      aggregation_rule: "Sum installed packaging mass after declared pallet reuse allocation and normalize"
+      quality_evidence: "Scale record, supplier specification, packaging BOM, stock reconciliation"
+    - protocol_id: cp_finished_product_records
+      process_id: "final_packaging"
+      flow_role: "Reference product output"
+      record_type: "Calibrated finished-goods scale and release record"
+      raw_fields: "model; serial/batch; net machine mass; included accessories; residual test water state; packaging state; conformity status"
+      collection_method: "Weigh released conforming machines in the declared reference state"
+      unit: "kg"
+      frequency: "Each model/batch; representative per-unit weighing only when variability is controlled"
+      temporal_coverage: "Same period as all foreground inputs"
+      site_scope: "Reporting manufacturing site"
+      aggregation_rule: "Sum conforming net machine mass; use as denominator for all normalized exchanges"
+      quality_evidence: "Scale calibration, release certificate, variance record"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Every inventory exchange"
+      rule: "normalized amount = attributable exchange quantity / conforming net product mass"
+      inputs:
+        - "Attributable exchange quantity"
+        - "conforming product mass from cp_finished_product_records"
+      output: "Exchange per 1 kg reference product"
+      source_ids: []
+    - id: calc_electricity_conversion
+      applies_to: "Electricity rows"
+      rule: "electricity_MJ = metered_kWh × 3.6; do not round before batch aggregation"
+      inputs:
+        - "Metered kWh"
+      output: "MJ of purchased electricity"
+      source_ids: []
+    - id: calc_water_mass
+      applies_to: "Water and wastewater records originally measured by volume"
+      rule: "mass = measured volume × recorded density at stated reference conditions"
+      inputs:
+        - Volume
+        - density
+        - "temperature/pressure where relevant"
+      output: "kg water or wastewater"
+      source_ids: []
+    - id: calc_material_balance
+      applies_to: "Metal fabrication and assembly"
+      rule: "received attributable mass = installed product mass + boundary-crossing scrap + other specifically identified losses ± inventory change, within documented measurement uncertainty"
+      inputs:
+        - "BOM/stock mass"
+        - "finished mass"
+        - scrap
+        - "identified losses"
+        - "stock change"
+      output: "Reconciled material consumption"
+      source_ids: []
+    - id: calc_refrigerant_charge
+      applies_to: "R404A charging"
+      rule: "net charge = cylinder mass decrease − recovered mass − documented non-product transfers; reconcile to serial/batch charge records"
+      inputs:
+        - "Cylinder scale"
+        - "recovery log"
+        - "charge log"
+      output: "kg R404A installed in conforming products"
+      source_ids: []
+    - id: calc_packaging_reuse
+      applies_to: "Reusable wooden pallets"
+      rule: "attributable pallet mass = pallet mass / verified expected uses; report the reuse assumption and sensitivity, or assign full mass when reuse is unverified"
+      inputs:
+        - "Pallet mass"
+        - "verified reuse count"
+      output: "kg attributable wooden pallet"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Product family and reference flow"
+      requirement: "Preserve CPC 43935 non-household intended-use boundary and declare the exact model/configuration represented."
+      evidence: "Declaration of conformity or equivalent intended-use statement, product specification, model list"
+    - id: dq_completeness
+      applies_to: "Foreground inventory"
+      requirement: "Cover at least 95% of measured foreground mass and energy by identified atomic rows; disclose the identity and estimated magnitude of every omitted exchange and do not use an umbrella flow to reach completeness."
+      evidence: "Mass/energy reconciliation and data-gap register"
+    - id: dq_temporal
+      applies_to: "Production records"
+      requirement: "Use at least 12 representative months where available; for shorter production periods, cover the full period and explain seasonality, ramp-up, and abnormal operations."
+      evidence: "Dated records and representativeness assessment"
+    - id: dq_measurement
+      applies_to: "Metered and weighed quantities"
+      requirement: "Use in-calibration instruments or document correction, uncertainty, and fallback reconciliation."
+      evidence: "Calibration certificates, invoices, stock and meter reconciliation"
+    - id: dq_supplier_data
+      applies_to: "Major materials and components"
+      requirement: "Prefer supplier- and geography-specific upstream datasets; document technology and recycled-content assumptions for stainless steel, carbon steel, copper, polypropylene, motors, pumps, and controls."
+      evidence: "Supplier declarations, dataset metadata, procurement records"
+    - id: dq_conditional_routes
+      applies_to: "Surface cleaning and R404A charging"
+      requirement: "Demonstrate inclusion with site records or exclusion with product/process configuration evidence; do not report zero solely because a record is missing."
+      evidence: "Process map, chemical ledger, refrigerant charge log, supplier documentation"
+    - id: dq_use_metadata
+      applies_to: "Downstream use-stage readiness"
+      requirement: "Report machine type, sanitation method, rated throughput, rack/belt basis, energy and water performance fields, and test-method identity without treating conformance limits as measured manufacturing amounts."
+      evidence: "Product specification and applicable performance test report"
+validation_rules:
+  - rule_id: val_category_identity
+    applies_to: "Product identity"
+    rule: "Fail if the represented product is household-type, a laboratory or medical-device washer, bottle/container washing machinery, a detergent, or a separately sold part; verify intended non-household use and the complete-machine factory-gate state."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - jrc-eu-professional-dishwasher-boundary-2015
+  - rule_id: val_reference_mass
+    applies_to: "Functional unit and reference flow"
+    rule: "Require the exact reference-product UUID, mass property UUID, mass unit-group UUID, kg reference unit, measured conforming product mass, and all required qualifiers."
+    source_ids: []
+  - rule_id: val_inventory_atomicity
+    applies_to: "Process inventory"
+    rule: "Fail any selected flow that combines materials, utilities, fuels, packaging, wastes, or emissions; every reported exchange must retain one row id, one direction, and one flow type."
+    source_ids: []
+  - rule_id: val_material_balance
+    applies_to: "Metal fabrication and assembly"
+    rule: "Require a documented mass reconciliation for major purchased materials, installed mass, post-industrial steel scrap, other identified losses, and stock change within stated uncertainty."
+    source_ids: []
+  - rule_id: val_energy_and_water
+    applies_to: "Electricity, water, and wastewater"
+    rule: "Require meter period, allocation basis, conversion records, and matching production denominator; reject specification limits as substitutes for foreground manufacturing records."
+    source_ids:
+      - us-epa-energy-star-commercial-dishwashers-v3-2020
+  - rule_id: val_conditional_processes
+    applies_to: "Surface cleaning and R404A charging"
+    rule: "Require site/product evidence for inclusion or exclusion. If included, require all atomic input/output rows and their collection protocols; if a different refrigerant is installed, this R404A row is not applicable and a separately audited refrigerant row is required."
+    source_ids:
+      - swedish-procurement-professional-dishwashers
+  - rule_id: val_upstream_links
+    applies_to: "Purchased inputs"
+    rule: "Require an upstream dataset or explicit data gap for each purchased material, component, utility, refrigerant, and packaging flow, with geography and technology disclosed."
+    source_ids: []
+  - rule_id: val_allocation
+    applies_to: "Shared processes and recycling"
+    rule: "Require causal allocation evidence and a sensitivity check for material shared loads; prohibit hidden avoided-production credit for scrap inside the foreground inventory."
+    source_ids: []
+  - rule_id: val_bilingual_alignment
+    applies_to: "English and Chinese PCR renderings"
+    rule: "Require identical ordered process ids, row ids, UUIDs, controlled values, source ids, and system-boundary/allocation/validation rule ids in both renderings."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground factory-gate production dataset for one declared non-household dishwashing-machine model or homogeneous product family"
+  downstream_use: "May be published as a secondary_dataset or background_dataset for machinery supply in product LCAs and lifecycle models when configuration, geography, time, and boundary are representative"
+  allowed_use: "Cradle-to-gate machinery production; supplier comparison with matched reference state and allocation; downstream models that add installation, distribution, operation, maintenance, and end-of-life separately"
+  excluded_use: "Household dishwasher production; detergent production; direct representation of operation or cleaning service; use of one product-family dataset for materially different machine types without representativeness review"
+  required_metadata: "PCR id and version; model/product family; intended use; machine and sanitation type; rated throughput basis; reference-product UUID; mass; site and geography; period; technology; surface-cleaning route; heat-recovery/heat-pump and refrigerant configuration; packaging state; allocation; upstream dataset versions; cut-offs; data gaps"
+  required_quality_disclosure: "Foreground coverage; measurement and allocation methods; calibration status; temporal coverage; supplier-data share; mass balance; conditional-route evidence; uncertainty; unresolved carbon-steel flow UUID; missing empirical range evidence"
+  update_trigger: "Material change in model BOM, machine type, sanitation or heating technology, refrigerant, manufacturing site, energy supply, surface treatment, test protocol, packaging, allocation, supplier datasets, or a change exceeding the declared uncertainty threshold"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-06)"
+    used_for: "Official CPC 43935 product identity and exclusion of household type"
+  - id: "jrc-eu-professional-dishwasher-boundary-2015"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Revision of European Ecolabel Criteria for the six detergent product groups, Draft Technical Report, 2015, https://susproc.jrc.ec.europa.eu/product-bureau/sites/default/files/contentype/product_group_documents/1581681262/ELS-DP_D2_0915.pdf (retrieved 2026-09-06)"
+    used_for: "Professional-versus-household intended-use boundary and commercial/industrial function"
+  - id: "us-epa-energy-star-commercial-dishwashers-v3-2020"
+    type: "standard"
+    reference: "U.S. EPA ENERGY STAR Program Requirements Product Specification for Commercial Dishwashers, Eligibility Criteria Version 3.0, 2020, https://www.energystar.gov/sites/default/files/Commercial%20Dishwashers%20Final%20Version%203.0%20Specification_0.pdf (retrieved 2026-09-06)"
+    used_for: "Machine-type and sanitation taxonomy; throughput, water, and energy metadata and validation"
+  - id: "swedish-procurement-professional-dishwashers"
+    type: "official_guidance"
+    reference: "Swedish National Agency for Public Procurement, Sustainability criteria for Professional dishwashers, https://www.upphandlingsmyndigheten.se/en/criteria/building-and-property/professional-kitchen/professional-dishwashers/ (retrieved 2026-09-06)"
+    used_for: "Covered professional machine types, use-stage energy/water relevance, and conditional heat-pump configuration"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:aa3e8c9c918c3ec99f922a99aa547428f7943da0c9bbd8155c4d2d34c9d00a81"
+  generated_content_sha256: "sha256:52dcc51c8e268327150e3a4db36c3790b4bdc11662481fd5444bce0d2d00a70b"

@@ -1,10 +1,702 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "46532"
-  title: "Lighting sets used for Christmas trees, not solely for LED light sources"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.electrical-machinery-and-apparatus.lighting-sets-used-for-christmas-trees-not-solely-for-led-light-sources"
+  classification_refs: "CPC 3.0: 46532, exact"
+  covered_products: "Christmas-tree lighting chains containing at least one non-LED light source, including all-incandescent and mixed incandescent/LED sets"
+  excluded_products: "Lighting sets designed solely for LED light sources; general luminaires; rope lights; separately sold replacement lamps; non-electrical decorations; Christmas trees"
+  representative_product: "A packaged mains-powered or extra-low-voltage Christmas-tree lighting chain with insulated copper cable and miniature incandescent lamps; LED modules and a controller may also be present"
+  production_route: "Receipt of finished components, cable cutting and termination, lamp-holder and source-module fitting, electrical test, final assembly, and packaging"
+  market_state: "Finished, tested, packaged lighting set at the factory gate"
+functional_unit:
+  what: "Provide decorative electric lighting on a Christmas tree using a lighting chain that is not solely LED"
+  how_much: "One complete lighting set with its supplied electrical accessories and sales packaging"
+  how_well: "Meets the declared rated voltage, input power, circuit arrangement, indoor/outdoor rating, ingress-protection claim where applicable, lamp count, light-source technology mix, and applicable safety conformity"
+  how_long_or_cycle: "One declared product service life, with rated or warranted operating life and expected annual operating hours stated when use is modelled"
+  reference_flow_link: "reference_product_output"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The required foreground boundary starts when identified lighting-chain components and packaging enter the reporting facility and ends when one tested, packaged set leaves the factory gate. Supplier production of cable, lamps, modules, holders, plugs, power supplies, controllers, boxes, and bags is represented by compatible upstream datasets and must not be repeated as foreground manufacture unless the reporting facility actually performs it. Use and end-of-life are separate conditional modules."
+      source_ids: []
+    - rule_id: sb_category_boundary
+      applies_to: "product eligibility"
+      rule: "Include only a Christmas-tree lighting chain containing at least one non-LED light source; reject a set designed solely for LED sources from this PCR."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+    - rule_id: sb_production_boundary
+      applies_to: "required cradle-to-gate dataset"
+      rule: "Include received-component transport when within the declared study boundary, cable cutting and termination, source and holder fitting, controller or power-supply fitting when present, electrical testing, rework, rejects, packaging, and site energy attributable to the product."
+      source_ids:
+        - iec-60598-2-20-2022
+    - rule_id: sb_upstream_components
+      applies_to: "purchased components"
+      rule: "Link each received component to a compatible upstream product dataset and prevent double counting of component manufacture."
+      source_ids: []
+    - rule_id: sb_optional_lifecycle
+      applies_to: "use and end-of-life modules"
+      rule: "Include use and end-of-life only when required by the declared study goal; retain their assumptions separately from the mandatory production result."
+      source_ids:
+        - eu-weee-directive-2012-19
+boundary_abstraction:
+  declared_starting_condition: "Identified, quality-accepted lighting-chain components and packaging at the reporting facility receiving point"
+  starting_condition_role: "Foreground assembly starting condition; upstream component production remains linked background supply"
+  product_classification_scope: "Christmas-tree lighting sets containing at least one non-LED light source; solely LED sets are outside scope"
+  recursive_input_rule: "If a complete lighting set in this same category enters for repacking, rework, or bundling, record it once as a same-category product input and do not recursively expand it inside this foreground assembly dataset; disclose the upstream dataset used"
+  upstream_dataset_requirement: "Use geography-, technology-, material-, and time-representative datasets for every received component and packaging flow; disclose proxies and unrepresented mass"
+  disclosure: "Declare facility location, reporting period, purchased-versus-made component boundary, product configuration, reference amount, cut-off decisions, rework treatment, packaging boundary, and whether use or end-of-life modules are included"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Finished Christmas-tree lighting set, not solely LED"
+    uuid: ""
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "Item(s)"
+  required_qualifiers:
+    - "total cable length"
+    - "number of light sources"
+    - "count and technology of non-LED light sources"
+    - "LED module count when present"
+    - "replaceable or non-replaceable source construction"
+    - series
+    - parallel
+    - "or series/parallel arrangement"
+    - "rated input voltage"
+    - "rated input power"
+    - "mains-direct or extra-low-voltage supply"
+    - "indoor or outdoor rating"
+    - "ingress-protection rating when claimed"
+    - "controller functions when present"
+    - "total product mass excluding and including packaging"
+    - "packaging composition"
+    - "production geography and reference year"
+    - "declared service life and operating-hours scenario when use is modelled"
+reference_flows:
+  []
+measurement_rules:
+  - id: mu_reference_count
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Number of items"
+      uuid: ""
+    required_unit: "Item(s)"
+    rule: "Normalize the dataset to exactly one complete saleable lighting set; state the number of sets represented by each production record before normalization."
+  - id: mu_component_mass
+    applies_to: "component and packaging inputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record net mass entering the model for each separately identified component or package; do not substitute purchase count unless a measured representative mass per item and the counted quantity are retained."
+  - id: mu_electricity_energy
+    applies_to: "assembly and use electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Preserve metered electricity and convert kWh to MJ using 1 kWh = 3.6 MJ; disclose whether transformer and standby losses are included."
+  - id: mu_use_calculation
+    applies_to: "conditional use phase"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Calculate electricity from declared measured rated input power, operating hours, duty cycle, and service life; model each declared mode separately before summing."
+process_map:
+  - id: final_assembly_and_test
+    name: "Cable preparation, lighting-set assembly, electrical test, and rework"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Foreground production"
+    quantitative_reference: "1 saleable finished lighting set"
+  - id: packaging
+    name: "Sales packaging"
+    inclusion: "required"
+    inclusion_condition: "Always included for the factory-gate reference product"
+    role: "Foreground packaging"
+    quantitative_reference: "1 packaged finished lighting set"
+  - id: use_phase
+    name: "Electricity consumption during declared use"
+    inclusion: "conditional"
+    inclusion_condition: "Include only for lifecycle studies with a declared operating scenario"
+    role: "Downstream use"
+    quantitative_reference: "1 lighting set over its declared service life"
+  - id: end_of_life
+    name: "Collection of the discarded lighting set"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when end-of-life lies within the study boundary"
+    role: "Downstream end-of-life"
+    quantitative_reference: "1 discarded lighting set"
+process_inventory:
+  - id: final_assembly_and_test
+    label: "Cable preparation, lighting-set assembly, electrical test, and rework"
+    inputs:
+      product:
+        - row_id: insulated_copper_cable_input
+          role: "Insulated copper lighting-chain cable"
+          name: "Insulated copper electrical cable for lighting chain"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass of insulated copper cable consumed, including cable in saleable sets and attributable cutting loss."
+          amount:
+            expression: "measured net cable input allocated to saleable output and attributable rejects"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 complete finished lighting set"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids: []
+            ranges: []
+        - row_id: incandescent_lamp_input
+          role: "Miniature incandescent lamps"
+          name: "Miniature incandescent electric lamp"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record all miniature incandescent lamps entering assembly. At least one non-LED light source must remain in the finished reference product."
+          amount:
+            expression: "measured mass of accepted and installed lamps attributable to one finished set"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 complete finished lighting set"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+        - row_id: led_module_input
+          role: "LED modules for a mixed-source set"
+          name: "LED module"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f0e13a6e-6380-4372-98a0-899623339d91"
+          property_unit: "Mass / kg"
+          description: "Record LED modules only when the finished set combines LED and non-LED light sources. Do not use this row for a solely LED set."
+          amount:
+            expression: "measured mass of LED modules installed in the mixed-source finished set; not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 complete mixed-source finished lighting set"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids: []
+            ranges: []
+        - row_id: lamp_holder_input
+          role: "Thermoplastic lamp holders"
+          name: "Thermoplastic electric lamp holder for lighting chain"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass of moulded thermoplastic lamp holders or sockets installed in the set."
+          amount:
+            expression: "measured mass installed in saleable output and attributable rejects"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 complete finished lighting set"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids: []
+            ranges: []
+        - row_id: mains_plug_input
+          role: "Household mains plug"
+          name: "Household mains electrical plug"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass of the mains plug when a mains-direct plug is supplied as part of the set."
+          amount:
+            expression: "measured mass of the supplied mains plug; not applicable when the set has no mains plug"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 complete finished lighting set"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids: []
+            ranges: []
+        - row_id: power_supply_input
+          role: "Extra-low-voltage power supply"
+          name: "Extra-low-voltage AC/DC power supply adapter"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass of the AC/DC power supply when supplied with an extra-low-voltage lighting set."
+          amount:
+            expression: "measured mass of the supplied power supply; not applicable when no separate power supply is supplied"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 complete finished lighting set"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids: []
+            ranges: []
+        - row_id: lighting_controller_input
+          role: "Electronic lighting controller"
+          name: "Electronic lighting controller assembly"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass of the electronic controller when the finished set provides flashing, dimming, sequencing, timing, or similar control."
+          amount:
+            expression: "measured controller mass; not applicable when the finished set has no controller"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 complete finished lighting set"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids: []
+            ranges: []
+        - row_id: electricity_assembly_input
+          role: "Assembly and electrical-test electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity consumed by cable preparation, assembly, electrical testing, rework, and directly attributable support equipment."
+          amount:
+            expression: "submetered electricity or documented allocation from a facility meter, converted to MJ"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 complete finished lighting set"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Finished Christmas-tree lighting set"
+          name: "Finished Christmas-tree lighting set, not solely LED"
+          flow_type: "product"
+          property_unit: "Number of items / Item(s)"
+          description: "Record saleable sets that passed the declared electrical and visual acceptance tests. This is the reference product output."
+          amount:
+            expression: "exactly 1 complete saleable set after normalization"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "PCR reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_production_outputs
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: cable_offcut_waste
+          role: "Insulated cable offcuts"
+          name: "Waste insulated copper electrical cable offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record composite insulated copper cable offcuts leaving the assembly process as waste; do not record recovered clean copper under this row."
+          amount:
+            expression: "measured mass leaving the assembly boundary as cable offcut waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 complete finished lighting set"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_production_outputs
+              source_ids: []
+            ranges: []
+        - row_id: defective_set_waste
+          role: "Defective finished lighting sets"
+          name: "Defective Christmas-tree lighting set manufacturing waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record fully or substantially assembled lighting sets discarded after failed test and not reworked into saleable output."
+          amount:
+            expression: "measured mass of defective sets sent to waste treatment, excluding successfully reworked units"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 complete finished lighting set"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_production_outputs
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: packaging
+    label: "Sales packaging"
+    inputs:
+      product:
+        - row_id: corrugated_box_input
+          role: "Corrugated board box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record the net mass of each corrugated board box supplied with the reference product."
+          amount:
+            expression: "measured box mass supplied with one finished set"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 packaged finished lighting set"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom
+              source_ids: []
+            ranges: []
+        - row_id: polyethylene_bag_input
+          role: "Polyethylene packaging bag"
+          name: "Polyethylene bag"
+          flow_type: "product"
+          flow_ref:
+            uuid: "10647902-9822-4b06-bc95-f1f30f10c261"
+          property_unit: "Mass / kg"
+          description: "Record the net mass of the polyethylene bag when one is supplied around or within the sales package."
+          amount:
+            expression: "measured bag mass supplied with one finished set; not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 packaged finished lighting set"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: use_phase
+    label: "Electricity consumption during declared use"
+    inputs:
+      product:
+        - row_id: electricity_use_input
+          role: "Use-phase electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Calculate electricity only for a declared operating scenario, using measured rated input power and declared operating time. State geography, grid dataset, service life, duty cycle, controller mode, and transformer or standby losses."
+          amount:
+            expression: "rated input power in kW × operating hours × duty cycle × 3.6 MJ/kWh over declared service life"
+            value_mode: "calculated_value"
+            specificity: "scenario_specific"
+            basis:
+              text: "per 1 lighting set over the declared service life"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_use_scenario
+              source_ids:
+                - iec-60598-2-20-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: end_of_life
+    label: "Collection of the discarded lighting set"
+    inputs:
+      product:
+        []
+      waste:
+        - row_id: end_of_life_set_waste
+          role: "Discarded lighting set"
+          name: "Waste electrical and electronic equipment"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "631c740a-468f-41e8-9513-72bb25121958"
+          property_unit: "Mass / kg"
+          description: "Record the discarded product as waste electrical and electronic equipment when end-of-life lies within the study boundary. Packaging waste is not included in this row."
+          amount:
+            expression: "measured product mass excluding packaging, adjusted by the declared collection rate when the scenario does not collect all discarded sets"
+            value_mode: "calculated_value"
+            specificity: "scenario_specific"
+            basis:
+              text: "per 1 discarded lighting set"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_end_of_life_scenario
+              source_ids:
+                - eu-weee-directive-2012-19
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: al_subdivision_first
+    applies_to: "shared assembly and packaging operations"
+    rule: "Subdivide or submeter product-specific operations wherever records permit before applying an allocation."
+    source_ids: []
+  - rule_id: al_shared_operations
+    applies_to: "shared electricity and support operations"
+    rule: "When subdivision is not possible, allocate shared burdens using a documented physical driver causally related to the operation, such as machine time, tested-set count, or measured throughput; do not use revenue unless no defensible physical driver exists."
+    source_ids: []
+  - rule_id: al_rework_and_rejects
+    applies_to: "rework and rejected products"
+    rule: "Assign rework energy and consumed components to the production lot that caused them; exclude successfully reworked units from waste output and include unrecovered defective sets as waste."
+    source_ids: []
+  - rule_id: al_recycling
+    applies_to: "recyclable production waste and end-of-life material"
+    rule: "Report waste treatment and any recycling credit separately. Do not subtract an avoided-product credit inside the foreground inventory unless the declared study method requires it, in which case disclose the method and substituted product."
+    source_ids:
+      - eu-weee-directive-2012-19
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_component_bom
+      process_id: "final_assembly_and_test"
+      flow_role: "received components installed or lost"
+      record_type: "approved bill of materials, purchase receipts, issue records, and representative component weighing"
+      raw_fields: "component identity; supplier; material or technology; units issued; units returned; measured unit mass; product configuration; accepted output count"
+      collection_method: "Reconcile BOM and stock issues to the reporting lot and verify representative masses on calibrated scales"
+      unit: "kg and Item(s)"
+      frequency: "Each product configuration and production lot"
+      temporal_coverage: "Complete reporting period, normally at least 12 consecutive months or the full campaign"
+      site_scope: "All facilities producing the declared reference product"
+      aggregation_rule: "Sum net issued mass by atomic component and divide by saleable-set output; retain losses in the applicable waste row"
+      quality_evidence: "BOM revision, supplier specification, scale calibration, stock reconciliation, and lot records"
+    - protocol_id: cp_assembly_energy
+      process_id: "final_assembly_and_test"
+      flow_role: "assembly and test electricity"
+      record_type: "submeter or facility electricity meter with allocation record"
+      raw_fields: "meter start and end; kWh; equipment scope; operating time; tested-set count; allocation driver; transformer or standby inclusion"
+      collection_method: "Prefer product-line submetering; otherwise reconcile to facility invoices and allocate with a documented physical driver"
+      unit: "kWh, converted to MJ"
+      frequency: "Monthly and each production campaign"
+      temporal_coverage: "Same period as production output"
+      site_scope: "All assembly and test operations in the declared boundary"
+      aggregation_rule: "Sum attributable kWh, convert to MJ, and divide by saleable-set output"
+      quality_evidence: "Meter calibration or invoice reconciliation and allocation worksheet"
+    - protocol_id: cp_production_outputs
+      process_id: "final_assembly_and_test"
+      flow_role: "saleable output and manufacturing wastes"
+      record_type: "production count, test log, rework log, and waste scale ticket"
+      raw_fields: "produced count; passed count; reworked count; rejected count; waste identity; gross and tare mass; treatment destination"
+      collection_method: "Reconcile test disposition to production counts and weigh each segregated waste stream"
+      unit: "Item(s) and kg"
+      frequency: "Each lot; wastes at each shipment"
+      temporal_coverage: "Same period as component and energy records"
+      site_scope: "All included assembly facilities"
+      aggregation_rule: "Normalize passed output to one set; divide each net waste mass by passed-set count"
+      quality_evidence: "Test records, rework disposition, calibrated scale evidence, and waste transfer note"
+    - protocol_id: cp_packaging_bom
+      process_id: "packaging"
+      flow_role: "sales packaging supplied"
+      record_type: "packaging BOM, supplier specification, and representative weighing"
+      raw_fields: "package identity; material; grade; recycled content; unit mass; units per set; supplier"
+      collection_method: "Weigh each packaging component and reconcile count per finished set"
+      unit: "kg and Item(s)"
+      frequency: "Each packaging specification change and representative lot"
+      temporal_coverage: "Same period as reference product"
+      site_scope: "Packaging applied to the declared product"
+      aggregation_rule: "Multiply verified unit mass by units per set and normalize to one packaged set"
+      quality_evidence: "Packaging drawing, supplier specification, scale calibration, and BOM revision"
+    - protocol_id: cp_use_scenario
+      process_id: "use_phase"
+      flow_role: "electricity during use"
+      record_type: "product electrical test and declared scenario"
+      raw_fields: "measured input power by mode; operating hours per year; duty cycle; service life; transformer losses; standby power; geography; grid dataset"
+      collection_method: "Measure input power for the declared configuration and combine it with an explicitly named operating scenario"
+      unit: "W, h, years, and MJ"
+      frequency: "Each product configuration and scenario revision"
+      temporal_coverage: "Measurement date and scenario reference year stated"
+      site_scope: "Declared market and use geography"
+      aggregation_rule: "Sum mode-specific kW × hours × duty cycle, multiply by service years, and convert kWh to MJ"
+      quality_evidence: "Calibrated power measurement, rated label, scenario rationale, and calculation worksheet"
+    - protocol_id: cp_end_of_life_scenario
+      process_id: "end_of_life"
+      flow_role: "discarded electrical equipment"
+      record_type: "product weighing and collection/treatment scenario"
+      raw_fields: "product mass excluding packaging; collection rate; treatment route; geography; reference year"
+      collection_method: "Weigh the product and apply only a documented scenario-specific collection rate"
+      unit: "kg and fraction"
+      frequency: "Each product configuration and scenario revision"
+      temporal_coverage: "Scenario reference year stated"
+      site_scope: "Declared market and collection geography"
+      aggregation_rule: "Product mass × declared collection rate per discarded set"
+      quality_evidence: "Scale calibration, scenario source, collection-system description, and treatment route"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all production inventory rows"
+      rule: "normalized amount = reporting-period attributable amount ÷ saleable finished-set count"
+      inputs:
+        - "atomic input"
+        - energy
+        - "or waste amount"
+        - "passed-set count"
+      output: "amount per 1 finished lighting set"
+      source_ids: []
+    - id: calc_component_reconciliation
+      applies_to: "component inputs"
+      rule: "net component input = opening stock + receipts − closing stock − documented returns; reconcile net input to product mass, waste, and inventory change"
+      inputs:
+        - stock
+        - receipts
+        - returns
+        - "product mass"
+        - "waste mass"
+      output: "reconciled component mass"
+      source_ids: []
+    - id: calc_electricity_mj
+      applies_to: "electricity rows"
+      rule: "electricity in MJ = metered or calculated electricity in kWh × 3.6"
+      inputs:
+        - kWh
+      output: "MJ"
+      source_ids: []
+    - id: calc_use_electricity
+      applies_to: "electricity_use_input"
+      rule: "MJ = sum over declared modes of input power in kW × operating hours × duty cycle × service years × 3.6"
+      inputs:
+        - "measured power"
+        - hours
+        - "duty cycle"
+        - "service life"
+      output: "use-phase electricity in MJ per set"
+      source_ids:
+        - iec-60598-2-20-2022
+    - id: calc_eol_waste
+      applies_to: "end_of_life_set_waste"
+      rule: "collected waste mass = product mass excluding packaging × declared collection rate"
+      inputs:
+        - "product mass and collection rate"
+      output: "kg of waste electrical and electronic equipment per discarded set"
+      source_ids:
+        - eu-weee-directive-2012-19
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "product and components"
+      requirement: "Retain model number, BOM revision, source-technology mix, lamp count, circuit arrangement, rated voltage and power, cable length, indoor/outdoor rating, and supplied accessories for each reported configuration."
+      evidence: "Product specification, label photograph, BOM, and test record"
+    - id: dq_temporal
+      applies_to: "foreground production"
+      requirement: "Component, output, waste, and energy records must cover the same period; disclose campaign data shorter than 12 months and any seasonal representativeness limitation."
+      evidence: "Dated source records and coverage reconciliation"
+    - id: dq_completeness
+      applies_to: "cradle-to-gate inventory"
+      requirement: "Reconcile all component and packaging mass to saleable product, manufacturing waste, documented returns, and inventory change; quantify excluded mass and justify every cut-off."
+      evidence: "Mass reconciliation and cut-off register"
+    - id: dq_measurement
+      applies_to: "mass, count, and electricity"
+      requirement: "Use calibrated instruments or reconciled commercial records; retain conversion factors and uncertainty or allocation evidence."
+      evidence: "Calibration certificates, invoices, meter records, and calculation worksheets"
+    - id: dq_background
+      applies_to: "upstream datasets"
+      requirement: "Document geography, technology, reference year, material grade, and proxy status for each component and packaging dataset."
+      evidence: "Background-dataset mapping table"
+    - id: dq_scenarios
+      applies_to: "use and end-of-life"
+      requirement: "Keep production results separate from conditional scenario results and disclose every power, duty-cycle, lifetime, collection, and treatment assumption."
+      evidence: "Scenario record and module-separated result table"
+validation_rules:
+  - rule_id: vr_category_eligibility
+    applies_to: "product identity"
+    rule: "Confirm that at least one installed light source is non-LED and that the product is marketed as a Christmas-tree lighting set; reject solely LED lighting sets."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: vr_reference_flow
+    applies_to: "reference flow"
+    rule: "Confirm exactly one complete saleable set, including supplied accessories and sales packaging, and all required qualifiers."
+    source_ids:
+      - iec-60598-2-20-2022
+  - rule_id: vr_inventory_balance
+    applies_to: "production inventory"
+    rule: "Confirm component and packaging mass reconciliation, passed-set count, rework disposition, waste mass, and any excluded mass for the same reporting period."
+    source_ids: []
+  - rule_id: vr_atomic_flows
+    applies_to: "all inventory rows"
+    rule: "Confirm that each row represents one atomic product, waste, or elementary exchange and that no row combines utilities, materials, packaging, or wastes."
+    source_ids: []
+  - rule_id: vr_electricity
+    applies_to: "electricity rows"
+    rule: "Confirm that electricity is reported in MJ, that each kWh conversion uses 3.6 MJ/kWh, and that grid geography and losses are disclosed."
+    source_ids: []
+  - rule_id: vr_optional_modules
+    applies_to: "use and end-of-life"
+    rule: "If included, confirm that use and end-of-life assumptions are scenario-specific, separately reported, and not embedded in the cradle-to-gate result."
+    source_ids:
+      - eu-weee-directive-2012-19
+published_dataset_profile:
+  dataset_role: "Foreground production dataset suitable for publication as a secondary_dataset or background_dataset after review; optional use and end-of-life modules remain separate lifecyclemodel projections"
+  downstream_use: "Product-footprint, supply-chain, and lifecycle models for Christmas-tree lighting sets containing at least one non-LED source"
+  allowed_use: "The declared product configuration, production geography, technology, reporting period, and explicitly documented lifecycle scenarios"
+  excluded_use: "Solely LED lighting sets; general luminaires; products with materially different source technology, voltage class, packaging, geography, or production route without representativeness review"
+  required_metadata: "PCR id; product model and BOM revision; reference amount; all required qualifiers; facility and market geography; reporting period; boundary; allocation; cut-offs; source-technology mix; packaging; upstream dataset mapping; optional-module status"
+  required_quality_disclosure: "Primary-data share; temporal coverage; mass and energy reconciliation; measurement and allocation evidence; proxy datasets; excluded mass; uncertainty limitations; use and end-of-life assumptions when present"
+  update_trigger: "BOM or source-technology change; change between mains-direct and extra-low-voltage supply; rated-power or controller change; cable or packaging redesign; supplier or geography change; new production technology; reporting data older than the declared validity period; material change to use or end-of-life scenarios"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "dataset"
+    reference: "United Nations Statistics Division, CPC Version 3.0 structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-04)"
+    used_for: "Official CPC 46532 product identity and exclusion of sets solely using LED light sources"
+  - id: "iec-60598-2-20-2022"
+    type: "standard"
+    reference: "IEC 60598-2-20:2022, Luminaires — Part 2-20: Particular requirements — Lighting chains, https://webstore.iec.ch/en/publication/73916 (retrieved 2026-09-04)"
+    used_for: "Lighting-chain identity; series, parallel, and series/parallel configurations; indoor/outdoor application; rated-voltage and product-qualification fields"
+  - id: "eu-weee-directive-2012-19"
+    type: "standard"
+    reference: "Directive 2012/19/EU of the European Parliament and of the Council on waste electrical and electronic equipment, https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32012L0019 (retrieved 2026-09-04)"
+    used_for: "Conditional end-of-life scope, separate collection, and waste electrical/electronic equipment treatment disclosure"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:85fac44cdc670633450ee3f86e0368bd790e23e00c161ef9648062320688908f"
+  generated_content_sha256: "sha256:9a225ff9e5c4089c8f212272eaf71129c22ac90ed8bee1b4a347b65b94a584bb"

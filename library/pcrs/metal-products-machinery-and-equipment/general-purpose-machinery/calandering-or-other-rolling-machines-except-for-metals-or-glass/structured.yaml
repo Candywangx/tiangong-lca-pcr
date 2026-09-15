@@ -1,10 +1,572 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43933"
-  title: "Calandering or other rolling machines, except for metals or glass"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.calandering-or-other-rolling-machines-except-for-metals-or-glass"
+  classification_refs: "CPC 3.0: 43933 (exact classification context)"
+  covered_products: "Complete calendering, calandering, embossing, smoothing, laminating, compacting, or other roller-processing machines for non-metallic and non-glass sheet or web materials"
+  excluded_products: "Metal-rolling machines; glass-rolling machines; stand-alone cylinders or rolls; parts and accessories supplied separately; customer-site installation; machines whose principal function belongs to another specific machinery category"
+  representative_product: "Electrically driven multi-roll industrial calender with a fabricated frame, calender roll assembly, drive motor, electronic control unit, initial lubricant fill, factory acceptance test, and transport packaging"
+  production_route: "Purchased-component assembly with either in-house steel-plate fabrication or a purchased coated machine structure; mechanical/electrical integration; factory testing; packaging"
+  market_state: "New, complete, factory-tested, ready-for-delivery machine at the manufacturer's factory gate"
+functional_unit:
+  what: "Manufacture and factory provision of a complete roller-processing machine for non-metallic and non-glass sheet or web materials"
+  how_much: "1,000 kg net machine mass, excluding delivery packaging"
+  how_well: "Meets the declared purchase specification and factory acceptance criteria for processed material, working width, roll count and material, roll diameter and finish, line force, speed, temperature-control capability, installed power, control architecture, guarding, and accessories"
+  how_long_or_cycle: "One factory production and delivery-preparation cycle; use-stage service life is not included"
+  reference_flow_link: "reference_machine"
+system_boundary:
+  rules:
+    - rule_id: boundary_cradle_to_factory_gate
+      applies_to: "Product system"
+      rule: "Include upstream production and inbound transport of all reported materials, components, electricity, lubricants, and packaging; include in-house fabrication when performed, assembly, electrical integration, initial filling, factory acceptance testing, preparation, and management of manufacturing waste through the selected treatment input. Exclude customer-site installation, use, maintenance, and end of life unless separately reported."
+      source_ids:
+        - epd-international-machine-tools-pcr-2012-02-v4
+    - rule_id: boundary_route_disclosure
+      applies_to: "Frame supply"
+      rule: "Apply either the in-house steel-plate fabrication route or the purchased coated-structure route to the same principal frame. Disclose mixed sourcing and allocate only the measured mass share to each route."
+      source_ids:
+        - epd-international-machine-tools-pcr-2012-02-v4
+    - rule_id: boundary_capital_goods
+      applies_to: "Manufacturing equipment and buildings"
+      rule: "Exclude ordinary production capital goods and factory infrastructure from the foreground inventory unless the study goal explicitly includes them; any inclusion shall be disclosed separately and shall not change the product reference flow."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased materials and components at the point they enter the manufacturer-controlled supply chain or reporting facility"
+  starting_condition_role: "Upstream product inputs with supplier-specific or representative production datasets, followed by manufacturer-controlled core processes"
+  product_classification_scope: "Complete machines within the semantic boundary above; CPC 3.0 code 43933 is classification context and does not define a separate identity by itself"
+  recursive_input_rule: "A complete same-category machine used only as manufacturing equipment is capital equipment and is not recursively inventoried as a product input; a same-category machine purchased for resale shall be disclosed and excluded from the manufactured output quantity"
+  upstream_dataset_requirement: "Use supplier-specific datasets for principal structures, roll assemblies, motors, controls, lubricants, and packaging when available; otherwise use geographically and technologically representative background datasets and disclose substitutions"
+  disclosure: "Report frame route, component supplier geography, recycled-content claims, electricity product and geography, allocation basis, excluded accessories, packaging composition, and all departures from this boundary"
+reference_flow_definition:
+  reference_amount: "1,000 kg net machine mass"
+  product_flow_ref:
+    name: "Calendering or other rolling machine, except for metals or glass (UUID unresolved)"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "processed material family"
+    - "machine configuration and trade name"
+    - "factory location and reporting period"
+    - "net machine mass"
+    - "working width"
+    - "roll count"
+    - material
+    - "diameter and surface finish"
+    - "line force"
+    - "speed range"
+    - "roll-temperature-control capability"
+    - "installed power"
+    - "motor rating and efficiency class"
+    - "control architecture and voltage"
+    - "frame-supply route"
+    - "included accessories"
+    - "packaging mass and material"
+    - "factory acceptance test boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference machine and all mass-normalized material and waste rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record net machine mass after factory acceptance and before delivery packaging; normalize all amounts by multiplying the batch amount by 1,000 kg divided by total accepted net machine mass."
+  - id: packaging_separation
+    applies_to: "Delivery packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure packaging separately from net machine mass; include packaging production in the cradle-to-gate inventory but do not add it to the reference amount."
+  - id: electricity_conversion
+    applies_to: "Purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered kWh in source records and convert to MJ with 1 kWh = 3.6 MJ only in the normalized inventory; disclose grid geography, voltage level, supplier product, and treatment of losses."
+  - id: route_exclusivity
+    applies_to: "Steel plate and purchased coated machine structure"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Declare whether the reporting facility fabricates the principal frame from steel plate or receives a coated machine structure; do not count both routes for the same frame mass."
+process_map:
+  - id: frame_fabrication
+    name: "Principal frame fabrication"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when steel plate is cut, machined, formed, welded, or finished under the reporting manufacturer's control; exclude the purchased coated-structure mass represented in machine_assembly_test."
+    role: "Foreground component fabrication"
+    quantitative_reference: "Net mass of accepted fabricated frame parts attributable to the reference machine"
+  - id: machine_assembly_test
+    name: "Mechanical/electrical assembly and factory acceptance testing"
+    inclusion: "required"
+    inclusion_condition: "Always include for a complete manufactured machine."
+    role: "Foreground assembly, filling, integration, and testing"
+    quantitative_reference: "1,000 kg accepted net machine mass"
+  - id: delivery_packaging
+    name: "Delivery packaging preparation"
+    inclusion: "required"
+    inclusion_condition: "Include packaging applied before the product leaves the factory gate."
+    role: "Foreground delivery preparation"
+    quantitative_reference: "Packaging applied to 1,000 kg accepted net machine mass"
+process_inventory:
+  - id: frame_fabrication
+    label: "Principal frame fabrication"
+    inputs:
+      product:
+        - row_id: steel_plate
+          role: "Alloy steel plate for an in-house fabricated frame"
+          name: "Steel Plate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "421db3a5-394d-410b-8ebf-af23a37fc878"
+          property_unit: "Mass / kg"
+          description: "Record alloy steel plate crossing into manufacturer-controlled frame fabrication. Apply only to the in-house fabrication route and retain grade, thickness, surface state, recycled-content claim, supplier, and origin."
+          amount:
+            expression: "measured net steel-plate receipts issued to accepted frame work orders, less documented returns to stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg accepted net machine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids: []
+            ranges: []
+        - row_id: fabrication_electricity
+          role: "Electricity for frame fabrication"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record purchased electrical energy consumed by cutting, forming, machining, welding, finishing, extraction, and directly supporting frame-fabrication equipment when the process is in scope."
+          amount:
+            expression: "submetered electricity or allocated meter difference for accepted frame work orders"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted net machine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_factory_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: low_alloy_steel_scrap
+          role: "Segregated low-alloy steel fabrication scrap"
+          name: "Low-alloy steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "afedcccd-b9f3-4941-8ba4-d3135b8abb67"
+          property_unit: "Mass / kg"
+          description: "Record low-alloy steel offcuts and chips leaving the reporting facility as waste. Keep alloy grade, contamination state, mass, and treatment destination with the foreground record."
+          amount:
+            expression: "measured outbound mass attributable to accepted frame work orders"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted net machine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fabrication_scrap
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: machine_assembly_test
+    label: "Mechanical/electrical assembly and factory acceptance testing"
+    inputs:
+      product:
+        - row_id: purchased_coated_machine_structure
+          role: "Purchased coated principal machine structure"
+          name: "Coated and painted machine structures and components"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b9bcd4e3-4971-448a-9077-1bc397c7c591"
+          property_unit: "Mass / kg"
+          description: "Record a purchased coated and painted principal structure only for the externally fabricated frame route. The supplier boundary shall include fabrication and coating; do not combine this amount with the same frame mass under steel_plate."
+          amount:
+            expression: "measured accepted supplier-delivery mass installed in the reference machine"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg accepted net machine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids: []
+            ranges: []
+        - row_id: calender_roll_assembly
+          role: "Calender roll assembly"
+          name: "Calender roll assembly (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the complete installed roll assembly as one purchased or internally transferred component. Its roll count, shell and core materials, surface treatment, dimensions, mass, supplier, and included bearings shall be declared; the Tiangong UUID remains unresolved."
+          amount:
+            expression: "measured accepted installed mass from the machine bill of materials"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg accepted net machine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids: []
+            ranges: []
+        - row_id: electric_motor
+          role: "Principal electric drive motor"
+          name: "Electric motor"
+          flow_type: "product"
+          flow_ref:
+            uuid: "014f80a3-c257-425b-9b75-3e5a18573695"
+          property_unit: "Mass / kg"
+          description: "Record the installed principal industrial AC drive motor. Declare rated output, voltage, efficiency class, mass, supplier, and whether auxiliary motors are included in this row."
+          amount:
+            expression: "measured accepted installed mass from the machine bill of materials"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg accepted net machine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids: []
+            ranges: []
+        - row_id: electronic_control_unit
+          role: "Electronic machine control unit"
+          name: "Electronic control unit"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ff5a65c8-7726-48b4-b794-6bacd21ab77e"
+          property_unit: "Mass / kg"
+          description: "Record the installed electronic control unit as supplied. Declare control architecture, rated voltage, mass, supplier, and the boundary between the unit and separately inventoried drives or motors."
+          amount:
+            expression: "measured accepted installed mass from the machine bill of materials"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg accepted net machine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids: []
+            ranges: []
+        - row_id: lubricating_oil
+          role: "Initial machinery lubricating-oil fill"
+          name: "lubricating oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "aec6f1a5-7b09-4704-870d-434d3ada0edd"
+          property_unit: "Mass / kg"
+          description: "Record finished lubricating oil placed in the delivered machine before acceptance. Declare lubricant grade, viscosity, supplier, density used for any volume-to-mass conversion, and whether test oil remains in the product."
+          amount:
+            expression: "measured lubricant mass retained in the accepted machine"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg accepted net machine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_bom
+              source_ids: []
+            ranges: []
+        - row_id: assembly_test_electricity
+          role: "Electricity for assembly and factory acceptance testing"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record purchased electricity consumed by assembly tools, handling, controls commissioning, no-load and loaded acceptance tests, and directly supporting equipment. Exclude customer use-stage electricity."
+          amount:
+            expression: "submetered electricity or allocated meter difference for accepted machine work orders and tests"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg accepted net machine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_factory_electricity
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: delivery_packaging
+    label: "Delivery packaging preparation"
+    inputs:
+      product:
+        - row_id: softwood_packaging_lumber
+          role: "Softwood lumber used in the delivery skid or crate"
+          name: "Sawn softwood packaging lumber (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only sawn softwood incorporated into the delivery skid, blocking, or crate. Moisture content, treatment, wood species group, mass, and reusable-packaging status shall be declared; the Tiangong UUID remains unresolved."
+          amount:
+            expression: "measured dry-basis-equivalent mass applied to accepted machines"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg accepted net machine mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_machine
+          role: "Ready-for-delivery calendering or rolling machine"
+          name: "Calendering or other rolling machine, except for metals or glass (UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the accepted net mass of the complete machine after factory testing and before packaging mass is added. The machine product-flow UUID remains unresolved; do not substitute a glass product or a metal/glass rolling machine."
+          amount:
+            expression: "fixed reference output of 1,000 kg accepted net machine mass"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "PCR reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "source_rule"
+              collection_protocol_id: cp_product_mass_acceptance
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoidance
+    applies_to: "Shared manufacturing processes"
+    rule: "Avoid allocation by submetering, work-order material issue, direct labour or machine-time records, and separate waste weighing for the reference machine."
+    source_ids:
+      - epd-international-machine-tools-pcr-2012-02-v4
+  - rule_id: allocation_physical
+    applies_to: "Residual shared burdens"
+    rule: "When subdivision is not practicable, allocate fabrication electricity by measured machine-hours or equipment energy drivers, coating burdens by coated area, assembly burdens by recorded labour or station time, and handling burdens by handled mass; disclose the selected causal relationship."
+    source_ids:
+      - epd-international-machine-tools-pcr-2012-02-v4
+  - rule_id: allocation_economic_fallback
+    applies_to: "Non-causal residual burdens"
+    rule: "Use economic allocation only when no defensible physical relationship exists; report the value basis, reference period, affected share, and a sensitivity result."
+    source_ids:
+      - epd-international-machine-tools-pcr-2012-02-v4
+  - rule_id: waste_burden
+    applies_to: "Manufacturing waste"
+    rule: "Assign collection and treatment burdens to the product system until the selected waste flow reaches its documented end-of-waste point; do not credit recycling without a separately declared method."
+    source_ids:
+      - epd-international-machine-tools-pcr-2012-02-v4
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_component_bom
+      process_id: "frame_fabrication_machine_assembly_test"
+      flow_role: "Installed material and component inputs"
+      record_type: "ERP receipt, approved bill of materials, issue/return record, supplier mass declaration, and acceptance record"
+      raw_fields: "work_order; part_id; supplier; material_or_component; grade_or_model; gross_mass; returned_mass; installed_mass; geography; acceptance_status"
+      collection_method: "Reconcile accepted BOM quantities to weighed or supplier-declared masses and subtract documented returns"
+      unit: "kg"
+      frequency: "Each accepted machine or homogeneous production batch"
+      temporal_coverage: "Complete reporting period, normally at least 12 consecutive months or all units in a shorter disclosed campaign"
+      site_scope: "All manufacturer-controlled sites producing the declared machines"
+      aggregation_rule: "Sum accepted installed masses by row and divide by accepted net machine mass, then multiply by 1,000 kg"
+      quality_evidence: "Approved BOM revision, receiving record, scale calibration or supplier declaration, and work-order reconciliation"
+    - protocol_id: cp_factory_electricity
+      process_id: "frame_fabrication_machine_assembly_test"
+      flow_role: "Purchased electricity"
+      record_type: "Revenue meter, submeter, test log, and production work-order record"
+      raw_fields: "meter_id; opening_reading; closing_reading; test_kWh; operating_hours; work_order; accepted_mass; grid_geography; voltage; supplier_product; losses_boundary"
+      collection_method: "Prefer dedicated submeters; otherwise subtract excluded loads and allocate the remaining meter difference using documented equipment power-hours"
+      unit: "kWh"
+      frequency: "Per work order or test, aggregated monthly"
+      temporal_coverage: "Same period as accepted production; disclose shutdowns and abnormal tests"
+      site_scope: "All reporting-facility meters serving included processes"
+      aggregation_rule: "Convert kWh to MJ and normalize to 1,000 kg accepted net machine mass under calc_allocate_shared_electricity"
+      quality_evidence: "Meter calibration or utility invoice, allocation workbook, test record, and meter-boundary diagram"
+    - protocol_id: cp_fabrication_scrap
+      process_id: "frame_fabrication"
+      flow_role: "Low-alloy steel scrap output"
+      record_type: "Waste scale ticket, scrap-bin log, material issue record, and treatment receipt"
+      raw_fields: "alloy_grade; work_order; gross_bin_mass; tare_mass; contamination; destination; treatment; accepted_frame_mass"
+      collection_method: "Weigh segregated low-alloy scrap and reconcile it to steel issued and accepted frame mass"
+      unit: "kg"
+      frequency: "Each shipment with work-order attribution; aggregate monthly"
+      temporal_coverage: "Same period as in-house frame fabrication"
+      site_scope: "Reporting-facility fabrication area and outbound waste boundary"
+      aggregation_rule: "Sum attributable net scrap mass and normalize to 1,000 kg accepted net machine mass"
+      quality_evidence: "Calibrated scale ticket, segregation inspection, mass-balance reconciliation, and treatment receipt"
+    - protocol_id: cp_packaging_bom
+      process_id: "delivery_packaging"
+      flow_role: "Softwood packaging input"
+      record_type: "Packaging BOM, purchase record, moisture measurement, and packing checklist"
+      raw_fields: "work_order; wood_type; treatment; wet_mass; moisture_content; dry_basis_mass; reusable_status; accepted_machine_mass"
+      collection_method: "Weigh lumber or reconcile piece dimensions and density, then convert to the declared mass basis"
+      unit: "kg"
+      frequency: "Each packed machine"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "Final packing area"
+      aggregation_rule: "Sum packaging lumber applied to accepted machines and normalize to 1,000 kg accepted net machine mass"
+      quality_evidence: "Packing checklist, scale or dimensional record, moisture record, and purchase specification"
+    - protocol_id: cp_product_mass_acceptance
+      process_id: "delivery_packaging"
+      flow_role: "Reference machine output"
+      record_type: "Final acceptance certificate, calibrated scale or reconciled engineering mass statement, and serial-number register"
+      raw_fields: "serial_number; configuration; net_machine_mass; packaging_mass; acceptance_date; accepted_status"
+      collection_method: "Determine net accepted machine mass separately from packaging and rejected or reworked units"
+      unit: "kg"
+      frequency: "Each accepted machine"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "Factory-gate output boundary"
+      aggregation_rule: "Sum accepted net machine mass; all reported flows are normalized to exactly 1,000 kg"
+      quality_evidence: "Acceptance certificate, serial-number register, weighing evidence, and packaging subtraction record"
+  calculation_rules:
+    - id: calc_mass_normalization
+      applies_to: "All inventory rows"
+      rule: "normalized amount = attributable batch amount × 1,000 kg / accepted net machine mass represented by the batch"
+      inputs:
+        - "attributable row amount"
+        - "accepted net machine mass"
+      output: "Row amount per 1,000 kg reference machine"
+      source_ids: []
+    - id: calc_allocate_shared_electricity
+      applies_to: "fabrication_electricity; assembly_test_electricity"
+      rule: "included kWh = submetered kWh, or facility meter difference minus documented excluded loads multiplied by the causal equipment power-hour share; normalized MJ = included kWh × 3.6 × 1,000 / accepted net machine mass"
+      inputs:
+        - "meter readings"
+        - "excluded loads"
+        - "equipment power and time"
+        - "accepted net machine mass"
+      output: "MJ per 1,000 kg reference machine"
+      source_ids: []
+    - id: calc_scrap_reconciliation
+      applies_to: "low_alloy_steel_scrap"
+      rule: "attributable scrap = weighed segregated low-alloy scrap reconciled to issued steel minus returned stock and accepted incorporated steel"
+      inputs:
+        - "issued steel"
+        - "returned stock"
+        - "accepted incorporated steel"
+        - "weighed scrap"
+      output: "kg low-alloy steel scrap per 1,000 kg reference machine"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Reference machine and components"
+      requirement: "Match serial number, configuration, BOM revision, supplier model, and all required qualifiers to the accepted product; do not mix metal/glass rolling machinery or separate parts into the output."
+      evidence: "Acceptance certificate, serial register, approved BOM, purchase specification, and supplier records"
+    - id: dq_measurement
+      applies_to: "Mass and electricity"
+      requirement: "Use calibrated instruments or auditable supplier declarations; retain raw units, conversion factors, meter boundaries, tare corrections, and packaging subtraction."
+      evidence: "Calibration certificates, invoices, scale tickets, meter diagrams, and calculation workbook"
+    - id: dq_temporal
+      applies_to: "Foreground activity data"
+      requirement: "Use a period representative of current production, normally at least 12 consecutive months; a shorter campaign shall include all accepted units and disclose why it is representative."
+      evidence: "Dated production register, meter series, and completeness check"
+    - id: dq_completeness
+      applies_to: "Product mass and included processes"
+      requirement: "Reconcile BOM mass, installed components, initial lubricant, packaging, fabrication scrap, and accepted output; explain every excluded material or activity and quantify its known mass share."
+      evidence: "Mass-balance worksheet, exclusion register, and reviewer sign-off"
+    - id: dq_background
+      applies_to: "Upstream datasets"
+      requirement: "Select datasets consistent with supplier geography, production technology, alloy or component state, electricity product, and reference year; disclose proxies and their contribution."
+      evidence: "Dataset mapping table and representativeness assessment"
+    - id: dq_primary_data
+      applies_to: "Core processes"
+      requirement: "Use site-specific data for manufacturer-controlled fabrication, assembly, testing, packaging, and waste management."
+      evidence: "Work orders, BOM records, meter data, packaging records, and waste tickets"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "Product identity"
+    rule: "Reject a data package that lacks the processed-material family, machine configuration, net mass, roll specification, installed power, control architecture, frame route, factory location, reporting period, and acceptance boundary."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_reference
+    applies_to: "Reference flow"
+    rule: "Require exactly 1,000 kg accepted net machine mass after normalization, with packaging mass excluded from the reference amount and reported separately."
+    source_ids: []
+  - rule_id: validate_route
+    applies_to: "Frame supply"
+    rule: "Reject double counting of the same principal frame mass under both steel_plate and purchased_coated_machine_structure; mixed sourcing requires measured mass shares."
+    source_ids: []
+  - rule_id: validate_energy
+    applies_to: "Electricity"
+    rule: "Require raw kWh, the 3.6 MJ/kWh conversion, grid geography, voltage, supplier product, allocation basis, and treatment of losses; exclude use-stage electricity."
+    source_ids:
+      - epd-international-machine-tools-pcr-2012-02-v4
+  - rule_id: validate_mass_balance
+    applies_to: "Materials and waste"
+    rule: "Reconcile accepted product mass with installed BOM mass and explain differences, including removed machining mass, consumables, packaging, waste, returned stock, and measurement uncertainty."
+    source_ids: []
+  - rule_id: validate_uuid_gaps
+    applies_to: "Unresolved identities"
+    rule: "Keep the product-flow UUID, calender-roll-assembly UUID, and softwood-packaging-lumber UUID blank until an exact public state-100 identity is directly verified; never substitute a glass product, generic instrument, hardwood, or fibreboard candidate."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground cradle-to-factory-gate production dataset for a declared complete machine configuration"
+  downstream_use: "May serve as a secondary_dataset or background_dataset for systems purchasing the declared machine when the user confirms configuration, geography, time, and boundary compatibility"
+  allowed_use: "Product-footprint modelling of the machine's manufacture; capital-goods scenarios; supply-chain screening; comparison of production configurations with equivalent functional and boundary qualifiers"
+  excluded_use: "Direct comparison of metal/glass rolling machinery; stand-alone rolls or parts; unqualified machine variants; use-stage performance comparison; customer-site installation; maintenance; end-of-life claims; automatic inference of service life or productivity"
+  required_metadata: "PCR id and version; machine trade name and configuration; all required qualifiers; factory geography; reporting period; accepted output mass and unit count; frame route; supplier dataset mapping; electricity attributes; packaging; allocation method; unresolved UUID status"
+  required_quality_disclosure: "Foreground coverage; meter and mass-balance completeness; supplier-specific versus generic data shares; proxy datasets; exclusions; allocation shares; uncertainty; validation findings; departures from this PCR"
+  update_trigger: "Change in machine configuration, roll construction, principal material or supplier route, factory process, electricity supply, control or drive architecture, packaging, allocation method, reporting period, or resolution of any currently blank UUID"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-06)"
+    used_for: "Official CPC 43933 title and classification context"
+  - id: "epd-international-machine-tools-pcr-2012-02-v4"
+    type: "standard"
+    reference: "EPD International, PCR 2012:02, Machine-tools for drilling, boring or milling metals and composite materials, version 4.0.0, 27 February 2024, https://api.prod.environdec.com/api/v2/EPDLibrary/Files/cfd6c3a3-b2ab-4705-5616-08dc2e3a662b/Data (retrieved 2026-09-06)"
+    used_for: "Analogous industrial-machinery system decomposition, core-process coverage, packaging inclusion, allocation hierarchy, foreground data quality, and electricity disclosure"
+  - id: "china-mof-2026-tariff-adjustment"
+    type: "official_guidance"
+    reference: "Ministry of Finance of the People's Republic of China, 2026 Tariff Adjustment Plan, https://m.mof.gov.cn/czxw/202603/P020260326610286964491.pdf (retrieved 2026-09-06)"
+    used_for: "Professional Chinese terminology for tariff item 84201000"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b6fb8b2363474799663519387f995c091de10df4eda163f39e12bdf35cd5a1ad"
+  generated_content_sha256: "sha256:ff26cde1fcf54499ce0e1d0c33483984a214a8d540f541d0d2cda9a18583d51e"

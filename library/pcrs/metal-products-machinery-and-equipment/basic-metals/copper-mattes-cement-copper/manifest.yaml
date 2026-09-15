@@ -2,12 +2,13 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.basic-metals.copper-mattes-cement-copper
 title:
   en-US: "Copper mattes; cement copper"
-  zh-CN: null
-status: scaffold
+  zh-CN: "铜锍；沉积铜（泥铜）"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
+updated_at_utc: "2026-09-04T06:35:00Z"
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +23,92 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "41411"
     title: "Copper mattes; cement copper"
     mapping_type: exact
+review_metadata:
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  semantic_boundary:
+    status: confirmed
+    statement: "Gate-to-gate production of either copper matte by smelting copper concentrate or cement copper by iron cementation of a copper-bearing pregnant leach solution; upstream concentrate production and leaching, and downstream converting or refining, are outside the foreground production boundary."
+  reference_flow_identity:
+    status: unresolved
+    unresolved_support_fields:
+      - reference_product_flow_uuid
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: matte_copper_concentrate
+        reason_code: no_exact_candidate
+        explanation: "The ranked search returned an imported concentrate, transport services, and copper ore; none is an exact geography-neutral copper-concentrate material flow."
+      - row_id: matte_electricity
+        reason_code: property_or_unit_mismatch
+        explanation: "No candidate combined the required electricity supply identity with an energy property and suitable electricity unit; service, alternating-current calorific-value, and cable records were rejected."
+      - row_id: reference_product_copper_matte
+        reason_code: classification_mismatch
+        explanation: "The exact-name copper-matte candidate is classified as CPC 14210 copper ores and concentrates rather than CPC 41411 basic-metal intermediate product."
+      - row_id: matte_sulfur_dioxide_air
+        reason_code: classification_mismatch
+        explanation: "The sulfur-dioxide candidates were assigned to lower-stratosphere, indoor-air, or water compartments; a state-100 emission to air, unspecified candidate was not established."
+      - row_id: matte_particulate_air
+        reason_code: semantic_mismatch
+        explanation: "All candidates were PM0.2-PM2.5 flows; the source-backed row requires total particulate matter and cannot be narrowed without foreground size-fraction data."
+      - row_id: cement_pregnant_leach_solution
+        reason_code: product_state_mismatch
+        explanation: "Candidates denoted copper sulfate ore, not an aqueous copper-bearing pregnant leach solution."
+      - row_id: cement_electricity
+        reason_code: property_or_unit_mismatch
+        explanation: "No candidate combined the required electricity supply identity with an energy property and suitable electricity unit; service, alternating-current calorific-value, and cable records were rejected."
+      - row_id: cement_copper_product
+        reason_code: no_exact_candidate
+        explanation: "The ranked candidates were copper catalyst, blister copper, recycled copper, refined copper, and anode copper; none denotes precipitated cement copper."
+      - row_id: cement_spent_leach_solution
+        reason_code: no_exact_candidate
+        explanation: "Candidates were solid copper-bearing wastes or a generic disposal label, not an iron-sulfate-bearing spent leach solution."
+    range_evidence_needs:
+      - row_id: matte_copper_concentrate
+        explanation: "Verify a multi-source, boundary-compatible concentrate consumption or copper-recovery range; until then collect batch-specific dry feed and assay data."
+      - row_id: matte_quartz_stone_flux
+        explanation: "Verify a multi-source, technology-compatible quartz-flux consumption range; until then collect site-specific flux mass and composition."
+      - row_id: matte_natural_gas
+        explanation: "Verify a multi-source range for the declared furnace and fuel boundary; until then meter site-specific gas at declared reference conditions."
+      - row_id: matte_industrial_oxygen
+        explanation: "Verify a multi-source range compatible with oxygen-enrichment technology and supply boundary; until then meter oxygen volume and purity."
+      - row_id: matte_electricity
+        explanation: "Verify a multi-source electricity range for the declared smelting technology; until then use reconciled site meter records."
+      - row_id: reference_product_copper_matte
+        explanation: "Verify independent yield and dry-product-state evidence compatible with the selected matte technology; until then calculate output from batch mass and moisture records."
+      - row_id: matte_sulfuric_acid
+        explanation: "Verify a multi-source sulfuric-acid recovery range for comparable off-gas treatment boundaries; until then collect product mass, concentration, and sulfur-balance records."
+      - row_id: matte_copper_slag
+        explanation: "Verify a multi-source slag-generation range for comparable concentrate grade and furnace technology; until then weigh or reconcile the slag stream."
+      - row_id: matte_sulfur_dioxide_air
+        explanation: "Verify a multi-source controlled-stack sulfur-dioxide range with compatible gas-treatment boundaries; until then use stack measurements and sulfur balance."
+      - row_id: matte_particulate_air
+        explanation: "Verify a multi-source total-particulate range with compatible control technology and measurement basis; until then use site stack-test data."
+      - row_id: matte_fossil_co2_air
+        explanation: "Verify a multi-source direct fossil-carbon-dioxide range for the declared fuel and furnace boundary; until then calculate from metered fuel and carbon balance."
+      - row_id: cement_pregnant_leach_solution
+        explanation: "Verify a multi-source pregnant-solution consumption range with compatible copper concentration and upstream boundary; until then collect solution volume, density, and assay."
+      - row_id: cement_scrap_steel
+        explanation: "Verify a multi-source steel-scrap consumption range with compatible solution chemistry and scrap grade; until then weigh scrap and assay iron content."
+      - row_id: cement_electricity
+        explanation: "Verify a multi-source electricity range for comparable pumping, agitation, and separation equipment; until then use reconciled meter records."
+      - row_id: cement_copper_product
+        explanation: "Verify independent cement-copper recovery and dry-product-state evidence; until then calculate output from measured mass, moisture, and copper assay."
+      - row_id: cement_spent_leach_solution
+        explanation: "Verify a multi-source spent-solution generation range with compatible recycle and purge boundary; until then collect purge volume, density, and composition."
+      - row_id: cement_hydrogen_air
+        explanation: "Verify a multi-source direct-hydrogen range for comparable acidity and iron-consumption conditions; until then measure or calculate from reconciled reaction data."

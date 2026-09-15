@@ -2,12 +2,13 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.basic-metals.tungsten-molybdenum-tantalum-magnesium-cobalt-cadmium-titanium-zirconium-beryllium-gall-f36ccdf2
 title:
   en-US: "Tungsten, molybdenum, tantalum, magnesium, cobalt, cadmium, titanium, zirconium, beryllium, gallium, hafnium, indium, niobium, rhenium and thallium, germanium and vanadium, unwrought, and powders thereof, except powders of magnesium; cobalt mattes and other intermediate products of cobalt metallurgy"
-  zh-CN: null
-status: scaffold
+  zh-CN: "未锻轧钨、钼、钽、镁、钴、镉、钛、锆、铍、镓、铪、铟、铌、铼、铊、锗和钒及其粉末（镁粉除外）；钴锍及钴冶金的其他中间产品"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
+updated_at_utc: "2026-09-04T12:21:24Z"
 domains:
-  - "metal-products-machinery-and-equipment"
+  - metal-products-machinery-and-equipment
 modules:
   core:
     - pcr-minimum-content
@@ -22,16 +23,84 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "41601"
     title: "Tungsten, molybdenum, tantalum, magnesium, cobalt, cadmium, titanium, zirconium, beryllium, gallium, hafnium, indium, niobium, rhenium and thallium, germanium and vanadium, unwrought, and powders thereof, except powders of magnesium; cobalt mattes and other intermediate products of cobalt metallurgy"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  semantic_boundary:
+    decision: promote_legacy
+    duplicate_material_pcr_found: false
+    representative_route: tungsten_powder_from_tungsten_concentrate
+    category_variability_note: "The category spans chemically distinct metals and metallurgical routes. The detailed inventory is an audited tungsten-powder representative route; other covered products require a declared route-specific process map and atomic exchanges without cross-product proxying."
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: tungsten_trioxide_output
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "No exact public state-100 tungsten trioxide product flow was found; this internal WO3 intermediate needs a dedicated flow identity."
+      - row_id: tungsten_leach_residue
+        reason_code: no_exact_candidate
+        explanation: "The only ranked waste candidate was tungsten tailings, which is beneficiation waste rather than hydrometallurgical leach residue."
+      - row_id: tungsten_process_wastewater
+        reason_code: no_exact_candidate
+        explanation: "The only ranked waste candidate was solid tungsten tailings, not tungsten-containing process wastewater."
+      - row_id: tungsten_trioxide_input
+        reason_code: internal_intermediate_needs_new_flow
+        explanation: "No exact public state-100 tungsten trioxide product flow was found; the input is the same internal WO3 intermediate transferred from hydrometallurgy."
+      - row_id: hydrogen_reductant
+        reason_code: no_exact_candidate
+        explanation: "Two ranked searches returned gas mixtures, hydrogen compounds, and petroleum products, but no exact elemental industrial hydrogen product flow."
+    range_evidence_needs:
+      - range_id: range_tungsten_concentrate_input
+        row_id: tungsten_concentrate_input
+        explanation: "Two independent, original-text-verified sources with compatible concentrate grade, powder product state, route boundary, and mass basis were not available; collect foreground mass and grade data."
+      - range_id: range_hydromet_water
+        row_id: hydromet_process_water
+        explanation: "No two independent boundary-compatible sources supported an empirical process-water range; retain foreground metering."
+      - range_id: range_hydromet_caustic
+        row_id: sodium_hydroxide_input
+        explanation: "No two independent sources supported a route- and concentration-compatible sodium-hydroxide range; retain foreground purchase and concentration records."
+      - range_id: range_hydromet_electricity
+        row_id: hydromet_electricity
+        explanation: "No two independent sources supported a boundary-compatible hydrometallurgical electricity range; retain submetered foreground energy."
+      - range_id: range_tungsten_trioxide_yield
+        row_id: tungsten_trioxide_output
+        explanation: "No independent compatible empirical yield range was verified; calculate output from batch mass and tungsten-assay records."
+      - range_id: range_leach_residue
+        row_id: tungsten_leach_residue
+        explanation: "No independent compatible leach-residue range was verified; weigh the wet residue and record moisture and tungsten content."
+      - range_id: range_process_wastewater
+        row_id: tungsten_process_wastewater
+        explanation: "No independent compatible wastewater range was verified; meter or mass-balance the discharged wastewater."
+      - range_id: range_hydrogen_input
+        row_id: hydrogen_reductant
+        explanation: "No two independent compatible sources supported an empirical hydrogen-use range for the declared furnace and WO3 feed state; retain foreground gas metering."
+      - range_id: range_reduction_electricity
+        row_id: reduction_electricity
+        explanation: "No two independent compatible sources supported an empirical reduction-electricity range; retain submetered foreground energy."
+      - range_id: range_natural_gas
+        row_id: reduction_natural_gas
+        explanation: "No two independent compatible sources supported an empirical furnace natural-gas range; retain foreground gas metering when this heating route applies."
+      - range_id: range_oxygen
+        row_id: combustion_oxygen
+        explanation: "No two independent compatible sources supported an empirical oxygen-use range; retain foreground oxygen metering when oxygen-supported combustion applies."
+      - range_id: range_tungsten_powder_yield
+        row_id: tungsten_powder_output
+        explanation: "No two independent compatible sources supported an empirical powder-yield range; calculate dry saleable output from lot records."
+      - range_id: range_fossil_co2
+        row_id: fossil_co2_output
+        explanation: "No route-specific empirical direct-emission range was inferred; calculate fossil CO2 from metered fuel and verified carbon balance when combustion applies."

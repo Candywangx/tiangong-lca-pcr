@@ -1,10 +1,682 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "42110"
-  title: "Bridges, bridge sections, towers and lattice masts, of iron or steel"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.bridges-bridge-sections-towers-and-lattice-masts-of-iron-or-steel"
+  classification_refs: "CPC 3.0: 42110 (exact classification context)"
+  covered_products: "Factory-fabricated iron or steel bridges; bridge sections; towers; lattice masts; permanently incorporated shop-applied fasteners and corrosion-protection layers when supplied with those products"
+  excluded_products: "Constructed bridge assets; elevated highways; structural-steel erection and bridge-construction services; prefabricated buildings; residual structural-metal products outside this category; temporary transport fixtures; site installation, use, maintenance and end-of-life services"
+  representative_product: "A released factory-fabricated structural-steel bridge section or tower/mast section ready for downstream transport and erection"
+  production_route: "Drawing-controlled receipt of steel plate and sections, cutting/forming/machining, welding or mechanical joining, route-specific surface preparation and protection, inspection and factory release"
+  market_state: "Uncoated weathering steel, shop-primed or painted steel, thermally sprayed steel, or hot-dip galvanized steel at the manufacturer's gate; declared per dataset"
+functional_unit:
+  what: "Provide a factory-fabricated load-bearing iron or steel bridge, bridge section, tower, or lattice mast product ready for the declared downstream transport and erection scope"
+  how_much: "1,000 kg net mass of released product at the factory gate"
+  how_well: "Conforming to the declared drawings, steel grades, dimensional tolerances, joint and weld requirements, inspection status, and corrosion-protection specification"
+  how_long_or_cycle: "One released fabrication lot at the factory gate; no service-life claim is included because the covered output is an intermediate structural product"
+  reference_flow_link: "1,000 kg of the declared covered product, normalized from lot-specific released net mass"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "foreground_system_boundary"
+      rule: "Include all material, energy, water, waste and direct-emission exchanges attributable to receiving, fabrication, joining, route-specific finishing, inspection, repair before release, internal movement and factory-gate dispatch preparation."
+      source_ids:
+        - eu-pef-2021-2279
+        - fhwa-bridge-welding-reference-manual-2020
+    - rule_id: boundary_outsourced_steps
+      applies_to: "outsourced_fabrication"
+      rule: "Include outsourced cutting, forming, welding, heat treatment, surface preparation or coating that is part of the released product, using supplier-specific activity data or a disclosed representative dataset; do not omit it because it occurs off site."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_exclusions
+      applies_to: "downstream_and_capital_scope"
+      rule: "Exclude construction-site erection, civil works, distribution after the factory gate, use, maintenance, demolition and end-of-life. Exclude capital goods only when the study's governing method permits it and disclose the exclusion."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_complete_atomic_flows
+      applies_to: "foreground_inventory_completeness"
+      rule: "Add every actual material, fastener, welding consumable, shielding gas, abrasive, chemical, coating component, fuel, utility, waste and elementary emission as a separate atomic exchange when it crosses the declared boundary, even when it is not one of the common rows below."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Purchased steel plate, structural sections, permanent bought-in components, welding consumables, auxiliaries, coating materials, fuels and utilities as received at the reporting factory boundary"
+  starting_condition_role: "Purchased-input gate for foreground factory fabrication"
+  product_classification_scope: "Factory-fabricated iron or steel bridges, bridge sections, towers and lattice masts; not completed construction assets or erection/construction services"
+  recursive_input_rule: "If a purchased bridge section, tower section, or other input is itself within this PCR category, record it as a distinct product input with supplier quantity and an upstream dataset ending at that supplier's gate; do not silently fold it into the reporting factory's own output or create a self-referential aggregate."
+  upstream_dataset_requirement: "Link each purchased material, utility, fuel, chemical and externally fabricated component to a geographically and technologically representative upstream dataset; disclose proxies and supplier-specific data gaps."
+  disclosure: "Declare included factory operations, outsourced operations, coating route, joining route, treatment of internal returns, allocation method, cut-offs, added atomic exchanges, factory location, reporting period, and the exact factory-gate release condition."
+reference_flow_definition:
+  reference_amount: "1,000 kg net released product mass"
+  product_flow_ref:
+    name: "Bridges, bridge sections, towers and lattice masts, of iron or steel"
+    uuid: "4a0df357-537a-4fce-aa35-87678778a6e4"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product subtype"
+    - "complete product or section scope"
+    - "drawing and revision"
+    - "steel grade and applicable material specification"
+    - "net product mass method"
+    - "fabrication and joining route"
+    - "weld process and consumable classification"
+    - "corrosion-protection state and coating system"
+    - "permanent fastener inclusion"
+    - "factory-gate release condition"
+    - "manufacturing geography"
+    - "reporting period"
+    - "supplier and recycled-content disclosure where available"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure or calculate the released net mass of permanent product components, including permanent fasteners and shop-applied metallic or paint coatings; exclude reusable lifting and transport fixtures and separately shipped installation consumables."
+  - id: mass_input_consistency
+    applies_to: "Steel, welding consumables, chemicals, coatings and scrap"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record physical mass crossing the foreground boundary. For solutions or formulated coatings, record delivered product mass and declare concentration, solids content, density conversion, and unused return separately where relevant."
+  - id: metered_electricity
+    applies_to: "Purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the original metered energy unit and apply an auditable exact unit conversion to MJ; do not derive electricity from cost. Declare grid, voltage level, geography, losses boundary, and any on-site generation or export separately."
+  - id: gas_reference_conditions
+    applies_to: "Natural gas and industrial oxygen"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Record metered volume only with the temperature, pressure, wet/dry basis and meter correction or supplier reference conditions needed to make the volume reproducible."
+  - id: fuel_and_water_basis
+    applies_to: "Diesel fuel and process water"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record delivered or consumed mass. Any volume-to-mass conversion must use lot- or supplier-specific density and retain the source record and reference conditions."
+  - id: no_cross_route_averaging
+    applies_to: "Route-conditional inputs and outputs"
+    required_property_ref:
+      name: "Declared row property"
+      uuid: ""
+    required_unit: "Declared row unit"
+    rule: "Mark a conditional row not applicable when its route is absent. Do not average galvanizing, paint, welding, cutting, fuel, or water exchanges across products that did not undergo those operations."
+process_map:
+  - id: integrated_structural_fabrication
+    name: "Integrated structural fabrication and factory finishing"
+    inclusion: "required"
+    inclusion_condition: "Always; individual cutting, welding, cleaning, coating, fuel and water rows apply only when used by the declared lot"
+    role: "Foreground manufacture from received structural materials through cutting/forming, joining, route-specific finishing, inspection and release"
+    quantitative_reference: "1,000 kg net released product mass"
+process_inventory:
+  - id: integrated_structural_fabrication
+    label: "Integrated structural fabrication and factory finishing"
+    inputs:
+      product:
+        - row_id: in_medium_plate
+          role: "Structural steel plate input"
+          name: "Medium Plate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "53818733-c47c-4e11-a23d-af2720338592"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Medium plate entering cutting, forming, machining or assembly is recorded from lot-specific purchasing and material-issue records. Steel grade, dimensions, coating state and supplier route must be declared."
+          amount:
+            expression: "measured issued mass less documented unused material returned to stock for the declared lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net released product mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_and_consumable_records
+              source_ids: []
+            ranges: []
+        - row_id: in_hot_rolled_large_section
+          role: "Hot-rolled structural section input"
+          name: "Hot-rolled large section"
+          flow_type: "product"
+          flow_ref:
+            uuid: "cbeefeb8-2dfc-48f5-b643-f35aed0d52a1"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Hot-rolled large sections entering cutting, drilling, forming or assembly are recorded separately from plate. The actual section geometry, grade and supplier route are required qualifiers."
+          amount:
+            expression: "measured issued mass less documented unused sections returned to stock for the declared lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net released product mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_and_consumable_records
+              source_ids: []
+            ranges: []
+        - row_id: in_flux_cored_wire
+          role: "Flux-cored welding wire input"
+          name: "Flux Cored Wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1b74a576-06e0-4764-97ce-11a73f8a4752"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Flux-cored wire is recorded only for lots using flux-cored arc welding. Other electrode, wire, flux and shielding-gas products used by the declared welding procedure must be added as separate atomic exchanges."
+          amount:
+            expression: "issued mass minus sealed unused wire returned to controlled stock for the declared lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net released product mass for lots using flux-cored arc welding; otherwise not applicable"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_and_consumable_records
+              source_ids:
+                - fhwa-bridge-welding-reference-manual-2020
+            ranges: []
+        - row_id: in_industrial_oxygen
+          role: "Industrial oxygen input"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3; unit group 93a60a57-a3c8-12da-a746-0800200c9a66"
+          description: "Industrial oxygen is recorded only when supplied across the foreground boundary for oxy-fuel cutting, heating or another declared fabrication operation. Oxygen used by absent routes is not averaged into the lot."
+          amount:
+            expression: "supplier-corrected or metered volume at declared reference conditions attributable to the lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net released product mass for oxygen-using operations; otherwise not applicable"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_and_fuel_records
+              source_ids: []
+            ranges: []
+        - row_id: in_natural_gas
+          role: "Natural gas input"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3; unit group 93a60a57-a3c8-12da-a746-0800200c9a66"
+          description: "Gaseous natural gas is recorded only for direct-fired heating, thermal cutting, curing or other declared factory use. Composition, reference conditions and biogenic blending must be disclosed."
+          amount:
+            expression: "corrected metered or invoiced volume allocated to the lot under the declared allocation rule"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net released product mass when natural gas is used; otherwise not applicable"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_and_fuel_records
+              source_ids: []
+            ranges: []
+        - row_id: in_electricity
+          role: "Purchased electricity input"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "67b723a9-6f63-4802-adca-b52ce7967d47"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ; unit group 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Purchased electrical energy used for cutting, machining, welding, ventilation, compressed air, coating, internal handling and inspection is recorded from meters or an auditable allocation from facility meters."
+          amount:
+            expression: "metered purchased electricity attributable to the declared lot, converted to MJ with an auditable exact unit conversion"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net released product mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_and_fuel_records
+              source_ids:
+                - eu-pef-2021-2279
+                - fhwa-bridge-welding-reference-manual-2020
+            ranges: []
+        - row_id: in_diesel_fuel
+          role: "Diesel fuel input"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Diesel consumed by owned mobile equipment, generators or direct-fired equipment inside the foreground boundary is recorded separately. Contractor fuel is included only when that contracted activity is inside the product boundary and is not already represented by a supplier dataset."
+          amount:
+            expression: "measured or inventory-reconciled consumed mass attributable to the lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net released product mass when diesel is used; otherwise not applicable"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_and_fuel_records
+              source_ids: []
+            ranges: []
+        - row_id: in_process_water
+          role: "Process water input"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Process water is recorded only when used for wet cleaning, rinsing, water-based surface preparation or another declared factory operation. Cooling water in a closed loop or a distinct supplied water grade must be represented separately."
+          amount:
+            expression: "metered or batch-recorded consumed mass attributable to the declared lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net released product mass for water-using operations; otherwise not applicable"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_and_fuel_records
+              source_ids: []
+            ranges: []
+        - row_id: in_sodium_hydroxide
+          role: "Sodium hydroxide input"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Sodium hydroxide is recorded only when the declared surface-treatment route uses it. Delivered solution mass and concentration are recorded without treating pure NaOH mass and solution mass as interchangeable."
+          amount:
+            expression: "delivered product mass consumed by the declared lot, with solution concentration and unused return documented"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net released product mass for alkaline-cleaning operations; otherwise not applicable"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_and_consumable_records
+              source_ids: []
+            ranges: []
+        - row_id: in_shg_zinc_metal
+          role: "Special High Grade zinc metal input"
+          name: "Special High Grade zinc metal"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2d8ff1bd-e128-4c74-a99d-b8734c99bbd2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Special High Grade zinc metal is recorded only when that grade is added to a hot-dip galvanizing bath for the declared product. Other zinc grades, zinc-aluminium wires and bath-alloy additions are separate atomic exchanges."
+          amount:
+            expression: "bath make-up mass attributable to the declared lot using documented bath inventory reconciliation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net released hot-dip galvanized product mass; otherwise not applicable"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_and_consumable_records
+              source_ids:
+                - fhwa-thermal-spray-coatings-2014
+            ranges: []
+        - row_id: in_zinc_rich_epoxy_primer
+          role: "Two-component zinc-rich epoxy primer input"
+          name: "Two-component zinc-rich epoxy primer"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "The wet, mixed two-component zinc-rich epoxy primer crossing the factory boundary is recorded only for the declared paint system. Its Tiangong flow UUID remains unresolved because the audited candidates did not verify the required formulation."
+          amount:
+            expression: "mixed wet product mass applied plus documented spray and mixing loss attributable to the lot, net of separately measured recoverable return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net released product mass for lots using this primer; otherwise not applicable"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_and_consumable_records
+              source_ids:
+                - fhwa-one-coat-steel-bridges-2011
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: out_reference_product
+          role: "Released reference product"
+          name: "Bridges, bridge sections, towers and lattice masts, of iron or steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4a0df357-537a-4fce-aa35-87678778a6e4"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "The released output is the measured or calculated net mass of the covered factory-fabricated product that passed the declared acceptance and inspection requirements."
+          amount:
+            expression: "1,000 kg after normalization from lot-specific released net product mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg net released product mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_release_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        - row_id: out_post_industrial_steel_scrap
+          role: "Post-industrial steel scrap output"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Steel offcuts, turnings and rejected steel pieces leaving the fabrication process as post-industrial scrap are measured separately from reusable material returned to stock and from non-ferrous or coated hazardous waste."
+          amount:
+            expression: "measured mass leaving the foreground boundary as post-industrial steel scrap, net of internal reuse"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net released product mass"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_scrap_and_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: out_co2_fossil_natural_gas
+          role: "Fossil carbon dioxide from natural-gas combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Direct fossil carbon dioxide from natural gas burned inside the foreground boundary is calculated or measured separately from upstream gas-supply emissions. It is absent when no natural gas is combusted on site."
+          amount:
+            expression: "direct monitored mass or measured natural-gas quantity multiplied by a documented composition- and geography-appropriate fossil CO2 factor; keep upstream emissions excluded"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net released product mass when natural gas is combusted; otherwise not applicable"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_combustion_records
+              source_ids: []
+            ranges: []
+        - row_id: out_co2_fossil_diesel
+          role: "Fossil carbon dioxide from diesel combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Direct fossil carbon dioxide from diesel burned inside the foreground boundary is calculated or measured separately from upstream diesel-supply emissions and from any declared biogenic fraction."
+          amount:
+            expression: "direct monitored mass or measured diesel quantity multiplied by a documented grade-, composition- and geography-appropriate fossil CO2 factor; keep upstream emissions excluded"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net released product mass when diesel is combusted; otherwise not applicable"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_combustion_records
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "foreground_burden_allocation"
+    rule: "Avoid allocation by separately metering, batch-recording or otherwise subdividing operations and utilities directly attributable to the declared product lot."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical_causality
+    applies_to: "shared_factory_operations"
+    rule: "When subdivision is not feasible, use a documented causal physical driver such as measured machine time, weld length, cutting time, coating area, lifted mass-distance or occupied process time. Product mass alone is permitted only when shown to represent the shared operation's physical causality."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_other_relationship
+    applies_to: "residual_multifunctionality"
+    rule: "Use another relationship, including economic allocation, only after documenting why subdivision, system expansion and a relevant physical relationship are not feasible; disclose prices, period and sensitivity when economic allocation is used."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_scrap_no_hidden_credit
+    applies_to: "post_industrial_steel_scrap"
+    rule: "Record post-industrial steel scrap at its measured mass and destination. Do not apply an avoided-primary-steel credit or recycling substitution inside this factory-gate inventory unless the governing study method explicitly requires it and the method is disclosed without double counting."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_and_consumable_records
+      process_id: "integrated_structural_fabrication"
+      flow_role: "in_medium_plate; in_hot_rolled_large_section; in_flux_cored_wire; in_sodium_hydroxide; in_shg_zinc_metal; in_zinc_rich_epoxy_primer"
+      record_type: "Purchase receipt, material certificate, stock issue/return, batch mix and bath inventory record"
+      raw_fields: "product identity; supplier; lot; grade/formulation; gross issued quantity; unused return; concentration or solids; unit; date; linked product lot"
+      collection_method: "Reconcile traceable receipt and issue records to the fabrication lot; use calibrated weighing where available and retain conversions"
+      unit: "kg"
+      frequency: "Per receipt and issue; reconcile per lot and reporting period"
+      temporal_coverage: "Complete production period represented by the dataset"
+      site_scope: "All included lines and storage/issue points at the reporting factory, plus in-scope outsourced records"
+      aggregation_rule: "Sum consumed quantity by atomic product identity, subtract only documented reusable return, then normalize by released net product mass"
+      quality_evidence: "Purchase records; material certificates; stock ledger; scale calibration; batch sheet; bath reconciliation; lot traceability"
+    - protocol_id: cp_utility_and_fuel_records
+      process_id: "integrated_structural_fabrication"
+      flow_role: "in_industrial_oxygen; in_natural_gas; in_electricity; in_diesel_fuel; in_process_water"
+      record_type: "Calibrated submeter, supplier invoice, tank/stock reconciliation or equipment log"
+      raw_fields: "meter start/end; corrected quantity; unit; reference conditions; fuel grade; meter location; operating hours; allocation driver; lot; date"
+      collection_method: "Prefer lot or process submeters; otherwise reconcile facility totals and allocate using the documented causal driver"
+      unit: "m3, MJ or kg as specified by the row"
+      frequency: "Continuous or per delivery, aggregated at least monthly and reconciled to the lot"
+      temporal_coverage: "Same period as released product, with opening/closing inventory where relevant"
+      site_scope: "All in-scope meters, tanks and equipment; exclude quantities already included in outsourced datasets"
+      aggregation_rule: "Subtract exports and out-of-boundary uses, allocate only the remaining in-scope quantity, convert units audibly, then normalize"
+      quality_evidence: "Meter calibration; invoices; tank dip or stock balance; equipment log; allocation worksheet; reference-condition record"
+    - protocol_id: cp_product_release_records
+      process_id: "integrated_structural_fabrication"
+      flow_role: "out_reference_product"
+      record_type: "Release certificate, calibrated scale record, shipping mass record or drawing-controlled permanent-component BOM"
+      raw_fields: "product subtype; lot; drawing revision; component mass; permanent fastener mass; coating mass; excluded fixture mass; acceptance status; release date"
+      collection_method: "Prefer direct calibrated weighing; otherwise sum verified permanent-component masses and reconcile against shipping or weighbridge data"
+      unit: "kg"
+      frequency: "Per released lot"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "All covered products released by the reporting factory"
+      aggregation_rule: "Include accepted permanent product mass only; exclude reusable fixtures and unreleased/reworked inventory; sum lots before normalization"
+      quality_evidence: "Release certificate; inspection acceptance; scale calibration; signed BOM; shipping mass reconciliation"
+    - protocol_id: cp_scrap_and_waste_records
+      process_id: "integrated_structural_fabrication"
+      flow_role: "out_post_industrial_steel_scrap"
+      record_type: "Segregated waste scale ticket and stock movement record"
+      raw_fields: "waste identity; alloy/coating contamination; mass; container tare; source lot/process; internal reuse; destination; date"
+      collection_method: "Weigh each outbound segregated scrap stream; reconcile internal return before classifying material as waste"
+      unit: "kg"
+      frequency: "Per shipment with monthly reconciliation"
+      temporal_coverage: "Same period as production records"
+      site_scope: "All fabrication, repair and rejection areas in scope"
+      aggregation_rule: "Sum only scrap crossing the foreground boundary, net of documented internal reuse; keep other wastes as separate atomic rows"
+      quality_evidence: "Calibrated scale tickets; waste transfer note; recycler receipt; internal return ledger"
+    - protocol_id: cp_direct_combustion_records
+      process_id: "integrated_structural_fabrication"
+      flow_role: "out_co2_fossil_natural_gas; out_co2_fossil_diesel"
+      record_type: "Continuous emission monitor or fuel-consumption and emission-factor calculation record"
+      raw_fields: "fuel row; quantity; composition/grade; fossil fraction; factor value; factor unit; factor source and year; oxidation assumption; monitor result; lot allocation"
+      collection_method: "Use direct monitoring when representative; otherwise multiply measured fuel use by a documented factor compatible with fuel, geography and period, and keep gas and diesel calculations separate"
+      unit: "kg CO2"
+      frequency: "Per monitoring interval or fuel reconciliation; aggregate with production period"
+      temporal_coverage: "Same period as fuel and released-product records"
+      site_scope: "All direct combustion sources inside the foreground boundary"
+      aggregation_rule: "Sum direct fossil CO2 by fuel and source, exclude upstream supply emissions, allocate using the same causal driver as fuel, then normalize"
+      quality_evidence: "Monitor QA record or complete factor citation; fuel record; calculation workbook; allocation record; independent check"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Every inventory row"
+      rule: "normalized amount = period or lot amount × 1,000 / released net product mass in kg; calculate before rounding and preserve the unrounded value"
+      inputs:
+        - "atomic lot or period amount"
+        - "released net product mass"
+      output: "row amount per 1,000 kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_released_net_mass
+      applies_to: "out_reference_product"
+      rule: "Prefer calibrated direct mass. If calculated, sum permanent accepted steel, permanent fasteners and shop-applied coating mass, subtract only documented reusable fixtures and packaging not sold as product, and reconcile with shipping mass."
+      inputs:
+        - "accepted component/BOM masses"
+        - "coating mass"
+        - "scale or shipping reconciliation"
+      output: "released net product mass"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_shared_resource_allocation
+      applies_to: "Shared utilities and consumables"
+      rule: "Allocate the reconciled in-scope total using the selected causal physical driver; allocation fractions across all products sharing the total must sum to 1 before normalization."
+      inputs:
+        - "reconciled resource total"
+        - "product-specific driver values"
+      output: "allocated lot resource quantity"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_direct_fossil_co2
+      applies_to: "out_co2_fossil_natural_gas; out_co2_fossil_diesel"
+      rule: "For each fuel separately, direct fossil CO2 = measured fuel quantity × documented compatible fossil CO2 factor, adjusted only for a documented fossil fraction; do not add upstream supply emissions to these elementary rows."
+      inputs:
+        - "measured fuel quantity"
+        - factor
+        - "fossil fraction"
+        - "direct monitor result when used"
+      output: "direct fossil CO2 mass by fuel"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_traceability
+      applies_to: "Reference product and steel inputs"
+      requirement: "Link each released lot to drawings, product subtype, steel grades, material certificates, component/BOM records, joining route, coating state and release acceptance."
+      evidence: "Drawing register; material certificates; route card; release certificate"
+    - id: dq_temporal_completeness
+      applies_to: "All foreground rows"
+      requirement: "Cover a representative continuous production period, normally at least 12 months where production is recurring; disclose shorter campaigns, shutdowns, atypical projects and inventory changes."
+      evidence: "Production calendar; meter/invoice period reconciliation; lot list"
+    - id: dq_atomic_completeness
+      applies_to: "Foreground inventory"
+      requirement: "Reconcile the actual BOM, consumable ledger, utility meters, fuel records, waste records and environmental permits. Add every additional crossing as an atomic row and justify any omission under the governing cut-off rule."
+      evidence: "Signed completeness reconciliation and cut-off log"
+    - id: dq_measurement_quality
+      applies_to: "Measured quantities"
+      requirement: "Record instrument, calibration status, resolution, reference conditions, conversion factors and estimation share; flag missing or expired calibration."
+      evidence: "Calibration certificates; meter register; conversion worksheet"
+    - id: dq_representativeness
+      applies_to: "Upstream datasets and shared allocations"
+      requirement: "Evaluate technological, geographical and temporal match; identify proxies and quantify the foreground share based on estimates rather than direct records."
+      evidence: "Data-quality assessment; supplier geography; dataset metadata; allocation worksheet"
+    - id: dq_route_separation
+      applies_to: "Welding, coating, fuel and water rows"
+      requirement: "Demonstrate that not-applicable routes were excluded and that route-specific exchanges were not averaged into products that did not undergo those operations."
+      evidence: "Route card; work order; coating/welding procedure; lot-level allocation"
+    - id: dq_emission_factor_provenance
+      applies_to: "Calculated direct emissions"
+      requirement: "Retain full factor identity, publisher, version/year, fuel basis, geography, units, oxidation and fossil-fraction assumptions; an undocumented default factor is not acceptable."
+      evidence: "Factor source and calculation review record"
+validation_rules:
+  - rule_id: validation_identity
+    applies_to: "reference_flow_and_metadata"
+    rule: "Confirm the reference UUID, 1,000 kg mass basis, product subtype, drawing/revision, steel grade, fabrication route, coating state, geography, period and factory-gate release condition."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - eu-pef-2021-2279
+  - rule_id: validation_process_coverage
+    applies_to: "foreground_processes"
+    rule: "Confirm all in-scope receipt, cutting/forming/machining, joining, route-specific finishing, inspection, repair, internal movement and dispatch-preparation operations are represented directly or through a disclosed in-scope outsourced dataset."
+    source_ids:
+      - eu-pef-2021-2279
+      - fhwa-bridge-welding-reference-manual-2020
+  - rule_id: validation_atomic_inventory
+    applies_to: "process_inventory"
+    rule: "Confirm each exchange is one physical product, waste or elementary flow; split additional electrodes, fluxes, gases, fasteners, abrasives, coatings, fuels, water grades, wastes and emissions rather than using collection labels."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validation_mass_reconciliation
+    applies_to: "steel_and_product_mass"
+    rule: "Reconcile issued steel = released product steel content + post-industrial steel scrap + internal return + work-in-progress change + measured process loss, with every residual investigated and disclosed."
+    source_ids: []
+  - rule_id: validation_utility_reconciliation
+    applies_to: "electricity_fuels_gases_water"
+    rule: "Reconcile submeter or allocated lot totals to facility meters, invoices and opening/closing stocks; allocation fractions for each shared total must sum to 1."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validation_route_conditions
+    applies_to: "conditional_rows"
+    rule: "Verify each conditional input and output against work orders and procedure records; absent oxygen, natural gas, diesel, water, sodium hydroxide, galvanizing zinc, primer or direct-combustion routes must be marked not applicable rather than zero-filled into an average."
+    source_ids:
+      - fhwa-bridge-welding-reference-manual-2020
+      - fhwa-thermal-spray-coatings-2014
+      - fhwa-one-coat-steel-bridges-2011
+  - rule_id: validation_coating_compatibility
+    applies_to: "coated_products"
+    rule: "Confirm coating identity, layer/system, surface preparation, application location, wet/dry basis and inclusion of permanent coating mass are consistent with the declared released product."
+    source_ids:
+      - fhwa-thermal-spray-coatings-2014
+      - fhwa-one-coat-steel-bridges-2011
+  - rule_id: validation_direct_emissions
+    applies_to: "direct_combustion"
+    rule: "Confirm natural-gas and diesel fossil CO2 rows include direct foreground combustion only, use measured fuel or representative monitoring, and retain compatible factor provenance and fossil fraction without double counting upstream emissions."
+    source_ids: []
+  - rule_id: validation_data_quality
+    applies_to: "dataset_release"
+    rule: "Confirm temporal coverage, calibration, source traceability, data gaps, proxy use, cut-offs, allocation and uncertainty disclosures are complete enough for the stated downstream role."
+    source_ids:
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Product-specific or facility-average factory-gate inventory dataset for a declared iron/steel bridge, bridge section, tower or lattice mast product"
+  downstream_use: "May be used as a secondary_dataset or background_dataset for construction, infrastructure, energy or communications systems when product subtype, geography, technology, period and factory-gate boundary match"
+  allowed_use: "Product-specific modelling; supplier or facility benchmarking with aligned scopes; downstream construction and asset models that add transport, erection, use, maintenance and end-of-life explicitly"
+  excluded_use: "Constructed-bridge or installed-tower results; erection/construction service datasets; generic structural steel production; use-stage durability claims; substitution or recycling credits not documented by the consuming method"
+  required_metadata: "PCR id and version/status; reference UUID and amount; product subtype; complete/section scope; drawing/specification; steel grade; joining and coating routes; net-mass method; factory and geography; period; allocation; cut-offs; upstream dataset list; added atomic exchanges"
+  required_quality_disclosure: "Foreground versus estimated shares; measurement/calibration status; temporal, geographical and technological representativeness; material and utility reconciliation; factor provenance; unresolved flow identities; uncertainty and proxy use"
+  update_trigger: "Material change in product design or mass, steel grade or supplier route, welding/assembly technology, coating system, factory energy mix, fuel, allocation method, outsourced scope, emission factor, geography, or reporting period; or resolution of an unresolved UUID/range evidence need"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "dataset"
+    reference: "United Nations Statistics Division, CPC Ver. 3.0 Structure, 30 June 2025, row 42110, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-05)"
+    used_for: "Official classification identity and English product title"
+  - id: "china-mof-2013-tariff-schedule"
+    type: "official_guidance"
+    reference: "Ministry of Finance of the People's Republic of China, tariff schedule, page 127, lines 73081000 and 73082000, https://gss.mof.gov.cn/gzdt/zhengcefabu/201306/P020130708509079068339.pdf (retrieved 2026-09-05)"
+    used_for: "Professional Chinese product terminology for bridge sections, towers and lattice masts"
+  - id: "fhwa-bridge-welding-reference-manual-2020"
+    type: "handbook"
+    reference: "U.S. Federal Highway Administration, Bridge Welding Reference Manual, FHWA-HIF-19-088, September 2019 with September 2020 errata, https://www.fhwa.dot.gov/bridge/steel/pubs/hif19088.pdf (retrieved 2026-09-05)"
+    used_for: "Welding-process decomposition, welding-consumable roles, electric welding equipment, inspection and quality records"
+  - id: "fhwa-one-coat-steel-bridges-2011"
+    type: "official_guidance"
+    reference: "U.S. Federal Highway Administration, Performance Evaluation of One-Coat Systems for New Steel Bridges, FHWA-HRT-11-046, June 2011, https://www.fhwa.dot.gov/publications/research/infrastructure/bridge/11046/001.cfm (retrieved 2026-09-05)"
+    used_for: "Abrasive surface preparation and zinc-rich primer/coating-system process scope"
+  - id: "fhwa-thermal-spray-coatings-2014"
+    type: "official_guidance"
+    reference: "U.S. Federal Highway Administration, Slip and Creep of Thermal Spray Coatings, FHWA-HRT-14-083, September 2014, https://www.fhwa.dot.gov/publications/research/infrastructure/structures/bridge/14083/index.cfm (retrieved 2026-09-05)"
+    used_for: "Corrosion-protection route distinctions, blast cleaning, zinc-bearing coatings, hot-dip galvanizing and coating quality records"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission, Commission Recommendation (EU) 2021/2279, Annex I Product Environmental Footprint Method, Official Journal L 471, 30 December 2021, https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32021H2279 (retrieved 2026-09-05)"
+    used_for: "Declared-unit and reference-flow method, company-specific BOM and manufacturing data, boundary and completeness rules, data quality, and allocation hierarchy"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:160e4659c038eb13cb31836c032da26adbc788cc66c1f6f4157d7aa96014ec71"
+  generated_content_sha256: "sha256:41e021ace03c1f3ac9fb2ed4457ec58658873581c565c5d6ab832928873e24ee"

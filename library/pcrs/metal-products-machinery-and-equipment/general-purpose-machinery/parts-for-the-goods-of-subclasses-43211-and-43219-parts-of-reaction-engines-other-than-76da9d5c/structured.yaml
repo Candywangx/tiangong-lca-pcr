@@ -1,10 +1,618 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "43251"
-  title: "Parts for the goods of subclasses 43211 and 43219; parts of reaction engines other than turbo-jets"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.general-purpose-machinery.parts-for-the-goods-of-subclasses-43211-and-43219-parts-of-reaction-engines-other-than-76da9d5c"
+  classification_refs: "CPC 3.0: 43251, Parts for the goods of subclasses 43211 and 43219; parts of reaction engines other than turbo-jets (exact classification context; currently unmapped)"
+  covered_products: "Separately supplied finished parts for linear-acting hydraulic or pneumatic cylinders; separately supplied finished parts for other hydraulic or pneumatic power engines and motors; separately supplied finished parts for reaction engines other than turbo-jets"
+  excluded_products: "Complete engines or motors; turbo-jet and turbo-propeller parts; pumps, compressors, valves, or unrelated machinery parts; repaired, overhauled, or remanufactured parts; tooling; production equipment; packaging not integral to the saleable part"
+  representative_product: "A conforming, machined and finished load-bearing or pressure-containing engine or motor part supplied as a new replacement or original-equipment component"
+  production_route: "Receipt of a declared material-specific forged or cast preform; precision machining; route-dependent heat treatment and aqueous cleaning or surface treatment; final inspection and release"
+  market_state: "New, finished, inspected part at the reporting facility factory gate, with preservation coating only when part of the declared saleable state"
+functional_unit:
+  what: "A separately supplied part that meets the declared drawing, material, dimensional, surface-condition, and acceptance requirements for the identified hydraulic or pneumatic engine or motor, or non-turbojet reaction engine"
+  how_much: "1 kg net mass of conforming finished part"
+  how_well: "Released by the reporting facility against the declared drawing revision and applicable inspection or test plan; rejected parts and removable packaging are excluded from conforming output mass"
+  how_long_or_cycle: "One production lot through factory-gate release; service life and use cycles are outside this cradle-to-gate PCR"
+  reference_flow_link: "The reference flow is the measured net mass of conforming finished parts represented by out_finished_part"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_operations
+      applies_to: "reporting-facility manufacturing"
+      rule: "Include directly controlled receipt, machining, route-dependent heat treatment, aqueous cleaning or surface treatment, assembly, inspection, rework within the lot, and waste handling through the point each exchange leaves the foreground boundary."
+      source_ids:
+        - eu-jrc-sf-bref-2024
+        - eu-jrc-stm-bref-2006
+        - us-epa-aerospace-neshap-2015
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased inputs"
+      rule: "Keep every purchased preform, electricity, fuel, water, and chemical as a visible product input linked to an upstream dataset whose geography, technology, product state, and delivery boundary are disclosed."
+      source_ids: []
+    - rule_id: boundary_route_conditions
+      applies_to: "conditional operations"
+      rule: "Include natural gas only when directly fired heat treatment occurs, and include process water, sodium hydroxide, cleaning wastewater, and waste alkaline liquor only when the declared aqueous alkaline-cleaning route uses or generates those atomic exchanges."
+      source_ids:
+        - eu-jrc-sf-bref-2024
+        - eu-jrc-stm-bref-2006
+    - rule_id: boundary_exclusions
+      applies_to: "outside-scope life-cycle stages"
+      rule: "Exclude capital equipment, tooling production, building infrastructure, employee travel, use, maintenance, repair, overhaul, remanufacture, end-of-life, and distribution beyond the reporting facility gate unless the study goal explicitly expands the boundary and reports that expansion separately."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Material-specific forged or cast preforms, purchased consumables, and purchased utilities received at the reporting-facility boundary in their declared supply states"
+  starting_condition_role: "The starting condition separates upstream preform and utility production from the directly controlled part-manufacturing foreground"
+  product_classification_scope: "Separately supplied new parts within the composite CPC 43251 identity; classification context does not make complete engines, turbojet or turboprop parts, or unrelated machinery parts part of this PCR"
+  recursive_input_rule: "If an input is itself a finished part within this PCR category, record it once as a visible purchased product input with its own upstream dataset; do not recursively reproduce its manufacturing inventory inside the receiving process"
+  upstream_dataset_requirement: "Link every purchased precursor, material, chemical, fuel, electricity, and water input to an upstream dataset matching the declared material or product state, geography, technology, and delivery boundary"
+  disclosure: "Disclose part family, drawing revision, alloy and material specification, precursor form, heat-treatment and surface-treatment route, internal rework, outsourced operations, site, production period, and all boundary deviations"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Finished CPC 43251 engine or motor part"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "part family and intended host equipment"
+    - "part number and drawing revision"
+    - "material specification and alloy grade"
+    - "incoming precursor form"
+    - "manufacturing and heat-treatment route"
+    - "surface treatment and preservation state"
+    - "inspection or test acceptance basis"
+    - "production site and geography"
+    - "production period"
+    - "new-production factory-gate state"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "conforming finished part and all mass-normalized inventory"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh conforming finished parts without removable packaging and normalize every inventory amount to 1 kg of that output. Preserve measured lot totals and the normalization calculation."
+  - id: material_mass_balance
+    applies_to: "precursor inputs, conforming output, metal scrap, and stock change"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use one dry or as-received mass basis consistently within each declared material stream. Record retained work in progress and inventory change separately before checking the lot mass balance."
+  - id: electricity_energy
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the metered electrical-energy quantity. When the source meter reports kWh, convert using 1 kWh = 3.6 MJ and retain the original meter value."
+  - id: gas_volume
+    applies_to: "gaseous natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Report gas at the supplier's declared reference temperature and pressure; disclose those reference conditions and any conversion from meter conditions."
+process_map:
+  - id: integrated_part_manufacturing
+    name: "Integrated part machining, route-dependent finishing, inspection, and release"
+    inclusion: "required"
+    inclusion_condition: "Applies to every foreground data package; route-conditional cards are recorded only when their stated material or operation applies"
+    role: "Foreground manufacturing from received preform to conforming finished part"
+    quantitative_reference: "1 kg conforming finished part at factory gate"
+process_inventory:
+  - id: integrated_part_manufacturing
+    label: "Integrated part machining, route-dependent finishing, inspection, and release"
+    inputs:
+      product:
+        - row_id: in_alloy_steel_forging
+          role: "Low-alloy steel forged preform"
+          name: "Low-alloy steel forging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the separately purchased forged preform when the declared part is manufactured from low-alloy steel forging stock."
+          amount:
+            expression: "measured as-received mass issued to the conforming production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished part at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: in_aluminium_alloy_casting
+          role: "Aluminium-alloy casting preform"
+          name: "Aluminium-alloy casting preform"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the separately purchased casting preform when the declared part is manufactured from an aluminium-alloy casting."
+          amount:
+            expression: "measured as-received mass issued to the conforming production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished part at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: in_nickel_alloy_forging
+          role: "Nickel-alloy forged preform"
+          name: "Nickel-alloy forging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the separately purchased forged preform when the declared reaction-engine part is manufactured from nickel-alloy forging stock."
+          amount:
+            expression: "measured as-received mass issued to the conforming production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished part at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: in_electricity
+          role: "Purchased electrical energy"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity used by machining equipment and attributable auxiliaries, heat-treatment or surface-treatment equipment, inspection, and directly controlled waste handling."
+          amount:
+            expression: "measured electricity attributable to the production lot, including justified allocation of shared meters"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished part at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_and_consumable_records
+              source_ids: []
+            ranges: []
+        - row_id: in_cutting_fluid
+          role: "Cutting fluid supplied to machining"
+          name: "Cutting Fluid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "576d250f-4f36-4385-939d-0f03b8f95a10"
+          property_unit: "Mass / kg"
+          description: "Record the net fresh cutting-fluid product entering machining after deducting separately documented unopened returns; declare formulation, dilution, and recirculation state."
+          amount:
+            expression: "measured net fresh cutting-fluid mass issued to the production lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished part at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_and_consumable_records
+              source_ids: []
+            ranges: []
+        - row_id: in_natural_gas
+          role: "Natural gas for directly fired heat treatment"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record this flow only when gaseous natural gas is combusted inside the foreground boundary for heating or heat treatment."
+          amount:
+            expression: "supplier-meter or calibrated submeter volume attributable to the production lot at declared reference conditions"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished part at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_and_consumable_records
+              source_ids: []
+            ranges: []
+        - row_id: in_process_water
+          role: "Process water for aqueous cleaning and rinsing"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water only when it crosses the foreground boundary for aqueous cleaning, rinsing, bath make-up, or directly associated cleaning operations."
+          amount:
+            expression: "measured delivered water mass or volume converted using documented density and meter conditions"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished part at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_bath_records
+              source_ids:
+                - eu-jrc-stm-bref-2006
+            ranges: []
+        - row_id: in_sodium_hydroxide
+          role: "Sodium hydroxide used in alkaline cleaning"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide only when the declared cleaning route uses it; retain the product supply state and concentration rather than assuming pure dry chemical."
+          amount:
+            expression: "measured mass of sodium-hydroxide product charged to the cleaning bath, with supply concentration disclosed"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished part at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_bath_records
+              source_ids:
+                - eu-jrc-stm-bref-2006
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: out_finished_part
+          role: "Conforming finished engine or motor part"
+          name: "Finished CPC 43251 engine or motor part"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only parts released against the declared drawing and acceptance plan; exclude rejects, work in progress, and removable packaging from the conforming output mass."
+          amount:
+            expression: "measured net mass of conforming finished parts released from the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg conforming finished part at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_mass_balance
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: out_low_alloy_steel_scrap
+          role: "Low-alloy steel machining scrap"
+          name: "Low-alloy steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "afedcccd-b9f3-4941-8ba4-d3135b8abb67"
+          property_unit: "Mass / kg"
+          description: "Record segregated low-alloy steel chips, offcuts, and rejected metal sent out as scrap when the low-alloy steel route applies."
+          amount:
+            expression: "measured dispatched mass plus justified closing stock change attributable to the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished part at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_dispatch_records
+              source_ids: []
+            ranges: []
+        - row_id: out_aluminium_scrap
+          role: "Aluminium machining scrap"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass / kg"
+          description: "Record segregated aluminium chips, offcuts, and rejected metal sent out as scrap when the aluminium route applies."
+          amount:
+            expression: "measured dispatched mass plus justified closing stock change attributable to the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished part at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_dispatch_records
+              source_ids: []
+            ranges: []
+        - row_id: out_nickel_alloy_scrap
+          role: "Nickel-alloy machining scrap"
+          name: "Nickel-alloy machining scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record segregated nickel-alloy chips, offcuts, and rejected metal sent out as scrap when the nickel-alloy route applies."
+          amount:
+            expression: "measured dispatched mass plus justified closing stock change attributable to the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming finished part at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_dispatch_records
+              source_ids: []
+            ranges: []
+        - row_id: out_waste_cutting_oil
+          role: "Waste cutting oil from machining"
+          name: "Waste cutting oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "80d926e3-0f76-4a19-9b1e-ffec9deb1216"
+          property_unit: "Mass / kg"
+          description: "Record waste cutting oil only for an oil-based cutting-fluid route when the material leaves the foreground boundary for recovery or treatment."
+          amount:
+            expression: "measured mass transferred to closed waste storage or an off-site recovery or treatment operator"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished part at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_dispatch_records
+              source_ids:
+                - us-epa-aerospace-neshap-2015
+            ranges: []
+        - row_id: out_cleaning_wastewater
+          role: "Wastewater from aqueous cleaning"
+          name: "Wastewater from cleaning"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f0402393-e82c-47e8-9cd8-a486c97f3e89"
+          property_unit: "Mass / kg"
+          description: "Record cleaning rinse water leaving the process as wastewater separately from concentrated spent bath liquor."
+          amount:
+            expression: "measured wastewater mass, or measured volume converted with documented density, crossing to treatment or sewer"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished part at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_bath_records
+              source_ids:
+                - eu-jrc-stm-bref-2006
+            ranges: []
+        - row_id: out_waste_alkaline_liquor
+          role: "Waste alkaline liquor from bath replacement"
+          name: "Waste Alkaline Liquor"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "ce738ef0-a711-4650-a38b-34479efd7559"
+          property_unit: "Mass / kg"
+          description: "Record concentrated spent alkaline cleaning solution separately when a bath is partially or fully replaced and leaves the foreground process for treatment."
+          amount:
+            expression: "measured spent-liquor mass removed from the bath and transferred to treatment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming finished part at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_bath_records
+              source_ids:
+                - eu-jrc-stm-bref-2006
+            ranges: []
+      elementary:
+        - row_id: out_fossil_co2
+          role: "Direct fossil carbon dioxide from natural-gas combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record only direct foreground fossil carbon dioxide attributable to natural-gas combustion; do not add upstream electricity or fuel-supply emissions to this elementary-flow row."
+          amount:
+            expression: "calculate from attributable natural-gas consumption and documented fuel carbon content, oxidation fraction, and carbon-to-carbon-dioxide mass conversion"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming finished part at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_and_consumable_records
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "mixed part families, alloys, routes, or production lots"
+    rule: "Subdivide production by part family, alloy, route, machine cell, or lot and use direct meters, issue records, and time records before allocating shared burdens."
+    source_ids: []
+  - rule_id: allocation_shared_operations
+    applies_to: "inseparable shared electricity, fuel, consumables, or waste"
+    rule: "When subdivision or direct measurement is not feasible, allocate the shared exchange using the measured causal driver, in descending preference: machine or furnace time adjusted for rated load, treated surface area for surface operations, or conforming product mass. Record the driver and calculation."
+    source_ids: []
+  - rule_id: allocation_scrap_and_recycling
+    applies_to: "metal scrap and recovered cutting oil"
+    rule: "Report waste outputs at the foreground boundary without avoided-burden credit. If a downstream study models recycling or recovery benefits, keep that modelling outside this foreground process and disclose the method."
+    source_ids: []
+  - rule_id: allocation_rework
+    applies_to: "internal rework before factory-gate release"
+    rule: "Keep rework inputs and wastes in the originating lot. Do not create additional conforming product output for the same physical part."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_batch_mass_balance
+      process_id: "integrated_part_manufacturing"
+      flow_role: "precursor input, conforming output, work in progress, and stock change"
+      record_type: "weighbridge, scale, material-issue, routing, and release records"
+      raw_fields: "material identity; alloy; precursor mass; finished mass; reject mass; opening and closing stock; lot id; timestamp"
+      collection_method: "calibrated weighing and production-record reconciliation"
+      unit: "kg"
+      frequency: "each production lot"
+      temporal_coverage: "complete declared reporting period"
+      site_scope: "all in-scope cells and outsourced steps reconciled to the reporting lot"
+      aggregation_rule: "sum accepted records by material and lot, reconcile stock change, then divide by conforming finished mass"
+      quality_evidence: "calibration status; lot traceability; release record; reconciliation sign-off"
+    - protocol_id: cp_utility_and_consumable_records
+      process_id: "integrated_part_manufacturing"
+      flow_role: "electricity, natural gas, cutting fluid, and direct fossil carbon dioxide"
+      record_type: "submeters, supplier meters, issue and return records, and fuel-quality records"
+      raw_fields: "meter start and end; meter unit; allocation driver; fluid issue and return; gas reference conditions; carbon content; oxidation fraction; timestamp"
+      collection_method: "calibrated meter reading and controlled-stores reconciliation"
+      unit: "MJ; m3; kg"
+      frequency: "each lot or shift, aggregated monthly at most"
+      temporal_coverage: "complete declared reporting period"
+      site_scope: "every in-scope cell, furnace, and attributable auxiliary"
+      aggregation_rule: "subtract verified returns and opening/closing stocks, allocate only shared meters by the declared causal driver, then normalize"
+      quality_evidence: "meter calibration; supplier statement; issue voucher; allocation worksheet"
+    - protocol_id: cp_cleaning_bath_records
+      process_id: "integrated_part_manufacturing"
+      flow_role: "process water, sodium hydroxide, cleaning wastewater, and waste alkaline liquor"
+      record_type: "water meter, batch-make-up sheet, bath analysis, discharge meter, and waste-transfer record"
+      raw_fields: "water quantity; chemical product mass and concentration; bath volume; bath replacement; wastewater quantity; density; destination; lot id; timestamp"
+      collection_method: "meter reading, controlled chemical issue, bath log, and waste-transfer measurement"
+      unit: "kg; m3"
+      frequency: "each make-up, discharge, or bath change"
+      temporal_coverage: "complete declared reporting period"
+      site_scope: "all in-scope aqueous-cleaning lines"
+      aggregation_rule: "distinguish rinse wastewater from spent bath liquor, reconcile make-up and discharge, then normalize"
+      quality_evidence: "meter calibration; chemical certificate; bath log; transfer manifest"
+    - protocol_id: cp_waste_dispatch_records
+      process_id: "integrated_part_manufacturing"
+      flow_role: "segregated metal scrap and waste cutting oil"
+      record_type: "container weights, stock records, and transfer manifests"
+      raw_fields: "waste identity; material grade; gross and tare mass; stock change; contamination; destination; lot allocation; timestamp"
+      collection_method: "calibrated weighing and manifest reconciliation"
+      unit: "kg"
+      frequency: "each container or dispatch"
+      temporal_coverage: "complete declared reporting period"
+      site_scope: "all in-scope waste storage and dispatch points"
+      aggregation_rule: "subtract tare, include documented stock change, allocate only mixed-lot containers by measured contents or traceable lot records"
+      quality_evidence: "scale calibration; photographs or composition record; signed transfer manifest"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every inventory row"
+      rule: "normalized amount = accepted lot amount / net mass of conforming finished parts released from that lot"
+      inputs:
+        - "accepted exchange amount"
+        - "conforming finished-part mass"
+      output: "exchange amount per 1 kg conforming finished part"
+      source_ids: []
+    - id: calc_material_reconciliation
+      applies_to: "each declared alloy route"
+      rule: "precursor input + opening work in progress - closing work in progress = conforming finished part + segregated scrap + other recorded material outputs + explained mass difference"
+      inputs:
+        - precursor
+        - product
+        - scrap
+        - "other material outputs"
+        - "and stock-change masses"
+      output: "lot mass-balance residual and reconciliation status"
+      source_ids: []
+    - id: calc_fossil_co2
+      applies_to: "direct natural-gas combustion"
+      rule: "direct fossil CO2 mass = attributable fuel carbon mass × oxidation fraction × 44/12; derive fuel carbon mass from measured gas and the documented supplier composition or carbon factor"
+      inputs:
+        - "natural-gas quantity"
+        - "reference conditions"
+        - "supplier carbon content or factor"
+        - "oxidation fraction"
+      output: "kg direct fossil carbon dioxide"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity_traceability
+      applies_to: "reference product and material inputs"
+      requirement: "Trace every reported lot to the part family, part or drawing number, revision, alloy specification, precursor form, route, and acceptance record."
+      evidence: "routing and release records; material certificate; supplier record"
+    - id: dq_temporal_completeness
+      applies_to: "all foreground exchanges"
+      requirement: "Cover the full declared reporting period and account for shutdown, start-up, rework, and stock changes that affect in-scope production."
+      evidence: "meter completeness check; production calendar; stock reconciliation"
+    - id: dq_measurement_quality
+      applies_to: "meters and scales"
+      requirement: "Use calibrated or verified equipment and retain unit, reference conditions, calibration status, and any conversion factors."
+      evidence: "calibration certificate; meter specification; conversion worksheet"
+    - id: dq_route_specificity
+      applies_to: "conditional inventory rows"
+      requirement: "Mark every conditional row applicable or not applicable for the declared route and retain evidence for that decision."
+      evidence: "process routing; work instruction; bath or furnace log"
+    - id: dq_outsourced_operations
+      applies_to: "outsourced heat or surface treatment"
+      requirement: "Keep the outsourced product flow visible, document whether its burdens are in a supplier dataset, and prevent double counting with on-site rows."
+      evidence: "purchase order; supplier process declaration; boundary reconciliation"
+validation_rules:
+  - rule_id: validation_identity
+    applies_to: "product category and reference flow"
+    rule: "Reject a data package that does not identify the part family, drawing revision, material specification, precursor form, manufacturing route, surface state, site, period, and factory-gate condition."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validation_reference_mass
+    applies_to: "normalization"
+    rule: "Confirm that every reported amount is normalized to 1 kg net mass of conforming finished part and that removable packaging, rejects, and work in progress are not counted as reference output."
+    source_ids: []
+  - rule_id: validation_atomic_routes
+    applies_to: "conditional inventory"
+    rule: "Confirm that each applicable material, utility, chemical, waste, and elementary exchange is reported as its own atomic row; no combined utility, material, waste, or emissions category may substitute for a row."
+    source_ids: []
+  - rule_id: validation_mass_balance
+    applies_to: "material flows"
+    rule: "Reconcile each material-specific precursor input against conforming product, material-specific scrap, other material outputs, and stock change; investigate and disclose an unexplained residual."
+    source_ids: []
+  - rule_id: validation_energy_and_emissions
+    applies_to: "natural gas and direct fossil carbon dioxide"
+    rule: "When natural gas is reported, require its reference conditions and either a corresponding direct fossil carbon-dioxide calculation or an explicit documented reason the combustion occurs outside the foreground boundary."
+    source_ids: []
+  - rule_id: validation_cleaning_streams
+    applies_to: "aqueous cleaning"
+    rule: "When alkaline cleaning applies, distinguish process water, sodium-hydroxide product, cleaning wastewater, and spent alkaline liquor and prevent double counting between rinse water and bath replacement."
+    source_ids:
+      - eu-jrc-stm-bref-2006
+  - rule_id: validation_evidence_gaps
+    applies_to: "candidate methodology use"
+    rule: "Treat missing exact UUIDs and missing independent range evidence as disclosed candidate-methodology limitations; do not silently substitute proxy flows or invented numeric ranges."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production data package for a declared finished engine or motor part"
+  downstream_use: "Secondary or background cradle-to-gate datasets for machinery, aerospace, hydraulic, pneumatic, and reaction-engine product systems after scope compatibility is confirmed"
+  allowed_use: "Part-specific cradle-to-gate modelling where product identity, material, route, geography, technology, time period, and factory-gate state match the consuming model"
+  excluded_use: "Direct representation of complete engines or motors, turbo-jet or turbo-propeller parts, repair or overhaul, generic metal products without part qualifiers, use-stage performance, maintenance, end-of-life, or an externally inferred benchmark range"
+  required_metadata: "canonical PCR id; part family; part number and drawing revision; host equipment; material and alloy; precursor state; machining, heat-treatment, cleaning and surface-treatment route; site and geography; production period; reference conditions; allocation drivers; outsourced-operation boundary; UUID gaps"
+  required_quality_disclosure: "metering and scale coverage; calibration; lot and material traceability; mass-balance residual; conditional-row applicability; rework; stock change; waste destinations; supplier-data representativeness; unresolved UUID and range-evidence needs"
+  update_trigger: "Change in part family, design revision, material or precursor state, manufacturing route, heat or surface treatment, site, energy supply, allocation driver, outsourced boundary, or evidence sufficient to resolve UUID or range gaps"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-05)"
+    used_for: "Official CPC 43251 product identity and hierarchy only; not quantitative methodology"
+  - id: "eu-jrc-sf-bref-2024"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Smitheries and Foundries Industry, 2024, https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/smitheries-and-foundries-industry (retrieved 2026-09-05)"
+    used_for: "Process decomposition for forged or cast preforms, heating, machining, finishing, and heat treatment"
+  - id: "eu-jrc-stm-bref-2006"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Surface Treatment of Metals and Plastics BREF, adopted August 2006, https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2019-11/stm_bref_0806.pdf (retrieved 2026-09-05)"
+    used_for: "Conditional aqueous cleaning and surface-treatment boundary; separation of process water, alkaline chemistry, rinse wastewater, and spent alkaline solution"
+  - id: "us-epa-aerospace-neshap-2015"
+    type: "standard"
+    reference: "United States Environmental Protection Agency, Aerospace Manufacturing and Rework Facilities NESHAP final rule, Federal Register 80 FR 76152, 7 December 2015, https://www.govinfo.gov/content/pkg/FR-2015-12-07/pdf/2015-30356.pdf (retrieved 2026-09-05)"
+    used_for: "Reaction-engine-part relevance of cleaning, coating, chemical milling, blasting, and controlled handling of spent solvent or coating wastes"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:a1388d4e84e16cf6da89157ec564d551d297057258d1fa2b12f6d3c3e302e629"
+  generated_content_sha256: "sha256:c323db022e93d7cf28e40c908b6a50a8c58307f5dd0c15861ee0ce26b4c82580"

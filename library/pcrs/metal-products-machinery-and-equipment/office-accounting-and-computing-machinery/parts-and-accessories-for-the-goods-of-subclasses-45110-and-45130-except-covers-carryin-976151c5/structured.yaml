@@ -1,10 +1,441 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "45170"
-  title: "Parts and accessories for the goods of subclasses 45110 and 45130 (except covers, carrying cases and the like)"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.office-accounting-and-computing-machinery.parts-and-accessories-for-the-goods-of-subclasses-45110-and-45130-except-covers-carryin-976151c5"
+  classification_refs: "CPC 3.0: 45170; un-cpc-3-0-structure-2025"
+  covered_products: "Host-dedicated mechanical and electronic parts within the scope above"
+  excluded_products: "Complete machines; covers; carrying cases; general-purpose parts; repair services"
+  representative_product: "Rubber-coated typewriter platen roller, declared model and core provenance"
+  production_route: "Prepared core receipt; rubber coating; vulcanization; precision finishing; inspection; packing"
+  market_state: "Accepted finished part at supplier gate; new or remanufactured status declared separately"
+functional_unit:
+  what: "Provide paper support and feed contact in a compatible typewriter"
+  how_much: "1 kg net accepted platen output; record corresponding piece count"
+  how_well: "Meet model-specific diameter, runout, hardness, surface and paper-feed acceptance specifications documented by test"
+  how_long_or_cycle: "One production batch at gate; no assumed host lifetime or replacement interval. Service comparisons require measured durability and installed duty"
+  reference_flow_link: "reference_product"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate
+      applies_to: "foreground"
+      rule: "Collect receipt-through-dispatch coating, curing, finishing, testing, packing and attributable losses. Connect purchased inputs to upstream supply and actual transport; connect exported waste to treatment. Report the resulting cradle-to-gate partial boundary and all exclusions."
+      source_ids:
+        - ghg-protocol-product-standard
+    - rule_id: boundary_operations
+      applies_to: "platen_production"
+      rule: "Collect coating and finishing as specified in the route; preparation, autoclave and grinding evidence guides process inclusion, but supplier-specific hardness recommendations are not universal limits."
+      source_ids:
+        - vescovo-platen-recovery
+        - jjshort-typewriter-platen
+    - rule_id: boundary_extension
+      applies_to: "other_parts"
+      rule: "For a different part or technology replace the representative BOM with the measured BOM and explicit atomic exchanges. Include on-site compounding, bonding, cleaning, coating emissions or boiler operation whenever present; verify each chemical and emission separately before declaring the inventory complete."
+      source_ids:
+        - ghg-protocol-product-standard
+boundary_abstraction:
+  declared_starting_condition: "Bare prepared steel platen core and delivered formulated rubber compound"
+  starting_condition_role: "foreground_input"
+  product_classification_scope: "Machine-dedicated parts; no complete-machine use phase"
+  recursive_input_rule: "Record a purchased same-category core once with its state-specific upstream dataset; do not recursively create an identical foreground copy. Internally circulated rework is not another purchase."
+  upstream_dataset_requirement: "Document core manufacture or recovery, stripping, cleaning, removed rubber treatment, compound formulation and transport in supplier datasets. No zero-burden core assumption without explicit reuse allocation."
+  disclosure: "Preparation location; core history; supplier datasets; missing stages; allocation; installed service outside this partial inventory"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Typewriter platen roller"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "part number"
+    - "host model and function"
+    - "drawing revision"
+    - dimensions
+    - "hardness acceptance method"
+    - "polymer formulation"
+    - "core material"
+    - "new/reused core provenance"
+    - "net piece mass"
+    - yield
+    - site
+    - period
+    - "energy technology"
+    - "upstream preparation boundary"
+    - packaging
+    - transport
+    - "intended service and durability evidence when comparing functions"
+reference_flows:
+  []
+measurement_rules:
+  - id: net_reference
+    applies_to: "accepted product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Separate product net mass from packaging and waste; convert count using measured model-specific mass."
+  - id: energy_conversion
+    applies_to: "electricity and steam heat"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert metered kWh by 3.6 MJ/kWh; steam uses net enthalpy transfer, not an arbitrary fixed mass-to-energy factor."
+process_map:
+  - id: platen_production
+    name: "Coating, curing, finishing and dispatch"
+    inclusion: "required"
+    inclusion_condition: "Representative prepared-core platen route"
+    role: "foreground_production"
+    quantitative_reference: "1 kg"
+process_inventory:
+  - id: platen_production
+    label: "Coating, curing, finishing and dispatch"
+    inputs:
+      product:
+        - row_id: core
+          role: "Steel typewriter platen core"
+          name: "Steel typewriter platen core"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This exchange is measured at the coating-and-finishing boundary using its dedicated batch protocol."
+          amount:
+            expression: "Record the dry net mass of prepared bare cores issued, returned and remaining in stock; retain supplier preparation and new/reused status."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net platen output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_core
+              source_ids: []
+            ranges: []
+        - row_id: compound
+          role: "Unvulcanized SBR/NR compound for platen coating"
+          name: "Unvulcanized SBR/NR compound for platen coating"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This exchange is measured at the coating-and-finishing boundary using its dedicated batch protocol."
+          amount:
+            expression: "Weigh the formulated compound as delivered and issued; retain recipe or supplier composition, curing system and returned uncured stock. Do not also count its constituent polymers as separate purchased inputs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net platen output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_compound
+              source_ids: []
+            ranges: []
+        - row_id: electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "This exchange is measured at the coating-and-finishing boundary using its dedicated batch protocol."
+          amount:
+            expression: "Meter coating, electric curing when used, machining, extraction and inspection electricity including attributable idle cycles; exclude electricity already included in purchased steam production."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net platen output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity
+              source_ids: []
+            ranges: []
+        - row_id: steam
+          role: "heat, steam"
+          name: "heat, steam"
+          flow_type: "product"
+          flow_ref:
+            uuid: "74d07391-d5e4-4beb-bd80-4fe9a7617cf1"
+          property_unit: "Gross calorific value / MJ"
+          description: "This exchange is measured at the coating-and-finishing boundary using its dedicated batch protocol."
+          amount:
+            expression: "inclusion_condition: purchased steam supplies the autoclave. Measure net delivered heat using steam flow and inlet/return enthalpy; retain pressure, temperature, condensate return and supplier boundary. If steam is generated on site, instantiate the boiler fuel, water, blowdown and individual emissions instead of buying steam from the same foreground system."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net platen output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steam
+              source_ids: []
+            ranges: []
+        - row_id: box
+          role: "corrugated board boxes"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "This exchange is measured at the coating-and-finishing boundary using its dedicated batch protocol."
+          amount:
+            expression: "inclusion_condition: corrugated boxes are used at the dispatch gate. Weigh empty boxes and allocate actual batch use to accepted net platen output; exclude box mass from product reference mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net platen output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_box
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Typewriter platen roller"
+          name: "Typewriter platen roller"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This exchange is measured at the coating-and-finishing boundary using its dedicated batch protocol."
+          amount:
+            expression: "Weigh accepted finished platens after dimensional, hardness and functional inspection; normalize the accepted net product output to 1 kg. Record piece count and measured net mass per model."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net platen output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reference_product
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: rubber_waste
+          role: "Waste rubber"
+          name: "Waste rubber"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "b4818cb7-cbef-403a-9fc3-a12fe8baf092"
+          property_unit: "Mass / kg"
+          description: "This exchange is measured at the coating-and-finishing boundary using its dedicated batch protocol."
+          amount:
+            expression: "Weigh captured rubber removed during finishing and dispatched to a documented treatment route. Do not count captured material as airborne elementary emissions; measure uncaptured emissions individually where present."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net platen output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rubber_waste
+              source_ids: []
+            ranges: []
+        - row_id: reject
+          role: "Rejected typewriter platen roller"
+          name: "Rejected typewriter platen roller"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This exchange is measured at the coating-and-finishing boundary using its dedicated batch protocol."
+          amount:
+            expression: "inclusion_condition: whole rejected platens leave for waste treatment. Weigh these separately from rubber grinding waste; retained rework is an internal loop and is not an exported waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted net platen output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reject
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide
+    applies_to: "shared_operations"
+    rule: "Use batch submetering and process subdivision first. Where unavoidable, allocate shared machine energy using measured operating time and load; justify the physical relationship. Use economic allocation only with a documented reason why physical allocation is unsuitable and disclose sensitivity."
+    source_ids:
+      - ghg-protocol-product-standard
+  - rule_id: allocation_reuse
+    applies_to: "core_and_waste"
+    rule: "Disclose the selected reuse/recycling allocation and inherited core burdens. Do not automatically credit avoided new cores or future machine service. Keep waste treatment separate from coproduct allocation; no duplicate virgin-material substitution credit."
+    source_ids:
+      - ghg-protocol-product-standard
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_core
+      process_id: "platen_production"
+      flow_role: "core"
+      record_type: "batch record"
+      raw_fields: "batch_id; part_number; dates; opening_stock; receipts; returns; closing_stock; net_quantity; unit; accepted_output; meter_id; destination"
+      collection_method: "Calibrated weighing or submetering; reconcile invoices, issue notes and waste transfers; steam additionally records inlet and return states"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "Declared representative production period including idle and failed batches"
+      site_scope: "One identified site and route"
+      aggregation_rule: "Sum net exchange over the same period and divide by accepted net kg; reference output divided by itself"
+      quality_evidence: "Calibration, traceable tickets, BOM revision, meter reconciliation and inspection records"
+    - protocol_id: cp_compound
+      process_id: "platen_production"
+      flow_role: "compound"
+      record_type: "batch record"
+      raw_fields: "batch_id; part_number; dates; opening_stock; receipts; returns; closing_stock; net_quantity; unit; accepted_output; meter_id; destination"
+      collection_method: "Calibrated weighing or submetering; reconcile invoices, issue notes and waste transfers; steam additionally records inlet and return states"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "Declared representative production period including idle and failed batches"
+      site_scope: "One identified site and route"
+      aggregation_rule: "Sum net exchange over the same period and divide by accepted net kg; reference output divided by itself"
+      quality_evidence: "Calibration, traceable tickets, BOM revision, meter reconciliation and inspection records"
+    - protocol_id: cp_electricity
+      process_id: "platen_production"
+      flow_role: "electricity"
+      record_type: "batch record"
+      raw_fields: "batch_id; part_number; dates; opening_stock; receipts; returns; closing_stock; net_quantity; unit; accepted_output; meter_id; destination"
+      collection_method: "Calibrated weighing or submetering; reconcile invoices, issue notes and waste transfers; steam additionally records inlet and return states"
+      unit: "MJ"
+      frequency: "each batch"
+      temporal_coverage: "Declared representative production period including idle and failed batches"
+      site_scope: "One identified site and route"
+      aggregation_rule: "Sum net exchange over the same period and divide by accepted net kg; reference output divided by itself"
+      quality_evidence: "Calibration, traceable tickets, BOM revision, meter reconciliation and inspection records"
+    - protocol_id: cp_steam
+      process_id: "platen_production"
+      flow_role: "steam"
+      record_type: "batch record"
+      raw_fields: "batch_id; part_number; dates; opening_stock; receipts; returns; closing_stock; net_quantity; unit; accepted_output; meter_id; destination"
+      collection_method: "Calibrated weighing or submetering; reconcile invoices, issue notes and waste transfers; steam additionally records inlet and return states"
+      unit: "MJ"
+      frequency: "each batch"
+      temporal_coverage: "Declared representative production period including idle and failed batches"
+      site_scope: "One identified site and route"
+      aggregation_rule: "Sum net exchange over the same period and divide by accepted net kg; reference output divided by itself"
+      quality_evidence: "Calibration, traceable tickets, BOM revision, meter reconciliation and inspection records"
+    - protocol_id: cp_box
+      process_id: "platen_production"
+      flow_role: "box"
+      record_type: "batch record"
+      raw_fields: "batch_id; part_number; dates; opening_stock; receipts; returns; closing_stock; net_quantity; unit; accepted_output; meter_id; destination"
+      collection_method: "Calibrated weighing or submetering; reconcile invoices, issue notes and waste transfers; steam additionally records inlet and return states"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "Declared representative production period including idle and failed batches"
+      site_scope: "One identified site and route"
+      aggregation_rule: "Sum net exchange over the same period and divide by accepted net kg; reference output divided by itself"
+      quality_evidence: "Calibration, traceable tickets, BOM revision, meter reconciliation and inspection records"
+    - protocol_id: cp_reference_product
+      process_id: "platen_production"
+      flow_role: "reference_product"
+      record_type: "batch record"
+      raw_fields: "batch_id; part_number; dates; opening_stock; receipts; returns; closing_stock; net_quantity; unit; accepted_output; meter_id; destination"
+      collection_method: "Calibrated weighing or submetering; reconcile invoices, issue notes and waste transfers; steam additionally records inlet and return states"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "Declared representative production period including idle and failed batches"
+      site_scope: "One identified site and route"
+      aggregation_rule: "Sum net exchange over the same period and divide by accepted net kg; reference output divided by itself"
+      quality_evidence: "Calibration, traceable tickets, BOM revision, meter reconciliation and inspection records"
+    - protocol_id: cp_rubber_waste
+      process_id: "platen_production"
+      flow_role: "rubber_waste"
+      record_type: "batch record"
+      raw_fields: "batch_id; part_number; dates; opening_stock; receipts; returns; closing_stock; net_quantity; unit; accepted_output; meter_id; destination"
+      collection_method: "Calibrated weighing or submetering; reconcile invoices, issue notes and waste transfers; steam additionally records inlet and return states"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "Declared representative production period including idle and failed batches"
+      site_scope: "One identified site and route"
+      aggregation_rule: "Sum net exchange over the same period and divide by accepted net kg; reference output divided by itself"
+      quality_evidence: "Calibration, traceable tickets, BOM revision, meter reconciliation and inspection records"
+    - protocol_id: cp_reject
+      process_id: "platen_production"
+      flow_role: "reject"
+      record_type: "batch record"
+      raw_fields: "batch_id; part_number; dates; opening_stock; receipts; returns; closing_stock; net_quantity; unit; accepted_output; meter_id; destination"
+      collection_method: "Calibrated weighing or submetering; reconcile invoices, issue notes and waste transfers; steam additionally records inlet and return states"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "Declared representative production period including idle and failed batches"
+      site_scope: "One identified site and route"
+      aggregation_rule: "Sum net exchange over the same period and divide by accepted net kg; reference output divided by itself"
+      quality_evidence: "Calibration, traceable tickets, BOM revision, meter reconciliation and inspection records"
+  calculation_rules:
+    - id: normalize
+      applies_to: "all_rows"
+      rule: "q_i = net exchange_i / accepted net product mass; reconcile stock changes before division; retain rejected-batch burdens"
+      inputs:
+        - "matched-period measured quantities"
+      output: "unit/kg accepted product"
+      source_ids: []
+    - id: mass_balance
+      applies_to: "solid_material"
+      rule: "Core + compound input = accepted product + exported solid waste + stock change + measured losses; investigate residual against instrument uncertainty, never force closure"
+      inputs:
+        - "net solid masses"
+      output: "kg residual and explanation"
+      source_ids: []
+  data_quality_requirements:
+    - id: quality_traceability
+      applies_to: "all_rows"
+      requirement: "Use site primary records; separate missing, measured zero and demonstrably absent flows. Do not extrapolate across core histories, electronic/mechanical technologies or grids without qualification."
+      evidence: "ghg-protocol-product-standard; cp_*"
+    - id: quality_function
+      applies_to: "reference_product"
+      requirement: "Retain model-specific drawing, hardness method, dimensions, inspection outcomes and actual rejected mass; manufacturer hardness examples are not universal acceptance limits."
+      evidence: "vescovo-platen-recovery; jjshort-typewriter-platen"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "reference_product"
+    rule: "Reject incompatible host parts, missing qualifiers or an unresolved UUID silently replaced by a generic machine flow."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_inventory
+    applies_to: "all_rows"
+    rule: "Check atomic exchange identity, flow type, units, normalization period, upstream coverage and completeness of conditional operations. Verify electricity and purchased steam do not duplicate heat generation."
+    source_ids: []
+  - rule_id: validate_balance
+    applies_to: "production"
+    rule: "Require accepted product mass greater than zero and explain stock-adjusted mass imbalance using measurement uncertainty. Missing evidence is inconclusive, not a zero or an invented range."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "foreground_data_package"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Declared part and route supply inventory for compatible machine manufacture or replacement studies"
+  excluded_use: "Unqualified whole-machine footprint; lifetime benefit claims; calculator electronics represented by platen data"
+  required_metadata: "Reference qualifiers; BOM; process map; location; dates; upstream datasets; allocation; transport and waste destinations"
+  required_quality_disclosure: "Missing inputs; unconfirmed identities; measured coverage; exclusions; uncertainty; route changes; absent empirical ranges"
+  update_trigger: "Change in part design, compound, core provenance, energy supply, process or supplier evidence"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division, CPC 3.0 Structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Entries 45110, 45130 and 45170; classification scope. Verified 2026-09-08."
+  - id: "ghg-protocol-product-standard"
+    type: "standard"
+    reference: "WRI/WBCSD, Product Life Cycle Accounting and Reporting Standard (2011), chapters 6–9. https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard_041613.pdf"
+    used_for: "Unit of analysis, partial-boundary disclosure, primary records and allocation hierarchy; used as GHG accounting guidance, not a complete multi-impact LCA specification. Verified 2026-09-08."
+  - id: "vescovo-platen-recovery"
+    type: "handbook"
+    reference: "Vescovo Restauri, European Typewriter Platen Recovery Service. https://www.vescovorestauri.it/laboratorio/european-typewriter-platen-recovery-service/"
+    used_for: "Italian route: SBR/NR coating, vulcanization, dimensional finishing; qualitative process evidence only. Verified 2026-09-08."
+  - id: "jjshort-typewriter-platen"
+    type: "handbook"
+    reference: "J.J. Short Associates, Typewriter Platens, Feed Rollers, Bail Rollers, Finger Rollers and Power Rollers. https://www.jjshort.com/typewriter-platen-repair.php"
+    used_for: "US specialist: stripping, recoating, precision grinding, model-specific rubber and hardness. No numerical inventory range. Verified 2026-09-08."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:282f901b7ef4be70eaf5bb3f4585e30de03e5f898fd40141fee47b39342d4079"
+  generated_content_sha256: "sha256:28b04ade48bbcb90423da52b7701f41c6256f297cb0063383a0776dd238487f6"

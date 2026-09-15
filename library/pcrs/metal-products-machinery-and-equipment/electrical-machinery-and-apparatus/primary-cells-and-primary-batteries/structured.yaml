@@ -1,10 +1,658 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "46410"
-  title: "Primary cells and primary batteries"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.electrical-machinery-and-apparatus.primary-cells-and-primary-batteries"
+  classification_refs: "CPC 3.0: 46410, Primary cells and primary batteries"
+  covered_products: "New non-rechargeable electrochemical cells and complete primary batteries, including cylindrical, prismatic, button, coin, reserve, and multi-cell products"
+  excluded_products: "Rechargeable accumulators and packs; capacitors; separately sold parts and separators; spent batteries and battery scrap; chargers; use and end-of-life services"
+  representative_product: "Factory-gate, sale-ready cylindrical alkaline manganese dioxide-zinc battery"
+  production_route: "Purchased active and structural materials; cathode and anode preparation; component forming; assembly; electrolyte filling; sealing; inspection; electrical testing; marking; packaging"
+  market_state: "New, non-rechargeable, tested, marked, and packaged product at the manufacturing-site gate"
+functional_unit:
+  what: "Delivery of electrical energy by a declared primary electrochemical cell or battery"
+  how_much: "One conforming primary cell or primary battery of the declared chemistry, format, and rated capacity"
+  how_well: "Meets the declared rated voltage and capacity under the stated discharge load, duty cycle, temperature, and end-point voltage, and meets the declared leakage and safety acceptance criteria"
+  how_long_or_cycle: "One non-rechargeable discharge life, with the declared shelf-life and storage condition"
+  reference_flow_link: "One sale-ready item of the declared primary cell or primary battery at the manufacturing-site gate"
+system_boundary:
+  rules:
+    - rule_id: sb_factory_gate
+      applies_to: "Foreground manufacture"
+      rule: "Include material forming, active-material and electrolyte preparation performed on site, cell assembly and filling, sealing, inspection, electrical testing, marking, and packaging through the sale-ready factory gate."
+      source_ids:
+        - us-epa-primary-battery-manufacturing-1975
+        - energizer-alkaline-handbook-2018
+    - rule_id: sb_upstream_inputs
+      applies_to: "Purchased inputs"
+      rule: "Link upstream production and delivery datasets for every purchased input; keep the foreground amount as the actual net site receipt or consumption."
+      source_ids: []
+    - rule_id: sb_downstream_exclusion
+      applies_to: "Downstream stages"
+      rule: "Exclude distribution after the factory gate, use, attempted recharging, and end-of-life treatment unless a separate study system explicitly adds those stages."
+      source_ids:
+        - eu-batteries-regulation-2023
+    - rule_id: sb_route_completeness
+      applies_to: "Non-representative chemistry or format"
+      rule: "Replace the representative alkaline bill of materials with the actual atomic exchanges and disclose all route-specific active materials, electrolyte, container, terminals, separator, seals, labels, process emissions, and wastes."
+      source_ids:
+        - eu-batteries-regulation-2023
+        - energizer-alkaline-ais-2022
+boundary_abstraction:
+  declared_starting_condition: "Purchased active materials, electrolyte constituents, component materials, packaging, water, and delivered energy at the primary-battery manufacturing-site gate"
+  starting_condition_role: "Cradle-to-gate foreground entry point for primary-cell and primary-battery manufacture"
+  product_classification_scope: "New non-rechargeable primary cells and primary batteries; excludes rechargeable accumulators, parts sold separately, and spent batteries"
+  recursive_input_rule: "When a primary cell or primary battery is purchased for assembly into a larger primary battery, record it once as a same-category product input and link its upstream factory-gate dataset; do not recursively reconstruct it inside the receiving process"
+  upstream_dataset_requirement: "Every purchased material, energy carrier, water supply, packaging component, and same-category product input requires a geographically and technologically representative upstream dataset or an explicit data-gap disclosure"
+  disclosure: "Declare chemistry, format, site, production period, purchased-versus-in-house component boundary, upstream dataset choices, internal recycling, rejected-product treatment, packaging configuration, and all exclusions"
+reference_flow_definition:
+  reference_amount: "1 item"
+  product_flow_ref:
+    name: "Alkaline battery"
+    uuid: "b8cd9a54-b808-450f-8aa6-3ea2a037c416"
+  flow_property_ref:
+    uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+  unit_group_ref:
+    uuid: "5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+  reference_unit: "Item(s)"
+  required_qualifiers:
+    - "primary chemistry and electrode couple"
+    - "IEC or equivalent designation"
+    - "cell or multi-cell battery"
+    - "physical format and dimensions"
+    - "nominal and rated voltage"
+    - "rated capacity and capacity unit"
+    - "discharge load and duty cycle"
+    - "test temperature"
+    - "end-point voltage"
+    - "shelf-life claim and storage condition"
+    - "leakage and safety acceptance criteria"
+    - "package configuration"
+    - "manufacturing site and geography"
+    - "production period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_item_count
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "Item(s)"
+    rule: "Count only conforming, sale-ready items. Declare the number of cells in every multi-cell battery and do not treat one cell and one multi-cell battery as equivalent items."
+  - id: material_mass
+    applies_to: "Material and waste rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report net as-delivered mass crossing the foreground boundary. Record concentration, moisture, coating, alloy, and purity separately; do not silently convert solution mass to dry substance mass."
+  - id: electricity_energy
+    applies_to: "Purchased electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered electricity in its source unit and convert to MJ with a documented conversion factor; declare voltage level, grid geography, supplier mix where used, and included distribution losses."
+  - id: performance_capacity
+    applies_to: "Rated capacity qualifier"
+    required_property_ref:
+      name: "Declared capacity measure"
+      uuid: ""
+    required_unit: "Ah, mAh, or Wh"
+    rule: "Capacity is valid only with the discharge current or load, duty cycle, test temperature, and end-point voltage. Do not compare capacity values with different test conditions without an explicit conversion or test model."
+process_map:
+  - id: primary_battery_manufacturing
+    name: "Primary-cell component preparation, assembly, testing, and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always for a factory-gate primary-cell or primary-battery dataset"
+    role: "Foreground production from received inputs to tested and packaged output"
+    quantitative_reference: "1 conforming sale-ready primary cell or primary battery item"
+process_inventory:
+  - id: primary_battery_manufacturing
+    label: "Primary-cell component preparation, assembly, testing, and packaging"
+    inputs:
+      product:
+        - row_id: cathode_manganese_dioxide
+          role: "Cathode manganese dioxide"
+          name: "Manganese dioxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a882e0bf-5e21-45e9-8f38-65df4d72bd7f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record manganese dioxide received for the cathode mixture of the representative alkaline route."
+          amount:
+            expression: "measured net mass consumed, excluding returned unopened material and separately quantified internal recycle"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 conforming sale-ready battery item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_bom
+              source_ids:
+                - energizer-alkaline-handbook-2018
+                - energizer-alkaline-ais-2022
+            ranges: []
+        - row_id: anode_zinc_dust
+          role: "Zinc-dust anode material"
+          name: "Zinc dust"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d92b8d4-6633-4238-b0e2-9096db3e8882"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record zinc dust or powder received for the gelled anode of the representative alkaline route."
+          amount:
+            expression: "measured net zinc-dust mass consumed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 conforming sale-ready battery item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_bom
+              source_ids:
+                - energizer-alkaline-handbook-2018
+                - energizer-alkaline-ais-2022
+            ranges: []
+        - row_id: electrolyte_potassium_hydroxide
+          role: "Potassium-hydroxide electrolyte"
+          name: "Potassium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4e9c2ac1-efab-4b4c-aa54-79440221a6c6"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record the as-delivered potassium-hydroxide input and its solution concentration. Water included in a purchased solution is not also recorded as process water."
+          amount:
+            expression: "measured net as-delivered mass consumed, with potassium-hydroxide concentration and water content retained as qualifiers"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 conforming sale-ready battery item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_bom
+              source_ids:
+                - energizer-alkaline-handbook-2018
+                - energizer-alkaline-ais-2022
+            ranges: []
+        - row_id: cathode_conductive_graphite
+          role: "Conductive graphite for cathode"
+          name: "Battery-grade conductive graphite powder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record battery-grade graphite powder added as the cathode conductor. The exact TianGong UUID remains unresolved; do not substitute a graphite electrode or lubricant."
+          amount:
+            expression: "measured net graphite-powder mass consumed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 conforming sale-ready battery item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_bom
+              source_ids:
+                - energizer-alkaline-handbook-2018
+                - energizer-alkaline-ais-2022
+            ranges: []
+        - row_id: nickel_plated_steel_sheet
+          role: "Nickel-plated steel sheet for can and terminals"
+          name: "Nickel-plated steel sheet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record nickel-plated steel sheet received for the can, covers, or terminals. The exact TianGong UUID remains unresolved; do not substitute plain steel or nickel sheet."
+          amount:
+            expression: "measured net nickel-plated steel-sheet mass consumed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 conforming sale-ready battery item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_bom
+              source_ids:
+                - energizer-alkaline-handbook-2018
+                - energizer-alkaline-ais-2022
+            ranges: []
+        - row_id: current_collector_brass
+          role: "Brass current-collector material"
+          name: "Brass"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e422cfbf-5444-43ab-a68a-22be82e2ad47"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record brass received for the anode current collector of the representative cylindrical route."
+          amount:
+            expression: "measured net brass mass consumed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 conforming sale-ready battery item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_bom
+              source_ids:
+                - energizer-alkaline-handbook-2018
+            ranges: []
+        - row_id: separator_paper
+          role: "Separator paper"
+          name: "Separator paper"
+          flow_type: "product"
+          flow_ref:
+            uuid: "68a4c082-ae92-4672-b9ce-c328fc41a225"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record separator paper received for the representative route. If another separator material is used, replace this row with that one concrete material exchange."
+          amount:
+            expression: "measured net separator-paper mass consumed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 conforming sale-ready battery item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_bom
+              source_ids:
+                - energizer-alkaline-handbook-2018
+            ranges: []
+        - row_id: seal_nylon_6
+          role: "Nylon 6 seal material"
+          name: "Nylon 6"
+          flow_type: "product"
+          flow_ref:
+            uuid: "efa66875-efd4-4d6e-bb93-fcc66de3b440"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record nylon 6 resin received for an on-site molded cell seal. If a finished seal is purchased, replace this row with the exact finished-seal flow and boundary."
+          amount:
+            expression: "measured net nylon 6 resin mass consumed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 conforming sale-ready battery item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_bom
+              source_ids:
+                - energizer-alkaline-handbook-2018
+            ranges: []
+        - row_id: label_plastic_film
+          role: "Plastic insulating label film"
+          name: "Plastic Film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8c3dd40c-a22b-48b5-bdec-7da4d3282bfa"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record plastic film consumed as the insulating exterior label substrate. Printing ink or adhesive, when used, is a separate atomic input and must be added to the foreground inventory."
+          amount:
+            expression: "measured net plastic-film mass consumed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 conforming sale-ready battery item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_bom
+              source_ids:
+                - energizer-alkaline-handbook-2018
+            ranges: []
+        - row_id: paper_box
+          role: "Paper box packaging"
+          name: "Paper box"
+          flow_type: "product"
+          flow_ref:
+            uuid: "12d5d744-7725-4dbc-b102-43c80547f777"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record paper boxes only when they cross the factory gate with the reference product. Add other concrete packaging components as separate rows."
+          amount:
+            expression: "measured net paper-box mass shipped with conforming product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 conforming sale-ready battery item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_bom
+              source_ids:
+                - energizer-alkaline-ais-2022
+            ranges: []
+        - row_id: process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record water supplied across the foreground boundary for material preparation or cleaning; exclude water already included in a purchased electrolyte solution."
+          amount:
+            expression: "measured net process-water input after separately metered closed-loop return"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 conforming sale-ready battery item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_meter
+              source_ids:
+                - us-epa-primary-battery-manufacturing-1975
+            ranges: []
+        - row_id: electricity
+          role: "Purchased electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200b9a66 / MJ; unit group 93a60a57-a3c8-11da-a746-0800200c9a66"
+          description: "Record metered electricity delivered to material preparation, forming, assembly, sealing, testing, marking, packaging, and allocated auxiliary systems."
+          amount:
+            expression: "metered net purchased electricity assigned to the declared production period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 conforming sale-ready battery item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meter
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: alkaline_battery_output
+          role: "Conforming alkaline battery"
+          name: "Alkaline battery"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b8cd9a54-b808-450f-8aa6-3ea2a037c416"
+          property_unit: "Number of items 01846770-4cfe-4a25-8ad9-919d8d378345 / Item(s); unit group 5beb6eed-33a9-47b8-9ede-1dfe8f679159"
+          description: "Record only items that pass the declared inspection, electrical performance, leakage, marking, and packaging criteria."
+          amount:
+            expression: "counted conforming sale-ready output items"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 reference item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_and_test
+              source_ids:
+                - un-cpc-3-0-2025
+                - energizer-alkaline-ais-2022
+            ranges: []
+      waste:
+        - row_id: rejected_alkaline_battery
+          role: "Rejected alkaline primary battery"
+          name: "Rejected alkaline primary battery"
+          flow_type: "waste"
+          property_unit: "Number of items / Item(s)"
+          description: "Record complete alkaline batteries rejected during inspection or electrical testing and sent to an external treatment route. The exact TianGong waste UUID remains unresolved."
+          amount:
+            expression: "counted rejected complete items leaving the foreground boundary as waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 conforming sale-ready battery item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - us-epa-primary-battery-manufacturing-1975
+            ranges: []
+        - row_id: waste_alkaline_liquor
+          role: "Waste alkaline liquor"
+          name: "Waste Alkaline Liquor"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "ce738ef0-a711-4650-a38b-34479efd7559"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record separately collected potassium-hydroxide-bearing electrolyte or cleaning liquid that leaves the site for treatment. Do not combine it with other wastewater streams."
+          amount:
+            expression: "measured mass transferred off site, with potassium-hydroxide concentration and treatment route declared"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 conforming sale-ready battery item"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_direct_assignment
+    applies_to: "Multiple products or production lines"
+    rule: "Prefer subdivision, dedicated meters, batch records, equipment time, and material issue records so inputs and wastes are directly assigned to the declared primary-battery product."
+    source_ids: []
+  - rule_id: allocation_joint_outputs
+    applies_to: "Inseparable saleable co-products"
+    rule: "Do not apply an undocumented default factor. Declare the co-product, causal relationship, allocation property, prices or physical quantities, allocation period, and sensitivity result; unresolved joint production requires methodology review before publication."
+    source_ids: []
+  - rule_id: allocation_recycling
+    applies_to: "Internal recycle and external recovery"
+    rule: "Count internal recycle once and subtract only documented returns from gross issues. Do not credit avoided primary production or future recycling inside the factory-gate foreground result; report any such credit as a separate disclosed scenario."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_bom
+      process_id: "primary_battery_manufacturing"
+      flow_role: "Active, structural, seal, label, and packaging material inputs"
+      record_type: "Purchase receipts, lot issue/return records, bill of materials, and inventory reconciliation"
+      raw_fields: "material identity; supplier; lot; chemistry or grade; concentration or coating; gross issue; return; opening and closing stock; conforming output items"
+      collection_method: "Reconcile ERP or warehouse records to production lots and verify representative lots against weighed issues"
+      unit: "kg and Item(s)"
+      frequency: "Each lot, aggregated monthly"
+      temporal_coverage: "At least 12 consecutive months or the full campaign for campaign production"
+      site_scope: "All operations included in the declared manufacturing site"
+      aggregation_rule: "Net consumption equals receipts plus opening stock minus returns, closing stock, and separately documented transfers; divide by conforming output items"
+      quality_evidence: "Supplier specifications, calibrated scale records, stock reconciliation, and signed bill-of-material revision"
+    - protocol_id: cp_water_meter
+      process_id: "primary_battery_manufacturing"
+      flow_role: "Process-water input"
+      record_type: "Water meter and batch make-up records"
+      raw_fields: "meter id; opening and closing reading; make-up water; return water; electrolyte-solution water; downtime; output items"
+      collection_method: "Read calibrated site or process meters and reconcile batch additions; exclude water embedded in purchased solutions"
+      unit: "kg or m3 with density and temperature"
+      frequency: "Daily or per batch, aggregated monthly"
+      temporal_coverage: "Same period as output"
+      site_scope: "Included process lines and allocated auxiliaries"
+      aggregation_rule: "Net boundary input divided by conforming output items"
+      quality_evidence: "Meter calibration, density conversion, line coverage, and reconciliation to invoices"
+    - protocol_id: cp_electricity_meter
+      process_id: "primary_battery_manufacturing"
+      flow_role: "Purchased electricity input"
+      record_type: "Revenue meter, submeter, and operating-hour records"
+      raw_fields: "meter id; opening and closing reading; line load; auxiliary allocation; downtime; voltage level; supplier and grid geography; output items"
+      collection_method: "Use calibrated submeters where available; otherwise document an engineering allocation from the site meter"
+      unit: "kWh converted to MJ"
+      frequency: "Hourly or daily, aggregated monthly"
+      temporal_coverage: "Same period as output"
+      site_scope: "Included process lines and allocated auxiliaries"
+      aggregation_rule: "Net metered electricity minus documented exports, divided by conforming output items"
+      quality_evidence: "Meter calibration, invoice reconciliation, submeter coverage, and allocation worksheet"
+    - protocol_id: cp_output_and_test
+      process_id: "primary_battery_manufacturing"
+      flow_role: "Conforming output and performance qualifiers"
+      record_type: "Production count, inspection record, and electrical test record"
+      raw_fields: "chemistry; designation; format; cell count; voltage; test load; duty cycle; temperature; end-point voltage; capacity; leakage result; accepted items; packaging configuration"
+      collection_method: "Count accepted items after final test and link sampled performance results to lot and test method"
+      unit: "Item(s), V, A or ohm, h, Ah or Wh, degree C"
+      frequency: "Each lot"
+      temporal_coverage: "Same period as inputs"
+      site_scope: "All sale-ready output from the declared site"
+      aggregation_rule: "Sum accepted items; retain lot-weighted performance statistics without converting between unlike test conditions"
+      quality_evidence: "Counter verification, test-equipment calibration, sampling plan, and nonconformance log"
+    - protocol_id: cp_waste_records
+      process_id: "primary_battery_manufacturing"
+      flow_role: "Rejected batteries and alkaline liquid waste"
+      record_type: "Nonconformance log, waste scale ticket, manifest, and treatment receipt"
+      raw_fields: "waste identity; source lot; item count or mass; electrolyte concentration; storage change; destination; treatment route; date"
+      collection_method: "Reconcile generated, internally reworked, stored, and off-site transferred quantities"
+      unit: "Item(s) or kg"
+      frequency: "Each transfer, reconciled monthly"
+      temporal_coverage: "Same period as output"
+      site_scope: "All waste-generating operations in scope"
+      aggregation_rule: "Waste generated equals off-site transfer plus closing storage minus opening storage minus documented rework return"
+      quality_evidence: "Scale calibration, signed transfer record, treatment receipt, and storage reconciliation"
+  calculation_rules:
+    - id: calc_per_item_inventory
+      applies_to: "Every inventory exchange"
+      rule: "Divide the exchange quantity assigned to the production period by the number of conforming sale-ready reference items from the same period."
+      inputs:
+        - "Net exchange quantity"
+        - "conforming output items"
+      output: "Exchange per reference item"
+      source_ids: []
+    - id: calc_solution_reporting
+      applies_to: "Potassium-hydroxide solution and waste alkaline liquor"
+      rule: "Report as-delivered solution mass and concentration. Calculate dry potassium-hydroxide mass only as an additional disclosed value: solution mass multiplied by measured mass fraction; never replace the as-delivered exchange silently."
+      inputs:
+        - "Solution mass"
+        - "measured or supplier-certified mass fraction"
+      output: "As-delivered mass and optional dry KOH mass"
+      source_ids: []
+    - id: calc_electricity_conversion
+      applies_to: "Electricity"
+      rule: "Convert kWh to MJ using 3.6 MJ per kWh after net meter reconciliation."
+      inputs:
+        - "Net kWh"
+      output: "MJ electricity"
+      source_ids: []
+    - id: calc_capacity
+      applies_to: "Performance qualifier"
+      rule: "For a constant-current test, capacity in Ah equals current in A multiplied by elapsed hours to the declared end-point voltage; other load profiles require the declared test method and integrated current."
+      inputs:
+        - "Current or load profile"
+        - "elapsed time"
+        - "end-point voltage"
+        - temperature
+        - "duty cycle"
+      output: "Declared tested capacity"
+      source_ids:
+        - energizer-alkaline-handbook-2018
+    - id: calc_mass_reconciliation
+      applies_to: "Material and waste completeness"
+      rule: "Reconcile input material mass with product mass, measured wastes, stock change, moisture or volatile loss, and direct emissions. Investigate and disclose the residual rather than forcing balance by changing the reference product."
+      inputs:
+        - "Material inputs"
+        - "product mass sample"
+        - wastes
+        - "stock change"
+        - "measured emissions"
+      output: "Mass-balance residual and explanation"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product"
+      requirement: "Chemistry, designation, format, cell count, performance test conditions, package configuration, site, geography, and production period must be unambiguous."
+      evidence: "Product specification, label, approved bill of materials, test method, and lot record"
+    - id: dq_temporal_coverage
+      applies_to: "Foreground inventory"
+      requirement: "Use at least 12 consecutive months for continuous production or the complete campaign for campaign production; explain shutdowns, startups, abnormal lots, and exclusions."
+      evidence: "Dated meter, purchase, output, and waste records"
+    - id: dq_completeness
+      applies_to: "Atomic exchanges"
+      requirement: "Reconcile the bill of materials, utilities, output, nonconforming items, other material losses, liquid wastes, and direct emissions. Add actual route-specific exchanges instead of aggregating them into umbrella rows."
+      evidence: "Signed completeness checklist and mass reconciliation"
+    - id: dq_geography_technology
+      applies_to: "Upstream links"
+      requirement: "Match supplier geography, production technology, material grade, solution concentration, recycled content, electricity voltage and grid, water supply, and waste-treatment route where they materially affect results."
+      evidence: "Supplier declaration, dataset metadata, invoices, and treatment receipts"
+    - id: dq_measurement
+      applies_to: "Meters, scales, and tests"
+      requirement: "Use equipment within its calibration interval and retain the calibration status, resolution, missing-data treatment, and allocation worksheet."
+      evidence: "Calibration certificate, meter register, and QA record"
+    - id: dq_uuid_gaps
+      applies_to: "UUID-empty rows"
+      requirement: "Keep the concrete flow name and reported amount, but do not substitute a proxy UUID. Resolve or explicitly carry the identity gap before publication."
+      evidence: "UUID review record linked to the row id"
+validation_rules:
+  - rule_id: validation_identity
+    applies_to: "Product identity"
+    rule: "Fail validation if the product is rechargeable, spent, a separately sold part, or lacks declared chemistry, format, cell count, manufacturing site, production period, and package configuration."
+    source_ids:
+      - eu-batteries-regulation-2023
+      - un-cpc-3-0-2025
+  - rule_id: validation_reference_flow
+    applies_to: "Reference flow"
+    rule: "Confirm exactly one conforming sale-ready item and retain the capacity test load, duty cycle, temperature, end-point voltage, rated voltage, and shelf-life declaration."
+    source_ids:
+      - energizer-alkaline-handbook-2018
+      - energizer-alkaline-ais-2022
+  - rule_id: validation_boundary
+    applies_to: "System boundary"
+    rule: "Confirm all in-house preparation, forming, assembly, filling, sealing, inspection, testing, marking, packaging, and allocated auxiliaries are included and downstream use and end-of-life are excluded."
+    source_ids:
+      - us-epa-primary-battery-manufacturing-1975
+  - rule_id: validation_inventory
+    applies_to: "Process inventory"
+    rule: "Confirm every actual bill-of-material, packaging, energy, water, waste, and direct-emission exchange is represented as one atomic row; confirm no representative alkaline row is applied unchanged to another chemistry."
+    source_ids:
+      - energizer-alkaline-handbook-2018
+      - energizer-alkaline-ais-2022
+  - rule_id: validation_units
+    applies_to: "Amounts and conversions"
+    rule: "Confirm item counts, material masses, solution concentrations, electricity conversion, and normalization period are consistent and auditable."
+    source_ids: []
+  - rule_id: validation_reconciliation
+    applies_to: "Completeness"
+    rule: "Require bill-of-material, output, waste, stock, energy, and water reconciliation; disclose the mass-balance residual, allocation methods, internal recycle, missing data, and exclusions."
+    source_ids: []
+  - rule_id: validation_uuid_resolution
+    applies_to: "Database identity"
+    rule: "Report cathode_conductive_graphite, nickel_plated_steel_sheet, and rejected_alkaline_battery as unresolved until exact public state-100 flows are confirmed; never pass a proxy UUID as exact."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground factory-gate production dataset for one declared primary cell or primary battery product"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Cradle-to-gate product modelling, supplier comparison under matched product and test qualifiers, and downstream studies that add distribution, use, and end-of-life consistently"
+  excluded_use: "Rechargeable batteries, chemistry substitution without a route-specific inventory, spent-battery treatment, performance comparison under unmatched discharge tests, or an undisclosed global market average"
+  required_metadata: "PCR id and version; chemistry; IEC or equivalent designation; format and dimensions; cell count; voltage; capacity test conditions; shelf-life claim; package configuration; site and geography; production period; technology; purchased-versus-in-house component boundary; upstream datasets; allocation; internal recycle; waste routes; unresolved identities"
+  required_quality_disclosure: "Temporal and site coverage; meter and scale coverage; test sampling; calibration; supplier data quality; allocation; missing-data treatment; mass-balance residual; important-flow range evidence gaps; UUID gaps; exclusions and sensitivity cases"
+  update_trigger: "Change in chemistry, active-material supplier route, format, cell count, bill of materials, electrolyte concentration, production site or line, electricity supply, packaging, test specification, allocation, waste route, or a material change in normalized inventory"
+data_sources:
+  - id: "un-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-04)"
+    used_for: "Official classification identity for CPC 46410"
+  - id: "eu-batteries-regulation-2023"
+    type: "standard"
+    reference: "Regulation (EU) 2023/1542 concerning batteries and waste batteries, Article 3, https://eur-lex.europa.eu/eli/reg/2023/1542/oj/eng (retrieved 2026-09-04)"
+    used_for: "Definitions of battery, battery cell, battery pack, and non-rechargeable battery; semantic exclusions"
+  - id: "energizer-alkaline-handbook-2018"
+    type: "handbook"
+    reference: "Energizer Brands, Alkaline Manganese Dioxide Handbook and Application Manual, 2018, https://data.energizer.com/pdfs/alkaline_appman.pdf (retrieved 2026-09-04)"
+    used_for: "Representative alkaline-cell construction, component identities, discharge-capacity qualifiers, and test interpretation"
+  - id: "energizer-alkaline-ais-2022"
+    type: "handbook"
+    reference: "Energizer, Alkaline Manganese Dioxide-Zinc Batteries Article Information Sheet, document 1022-Alk, October 2022, https://data.energizer.com/wp-content/uploads/2022/09/alkaline1022.pdf (retrieved 2026-09-04)"
+    used_for: "Non-rechargeable product state, representative material identity, labeling, and safe outer packaging condition; not used as a two-source empirical inventory range"
+  - id: "us-epa-primary-battery-manufacturing-1975"
+    type: "official_guidance"
+    reference: "U.S. Environmental Protection Agency, Draft Development Document for Effluent Limitations Guidelines and Standards of Performance for the Machinery and Mechanical Products Manufacturing Point Source Category, Volume 2, https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=2000USW8.TXT (retrieved 2026-09-04)"
+    used_for: "Primary-battery material forming, filling, sealing, testing, packing, process-water, and rejected-product process decomposition; historical formulations are not prescribed"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:a2740357b13a3fabf98013c5ca26a322f8ffa1a4ab3798295762f5c555e9033d"
+  generated_content_sha256: "sha256:bc52be1939b94139fa14602db0b787ea66cb23a177c5a675223b34fc04215a60"

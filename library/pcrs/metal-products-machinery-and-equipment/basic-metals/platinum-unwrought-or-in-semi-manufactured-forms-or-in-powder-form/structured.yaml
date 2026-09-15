@@ -1,10 +1,599 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41330"
-  title: "Platinum, unwrought or in semi-manufactured forms, or in powder form"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.platinum-unwrought-or-in-semi-manufactured-forms-or-in-powder-form"
+  classification_refs: "CPC 3.0 41330 — Platinum, unwrought or in semi-manufactured forms, or in powder form"
+  covered_products: "Platinum metal released as unwrought metal, metal sponge, powder, or a declared semi-manufactured form such as plate, sheet, strip, rod, wire, tube, or foil"
+  excluded_products: "Ores and concentrates; platinum compounds; catalysts and fabricated catalyst articles; jewellery and finished articles; waste and scrap; mixed PGM products without separately quantified platinum"
+  representative_product: "Saleable platinum metal with declared platinum mass fraction and declared physical form"
+  production_route: "Precious-metal refining followed by route-appropriate reduction, melting, powder finishing, or semi-manufacturing; primary and secondary feed histories are declared separately"
+  market_state: "Factory-gate, saleable platinum in the declared unwrought, semi-manufactured, or powder state; purity, dimensions or particle specification, and packaging condition declared"
+functional_unit:
+  what: "Production of saleable platinum metal in one declared covered physical form"
+  how_much: "1 kg net platinum product at the factory gate"
+  how_well: "Conforms to the producer's declared platinum mass fraction and form-specific release specification; no universal purity is inferred"
+  how_long_or_cycle: "One completed production campaign or accounting period represented by contemporaneous foreground records"
+  reference_flow_link: "The reference amount is the measured net mass of the released platinum product represented by inventory row platinum_product"
+system_boundary:
+  rules:
+    - rule_id: sb_gate_boundary
+      applies_to: "foreground refinery-and-finishing system"
+      rule: "Include all attributable foreground material, energy, water, waste, and direct-emission exchanges from receipt of the declared assayed feed to released platinum at the factory gate."
+      source_ids:
+        - eu-nfm-bat-conclusions-2016
+        - ipa-pgm-lca-2017-2022-update
+    - rule_id: sb_route_disclosure
+      applies_to: "primary, secondary, or mixed feed"
+      rule: "Preserve primary and secondary feed histories as explicit metadata and do not average unlike upstream burden conventions without reporting the shares and calculation."
+      source_ids:
+        - ipa-pgm-lca-2017-2022-update
+    - rule_id: sb_recycle_loops
+      applies_to: "acid, chlorine, water, precious-metal, and residue loops"
+      rule: "Count make-up inputs and net outputs crossing the foreground boundary. Report internally recovered and recirculated quantities separately and do not count them as new external inputs."
+      source_ids:
+        - eu-nfm-bat-conclusions-2016
+    - rule_id: sb_forming_condition
+      applies_to: "semi-manufactured or powder output"
+      rule: "Include the forming, powder preparation, melting, casting, rolling, drawing, extrusion, annealing, or finishing operations performed before the declared factory-gate product is released; mark absent operations not applicable."
+      source_ids:
+        - eu-nfm-bat-conclusions-2016
+boundary_abstraction:
+  declared_starting_condition: "An identified, weighed, homogenised or otherwise representatively sampled, and assayed platinum-bearing refinery feed lot received at the foreground facility"
+  starting_condition_role: "Foreground refinery input; its upstream production or collection and preprocessing is represented by linked upstream datasets or an explicitly justified secondary-material cut-off"
+  product_classification_scope: "Saleable platinum metal in unwrought, semi-manufactured, or powder form; route and physical form do not create separate canonical PCR identities"
+  recursive_input_rule: "If a covered platinum product re-enters as feed, record it once as a product input with its upstream dataset and model only the incremental foreground refining or forming; do not recursively expand the same PCR inside the foreground process"
+  upstream_dataset_requirement: "Primary feed requires traceable upstream mining, concentration, smelting, and base-metal-refining datasets as applicable. Secondary feed requires collection and preprocessing datasets unless a declared cut-off convention legitimately assigns it zero incoming burden."
+  disclosure: "Declare feed category and origin, platinum and co-metal assays, primary/secondary share, cut-off convention, included unit operations, internal recycle loops, abatement and wastewater treatment, finishing form, geography, technology, period, and exclusions"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Platinum, unwrought or in semi-manufactured forms, or in powder form — UUID unresolved"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "platinum mass fraction and assay method"
+    - "physical form"
+    - "dimensions or particle-size specification when applicable"
+    - primary
+    - secondary
+    - "or mixed feed route"
+    - "feed origin and burden treatment"
+    - "facility geography"
+    - "refining and finishing technology"
+    - "production period"
+    - "allocation method"
+    - "internal recycle treatment"
+    - "factory-gate packaging condition"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product and all mass-normalised inventory"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use net released product mass. Preserve measured values before normalising all foreground exchanges to 1 kg of released platinum product."
+  - id: platinum_content_basis
+    applies_to: "feed, product, residues, and co-products"
+    required_property_ref:
+      name: "Mass and reported platinum mass fraction"
+      uuid: ""
+    required_unit: "kg and kg Pt/kg material"
+    rule: "Record wet or dry basis, sampling method, assay method, and uncertainty. Do not substitute total PGM content for platinum content."
+  - id: solution_concentration_basis
+    applies_to: "hydrochloric acid and other aqueous reagents"
+    required_property_ref:
+      name: "Mass and solution concentration"
+      uuid: ""
+    required_unit: "kg solution and mass fraction"
+    rule: "Report purchased or make-up solution mass and concentration separately; do not report active-acid mass as solution mass. Recovered internal acid is not a new technosphere input."
+  - id: gas_volume_basis
+    applies_to: "gaseous natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "State temperature, absolute pressure, and dry/wet basis for gas volume; retain the metered volume and any conversion factor."
+  - id: electricity_energy_basis
+    applies_to: "purchased electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Record meter-delivered electricity in kWh and declare voltage level, grid geography, contractual supply, and on-site generation treatment. Do not use a voltage-transformation service or cable flow as electricity."
+process_map:
+  - id: platinum_refining_and_finishing
+    name: "Platinum refining and finishing"
+    inclusion: "required"
+    inclusion_condition: "Always included; individual route-conditioned exchanges are recorded only when they cross the declared foreground boundary"
+    role: "Foreground production from assayed refinery feed through released platinum form"
+    quantitative_reference: "1 kg released platinum product"
+process_inventory:
+  - id: platinum_refining_and_finishing
+    label: "Platinum refining and finishing"
+    inputs:
+      product:
+        - row_id: pt_refinery_feed
+          role: "Assayed platinum-bearing refinery feed lot"
+          name: "Assayed platinum-bearing refinery feed lot — UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The received physical feed lot crosses the foreground refinery boundary once. Its state, origin, dry matter, platinum assay, other valuable-metal assays, and upstream dataset are recorded for the actual campaign."
+          amount:
+            expression: "Measure received mass and determine dry mass and platinum content from representative sampling and assay; keep each materially distinct feed lot as a separate exchange record."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg released platinum product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed_mass_assay
+              source_ids:
+                - eu-nfm-bat-conclusions-2016
+            ranges: []
+        - row_id: hydrochloric_acid_30
+          role: "Hydrochloric acid solution, 30%"
+          name: "Hydrochloric acid (30%)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "56414d25-a353-4d67-b362-87212ce6011d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Purchased or externally supplied 30% hydrochloric acid solution is recorded when used as refinery make-up acid. Internally recovered acid is reported in the recycle ledger rather than counted again as an input."
+          amount:
+            expression: "Sum weighed or invoiced 30% solution entering the campaign boundary; record actual concentration and convert only with documented solution mass fraction."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released platinum product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reagent_records
+              source_ids:
+                - eu-nfm-bat-conclusions-2016
+            ranges: []
+        - row_id: chlorine_gas
+          role: "Chlorine gas"
+          name: "Chlorine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1fb2c22c-c189-4e2a-9a9f-810b59c37325"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Externally supplied chlorine is recorded for hydrochloric-acid/chlorine dissolution or dry chlorination when that route is used. Recovered chlorine in a closed loop is not counted as a new input."
+          amount:
+            expression: "Measure make-up chlorine crossing the facility process boundary for the represented campaign."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released platinum product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reagent_records
+              source_ids:
+                - eu-nfm-bat-conclusions-2016
+            ranges: []
+        - row_id: sodium_hydroxide
+          role: "Sodium hydroxide"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Externally supplied sodium hydroxide is recorded when used for feed treatment, neutralisation, or wastewater treatment attributable to the represented campaign. Solution concentration and supply state remain foreground qualifiers."
+          amount:
+            expression: "Sum purchased or make-up sodium hydroxide product mass entering included operations and report solution concentration where applicable."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released platinum product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reagent_records
+              source_ids:
+                - eu-nfm-bat-conclusions-2016
+            ranges: []
+        - row_id: process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Make-up process water crossing the boundary is recorded for dissolution, washing, scrubbing, product finishing, and attributable wastewater treatment. Recirculated water is disclosed separately without double counting."
+          amount:
+            expression: "Meter or otherwise reconcile make-up process water entering included operations; disclose source, quality, and density conversion if volume records are converted to mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released platinum product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - eu-nfm-bat-conclusions-2016
+                - ipa-pgm-lca-2017-2022-update
+            ranges: []
+        - row_id: purchased_electricity
+          role: "Purchased electricity"
+          name: "Purchased alternating-current electricity — UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Meter-delivered electricity is recorded as one energy exchange. Voltage, grid geography, contractual supply, and on-site generation are qualifiers rather than separate unverified flow identities."
+          amount:
+            expression: "Sum revenue-grade meter readings attributable to included operations, net of documented exported electricity and excluding electricity already embedded in upstream datasets."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released platinum product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_records
+              source_ids:
+                - eu-nfm-bat-conclusions-2016
+                - ipa-pgm-lca-2017-2022-update
+            ranges: []
+        - row_id: gaseous_natural_gas
+          role: "Gaseous natural gas"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Gaseous natural gas is recorded when combusted in included drying, thermal pretreatment, reduction support, melting, annealing, or finishing operations. Supply conditions and lower heating value are retained."
+          amount:
+            expression: "Record calibrated metered volume at stated reference conditions for the represented campaign."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released platinum product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_records
+              source_ids:
+                - eu-nfm-bat-conclusions-2016
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: platinum_product
+          role: "Released platinum product"
+          name: "Platinum, unwrought or in semi-manufactured forms, or in powder form — UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The released reference product is one declared physical form and one release specification. Different saleable forms or specifications are separate dataset variants, not aggregated exchanges."
+          amount:
+            expression: "Measure net released product mass and assay; normalise the completed inventory to exactly 1 kg of this output."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg released platinum product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_release
+              source_ids:
+                - un-cpc-3-structure-2025
+                - ipa-pgm-lca-2017-2022-update
+            ranges: []
+      waste:
+        - row_id: platinum_filter_cake
+          role: "Platinum-bearing hydroxide filter cake"
+          name: "Platinum-bearing hydroxide filter cake — UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "The weighed hydroxide filter cake leaving wastewater treatment for external recovery or disposal is recorded separately from internally recycled precious-metal residue. Its retained platinum and other regulated metal concentrations are assayed."
+          amount:
+            expression: "Weigh cake leaving the foreground boundary, determine dry matter and platinum concentration, and record destination and recovery status."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released platinum product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids:
+                - eu-nfm-bat-conclusions-2016
+            ranges: []
+        - row_id: acidic_chloride_wastewater
+          role: "Acidic chloride-bearing refinery wastewater"
+          name: "Acidic chloride-bearing platinum-refinery wastewater — UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Net acidic chloride-bearing wastewater sent to external treatment or discharge after included on-site treatment is one aqueous waste exchange. Internally recirculated leach liquor and water are excluded from this net output."
+          amount:
+            expression: "Meter net wastewater crossing the foreground boundary and retain pH, chloride, suspended-solids, platinum, and other regulated-metal analyses."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released platinum product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - eu-nfm-bat-conclusions-2016
+            ranges: []
+      elementary:
+        - row_id: fossil_carbon_dioxide
+          role: "Direct fossil carbon dioxide"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Direct fossil carbon dioxide from on-site combustion of gaseous natural gas in included operations is calculated separately from upstream electricity and fuel-supply emissions."
+          amount:
+            expression: "Calculate fossil CO2 from campaign natural-gas consumption and documented carbon content or supplier emission factor; reconcile with direct emissions monitoring when available."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released platinum product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fuel_records
+              source_ids:
+                - eu-nfm-bat-conclusions-2016
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "separately metered operations and campaigns"
+    rule: "Avoid allocation by subdividing campaign, unit-operation, and product-form records wherever technically feasible."
+    source_ids:
+      - eu-nfm-bat-conclusions-2016
+  - rule_id: allocation_precious_metals
+    applies_to: "joint precious-metal refinery burdens that cannot be subdivided"
+    rule: "Allocate remaining shared precious-metal-refinery burdens by recovered mass of each separately assayed saleable precious metal, and disclose the factors and sensitivity to an economic alternative."
+    source_ids:
+      - ipa-pgm-lca-2017-2022-update
+  - rule_id: allocation_base_and_precious_metals
+    applies_to: "unresolved joint production of base and precious metals"
+    rule: "Use the verified upstream supplier dataset method. If foreground joint burdens cannot be subdivided, apply economic allocation to recovered metal content with documented prices, period, currency, and sensitivity; do not mix methods silently."
+    source_ids:
+      - ipa-pgm-lca-2017-2022-update
+  - rule_id: allocation_internal_recovery
+    applies_to: "internal solutions, residues, filter cakes, and off-spec metal"
+    rule: "Treat material returned within the foreground boundary as internal recycle without avoided-product credit. Recognise a co-product or waste only when it crosses the boundary, has a measured quantity, and has a documented destination."
+    source_ids:
+      - eu-nfm-bat-conclusions-2016
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_feed_mass_assay
+      process_id: "platinum_refining_and_finishing"
+      flow_role: "assayed refinery feed"
+      record_type: "weighbridge/batch ticket and laboratory assay"
+      raw_fields: "lot id; origin; route; gross, tare and net mass; moisture; Pt and co-metal assays; sampling and assay methods; uncertainty; upstream dataset id"
+      collection_method: "Calibrated weighing plus representative sampling and documented laboratory assay"
+      unit: "kg; kg Pt/kg dry feed"
+      frequency: "Every received lot"
+      temporal_coverage: "Same campaigns and period as product output"
+      site_scope: "All included refinery feeds"
+      aggregation_rule: "Keep distinct feed lots; aggregate mass and contained metal only after dry-basis conversion and route tagging"
+      quality_evidence: "Calibration records; chain of custody; duplicate or certified-reference assay checks"
+    - protocol_id: cp_reagent_records
+      process_id: "platinum_refining_and_finishing"
+      flow_role: "hydrochloric acid, chlorine, and sodium hydroxide make-up"
+      record_type: "tank, scale, flowmeter, batch, and invoice records"
+      raw_fields: "reagent id; concentration/purity; opening and closing stock; receipts; returns; recovered-loop quantity; allocation key"
+      collection_method: "Reconcile calibrated storage and dosing records with purchases and production batches"
+      unit: "kg product"
+      frequency: "Each batch; monthly reconciliation"
+      temporal_coverage: "Full represented period"
+      site_scope: "All included operations"
+      aggregation_rule: "External input = opening stock + receipts - closing stock - documented returns; internal recycle reported separately"
+      quality_evidence: "Meter/scale calibration; supplier certificate; inventory reconciliation"
+    - protocol_id: cp_water_records
+      process_id: "platinum_refining_and_finishing"
+      flow_role: "process-water make-up"
+      record_type: "water meter and balance"
+      raw_fields: "source; quality; meter readings; density; recirculation; discharge"
+      collection_method: "Calibrated make-up meters reconciled to recirculation and wastewater records"
+      unit: "kg or m3 with conversion"
+      frequency: "Continuous or each batch; monthly reconciliation"
+      temporal_coverage: "Full represented period"
+      site_scope: "All included water systems"
+      aggregation_rule: "Count only make-up crossing the boundary; retain measured volume and documented density for mass conversion"
+      quality_evidence: "Meter calibration; water balance; laboratory quality results"
+    - protocol_id: cp_electricity_records
+      process_id: "platinum_refining_and_finishing"
+      flow_role: "purchased electricity"
+      record_type: "revenue/submeter records"
+      raw_fields: "meter id; import; export; voltage; grid geography; contract; on-site generation; operation allocation"
+      collection_method: "Revenue meters and calibrated submeters; documented allocation for shared loads"
+      unit: "kWh"
+      frequency: "Continuous; monthly reconciliation"
+      temporal_coverage: "Full represented period"
+      site_scope: "All included operations"
+      aggregation_rule: "Sum imported electricity attributable to included operations minus documented export; do not net unrelated site loads"
+      quality_evidence: "Utility invoices; meter calibration; submeter coverage and reconciliation"
+    - protocol_id: cp_fuel_records
+      process_id: "platinum_refining_and_finishing"
+      flow_role: "gaseous natural gas and direct fossil CO2"
+      record_type: "custody-transfer meter, fuel certificate, and emissions calculation"
+      raw_fields: "gas volume; temperature; pressure; moisture; heating value; carbon content; meter id; operation; monitoring result"
+      collection_method: "Calibrated metering at stated reference conditions; calculate CO2 from documented carbon data and reconcile with monitoring"
+      unit: "m3 gas; kg CO2"
+      frequency: "Continuous or each batch; monthly reconciliation"
+      temporal_coverage: "Full represented period"
+      site_scope: "Included fuel-burning equipment only"
+      aggregation_rule: "Aggregate condition-corrected volume; allocate shared equipment by defensible operating records; calculate direct fossil CO2 consistently"
+      quality_evidence: "Meter calibration; supplier certificate; calculation sheet; emissions-monitor reconciliation"
+    - protocol_id: cp_product_release
+      process_id: "platinum_refining_and_finishing"
+      flow_role: "released platinum product"
+      record_type: "final scale, batch release, and assay records"
+      raw_fields: "product lot; net mass; Pt assay; physical form; dimensions/particle specification; off-spec return; packaging tare"
+      collection_method: "Calibrated final weighing and documented product-release assay"
+      unit: "kg product; kg Pt/kg product"
+      frequency: "Every released lot"
+      temporal_coverage: "Same campaigns and period as inputs"
+      site_scope: "All covered product lots in one declared dataset variant"
+      aggregation_rule: "Sum conforming net released mass; exclude packaging tare and returned or off-spec material; normalise to 1 kg"
+      quality_evidence: "Scale calibration; certificate of analysis; release specification; lot traceability"
+    - protocol_id: cp_residue_records
+      process_id: "platinum_refining_and_finishing"
+      flow_role: "platinum-bearing hydroxide filter cake"
+      record_type: "waste manifest, scale, and laboratory analysis"
+      raw_fields: "mass; moisture; Pt and regulated-metal concentrations; destination; recovery/disposal status"
+      collection_method: "Weigh each shipment or container and sample using a documented heterogeneous-solid protocol"
+      unit: "kg wet and dry cake; kg Pt/kg dry cake"
+      frequency: "Each shipment or batch"
+      temporal_coverage: "Full represented period"
+      site_scope: "All filter cake crossing the boundary"
+      aggregation_rule: "Aggregate destination-specific dry and wet masses; keep internal returns outside the output"
+      quality_evidence: "Scale calibration; chain of custody; laboratory QA/QC; waste manifest"
+    - protocol_id: cp_wastewater_records
+      process_id: "platinum_refining_and_finishing"
+      flow_role: "acidic chloride-bearing wastewater"
+      record_type: "flowmeter and composite sample"
+      raw_fields: "flow; density; pH; chloride; suspended solids; Pt and regulated metals; treatment stage; destination"
+      collection_method: "Calibrated net-flow measurement plus flow-proportional composite sampling"
+      unit: "kg or m3; concentration units"
+      frequency: "Continuous flow; composite per permit or batch"
+      temporal_coverage: "Full represented period"
+      site_scope: "Net wastewater crossing the foreground boundary"
+      aggregation_rule: "Convert volume to mass only with measured/documented density; calculate loads from matched flow and concentration periods"
+      quality_evidence: "Flowmeter calibration; laboratory QA/QC; treatment and discharge records"
+  calculation_rules:
+    - id: calc_normalise_reference
+      applies_to: "every inventory exchange"
+      rule: "Normalised amount = campaign exchange amount / net kg of conforming released platinum product."
+      inputs:
+        - "Campaign exchange quantity"
+        - "cp_product_release net product mass"
+      output: "Exchange per 1 kg reference product"
+      source_ids: []
+    - id: calc_dry_feed_platinum
+      applies_to: "pt_refinery_feed"
+      rule: "Dry feed mass = net wet mass × (1 - moisture fraction); contained Pt = dry feed mass × dry-basis Pt mass fraction."
+      inputs:
+        - Weighing
+        - moisture
+        - "and assay records from cp_feed_mass_assay"
+      output: "kg dry feed and kg contained Pt"
+      source_ids: []
+    - id: calc_solution_mass
+      applies_to: "aqueous reagent records"
+      rule: "Keep solution product mass as the exchange; active reagent mass = solution mass × measured mass fraction is an additional calculation and must not replace the product exchange."
+      inputs:
+        - "Reagent mass and concentration from cp_reagent_records"
+      output: "kg solution and kg active substance"
+      source_ids: []
+    - id: calc_direct_fossil_co2
+      applies_to: "fossil_carbon_dioxide"
+      rule: "Calculate CO2 from measured fuel and documented carbon content or supplier factor; keep factor identity, oxidation assumption, and monitoring reconciliation."
+      inputs:
+        - "Natural-gas record and carbon data from cp_fuel_records"
+      output: "kg fossil CO2"
+      source_ids:
+        - eu-nfm-bat-conclusions-2016
+    - id: calc_precious_metal_allocation
+      applies_to: "inseparable joint precious-metal-refinery burdens"
+      rule: "Allocation factor for metal i = recovered saleable mass of metal i / total recovered saleable mass of jointly processed precious metals."
+      inputs:
+        - "Assayed released masses for all joint precious-metal co-products"
+      output: "Product-specific allocation factors summing to 1"
+      source_ids:
+        - ipa-pgm-lca-2017-2022-update
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and feed"
+      requirement: "Preserve lot-to-lot traceability, physical form, purity, feed origin, route, and Tiangong UUID status; do not substitute a wire-only UUID for the broader reference product."
+      evidence: "Release certificates, feed tickets, assay records, and unresolved-UUID review metadata"
+    - id: dq_temporal
+      applies_to: "all foreground records"
+      requirement: "Use a common representative period, normally at least 12 consecutive months or a complete documented campaign set covering seasonal and maintenance variation; explain shorter periods."
+      evidence: "Meter, inventory, production, maintenance, and batch coverage records"
+    - id: dq_completeness
+      applies_to: "material, energy, water, waste, and direct emissions"
+      requirement: "Reconcile all included operations and identify every additional reagent, fuel, waste, or direct elementary flow as its own atomic exchange before publication."
+      evidence: "Mass/metal balances, utility reconciliation, waste manifests, emissions inventory, and completeness checklist"
+    - id: dq_assay
+      applies_to: "Pt-bearing feeds, products, co-products, and residues"
+      requirement: "Use representative sampling, documented assay methods, units, detection limits, and uncertainty; retain duplicate or reference-material QA results where available."
+      evidence: "Sampling plans, laboratory reports, QA/QC records, and certificates of analysis"
+    - id: dq_geography_technology
+      applies_to: "upstream datasets and utilities"
+      requirement: "Match geography, technology, product state, concentration, and delivery boundary; disclose any proxy and do not assign an unverified UUID."
+      evidence: "Supplier dataset metadata, contracts, process description, and UUID audit record"
+validation_rules:
+  - rule_id: val_reference_product
+    applies_to: "reference flow and platinum_product"
+    rule: "Verify exactly 1 kg net released platinum product after normalisation, with declared platinum assay and covered physical form; reject mixed-PGM mass as the platinum reference amount."
+    source_ids:
+      - un-cpc-3-structure-2025
+  - rule_id: val_inventory_reconciliation
+    applies_to: "foreground inventory"
+    rule: "Require all 11 prescribed atomic rows to be either UUID-matched or explicitly unresolved and applicable rows to carry foreground quantities; add separate audited rows for any additional actual reagent, fuel, waste, or direct emission."
+    source_ids:
+      - eu-nfm-bat-conclusions-2016
+  - rule_id: val_mass_metal_balance
+    applies_to: "feeds, product, co-products, residues, and wastewater"
+    rule: "Reconcile total mass and contained platinum across input, released products, internal stocks/recycle, residues, and measured losses; document uncertainty and investigation of material imbalance."
+    source_ids:
+      - eu-nfm-bat-conclusions-2016
+  - rule_id: val_no_double_counting
+    applies_to: "internal loops and upstream datasets"
+    rule: "Verify that recovered acid, chlorine, water, solutions, residues, and platinum are not counted as new inputs and that upstream burdens are not duplicated in the foreground inventory."
+    source_ids:
+      - eu-nfm-bat-conclusions-2016
+  - rule_id: val_allocation
+    applies_to: "multi-metal campaigns"
+    rule: "Verify subdivision was attempted first, all allocation factors sum to 1 for the allocated burden, co-product quantities and assays are measured, and sensitivity and method disclosures are present."
+    source_ids:
+      - ipa-pgm-lca-2017-2022-update
+  - rule_id: val_waste_emissions
+    applies_to: "wastewater, filter cake, and direct fossil CO2"
+    rule: "Verify wastewater and filter cake destinations and compositions, distinguish internal recovery from boundary outputs, and exclude upstream electricity emissions from direct fossil CO2."
+    source_ids:
+      - eu-nfm-bat-conclusions-2016
+published_dataset_profile:
+  dataset_role: "secondary_dataset or background_dataset after review; candidate foreground packages remain authoring inputs"
+  downstream_use: "Product-system modelling requiring platinum at the factory gate, with route, form, purity, geography, technology, period, and allocation matched to the study"
+  allowed_use: "Use for the declared primary, secondary, or mixed feed route and declared released product form after UUID gaps, data-quality evidence, and boundary compatibility are reviewed"
+  excluded_use: "Direct representation of ore or concentrate, platinum compounds, catalysts, jewellery, fabricated end-use articles, scrap treatment alone, or another PGM; unsupported extrapolation between primary and secondary routes"
+  required_metadata: "PCR id; product form and purity; product and feed assays; feed route and origin; secondary cut-off convention; system boundary; geography; technology; period; allocation; UUID status; source and collection protocol versions"
+  required_quality_disclosure: "Record coverage, meter and scale calibration, sampling and assay QA/QC, mass and platinum balance, allocation sensitivity, proxy datasets, unresolved UUIDs, and unresolved range-evidence needs"
+  update_trigger: "Material change in feed mix, burden convention, refinery or finishing technology, energy or water supply, recovery efficiency, product specification, allocation, abatement, wastewater treatment, geography, or representative period"
+data_sources:
+  - id: "un-cpc-3-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *CPC Version 3.0 Structure*, 30 June 2025, official CSV, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv, retrieved 2026-09-04, SHA-256 5cd2c1c4890dd6be16af48e9bb940fed48efff9865f39ff15edaa921da25fb7c"
+    used_for: "Exact CPC 41330 classification identity and English title; independence key unsd-cpc-3.0-structure-2025"
+  - id: "china-mof-research-goods-list-2026"
+    type: "official_guidance"
+    reference: "Ministry of Finance of the People's Republic of China, *免税科研货物清单* (Duty-free scientific research goods list), item 151 / heading 7110, https://m.mof.gov.cn/zcfb/202601/P020260114634207037460.pdf, 2026, retrieved 2026-09-04, SHA-256 844ae4413404a9727f8cb805c2ebbfef8959afc2e44db43d421ed9da0ab6b350"
+    used_for: "Verification of professional Chinese product-state terminology “铂，未锻造、半制成或粉末状”; independence key china-mof-tax-free-research-goods-list-2026"
+  - id: "eu-nfm-bat-conclusions-2016"
+    type: "official_guidance"
+    reference: "European Commission, *Commission Implementing Decision (EU) 2016/1032 establishing best available techniques (BAT) conclusions for the non-ferrous metals industries*, Official Journal L 174, 30 June 2016, official full-text XHTML, https://publications.europa.eu/resource/cellar/174bd664-3e84-11e6-af30-01aa75ed71a1.0006.03/DOC_1, retrieved 2026-09-04, SHA-256 1a752d504bcfdbf68ca521d73ab48fa511de01b750923089f1591f95dfa06699"
+    used_for: "Original-text non-ferrous and precious-metal process scope; material selection and mixing; pretreatment, smelting/melting, leaching and hydrometallurgical stages; energy management; wastewater measurement, reuse, segregation, treatment, and monitoring; and HCl/Cl2 controls; independence key eu-commission-implementing-decision-2016-1032"
+  - id: "ipa-pgm-lca-2017-2022-update"
+    type: "literature"
+    reference: "International Platinum Group Metals Association, *The Life Cycle Assessment of Platinum Group Metals (PGMs): Reference Year 2017 & 2022 Update*, 2022, https://ipa-news.com/assets/pdfs/2022-06-21-lca-fact-sheet-2022-ipa.pdf, retrieved 2026-09-04"
+    used_for: "Original-text cradle-to-gate boundary, separate primary/secondary route treatment, 1 kg platinum functional-unit precedent, and mass/economic allocation practice; independence key ipa-sphera-pgm-lca-2017-2022-update"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:a7d92a0402f66bbbb8e0f4d55a84537b5cdde2c527c87a368614c61aaea15270"
+  generated_content_sha256: "sha256:ea8d470221f64bdfb67147d841f69a8d7239047fb49ea5cdc87ae830c6594ae3"

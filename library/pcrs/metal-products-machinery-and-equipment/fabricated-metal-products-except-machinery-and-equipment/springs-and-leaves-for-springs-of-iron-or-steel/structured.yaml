@@ -1,10 +1,943 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "42945"
-  title: "Springs and leaves for springs, of iron or steel"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.springs-and-leaves-for-springs-of-iron-or-steel"
+  classification_refs: "CPC 3.0: 42945, exact"
+  covered_products: "Finished iron or steel leaf springs and leaves, helical springs, compression springs, extension springs, torsion springs, flat spiral springs, disc springs, and spring units sold with a spring as their principal product identity"
+  excluded_products: "Non-ferrous, polymer, or elastomer springs; clock and watch springs; spring or lock washers; shock absorbers; non-spring assemblies"
+  representative_product: "Finished and inspected iron or steel spring or spring leaf conforming to the declared drawing and acceptance specification"
+  production_route: "Purchased spring-steel wire, strip, or rod; cutting and forming; route-applicable heat treatment; grinding, deburring, cleaning, passivation, shot peening, or corrosion protection when performed; final inspection"
+  market_state: "Conforming finished spring product at the factory gate, excluding separate packaging; coating or preservative retained on the product is included and declared"
+functional_unit:
+  what: "Provide a conforming iron or steel spring product with the declared elastic function, geometry, and acceptance class at the factory gate"
+  how_much: "1 kg net mass of conforming finished spring or spring leaf, excluding separate packaging"
+  how_well: "Meets the declared steel grade, dimensional tolerances, load-deflection or torque-deflection requirement, surface condition, heat-treatment state, and inspection acceptance criteria"
+  how_long_or_cycle: "One production and delivery lot; service life and fatigue-cycle performance are declared as product qualifiers but are not converted into a use-phase functional duration"
+  reference_flow_link: "1 kg of accepted reference-product output from finishing_inspection"
+system_boundary:
+  rules:
+    - rule_id: sb_factory_gate
+      applies_to: "Foreground product system"
+      rule: "Include receipt and handling of purchased wire, strip, or rod; cutting and forming; route-applicable heat treatment and quenching; grinding, deburring, cleaning, passivation, shot peening, corrosion protection, and inspection when performed; and on-site waste handling up to transfer from the facility."
+      source_ids:
+        - us-census-naics-2022-spring-manufacturing
+        - us-epa-james-spring-wire
+        - eu-rfcs-lighttech-2020
+    - rule_id: sb_upstream_separation
+      applies_to: "Purchased products and energy"
+      rule: "Represent steelmaking, wire drawing, strip or rod production, purchased chemical production, and energy supply with separate upstream datasets. Do not recreate upstream burdens as direct foreground elementary flows."
+      source_ids:
+        - us-census-naics-2022-spring-manufacturing
+    - rule_id: sb_conditional_routes
+      applies_to: "Heat treatment and surface finishing"
+      rule: "Include only the thermal, quench, cleaning, peening, passivation, plating, painting, or rust-prevention steps actually used for the declared product. Record every applied material and generated waste as a distinct exchange; do not average mutually exclusive routes without production-weighted records."
+      source_ids:
+        - us-epa-james-spring-wire
+        - eu-rfcs-lighttech-2020
+    - rule_id: sb_exclusions
+      applies_to: "Product system exclusions"
+      rule: "Exclude capital goods, employee commuting, research and development, separate packaging, outbound distribution, installation, use, maintenance, and end-of-life unless the study explicitly expands the boundary and reports those additions separately."
+      source_ids: []
+    - rule_id: sb_direct_emissions
+      applies_to: "Foreground elementary flows"
+      rule: "Report only emissions crossing directly from the facility to the environment. Upstream emissions embodied in electricity, natural gas, steel, water, or chemicals remain in their supplier datasets."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Purchased steel wire, strip, or rod crosses the facility gate with supplier, grade, dimensions, mass, heat-treatment state, coating state, recycled-content claim if used, and upstream dataset reference declared"
+  starting_condition_role: "Upstream product input to foreground spring forming"
+  product_classification_scope: "Iron or steel springs, spring leaves, and spring units whose principal product identity falls within CPC 3.0 code 42945"
+  recursive_input_rule: "If a finished spring in this same category is purchased and incorporated into a spring unit, record it once as a separately quantified upstream product input with its own dataset; do not reopen or duplicate its spring-manufacturing foreground chain"
+  upstream_dataset_requirement: "Use supplier- and grade-specific datasets where available; otherwise use a technologically and geographically representative dataset for the exact wire, strip, or rod form and disclose the proxy"
+  disclosure: "Declare spring form, grade, feedstock form, forming temperature, heat-treatment and quench route, finishing and coating steps, internal versus outsourced operations, net product mass, rejects, packaging treatment, facility geography, reference year, and any integrated upstream production"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Springs and leaves for springs, of iron or steel"
+    uuid: "650cda2f-7baa-413f-ac22-ff0da54ea8ba"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "spring form and application"
+    - "drawing or part identifier"
+    - "iron or steel grade"
+    - wire
+    - strip
+    - "or rod feedstock form"
+    - "hot- or cold-forming route"
+    - "heat-treatment and quench route"
+    - "surface-treatment and coating state"
+    - "load-deflection or torque-deflection class"
+    - "fatigue or service-cycle requirement when specified"
+    - "net-mass basis"
+    - geography
+    - "reference year"
+    - "packaging exclusion or inclusion statement"
+reference_flows:
+  []
+measurement_rules:
+  - id: mu_reference_mass
+    applies_to: "Reference product and all mass-normalized inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize to 1 kg net accepted spring product after inspection. Exclude separate packaging mass; include coating, preservative, and permanently assembled spring elements that are part of the sold product."
+  - id: mu_feedstock_mass
+    applies_to: "Purchased steel wire, strip, and rod"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record actual received mass by feedstock form and steel grade. Do not combine wire, strip, and rod or substitute nominal design mass for received mass."
+  - id: mu_electricity_conversion
+    applies_to: "Electricity rows"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve meter data in kWh and convert to MJ using 1 kWh = 3.6 MJ before normalization; disclose the grid, voltage level, losses, and meter boundary."
+  - id: mu_gas_volume
+    applies_to: "Natural gas used in heat treatment"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Record metered volume and its temperature, pressure, and dry or wet reference conditions. Do not mix standard and actual cubic metres without an explicit conversion."
+  - id: mu_mass_balance
+    applies_to: "Each foreground process and the total product system"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile steel entering, internal intermediate transfers, saleable output, offcuts, rejects, retained coating, and accumulated stock over the reporting period. Explain any residual greater than the facility's documented measurement uncertainty."
+process_map:
+  - id: forming
+    name: "Feedstock preparation and spring forming"
+    inclusion: "required"
+    inclusion_condition: "Always included for purchased wire, strip, or rod; disclose outsourced forming if it is not performed on site"
+    role: "Foreground cutting, bending, winding, coiling, pressing, or leaf forming"
+    quantitative_reference: "kg formed spring blank transferred"
+  - id: heat_treatment
+    name: "Heat treatment and quenching"
+    inclusion: "conditional"
+    inclusion_condition: "Include when heating, stress relieving, hardening, tempering, austempering, or quenching is performed for the declared product"
+    role: "Foreground thermal conditioning"
+    quantitative_reference: "kg heat-treated spring blank transferred"
+  - id: finishing_inspection
+    name: "Surface finishing and final inspection"
+    inclusion: "required"
+    inclusion_condition: "Always include final inspection; include grinding, deburring, cleaning, passivation, shot peening, or corrosion protection only when performed"
+    role: "Foreground finishing and accepted-product release"
+    quantitative_reference: "kg accepted reference product"
+process_inventory:
+  - id: forming
+    label: "Feedstock preparation and spring forming"
+    inputs:
+      product:
+        - row_id: steel_wire
+          role: "Purchased iron or non-alloy steel wire"
+          name: "Steel Wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "62bb3717-f62c-43e0-baca-46a1e6f847c4"
+          property_unit: "Mass / kg"
+          description: "Record this input only for wire-formed springs when the purchased wire is iron or non-alloy steel as defined by the selected flow classification. The foreground record shall identify grade, diameter, supplier, coating, and incoming thermal state."
+          amount:
+            expression: "Measured received steel-wire mass consumed by the declared product lots, adjusted for opening and closing stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - us-census-naics-2022-spring-manufacturing
+            ranges: []
+        - row_id: low_alloy_steel_wire
+          role: "Purchased low-alloy steel wire"
+          name: "Wire drawing, steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "461d98b3-a825-41bb-9b16-056331873326"
+          property_unit: "Mass / kg"
+          description: "Record this input only for wire-formed springs when the purchased wire is low-alloy steel. Declare the exact alloy grade, spring-wire specification, diameter, supplier, coating, incoming thermal state, and upstream wire-drawing boundary."
+          amount:
+            expression: "Measured received low-alloy steel-wire mass consumed by the declared product lots, adjusted for opening and closing stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - us-census-naics-2022-spring-manufacturing
+            ranges: []
+        - row_id: steel_strip
+          role: "Purchased spring-steel strip"
+          name: "Spring-steel strip"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this input only for leaf, flat, disc, or spiral springs made from strip. Keep the UUID blank until an exact public spring-steel strip identity is verified."
+          amount:
+            expression: "Measured received spring-steel strip mass consumed by the declared product lots, adjusted for opening and closing stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - us-census-naics-2022-spring-manufacturing
+                - eu-prodcom-2006-springs
+            ranges: []
+        - row_id: steel_rod
+          role: "Purchased spring-steel rod"
+          name: "Spring-steel rod"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this input only for hot-wound or other rod-formed springs. The foreground record shall identify spring-steel grade, diameter, supplier, and incoming thermal state."
+          amount:
+            expression: "Measured received spring-steel rod mass consumed by the declared product lots, adjusted for opening and closing stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - us-census-naics-2022-spring-manufacturing
+                - eu-prodcom-2006-springs
+            ranges: []
+        - row_id: forming_electricity
+          role: "Forming electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity used by cutting, coiling, winding, pressing, handling, and forming auxiliaries allocated to the declared product lots."
+          amount:
+            expression: "Metered electricity converted from kWh to MJ and normalized to accepted product output"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_forming_energy
+              source_ids: []
+            ranges: []
+        - row_id: forming_lubricant
+          role: "Mineral-oil-based forming lubricant"
+          name: "Mineral-oil-based metal-forming lubricant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only lubricant that is consumed, carried out on parts, or lost during cutting and forming; recirculated inventory is adjusted for opening and closing stock."
+          amount:
+            expression: "Purchased plus opening stock minus closing stock, recovered lubricant, and documented transfers, assigned to the declared product lots"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_forming_consumables
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: formed_blank_output
+          role: "Formed steel spring blank transferred to the next operation"
+          name: "Formed steel spring blank"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This internal intermediate preserves the declared alloy, geometry, and as-formed state. Measure it before route-specific heat treatment or finishing."
+          amount:
+            expression: "Measured mass transferred from forming to heat treatment or directly to finishing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_outputs
+              source_ids:
+                - us-census-naics-2022-spring-manufacturing
+            ranges: []
+      waste:
+        - row_id: steel_offcuts
+          role: "Steel offcuts and forming rejects"
+          name: "Steel scrap, offcuts"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "57ac39af-dc0e-4c66-b357-56a68b7d892b"
+          property_unit: "Mass / kg"
+          description: "Record segregated steel offcuts and rejected blanks leaving forming for recycling, treatment, or disposal; do not net their mass against steel input."
+          amount:
+            expression: "Measured mass of offcuts and rejected blanks leaving forming, net of documented internal remelt or rework returned to the same period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_forming_outputs
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: heat_treatment
+    label: "Heat treatment and quenching"
+    inputs:
+      product:
+        - row_id: formed_blank_heat_input
+          role: "Formed steel spring blank entering heat treatment"
+          name: "Formed steel spring blank"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This internal input equals the portion of formed_blank_output routed to heat treatment in the same reporting period after stock adjustment."
+          amount:
+            expression: "Measured mass entering the declared heat-treatment route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_records
+              source_ids:
+                - us-epa-james-spring-wire
+            ranges: []
+        - row_id: heat_treatment_electricity
+          role: "Heat-treatment electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity used by electric furnaces, induction systems, circulation, quench handling, and thermal-control equipment when these operations are included."
+          amount:
+            expression: "Metered electricity converted from kWh to MJ and assigned to the treated product lots"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_heat_records
+              source_ids: []
+            ranges: []
+        - row_id: natural_gas_heat_treatment
+          role: "Natural gas for heat treatment"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record natural gas only for gas-fired furnaces or direct-fired thermal operations. Declare meter reference conditions and exclude gas used by unrelated products or buildings."
+          amount:
+            expression: "Metered gas volume assigned to the declared heat-treatment batches at stated reference conditions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_records
+              source_ids: []
+            ranges: []
+        - row_id: quenching_oil
+          role: "Quenching oil"
+          name: "Quenching Oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "02f62137-e204-46e6-8e72-e88b450fbdc4"
+          property_unit: "Mass / kg"
+          description: "Record fresh or make-up quenching oil only when an oil-quench route is used. Declare the formulation used and adjust bulk tank additions for opening and closing stock and recovered oil."
+          amount:
+            expression: "Purchased plus opening stock minus closing stock, recovered oil, and documented transfers during oil-quench production"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_heat_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: heat_treated_blank_output
+          role: "Heat-treated steel spring blank transferred to finishing"
+          name: "Heat-treated steel spring blank"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This internal intermediate preserves the declared alloy, geometry, furnace route, thermal cycle, quench medium, and post-treatment state."
+          amount:
+            expression: "Measured mass released from heat treatment to finishing after heat-treatment rejects are separated"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_outputs
+              source_ids:
+                - us-epa-james-spring-wire
+            ranges: []
+      waste:
+        - row_id: spent_quenching_oil
+          role: "Spent quenching oil"
+          name: "spent quench oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "0f997fd8-26b1-432f-a8b8-e2703616b018"
+          property_unit: "Mass / kg"
+          description: "Record quenching oil removed from service and transferred for regeneration, energy recovery, treatment, or disposal without netting it against make-up oil."
+          amount:
+            expression: "Weighed or documented transfer mass of quenching oil removed from service and assigned to treated product lots"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_outputs
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: fossil_co2_heat_treatment
+          role: "Direct fossil carbon dioxide from gas-fired heat treatment"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record only fossil carbon dioxide emitted directly by on-site natural-gas combustion. Do not add upstream electricity, gas-supply, or steel-production emissions here."
+          amount:
+            expression: "Measured direct emission mass or calculated mass from metered natural gas using a documented facility-approved factor and oxidation basis"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emissions
+              source_ids: []
+            ranges: []
+  - id: finishing_inspection
+    label: "Surface finishing and final inspection"
+    inputs:
+      product:
+        - row_id: formed_blank_finishing_input
+          role: "Formed blank entering finishing without post-forming heat treatment"
+          name: "Formed steel spring blank"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this internal input only for a declared route that transfers an as-formed blank directly to finishing. It shall reconcile with the corresponding forming output after stock adjustment."
+          amount:
+            expression: "Measured as-formed blank mass entering finishing when post-forming heat treatment is not applied"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids: []
+            ranges: []
+        - row_id: heat_treated_blank_finishing_input
+          role: "Heat-treated blank entering finishing"
+          name: "Heat-treated steel spring blank"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this internal input only for a declared heat-treated route. It shall reconcile with heat_treated_blank_output after stock adjustment."
+          amount:
+            expression: "Measured heat-treated blank mass entering finishing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids: []
+            ranges: []
+        - row_id: finishing_electricity
+          role: "Finishing electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity used by grinding, deburring, shot peening, cleaning, drying, coating, material handling, and inspection equipment actually used for the declared lots."
+          amount:
+            expression: "Metered electricity converted from kWh to MJ and assigned to the declared finishing lots"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - us-epa-james-spring-wire
+            ranges: []
+        - row_id: process_water_finishing
+          role: "Process water for cleaning and finishing"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water crossing the finishing boundary for cleaning, rinsing, passivation make-up, or dust control. Closed-loop recirculation is not repeatedly counted; record net make-up."
+          amount:
+            expression: "Metered or tank-balanced net process-water make-up assigned to the declared finishing lots"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - us-epa-james-spring-wire
+            ranges: []
+        - row_id: sodium_hydroxide_finishing
+          role: "Sodium hydroxide for alkaline cleaning"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide only when the declared cleaning or surface-treatment chemistry uses it. Report dry-equivalent sodium-hydroxide mass from concentration and solution mass."
+          amount:
+            expression: "Solution mass multiplied by verified sodium-hydroxide mass fraction, adjusted for stock and recovery"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - us-epa-james-spring-wire
+            ranges: []
+        - row_id: steel_shot
+          role: "Steel shot for shot peening"
+          name: "Steel shot"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record steel-shot make-up only for a declared shot-peening route. Adjust additions for opening and closing machine inventory and recovered reusable shot."
+          amount:
+            expression: "Purchased plus opening stock minus closing stock, recovered reusable shot, and documented transfers during declared shot-peening production"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-rfcs-lighttech-2020
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Accepted finished spring product"
+          name: "Springs and leaves for springs, of iron or steel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "650cda2f-7baa-413f-ac22-ff0da54ea8ba"
+          property_unit: "Mass / kg"
+          description: "Record only spring products that pass the declared dimensional, mechanical, surface, and lot-acceptance requirements. Separate packaging is excluded from this mass."
+          amount:
+            expression: "Measured net mass of conforming finished product released at final inspection"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_outputs
+              source_ids:
+                - un-cpc-3-0-structure-2025
+                - eu-prodcom-2006-springs
+            ranges: []
+      waste:
+        - row_id: spent_steel_shot
+          role: "Spent steel shot"
+          name: "Spent steel shot from shot peening"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record steel shot removed from service and transferred for recycling, treatment, or disposal; exclude reusable shot returned to the machine."
+          amount:
+            expression: "Weighed or documented transfer mass of spent shot removed from the declared shot-peening route"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_outputs
+              source_ids:
+                - eu-rfcs-lighttech-2020
+            ranges: []
+        - row_id: metal_finishing_wastewater
+          role: "Metal-finishing wastewater"
+          name: "Metal-finishing wastewater from spring cleaning and surface treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater transferred from spring cleaning, rinsing, passivation, or surface treatment to on-site or off-site treatment. Do not combine it with uncontaminated cooling water or sanitary wastewater."
+          amount:
+            expression: "Metered discharge mass or volume converted using measured density, net of separately metered uncontaminated water"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing_outputs
+              source_ids:
+                - us-epa-james-spring-wire
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: al_subdivide
+    applies_to: "Shared forming, heat-treatment, and finishing equipment"
+    rule: "Prefer subdivision by product lot, machine time, furnace charge, meter, tank balance, or production campaign before applying allocation."
+    source_ids: []
+  - rule_id: al_mass_energy_drivers
+    applies_to: "Residual shared inputs and outputs"
+    rule: "Allocate steel and mass-related consumables by measured product mass and process yield; allocate electricity and fuel by submetered use, equipment time multiplied by measured load, or furnace charge energy. Do not use revenue when a causal physical driver is available."
+    source_ids: []
+  - rule_id: al_scrap
+    applies_to: "Steel offcuts and rejects"
+    rule: "Record scrap mass and destination as a distinct output. Do not subtract avoided primary-steel burden or assign a recycling credit inside the foreground inventory unless a separately declared consequential or substitution model is required by the study."
+    source_ids: []
+  - rule_id: al_co_products
+    applies_to: "Multiple saleable spring products from one run"
+    rule: "Treat separately specified spring products as co-products only when outputs cannot be subdivided. Use documented mass allocation by default, or another causal physical relation when mass does not represent the shared process; report the method and sensitivity."
+    source_ids: []
+  - rule_id: al_no_double_count
+    applies_to: "Internal intermediates and rework"
+    rule: "Internal formed and heat-treated blank transfers carry no new upstream burden. Rework returned within the same reporting period is counted once and reconciled through stock and reject records."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_receipts
+      process_id: "forming"
+      flow_role: "steel wire, strip, and rod inputs"
+      record_type: "purchase receipt, weighbridge record, stock ledger, material certificate"
+      raw_fields: "supplier; steel grade; form; diameter or thickness; coating; heat-treatment state; received mass; opening stock; closing stock; lot ids"
+      collection_method: "Reconcile certified receipts and physical stock to product-lot consumption"
+      unit: "kg"
+      frequency: "each receipt and monthly stock close"
+      temporal_coverage: "At least one representative 12-month period, or the complete shorter campaign"
+      site_scope: "All facilities producing the declared product"
+      aggregation_rule: "Sum consumed mass by form and grade; normalize to accepted product mass"
+      quality_evidence: "Calibrated scale records, material certificates, stock reconciliation, supplier invoice"
+    - protocol_id: cp_forming_energy
+      process_id: "forming"
+      flow_role: "forming electricity"
+      record_type: "submeter or equipment energy log"
+      raw_fields: "meter id; opening and closing kWh; machine id; operating hours; product lot; production mass"
+      collection_method: "Read dedicated meter; where shared, allocate measured load-hours to lots"
+      unit: "kWh and MJ"
+      frequency: "each shift or batch; monthly reconciliation"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Forming equipment and direct auxiliaries"
+      aggregation_rule: "Convert kWh to MJ; sum assigned energy; divide by accepted product mass"
+      quality_evidence: "Meter calibration, load test, production log, allocation worksheet"
+    - protocol_id: cp_forming_consumables
+      process_id: "forming"
+      flow_role: "forming lubricant"
+      record_type: "purchase, issue, recovery, and stock records"
+      raw_fields: "product name; composition or safety data sheet; mass purchased; opening stock; closing stock; recovered mass; lot ids"
+      collection_method: "Tank or container mass balance"
+      unit: "kg"
+      frequency: "each issue; monthly stock close"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Forming operations only"
+      aggregation_rule: "Purchased plus opening stock minus closing stock, recovery, and transfers; divide by accepted product mass"
+      quality_evidence: "Stock reconciliation, scale calibration, purchase and recovery records"
+    - protocol_id: cp_forming_outputs
+      process_id: "forming"
+      flow_role: "formed blank and steel offcuts"
+      record_type: "transfer weight, reject log, scrap ticket"
+      raw_fields: "lot id; blank mass; offcut mass; reject mass; rework return; opening and closing work-in-process"
+      collection_method: "Weigh transfers and scrap containers; reconcile work in process"
+      unit: "kg"
+      frequency: "each batch; monthly reconciliation"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Forming output boundary"
+      aggregation_rule: "Sum net transfers and waste after stock change; normalize to accepted product mass"
+      quality_evidence: "Scale calibration, transfer log, scrap ticket, reject disposition"
+    - protocol_id: cp_heat_records
+      process_id: "heat_treatment"
+      flow_role: "heat-treatment inputs"
+      record_type: "batch card, furnace meter, gas meter, oil stock record"
+      raw_fields: "batch id; blank mass; furnace route; temperature-time program; kWh; gas m3 and reference conditions; oil additions; oil stock; quench medium"
+      collection_method: "Capture furnace batch and dedicated meter records; balance quench oil"
+      unit: "kg, kWh, MJ, m3"
+      frequency: "each furnace batch; monthly utility reconciliation"
+      temporal_coverage: "Complete included heat-treatment campaigns"
+      site_scope: "Included furnaces and quench systems"
+      aggregation_rule: "Assign batch-specific inputs to treated mass; normalize to accepted product mass"
+      quality_evidence: "Calibrated meters, furnace chart, batch traceability, tank balance"
+    - protocol_id: cp_heat_outputs
+      process_id: "heat_treatment"
+      flow_role: "heat-treated blank and spent quenching oil"
+      record_type: "release weight, reject log, hazardous-waste manifest"
+      raw_fields: "batch id; released mass; reject mass; spent oil mass; destination; stock change"
+      collection_method: "Weigh released intermediates and outgoing oil containers"
+      unit: "kg"
+      frequency: "each batch or waste shipment"
+      temporal_coverage: "Same period as heat-treatment inputs"
+      site_scope: "Included heat-treatment and quench systems"
+      aggregation_rule: "Sum released mass and removed oil; normalize to accepted product mass"
+      quality_evidence: "Scale calibration, batch release, waste manifest, stock reconciliation"
+    - protocol_id: cp_combustion_emissions
+      process_id: "heat_treatment"
+      flow_role: "direct fossil carbon dioxide"
+      record_type: "stack test, continuous monitor, gas meter, approved calculation sheet"
+      raw_fields: "measured CO2 mass or concentration and flow; gas volume; reference conditions; emission factor; oxidation factor; operating hours"
+      collection_method: "Prefer direct measurement; otherwise calculate from metered gas using documented facility-approved factors"
+      unit: "kg"
+      frequency: "continuous, test campaign, or each reporting period"
+      temporal_coverage: "Same period as gas consumption"
+      site_scope: "Direct furnace emission points only"
+      aggregation_rule: "Aggregate direct fossil CO2 and divide by accepted product mass"
+      quality_evidence: "Monitor calibration, stack-test report, meter record, factor approval and calculation trace"
+    - protocol_id: cp_finishing_records
+      process_id: "finishing_inspection"
+      flow_role: "finishing inputs"
+      record_type: "transfer weight, submeter, water meter, chemical issue, shot inventory"
+      raw_fields: "incoming blank mass by route; kWh; water mass or volume and density; sodium-hydroxide solution mass and concentration; shot additions, recovery, and stock; lot ids"
+      collection_method: "Reconcile route-specific meters, batch sheets, chemical issues, and stock"
+      unit: "kg, kWh, MJ"
+      frequency: "each batch or shift; monthly reconciliation"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Finishing and inspection equipment used by declared lots"
+      aggregation_rule: "Calculate net make-up and route-specific use; normalize to accepted product mass"
+      quality_evidence: "Meter and scale calibration, concentration certificate, stock reconciliation, route log"
+    - protocol_id: cp_finishing_outputs
+      process_id: "finishing_inspection"
+      flow_role: "accepted product, spent shot, and wastewater"
+      record_type: "final weight, inspection release, waste transfer, discharge meter"
+      raw_fields: "accepted mass; rejected mass; inspection result; spent-shot mass; wastewater volume or mass; density; destination; lot ids"
+      collection_method: "Weigh accepted product and wastes; meter wastewater; retain inspection disposition"
+      unit: "kg and m3"
+      frequency: "each lot and each waste transfer; monthly reconciliation"
+      temporal_coverage: "Same period as finishing inputs"
+      site_scope: "Final inspection and finishing waste boundary"
+      aggregation_rule: "Sum accepted mass and each waste separately; normalize to accepted product mass"
+      quality_evidence: "Calibrated scales and meters, inspection certificate, waste manifest, laboratory or density record"
+  calculation_rules:
+    - id: calc_normalize
+      applies_to: "All inventory rows"
+      rule: "normalized amount = reporting-period amount assigned to declared lots / reporting-period accepted net product mass"
+      inputs:
+        - "assigned flow amount"
+        - "accepted reference-product mass"
+      output: "amount per 1 kg accepted product"
+      source_ids: []
+    - id: calc_electricity
+      applies_to: "Electricity rows"
+      rule: "MJ = metered kWh × 3.6; normalized MJ = MJ / accepted product kg"
+      inputs:
+        - kWh
+        - "accepted product kg"
+      output: "MJ/kg reference product"
+      source_ids: []
+    - id: calc_sodium_hydroxide
+      applies_to: "Sodium hydroxide"
+      rule: "dry NaOH mass = solution mass × verified NaOH mass fraction"
+      inputs:
+        - "solution mass"
+        - "concentration certificate or laboratory result"
+      output: "kg NaOH/kg reference product"
+      source_ids: []
+    - id: calc_water_mass
+      applies_to: "Process water and wastewater"
+      rule: "mass = measured volume × measured period-representative density; do not assume density when dissolved or suspended solids make it material"
+      inputs:
+        - volume
+        - density
+        - "accepted product kg"
+      output: "kg/kg reference product"
+      source_ids: []
+    - id: calc_internal_balance
+      applies_to: "Internal intermediates"
+      rule: "opening work in process + process output - closing work in process = downstream transfer + rejects + documented rework return"
+      inputs:
+        - "transfer weights"
+        - "work-in-process stock"
+        - rejects
+        - rework
+      output: "reconciled intermediate mass"
+      source_ids: []
+    - id: calc_total_mass_balance
+      applies_to: "Total foreground system"
+      rule: "steel inputs + retained non-steel material inputs = accepted product + exported wastes + stock increase + measured direct mass emissions + residual"
+      inputs:
+        - "all mass rows"
+        - "stock change"
+      output: "mass-balance residual and percentage"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Reference product and steel feedstocks"
+      requirement: "Preserve lot traceability from material certificate through accepted product and declare grade, form, drawing, heat treatment, and surface state."
+      evidence: "Material certificate, routing card, inspection release, product specification"
+    - id: dq_measurement
+      applies_to: "Mass, electricity, gas, water, and chemical records"
+      requirement: "Use calibrated meters or documented stock balances; record calibration status, unit, reference conditions, detection limit where relevant, and uncertainty."
+      evidence: "Calibration certificate, meter log, tank or stock reconciliation"
+    - id: dq_temporal
+      applies_to: "Foreground dataset"
+      requirement: "Cover at least one representative 12-month period unless production is campaign-based or newer; explain shutdowns, atypical batches, and shorter periods."
+      evidence: "Production calendar, monthly totals, representativeness review"
+    - id: dq_completeness
+      applies_to: "Foreground inventory"
+      requirement: "Reconcile purchased steel, internal transfers, accepted output, rejects, wastes, direct emissions, utilities, and stock changes; document excluded flows and their screening basis."
+      evidence: "Mass and energy balance, waste register, permit inventory, exclusion log"
+    - id: dq_route
+      applies_to: "Conditional heat treatment and finishing"
+      requirement: "Identify each route actually used and its production share. Do not average mutually exclusive furnace, quench, peening, cleaning, or coating routes without production-weighted primary records."
+      evidence: "Routing cards, furnace recipes, bath logs, production shares"
+    - id: dq_geography_technology
+      applies_to: "Upstream datasets"
+      requirement: "Match steel form and grade, energy geography, supplier technology, and reference year; disclose every proxy and its expected direction of bias."
+      evidence: "Supplier dataset metadata, proxy assessment, geography and technology statement"
+validation_rules:
+  - rule_id: val_reference_flow
+    applies_to: "Reference product"
+    rule: "Confirm that the reference output uses UUID 650cda2f-7baa-413f-ac22-ff0da54ea8ba, Mass, kg, and exactly 1 kg net accepted product excluding separate packaging."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - eu-prodcom-2006-springs
+  - rule_id: val_product_scope
+    applies_to: "Product identity"
+    rule: "Confirm the product is principally an iron or steel spring, spring leaf, or spring unit and that excluded washers, shock absorbers, clock or watch springs, non-ferrous springs, and non-spring assemblies are not represented by this PCR."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - eu-prodcom-2006-springs
+  - rule_id: val_feedstock_route
+    applies_to: "Forming inputs"
+    rule: "Exactly the steel wire, strip, and rod forms actually consumed shall carry non-zero amounts, and each shall declare grade, dimensions, supplier, and incoming state."
+    source_ids:
+      - us-census-naics-2022-spring-manufacturing
+  - rule_id: val_internal_transfers
+    applies_to: "Internal intermediates"
+    rule: "Reconcile formed and heat-treated blank outputs to downstream inputs after work-in-process stock change, rejects, and rework; do not create burden on internal transfers."
+    source_ids: []
+  - rule_id: val_conditional_processes
+    applies_to: "Heat treatment and finishing"
+    rule: "Verify every applied furnace, quench, grinding, cleaning, passivation, shot-peening, or corrosion-protection route has its atomic inputs and outputs recorded, and every non-applied route is explicitly documented."
+    source_ids:
+      - us-epa-james-spring-wire
+      - eu-rfcs-lighttech-2020
+  - rule_id: val_energy_emissions
+    applies_to: "Energy and direct emissions"
+    rule: "Reconcile electricity and gas meters to included equipment and confirm direct fossil CO2 excludes upstream supplier emissions. Any calculated emission shall retain its factor, oxidation basis, and calculation trace."
+    source_ids: []
+  - rule_id: val_mass_balance
+    applies_to: "Foreground product system"
+    rule: "Pass the documented facility mass-balance tolerance or explain the residual with measurement uncertainty, stock change, unmeasured coating retention, or a corrective action."
+    source_ids: []
+  - rule_id: val_data_period
+    applies_to: "Dataset quality"
+    rule: "Confirm input, output, waste, energy, and emission records cover the same representative period and facility scope."
+    source_ids: []
+  - rule_id: val_uuid_status
+    applies_to: "UUID-bearing flows"
+    rule: "Confirm every stored flow, flow-property, and unit-group UUID remains public at state code 100 and still matches the recorded English and Chinese base names, flow type, classification, property, and unit group."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground spring-manufacturing dataset suitable for review and later publication as a secondary_dataset or background_dataset"
+  downstream_use: "Product carbon footprint, process LCA, supply-chain comparison, and lifecyclemodel construction for products consuming iron or steel springs or spring leaves"
+  allowed_use: "Use for the declared spring form, steel grade, forming route, heat treatment, finishing state, facility geography, technology, and reference period, or with a documented representativeness assessment"
+  excluded_use: "Do not use as a proxy for non-ferrous or polymer springs, spring washers, shock absorbers, clock or watch springs, unmodelled integrated steel production, downstream use or service life, or routes with materially different heat treatment or surface treatment without adjustment"
+  required_metadata: "PCR id and version state; product and flow UUIDs; spring form and application; drawing or part family; steel grade and feedstock form; forming and heat-treatment route; quench medium; finishing and coating; net-mass and packaging treatment; facility geography; reference year and period; production volume; allocation; upstream dataset choices; cut-offs; unresolved UUID disclosures"
+  required_quality_disclosure: "Primary-data share; meter and scale calibration; material and internal-transfer mass-balance result; temporal, geographic, and technological representativeness; route production shares; data gaps and proxies; uncertainty; excluded flows; direct-emission method; waste destination; reviewer status"
+  update_trigger: "Update when product scope, steel grade family, feedstock form, forming technology, furnace or quench route, finishing or coating route, facility energy supply, allocation, waste treatment, reference period, or a material data source changes; also update when an unresolved flow UUID or range-evidence need is resolved"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-05)"
+    used_for: "Exact CPC 42945 product identity and hierarchy"
+  - id: "us-census-naics-2022-spring-manufacturing"
+    type: "official_guidance"
+    reference: "U.S. Census Bureau, 2022 NAICS Manual, Spring and Wire Product Manufacturing and Spring Manufacturing, p. 234, https://www.census.gov/naics/reference_files_tools/2022_NAICS_Manual.pdf (retrieved 2026-09-05)"
+    used_for: "Purchased wire, strip, or rod starting boundary and forming process decomposition"
+  - id: "us-epa-james-spring-wire"
+    type: "official_guidance"
+    reference: "U.S. Environmental Protection Agency, James Spring and Wire Company facility description, https://19january2021snapshot.epa.gov/hwcorrectiveactionsites/hazardous-waste-cleanup-james-spring-and-wire-company-incorporated-frazer_.html (retrieved 2026-09-05)"
+    used_for: "Grinding, cleaning, passivation, heat treating, surface treatment, assembly, packaging, and facility waste-stream evidence"
+  - id: "eu-prodcom-2006-springs"
+    type: "official_guidance"
+    reference: "Commission Regulation (EC) No 317/2006, PRODCOM 2005 list, Official Journal L 60, pp. 168-169, https://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2006:060:0001:0282:EN:PDF (retrieved 2026-09-05)"
+    used_for: "Covered hot- and cold-formed leaf, helical, flat spiral, disc, and other steel spring forms; kg reporting unit"
+  - id: "eu-rfcs-lighttech-2020"
+    type: "official_guidance"
+    reference: "European Commission, Synopsis of RFCS Projects 2017-2020, LIGHTTECH project 799787, p. 127, https://research-and-innovation.ec.europa.eu/system/files/2020-12/synopsis_of_rfcs_projects_2017-2020.pdf (retrieved 2026-09-05)"
+    used_for: "Stress shot peening as a route-specific process for high-strength steel leaf springs"
+  - id: "china-mof-2026-research-import-list"
+    type: "official_guidance"
+    reference: "Ministry of Finance of the People's Republic of China, 2026 tax-exempt research goods list, p. 16, heading 7320, https://m.mof.gov.cn/zcfb/202601/P020260114634207037460.pdf (retrieved 2026-09-05)"
+    used_for: "Verified professional Chinese product terminology"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:40479c6c0f52fa752dc7083d8f57dc9916754b302f793ec7f0be66e81effee1d"
+  generated_content_sha256: "sha256:a30a9b2aaa4e108990d2ed0f2c778a27887229a5cda82940ab26eb79788842de"

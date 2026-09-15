@@ -1,10 +1,1083 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41432"
-  title: "Alumina (aluminium oxide), except artificial corundum"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.alumina-aluminium-oxide-except-artificial-corundum"
+  classification_refs: "CPC 3.0 41432, exact"
+  covered_products: "Dry non-fused alumina (aluminium oxide) produced from bauxite by the Bayer route"
+  excluded_products: "Artificial corundum; fused alumina; aluminium hydroxide; primary aluminium; bauxite; downstream specialty products"
+  representative_product: "Smelter-grade or other declared non-fused dry alumina at the refinery gate"
+  production_route: "Bayer digestion, clarification, precipitation, and calcination"
+  market_state: "Dry alumina as dispatched from the refinery; packaging or bulk-delivery state declared"
+functional_unit:
+  what: "Dry non-fused alumina meeting the declared product specification"
+  how_much: "1,000 kg"
+  how_well: "Declared aluminium-oxide content, impurities, particle specification, and moisture basis"
+  how_long_or_cycle: "Production during the declared reporting period, normally 12 consecutive months"
+  reference_flow_link: "Net saleable alumina output at the refinery gate"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground starts when bauxite and other purchased inputs cross the refinery gate and ends when conforming dry alumina crosses the refinery gate. Include refinery handling, grinding, digestion, clarification, precipitation, calcination, product recovery, directly operated residue management, and directly operated steam generation. Include direct fuel combustion and measured releases; link purchased inputs to separate upstream datasets without incorporating their upstream exchanges into foreground rows."
+      source_ids: []
+    - rule_id: system_boundary_rule_2
+      applies_to: "foreground_system_boundary"
+      rule: "Exclude bauxite mining and beneficiation before the declared gate, manufacture of purchased chemicals and energy, capital goods unless the study explicitly requires them, employee travel, downstream transport and use, aluminium smelting, and artificial-corundum fusion. Disclose any material site operation omitted from this gate-to-gate boundary."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Bauxite, chemicals, water, fuels, and purchased energy at the refinery gate, with supplier state and metering basis declared"
+  starting_condition_role: "Gate-to-gate foreground starting condition"
+  product_classification_scope: "CPC 3.0 41432, excluding artificial corundum and downstream conversions"
+  recursive_input_rule: "Any returned alumina or same-category material entering the refinery is recorded once as a separate input with origin and state; do not recursively apply this PCR to that input inside the same foreground package."
+  upstream_dataset_requirement: "Use geographically, technologically, temporally, and product-state representative upstream datasets for each purchased input."
+  disclosure: "Report cut-offs, missing meters, allocation, recycled liquor and seed loops, residue route, energy origin, and deviations from the declared boundary."
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Alumina (aluminium oxide), except artificial corundum"
+    uuid: "2b64b550-00d6-4210-aa50-7c061511518d"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "dry-mass basis"
+    - "aluminium-oxide grade and impurity specification"
+    - "non-fused state"
+    - "Bayer route"
+    - "plant geography"
+    - "reporting period"
+    - "packaging or bulk-delivery state"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Alumina reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report net saleable alumina on the declared dry-mass basis; retain measured moisture and conversion records."
+  - id: solid_mass_basis
+    applies_to: "Bauxite, sodium hydroxide, calcium oxide, red mud, and particulate matter"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "State as-received or dry basis and convert only with measured moisture or concentration data."
+  - id: process_water_mass
+    applies_to: "Process Water"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use mass metering or convert measured volume with documented density and reference conditions."
+  - id: gas_volume_basis
+    applies_to: "natural gas in the gaseous state"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Declare temperature, pressure, composition, and whether the meter reports standard or actual volume."
+  - id: energy_basis
+    applies_to: "alternating current"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert facility electricity-meter data to MJ using 3.6 MJ per kWh and retain original kWh records."
+  - id: steam_mass_basis
+    applies_to: "Industrial steam"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Meter steam mass and separately document pressure, temperature, condensate return, and purchased or on-site origin."
+process_map:
+  - id: raw_material_handling
+    name: "Raw-material handling and grinding"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Prepares bauxite feed"
+    quantitative_reference: "Bauxite transferred to digestion"
+  - id: digestion_clarification_precipitation
+    name: "Digestion, clarification, and precipitation"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Produces aluminium-hydroxide intermediate and separates red mud"
+    quantitative_reference: "Aluminium-hydroxide feed to calcination"
+  - id: calcination_product_handling
+    name: "Calcination and product handling"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Produces saleable dry alumina"
+    quantitative_reference: "1,000 kg dry alumina"
+  - id: red_mud_management
+    name: "Red-mud management"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when red mud is managed within the reporting facility boundary"
+    role: "Transfers and manages refinery residue"
+    quantitative_reference: "Red mud received for management"
+  - id: onsite_steam_generation
+    name: "On-site steam generation"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when steam is generated by the reporting facility"
+    role: "Supplies refinery process steam"
+    quantitative_reference: "Industrial steam delivered to refinery users"
+process_inventory:
+  - id: raw_material_handling
+    label: "Raw-material handling and grinding"
+    inputs:
+      product:
+        - row_id: rmh_bauxite
+          role: "Bauxite feed"
+          name: "Bauxite"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the as-received bauxite transferred into refinery handling and grinding."
+          amount:
+            expression: "Net weighbridge or conveyor mass corrected to the declared moisture basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry alumina output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rmh_bauxite
+              source_ids:
+                - australia-npi-alumina-refining-2007
+                - us-epa-ap42-primary-aluminum-12-1
+            ranges: []
+        - row_id: rmh_electricity
+          role: "Electricity for handling and grinding"
+          name: "alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d0361a3-56cc-45f9-aa42-bb9103285bf9"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered alternating-current electricity consumed by bauxite handling and grinding."
+          amount:
+            expression: "Submetered electricity, or documented allocation of a shared meter by operating records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry alumina output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rmh_electricity
+              source_ids:
+                - australia-npi-alumina-refining-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: rmh_total_particulate
+          role: "Total particulate matter from handling and grinding"
+          name: "Total particulate matter to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record total particulate matter released to air after controls from bauxite handling and grinding."
+          amount:
+            expression: "Stack or ambient-source measurement; otherwise a documented site-specific mass balance or approved emission factor"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry alumina output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rmh_total_particulate
+              source_ids:
+                - us-epa-ap42-primary-aluminum-12-1
+                - australia-npi-alumina-refining-2007
+            ranges: []
+  - id: digestion_clarification_precipitation
+    label: "Digestion, clarification, and precipitation"
+    inputs:
+      product:
+        - row_id: dcp_process_water
+          role: "Process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process make-up water crossing this process boundary; exclude internal recirculation."
+          amount:
+            expression: "Metered net make-up water, excluding documented internal recycle"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry alumina output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dcp_process_water
+              source_ids:
+                - australia-npi-alumina-refining-2007
+            ranges: []
+        - row_id: dcp_sodium_hydroxide
+          role: "Sodium hydroxide"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record purchased sodium hydroxide make-up entering the liquor circuit."
+          amount:
+            expression: "Invoice or tank change corrected to 100 percent sodium-hydroxide equivalent using measured concentration"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry alumina output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dcp_sodium_hydroxide
+              source_ids:
+                - australia-npi-alumina-refining-2007
+                - us-epa-ap42-primary-aluminum-12-1
+            ranges: []
+        - row_id: dcp_calcium_oxide
+          role: "Calcium oxide"
+          name: "Calcium oxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record calcium oxide supplied as refinery lime on a chemically specified mass basis."
+          amount:
+            expression: "Delivered mass multiplied by measured calcium-oxide fraction; exclude water and inert fraction"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry alumina output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dcp_calcium_oxide
+              source_ids:
+                - australia-npi-alumina-refining-2007
+                - us-epa-ap42-primary-aluminum-12-1
+            ranges: []
+        - row_id: dcp_electricity
+          role: "Electricity for digestion, clarification, and precipitation"
+          name: "alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d0361a3-56cc-45f9-aa42-bb9103285bf9"
+          property_unit: "Net calorific value / MJ"
+          description: "Record alternating-current electricity consumed by this process group."
+          amount:
+            expression: "Submetered electricity, or documented allocation of a shared meter by operating records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry alumina output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dcp_electricity
+              source_ids:
+                - australia-npi-alumina-refining-2007
+            ranges: []
+        - row_id: dcp_industrial_steam
+          role: "Industrial steam"
+          name: "Industrial steam"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ea4e839d-d854-4a7a-a362-b4ccb8dc61ff"
+          property_unit: "Mass / kg"
+          description: "Record steam delivered to digestion and related refinery users, whether purchased or supplied from the conditional on-site process."
+          amount:
+            expression: "Metered delivered steam mass net of separately measured condensate return"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry alumina output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dcp_industrial_steam
+              source_ids:
+                - australia-npi-alumina-refining-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: dcp_red_mud
+          role: "Red mud from bauxite digestion"
+          name: "Redmud from bauxite digestion"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "2d27a130-27dc-48d9-bc6a-c2428bb6907b"
+          property_unit: "Mass / kg"
+          description: "Record red mud separated from pregnant liquor and transferred to residue management."
+          amount:
+            expression: "Measured slurry or solids mass with dry-solids fraction and entrained-liquor basis retained"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry alumina output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dcp_red_mud
+              source_ids:
+                - australia-npi-alumina-refining-2007
+                - us-epa-ap42-primary-aluminum-12-1
+            ranges: []
+      elementary:
+        []
+  - id: calcination_product_handling
+    label: "Calcination and product handling"
+    inputs:
+      product:
+        - row_id: calc_natural_gas
+          role: "Natural gas for calcination"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas combusted directly in calcination."
+          amount:
+            expression: "Metered gas volume at documented reference conditions assigned to calcination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry alumina output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_calc_natural_gas
+              source_ids:
+                - australia-npi-alumina-refining-2007
+            ranges: []
+        - row_id: calc_electricity
+          role: "Electricity for calcination and product handling"
+          name: "alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d0361a3-56cc-45f9-aa42-bb9103285bf9"
+          property_unit: "Net calorific value / MJ"
+          description: "Record alternating-current electricity consumed in calcination, cooling, recovery, and product handling."
+          amount:
+            expression: "Submetered electricity, or documented allocation of a shared meter by operating records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry alumina output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_calc_electricity
+              source_ids:
+                - australia-npi-alumina-refining-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: calc_alumina
+          role: "Saleable dry alumina"
+          name: "Alumina (aluminium oxide), except artificial corundum"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2b64b550-00d6-4210-aa50-7c061511518d"
+          property_unit: "Mass / kg"
+          description: "Record net conforming alumina dispatched from the refinery, excluding internal recycle and off-specification material retained on site."
+          amount:
+            expression: "Net saleable dry mass at the refinery gate"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "1,000 kg dry alumina output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_calc_alumina
+              source_ids:
+                - un-cpc-3-0-structure-2025
+                - australia-npi-alumina-refining-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: calc_fossil_carbon_dioxide
+          role: "Fossil carbon dioxide from calcination fuel"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil carbon dioxide from calcination fuel combustion; exclude upstream electricity emissions."
+          amount:
+            expression: "Direct measurement or fuel carbon balance using site fuel quantity, composition, and oxidation basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry alumina output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_calc_fossil_carbon_dioxide
+              source_ids:
+                - australia-npi-alumina-refining-2007
+            ranges: []
+        - row_id: calc_total_particulate
+          role: "Total particulate matter from calcination and product handling"
+          name: "Total particulate matter to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record total particulate matter released to air after controls from calcination and product handling."
+          amount:
+            expression: "Stack measurement; otherwise a documented site-specific mass balance or approved emission factor"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry alumina output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_calc_total_particulate
+              source_ids:
+                - us-epa-ap42-primary-aluminum-12-1
+                - australia-npi-alumina-refining-2007
+            ranges: []
+  - id: red_mud_management
+    label: "Red-mud management"
+    inputs:
+      product:
+        - row_id: residue_process_water
+          role: "Process water for residue management"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record make-up process water used within the residue-management boundary."
+          amount:
+            expression: "Metered net make-up water excluding internal recovered water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry alumina output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_process_water
+              source_ids:
+                - australia-npi-alumina-refining-2007
+            ranges: []
+        - row_id: residue_electricity
+          role: "Electricity for residue management"
+          name: "alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4d0361a3-56cc-45f9-aa42-bb9103285bf9"
+          property_unit: "Net calorific value / MJ"
+          description: "Record alternating-current electricity used for pumping, thickening, filtration, or other declared residue operations."
+          amount:
+            expression: "Submetered electricity, or documented allocation of a shared meter by equipment operating records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry alumina output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_electricity
+              source_ids:
+                - australia-npi-alumina-refining-2007
+            ranges: []
+      waste:
+        - row_id: residue_red_mud_input
+          role: "Red mud received for management"
+          name: "Redmud from bauxite digestion"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "2d27a130-27dc-48d9-bc6a-c2428bb6907b"
+          property_unit: "Mass / kg"
+          description: "Record red mud entering this process from clarification, preserving the same moisture and solids basis as the corresponding output."
+          amount:
+            expression: "Transfer mass reconciled to the upstream red-mud output"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry alumina output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_red_mud_input
+              source_ids:
+                - australia-npi-alumina-refining-2007
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: residue_red_mud_output
+          role: "Red mud transferred to storage, treatment, or disposal"
+          name: "Redmud from bauxite digestion"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "2d27a130-27dc-48d9-bc6a-c2428bb6907b"
+          property_unit: "Mass / kg"
+          description: "Record red mud leaving the managed foreground process for the declared storage, treatment, use, or disposal route."
+          amount:
+            expression: "Measured transfer mass with dry-solids fraction, moisture, destination, and stock change reconciled"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry alumina output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_red_mud_output
+              source_ids:
+                - australia-npi-alumina-refining-2007
+            ranges: []
+      elementary:
+        []
+  - id: onsite_steam_generation
+    label: "On-site steam generation"
+    inputs:
+      product:
+        - row_id: utility_natural_gas
+          role: "Natural gas for on-site steam generation"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas combusted in facility-operated boilers when this conditional process applies."
+          amount:
+            expression: "Metered boiler gas volume at documented reference conditions"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry alumina output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_natural_gas
+              source_ids:
+                - australia-npi-alumina-refining-2007
+            ranges: []
+        - row_id: utility_process_water
+          role: "Boiler feedwater"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record net process water supplied as boiler feedwater when on-site steam generation applies."
+          amount:
+            expression: "Metered feedwater less separately measured condensate return"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry alumina output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_process_water
+              source_ids:
+                - australia-npi-alumina-refining-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: utility_industrial_steam
+          role: "Industrial steam supplied to refinery"
+          name: "Industrial steam"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ea4e839d-d854-4a7a-a362-b4ccb8dc61ff"
+          property_unit: "Mass / kg"
+          description: "Record industrial steam delivered from facility-operated boilers to refinery users."
+          amount:
+            expression: "Metered delivered steam mass with pressure and temperature retained"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry alumina output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_industrial_steam
+              source_ids:
+                - australia-npi-alumina-refining-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: utility_fossil_carbon_dioxide
+          role: "Fossil carbon dioxide from on-site steam generation"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil carbon dioxide from boiler natural-gas combustion when this conditional process applies."
+          amount:
+            expression: "Direct measurement or fuel carbon balance using site fuel quantity, composition, and oxidation basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry alumina output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_fossil_carbon_dioxide
+              source_ids:
+                - australia-npi-alumina-refining-2007
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "foreground_burden_allocation"
+    rule: "Avoid allocation by submetering the five process groups and reconciling internal red-mud, steam, liquor, water, and seed transfers. Internal recycle is not a new product input or output. Saleable by-products, recovered materials exported from the boundary, or shared services shall be reported explicitly rather than hidden in the alumina balance."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_rmh_bauxite
+      process_id: "raw_material_handling"
+      flow_role: "rmh_bauxite"
+      record_type: "weighbridge and moisture records"
+      raw_fields: "gross mass; returns; moisture; dry solids"
+      collection_method: "reconcile receipts and conveyor totals"
+      unit: "kg"
+      frequency: "each delivery and monthly"
+      temporal_coverage: "reporting period"
+      site_scope: "refinery"
+      aggregation_rule: "net mass normalized to reference flow"
+      quality_evidence: "calibrated scale; moisture laboratory results"
+    - protocol_id: cp_rmh_electricity
+      process_id: "raw_material_handling"
+      flow_role: "rmh_electricity"
+      record_type: "electricity meter"
+      raw_fields: "kWh; meter id; timestamps"
+      collection_method: "submeter or allocate shared meter"
+      unit: "MJ"
+      frequency: "hourly or monthly"
+      temporal_coverage: "reporting period"
+      site_scope: "process group"
+      aggregation_rule: "sum, convert at 3.6 MJ/kWh, normalize"
+      quality_evidence: "calibration and meter coverage"
+    - protocol_id: cp_rmh_total_particulate
+      process_id: "raw_material_handling"
+      flow_role: "rmh_total_particulate"
+      record_type: "emissions record"
+      raw_fields: "concentration; gas flow; hours; control status"
+      collection_method: "measured release or documented calculation"
+      unit: "kg"
+      frequency: "test campaign and monthly operation"
+      temporal_coverage: "representative operation in reporting period"
+      site_scope: "release point"
+      aggregation_rule: "sum release after controls"
+      quality_evidence: "test report and control uptime"
+    - protocol_id: cp_dcp_process_water
+      process_id: "digestion_clarification_precipitation"
+      flow_role: "dcp_process_water"
+      record_type: "water meter"
+      raw_fields: "volume or mass; density; recycle"
+      collection_method: "net make-up meter"
+      unit: "kg"
+      frequency: "daily or monthly"
+      temporal_coverage: "reporting period"
+      site_scope: "process group"
+      aggregation_rule: "subtract documented recycle, normalize"
+      quality_evidence: "meter calibration and water balance"
+    - protocol_id: cp_dcp_sodium_hydroxide
+      process_id: "digestion_clarification_precipitation"
+      flow_role: "dcp_sodium_hydroxide"
+      record_type: "tank and assay record"
+      raw_fields: "solution mass; concentration; stock change"
+      collection_method: "material balance"
+      unit: "kg"
+      frequency: "delivery and monthly"
+      temporal_coverage: "reporting period"
+      site_scope: "process group"
+      aggregation_rule: "100 percent NaOH equivalent"
+      quality_evidence: "tank calibration and assay"
+    - protocol_id: cp_dcp_calcium_oxide
+      process_id: "digestion_clarification_precipitation"
+      flow_role: "dcp_calcium_oxide"
+      record_type: "receipt and assay"
+      raw_fields: "delivered mass; CaO fraction; stock change"
+      collection_method: "material balance"
+      unit: "kg"
+      frequency: "delivery and monthly"
+      temporal_coverage: "reporting period"
+      site_scope: "process group"
+      aggregation_rule: "pure CaO equivalent"
+      quality_evidence: "scale and certificate or assay"
+    - protocol_id: cp_dcp_electricity
+      process_id: "digestion_clarification_precipitation"
+      flow_role: "dcp_electricity"
+      record_type: "electricity meter"
+      raw_fields: "kWh; meter id; timestamps"
+      collection_method: "submeter or causal allocation"
+      unit: "MJ"
+      frequency: "hourly or monthly"
+      temporal_coverage: "reporting period"
+      site_scope: "process group"
+      aggregation_rule: "sum, convert, normalize"
+      quality_evidence: "calibration and allocation record"
+    - protocol_id: cp_dcp_industrial_steam
+      process_id: "digestion_clarification_precipitation"
+      flow_role: "dcp_industrial_steam"
+      record_type: "steam meter"
+      raw_fields: "mass; pressure; temperature; condensate return"
+      collection_method: "net delivered steam metering"
+      unit: "kg"
+      frequency: "hourly or monthly"
+      temporal_coverage: "reporting period"
+      site_scope: "process group"
+      aggregation_rule: "sum net delivery, normalize"
+      quality_evidence: "calibration and steam balance"
+    - protocol_id: cp_dcp_red_mud
+      process_id: "digestion_clarification_precipitation"
+      flow_role: "dcp_red_mud"
+      record_type: "residue meter and assay"
+      raw_fields: "slurry mass; solids; moisture; liquor"
+      collection_method: "transfer measurement and solids balance"
+      unit: "kg"
+      frequency: "daily or monthly"
+      temporal_coverage: "reporting period"
+      site_scope: "process group"
+      aggregation_rule: "report declared wet or dry basis consistently"
+      quality_evidence: "meter and laboratory solids"
+    - protocol_id: cp_calc_natural_gas
+      process_id: "calcination_product_handling"
+      flow_role: "calc_natural_gas"
+      record_type: "gas meter"
+      raw_fields: "volume; temperature; pressure; composition"
+      collection_method: "dedicated meter"
+      unit: "m3"
+      frequency: "hourly or monthly"
+      temporal_coverage: "reporting period"
+      site_scope: "calcination"
+      aggregation_rule: "sum at declared conditions, normalize"
+      quality_evidence: "meter calibration and gas quality"
+    - protocol_id: cp_calc_electricity
+      process_id: "calcination_product_handling"
+      flow_role: "calc_electricity"
+      record_type: "electricity meter"
+      raw_fields: "kWh; meter id; timestamps"
+      collection_method: "submeter or causal allocation"
+      unit: "MJ"
+      frequency: "hourly or monthly"
+      temporal_coverage: "reporting period"
+      site_scope: "process group"
+      aggregation_rule: "sum, convert, normalize"
+      quality_evidence: "calibration and allocation record"
+    - protocol_id: cp_calc_alumina
+      process_id: "calcination_product_handling"
+      flow_role: "calc_alumina"
+      record_type: "product scale and quality"
+      raw_fields: "mass; moisture; grade; off-spec; returns"
+      collection_method: "dispatch and production reconciliation"
+      unit: "kg"
+      frequency: "batch and monthly"
+      temporal_coverage: "reporting period"
+      site_scope: "refinery gate"
+      aggregation_rule: "net dry conforming mass"
+      quality_evidence: "calibrated scale and laboratory results"
+    - protocol_id: cp_calc_fossil_carbon_dioxide
+      process_id: "calcination_product_handling"
+      flow_role: "calc_fossil_carbon_dioxide"
+      record_type: "emissions or fuel record"
+      raw_fields: "CO2; fuel; carbon; oxidation"
+      collection_method: "direct measure or carbon balance"
+      unit: "kg"
+      frequency: "continuous or monthly"
+      temporal_coverage: "reporting period"
+      site_scope: "calciner sources"
+      aggregation_rule: "sum direct fossil CO2"
+      quality_evidence: "monitor QA or fuel certificates"
+    - protocol_id: cp_calc_total_particulate
+      process_id: "calcination_product_handling"
+      flow_role: "calc_total_particulate"
+      record_type: "emissions record"
+      raw_fields: "concentration; gas flow; hours; control status"
+      collection_method: "measured release or documented calculation"
+      unit: "kg"
+      frequency: "test campaign and monthly operation"
+      temporal_coverage: "representative operation in reporting period"
+      site_scope: "release point"
+      aggregation_rule: "sum release after controls"
+      quality_evidence: "test report and control uptime"
+    - protocol_id: cp_residue_process_water
+      process_id: "red_mud_management"
+      flow_role: "residue_process_water"
+      record_type: "water meter"
+      raw_fields: "volume or mass; density; recovered water"
+      collection_method: "net make-up meter"
+      unit: "kg"
+      frequency: "daily or monthly"
+      temporal_coverage: "reporting period"
+      site_scope: "residue area"
+      aggregation_rule: "subtract recovered water, normalize"
+      quality_evidence: "calibration and water balance"
+    - protocol_id: cp_residue_electricity
+      process_id: "red_mud_management"
+      flow_role: "residue_electricity"
+      record_type: "electricity meter"
+      raw_fields: "kWh; equipment hours"
+      collection_method: "submeter or causal allocation"
+      unit: "MJ"
+      frequency: "hourly or monthly"
+      temporal_coverage: "reporting period"
+      site_scope: "residue area"
+      aggregation_rule: "sum, convert, normalize"
+      quality_evidence: "calibration and operating log"
+    - protocol_id: cp_residue_red_mud_input
+      process_id: "red_mud_management"
+      flow_role: "residue_red_mud_input"
+      record_type: "transfer record"
+      raw_fields: "mass; solids; moisture"
+      collection_method: "reconcile with upstream output"
+      unit: "kg"
+      frequency: "daily or monthly"
+      temporal_coverage: "reporting period"
+      site_scope: "process transfer"
+      aggregation_rule: "same-basis transfer total"
+      quality_evidence: "mass and solids reconciliation"
+    - protocol_id: cp_residue_red_mud_output
+      process_id: "red_mud_management"
+      flow_role: "residue_red_mud_output"
+      record_type: "transfer and stock record"
+      raw_fields: "mass; solids; moisture; destination; stock"
+      collection_method: "destination and inventory balance"
+      unit: "kg"
+      frequency: "each transfer and monthly"
+      temporal_coverage: "reporting period"
+      site_scope: "residue area"
+      aggregation_rule: "output plus stock change reconciled to input"
+      quality_evidence: "survey, scale, assay, destination record"
+    - protocol_id: cp_utility_natural_gas
+      process_id: "onsite_steam_generation"
+      flow_role: "utility_natural_gas"
+      record_type: "gas meter"
+      raw_fields: "volume; conditions; composition"
+      collection_method: "boiler meter"
+      unit: "m3"
+      frequency: "hourly or monthly"
+      temporal_coverage: "reporting period"
+      site_scope: "on-site boilers"
+      aggregation_rule: "sum at declared conditions, normalize"
+      quality_evidence: "calibration and gas quality"
+    - protocol_id: cp_utility_process_water
+      process_id: "onsite_steam_generation"
+      flow_role: "utility_process_water"
+      record_type: "water meter"
+      raw_fields: "feedwater; condensate return"
+      collection_method: "net feedwater metering"
+      unit: "kg"
+      frequency: "hourly or monthly"
+      temporal_coverage: "reporting period"
+      site_scope: "on-site boilers"
+      aggregation_rule: "feedwater less condensate return"
+      quality_evidence: "calibration and steam-water balance"
+    - protocol_id: cp_utility_industrial_steam
+      process_id: "onsite_steam_generation"
+      flow_role: "utility_industrial_steam"
+      record_type: "steam meter"
+      raw_fields: "mass; pressure; temperature"
+      collection_method: "delivered steam metering"
+      unit: "kg"
+      frequency: "hourly or monthly"
+      temporal_coverage: "reporting period"
+      site_scope: "on-site boilers"
+      aggregation_rule: "sum delivery, normalize"
+      quality_evidence: "calibration and steam balance"
+    - protocol_id: cp_utility_fossil_carbon_dioxide
+      process_id: "onsite_steam_generation"
+      flow_role: "utility_fossil_carbon_dioxide"
+      record_type: "emissions or fuel record"
+      raw_fields: "CO2; fuel; carbon; oxidation"
+      collection_method: "direct measure or carbon balance"
+      unit: "kg"
+      frequency: "continuous or monthly"
+      temporal_coverage: "reporting period"
+      site_scope: "boiler sources"
+      aggregation_rule: "sum direct fossil CO2"
+      quality_evidence: "monitor QA or fuel certificates"
+  calculation_rules:
+    - id: calc_normalize
+      applies_to: "all inventory rows"
+      rule: "normalized amount = reporting-period amount / dry saleable alumina × 1,000"
+      inputs:
+        - "row amount"
+        - calc_alumina
+      output: "amount per 1,000 kg dry alumina"
+      source_ids: []
+    - id: calc_dry_mass
+      applies_to: "wet solids"
+      rule: "dry mass = wet mass × measured dry-solids fraction"
+      inputs:
+        - "wet mass"
+        - "dry-solids fraction"
+      output: "kg dry material"
+      source_ids: []
+    - id: calc_solution_equivalent
+      applies_to: "sodium hydroxide"
+      rule: "pure NaOH equivalent = solution mass × measured NaOH mass fraction"
+      inputs:
+        - "solution mass"
+        - assay
+      output: "kg NaOH"
+      source_ids: []
+    - id: calc_electricity_mj
+      applies_to: "alternating current"
+      rule: "MJ = metered kWh × 3.6"
+      inputs:
+        - "metered kWh"
+      output: "MJ"
+      source_ids: []
+    - id: calc_gas_reference
+      applies_to: "natural gas"
+      rule: "convert only using documented meter temperature, pressure, compressibility, and reference conditions"
+      inputs:
+        - "measured gas volume"
+        - conditions
+      output: "m3 at declared basis"
+      source_ids: []
+    - id: calc_fossil_co2
+      applies_to: "direct fuel combustion"
+      rule: "fossil CO2 = fuel quantity × carbon content × oxidation fraction × 44/12, unless a quality-assured direct measurement is used"
+      inputs:
+        - fuel
+        - carbon
+        - oxidation
+      output: "kg fossil CO2"
+      source_ids:
+        - australia-npi-alumina-refining-2007
+    - id: calc_residue_reconciliation
+      applies_to: "red mud"
+      rule: "input = output to destinations + closing stock − opening stock + measured losses, on one solids and moisture basis"
+      inputs:
+        - transfers
+        - stocks
+        - solids
+      output: "reconciled red-mud mass"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_temporal
+      applies_to: "all rows"
+      requirement: "Use one common reporting period and disclose shutdowns, atypical campaigns, and substitutions."
+      evidence: "timestamps; production calendar"
+    - id: dq_geography
+      applies_to: "purchased inputs"
+      requirement: "Match supply geography and delivery boundary or disclose proxy use."
+      evidence: "supplier and dataset metadata"
+    - id: dq_technology
+      applies_to: "refinery"
+      requirement: "Declare Bayer technology, digestion and calciner configuration, residue route, and control equipment."
+      evidence: "process description and equipment list"
+    - id: dq_mass_balance
+      applies_to: "alumina, bauxite, caustic, and red mud"
+      requirement: "Reconcile dry solids and key material stocks; investigate unexplained differences."
+      evidence: "signed mass balance and laboratory results"
+    - id: dq_energy_balance
+      applies_to: "electricity, gas, and steam"
+      requirement: "Reconcile submeter totals to facility meters and avoid double counting on-site steam fuel and purchased steam."
+      evidence: "meter hierarchy and reconciliation"
+    - id: dq_uncertainty
+      applies_to: "all material rows"
+      requirement: "Record meter accuracy, sampling uncertainty, estimation method, missing-data treatment, and data coverage."
+      evidence: "uncertainty register and QA records"
+    - id: dq_uuid
+      applies_to: "UUID-bearing flows"
+      requirement: "Preserve the audited TianGong identity, flow type, property, unit group, and state-100 status; do not substitute a proxy UUID."
+      evidence: "UUID audit record"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "foreground_dataset_conformance"
+    rule: "calc_alumina shall equal 1,000 kg dry conforming non-fused alumina after normalization and shall use the audited reference-product UUID."
+    source_ids: []
+  - rule_id: validation_rule_2
+    applies_to: "foreground_dataset_conformance"
+    rule: "Every row shall contain exactly one atomic exchange; UUID-empty rows shall remain explicitly unresolved and shall not use a proxy UUID."
+    source_ids: []
+  - rule_id: validation_rule_3
+    applies_to: "foreground_dataset_conformance"
+    rule: "Every included process row shall have a value, unit, method, reporting-period coverage, and evidence reference; a conditional process may be marked not applicable only with evidence."
+    source_ids: []
+  - rule_id: validation_rule_4
+    applies_to: "foreground_dataset_conformance"
+    rule: "Bauxite, chemicals, alumina, particulate matter, and red mud shall disclose consistent wet/dry or concentration bases and conversion records."
+    source_ids: []
+  - rule_id: validation_rule_5
+    applies_to: "foreground_dataset_conformance"
+    rule: "Red-mud generation, transfers, stocks, and destinations shall reconcile on one declared solids and moisture basis."
+    source_ids: []
+  - rule_id: validation_rule_6
+    applies_to: "foreground_dataset_conformance"
+    rule: "When on-site steam generation is included, its natural gas and direct CO2 shall not also be embedded in a purchased-steam foreground record."
+    source_ids: []
+  - rule_id: validation_rule_7
+    applies_to: "foreground_dataset_conformance"
+    rule: "Artificial-corundum fusion, aluminium smelting, and bauxite mining shall not be represented as covered foreground processes."
+    source_ids: []
+  - rule_id: validation_rule_8
+    applies_to: "foreground_dataset_conformance"
+    rule: "Final evidence shall cite verified original text; discovery metadata or snippets alone are insufficient."
+    source_ids: []
+  - rule_id: validation_rule_9
+    applies_to: "foreground_dataset_conformance"
+    rule: "No external numeric QA range is asserted until two compatible, mutually independent original-text sources support it; foreground collection remains mandatory."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Gate-to-gate foreground data package for dry non-fused Bayer-process alumina"
+  downstream_use: "Construction of TianGong process and lifecycle-model datasets and product-footprint studies"
+  allowed_use: "Studies whose product state, technology, geography, period, allocation, and system boundary are compatible with the declared dataset"
+  excluded_use: "Artificial corundum, fused alumina, aluminium hydroxide, bauxite mining, aluminium smelting, or unqualified global-average claims"
+  required_metadata: "plant geography; reporting period; technology; bauxite state; alumina grade and moisture; residue route; energy origin; allocation; cut-offs; UUID audit provenance"
+  required_quality_disclosure: "primary-data coverage; meter and laboratory QA; missing-data treatment; uncertainty; mass and energy reconciliation; proxy upstream datasets"
+  update_trigger: "material process, fuel, electricity, ore, product-grade, residue-route, control, allocation, or boundary change; or loss of temporal representativeness"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Exact CPC 41432 product identity and exclusion of artificial corundum"
+  - id: "australia-npi-alumina-refining-2007"
+    type: "official_guidance"
+    reference: "Australian Government, Emission Estimation Technique Manual for Alumina Refining, Version 2.0, November 2007, https://www.dcceew.gov.au/sites/default/files/documents/falref.pdf"
+    used_for: "Bayer refinery process boundary, material and energy inputs, process stages, direct emissions, and red-mud management"
+  - id: "us-epa-ap42-primary-aluminum-12-1"
+    type: "official_guidance"
+    reference: "U.S. EPA, AP-42 Section 12.1, Primary Aluminum Production, https://www.epa.gov/sites/production/files/2020-11/documents/c12s01.pdf"
+    used_for: "Bayer process sequence, separation from aluminium smelting, raw-material additions, red mud, calcination, and particulate release points"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:85d06def3d38c86a8cb894fa16148b9d19558933120338130a5d9c95913b0b9c"
+  generated_content_sha256: "sha256:299b4464aaf9aa9c6d50381f6d3b673ee25aa3ec410dad666b714615f32e0401"

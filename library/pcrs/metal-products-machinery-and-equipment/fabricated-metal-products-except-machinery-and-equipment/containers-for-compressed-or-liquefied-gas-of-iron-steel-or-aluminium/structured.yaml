@@ -1,10 +1,987 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "42220"
-  title: "Containers for compressed or liquefied gas, of iron, steel or aluminium"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.fabricated-metal-products-except-machinery-and-equipment.containers-for-compressed-or-liquefied-gas-of-iron-steel-or-aluminium"
+  classification_refs: "CPC 3.0: 42220 (exact classification context)"
+  covered_products: "Empty iron, steel, or aluminium pressure receptacles for compressed, liquefied, or dissolved gas, including cylinders, tubes, pressure drums, and comparable metal containers"
+  excluded_products: "Filled gas packages; composite vessels not principally load-bearing metal; aerosol dispensers; gas cartridges; stationary non-gas tanks; separately supplied valves; use, requalification, repair, and end-of-life services"
+  representative_product: "Empty refillable steel or aluminium gas cylinder that has passed the declared manufacturing conformity tests"
+  production_route: "Seamless steel from billet or tube; welded steel from plate; seamless aluminium from alloy billet; route-specific heat treatment, finishing, testing, and release"
+  market_state: "Empty, finished, inspected, pressure-tested, marked where required, and ready for dispatch at the manufacturing gate"
+functional_unit:
+  what: "Provide an empty metal pressure receptacle capable of containing the declared compressed, liquefied, or dissolved gas under the declared service conditions"
+  how_much: "1 kg of accepted empty container product at the manufacturing gate"
+  how_well: "Conforming to the declared material, water capacity, service pressure, test pressure, manufacturing route, inspection plan, and applicable design/manufacturing standard"
+  how_long_or_cycle: "One factory-gate production output; service life and refill cycles must be declared for downstream use but are not modelled in this cradle-to-gate reference flow"
+  reference_flow_link: "1 kg net mass of conforming empty container output, excluding separately supplied gas and accessories unless explicitly included"
+system_boundary:
+  rules:
+    - rule_id: sb_factory_gate
+      applies_to: "foreground manufacturing"
+      rule: "Include all site operations from accepted stock through a conforming empty container at the factory gate, including forming, applicable joining and heat treatment, machining, cleaning/finishing, pressure testing, inspection, rejects, and directly attributable utilities, wastes, and emissions."
+      source_ids:
+        - us-dot-49-cfr-178-37
+        - us-dot-49-cfr-178-46
+        - us-dot-49-cfr-178-50
+    - rule_id: sb_upstream_links
+      applies_to: "purchased inputs and services"
+      rule: "Keep purchased-input production and external waste treatment outside the foreground gate but connect each crossing flow to an appropriate upstream or treatment dataset."
+      source_ids:
+        - ec-pef-method-2021
+    - rule_id: sb_exclusions
+      applies_to: "downstream stages"
+      rule: "Exclude gas filling, distribution, use, periodic inspection/requalification, repair, and end-of-life unless a broader study explicitly adds them as separate downstream processes."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+    - rule_id: sb_cutoff_disclosure
+      applies_to: "completeness"
+      rule: "Do not apply an automatic mass, energy, or environmental-significance cut-off. Quantify and justify every excluded crossing flow and disclose the cumulative omission."
+      source_ids:
+        - ec-pef-method-2021
+boundary_abstraction:
+  declared_starting_condition: "Accepted iron, steel, or aluminium stock and other purchased inputs at the manufacturing-site receiving gate"
+  starting_condition_role: "Foreground manufacturing starts after upstream production and delivery of purchased materials and energy carriers"
+  product_classification_scope: "Empty metal containers whose defining function is containment of compressed, liquefied, or dissolved gas"
+  recursive_input_rule: "If an already manufactured in-scope gas container is consumed as an input, record it as a purchased product with a separate upstream dataset; do not recursively reproduce its manufacturing inventory inside this foreground process"
+  upstream_dataset_requirement: "Link every purchased product, energy, and waste-treatment service to a geographically and technologically representative upstream dataset; disclose substitutions and data gaps"
+  disclosure: "Declare included operations, route, material/alloy, input stock form, testing standard, rejected product treatment, surface-finishing route, included accessories, cut-offs, allocation, geography, and time period"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Empty iron, steel, or aluminium container for compressed or liquefied gas"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "vessel family"
+    - refillability
+    - "pressure-shell material and alloy"
+    - "input stock form"
+    - "seamless or welded route"
+    - "water capacity"
+    - "service pressure"
+    - "test pressure"
+    - "gas-service compatibility"
+    - "design/manufacturing standard"
+    - "inspection and test plan"
+    - "included accessories"
+    - "surface finish"
+    - "net empty mass"
+    - "production geography"
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product and mass-based material, waste, and emission rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use calibrated net mass. Exclude contained gas, test water, removable transport packaging, and separately supplied accessories unless the declared product system explicitly includes them."
+  - id: energy_conversion
+    applies_to: "Electricity and fuels"
+    required_property_ref:
+      name: "Net calorific value for energy reporting"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Preserve measured purchase units and conversion factors. Report electricity in MJ using 1 kWh = 3.6 MJ; use supplier- or laboratory-specific net calorific value for fuels and disclose it."
+  - id: gas_volume_conditions
+    applies_to: "Natural gas and industrial oxygen"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Declare temperature, absolute pressure, gas composition, and compressibility convention for every volume record; convert all records to one declared reference condition before aggregation."
+  - id: water_mass_conversion
+    applies_to: "Process and test water"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Prefer mass metering; when volume is measured, apply a documented density at the measured temperature and retain the raw volume and conversion record. Count net make-up only when water is recirculated."
+  - id: piece_to_mass
+    applies_to: "Containers recorded by count"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert accepted pieces to net empty product mass using calibrated unit or batch weighing; retain piece count, tare definition, sample coverage, and variability."
+process_map:
+  - id: material_preparation_and_shell_forming
+    name: "Material preparation and pressure-shell forming"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Foreground shell production"
+    quantitative_reference: "Accepted formed shell mass and route-specific metal balance"
+  - id: pressure_shell_joining
+    name: "Pressure-shell seam and attachment joining"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared design uses a welded or brazed pressure shell or flux-cored welding for a qualifying joint"
+    role: "Foreground joining"
+    quantitative_reference: "Joined shell mass and qualified joint records"
+  - id: heat_treatment
+    name: "Route-specific heat treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include whenever the declared alloy, forming route, or manufacturing standard requires normalizing, quenching, tempering, solution treatment, ageing, stress relief, or another thermal cycle"
+    role: "Foreground material conditioning"
+    quantitative_reference: "Heat-treated shell mass and recorded furnace cycle"
+  - id: machining_cleaning_and_finishing
+    name: "Machining, cleaning, and surface finishing"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Foreground finishing"
+    quantitative_reference: "Finished shell surface and accepted pre-test container mass"
+  - id: inspection_pressure_test_and_release
+    name: "Inspection, pressure test, marking, and release"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Foreground conformity and product release"
+    quantitative_reference: "Net mass of conforming empty containers released"
+process_inventory:
+  - id: material_preparation_and_shell_forming
+    label: "Material preparation and pressure-shell forming"
+    inputs:
+      product:
+        - row_id: steel_billet
+          role: "Non-alloy steel billet feedstock"
+          name: "Billet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7de70586-42d8-40bb-a687-e0e0c05722e4"
+          property_unit: "Mass / kg"
+          description: "Record purchased billet only for a qualified seamless-steel route using this stock form. Preserve grade, heat number, supplier, delivery state, and assigned batch."
+          amount:
+            expression: "Measured accepted billet mass issued to the declared production batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming empty container output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_balance
+              source_ids: []
+            ranges: []
+        - row_id: seamless_steel_tube
+          role: "Seamless steel tube feedstock"
+          name: "Circular seamless steel tube for pressure-cylinder manufacture"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record circular seamless steel tube only where the cylinder route starts from qualified tube stock. The Tiangong UUID remains unresolved because the audited candidates were pipeline, non-circular, seamed, or different-metal products."
+          amount:
+            expression: "Measured accepted seamless tube mass issued to the declared production batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming empty container output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_balance
+              source_ids: []
+            ranges: []
+        - row_id: steel_plate
+          role: "Steel plate feedstock"
+          name: "Steel Plate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "421db3a5-394d-410b-8ebf-af23a37fc878"
+          property_unit: "Mass / kg"
+          description: "Record pressure-shell plate only for the declared welded-steel route. Preserve grade, thickness, heat number, supplier, and batch assignment."
+          amount:
+            expression: "Measured accepted steel plate mass issued to the declared welded-container batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming empty container output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_balance
+              source_ids: []
+            ranges: []
+        - row_id: aluminium_alloy_billet
+          role: "Aluminium-alloy billet feedstock"
+          name: "Aluminium-alloy billet for seamless gas-cylinder manufacture"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record traceable aluminium-alloy billet only for a qualified seamless-aluminium route. Alloy, cast, heat-treatment batch, supplier, and delivery state are mandatory foreground qualifiers; the mass-based Tiangong UUID is unresolved."
+          amount:
+            expression: "Measured accepted aluminium-alloy billet mass issued to the declared production batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming empty container output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_balance
+              source_ids: []
+            ranges: []
+        - row_id: forming_electricity
+          role: "Forming electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered electricity assigned to cutting, heating, extrusion, drawing, spinning, pressing, and other shell-forming equipment without including heat-treatment or downstream finishing electricity."
+          amount:
+            expression: "Metered or reconciled electricity attributable to material preparation and shell forming"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted formed shell output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_fuel
+              source_ids: []
+            ranges: []
+        - row_id: cutting_oxygen
+          role: "Oxygen for oxy-fuel preparation"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume / m3"
+          description: "Record oxygen only when oxy-fuel cutting, heating, or edge preparation is actually used in this process. Keep it separate from air and shielding gas."
+          amount:
+            expression: "Metered or cylinder-balance oxygen attributable to the declared preparation route"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg accepted formed shell output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_fuel
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: forming_steel_scrap
+          role: "Post-industrial steel forming scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Record segregated steel offcuts, chips, and rejected formed steel shell material leaving the process. Do not include accepted product mass or scrap internally remelted without crossing the process boundary."
+          amount:
+            expression: "Weighed steel scrap leaving shell forming, reconciled to the steel material balance"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted formed steel shell output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_balance
+              source_ids: []
+            ranges: []
+        - row_id: forming_aluminium_scrap
+          role: "Aluminium forming scrap"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass / kg"
+          description: "Record segregated aluminium offcuts, chips, and rejected formed aluminium shell material leaving the process. Preserve alloy and contamination status."
+          amount:
+            expression: "Weighed aluminium scrap leaving shell forming, reconciled to the aluminium material balance"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted formed aluminium shell output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_balance
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: pressure_shell_joining
+    label: "Pressure-shell seam and attachment joining"
+    inputs:
+      product:
+        - row_id: flux_cored_wire
+          role: "Flux-cored welding wire"
+          name: "Flux Cored Wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1b74a576-06e0-4764-97ce-11a73f8a4752"
+          property_unit: "Mass / kg"
+          description: "Record flux-cored wire only for a qualified welding procedure that uses it. Preserve consumable grade, batch, deposited-metal compatibility, and joint assignment."
+          amount:
+            expression: "Issued mass minus verified return of unused wire for qualifying pressure-shell and attachment joints"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg accepted joined shell output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_welding_consumables
+              source_ids: []
+            ranges: []
+        - row_id: joining_electricity
+          role: "Joining electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity metered or allocated to qualified welding and brazing equipment for the declared container route."
+          amount:
+            expression: "Metered or reconciled electricity attributable to pressure-shell and attachment joining"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted joined shell output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_fuel
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: heat_treatment
+    label: "Route-specific heat treatment"
+    inputs:
+      product:
+        - row_id: heat_treatment_natural_gas
+          role: "Natural gas for furnace firing"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas only for heat-treatment equipment that actually consumes it. Declare gas composition, reference conditions, net calorific value, and furnace assignment."
+          amount:
+            expression: "Metered or supplier-reconciled natural gas consumed by qualifying heat-treatment cycles"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg accepted heat-treated shell output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_fuel
+              source_ids: []
+            ranges: []
+        - row_id: heat_treatment_diesel
+          role: "Diesel for furnace firing"
+          name: "Diesel fuel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "Record diesel only where it is the actual heat-treatment fuel. Keep it separate from mobile-equipment diesel and declare grade, biogenic fraction, and net calorific value."
+          amount:
+            expression: "Tank-balance or invoice-reconciled diesel consumed by qualifying heat-treatment cycles"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg accepted heat-treated shell output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_fuel
+              source_ids: []
+            ranges: []
+        - row_id: heat_treatment_electricity
+          role: "Heat-treatment electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity used by resistance, induction, controls, pumps, and fans assigned to the declared heat-treatment cycle. Do not double count electricity already represented through purchased heat."
+          amount:
+            expression: "Metered or reconciled electricity attributable to qualifying heat-treatment cycles"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted heat-treated shell output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_fuel
+              source_ids: []
+            ranges: []
+        - row_id: quench_water
+          role: "Quench-water make-up"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record only fresh process-water make-up crossing the heat-treatment boundary. Recirculated water is not counted again."
+          amount:
+            expression: "Metered make-up water assigned to qualifying quench operations, net of returned or recirculated water"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg accepted heat-treated shell output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_balance
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: heat_treatment_co2
+          role: "Direct fossil carbon dioxide"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record direct fossil carbon dioxide released from on-site combustion of natural gas or diesel assigned to heat treatment. Exclude upstream electricity emissions and avoid duplicating stack measurements with fuel-balance calculations."
+          amount:
+            expression: "Calculate from collected fuel consumption and verified fossil carbon content, or use validated stack measurement, with one method selected for the reporting period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted heat-treated shell output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids: []
+            ranges: []
+  - id: machining_cleaning_and_finishing
+    label: "Machining, cleaning, and surface finishing"
+    inputs:
+      product:
+        - row_id: cleaning_sodium_hydroxide
+          role: "Sodium hydroxide for aqueous cleaning"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide only when it crosses the foreground boundary as the declared cleaning or pretreatment chemical. Preserve solution concentration and supplier state."
+          amount:
+            expression: "Active sodium hydroxide mass calculated from issued solution mass and measured concentration"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg accepted finished container before pressure testing"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_surface_chemicals
+              source_ids: []
+            ranges: []
+        - row_id: cleaning_water
+          role: "Cleaning-water input"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record process water used for washing, rinsing, and aqueous surface preparation. Count net make-up and keep it separate from pressure-test water."
+          amount:
+            expression: "Metered net cleaning and rinse-water make-up assigned to the declared finishing route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished container before pressure testing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_balance
+              source_ids: []
+            ranges: []
+        - row_id: powder_coating
+          role: "Powder coating input"
+          name: "Powder Coating"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0c581697-0eed-4b86-a070-b94966eb7344"
+          property_unit: "Mass / kg"
+          description: "Record powder coating only when this finish is applied. Preserve resin chemistry, colour, batch, cured-film specification, and recovered-powder practice."
+          amount:
+            expression: "Issued coating mass minus verified reusable powder returned to stock"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg accepted powder-coated container before pressure testing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_chemicals
+              source_ids: []
+            ranges: []
+        - row_id: finishing_electricity
+          role: "Finishing electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity assigned to machining, washing, drying, coating application, coating recovery, and curing within this process."
+          amount:
+            expression: "Metered or reconciled electricity attributable to machining, cleaning, and finishing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished container before pressure testing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_fuel
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: cleaning_wastewater
+          role: "Cleaning wastewater"
+          name: "Wastewater from cleaning"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "f0402393-e82c-47e8-9cd8-a486c97f3e89"
+          property_unit: "Mass / kg"
+          description: "Record wastewater leaving aqueous cleaning and rinsing before off-site or on-site treatment. Preserve pH, principal contaminants, treatment state, and destination."
+          amount:
+            expression: "Metered or mass-balanced cleaning wastewater crossing the process boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished container before pressure testing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_balance
+              source_ids: []
+            ranges: []
+        - row_id: powder_coating_waste
+          role: "Unrecovered powder-coating residue"
+          name: "Powder coating waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "9aa53a82-5462-400e-9096-efab7718201f"
+          property_unit: "Mass / kg"
+          description: "Record only spent powder and unrecovered overspray leaving the process as waste. Do not count powder internally recovered and returned to the application system."
+          amount:
+            expression: "Weighed powder-coating waste dispatched from the finishing process"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg accepted powder-coated container before pressure testing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_surface_chemicals
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: inspection_pressure_test_and_release
+    label: "Inspection, pressure test, marking, and release"
+    inputs:
+      product:
+        - row_id: pressure_test_water
+          role: "Hydrostatic pressure-test water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record fresh process-water make-up for hydrostatic testing. Reused test water remains inside the process and is not counted again."
+          amount:
+            expression: "Metered fresh test-water make-up net of recovered water during the reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming empty container output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_balance
+              source_ids: []
+            ranges: []
+        - row_id: test_electricity
+          role: "Testing and release electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value / MJ"
+          description: "Record electricity for pressure pumps, test controls, drying, marking, handling, and final inspection assigned to released containers."
+          amount:
+            expression: "Metered or reconciled electricity attributable to inspection, pressure testing, drying, marking, and release"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming empty container output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_fuel
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Conforming empty metal gas container"
+          name: "Empty iron, steel, or aluminium container for compressed or liquefied gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This is the accepted empty pressure container released at the manufacturing gate. The Tiangong product-flow UUID is unresolved; the row remains mass-based and fully qualified by the declared product specification."
+          amount:
+            expression: "Calibrated net empty mass of containers that passed all required inspections and tests"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg conforming empty container output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_final_product_and_tests
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: rejected_steel_container
+          role: "Rejected steel container scrap"
+          name: "Post-industrial steel scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "c143745d-be4f-4d8f-b403-2dcbfe685349"
+          property_unit: "Mass / kg"
+          description: "Record the net mass of rejected steel containers or destructive steel test specimens leaving the process as scrap. Prevent duplication with forming scrap."
+          amount:
+            expression: "Weighed rejected steel container and destructive-test scrap dispatched from final inspection"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming empty steel container output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_product_and_tests
+              source_ids: []
+            ranges: []
+        - row_id: rejected_aluminium_container
+          role: "Rejected aluminium container scrap"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass / kg"
+          description: "Record the net mass of rejected aluminium containers or destructive aluminium test specimens leaving the process as scrap. Prevent duplication with forming scrap."
+          amount:
+            expression: "Weighed rejected aluminium container and destructive-test scrap dispatched from final inspection"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming empty aluminium container output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_product_and_tests
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: al_subdivision_first
+    applies_to: "shared manufacturing operations"
+    rule: "Avoid allocation by sub-metering, batch assignment, equipment time, furnace charge, surface area, joint length, test count, or another causal physical record before applying an allocation factor."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: al_shared_utilities
+    applies_to: "utilities serving multiple products"
+    rule: "Allocate only the residual shared quantity using a documented causal driver. Mass may be used only when it represents resource demand; otherwise use machine time, thermal load, surface area, or another justified driver and disclose a sensitivity check."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: al_scrap
+    applies_to: "metal scrap outputs"
+    rule: "Report steel and aluminium scrap as waste outputs at the point they leave the foreground process. Do not subtract an avoided-primary-metal credit from the foreground inventory; any recycling substitution belongs to an explicitly declared downstream method."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: al_rework
+    applies_to: "internal rework"
+    rule: "Keep rework that does not cross the process boundary inside the batch balance and assign its incremental energy and material use to the resulting accepted output. Record material leaving the system as waste only once."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_balance
+      process_id: "material_preparation_and_shell_forming"
+      flow_role: "Each metal stock input and each segregated metal scrap output"
+      record_type: "Batch issue, weighment, return, scrap, and inventory record"
+      raw_fields: "row_id; material/alloy; heat/cast; supplier; opening stock; receipts; issued mass; returned mass; accepted work-in-process; scrap mass; batch; unit"
+      collection_method: "Reconcile calibrated scales, stock ledger, production issue, and scrap dispatch records for each material and row_id"
+      unit: "kg"
+      frequency: "Each batch with monthly closure"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "All in-scope forming operations"
+      aggregation_rule: "Sum only records assigned to the row and batch; prevent duplicate scrap assignment; normalize by accepted output"
+      quality_evidence: "Scale calibration; material certificate; heat/cast traceability; stock reconciliation; scrap ticket"
+    - protocol_id: cp_welding_consumables
+      process_id: "pressure_shell_joining"
+      flow_role: "Flux-cored welding wire"
+      record_type: "Consumable issue and return record"
+      raw_fields: "row_id; consumable grade; batch; opening stock; receipts; issued mass; returned mass; joint/work order; accepted output"
+      collection_method: "Reconcile stores and work-order records for each qualified welding procedure"
+      unit: "kg"
+      frequency: "Each batch with monthly closure"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "In-scope joined pressure shells and attachments"
+      aggregation_rule: "Net consumption equals issue minus verified unused return; normalize by accepted joined-shell mass"
+      quality_evidence: "Consumable certificate; qualified procedure; stores reconciliation; work order"
+    - protocol_id: cp_energy_and_fuel
+      process_id: "material_preparation_and_shell_forming_pressure_shell_joining_heat_treatment_machining_cleaning_and_finishing_inspection_pressure_test_and_release"
+      flow_role: "One electricity, natural-gas, diesel, or oxygen row"
+      record_type: "Meter, invoice, tank, or cylinder record"
+      raw_fields: "row_id; meter/source id; opening/closing reading or stock; receipts; returns; reference conditions; calorific value; equipment/process; batch; allocation driver"
+      collection_method: "Read calibrated meters or reconcile supplier and stock records separately for each carrier and row_id"
+      unit: "MJ; kWh; kg; m3"
+      frequency: "Each batch or monthly, with reporting-period closure"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "All directly controlled in-scope equipment"
+      aggregation_rule: "Apply declared unit conversion and causal allocation; never combine carriers; normalize to process or reference output"
+      quality_evidence: "Calibration; invoice; tank/cylinder ledger; fuel specification; allocation worksheet"
+    - protocol_id: cp_water_balance
+      process_id: "heat_treatment_machining_cleaning_and_finishing_inspection_pressure_test_and_release"
+      flow_role: "One process-water input or cleaning-wastewater output"
+      record_type: "Meter and recirculation balance"
+      raw_fields: "row_id; meter id; opening/closing reading; make-up; recirculated; discharged; transferred; temperature; density; process; batch"
+      collection_method: "Reconcile inlet, reuse, inventory, and discharge meters; sample composition where wastewater crosses the boundary"
+      unit: "kg; m3"
+      frequency: "Each batch or monthly, with reporting-period closure"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "In-scope quench, cleaning, rinsing, and hydrostatic-test systems"
+      aggregation_rule: "Count only net make-up as input and boundary-crossing wastewater as output; convert volume to mass with documented density"
+      quality_evidence: "Meter calibration; water balance; density record; wastewater analysis; discharge or transfer record"
+    - protocol_id: cp_surface_chemicals
+      process_id: "machining_cleaning_and_finishing"
+      flow_role: "Sodium hydroxide, powder coating, and powder-coating waste as separate rows"
+      record_type: "Chemical issue, concentration, recovery, return, and waste record"
+      raw_fields: "row_id; chemical/product; concentration; batch; opening stock; receipts; issued; recovered; returned; closing stock; waste mass; destination"
+      collection_method: "Reconcile each named chemical independently using calibrated mass records and measured concentration"
+      unit: "kg"
+      frequency: "Each batch with monthly closure"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "Declared cleaning and coating route"
+      aggregation_rule: "Calculate active sodium hydroxide separately; exclude reusable recovered powder from net input and waste; normalize by accepted finished output"
+      quality_evidence: "Supplier specification; concentration test; scale calibration; stock balance; waste ticket"
+    - protocol_id: cp_direct_emissions
+      process_id: "heat_treatment"
+      flow_role: "Fossil carbon dioxide from on-site fuel combustion"
+      record_type: "Fuel-carbon balance or validated stack measurement"
+      raw_fields: "row_id; fuel quantity; fuel carbon content; biogenic fraction; oxidation basis; stack result; monitoring period; assigned furnace output"
+      collection_method: "Use one declared method per emission and period; reconcile calculated and measured values when both exist without double counting"
+      unit: "kg"
+      frequency: "Each furnace batch with annual/reporting-period closure"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "In-scope fuel-fired heat-treatment equipment"
+      aggregation_rule: "Apply cr_fossil_co2; allocate only assigned fuel or measured stack mass; normalize by accepted heat-treated output"
+      quality_evidence: "Fuel analysis or supplier specification; calibrated meter; stack QA record; reconciliation worksheet"
+    - protocol_id: cp_final_product_and_tests
+      process_id: "inspection_pressure_test_and_release"
+      flow_role: "Accepted product and rejected steel or aluminium container rows"
+      record_type: "Test, inspection, weighment, marking, and rejection record"
+      raw_fields: "row_id; serial/lot; material; route; empty mass; water capacity; service pressure; test pressure; test method; result; rejection reason; scrap mass; release date"
+      collection_method: "Link calibrated weighing and required inspection/test records to each serial number or production lot"
+      unit: "kg; item; pressure unit as declared"
+      frequency: "Each item or prescribed lot"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "All in-scope containers released or rejected"
+      aggregation_rule: "Sum accepted net empty mass for the denominator; assign rejected material once by material; normalize all rows to accepted mass"
+      quality_evidence: "Scale and pressure-gauge calibration; test certificate; material traceability; release authorization; rejection disposition"
+  calculation_rules:
+    - id: cr_reference_normalization
+      applies_to: "every inventory row"
+      rule: "Normalized amount = reporting-period row quantity / reporting-period net mass of conforming empty containers released within the same product system."
+      inputs:
+        - "Row quantity"
+        - "accepted reference-product mass"
+        - "product and period assignment"
+      output: "Quantity per 1 kg reference product"
+      source_ids: []
+    - id: cr_active_sodium_hydroxide
+      applies_to: "cleaning_sodium_hydroxide"
+      rule: "Active sodium hydroxide mass = solution mass × measured mass fraction of sodium hydroxide; keep carrier water in the water balance when material."
+      inputs:
+        - "Issued solution mass"
+        - "measured concentration"
+      output: "kg active sodium hydroxide"
+      source_ids: []
+    - id: cr_fossil_co2
+      applies_to: "heat_treatment_co2"
+      rule: "Fossil CO2 mass = fossil fuel mass × fossil carbon mass fraction × oxidation fraction × 44/12, or the equivalent calculation from standardized gas volume; do not add a stack result representing the same emission."
+      inputs:
+        - "Fuel quantity"
+        - "reference conditions or density"
+        - "fossil carbon content"
+        - "oxidation fraction"
+      output: "kg fossil carbon dioxide"
+      source_ids: []
+    - id: cr_metal_balance
+      applies_to: "steel and aluminium material rows"
+      rule: "For each material and batch, input mass = accepted work-in-process mass + returned reusable stock + reported scrap/waste + documented inventory change; investigate and disclose residual imbalance."
+      inputs:
+        - "Material issue"
+        - return
+        - "accepted output"
+        - scrap
+        - "inventory change"
+      output: "Material-specific reconciliation and normalized flows"
+      source_ids: []
+    - id: cr_recovered_powder
+      applies_to: "powder_coating; powder_coating_waste"
+      rule: "Net powder input = issued powder − unused return; waste output = collected residue dispatched as waste; powder recovered and reused within the process is neither a new input nor a waste crossing."
+      inputs:
+        - Issue
+        - "unused return"
+        - "recovered reuse"
+        - "waste dispatch"
+      output: "kg powder input and kg powder-coating waste"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Maintain serial- or lot-level linkage among material/alloy, manufacturing route, water capacity, service pressure, test pressure, applicable standard, included accessories, empty mass, and release status."
+      evidence: "Product specification; drawing; material certificate; test and release record"
+    - id: dq_primary_data
+      applies_to: "foreground processes"
+      requirement: "Use complete site-specific records for directly controlled material, energy, water, waste, test, and emission flows over one representative reporting period; explain missing records and substitutions."
+      evidence: "Meter and stock reconciliation; invoices; production ledger; data-gap log"
+    - id: dq_temporal
+      applies_to: "all rows"
+      requirement: "Align numerator and accepted-output denominator to the same reporting period and exclude abnormal shutdown, commissioning, or trial production unless separately disclosed."
+      evidence: "Production calendar; meter dates; batch mapping; exception log"
+    - id: dq_measurement
+      applies_to: "measured quantities"
+      requirement: "Use calibrated devices suitable for the quantity and retain raw readings, units, conversion factors, reference conditions, and correction records."
+      evidence: "Calibration certificates; raw readings; conversion worksheet; QA approval"
+    - id: dq_completeness
+      applies_to: "all boundary crossings"
+      requirement: "Reconcile material, water, fuel, and product balances; document each exclusion and its cumulative significance rather than relying on an automatic cut-off."
+      evidence: "Balance worksheets; exclusion register; completeness review"
+    - id: dq_upstream_matching
+      applies_to: "linked datasets"
+      requirement: "Match upstream datasets to material grade/state, energy carrier, geography, technology, and reference unit; disclose proxies and unresolved identities."
+      evidence: "Supplier specification; dataset metadata; proxy justification"
+validation_rules:
+  - rule_id: vr_identity_complete
+    applies_to: "reference product"
+    rule: "Reject a data package that omits vessel family, refillability, shell material/alloy, stock form, seamless/welded route, water capacity, service pressure, test pressure, applicable standard, included accessories, surface finish, geography, reporting period, or net empty mass."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - us-dot-49-cfr-178-37
+      - us-dot-49-cfr-178-46
+      - us-dot-49-cfr-178-50
+  - rule_id: vr_route_consistency
+    applies_to: "process inventory"
+    rule: "Require each reported flow and process to match the declared route. A conditional row may be absent only when its operation or material is demonstrably not applicable; zero must not substitute for missing data."
+    source_ids:
+      - us-dot-49-cfr-178-37
+      - us-dot-49-cfr-178-46
+      - us-dot-49-cfr-178-50
+  - rule_id: vr_test_traceability
+    applies_to: "inspection and release"
+    rule: "Require traceable inspection and pressure/mechanical-test evidence at the frequency prescribed by the declared standard, and exclude failed containers from accepted output."
+    source_ids:
+      - us-dot-49-cfr-178-37
+      - us-dot-49-cfr-178-46
+      - us-dot-49-cfr-178-50
+  - rule_id: vr_mass_balance
+    applies_to: "metals and finished product"
+    rule: "Require separate steel and aluminium balances to close within the site's documented measurement uncertainty; investigate residuals and prevent double counting of forming scrap, destructive-test specimens, and rejected containers."
+    source_ids: []
+  - rule_id: vr_energy_no_double_count
+    applies_to: "electricity and fuels"
+    rule: "Reconcile process-level energy with facility totals and reject overlap among forming, joining, heat treatment, finishing, testing, purchased heat, and upstream electricity emissions."
+    source_ids: []
+  - rule_id: vr_emission_no_double_count
+    applies_to: "direct fossil carbon dioxide"
+    rule: "Accept either a validated fuel-carbon calculation or a representative stack result for the same source and period; if both exist, use one and retain the other as a reconciliation check."
+    source_ids: []
+  - rule_id: vr_cutoff_and_allocation
+    applies_to: "completeness and shared operations"
+    rule: "Require disclosed exclusions, allocation drivers, residual shared quantities, and sensitivity where the allocation choice can materially affect results."
+    source_ids:
+      - ec-pef-method-2021
+published_dataset_profile:
+  dataset_role: "Cradle-to-gate foreground production dataset for empty iron, steel, or aluminium compressed- or liquefied-gas containers"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product LCAs, supply-chain models, procurement comparisons, and lifecycle models that match the declared vessel design, material, route, service conditions, geography, included accessories, and factory-gate boundary"
+  excluded_use: "Filled-gas packaging without a separate gas/filling model; composite vessels outside the scope; use-stage safety or lifetime claims; periodic requalification; repair; end-of-life; or comparison of containers with materially different pressure service without functional adjustment"
+  required_metadata: "canonical PCR id; CPC context; vessel family; refillability; material/alloy; stock form; route; water capacity; service pressure; test pressure; standard; inspection plan; accessories; finish; empty mass; geography; reporting period; allocation; cut-offs; source and dataset versions"
+  required_quality_disclosure: "Primary-data coverage; meter and scale calibration; material and test traceability; material/water/energy reconciliations; rejected-product handling; direct-emission method; allocation drivers; exclusions; proxies; unresolved UUIDs; uncertainty and representativeness"
+  update_trigger: "Change in alloy or stock form, forming/joining/heat-treatment route, vessel design or pressure class, testing standard, finish, included accessories, site energy or water system, allocation, geography, or representative reporting period"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-06-23; SHA-256 5cd2c1c4890dd6be16af48e9bb940fed48efff9865f39ff15edaa921da25fb7c)"
+    used_for: "Product classification identity and separation from non-pressure tanks"
+  - id: "us-dot-49-cfr-178-37"
+    type: "standard"
+    reference: "U.S. Department of Transportation, 49 CFR 178.37, Specification 3AA and 3AAX seamless steel cylinders, https://www.ecfr.gov/current/title-49/subtitle-B/chapter-I/subchapter-C/part-178/subpart-C/section-178.37 (accessed 2026-09-05)"
+    used_for: "Seamless-steel scope, material traceability, manufacture, heat treatment, inspection, pressure testing, and rejection records"
+  - id: "us-dot-49-cfr-178-46"
+    type: "standard"
+    reference: "U.S. Department of Transportation, 49 CFR 178.46, Specification 3AL seamless aluminium cylinders, https://www.ecfr.gov/current/title-49/subtitle-B/chapter-I/subchapter-C/part-178/subpart-C/section-178.46 (accessed 2026-09-05)"
+    used_for: "Seamless-aluminium scope, traceable stock, backward extrusion, solution heat treatment and ageing, pressure testing, and mechanical testing"
+  - id: "us-dot-49-cfr-178-50"
+    type: "standard"
+    reference: "U.S. Department of Transportation, 49 CFR 178.50, Specification 4B welded or brazed steel cylinders, https://www.ecfr.gov/current/title-49/subtitle-B/chapter-I/subchapter-C/part-178/subpart-C/section-178.50 (accessed 2026-09-05)"
+    used_for: "Welded-steel scope, joining, material traceability, pressure testing, and mechanical testing"
+  - id: "ec-pef-method-2021"
+    type: "official_guidance"
+    reference: "European Commission, Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX:32021H2279 (accessed 2026-09-05)"
+    used_for: "Functional-unit framing, system-boundary and cut-off disclosure, foreground data quality, and allocation hierarchy"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f25e75d4a1445217da0854bec77d8e6467e4168a58d5cadaf934fe5a7a3d999e"
+  generated_content_sha256: "sha256:e8ade3359014756e831a9ba5fa88005268570c92c078a924cb4d405e1a0b829c"

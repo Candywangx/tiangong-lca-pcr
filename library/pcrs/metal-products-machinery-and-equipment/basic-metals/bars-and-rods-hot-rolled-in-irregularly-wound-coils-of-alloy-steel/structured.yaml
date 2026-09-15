@@ -1,10 +1,641 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41243"
-  title: "Bars and rods, hot-rolled, in irregularly wound coils, of alloy steel"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.bars-and-rods-hot-rolled-in-irregularly-wound-coils-of-alloy-steel"
+  classification_refs: "CPC 3.0: 41243, exact classification context"
+  covered_products: "Stainless-steel and other alloy-steel hot-rolled bars and rods supplied in irregularly wound coils, including grade-specific wire rod in that market state"
+  excluded_products: "Iron or non-alloy-steel wire rod; straight bars or rods; cold-formed, cold-finished or drawn wire; separately annealed, pickled, galvanised or coated downstream products; semi-finished billets and blooms"
+  representative_product: "Saleable alloy-steel hot-rolled wire-rod coil at the rolling-mill gate"
+  production_route: "Semi-finished alloy-steel feed; optional surface rectification; reheating; descaling; hot rolling; controlled cooling; irregular coiling; inspection, trimming and bundling"
+  market_state: "Hot-rolled, irregularly wound coil; alloy grade, dimensional specification, surface condition, heat-treatment state and packaging state declared"
+functional_unit:
+  what: "Supply of alloy-steel bars and rods in the hot-rolled, irregularly wound coil state at the producing mill gate"
+  how_much: "1,000 kg net saleable product, excluding transport packaging mass"
+  how_well: "Conforming to the declared alloy grade, diameter or section, dimensional tolerance, surface condition and applicable customer or product specification"
+  how_long_or_cycle: "One completed production lot through the declared billet-to-coil hot-rolling route; no use-duration function is assigned"
+  reference_flow_link: "alloy_steel_hot_rolled_coil_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_rule_start
+      applies_to: "foreground_start"
+      rule: "Begin the foreground system at receipt of semi-finished alloy-steel billet, bloom or equivalent long-steel feed; connect upstream steelmaking and casting through the input dataset."
+      source_ids:
+        - ec-jrc-fmp-bref-2022
+    - rule_id: boundary_rule_operations
+      applies_to: "foreground_operations"
+      rule: "Include all attributable on-site surface rectification when used, reheating, descaling, hot rolling, cooling, irregular coiling, inspection, trimming, bundling, direct energy, water, wastes and direct emissions."
+      source_ids:
+        - ec-jrc-fmp-bref-2022
+    - rule_id: boundary_rule_downstream
+      applies_to: "excluded_downstream_processing"
+      rule: "Exclude wire drawing, cold rolling, separate pickling, separate annealing or patenting, galvanising, coating and downstream fabrication from the reference-product process; model any included downstream transformation separately."
+      source_ids:
+        - ec-jrc-fmp-bref-2022
+    - rule_id: boundary_rule_internal_returns
+      applies_to: "internal_recycling"
+      rule: "Do not report scale, crop ends, off-specification rod, water or lubricant as an external output when it is fully returned and consumed within the same declared foreground system; retain the internal return record for mass-balance review."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Alloy-steel billet, bloom, or equivalent semi-finished long-steel feed received at the hot-rolling mill boundary, with grade, mass, casting route, temperature state and supplier geography declared"
+  starting_condition_role: "Upstream steelmaking and casting are represented by the selected semi-finished alloy-steel input dataset rather than reconstructed inside this foreground PCR"
+  product_classification_scope: "Alloy-steel hot-rolled bars and rods supplied in irregularly wound coils; CPC 3.0 code 41243 is classification context and does not replace the semantic product qualifiers"
+  recursive_input_rule: "A purchased or transferred product already meeting this PCR's reference-product state shall be recorded as an upstream product input and shall not be rerun through the billet-to-coil foreground process; disclose the transferred mass and avoid double counting its prior rolling burdens"
+  upstream_dataset_requirement: "Use a geographically, technologically and grade-representative semi-finished alloy-steel dataset with its steelmaking route, recycled-content method and casting state disclosed"
+  disclosure: "Declare included unit operations, direct-firing fuels, electricity supply, water-loop boundary, surface rectification, yield and internal returns, waste destinations, emission-monitoring basis, packaging, site, geography and production period"
+reference_flow_definition:
+  reference_amount: "1,000 kg net saleable hot-rolled coiled bars and rods"
+  product_flow_ref:
+    name: "Bars and rods, hot-rolled, in irregularly wound coils, of alloy steel; Tiangong UUID unresolved"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "alloy grade and standard"
+    - stainless
+    - high-speed
+    - "silico-manganese or other alloy-steel family"
+    - "billet or bloom feed state"
+    - "nominal diameter or section"
+    - "dimensional tolerance"
+    - "surface condition"
+    - "heat-treatment state"
+    - "coil mass range"
+    - "production route"
+    - "mill technology"
+    - "production site and geography"
+    - "production period"
+    - "recycled-content accounting method"
+    - "net product mass"
+    - "packaging inclusion or exclusion"
+    - "mill-gate delivery boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "Reference product and all ferrous material-balance rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report dry, net metal mass at the weighing condition declared by the mill. Exclude strapping and other transport packaging from the reference product mass and record them as separate inputs."
+  - id: energy_conversion
+    applies_to: "Alternating-current electricity"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "MJ"
+    rule: "Preserve the metered electricity unit and conversion factor in the foreground package; when converting kWh to MJ, use 3.6 MJ per kWh and do not mix primary-energy factors with delivered electricity."
+  - id: gas_volume_conditions
+    applies_to: "Gaseous natural gas"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "State the temperature, absolute pressure, moisture basis and meter correction used for the reported gas volume; do not combine volumes stated at different reference conditions."
+  - id: water_net_makeup
+    applies_to: "Process water"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Report net make-up water crossing the site boundary. Recirculated water within the mill is an internal flow and shall not be counted repeatedly as new input."
+process_map:
+  - id: hot_rolling_and_coiling
+    name: "Billet preparation, reheating, descaling, hot rolling, cooling, irregular coiling and finishing"
+    inclusion: "required"
+    inclusion_condition: "Surface rectification exchanges apply only when scarfing or grinding is performed; all other listed core stages are included for saleable hot-rolled coiled product"
+    role: "Foreground production from semi-finished alloy-steel feed to mill-gate coil"
+    quantitative_reference: "1,000 kg net saleable hot-rolled coiled bars and rods"
+process_inventory:
+  - id: hot_rolling_and_coiling
+    label: "Billet preparation, reheating, descaling, hot rolling, cooling, irregular coiling and finishing"
+    inputs:
+      product:
+        - row_id: alloy_steel_billet_input
+          role: "Semi-finished alloy-steel feed"
+          name: "Alloy-steel billet or bloom; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the alloy-steel billet, bloom or equivalent long-steel feed that crosses the rolling-mill boundary. Grade and feed state shall match the produced coil."
+          amount:
+            expression: "measured net mass charged to production lots, adjusted for opening and closing work-in-process inventory"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable hot-rolled coiled bars and rods"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: hot_rolling_electricity_input
+          role: "Delivered alternating-current electricity"
+          name: "Alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "455f0ef5-6118-4f2b-a3f5-1f75e0afe3ca"
+          property_unit: "Net calorific value / MJ"
+          description: "Record metered alternating-current electricity delivered to billet preparation, rolling drives, pumps, fans, cooling, coiling and finishing within the foreground process."
+          amount:
+            expression: "metered delivered electricity allocated to the declared production lots and converted to MJ using the recorded meter unit"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable hot-rolled coiled bars and rods"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_metering
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: reheating_natural_gas_input
+          role: "Natural gas for reheating"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Record gaseous natural gas delivered to reheating or holding burners within the foreground process. Supplier geography, burner technology and volume reference conditions are required."
+          amount:
+            expression: "corrected meter volume attributable to the declared production lots"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable hot-rolled coiled bars and rods"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_natural_gas_metering
+              source_ids:
+                - us-epa-ap42-steel-minimills-2009
+            ranges: []
+        - row_id: process_water_input
+          role: "Net process-water make-up"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record the net process water supplied across the site boundary for descaling, roll cooling, product cooling and other direct mill uses. Do not count internally recirculated water as repeated input. Convert volume-meter records to mass using a documented measured or supplier density at the declared reference condition."
+          amount:
+            expression: "mass of incoming make-up water less the mass of measured return exported back to the same supplier system, attributable to the declared production lots"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable hot-rolled coiled bars and rods"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_metering
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: rolling_lubricant_input
+          role: "Rolling lubricant"
+          name: "Hot rolling oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b6d54639-2da8-49b3-89d2-e14324bb14c8"
+          property_unit: "Mass / kg"
+          description: "Record hot rolling oil when it crosses the foreground boundary for the declared mill technology. Mark this row not applicable when production and stores records verify that no hot rolling oil was supplied; chemically different lubricants shall be added as separate dataset exchanges."
+          amount:
+            expression: "purchased or issued lubricant mass consumed by the declared production lots, corrected for inventory change and recovered lubricant returned to service"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable hot-rolled coiled bars and rods"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_lubricant_records
+              source_ids: []
+            ranges: []
+        - row_id: steel_strapping_input
+          role: "Steel strapping for coil bundling"
+          name: "Steel baling band"
+          flow_type: "product"
+          flow_ref:
+            uuid: "56fe4f71-b594-4b55-8553-c87f2516737d"
+          property_unit: "Mass / kg"
+          description: "Record steel straps shipped with the coil separately from the net reference-product mass."
+          amount:
+            expression: "issued or purchased steel-strap mass attached to shipped coils in the declared production lots"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable hot-rolled coiled bars and rods"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: alloy_steel_hot_rolled_coil_output
+          role: "Saleable hot-rolled alloy-steel coiled bars and rods"
+          name: "Bars and rods, hot-rolled, in irregularly wound coils, of alloy steel; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only product passing the declared grade, dimension, surface and coil acceptance criteria. Packaging mass is excluded."
+          amount:
+            expression: "measured net saleable product mass; normalize the foreground inventory to 1,000 kg"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - unsd-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        - row_id: mill_scale_output
+          role: "Mill scale sent outside the foreground system"
+          name: "Mill scale"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "763bdad1-b443-428a-89b6-371a6807fc6c"
+          property_unit: "Mass / kg"
+          description: "Record oxide scale removed during descaling and rolling only when it leaves the declared foreground system for treatment, recovery or disposal."
+          amount:
+            expression: "measured dispatched mass plus closing storage inventory less opening storage inventory, attributed to the declared production lots"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable hot-rolled coiled bars and rods"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_mass_records
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: grinding_swarf_output
+          role: "Grinding or scarfing swarf"
+          name: "Steel swarf"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "6a16eab5-8097-4e37-8d28-aa1e81b8bb5c"
+          property_unit: "Mass / kg"
+          description: "Record alloy-steel swarf or dust leaving the foreground system when surface rectification by grinding or scarfing is performed. Mark the row not applicable only when production records show that no such operation occurred."
+          amount:
+            expression: "measured collected mass attributable to production lots that underwent surface rectification"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable hot-rolled coiled bars and rods for the applicable route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass_records
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+        - row_id: spent_rolling_lubricant_output
+          role: "Spent rolling lubricant"
+          name: "Used lubricating oil"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "55d93375-7f04-4166-b2a2-88ce929051a5"
+          property_unit: "Mass / kg"
+          description: "Record used hot rolling oil only when it leaves the foreground system for external regeneration, treatment or disposal. Mark this row not applicable when no hot rolling oil was supplied or no used oil crossed the boundary."
+          amount:
+            expression: "measured dispatched mass adjusted for opening and closing on-site waste storage"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable hot-rolled coiled bars and rods"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_mass_records
+              source_ids: []
+            ranges: []
+        - row_id: rejected_alloy_steel_rod_output
+          role: "Rejected alloy-steel rod sent outside the foreground system"
+          name: "Off-specification alloy-steel hot-rolled rod; Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record crop ends and off-specification hot-rolled rod only when they leave the declared foreground system. Material fully returned to an upstream steelmaking process inside the same declared system is tracked internally and not reported as an external waste output."
+          amount:
+            expression: "measured dispatched mass adjusted for opening and closing reject inventory"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable hot-rolled coiled bars and rods"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: cooling_water_blowdown_output
+          role: "Cooling-water blowdown"
+          name: "Hot-rolling cooling-water blowdown; Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record cooling-water blowdown that crosses the foreground boundary to external wastewater treatment or discharge. Do not combine it with sanitary wastewater or unrelated site effluent."
+          amount:
+            expression: "measured blowdown volume attributable to the declared production lots"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable hot-rolled coiled bars and rods"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_metering
+              source_ids:
+                - ec-jrc-fmp-bref-2022
+            ranges: []
+      elementary:
+        - row_id: reheating_fossil_co2_air
+          role: "Fossil carbon dioxide from on-site fuel combustion"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record fossil carbon dioxide emitted to air from natural-gas combustion in reheating or holding furnaces within the foreground boundary. Do not include upstream gas-supply emissions in this direct elementary flow. No external quantitative ranges are prescribed in this candidate PCR. Important-flow ranges remain unresolved until at least two independent original-text sources with compatible billet-to-coil boundary, functional unit, product state, geography and technology are verified; foreground collection remains mandatory."
+          amount:
+            expression: "site-measured or facility-verified direct fossil carbon-dioxide mass attributable to the declared production lots"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable hot-rolled coiled bars and rods"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions_records
+              source_ids:
+                - us-epa-ap42-steel-minimills-2009
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_rule_subdivide
+    applies_to: "shared_mill_operations"
+    rule: "Prefer subdivision or direct lot, meter and mass-record attribution for reheating, rolling, cooling, coiling and finishing before applying allocation."
+    source_ids: []
+  - rule_id: allocation_rule_internal_returns
+    applies_to: "internal_returns"
+    rule: "Treat scale, crop ends, rejected rod, water and lubricant returned within the declared foreground system as internal exchanges; do not assign an avoided-product credit or report them again as external outputs."
+    source_ids: []
+  - rule_id: allocation_rule_residuals
+    applies_to: "saleable_residual_outputs"
+    rule: "If a saleable residual leaves the foreground system and shared burdens cannot be subdivided, allocate the remaining shared burdens by documented physical mass after separately attributing process-specific burdens; disclose output masses, market status, allocation fraction and sensitivity to an economic alternative."
+    source_ids: []
+  - rule_id: allocation_rule_no_recycled_content_double_count
+    applies_to: "semi_finished_steel_input"
+    rule: "Preserve the recycled-content or end-of-life accounting method of the upstream semi-finished alloy-steel dataset and do not add a second scrap credit in the rolling foreground."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass_balance
+      process_id: "hot_rolling_and_coiling"
+      flow_role: "alloy_steel_billet_input; alloy_steel_hot_rolled_coil_output; rejected_alloy_steel_rod_output"
+      record_type: "certified weighbridge, scale, production and inventory records"
+      raw_fields: "heat or lot id; grade; feed mass; saleable coil mass; reject mass; crop-end mass; opening and closing work-in-process; scale id; calibration status"
+      collection_method: "Link weighed inputs and outputs to heat or production-lot identifiers and reconcile inventory change"
+      unit: "kg"
+      frequency: "each heat or lot; aggregate monthly"
+      temporal_coverage: "at least 12 consecutive representative months, or the full campaign when shorter"
+      site_scope: "all lines and lots represented by the dataset"
+      aggregation_rule: "Sum verified lot records, adjust for inventory change, then normalize by verified net saleable product mass"
+      quality_evidence: "calibrated-scale certificates; production reconciliation; grade certificates; inventory sign-off"
+    - protocol_id: cp_electricity_metering
+      process_id: "hot_rolling_and_coiling"
+      flow_role: "hot_rolling_electricity_input"
+      record_type: "revenue, submeter or verified energy-management records"
+      raw_fields: "meter id; start and end reading; meter unit; line or equipment scope; outage; production lot or period; supplier; voltage; geography; calibration"
+      collection_method: "Prefer line submeters; otherwise attribute site-meter electricity using documented operating hours or equipment load after subtracting non-foreground uses"
+      unit: "kWh or MJ"
+      frequency: "continuous or shift readings; aggregate monthly"
+      temporal_coverage: "same representative period as product output"
+      site_scope: "all included rolling-mill equipment and attributable auxiliaries"
+      aggregation_rule: "Sum attributable delivered electricity and convert to MJ without applying a primary-energy factor"
+      quality_evidence: "meter calibration; invoices; submeter map; reconciliation to site total"
+    - protocol_id: cp_natural_gas_metering
+      process_id: "hot_rolling_and_coiling"
+      flow_role: "reheating_natural_gas_input"
+      record_type: "corrected gas-meter and supplier records"
+      raw_fields: "meter id; volume; temperature; pressure; moisture basis; correction factor; burner and furnace id; production period; supplier geography"
+      collection_method: "Read furnace or line meters; reconcile corrected volume to supplier invoices and production operating periods"
+      unit: "m3"
+      frequency: "continuous or shift readings; aggregate monthly"
+      temporal_coverage: "same representative period as product output"
+      site_scope: "every reheating or holding furnace included in the dataset"
+      aggregation_rule: "Sum volume at one declared reference condition and allocate only documented shared-furnace use"
+      quality_evidence: "meter calibration; supplier invoices; correction certificate; furnace operating log"
+    - protocol_id: cp_water_metering
+      process_id: "hot_rolling_and_coiling"
+      flow_role: "process_water_input; cooling_water_blowdown_output"
+      record_type: "intake, make-up, return and blowdown meter records"
+      raw_fields: "meter id; intake; purchased make-up; exported return; blowdown; line scope; date; water source; water density and reference condition; treatment destination"
+      collection_method: "Reconcile water-loop meters and distinguish internal recirculation from boundary-crossing make-up and blowdown"
+      unit: "m3 raw readings; kg reported process-water input"
+      frequency: "daily or shift readings; aggregate monthly"
+      temporal_coverage: "same representative period as product output"
+      site_scope: "rolling, descaling and cooling water systems attributable to the product"
+      aggregation_rule: "Calculate net boundary-crossing volumes, convert the process-water input to mass using documented density, and allocate shared systems using documented throughput or operating time"
+      quality_evidence: "meter calibration; density record; water balance; utility invoice; discharge or treatment record"
+    - protocol_id: cp_lubricant_records
+      process_id: "hot_rolling_and_coiling"
+      flow_role: "rolling_lubricant_input; spent_rolling_lubricant_output"
+      record_type: "purchase, issue, recovery and waste-dispatch records"
+      raw_fields: "product identity; issued mass; purchased mass; recovered mass; opening and closing stock; spent mass; destination; production period"
+      collection_method: "Reconcile stores and waste records by chemically specific lubricant and line"
+      unit: "kg"
+      frequency: "each issue and dispatch; aggregate monthly"
+      temporal_coverage: "same representative period as product output"
+      site_scope: "all included rolling equipment"
+      aggregation_rule: "Consumption equals issues or purchases plus opening stock minus closing stock and verified return to service"
+      quality_evidence: "safety data sheet; purchase invoice; stores ledger; waste transfer note"
+    - protocol_id: cp_packaging_records
+      process_id: "hot_rolling_and_coiling"
+      flow_role: "steel_strapping_input"
+      record_type: "packaging bill of materials and issue records"
+      raw_fields: "strap specification; mass per strap or issued mass; number of straps; coil id; opening and closing stock"
+      collection_method: "Link strap issues or bill-of-material counts to shipped coils and verify count-to-mass conversion"
+      unit: "kg"
+      frequency: "each shipped coil; aggregate monthly"
+      temporal_coverage: "same representative period as product output"
+      site_scope: "all reference-product coils shipped by the represented site"
+      aggregation_rule: "Sum verified attached strap mass; exclude it from net reference-product mass"
+      quality_evidence: "packaging specification; calibrated sample mass; issue record; shipment record"
+    - protocol_id: cp_waste_mass_records
+      process_id: "hot_rolling_and_coiling"
+      flow_role: "mill_scale_output; grinding_swarf_output; spent_rolling_lubricant_output"
+      record_type: "waste scale, storage and transfer records"
+      raw_fields: "waste identity; source operation; measured mass; opening and closing storage; internal return; destination; date; lot or period"
+      collection_method: "Weigh each segregated waste stream and reconcile dispatches, storage change and internal returns"
+      unit: "kg"
+      frequency: "each dispatch; aggregate monthly"
+      temporal_coverage: "same representative period as product output"
+      site_scope: "all included process areas and waste stores"
+      aggregation_rule: "External output equals dispatch plus closing storage minus opening storage; exclude documented internal returns"
+      quality_evidence: "scale calibration; waste transfer note; storage inventory; destination evidence"
+    - protocol_id: cp_direct_emissions_records
+      process_id: "hot_rolling_and_coiling"
+      flow_role: "reheating_fossil_co2_air"
+      record_type: "continuous monitoring, stack test, or facility-verified direct-emissions inventory"
+      raw_fields: "source id; fossil fuel quantity and composition; monitored or calculated CO2; method; sampling period; production period; control status; uncertainty"
+      collection_method: "Use site monitoring or a facility-verified inventory linked to included furnaces; retain the method and source-specific boundary"
+      unit: "kg"
+      frequency: "continuous, test campaign, or verified reporting period; aggregate to dataset period"
+      temporal_coverage: "same representative period as product output"
+      site_scope: "all direct fuel-combustion sources inside the foreground boundary"
+      aggregation_rule: "Sum source-specific fossil CO2 and attribute to represented product lots using direct records or documented furnace service"
+      quality_evidence: "monitoring QA/QC; calibration; laboratory or verification report; source-to-furnace map"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "normalized amount = period-attributable exchange / period net saleable reference-product mass × 1,000 kg"
+      inputs:
+        - "verified exchange amount"
+        - "verified net saleable coil mass"
+      output: "exchange amount per 1,000 kg reference product"
+      source_ids: []
+    - id: calc_material_balance
+      applies_to: "ferrous material rows"
+      rule: "unexplained mass difference = adjusted semi-finished feed mass - saleable product mass - externally dispatched ferrous or oxide outputs - closing internal ferrous inventory increase; report all terms and sign convention"
+      inputs:
+        - feed
+        - product
+        - scale
+        - swarf
+        - "reject and inventory-change records"
+      output: "documented mill mass-balance reconciliation"
+      source_ids: []
+    - id: calc_net_process_water
+      applies_to: "process water"
+      rule: "net make-up-water mass = (boundary-crossing intake or purchased make-up volume - water volume exported back to the same supplier system) × documented water density at the declared reference condition; use direct mass records when available and exclude internal recirculation"
+      inputs:
+        - intake
+        - make-up
+        - "export and recirculation records"
+        - "water density and reference condition"
+      output: "net process-water input in kg"
+      source_ids: []
+    - id: calc_gas_reference_volume
+      applies_to: "natural gas"
+      rule: "Convert each gas record to the single declared temperature, absolute-pressure and moisture condition using the meter or supplier correction; do not combine uncorrected volumes"
+      inputs:
+        - "metered volume"
+        - "reference and observed conditions"
+        - "correction factor"
+      output: "corrected natural-gas volume in m3"
+      source_ids: []
+    - id: calc_packaging_mass
+      applies_to: "steel strapping"
+      rule: "strap mass = verified strap count × measured or specified mass per strap, unless total issued mass is directly weighed"
+      inputs:
+        - "strap count"
+        - "mass per strap"
+        - "direct issued mass"
+      output: "steel-strapping input mass"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product and semi-finished feed"
+      requirement: "Retain grade certificates, product specification, heat or lot traceability, diameter or section, surface and heat-treatment state, and evidence that the output is supplied as an irregularly wound hot-rolled coil."
+      evidence: "certificates of analysis; production order; inspection and shipment records"
+    - id: dq_temporal_representativeness
+      applies_to: "all foreground exchanges"
+      requirement: "Use one common representative production period, normally at least 12 consecutive months; document shutdowns, campaigns, abnormal events and any shorter-period justification."
+      evidence: "dated raw records; production calendar; representativeness statement"
+    - id: dq_meter_and_scale_quality
+      applies_to: "mass, energy, gas and water"
+      requirement: "Use calibrated meters or documented reconciliation to invoices and site totals; retain meter scope, unit, correction and uncertainty information."
+      evidence: "calibration certificates; meter map; invoice reconciliation; QA/QC records"
+    - id: dq_completeness
+      applies_to: "process inventory"
+      requirement: "Reconcile all listed rows as measured, calculated, zero with evidence, not applicable under the stated condition, or unresolved; do not omit a known exchange because its UUID is unresolved."
+      evidence: "signed completeness checklist; material, energy and water balances; unresolved-flow register"
+    - id: dq_upstream_steel
+      applies_to: "semi-finished alloy-steel input"
+      requirement: "Document steelmaking route, casting route, grade family, supplier geography, recycled-content method and whether the feed dataset includes hot charging or prior reheating."
+      evidence: "supplier dataset and certificate; procurement specification; chain-of-custody record"
+    - id: dq_waste_destination
+      applies_to: "external waste outputs"
+      requirement: "Distinguish internal returns from external recovery, treatment and disposal and retain the receiving destination and mass evidence."
+      evidence: "waste transfer notes; receiver records; inventory reconciliation"
+validation_rules:
+  - rule_id: validation_rule_identity
+    applies_to: "reference_product"
+    rule: "Confirm CPC classification context and every required product qualifier; reject a dataset whose output is straight bar, drawn wire, coated product or another downstream state."
+    source_ids:
+      - unsd-cpc-3-0-structure-2025
+      - unsd-cpc-1-1-chinese
+  - rule_id: validation_rule_reference_amount
+    applies_to: "reference_flow"
+    rule: "Confirm that all exchanges are normalized to exactly 1,000 kg net saleable product and that steel strapping or other packaging is excluded from that mass."
+    source_ids: []
+  - rule_id: validation_rule_boundary
+    applies_to: "system_boundary"
+    rule: "Confirm that upstream steelmaking and casting are represented only through the semi-finished feed dataset and that all included hot-rolling stages, direct energy, water, external wastes and direct emissions are covered."
+    source_ids:
+      - ec-jrc-fmp-bref-2022
+  - rule_id: validation_rule_mass_balance
+    applies_to: "ferrous_material_balance"
+    rule: "Reconcile semi-finished feed, saleable product, mill scale, swarf, rejects, internal returns and work-in-process change; investigate and disclose any material unexplained difference."
+    source_ids: []
+  - rule_id: validation_rule_energy
+    applies_to: "electricity_and_fuel"
+    rule: "Reconcile electricity and corrected natural-gas records to the same production period and mill scope; confirm that upstream supply burdens are not duplicated as direct emissions."
+    source_ids:
+      - us-epa-ap42-steel-minimills-2009
+  - rule_id: validation_rule_uuid_status
+    applies_to: "tiangong_references"
+    rule: "Before activation or publication, directly read and confirm any newly adopted Tiangong UUID as public state_code 100 with matching base name, flow type, classification, property, unit group, state, geography, technology and comment; retain unresolved rows explicitly until then."
+    source_ids: []
+  - rule_id: validation_rule_ranges
+    applies_to: "quantitative_ranges"
+    rule: "Do not add an externally inferred range unless at least two mutually independent original sources have compatible system boundary, reference basis and product state and the synthesis explains geography and technology differences."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production dataset suitable, after review, for publication as a secondary_dataset or background_dataset"
+  downstream_use: "Product-carbon-footprint, process-LCA and lifecyclemodel studies needing a mill-gate alloy-steel hot-rolled wire-rod coil input"
+  allowed_use: "Use when alloy family, grade, product state, mill route, geography, production period, upstream steel route, recycled-content method and reference mass are compatible with the study"
+  excluded_use: "Do not use as a proxy for non-alloy-steel rod, straight bar, cold-drawn wire, separately heat-treated or pickled wire rod, coated products, semi-finished steel, or cradle-to-gate steel without the upstream feed dataset"
+  required_metadata: "PCR id and version; product and grade qualifiers; reference-flow UUID status; site and geography; period; technology; included stages; semi-finished feed dataset; steel route and recycled-content method; energy suppliers; water boundary; allocation; packaging; waste destinations; direct-emissions method; unresolved identities"
+  required_quality_disclosure: "raw-record coverage; meter and scale quality; temporal and technological representativeness; material, energy and water reconciliation; allocation sensitivity; data gaps; UUID and range-evidence status; uncertainty and verification status"
+  update_trigger: "Change in alloy family, product state, furnace or rolling technology, upstream steel route, electricity or fuel supply, water system, yield, allocation, packaging, site, representative period, Tiangong reference identity, or applicable product specification"
+data_sources:
+  - id: "unsd-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0 structure, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-03)"
+    used_for: "Official CPC 3.0 code 41243 identity, English title and hierarchy context"
+  - id: "unsd-cpc-1-1-chinese"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 1.1, Chinese edition. https://unstats.un.org/unsd/publication/SeriesM/M_77ver1_1c.pdf (retrieved 2026-09-03)"
+    used_for: "Verified Chinese steel-product terminology for irregularly coiled, hot-rolled stainless or other alloy-steel bars and rods under code 41243"
+  - id: "ec-jrc-fmp-bref-2022"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques (BAT) Reference Document for the Ferrous Metals Processing Industry, JRC131649, EUR 31321 EN, 2022, DOI 10.2760/196475. https://publications.jrc.ec.europa.eu/repository/handle/JRC131649 (retrieved 2026-09-03)"
+    used_for: "Semi-finished-steel downstream boundary; hot-rolling process sequence; distinction from cold rolling, wire drawing, pickling, annealing and coating routes"
+  - id: "us-epa-ap42-steel-minimills-2009"
+    type: "official_guidance"
+    reference: "U.S. Environmental Protection Agency, Emission Factor Documentation for AP-42 Section 12.5.1, Iron and Steel Production - Steel Minimills, April 2009. https://www.epa.gov/sites/production/files/2020-11/documents/b12s0501.pdf (retrieved 2026-09-03)"
+    used_for: "Natural-gas-fired reheating of semi-finished steel, direct-emission scope and source-quality expectations"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f1024b812c0c17fefad000db423a2c73e9b295dba3313066333e25f9bf739bdb"
+  generated_content_sha256: "sha256:aa1afed3bba29aa9ac9596c776fe65691a103e25b231a132b3845f000804ed89"

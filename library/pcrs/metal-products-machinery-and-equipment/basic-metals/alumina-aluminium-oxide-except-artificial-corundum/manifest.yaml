@@ -2,10 +2,10 @@ schema_version: 1
 id: pcr.metal-products-machinery-and-equipment.basic-metals.alumina-aluminium-oxide-except-artificial-corundum
 title:
   en-US: "Alumina (aluminium oxide), except artificial corundum"
-  zh-CN: null
-status: scaffold
+  zh-CN: "氧化铝（铝的氧化物），人造刚玉除外"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
   - "metal-products-machinery-and-equipment"
 modules:
@@ -22,16 +22,68 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "41432"
     title: "Alumina (aluminium oxide), except artificial corundum"
     mapping_type: exact
+review_metadata:
+  goal_policy_fingerprint: "sha256:ca4d48461138cec48aa51cf1438775f652663ac663b161c0203fabc5dc779d27"
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+  semantic_boundary_review:
+    outcome: promote_legacy
+    explanation: "The official CPC 3.0 leaf and the exact state-100 TianGong reference flow identify non-fused alumina (aluminium oxide) while excluding artificial corundum. Repository identity review found no other material PCR at this semantic boundary, so the legacy scaffold is promoted in place."
+  unresolved:
+    inventory_flow_uuids:
+      - row_id: rmh_bauxite
+        reason_code: no_exact_candidate
+        explanation: "The finalized bauxite search returned no exact mass-based, as-received refinery bauxite product flow; washed bauxite is a different product state and the remaining candidates are semantic mismatches."
+      - row_id: rmh_total_particulate
+        reason_code: semantic_mismatch
+        explanation: "Search candidates represent specific particulate size fractions and compartments rather than the required total particulate matter exchange from bauxite handling and grinding."
+      - row_id: dcp_calcium_oxide
+        reason_code: no_exact_candidate
+        explanation: "Search candidates were generic lime or volume-based quicklime records; none exactly represented mass-based calcium oxide supplied to the refinery."
+      - row_id: calc_total_particulate
+        reason_code: semantic_mismatch
+        explanation: "Search candidates represent specific particulate size fractions and compartments rather than the required total particulate matter exchange from calcination and product handling."
+    range_evidence_needs:
+      - range_id: alumina-major-input-output-qa-ranges
+        row_ids:
+          - rmh_bauxite
+          - dcp_process_water
+          - dcp_sodium_hydroxide
+          - dcp_calcium_oxide
+          - dcp_industrial_steam
+          - dcp_red_mud
+          - calc_natural_gas
+          - calc_alumina
+          - residue_red_mud_input
+          - residue_red_mud_output
+        explanation: "The verified original texts do not provide empirical numeric ranges from two mutually independent sources with compatible boundary, functional unit, product state, geography, and technology. Collect foreground values and uncertainty; no external numeric range is asserted."
+      - range_id: alumina-energy-water-emissions-qa-ranges
+        row_ids:
+          - rmh_electricity
+          - rmh_total_particulate
+          - dcp_electricity
+          - calc_electricity
+          - calc_fossil_carbon_dioxide
+          - calc_total_particulate
+          - residue_process_water
+          - residue_electricity
+          - utility_natural_gas
+          - utility_process_water
+          - utility_industrial_steam
+          - utility_fossil_carbon_dioxide
+        explanation: "The verified original texts do not provide empirical numeric ranges from two mutually independent sources with compatible boundary, functional unit, product state, geography, and technology. Collect foreground values and uncertainty; no external numeric range is asserted."

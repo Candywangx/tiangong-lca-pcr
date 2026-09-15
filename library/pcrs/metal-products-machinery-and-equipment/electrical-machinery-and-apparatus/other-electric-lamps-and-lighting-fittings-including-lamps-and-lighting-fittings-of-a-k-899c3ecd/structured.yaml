@@ -1,10 +1,907 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "46539"
-  title: "Other electric lamps and lighting fittings (including lamps and lighting fittings of a kind used for lighting public open spaces or thorough-fares), not solely for LED light sources"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.electrical-machinery-and-apparatus.other-electric-lamps-and-lighting-fittings-including-lamps-and-lighting-fittings-of-a-k-899c3ecd"
+  classification_refs: "CPC 3.0:46539"
+  covered_products: "Finished grid-connected electric lamps and lighting fittings not designed solely for LED light sources, including public-open-space and thoroughfare luminaires"
+  excluded_products: "Solely-LED luminaires; portable self-powered lamps; Christmas-tree lighting sets; non-electrical lamps; illuminated signs; separate lamp sources; separately sold parts"
+  representative_product: "A finished, packaged grid-connected luminaire with declared housing, optical element, compatible non-LED-only light-source configuration, control gear configuration, outgoing luminous flux, and assigned lifetime"
+  production_route: "Purchased and/or in-house fabricated components; conditional surface finishing; final assembly; electrical and photometric testing; packaging"
+  market_state: "Finished packaged luminaire at factory gate; application and supplied accessories declared"
+functional_unit:
+  what: "Provide outgoing artificial light from a conforming luminaire"
+  how_much: "1,000 lumens of outgoing artificial luminous flux"
+  how_well: "At the declared photometric distribution, electrical input, light-source/control-gear configuration, light-management state, and application conditions"
+  how_long_or_cycle: "35,000 operating hours"
+  reference_flow_link: "Number of luminaires N = (1,000 lumen × 35,000 h) / (declared outgoing luminous flux V × assigned lifetime H); multiply every cradle-to-gate exchange by N"
+system_boundary:
+  rules:
+    - rule_id: sb_complete_delivered_product
+      applies_to: "manufacturing boundary"
+      rule: "Include every component and accessory delivered with or required for proper operation of the declared luminaire; keep structural modification, roadworks, distribution, installation, use, maintenance, and end-of-life outside this foreground boundary."
+      source_ids:
+        - pep-ecopassport-psr-0014-ed2-2023
+    - rule_id: sb_atomic_bom
+      applies_to: "material and component inputs"
+      rule: "Record the actual bill of materials as atomic purchased material or component flows; do not combine dissimilar materials or energy carriers."
+      source_ids:
+        - pep-ecopassport-psr-0014-ed2-2023
+    - rule_id: sb_production_waste
+      applies_to: "manufacturing outputs"
+      rule: "Record each segregated production waste and its treatment destination; do not net scrap from material input."
+      source_ids:
+        - pep-ecopassport-psr-0014-ed2-2023
+boundary_abstraction:
+  declared_starting_condition: "All purchased materials, finished components, accessories, and packaging crossing the reporting-facility gate for the declared luminaire"
+  starting_condition_role: "foreground manufacturing input boundary"
+  product_classification_scope: "Finished CPC 3.0:46539 luminaire; not a solely-LED luminaire, separate lamp, or separately sold part"
+  recursive_input_rule: "A purchased CPC 46539 luminaire used as an input is recorded as a separate product input with an upstream dataset and is not reopened into the same foreground process."
+  upstream_dataset_requirement: "Use supplier- or geography/technology-representative upstream datasets for each purchased atomic material, component, utility, and waste-treatment service."
+  disclosure: "Disclose make-or-buy status, included lamp/control gear/accessories, facility geography, allocation, cut-off decisions, recycled-content claims, packaging, and processes performed on site."
+reference_flow_definition:
+  reference_amount: "N × measured finished-product mass, in kg"
+  product_flow_ref:
+    name: "Other electric lamps and lighting fittings (including lamps and lighting fittings of a kind used for lighting public open spaces or thorough-fares), not solely for LED light sources"
+    uuid: "f3d53035-bae3-4ebd-8a74-f133bc33211a"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "declared outgoing luminous flux V"
+    - "assigned lifetime H"
+    - "luminaire mass"
+    - application
+    - "indoor/outdoor state"
+    - "compatible light-source technology and replaceability"
+    - "supplied lamp count"
+    - "control-gear count and type"
+    - "light-management functions"
+    - "declared input power"
+    - "housing/optic materials"
+    - "mounting and accessories supplied"
+    - "manufacturing geography"
+    - "production route"
+    - "packaging state"
+reference_flows:
+  []
+measurement_rules:
+  - id: mu_product_mass
+    applies_to: "finished luminaire and constituent material rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure net product and constituent masses without product packaging; report packaging in separate rows."
+  - id: mu_luminous_flux
+    applies_to: "reference-flow scaling"
+    required_property_ref:
+      name: "outgoing artificial luminous flux"
+      uuid: ""
+    required_unit: "lumen"
+    rule: "Use a photometric report for the complete declared luminaire configuration; do not substitute bare-lamp rated flux for luminaire output."
+  - id: mu_lifetime
+    applies_to: "reference-flow scaling"
+    required_property_ref:
+      name: "assigned operating lifetime"
+      uuid: ""
+    required_unit: "h"
+    rule: "Use the manufacturer-declared luminaire life under stated conditions; for a non-replaceable source use the source-limited lifetime, and for a replaceable source use the structure lifetime."
+  - id: mu_energy
+    applies_to: "electricity rows"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "MJ"
+    rule: "Preserve metered kWh, then convert once using 1 kWh = 3.6 MJ and document voltage, grid geography, and loss boundary."
+  - id: mu_gas
+    applies_to: "natural gas and industrial oxygen"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "State temperature and pressure reference conditions and distinguish purchased gas from on-site generation."
+process_map:
+  - id: component_fabrication
+    name: "Material and component fabrication"
+    inclusion: "required"
+    inclusion_condition: "Always include; use purchased finished-component masses when fabrication is outside the reporting facility."
+    role: "foreground manufacturing"
+    quantitative_reference: "mass of each constituent and fabrication exchange per reference flow"
+  - id: surface_finishing
+    name: "Surface finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Include when cleaning, etching, anodizing, painting, or powder coating occurs inside the reporting facility."
+    role: "foreground finishing"
+    quantitative_reference: "finishing inputs and outputs per reference flow"
+  - id: assembly_packaging
+    name: "Final assembly, testing, and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always include."
+    role: "foreground assembly and product release"
+    quantitative_reference: "finished-product mass and packaging per reference flow"
+process_inventory:
+  - id: component_fabrication
+    label: "Material and component fabrication"
+    inputs:
+      product:
+        - row_id: aluminium_sheet
+          role: "Aluminium sheet"
+          name: "Aluminium sheet"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197be4-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this atomic exchange when aluminium sheet is cut or formed in the reporting facility; obtain the amount from batch material, meter, or waste records."
+          amount:
+            expression: "Record the actual quantity crossing the process boundary and normalize it to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per functional-equivalent quantity of luminaires required by the reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_and_materials
+              source_ids:
+                - luminaire-embodied-carbon-lca-2024
+            ranges: []
+        - row_id: steel_sheet
+          role: "Cold-rolled steel sheet"
+          name: "Cold-rolled steel sheet"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this atomic exchange when steel sheet is cut or formed in the reporting facility; obtain the amount from batch material, meter, or waste records."
+          amount:
+            expression: "Record the actual quantity crossing the process boundary and normalize it to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per functional-equivalent quantity of luminaires required by the reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_and_materials
+              source_ids:
+                - luminaire-embodied-carbon-lca-2024
+            ranges: []
+        - row_id: copper_wire
+          role: "copper wire"
+          name: "copper wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "da2d966d-fe62-44dc-ba0f-b1cd7c7cf33e"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this atomic exchange when copper wire crosses the foreground boundary for internal conductors; obtain the amount from batch material, meter, or waste records."
+          amount:
+            expression: "Record the actual quantity crossing the process boundary and normalize it to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per functional-equivalent quantity of luminaires required by the reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_and_materials
+              source_ids:
+                - pep-ecopassport-psr-0014-ed2-2023
+            ranges: []
+        - row_id: float_glass_sheet
+          role: "Float glass and surface ground or polished glass, in sheets"
+          name: "Float glass and surface ground or polished glass, in sheets"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1b43024e-16ea-42d2-830d-329c4a2abc3d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this atomic exchange when a flat-glass cover, lens, or diffuser is fabricated in the reporting facility; obtain the amount from batch material, meter, or waste records."
+          amount:
+            expression: "Record the actual quantity crossing the process boundary and normalize it to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per functional-equivalent quantity of luminaires required by the reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_and_materials
+              source_ids:
+                - luminaire-embodied-carbon-lca-2024
+            ranges: []
+        - row_id: polycarbonate_granulate
+          role: "Polycarbonate granulate"
+          name: "Polycarbonate granulate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this atomic exchange when a polycarbonate optical or enclosure part is moulded in the reporting facility; obtain the amount from batch material, meter, or waste records."
+          amount:
+            expression: "Record the actual quantity crossing the process boundary and normalize it to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per functional-equivalent quantity of luminaires required by the reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_and_materials
+              source_ids:
+                - luminaire-embodied-carbon-lca-2024
+            ranges: []
+        - row_id: fabrication_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record this atomic exchange for cutting, forming, moulding, joining, and fabrication auxiliaries inside the reporting facility; obtain the amount from batch material, meter, or waste records."
+          amount:
+            expression: "Record the actual quantity crossing the process boundary and normalize it to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per functional-equivalent quantity of luminaires required by the reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metered_energy
+              source_ids:
+                - luminaire-embodied-carbon-lca-2024
+            ranges: []
+        - row_id: fabrication_oxygen
+          role: "Industrial oxygen"
+          name: "Industrial oxygen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bd4b0f96-2090-4806-a648-335ab20ff401"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Record this atomic exchange only when oxygen-assisted cutting is performed in the reporting facility; obtain the amount from batch material, meter, or waste records."
+          amount:
+            expression: "Record the actual quantity crossing the process boundary and normalize it to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per functional-equivalent quantity of luminaires required by the reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_gases
+              source_ids:
+                - luminaire-embodied-carbon-lca-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: aluminium_scrap
+          role: "Aluminium Scrap"
+          name: "Aluminium Scrap"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "96c5f842-ea53-419b-b1cd-c02c479efb45"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this atomic exchange when segregated aluminium offcuts or rejects leave fabrication; obtain the amount from batch material, meter, or waste records."
+          amount:
+            expression: "Record the actual quantity crossing the process boundary and normalize it to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per functional-equivalent quantity of luminaires required by the reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids:
+                - pep-ecopassport-psr-0014-ed2-2023
+            ranges: []
+        - row_id: steel_scrap
+          role: "Steel scrap"
+          name: "Steel scrap"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this atomic exchange when segregated steel offcuts or rejects leave fabrication; obtain the amount from batch material, meter, or waste records."
+          amount:
+            expression: "Record the actual quantity crossing the process boundary and normalize it to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per functional-equivalent quantity of luminaires required by the reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids:
+                - pep-ecopassport-psr-0014-ed2-2023
+            ranges: []
+        - row_id: polycarbonate_scrap
+          role: "Polycarbonate fabrication offcuts"
+          name: "Polycarbonate fabrication offcuts"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this atomic exchange when segregated polycarbonate runners, offcuts, or rejects leave fabrication; obtain the amount from batch material, meter, or waste records."
+          amount:
+            expression: "Record the actual quantity crossing the process boundary and normalize it to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per functional-equivalent quantity of luminaires required by the reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids:
+                - pep-ecopassport-psr-0014-ed2-2023
+            ranges: []
+        - row_id: float_glass_cullet
+          role: "cullet float glass"
+          name: "cullet float glass"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "a62b5f32-0de6-4587-a5f8-d668a64e7979"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this atomic exchange when segregated flat-glass offcuts or breakage leave fabrication; obtain the amount from batch material, meter, or waste records."
+          amount:
+            expression: "Record the actual quantity crossing the process boundary and normalize it to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per functional-equivalent quantity of luminaires required by the reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids:
+                - pep-ecopassport-psr-0014-ed2-2023
+            ranges: []
+      elementary:
+        []
+  - id: surface_finishing
+    label: "Surface finishing"
+    inputs:
+      product:
+        - row_id: powder_coating
+          role: "Polyester powder coating"
+          name: "Polyester powder coating"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this atomic exchange when powder coating is applied to the luminaire structure; obtain the amount from batch material, meter, or waste records."
+          amount:
+            expression: "Record the actual quantity crossing the process boundary and normalize it to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per functional-equivalent quantity of luminaires required by the reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_materials
+              source_ids:
+                - luminaire-embodied-carbon-lca-2024
+            ranges: []
+        - row_id: sodium_hydroxide
+          role: "Sodium hydroxide"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this atomic exchange when sodium-hydroxide cleaning or etching is performed; obtain the amount from batch material, meter, or waste records."
+          amount:
+            expression: "Record the actual quantity crossing the process boundary and normalize it to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per functional-equivalent quantity of luminaires required by the reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_materials
+              source_ids:
+                - luminaire-embodied-carbon-lca-2024
+            ranges: []
+        - row_id: process_water
+          role: "Process Water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this atomic exchange when aqueous cleaning, rinsing, or surface treatment is performed; obtain the amount from batch material, meter, or waste records."
+          amount:
+            expression: "Record the actual quantity crossing the process boundary and normalize it to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per functional-equivalent quantity of luminaires required by the reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_materials
+              source_ids:
+                - luminaire-embodied-carbon-lca-2024
+            ranges: []
+        - row_id: finishing_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record this atomic exchange for pumps, booths, curing ovens, and treatment equipment attributable to the product; obtain the amount from batch material, meter, or waste records."
+          amount:
+            expression: "Record the actual quantity crossing the process boundary and normalize it to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per functional-equivalent quantity of luminaires required by the reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metered_energy
+              source_ids:
+                - luminaire-embodied-carbon-lca-2024
+            ranges: []
+        - row_id: natural_gas
+          role: "natural gas in the gaseous state"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Record this atomic exchange only when gaseous natural gas is burned in an attributable curing or drying operation; obtain the amount from batch material, meter, or waste records."
+          amount:
+            expression: "Record the actual quantity crossing the process boundary and normalize it to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per functional-equivalent quantity of luminaires required by the reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_gases
+              source_ids:
+                - luminaire-embodied-carbon-lca-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: powder_coating_waste
+          role: "Powder coating waste"
+          name: "Powder coating waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "9aa53a82-5462-400e-9096-efab7718201f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this atomic exchange when captured overspray or spent powder leaves the process as waste; obtain the amount from batch material, meter, or waste records."
+          amount:
+            expression: "Record the actual quantity crossing the process boundary and normalize it to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per functional-equivalent quantity of luminaires required by the reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids:
+                - pep-ecopassport-psr-0014-ed2-2023
+            ranges: []
+        - row_id: surface_finishing_wastewater
+          role: "Metal surface-finishing wastewater"
+          name: "Metal surface-finishing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this atomic exchange when aqueous surface-treatment effluent crosses to on-site or off-site treatment; obtain the amount from batch material, meter, or waste records."
+          amount:
+            expression: "Record the actual quantity crossing the process boundary and normalize it to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per functional-equivalent quantity of luminaires required by the reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids:
+                - pep-ecopassport-psr-0014-ed2-2023
+            ranges: []
+      elementary:
+        - row_id: fossil_co2
+          role: "carbon dioxide (fossil)"
+          name: "carbon dioxide (fossil)"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this atomic exchange for direct fossil carbon dioxide emitted from attributable on-site natural-gas combustion only; obtain the amount from batch material, meter, or waste records."
+          amount:
+            expression: "Record the actual quantity crossing the process boundary and normalize it to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per functional-equivalent quantity of luminaires required by the reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stack_and_fuel_balance
+              source_ids: []
+            ranges: []
+  - id: assembly_packaging
+    label: "Final assembly, testing, and packaging"
+    inputs:
+      product:
+        - row_id: control_gear
+          role: "Electronic ballast or declared luminaire control gear"
+          name: "Electronic ballast or declared luminaire control gear"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this atomic exchange when control gear is delivered with, integrated in, or required for the reference luminaire; obtain the amount from batch material, meter, or waste records."
+          amount:
+            expression: "Record the actual quantity crossing the process boundary and normalize it to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per functional-equivalent quantity of luminaires required by the reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_and_materials
+              source_ids:
+                - pep-ecopassport-psr-0014-ed2-2023
+            ranges: []
+        - row_id: lamp_light_source
+          role: "Electric filament or discharge lamps, arc lamps"
+          name: "Electric filament or discharge lamps, arc lamps"
+          flow_type: "product"
+          flow_ref:
+            uuid: "73b0a95f-d108-410a-ba2e-fac299a73970"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this atomic exchange when a compatible non-LED-only lamp is delivered with or selected for the reference luminaire; obtain the amount from batch material, meter, or waste records."
+          amount:
+            expression: "Record the actual quantity crossing the process boundary and normalize it to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per functional-equivalent quantity of luminaires required by the reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_bom_and_materials
+              source_ids:
+                - pep-ecopassport-psr-0014-ed2-2023
+            ranges: []
+        - row_id: corrugated_box
+          role: "corrugated board boxes"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this atomic exchange when a corrugated board box is delivered with the finished luminaire; obtain the amount from batch material, meter, or waste records."
+          amount:
+            expression: "Record the actual quantity crossing the process boundary and normalize it to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per functional-equivalent quantity of luminaires required by the reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_mass
+              source_ids:
+                - pep-ecopassport-psr-0014-ed2-2023
+            ranges: []
+        - row_id: ldpe_film
+          role: "Low-density polyethylene foil (PE-LD)"
+          name: "Low-density polyethylene foil (PE-LD)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2cecd3a7-d90e-44b4-aec5-1d9dfb907477"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this atomic exchange when PE-LD protective film or bag is delivered with the finished luminaire; obtain the amount from batch material, meter, or waste records."
+          amount:
+            expression: "Record the actual quantity crossing the process boundary and normalize it to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per functional-equivalent quantity of luminaires required by the reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_mass
+              source_ids:
+                - pep-ecopassport-psr-0014-ed2-2023
+            ranges: []
+        - row_id: assembly_electricity
+          role: "Electricity"
+          name: "Electricity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "890a70b7-b677-4e2a-8a1b-7d017e0a10ae"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / MJ"
+          description: "Record this atomic exchange for attributable assembly, electrical safety testing, photometric testing, and packaging; obtain the amount from batch material, meter, or waste records."
+          amount:
+            expression: "Record the actual quantity crossing the process boundary and normalize it to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per functional-equivalent quantity of luminaires required by the reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_metered_energy
+              source_ids:
+                - luminaire-embodied-carbon-lca-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_luminaire
+          role: "Other electric lamps and lighting fittings (including lamps and lighting fittings of a kind used for lighting public open spaces or thorough-fares), not solely for LED light sources"
+          name: "Other electric lamps and lighting fittings (including lamps and lighting fittings of a kind used for lighting public open spaces or thorough-fares), not solely for LED light sources"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f3d53035-bae3-4ebd-8a74-f133bc33211a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this atomic exchange for conforming finished luminaires released from final inspection; obtain the amount from batch material, meter, or waste records."
+          amount:
+            expression: "Record the actual quantity crossing the process boundary and normalize it to the reference flow."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per functional-equivalent quantity of luminaires required by the reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finished_product
+              source_ids:
+                - un-cpc-3-0-structure-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "all foreground processes"
+    rule: "Avoid allocation by metering product-specific batches, machines, finishing lines, and waste streams separately where feasible."
+    source_ids: []
+  - rule_id: allocation_mass
+    applies_to: "unavoidable shared process with multiple co-products"
+    rule: "When subdivision is not feasible and physical causality cannot be established, allocate shared burdens by measured output mass and disclose all outputs and the allocation fraction."
+    source_ids:
+      - pep-ecopassport-psr-0014-ed2-2023
+  - rule_id: allocation_scrap
+    applies_to: "production scrap"
+    rule: "Report scrap as a waste output and model its treatment separately; do not subtract its mass or a recycling credit from gross material input in the foreground inventory."
+    source_ids:
+      - pep-ecopassport-psr-0014-ed2-2023
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_bom_and_materials
+      process_id: "component_fabrication_assembly_packaging"
+      flow_role: "constituent material or component"
+      record_type: "ERP issue, supplier specification, weighed sample"
+      raw_fields: "item id; material grade; mass; quantity; supplier; recycled content; make-or-buy state"
+      collection_method: "reconcile approved BOM with purchasing and batch issue records; weigh representative units"
+      unit: "kg"
+      frequency: "each product revision and production batch"
+      temporal_coverage: "representative 12-month production period or full campaign"
+      site_scope: "all reporting facilities and outsourced steps declared"
+      aggregation_rule: "gross input mass divided by conforming output, then multiplied by N"
+      quality_evidence: "signed BOM; calibration record; supplier declaration; mass-balance reconciliation"
+    - protocol_id: cp_metered_energy
+      process_id: "all_processes"
+      flow_role: "electricity"
+      record_type: "submeter or machine log"
+      raw_fields: "meter start/end; machine id; batch; operating mode; grid connection"
+      collection_method: "product-specific submetering or documented allocation from machine-hours"
+      unit: "kWh, converted to MJ"
+      frequency: "each batch or monthly"
+      temporal_coverage: "representative 12 months"
+      site_scope: "all attributable on-site operations"
+      aggregation_rule: "subtract non-production baseline; divide by conforming output; multiply by N"
+      quality_evidence: "meter calibration; invoice reconciliation; allocation worksheet"
+    - protocol_id: cp_process_gases
+      process_id: "component_fabrication_surface_finishing"
+      flow_role: "industrial oxygen or natural gas"
+      record_type: "flowmeter, cylinder, or invoice record"
+      raw_fields: "gas identity; volume; temperature; pressure; batch; opening/closing inventory"
+      collection_method: "meter or inventory balance with reference-condition conversion"
+      unit: "m3"
+      frequency: "each batch or monthly"
+      temporal_coverage: "representative 12 months"
+      site_scope: "attributable cutting, curing, or drying equipment"
+      aggregation_rule: "net consumption divided by conforming output; multiply by N"
+      quality_evidence: "meter calibration; invoice balance; reference-condition record"
+    - protocol_id: cp_waste_mass
+      process_id: "component_fabrication_surface_finishing"
+      flow_role: "segregated waste"
+      record_type: "scale ticket and waste manifest"
+      raw_fields: "waste identity; mass; batch; destination; treatment; hazardous status"
+      collection_method: "weigh each segregated waste stream before internal reuse or dispatch"
+      unit: "kg"
+      frequency: "each dispatch and batch reconciliation"
+      temporal_coverage: "representative 12 months"
+      site_scope: "all reporting facilities"
+      aggregation_rule: "gross waste divided by conforming output; multiply by N"
+      quality_evidence: "scale calibration; manifest; mass balance"
+    - protocol_id: cp_finishing_materials
+      process_id: "surface_finishing"
+      flow_role: "coating, chemical, or process water"
+      record_type: "batch recipe, tank make-up log, meter"
+      raw_fields: "substance; concentration; opening/closing inventory; additions; recovered amount; batch"
+      collection_method: "inventory balance and calibrated water metering"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "representative 12 months"
+      site_scope: "each declared finishing line"
+      aggregation_rule: "net fresh input divided by conforming output; multiply by N"
+      quality_evidence: "recipe approval; SDS; meter calibration; inventory reconciliation"
+    - protocol_id: cp_stack_and_fuel_balance
+      process_id: "surface_finishing"
+      flow_role: "direct fossil carbon dioxide"
+      record_type: "fuel analysis and combustion calculation"
+      raw_fields: "natural-gas volume; reference conditions; carbon content; oxidation factor"
+      collection_method: "calculate only direct on-site fossil CO2 from collected fuel records"
+      unit: "kg"
+      frequency: "monthly or each campaign"
+      temporal_coverage: "same period as gas inventory"
+      site_scope: "reporting-facility combustion sources"
+      aggregation_rule: "documented carbon balance normalized by conforming output and N"
+      quality_evidence: "fuel specification; calculation worksheet; stack test when available"
+    - protocol_id: cp_packaging_mass
+      process_id: "assembly_packaging"
+      flow_role: "packaging component"
+      record_type: "packaging BOM and weighed sample"
+      raw_fields: "packaging item; material; mass; reuse count; units shipped"
+      collection_method: "weigh each packaging component separately and reconcile to shipments"
+      unit: "kg"
+      frequency: "each packaging design and quarterly check"
+      temporal_coverage: "representative 12 months"
+      site_scope: "factory-gate packaging supplied with product"
+      aggregation_rule: "packaging mass per shipped luminaire multiplied by N"
+      quality_evidence: "packaging drawing; scale calibration; shipment reconciliation"
+    - protocol_id: cp_finished_product
+      process_id: "assembly_packaging"
+      flow_role: "finished luminaire"
+      record_type: "final inspection and photometric report"
+      raw_fields: "net mass; outgoing flux V; lifetime H; power; configuration; rejects"
+      collection_method: "calibrated weighing plus electrical and photometric test for declared configuration"
+      unit: "kg; lumen; h; W"
+      frequency: "each product revision and representative batch"
+      temporal_coverage: "current marketed configuration"
+      site_scope: "all reference-product variants claimed"
+      aggregation_rule: "calculate N and scale all exchanges to the functional unit"
+      quality_evidence: "calibration certificates; test report; release record"
+  calculation_rules:
+    - id: calc_reference_quantity
+      applies_to: "all inventory rows"
+      rule: "N = (1,000 × 35,000) / (V × H); multiply per-luminaire exchanges by N."
+      inputs:
+        - "outgoing flux V in lumen"
+        - "assigned lifetime H in h"
+      output: "functional-equivalent luminaire quantity N"
+      source_ids:
+        - pep-ecopassport-psr-0014-ed2-2023
+    - id: calc_electricity
+      applies_to: "electricity rows"
+      rule: "MJ = metered kWh × 3.6."
+      inputs:
+        - "attributable metered kWh"
+      output: "MJ per reference flow"
+      source_ids: []
+    - id: calc_mass_balance
+      applies_to: "component fabrication and finishing"
+      rule: "Reconcile gross inputs = conforming product incorporated mass + each separately reported waste output + measured inventory change, within documented uncertainty."
+      inputs:
+        - input
+        - output
+        - waste
+        - "and stock records"
+      output: "mass-balance residual and completeness flag"
+      source_ids: []
+    - id: calc_direct_co2
+      applies_to: "fossil_co2"
+      rule: "Calculate direct fossil CO2 from collected natural-gas quantity and documented carbon/oxidation data; do not include upstream electricity or fuel-supply emissions."
+      inputs:
+        - "collected fuel and composition records"
+      output: "kg fossil CO2 per reference flow"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product"
+      requirement: "Demonstrate that the product is CPC 46539 and not solely designed for LED light sources; retain product specification, compatible-lamp statement, photos, and model number."
+      evidence: "approved product specification and classification review"
+    - id: dq_completeness
+      applies_to: "bill of materials and processes"
+      requirement: "Reconcile constituent mass, purchased components, factory inputs, wastes, and finished output; explain every material omission and outsourced step."
+      evidence: "BOM-to-production mass balance and supplier records"
+    - id: dq_temporal
+      applies_to: "all foreground data"
+      requirement: "Use a representative 12-month period or the complete production campaign; disclose shutdowns, prototypes, and abnormal batches."
+      evidence: "dated meter, purchasing, production, and waste records"
+    - id: dq_technology
+      applies_to: "fabrication and finishing"
+      requirement: "Identify in-house and outsourced cutting, forming, moulding, coating, anodizing, and testing technologies."
+      evidence: "route sheet, supplier declaration, and facility process map"
+    - id: dq_photometry
+      applies_to: "reference-flow scaling"
+      requirement: "Retain the complete-luminaire photometric report, assigned-lifetime basis, and declared power for the same configuration represented by the BOM."
+      evidence: "photometric and lifetime reports"
+    - id: dq_uncertainty
+      applies_to: "all calculated or allocated values"
+      requirement: "Report measurement uncertainty, allocation shares, data gaps, and any proxy upstream datasets."
+      evidence: "calculation workbook and data-quality review"
+validation_rules:
+  - rule_id: val_identity
+    applies_to: "product identity"
+    rule: "Fail if the product is solely designed for LED light sources, is a separate light source or part, or lacks evidence for the declared CPC 46539 boundary."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: val_reference_flow
+    applies_to: "functional unit"
+    rule: "Fail if V, H, N, net mass, supplied lamp/control-gear configuration, or photometric basis is missing or internally inconsistent."
+    source_ids:
+      - pep-ecopassport-psr-0014-ed2-2023
+  - rule_id: val_atomic_inventory
+    applies_to: "process inventory"
+    rule: "Fail if any recorded exchange combines multiple materials, utilities, fuels, wastes, or emissions, or if an actual exchange is hidden in an umbrella row."
+    source_ids: []
+  - rule_id: val_mass_balance
+    applies_to: "manufacturing"
+    rule: "Flag a non-zero unexplained mass-balance residual and fail when material omissions or netted scrap prevent reconciliation."
+    source_ids:
+      - pep-ecopassport-psr-0014-ed2-2023
+  - rule_id: val_direct_emissions
+    applies_to: "fossil_co2"
+    rule: "Fail if upstream fuel or electricity emissions are reported as direct elementary outputs, or if direct combustion CO2 lacks collected fuel evidence."
+    source_ids: []
+  - rule_id: val_packaging
+    applies_to: "packaging"
+    rule: "Fail if product packaging is included in net luminaire mass or if supplied packaging components are not reported separately."
+    source_ids:
+      - pep-ecopassport-psr-0014-ed2-2023
+published_dataset_profile:
+  dataset_role: "foreground product-manufacturing dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Cradle-to-gate manufacturing comparisons within the same CPC 46539 boundary and downstream lifecycle models that add declared distribution, installation, use, maintenance, and end-of-life scenarios"
+  excluded_use: "Comparison with solely-LED luminaires or other lighting categories without harmonized functional performance, lifetime, configuration, geography, and downstream scenarios"
+  required_metadata: "model number; CPC evidence; V; H; N; mass; power; lamp/control-gear/accessory configuration; light-management functions; application; geography; route; packaging; data period; allocation; upstream datasets"
+  required_quality_disclosure: "foreground share; primary-data coverage; mass-balance residual; metering uncertainty; allocation; outsourced steps; recycled-content evidence; unresolved UUIDs and range-evidence needs"
+  update_trigger: "Product redesign; light-source/control-gear change; flux, power, or lifetime change; BOM or packaging change above the study materiality threshold; facility/route/geography change; or newer representative data"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-09-04)"
+    used_for: "Official CPC 46539 identity and separation from adjacent lighting categories"
+  - id: "pep-ecopassport-psr-0014-ed2-2023"
+    type: "standard"
+    reference: "PEP ecopassport, PSR-0014-ed2.0-EN-2023 07 13, Specific Rules for Luminaires, https://register.pep-ecopassport.org/documents/public/PSR-0014-EN (retrieved 2026-09-04)"
+    used_for: "Luminaire scope, functional unit, reference-flow qualifiers, component/accessory boundary, allocation, packaging, waste, and disclosure rules"
+  - id: "luminaire-embodied-carbon-lca-2024"
+    type: "literature"
+    reference: "Mazzei et al., Embodied carbon quantification of luminaires using life cycle assessment and CIBSE TM65 methodologies: A comparison case study, Journal of Industrial Ecology 28 (2024), University of Cambridge published-version repository copy, https://api.repository.cam.ac.uk/server/api/core/bitstreams/ebf1b47c-5d0f-4e43-bd63-fb691f995d10/content (retrieved 2026-09-05; DOI 10.1111/jiec.13449)"
+    used_for: "Original-text-verified manufacturing-process and material-composition evidence; supports primary collection of aluminium, steel, glass, electricity, gas, and finishing operations"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:cff073f178e1eff27b39aa83e6027de0b555640d593ff035fdbf88f59b05dcd0"
+  generated_content_sha256: "sha256:58b1b8053dbd7783e3e5c7eb756261a88bb53a3ec65855d7f8924e2535c22f11"
